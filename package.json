@@ -1,12 +1,13 @@
 {
-  "name": "prmpt-landing",
+  "name": "ori-baebi-landing",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"app/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
     "@gsap/react": "^2.1.0",
@@ -21,7 +22,11 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "eslint": "^10.6.0",
+    "eslint-config-next": "^16.2.9",
+    "eslint-config-prettier": "^10.1.8",
     "postcss": "^8.5.0",
+    "prettier": "^3.9.4",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.8.0"
   }

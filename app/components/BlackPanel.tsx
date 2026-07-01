@@ -16,10 +16,7 @@ const GALLERY_IMAGES = [
 ];
 
 /* Build scattered grid layout */
-function buildLayout(
-  count: number,
-  cols: number
-): { col: number; imageIdx: number }[][] {
+function buildLayout(count: number, cols: number): { col: number; imageIdx: number }[][] {
   const rows: { col: number; imageIdx: number }[][] = [];
   let imgIdx = 0;
 
@@ -53,27 +50,15 @@ interface BlackPanelProps {
 
 export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
   /* Compute layouts for each breakpoint (we'll use CSS grid + responsive cols) */
-  const cols4Layout = useMemo(
-    () => buildLayout(GALLERY_IMAGES.length, 4),
-    []
-  );
-  const cols3Layout = useMemo(
-    () => buildLayout(GALLERY_IMAGES.length, 3),
-    []
-  );
-  const cols2Layout = useMemo(
-    () => buildLayout(GALLERY_IMAGES.length, 2),
-    []
-  );
+  const cols4Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 4), []);
+  const cols3Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 3), []);
+  const cols2Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 2), []);
 
   /* We render a single grid and use responsive column counts.
      For simplicity, we'll render based on a flat list with grid placement. */
 
   // Build flat grid cells for 4-column layout (desktop default)
-  const renderGrid = (
-    layout: { col: number; imageIdx: number }[][],
-    cols: number
-  ) => {
+  const renderGrid = (layout: { col: number; imageIdx: number }[][], cols: number) => {
     const cells: React.JSX.Element[] = [];
 
     layout.forEach((row, rowIdx) => {
@@ -88,8 +73,7 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
               className="bp-card"
               style={{
                 aspectRatio: "2/3",
-                transform: "scale(0)",
-                transformOrigin: isLeftHalf ? "right bottom" : "left bottom",
+                opacity: 0,
                 overflow: "hidden",
               }}
             >
@@ -107,12 +91,7 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
             </div>
           );
         } else {
-          cells.push(
-            <div
-              key={`${rowIdx}-${c}`}
-              style={{ aspectRatio: "2/3" }}
-            />
-          );
+          cells.push(<div key={`${rowIdx}-${c}`} style={{ aspectRatio: "2/3" }} />);
         }
       }
     });
@@ -136,7 +115,7 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
         ref={wrapRef}
         style={{
           width: "100%",
-          paddingTop: "min(400px, 40vh)",
+          paddingTop: "min(100px, 10vh)",
         }}
       >
         {/* Mobile: 2 cols */}

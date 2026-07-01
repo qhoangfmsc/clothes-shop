@@ -16,16 +16,22 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
   const rightRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
-  const loadCountRef = useRef(0);
   const activeSideRef = useRef<"left" | "right">("right");
   const mouseXRef = useRef(0);
 
   const onVideoReady = useCallback(() => {
-    loadCountRef.current++;
-    if (loadCountRef.current >= 2) {
+    if (!loaded) {
       setLoaded(true);
     }
-  }, []);
+  }, [loaded]);
+
+  /* Fallback: show container after 2s even if videos haven't loaded */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!loaded) setLoaded(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [loaded]);
 
   /* Desktop: cursor-driven video scrubbing */
   useEffect(() => {
@@ -101,9 +107,7 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
     const right = rightRef.current;
     if (!left || !right) return;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
 
     const onLeftEnd = () => {
@@ -155,7 +159,7 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
         muted
         playsInline
         preload="auto"
-        onCanPlayThrough={onVideoReady}
+        onLoadedData={onVideoReady}
         style={{
           position: "absolute",
           inset: 0,
@@ -173,7 +177,7 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
         muted
         playsInline
         preload="auto"
-        onCanPlayThrough={onVideoReady}
+        onLoadedData={onVideoReady}
         style={{
           position: "absolute",
           inset: 0,

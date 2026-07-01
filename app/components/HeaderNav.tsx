@@ -21,7 +21,7 @@ export default function HeaderNav() {
         justifyContent: "space-between",
         alignItems: "center",
       }}
-      className="top-4 right-4 w-auto sm:top-8 sm:right-8 lg:w-[330px]"
+      className="top-4 right-4 w-auto sm:top-8 sm:right-8 lg:w-[200px]"
     >
       {/* ABOUT - hidden on mobile */}
       <span
@@ -54,17 +54,6 @@ export default function HeaderNav() {
           <path d="M0 14H40" stroke="white" strokeWidth="2.5" />
           <path d="M0 26H40" stroke="white" strokeWidth="2.5" />
         </svg>
-
-        {/* CART */}
-        <span
-          className="text-[13px] lg:text-[15px]"
-          style={{
-            color: "white",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          [ CART ]
-        </span>
       </div>
     </motion.div>
   );

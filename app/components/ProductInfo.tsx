@@ -29,15 +29,14 @@ export default function ProductInfo() {
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
+          alignItems: "flex-end",
         }}
       >
         {/* Circle icon with symbol */}
         <div
-          className="w-5 h-5 sm:w-[30px] sm:h-[30px]"
+          className="w-5 h-5 sm:w-[20px] sm:h-[20px]"
           style={{
             position: "relative",
-            marginBottom: 8,
           }}
         >
           <svg
@@ -47,13 +46,7 @@ export default function ProductInfo() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle
-              cx="20"
-              cy="20"
-              r="18.75"
-              stroke="white"
-              className="stroke-[2] sm:stroke-[2.5]"
-            />
+            <circle cx="20" cy="20" r="18.75" stroke="white" className="stroke-2 sm:stroke-[2.5]" />
           </svg>
           <span
             id="circle-symbol"
@@ -75,32 +68,19 @@ export default function ProductInfo() {
 
         {/* Collection label */}
         <div
-          className="text-[20px] sm:text-[30px]"
+          className="text-[15px] sm:text-[25px]"
           style={{
             lineHeight: "100%",
-            textAlign: "center",
+            textAlign: "right",
             letterSpacing: "-0.04em",
             textTransform: "uppercase",
             color: "white",
           }}
         >
-          ARCHIVE COLLECTION
+          HAUTE COUTURE
           <br />
-          &ldquo;PROMPT&rdquo;
+          &ldquo;ORI BAEBI&rdquo;
         </div>
-      </div>
-
-      {/* Price */}
-      <div
-        className="text-[60px] sm:text-[80px]"
-        style={{
-          lineHeight: "100%",
-          textAlign: "center",
-          letterSpacing: "-0.04em",
-          color: "white",
-        }}
-      >
-        $97,33
       </div>
     </motion.div>
   );

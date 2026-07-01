@@ -17,17 +17,17 @@ export default function ViewButton() {
         alignItems: "center",
         justifyContent: "center",
       }}
-      className="left-4 right-4 bottom-[60px] h-[100px] sm:left-auto sm:right-8 sm:bottom-8 sm:w-[330px] sm:h-[174px]"
+      className="left-4 right-4 bottom-[60px] h-[72px] sm:left-auto sm:right-8 sm:bottom-8 sm:w-[220px] sm:h-[80px]"
     >
       <span
-        className="text-[72px] sm:text-[110px]"
+        className="text-[26px] sm:text-[42px]"
         style={{
           letterSpacing: "-0.04em",
           color: "#fff",
           mixBlendMode: "exclusion",
         }}
       >
-        view
+        explore
       </span>
     </div>
   );

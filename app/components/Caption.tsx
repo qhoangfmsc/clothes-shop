@@ -20,11 +20,11 @@ export default function Caption() {
         letterSpacing: "-0.04em",
         color: "#FFFFFF",
       }}
-      className="top-[118px] left-4 w-[calc(100vw-32px)] sm:top-[180px] sm:left-4 sm:w-[calc(50vw-48px)] lg:top-[244px] lg:left-8 lg:w-[692px]"
+      className="top-[118px] left-4 w-[calc(100vw-82px)] sm:top-[180px] sm:left-4 sm:w-[calc(50vw-90px)] lg:top-[244px] lg:left-8 lg:w-[540px]"
     >
-      When switching between videos near the center, do not reset currentTime to
-      0 abruptly. Add a small dead zone: if cursor is within +/-50px of center,
-      keep both videos at currentTime = 0 and show whichever was last active.
+      When luxury meets the runway, every thread tells a story. Ori Baebi crafts exclusive bags,
+      apparel &amp; accessories for the world&apos;s most discerning fashion houses — where heritage
+      artisanship meets avant-garde vision.
     </motion.div>
   );
 }

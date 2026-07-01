@@ -23,9 +23,7 @@ export default function Home() {
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    setIsTouch(
-      "ontouchstart" in window || navigator.maxTouchPoints > 0
-    );
+    setIsTouch("ontouchstart" in window || navigator.maxTouchPoints > 0);
   }, []);
 
   /* ── GSAP: slide black panel up during first 100vh ── */
@@ -67,7 +65,7 @@ export default function Home() {
       const vh = window.innerHeight;
       const wrapH = wrap.scrollHeight;
       maxScroll = Math.max(0, wrapH - vh);
-      spacer.style.height = `${vh + maxScroll + 2 * vh}px`;
+      spacer.style.height = `${vh + maxScroll + 3 * vh}px`;
     };
 
     recalc();
@@ -89,8 +87,7 @@ export default function Home() {
       /* symbol randomizer (throttled 80ms) */
       const now = performance.now();
       if (circleSymbol && now - lastSymbolTime > 80) {
-        circleSymbol.textContent =
-          symbols[Math.floor(Math.random() * symbols.length)];
+        circleSymbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
         lastSymbolTime = now;
       }
 
@@ -106,47 +103,40 @@ export default function Home() {
         wrap.style.transform = "translateY(0)";
       }
 
-      /* Card scaling */
+      /* Card fade in/out */
       const cards = panel.querySelectorAll<HTMLElement>(".bp-card");
-      const panelOffset = scrollY <= vh ? vh - scrollY : 0;
-      const phase2Offset = scrollY > vh ? -(scrollY - vh) : 0;
 
       cards.forEach((card) => {
         const rect = card.getBoundingClientRect();
-        let top = rect.top;
-        let bottom = rect.bottom;
-
-        if (scrollY <= vh) {
-          top += panelOffset;
-          bottom += panelOffset;
-        }
+        const top = rect.top;
+        const bottom = rect.bottom;
 
         if (bottom <= 0 || top >= vh) {
-          card.style.transform = "scale(0)";
+          card.style.opacity = "0";
           return;
         }
 
-        const enter = Math.min(1, (vh - top) / (vh * 0.6));
-        const exit = Math.min(1, bottom / (vh * 0.4));
-        const scale = Math.max(0, Math.min(enter, exit));
-        card.style.transform = `scale(${scale})`;
+        /* Fade in over 30% of viewport from bottom edge */
+        const enter = Math.max(0, Math.min(1, (vh - top) / (vh * 0.3)));
+        /* Fade out over 20% of viewport at the top */
+        const exit = Math.max(0, Math.min(1, bottom / (vh * 0.2)));
+
+        const opacity = Math.min(enter, exit);
+        card.style.opacity = String(opacity);
       });
 
       /* Outro phase */
       const outroStart = vh + maxScroll;
       if (scrollY > outroStart) {
-        const progress = Math.min(
-          1,
-          (scrollY - outroStart) / (vh - 100)
-        );
+        const progress = Math.min(1, (scrollY - outroStart) / (vh - 100));
 
         if (outroOverlay) outroOverlay.style.opacity = String(progress);
 
         if (outroInfo) {
           const offset = outroInfo.dataset.outroOffset
             ? Number(outroInfo.dataset.outroOffset)
-            : 166;
-          outroInfo.style.transform = `translateY(${-offset * progress}px)`;
+            : 160;
+          outroInfo.style.transform = `translateY(${-(offset - 80) * progress}px)`;
         }
 
         if (outroBuy) {
