@@ -11,6 +11,8 @@
 html,
 body {
   overflow-x: hidden;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 500;
 }
 
 .bp-card {

@@ -26,12 +26,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body
-        style={{
-          fontFamily: "'Inter Tight', sans-serif",
-          fontWeight: 500,
-        }}
-      >
+      <body>
         {children}
       </body>
     </html>
