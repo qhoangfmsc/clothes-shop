@@ -169,7 +169,7 @@ export default function Home() {
       style={{
         position: "relative",
         userSelect: "none",
-        background: "white",
+        background: "var(--bg-primary)",
         height: "500vh",
         cursor: isTouch ? "default" : "none",
       }}

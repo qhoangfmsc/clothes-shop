@@ -9,7 +9,7 @@ export default function WhiteOverlay() {
         inset: 0,
         pointerEvents: "none",
         zIndex: 12,
-        background: "#fff",
+        background: "var(--bg-primary)",
         opacity: 0,
       }}
     />

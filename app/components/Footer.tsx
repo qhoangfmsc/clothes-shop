@@ -15,8 +15,9 @@ export default function Footer() {
         alignItems: "center",
         textTransform: "uppercase",
         color: "white",
+        letterSpacing: "-0.02em",
       }}
-      className="bottom-6 gap-5 justify-between w-[calc(100%-32px)] text-[11px] tracking-[-0.02em] sm:bottom-8 sm:gap-20 sm:w-auto sm:text-[13px]"
+      className="bottom-6 gap-5 justify-between w-[calc(100%-32px)] text-[11px] sm:bottom-8 sm:gap-20 sm:w-auto sm:text-[13px]"
     >
       <span>ORI BAEBI ® 2026</span>
       <span>PRIVACY POLICY</span>

@@ -8,14 +8,14 @@ export default function ViewButton() {
         position: "fixed",
         pointerEvents: "none",
         zIndex: 20,
-        mixBlendMode: "exclusion",
         transformOrigin: "right bottom",
         transform: "scale(0)",
-        background: "#fff",
-        borderRadius: 1335,
+        background: "var(--accent-primary)",
+        borderRadius: "var(--radius-pill)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        boxShadow: "var(--shadow-lg)",
       }}
       className="left-4 right-4 bottom-[60px] h-[72px] sm:left-auto sm:right-8 sm:bottom-8 sm:w-[220px] sm:h-[80px]"
     >
@@ -23,8 +23,8 @@ export default function ViewButton() {
         className="text-[26px] sm:text-[42px]"
         style={{
           letterSpacing: "-0.04em",
-          color: "#fff",
-          mixBlendMode: "exclusion",
+          color: "var(--color-white)",
+          textTransform: "lowercase",
         }}
       >
         explore

@@ -105,7 +105,7 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "black",
+        background: "var(--bg-panel)",
         zIndex: 10,
         transform: "translateY(100vh)",
         overflow: "hidden",
