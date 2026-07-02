@@ -3,16 +3,16 @@
 import React, { RefObject, useMemo } from "react";
 
 const GALLERY_IMAGES = [
-  "/images/model_intro_1.webp",
-  "/images/model_intro_2.webp",
-  "/images/model_intro_3.webp",
-  "/images/model_intro_4.webp",
-  "/images/model_intro_5.webp",
-  "/images/model_intro_6.webp",
-  "/images/model_intro_7.webp",
-  "/images/model_intro_8.webp",
-  "/images/model_intro_9.webp",
-  "/images/model_intro_10.webp",
+  "/images/model-intro/model_intro_1.webp",
+  "/images/model-intro/model_intro_2.webp",
+  "/images/model-intro/model_intro_3.webp",
+  "/images/model-intro/model_intro_4.webp",
+  "/images/model-intro/model_intro_5.webp",
+  "/images/model-intro/model_intro_6.webp",
+  "/images/model-intro/model_intro_7.webp",
+  "/images/model-intro/model_intro_8.webp",
+  "/images/model-intro/model_intro_9.webp",
+  "/images/model-intro/model_intro_10.webp",
 ];
 
 /* Build scattered grid layout */
