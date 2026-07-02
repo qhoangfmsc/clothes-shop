@@ -1,5 +1,22 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const quicheFine = localFont({
+  src: "../assets/fonts/QuicheFine-MediumItalic.ttf",
+  weight: "500",
+  style: "italic",
+  display: "swap",
+  variable: "--font-quiche-fine",
+});
+
+const quicheDisplay = localFont({
+  src: "../assets/fonts/QuicheDisplay-Regular.otf",
+  weight: "400",
+  style: "normal",
+  display: "swap",
+  variable: "--font-quiche-display",
+});
 
 export const metadata: Metadata = {
   title: "Ori Baebi — Haute Couture Collection",
@@ -13,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${quicheFine.variable} ${quicheDisplay.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -26,3 +43,4 @@ export default function RootLayout({
     </html>
   );
 }
+

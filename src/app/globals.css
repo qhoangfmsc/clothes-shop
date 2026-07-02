@@ -120,8 +120,8 @@
 html,
 body {
   overflow-x: hidden;
-  font-family: "Inter Tight", sans-serif;
-  font-weight: 500;
+  font-family: var(--font-quiche-display), "Inter Tight", sans-serif;
+  font-weight: 400;
   color: var(--text-primary);
   background: var(--bg-primary);
   letter-spacing: -0.02em;
