@@ -18,7 +18,7 @@ export default function Caption() {
         fontSize: 12,
         lineHeight: "140%",
         letterSpacing: "-0.04em",
-        color: "#FFFFFF",
+        color: "#FFF",
       }}
       className="top-[118px] left-4 w-[calc(100vw-82px)] sm:top-[180px] sm:left-4 sm:w-[calc(50vw-90px)] lg:top-[244px] lg:left-8 lg:w-[540px]"
     >

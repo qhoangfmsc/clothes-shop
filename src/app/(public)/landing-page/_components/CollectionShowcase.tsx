@@ -50,15 +50,21 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
       for (let c = 0; c < cols; c++) {
         const item = row.find((r) => r.col === c);
         if (item) {
+          /* Cards in left half of grid → origin right bottom,
+             cards in right half → origin left bottom */
+          const isLeftHalf = c < cols / 2;
+          const origin = isLeftHalf ? "right bottom" : "left bottom";
+
           cells.push(
             <div
               key={`${rowIdx}-${c}`}
               className="collection-card"
               style={{
                 aspectRatio: "2/3",
-                opacity: 0,
                 overflow: "hidden",
                 borderRadius: "var(--radius-md)",
+                transform: "scale(0)",
+                transformOrigin: origin,
               }}
             >
               <img
@@ -99,7 +105,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
         ref={wrapRef}
         style={{
           width: "100%",
-          paddingTop: "min(100px, 10vh)",
+          paddingTop: "100vh",
         }}
       >
         {/* Mobile: 2 cols */}

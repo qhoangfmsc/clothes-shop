@@ -10,7 +10,7 @@ export default function ViewButton() {
         zIndex: 20,
         transformOrigin: "right bottom",
         transform: "scale(0)",
-        background: "var(--accent-primary)",
+        background: "#000",
         borderRadius: "var(--radius-pill)",
         display: "flex",
         alignItems: "center",

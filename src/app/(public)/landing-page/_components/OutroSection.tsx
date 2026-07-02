@@ -73,7 +73,7 @@ export default function OutroSection() {
           <span
             style={{
               display: "block",
-              color: "var(--text-accent)",
+              color: "var(--accent-primary)",
             }}
           >
             Collection
@@ -127,8 +127,7 @@ export default function OutroSection() {
           className="text-[12px] sm:text-[14px] lg:text-[15px] max-w-[280px] sm:max-w-[400px] lg:max-w-[440px]"
         >
           Curated outfits crafted with heritage artisanship
-          <br />
-          — where every thread tells a story.
+          <br />— where every thread tells a story.
         </p>
 
         {/* Decorative bottom accent line */}

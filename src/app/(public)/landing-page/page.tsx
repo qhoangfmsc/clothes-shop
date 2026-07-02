@@ -67,7 +67,7 @@ export default function LandingPage() {
       const vh = window.innerHeight;
       const wrapH = wrap.scrollHeight;
       maxScroll = Math.max(0, wrapH - vh);
-      spacer.style.height = `${vh + maxScroll + 3 * vh}px`;
+      spacer.style.height = `${vh + maxScroll + 2 * vh}px`;
     };
 
     recalc();
@@ -104,7 +104,7 @@ export default function LandingPage() {
         wrap.style.transform = "translateY(0)";
       }
 
-      /* Card fade in/out */
+      /* Card scale in/out (Black Panel animation) */
       const cards = panel.querySelectorAll<HTMLElement>(".collection-card");
 
       cards.forEach((card) => {
@@ -113,17 +113,17 @@ export default function LandingPage() {
         const bottom = rect.bottom;
 
         if (bottom <= 0 || top >= vh) {
-          card.style.opacity = "0";
+          card.style.transform = "scale(0)";
           return;
         }
 
-        /* Fade in over 30% of viewport from bottom edge */
-        const enter = Math.max(0, Math.min(1, (vh - top) / (vh * 0.3)));
-        /* Fade out over 20% of viewport at the top */
-        const exit = Math.max(0, Math.min(1, bottom / (vh * 0.2)));
+        /* Scale in over 60% of viewport from bottom edge */
+        const enter = Math.min(1, (vh - top) / (vh * 0.6));
+        /* Scale out over 40% of viewport at the top */
+        const exit = Math.min(1, bottom / (vh * 0.4));
 
-        const opacity = Math.min(enter, exit);
-        card.style.opacity = String(opacity);
+        const scale = Math.min(enter, exit);
+        card.style.transform = `scale(${scale})`;
       });
 
       /* Outro phase */

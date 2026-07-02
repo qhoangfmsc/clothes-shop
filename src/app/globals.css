@@ -128,14 +128,12 @@ body {
 }
 
 .collection-card {
-  will-change: opacity;
-  transition: opacity 0.3s var(--ease-default);
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .collection-card {
     will-change: auto;
-    transition: none;
   }
 }
 
