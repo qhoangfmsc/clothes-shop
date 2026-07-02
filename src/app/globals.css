@@ -137,9 +137,9 @@ body {
   }
 }
 
-/* ─── Drawer Styles ─── */
+/* ─── Drawer Styles (Dark Theme) ─── */
 .drawer-nav-link:hover {
-  border-bottom-color: var(--accent-primary) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .drawer-nav-link:hover .drawer-nav-label {
@@ -147,11 +147,11 @@ body {
 }
 
 .drawer-close-btn:hover {
-  background: var(--color-petal) !important;
-  border-color: var(--accent-primary) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .drawer-signin-btn:hover {
-  opacity: 0.9;
+  opacity: 0.85;
   transform: scale(1.02);
 }

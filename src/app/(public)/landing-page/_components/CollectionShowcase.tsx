@@ -62,7 +62,6 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
               style={{
                 aspectRatio: "2/3",
                 overflow: "hidden",
-                borderRadius: "var(--radius-md)",
                 transform: "scale(0)",
                 transformOrigin: origin,
               }}
@@ -105,7 +104,8 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
         ref={wrapRef}
         style={{
           width: "100%",
-          paddingTop: "100vh",
+          paddingTop: "80vh",
+          paddingBottom: "80vh",
         }}
       >
         {/* Mobile: 2 cols */}

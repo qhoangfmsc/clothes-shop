@@ -3,7 +3,6 @@ import HeaderNav from "@/src/app/_components/HeaderNav";
 import InvitationHero from "./_components/InvitationHero";
 import BrandStory from "./_components/BrandStory";
 import ServicesSection from "./_components/ServicesSection";
-import ContactCTA from "./_components/ContactCTA";
 
 export const metadata: Metadata = {
   title: "About — Ori Baebi",
@@ -27,11 +26,9 @@ export default function AboutPage() {
       {/* Section 2: Brand Story — clean editorial text */}
       <BrandStory />
 
-      {/* Section 3: Services — pastel cards */}
+      {/* Section 3: Services — dark invitation cards + CTA */}
       <ServicesSection />
-
-      {/* Section 4: Contact CTA */}
-      <ContactCTA />
     </main>
   );
 }
+

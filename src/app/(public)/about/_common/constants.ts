@@ -14,19 +14,19 @@ export const SERVICES = [
   {
     title: "Curated Collection",
     description:
-      "Browse our carefully selected pieces — each one crafted to perfection. From signature bags to seasonal apparel, every item reflects our commitment to understated luxury.",
+      "Signature bags, apparel & accessories — handpicked, crafted to perfection.",
     icon: "✦",
   },
   {
     title: "Custom Design",
     description:
-      "Have something unique in mind? Our design team works one-on-one with you to bring your vision to life. Bespoke patterns, personalized details, made exclusively for you.",
+      "One-on-one bespoke service. Your vision, our craft — made exclusively for you.",
     icon: "◈",
   },
   {
     title: "Personal Styling",
     description:
-      "Let us help you build a wardrobe that feels authentically you. Our stylists curate looks that balance timelessness with personality — effortless, always.",
+      "Wardrobe curation that balances timelessness with personality. Effortless, always.",
     icon: "❋",
   },
 ] as const;

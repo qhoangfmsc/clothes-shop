@@ -85,13 +85,13 @@ export default function HamburgerMenu() {
               zIndex: 100,
               width: "100%",
               maxWidth: 480,
-              /* --bg-secondary = cream #FAF3E0 */
-              background: "var(--bg-secondary)",
+              background: "rgba(0, 0, 0, 0.75)",
+              backdropFilter: "blur(40px)",
+              WebkitBackdropFilter: "blur(40px)",
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
-              /* warm shadow per DESIGN.md */
-              boxShadow: "var(--shadow-xl)",
+              boxShadow: "-8px 0 32px rgba(0, 0, 0, 0.5)",
             }}
           >
             {/* ── Top bar ── */}
@@ -101,7 +101,7 @@ export default function HamburgerMenu() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexShrink: 0,
-                borderBottom: "1px solid var(--border-subtle)",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
                 padding: "26px 20px",
               }}
               className="sm:py-[28px]! sm:px-[40px]!"
@@ -111,8 +111,7 @@ export default function HamburgerMenu() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, ease: [...ease], delay: 0.15 }}
                 style={{
-                  /* --text-heading = #1A1714 */
-                  color: "var(--text-heading)",
+                  color: "#FFF",
                   fontSize: "34px",
                   letterSpacing: "-0.04em",
                   lineHeight: "100%",
@@ -130,8 +129,7 @@ export default function HamburgerMenu() {
                 aria-label="Close menu"
                 style={{
                   background: "transparent",
-                  /* --border-default = taupe #B8A99A */
-                  border: "1px solid var(--border-default)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
                   borderRadius: "var(--radius-pill)",
                   cursor: "pointer",
                   width: 40,
@@ -139,7 +137,7 @@ export default function HamburgerMenu() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "var(--text-heading)",
+                  color: "#FFF",
                   transition: `background var(--duration-fast) var(--ease-default), border-color var(--duration-fast) var(--ease-default)`,
                 }}
                 className="drawer-close-btn"
@@ -198,15 +196,14 @@ export default function HamburgerMenu() {
                       gap: "16px",
                       padding: "20px 0",
                       textDecoration: "none",
-                      borderBottom: "1px solid var(--border-subtle)",
+                      borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
                       transition: `border-color var(--duration-fast) var(--ease-default)`,
                     }}
                   >
                     {/* Index number */}
                     <span
                       style={{
-                        /* --text-muted = taupe #B8A99A */
-                        color: "var(--text-muted)",
+                        color: "rgba(255, 255, 255, 0.3)",
                         fontSize: "var(--text-xs)",
                         letterSpacing: "-0.02em",
                         fontVariantNumeric: "tabular-nums",
@@ -228,8 +225,7 @@ export default function HamburgerMenu() {
                       <span
                         className="drawer-nav-label"
                         style={{
-                          /* --text-heading = #1A1714 */
-                          color: "var(--text-heading)",
+                          color: "#FFF",
                           fontSize: "var(--text-xl)",
                           letterSpacing: "-0.04em",
                           lineHeight: "100%",
@@ -242,8 +238,7 @@ export default function HamburgerMenu() {
                       </span>
                       <span
                         style={{
-                          /* --text-secondary = warm grey #9B9590 */
-                          color: "var(--text-secondary)",
+                          color: "rgba(255, 255, 255, 0.4)",
                           fontSize: "var(--text-sm)",
                           letterSpacing: "-0.02em",
                           lineHeight: "140%",
@@ -277,9 +272,8 @@ export default function HamburgerMenu() {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: "8px",
-                    /* --accent-primary = dusty rose #D4A5A5 */
-                    background: "var(--accent-primary)",
-                    color: "var(--color-white)",
+                    background: "#FFF",
+                    color: "#000",
                     borderRadius: "var(--radius-pill)",
                     padding: "12px 32px",
                     fontSize: "var(--text-md)",
@@ -321,9 +315,8 @@ export default function HamburgerMenu() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "8px",
-                borderTop: "1px solid var(--border-subtle)",
-                /* --text-muted = taupe #B8A99A */
-                color: "var(--text-muted)",
+                borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+                color: "rgba(255, 255, 255, 0.3)",
                 fontSize: "var(--text-xs)",
                 letterSpacing: "-0.02em",
                 textTransform: "uppercase",

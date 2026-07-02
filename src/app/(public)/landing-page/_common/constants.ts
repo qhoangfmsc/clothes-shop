@@ -7,9 +7,6 @@ export const GALLERY_IMAGES = [
   "/images/model-intro/model_intro_5.webp",
   "/images/model-intro/model_intro_6.webp",
   "/images/model-intro/model_intro_7.webp",
-  "/images/model-intro/model_intro_8.webp",
-  "/images/model-intro/model_intro_9.webp",
-  "/images/model-intro/model_intro_10.webp",
 ] as const;
 
 /** Video source paths for the VideoContainer */
@@ -20,4 +17,4 @@ export const RIGHT_VIDEO = "/videos/model_turn_right.mp4";
 export const FADE_MS = 600;
 
 /** Symbol randomizer characters for the circle icon */
-export const SYMBOLS = ["8", "$", "^^", "%", "/"] as const;
+export const SYMBOLS = [, "@", "^^", "!", "$", "#", "><"] as const;

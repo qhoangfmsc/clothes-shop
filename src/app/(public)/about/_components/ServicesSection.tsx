@@ -1,22 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SERVICES } from "../_common/constants";
+import { SERVICES, INVITATION } from "../_common/constants";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const CARD_BG = [
-  "var(--color-petal)",
-  "var(--color-cloud)",
-  "var(--color-vanilla)",
+/**
+ * Deep, warm card backgrounds — high-fashion invitation palette.
+ * Each card gets a slightly different dark tone for depth.
+ */
+const CARD_STYLES = [
+  {
+    bg: "var(--color-deep-brown)",
+    border: "rgba(180, 160, 140, 0.15)",
+  },
+  {
+    bg: "var(--color-chocolate)",
+    border: "rgba(180, 160, 140, 0.18)",
+  },
+  {
+    bg: "var(--color-charcoal)",
+    border: "rgba(180, 160, 140, 0.15)",
+  },
 ] as const;
 
 export default function ServicesSection() {
   return (
     <section
       style={{
-        background: "var(--bg-accent-blue)",
-        padding: "clamp(80px, 12vw, 160px) clamp(24px, 5vw, 80px)",
+        background: "var(--color-petal)",
+        padding: "80px 40px",
+        height: "100vh",
       }}
     >
       <div
@@ -32,7 +46,7 @@ export default function ServicesSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [...ease] }}
           style={{
-            color: "var(--text-accent)",
+            color: "var(--color-chocolate)",
             textTransform: "uppercase",
             fontSize: "var(--text-sm)",
             letterSpacing: "-0.02em",
@@ -50,7 +64,7 @@ export default function ServicesSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.1 }}
           style={{
-            color: "var(--text-heading)",
+            color: "var(--color-deep-brown)",
             letterSpacing: "-0.04em",
             lineHeight: "100%",
             fontWeight: 500,
@@ -61,7 +75,7 @@ export default function ServicesSection() {
           What We Offer
         </motion.h2>
 
-        {/* Cards */}
+        {/* Cards — dark invitation style */}
         <div
           style={{
             display: "grid",
@@ -69,69 +83,115 @@ export default function ServicesSection() {
             gap: 16,
           }}
         >
-          {SERVICES.map((service, idx) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.6,
-                ease: [...ease],
-                delay: idx * 0.12,
-              }}
-              style={{
-                background: CARD_BG[idx],
-                border: "1px solid var(--border-subtle)",
-                borderRadius: 8,
-                padding: "clamp(28px, 3vw, 40px)",
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-                cursor: "default",
-                transition: `transform var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default)`,
-              }}
-              whileHover={{
-                y: -2,
-                boxShadow: "var(--shadow-md)",
-              }}
-            >
-              <span
+          {SERVICES.map((service, idx) => {
+            const style = CARD_STYLES[idx];
+            return (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{
+                  duration: 0.6,
+                  ease: [...ease],
+                  delay: idx * 0.12,
+                }}
                 style={{
-                  fontSize: 28,
-                  color: "var(--accent-primary)",
-                  lineHeight: "100%",
+                  background: style.bg,
+                  border: `1px solid ${style.border}`,
+                  borderRadius: 8,
+                  padding: "clamp(32px, 3.5vw, 48px)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 20,
+                  cursor: "default",
+                  transition: `transform 300ms cubic-bezier(0.25,0.1,0.25,1), box-shadow 300ms cubic-bezier(0.25,0.1,0.25,1)`,
+                }}
+                whileHover={{
+                  y: -2,
+                  boxShadow: "0 8px 32px rgba(58, 49, 42, 0.35)",
                 }}
               >
-                {service.icon}
-              </span>
+                {/* Icon — muted gold accent */}
+                <span
+                  style={{
+                    fontSize: 24,
+                    color: "var(--color-taupe)",
+                    lineHeight: "100%",
+                    opacity: 0.85,
+                  }}
+                >
+                  {service.icon}
+                </span>
 
-              <h3
-                style={{
-                  color: "var(--text-heading)",
-                  letterSpacing: "-0.04em",
-                  lineHeight: "100%",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  fontSize: "clamp(15px, 1.8vw, 20px)",
-                }}
-              >
-                {service.title}
-              </h3>
+                {/* Title — light on dark */}
+                <h3
+                  style={{
+                    color: "var(--color-cream)",
+                    letterSpacing: "-0.04em",
+                    lineHeight: "100%",
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    fontSize: "clamp(15px, 1.8vw, 20px)",
+                  }}
+                >
+                  {service.title}
+                </h3>
 
-              <p
-                style={{
-                  color: "var(--text-primary)",
-                  letterSpacing: "-0.02em",
-                  lineHeight: "170%",
-                  fontSize: "clamp(12px, 1.3vw, 14px)",
-                }}
-              >
-                {service.description}
-              </p>
-            </motion.div>
-          ))}
+                {/* Description — warm muted text */}
+                <p
+                  style={{
+                    color: "var(--color-taupe)",
+                    letterSpacing: "-0.02em",
+                    lineHeight: "170%",
+                    fontSize: "clamp(12px, 1.3vw, 14px)",
+                  }}
+                >
+                  {service.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* GET IN TOUCH — CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [...ease], delay: 0.4 }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 64,
+          }}
+        >
+          <motion.a
+            href="mailto:hello@oribaebi.com"
+            whileHover={{ scale: 1.02, opacity: 0.9 }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "var(--color-deep-brown)",
+              color: "var(--color-cream)",
+              borderRadius: 9999,
+              padding: "14px 40px",
+              fontSize: "var(--text-md)",
+              letterSpacing: "-0.02em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              fontWeight: 500,
+              border: "1px solid rgba(180, 160, 140, 0.2)",
+              boxShadow: "0 4px 20px rgba(58, 49, 42, 0.2)",
+              transition:
+                "opacity 300ms cubic-bezier(0.25,0.1,0.25,1), transform 300ms cubic-bezier(0.25,0.1,0.25,1)",
+              cursor: "pointer",
+            }}
+          >
+            {INVITATION.ctaButton}
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );
