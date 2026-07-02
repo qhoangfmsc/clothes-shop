@@ -21,7 +21,7 @@ export default function ProductInfo() {
         flexDirection: "column",
         alignItems: "center",
       }}
-      className="left-0 right-0 bottom-12 sm:left-auto sm:right-8 sm:bottom-20 sm:w-[330px]"
+      className="left-0 -right-20 bottom-20 sm:left-auto sm:right-8 sm:bottom-20 sm:w-[330px]"
     >
       {/* Top block */}
       <div
