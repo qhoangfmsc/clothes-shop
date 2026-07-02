@@ -1,26 +1,13 @@
 "use client";
 
 import React, { RefObject, useMemo } from "react";
-
-const GALLERY_IMAGES = [
-  "/images/model-intro/model_intro_1.webp",
-  "/images/model-intro/model_intro_2.webp",
-  "/images/model-intro/model_intro_3.webp",
-  "/images/model-intro/model_intro_4.webp",
-  "/images/model-intro/model_intro_5.webp",
-  "/images/model-intro/model_intro_6.webp",
-  "/images/model-intro/model_intro_7.webp",
-  "/images/model-intro/model_intro_8.webp",
-  "/images/model-intro/model_intro_9.webp",
-  "/images/model-intro/model_intro_10.webp",
-];
+import { GALLERY_IMAGES } from "../_common/constants";
 
 /* Build scattered grid layout */
 function buildLayout(count: number, cols: number): { col: number; imageIdx: number }[][] {
   const rows: { col: number; imageIdx: number }[][] = [];
   let imgIdx = 0;
 
-  const totalRows = Math.ceil((count * 2.5) / 1); // generous rows
   for (let r = 0; imgIdx < count; r++) {
     const row: { col: number; imageIdx: number }[] = [];
 
@@ -54,10 +41,7 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
   const cols3Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 3), []);
   const cols2Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 2), []);
 
-  /* We render a single grid and use responsive column counts.
-     For simplicity, we'll render based on a flat list with grid placement. */
-
-  // Build flat grid cells for 4-column layout (desktop default)
+  // Build flat grid cells for N-column layout
   const renderGrid = (layout: { col: number; imageIdx: number }[][], cols: number) => {
     const cells: React.JSX.Element[] = [];
 
@@ -66,7 +50,6 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
       for (let c = 0; c < cols; c++) {
         const item = row.find((r) => r.col === c);
         if (item) {
-          const isLeftHalf = c < cols / 2;
           cells.push(
             <div
               key={`${rowIdx}-${c}`}

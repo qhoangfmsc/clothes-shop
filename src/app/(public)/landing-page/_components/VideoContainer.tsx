@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-
-const LEFT_VIDEO = "/videos/model_rotate_left.mp4";
-const RIGHT_VIDEO = "/videos/model_rotate_right.mp4";
-
-/** Duration of the crossfade transition in ms */
-const FADE_MS = 600;
+import { LEFT_VIDEO, RIGHT_VIDEO, FADE_MS } from "../_common/constants";
 
 interface VideoContainerProps {
   isTouch: boolean;
@@ -238,4 +233,3 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
     </div>
   );
 }
-

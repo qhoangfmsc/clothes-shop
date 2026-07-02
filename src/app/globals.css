@@ -138,3 +138,22 @@ body {
     transition: none;
   }
 }
+
+/* ─── Drawer Styles ─── */
+.drawer-nav-link:hover {
+  border-bottom-color: var(--accent-primary) !important;
+}
+
+.drawer-nav-link:hover .drawer-nav-label {
+  color: var(--accent-primary) !important;
+}
+
+.drawer-close-btn:hover {
+  background: var(--color-petal) !important;
+  border-color: var(--accent-primary) !important;
+}
+
+.drawer-signin-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
