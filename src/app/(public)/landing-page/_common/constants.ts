@@ -17,4 +17,4 @@ export const RIGHT_VIDEO = "/videos/model_turn_right.mp4";
 export const FADE_MS = 600;
 
 /** Symbol randomizer characters for the circle icon */
-export const SYMBOLS = [, "@", "^^", "!", "$", "#", "><"] as const;
+export const SYMBOLS = ["@", "^^", "!", "$", "#", "><"] as const;
