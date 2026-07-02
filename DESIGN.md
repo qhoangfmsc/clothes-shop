@@ -135,13 +135,16 @@ The landing page hero + gallery uses a dark scheme. For dark contexts:
 ```css
 :root {
   --font-primary: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-weight:  500;   /* Single weight across all text */
+  --font-display: var(--font-quiche-display), serif;
+  --font-weight:  500;   /* Single weight for Inter Tight */
 }
 ```
 
-- **Inter Tight** is loaded via Google Fonts with weight 500
+- **Inter Tight 500** — Primary UI font: navigation, buttons, body, labels
+- **Quiche Display 400** — Editorial display font: hero headings, landing page titles, editorial sections. Loaded as local font via `--font-quiche-display` CSS variable
+- `globals.css` sets `font-family: var(--font-quiche-display), "Inter Tight", sans-serif` as the base, allowing both fonts to cascade
 - Never add additional weights without design approval
-- Never use serif fonts — the brand is modern minimalist
+
 
 ### 2.2 Type Scale
 

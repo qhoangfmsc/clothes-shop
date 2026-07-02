@@ -127,13 +127,13 @@ body {
   letter-spacing: -0.02em;
 }
 
-.bp-card {
+.collection-card {
   will-change: opacity;
   transition: opacity 0.3s var(--ease-default);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bp-card {
+  .collection-card {
     will-change: auto;
     transition: none;
   }

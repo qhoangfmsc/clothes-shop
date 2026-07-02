@@ -10,9 +10,10 @@ import Footer from "@/src/app/_components/Footer";
 import Caption from "./_components/Caption";
 import ProductInfo from "./_components/ProductInfo";
 import ViewButton from "./_components/ViewButton";
+
 import VideoContainer from "./_components/VideoContainer";
-import WhiteOverlay from "./_components/WhiteOverlay";
-import BlackPanel from "./_components/BlackPanel";
+import OutroSection from "./_components/OutroSection";
+import CollectionShowcase from "./_components/CollectionShowcase";
 import { SYMBOLS } from "./_common/constants";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -104,7 +105,7 @@ export default function LandingPage() {
       }
 
       /* Card fade in/out */
-      const cards = panel.querySelectorAll<HTMLElement>(".bp-card");
+      const cards = panel.querySelectorAll<HTMLElement>(".collection-card");
 
       cards.forEach((card) => {
         const rect = card.getBoundingClientRect();
@@ -148,6 +149,7 @@ export default function LandingPage() {
         if (outroOverlay) outroOverlay.style.opacity = "0";
         if (outroInfo) outroInfo.style.transform = "translateY(0)";
         if (outroBuy) outroBuy.style.transform = "scale(0)";
+
         if (outroFooter) outroFooter.style.opacity = "0";
       }
 
@@ -195,14 +197,14 @@ export default function LandingPage() {
       {/* Video Background */}
       <VideoContainer isTouch={isTouch} />
 
-      {/* White Overlay */}
-      <WhiteOverlay />
+      {/* Outro Section (CTA + Contact) */}
+      <OutroSection />
 
       {/* Footer */}
       <Footer />
 
-      {/* Black Panel (Gallery) */}
-      <BlackPanel panelRef={panelRef} wrapRef={wrapRef} />
+      {/* Collection Showcase (Gallery) */}
+      <CollectionShowcase panelRef={panelRef} wrapRef={wrapRef} />
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function Caption() {
       style={{
         position: "fixed",
         pointerEvents: "none",
-        zIndex: 20,
+        zIndex: 10,
         mixBlendMode: "exclusion",
         fontSize: 12,
         lineHeight: "140%",

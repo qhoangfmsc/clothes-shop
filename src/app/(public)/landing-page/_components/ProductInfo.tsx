@@ -21,7 +21,7 @@ export default function ProductInfo() {
         flexDirection: "column",
         alignItems: "center",
       }}
-      className="left-0 -right-20 bottom-20 sm:left-auto sm:right-8 sm:bottom-20 sm:w-[330px]"
+      className="left-0 -right-30 bottom-14 sm:left-auto sm:right-8 sm:bottom-10 sm:w-[330px]"
     >
       {/* Top block */}
       <div
@@ -68,7 +68,7 @@ export default function ProductInfo() {
 
         {/* Collection label */}
         <div
-          className="text-[15px] sm:text-[25px]"
+          className="text-[10px] sm:text-[15px]"
           style={{
             lineHeight: "100%",
             textAlign: "right",

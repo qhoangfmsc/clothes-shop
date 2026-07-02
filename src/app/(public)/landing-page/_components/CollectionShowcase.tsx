@@ -30,12 +30,12 @@ function buildLayout(count: number, cols: number): { col: number; imageIdx: numb
   return rows;
 }
 
-interface BlackPanelProps {
+interface CollectionShowcaseProps {
   panelRef: RefObject<HTMLDivElement | null>;
   wrapRef: RefObject<HTMLDivElement | null>;
 }
 
-export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
+export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShowcaseProps) {
   /* Compute layouts for each breakpoint (we'll use CSS grid + responsive cols) */
   const cols4Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 4), []);
   const cols3Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 3), []);
@@ -53,16 +53,17 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
           cells.push(
             <div
               key={`${rowIdx}-${c}`}
-              className="bp-card"
+              className="collection-card"
               style={{
                 aspectRatio: "2/3",
                 opacity: 0,
                 overflow: "hidden",
+                borderRadius: "var(--radius-md)",
               }}
             >
               <img
                 src={GALLERY_IMAGES[item.imageIdx]}
-                alt={`Gallery ${item.imageIdx + 1}`}
+                alt={`Collection outfit ${item.imageIdx + 1}`}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -88,7 +89,7 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "var(--bg-panel)",
+        background: "var(--bg-accent-pink)",
         zIndex: 10,
         transform: "translateY(100vh)",
         overflow: "hidden",
@@ -106,6 +107,8 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
           className="grid sm:hidden"
           style={{
             gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "var(--space-2)",
+            padding: "0 var(--space-4)",
           }}
         >
           {renderGrid(cols2Layout, 2)}
@@ -116,6 +119,8 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
           className="hidden sm:grid lg:hidden"
           style={{
             gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "var(--space-3)",
+            padding: "0 var(--space-6)",
           }}
         >
           {renderGrid(cols3Layout, 3)}
@@ -126,6 +131,8 @@ export default function BlackPanel({ panelRef, wrapRef }: BlackPanelProps) {
           className="hidden lg:grid"
           style={{
             gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "var(--space-4)",
+            padding: "0 var(--space-8)",
           }}
         >
           {renderGrid(cols4Layout, 4)}

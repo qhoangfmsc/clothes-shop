@@ -24,9 +24,9 @@ export default function Logo() {
           y="40"
           fill="white"
           fontSize="48"
-          fontFamily="'Inter Tight', sans-serif"
-          fontWeight="500"
-          letterSpacing="-0.04em"
+          fontFamily="var(--font-quiche-display), serif"
+          fontWeight="400"
+          letterSpacing="-0.02em"
         >
           Ori Baebi
         </text>

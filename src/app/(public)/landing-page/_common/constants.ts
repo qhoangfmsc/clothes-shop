@@ -1,4 +1,4 @@
-/** Gallery images for the BlackPanel component */
+/** Gallery images for the CollectionShowcase component */
 export const GALLERY_IMAGES = [
   "/images/model-intro/model_intro_1.webp",
   "/images/model-intro/model_intro_2.webp",
