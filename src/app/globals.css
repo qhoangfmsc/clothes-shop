@@ -3,110 +3,110 @@
 /* ─── Ori Baebi Design System Tokens ─── */
 :root {
   /* Pink Family */
-  --color-blush:        #F2D5D5;
-  --color-petal:        #F8E3E0;
-  --color-rose-milk:    #FCEEED;
-  --color-dusty-rose:   #D4A5A5;
+  --color-blush: #f2d5d5;
+  --color-petal: #f8e3e0;
+  --color-rose-milk: #fceeed;
+  --color-dusty-rose: #d4a5a5;
 
   /* Blue Family */
-  --color-sky-mist:     #D5E4EF;
-  --color-cloud:        #E8F0F6;
-  --color-whisper-blue: #F0F5FA;
-  --color-sage-mist:    #C5CEB5;
+  --color-sky-mist: #d5e4ef;
+  --color-cloud: #e8f0f6;
+  --color-whisper-blue: #f0f5fa;
+  --color-sage-mist: #c5ceb5;
 
   /* Yellow Family */
-  --color-butter:       #F5ECC9;
-  --color-cream:        #FAF3E0;
-  --color-vanilla:      #FDF8EC;
-  --color-honey-dew:    #EDE4C5;
+  --color-butter: #f5ecc9;
+  --color-cream: #faf3e0;
+  --color-vanilla: #fdf8ec;
+  --color-honey-dew: #ede4c5;
 
   /* Lavender */
-  --color-lavender:     #E0D6EB;
-  --color-lavender-mist:#F0ECF5;
+  --color-lavender: #e0d6eb;
+  --color-lavender-mist: #f0ecf5;
 
   /* Neutrals */
-  --color-ivory:        #F5F0E8;
-  --color-warm-white:   #FDFCFA;
-  --color-warm-grey:    #9B9590;
-  --color-taupe:        #B8A99A;
-  --color-charcoal:     #3D3531;
-  --color-deep-brown:   #1A1714;
-  --color-chocolate:    #4A3728;
+  --color-ivory: #f2ede4;
+  --color-warm-white: #fdfcfa;
+  --color-warm-grey: #9b9590;
+  --color-taupe: #b8a99a;
+  --color-charcoal: #3d3531;
+  --color-deep-brown: #1a1714;
+  --color-chocolate: #4a3728;
 
   /* Pure */
-  --color-white:        #FFFFFF;
-  --color-black:        #000000;
+  --color-white: #ffffff;
+  --color-black: #000000;
 
   /* Semantic Backgrounds */
-  --bg-primary:         var(--color-ivory);
-  --bg-secondary:       var(--color-cream);
-  --bg-accent-pink:     var(--color-rose-milk);
-  --bg-accent-blue:     var(--color-whisper-blue);
-  --bg-accent-yellow:   var(--color-vanilla);
-  --bg-dark:            var(--color-black);
-  --bg-panel:           var(--color-deep-brown);
+  --bg-primary: var(--color-ivory);
+  --bg-secondary: var(--color-cream);
+  --bg-accent-pink: var(--color-rose-milk);
+  --bg-accent-blue: var(--color-whisper-blue);
+  --bg-accent-yellow: var(--color-vanilla);
+  --bg-dark: var(--color-black);
+  --bg-panel: var(--color-deep-brown);
 
   /* Semantic Text */
-  --text-primary:       var(--color-charcoal);
-  --text-secondary:     var(--color-warm-grey);
-  --text-heading:       var(--color-deep-brown);
-  --text-on-dark:       var(--color-white);
-  --text-accent:        var(--color-dusty-rose);
-  --text-muted:         var(--color-taupe);
+  --text-primary: var(--color-charcoal);
+  --text-secondary: var(--color-warm-grey);
+  --text-heading: var(--color-deep-brown);
+  --text-on-dark: var(--color-white);
+  --text-accent: var(--color-dusty-rose);
+  --text-muted: var(--color-taupe);
 
   /* Borders */
-  --border-light:       var(--color-petal);
-  --border-default:     var(--color-taupe);
-  --border-subtle:      rgba(181, 169, 154, 0.3);
+  --border-light: var(--color-petal);
+  --border-default: var(--color-taupe);
+  --border-subtle: rgba(181, 169, 154, 0.3);
 
   /* Accents */
-  --accent-primary:     var(--color-dusty-rose);
-  --accent-secondary:   var(--color-sky-mist);
-  --accent-tertiary:    var(--color-butter);
+  --accent-primary: var(--color-dusty-rose);
+  --accent-secondary: var(--color-sky-mist);
+  --accent-tertiary: var(--color-butter);
 
   /* Shadows (warm-toned, never pure black) */
-  --shadow-sm:  0 1px 3px rgba(58, 49, 42, 0.06);
-  --shadow-md:  0 4px 12px rgba(58, 49, 42, 0.08);
-  --shadow-lg:  0 8px 32px rgba(58, 49, 42, 0.12);
-  --shadow-xl:  0 16px 48px rgba(58, 49, 42, 0.16);
+  --shadow-sm: 0 1px 3px rgba(58, 49, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(58, 49, 42, 0.08);
+  --shadow-lg: 0 8px 32px rgba(58, 49, 42, 0.12);
+  --shadow-xl: 0 16px 48px rgba(58, 49, 42, 0.16);
 
   /* Radius */
-  --radius-sm:    4px;
-  --radius-md:    8px;
-  --radius-lg:    16px;
-  --radius-xl:    24px;
-  --radius-pill:  9999px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
 
   /* Spacing */
-  --space-1:  4px;
-  --space-2:  8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-8:  32px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
   --space-20: 80px;
 
   /* Typography */
-  --text-xs:    11px;
-  --text-sm:    12px;
-  --text-base:  13px;
-  --text-md:    15px;
-  --text-lg:    20px;
-  --text-xl:    25px;
-  --text-2xl:   30px;
-  --text-3xl:   42px;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 15px;
+  --text-lg: 20px;
+  --text-xl: 25px;
+  --text-2xl: 30px;
+  --text-3xl: 42px;
 
   /* Animation */
-  --ease-default:   cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
-  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-fast:  150ms;
-  --duration-base:  300ms;
-  --duration-slow:  600ms;
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
 }
 
 *,

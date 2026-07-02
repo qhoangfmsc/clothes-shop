@@ -16,14 +16,14 @@ export default function Logo() {
         zIndex: 20,
         mixBlendMode: "exclusion",
       }}
-      className="top-4 left-4 w-[124px] sm:top-8 sm:left-8 sm:w-[266px] lg:w-[355px]"
+      className="top-4 left-4 w-[200px] sm:top-8 sm:left-8 sm:w-[266px] lg:w-[355px]"
     >
-      <svg viewBox="0 0 360 50" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%">
+      <svg viewBox="0 0 300 150" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%">
         <text
           x="0"
-          y="40"
+          y="65"
           fill="white"
-          fontSize="48"
+          fontSize="52"
           fontFamily="var(--font-quiche-display), serif"
           fontWeight="400"
           letterSpacing="-0.02em"

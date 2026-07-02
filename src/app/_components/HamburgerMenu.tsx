@@ -102,9 +102,9 @@ export default function HamburgerMenu() {
                 alignItems: "center",
                 flexShrink: 0,
                 borderBottom: "1px solid var(--border-subtle)",
-                padding: "20px 24px",
+                padding: "26px 20px",
               }}
-              className="sm:!py-[28px] sm:!px-[40px]"
+              className="sm:py-[28px]! sm:px-[40px]!"
             >
               <motion.span
                 initial={{ opacity: 0, x: -12 }}
@@ -113,7 +113,7 @@ export default function HamburgerMenu() {
                 style={{
                   /* --text-heading = #1A1714 */
                   color: "var(--text-heading)",
-                  fontSize: "var(--text-lg)",
+                  fontSize: "34px",
                   letterSpacing: "-0.04em",
                   lineHeight: "100%",
                   fontWeight: 500,

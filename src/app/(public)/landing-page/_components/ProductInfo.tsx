@@ -68,7 +68,7 @@ export default function ProductInfo() {
 
         {/* Collection label */}
         <div
-          className="text-[10px] sm:text-[15px]"
+          className="text-[25px] sm:text-[30px]"
           style={{
             lineHeight: "100%",
             textAlign: "right",

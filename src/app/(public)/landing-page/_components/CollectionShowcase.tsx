@@ -89,7 +89,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
       style={{
         position: "fixed",
         inset: 0,
-        background: "var(--bg-accent-pink)",
+        background: "#000",
         zIndex: 10,
         transform: "translateY(100vh)",
         overflow: "hidden",
