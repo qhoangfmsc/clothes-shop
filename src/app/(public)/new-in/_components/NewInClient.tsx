@@ -73,12 +73,12 @@ export default function NewInClient({ products }: NewInClientProps) {
     if (!hero) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.3 });
+      const tl = gsap.timeline({ delay: 0.2 });
 
       /* Image reveal */
       tl.from(hero.querySelector(".ni-hero__image img"), {
         scale: 1.15,
-        duration: 1.2,
+        duration: 0.5,
         ease: "power2.out",
       });
 
@@ -228,17 +228,25 @@ export default function NewInClient({ products }: NewInClientProps) {
 
           <h1 className="ni-hero__title">
             <span className="ni-hero__title-line">New</span>
-            <span className="ni-hero__title-line"><em>Arrivals</em></span>
+            <span className="ni-hero__title-line">
+              <em>Arrivals</em>
+            </span>
           </h1>
 
           <p className="ni-hero__subtitle">
-            Be the first to discover what&apos;s next. Fresh drops, new silhouettes, 
-            and pieces designed for those who move first.
+            Be the first to discover what&apos;s next. Fresh drops, new silhouettes, and pieces
+            designed for those who move first.
           </p>
 
           <a href="#new-drops" className="ni-hero__cta">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M8 3V13M8 13L4 9M8 13L12 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M8 3V13M8 13L4 9M8 13L12 9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Explore Drops
           </a>
@@ -275,7 +283,9 @@ export default function NewInClient({ products }: NewInClientProps) {
 
       {/* ═══ 3. SPOTLIGHT #1 ═══ */}
       <section
-        ref={(el) => { spotlightRefs.current[0] = el; }}
+        ref={(el) => {
+          spotlightRefs.current[0] = el;
+        }}
         className="ni-spotlight"
         style={{ background: SPOTLIGHTS[0].bgColor }}
       >
@@ -296,18 +306,20 @@ export default function NewInClient({ products }: NewInClientProps) {
           <Link href={SPOTLIGHTS[0].href} className="ni-spotlight__cta">
             Shop Now
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M3 8H13M13 8L9 4M13 8L9 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </Link>
         </div>
       </section>
 
       {/* ═══ 4. PRODUCT GRID ═══ */}
-      <div
-        id="new-drops"
-        className="ni-grid-section"
-        style={{ background: "var(--bg-primary)" }}
-      >
+      <div id="new-drops" className="ni-grid-section" style={{ background: "var(--bg-primary)" }}>
         <div className="ni-grid-section__header">
           <div>
             <span className="ni-grid-section__label">Just Dropped</span>
@@ -346,16 +358,34 @@ export default function NewInClient({ products }: NewInClientProps) {
                       {isAdded ? (
                         <>
                           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path
+                              d="M3 8L6.5 11.5L13 4.5"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
                           </svg>
                           Added
                         </>
                       ) : (
                         <>
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path
+                              d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
                             <path d="M3 6H21" stroke="currentColor" strokeWidth="1.5" />
-                            <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path
+                              d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
                           </svg>
                           Add to Bag
                         </>
@@ -383,7 +413,9 @@ export default function NewInClient({ products }: NewInClientProps) {
 
       {/* ═══ 5. SPOTLIGHT #2 ═══ */}
       <section
-        ref={(el) => { spotlightRefs.current[1] = el; }}
+        ref={(el) => {
+          spotlightRefs.current[1] = el;
+        }}
         className="ni-spotlight ni-spotlight--reverse"
         style={{ background: SPOTLIGHTS[1].bgColor }}
       >
@@ -404,7 +436,13 @@ export default function NewInClient({ products }: NewInClientProps) {
           <Link href={SPOTLIGHTS[1].href} className="ni-spotlight__cta">
             Shop Now
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M3 8H13M13 8L9 4M13 8L9 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </Link>
         </div>
@@ -414,14 +452,26 @@ export default function NewInClient({ products }: NewInClientProps) {
       <section className="ni-newsletter">
         <div className="ni-newsletter__icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M22 6L12 13L2 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M22 6L12 13L2 6"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
         <h2 className="ni-newsletter__title">Never Miss a Drop</h2>
         <p className="ni-newsletter__desc">
-          Be the first to know when new pieces land. Join our inner circle
-          for early access and exclusive previews.
+          Be the first to know when new pieces land. Join our inner circle for early access and
+          exclusive previews.
         </p>
         <form className="ni-newsletter__form" onSubmit={(e) => e.preventDefault()}>
           <input
