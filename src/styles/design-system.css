@@ -1,0 +1,259 @@
+/* ═══════════════════════════════════════════════════════════
+   ORI BAEBI — Design System Tokens
+   Single source of truth for all visual decisions.
+   
+   AESTHETIC: Luxury boutique — warm champagne canvas with
+   a DIVERSE, rich palette inspired by the product range:
+   sage, dusty rose, lavender, dusty blue, chocolate, gold.
+   Noir used as contrast accent, not as the default.
+   
+   RULES:
+   - Every component MUST use these tokens
+   - NEVER hardcode hex values in components
+   - NEVER use Tailwind default colors
+   - When adding new tokens, add here FIRST, then use
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─────────────────────────────────────────────────────────
+     1. COLOR PALETTE
+     Champagne canvas + diverse accent families inspired by
+     the Ori Baebi product universe.
+     ───────────────────────────────────────────────────────── */
+
+  /* ─── Champagne Family — Core Canvas ─── */
+  --color-pearl-cream:      #FBF8F1;   /* Primary page bg — warmest white */
+  --color-champagne-cream:  #F5EFE0;   /* Secondary bg — soft champagne */
+  --color-warm-linen:       #EDE5D4;   /* Card surfaces, panels */
+  --color-soft-beige:       #E5DBCA;   /* Elevated surfaces, hover bg */
+  --color-sand:             #DDD1BC;   /* Input wells, deeper surfaces */
+
+  /* ─── Gold Family — Primary Accent ─── */
+  --color-champagne-gold:   #C9A96E;   /* Primary accent: buttons, links, highlights */
+  --color-pale-gold:        #D4B978;   /* Hover states, lighter accent */
+  --color-soft-gold:        #E8D5A3;   /* Badges, premium indicators */
+  --color-deep-gold:        #8B7335;   /* Pressed/active states */
+  --color-antique-gold:     #A6894A;   /* Decorative borders, dividers */
+
+  /* ─── Dusty Rose Family — Romantic, Feminine ─── */
+  --color-dusty-rose:       #D4A5A5;   /* Accent: floral, ribbon, romantic pieces */
+  --color-blush:            #E8C4C0;   /* Light rose: card tint, hover bg */
+  --color-rose-milk:        #F5E0DC;   /* Softest rose: section bg alternate */
+  --color-deep-rose:        #B07878;   /* Pressed rose, active state */
+
+  /* ─── Sage Family — Nature, Fresh ─── */
+  --color-sage:             #A3B18A;   /* Accent: spring, nature-inspired pieces */
+  --color-sage-mist:        #C5CEB5;   /* Light sage: card tint, tag bg */
+  --color-sage-cream:       #E2E8D5;   /* Softest sage: section bg alternate */
+  --color-deep-sage:        #7A8B65;   /* Pressed sage, active state */
+
+  /* ─── Lavender Family — Evening, Lace ─── */
+  --color-lavender:         #B8A5C8;   /* Accent: evening wear, lace overlays */
+  --color-lavender-mist:    #D4C8E0;   /* Light lavender: card tint, hover */
+  --color-lavender-cream:   #EDE6F2;   /* Softest lavender: section bg alternate */
+  --color-deep-lavender:    #8A7399;   /* Pressed lavender, active state */
+
+  /* ─── Dusty Blue Family — Bags, Denim ─── */
+  --color-dusty-blue:       #8FA3B4;   /* Accent: bags, hardware, denim adjacent */
+  --color-sky-mist:         #B5C8D6;   /* Light blue: card tint, hover */
+  --color-cloud:            #DAE4EC;   /* Softest blue: section bg alternate */
+  --color-deep-blue:        #6B8499;   /* Pressed blue, active state */
+
+  /* ─── Chocolate Family — Leather, Evening ─── */
+  --color-chocolate:        #5C4033;   /* Accent: leather goods, evening wear */
+  --color-mocha:            #8B7060;   /* Light brown: warm text accent */
+  --color-latte:            #C4AE98;   /* Softest brown: border, decorative */
+  --color-espresso:         #3D2B1F;   /* Deep brown: bold statement */
+
+  /* ─── Soft Yellow Family — Gingham, Summer ─── */
+  --color-butter:           #F0E4A6;   /* Accent: summer highlights, gingham */
+  --color-vanilla:          #FAF3DC;   /* Light yellow: section bg, warm glow */
+  --color-honey:            #D4C07A;   /* Warm yellow: badges, tags */
+
+  /* ─── Noir Family — Contrast & Text ─── */
+  --color-noir:             #0A0A08;   /* Headings, gallery panel, hero sections */
+  --color-obsidian:         #1A1917;   /* Body text on light bg */
+  --color-charcoal:         #2C2926;   /* Secondary text */
+  --color-slate:            #4A4540;   /* Muted text, timestamps */
+  --color-ash:              #6B6560;   /* Disabled, placeholder, ghost */
+
+  /* ─── Pure (use sparingly) ─── */
+  --color-white:            #FFFFFF;
+  --color-black:            #000000;
+
+
+  /* ─────────────────────────────────────────────────────────
+     2. SEMANTIC ALIASES — Backgrounds
+     Champagne canvas default. Diverse tints for sections.
+     ───────────────────────────────────────────────────────── */
+  --bg-primary:             var(--color-pearl-cream);
+  --bg-secondary:           var(--color-champagne-cream);
+  --bg-elevated:            var(--color-warm-linen);
+  --bg-surface:             var(--color-soft-beige);
+  --bg-inset:               var(--color-sand);
+  --bg-dark:                var(--color-noir);
+
+  /* Section Rotation — diverse, never same bg twice in a row */
+  --bg-section-1:           var(--color-pearl-cream);        /* #FBF8F1 — cream */
+  --bg-section-2:           var(--color-rose-milk);           /* #F5E0DC — rose tint */
+  --bg-section-3:           var(--color-champagne-cream);     /* #F5EFE0 — champagne */
+  --bg-section-4:           var(--color-sage-cream);          /* #E2E8D5 — sage tint */
+  --bg-section-5:           var(--color-vanilla);             /* #FAF3DC — warm yellow */
+  --bg-section-6:           var(--color-lavender-cream);      /* #EDE6F2 — lavender tint */
+  --bg-section-7:           var(--color-cloud);               /* #DAE4EC — blue tint */
+  --bg-section-8:           var(--color-warm-linen);          /* #EDE5D4 — linen */
+  --bg-section-noir:        var(--color-noir);                /* #0A0A08 — contrast statement */
+
+
+  /* ─────────────────────────────────────────────────────────
+     3. SEMANTIC ALIASES — Text
+     Dark text on light backgrounds.
+     ───────────────────────────────────────────────────────── */
+  --text-primary:           var(--color-obsidian);
+  --text-heading:           var(--color-noir);
+  --text-secondary:         var(--color-charcoal);
+  --text-muted:             var(--color-slate);
+  --text-disabled:          var(--color-ash);
+  --text-accent:            var(--color-champagne-gold);
+  --text-on-dark:           var(--color-pearl-cream);
+  --text-on-gold:           var(--color-noir);
+
+
+  /* ─────────────────────────────────────────────────────────
+     4. SEMANTIC ALIASES — Borders
+     ───────────────────────────────────────────────────────── */
+  --border-subtle:          rgba(201, 169, 110, 0.12);
+  --border-light:           rgba(201, 169, 110, 0.20);
+  --border-default:         rgba(201, 169, 110, 0.30);
+  --border-gold:            rgba(201, 169, 110, 0.50);
+  --border-strong:          var(--color-antique-gold);
+  --border-dark:            rgba(10, 10, 8, 0.10);
+
+
+  /* ─────────────────────────────────────────────────────────
+     5. SEMANTIC ALIASES — Accents
+     Gold is primary, but other colors are available for
+     variety and to match product categories.
+     ───────────────────────────────────────────────────────── */
+  --accent-primary:         var(--color-champagne-gold);
+  --accent-hover:           var(--color-pale-gold);
+  --accent-subtle:          var(--color-soft-gold);
+  --accent-pressed:         var(--color-deep-gold);
+  --accent-rose:            var(--color-dusty-rose);
+  --accent-sage:            var(--color-sage);
+  --accent-lavender:        var(--color-lavender);
+  --accent-blue:            var(--color-dusty-blue);
+  --accent-chocolate:       var(--color-chocolate);
+  --accent-butter:          var(--color-butter);
+
+
+  /* ─────────────────────────────────────────────────────────
+     6. SHADOWS — Warm Brown + Gold
+     ───────────────────────────────────────────────────────── */
+  --shadow-sm:              0 1px 3px rgba(58, 49, 42, 0.08);
+  --shadow-md:              0 4px 12px rgba(58, 49, 42, 0.10);
+  --shadow-lg:              0 8px 32px rgba(58, 49, 42, 0.14);
+  --shadow-xl:              0 16px 48px rgba(58, 49, 42, 0.18);
+  --shadow-gold-sm:         0 2px 8px rgba(201, 169, 110, 0.12);
+  --shadow-gold-md:         0 4px 24px rgba(201, 169, 110, 0.18);
+  --shadow-gold-lg:         0 8px 40px rgba(201, 169, 110, 0.22);
+  --shadow-gold-glow:       0 0 60px rgba(201, 169, 110, 0.15);
+
+
+  /* ─────────────────────────────────────────────────────────
+     7. TYPOGRAPHY
+     ───────────────────────────────────────────────────────── */
+  --font-primary:           "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display:           var(--font-quiche-display), serif;
+  --font-weight-body:       500;
+  --font-weight-display:    400;
+
+  /* Type Scale */
+  --text-xs:                11px;
+  --text-sm:                12px;
+  --text-base:              13px;
+  --text-md:                15px;
+  --text-lg:                20px;
+  --text-xl:                25px;
+  --text-2xl:               30px;
+  --text-3xl:               42px;
+
+
+  /* ─────────────────────────────────────────────────────────
+     8. SPACING — 4px Base Grid
+     ───────────────────────────────────────────────────────── */
+  --space-1:                4px;
+  --space-2:                8px;
+  --space-3:                12px;
+  --space-4:                16px;
+  --space-5:                20px;
+  --space-6:                24px;
+  --space-8:                32px;
+  --space-10:               40px;
+  --space-12:               48px;
+  --space-16:               64px;
+  --space-20:               80px;
+
+
+  /* ─────────────────────────────────────────────────────────
+     9. BORDER RADIUS
+     ───────────────────────────────────────────────────────── */
+  --radius-sm:              4px;
+  --radius-md:              8px;
+  --radius-lg:              16px;
+  --radius-xl:              24px;
+  --radius-pill:            9999px;
+
+
+  /* ─────────────────────────────────────────────────────────
+     10. ANIMATION & MOTION
+     ───────────────────────────────────────────────────────── */
+  --ease-default:           cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out-cubic:         cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out:            cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-luxury:            cubic-bezier(0.16, 1, 0.3, 1);
+
+  --duration-fast:          150ms;
+  --duration-base:          300ms;
+  --duration-slow:          600ms;
+  --duration-slower:        1000ms;
+  --duration-cinematic:     1200ms;
+
+
+  /* ─────────────────────────────────────────────────────────
+     11. Z-INDEX SCALE
+     ───────────────────────────────────────────────────────── */
+  --z-base:                 0;
+  --z-panel:                10;
+  --z-overlay:              12;
+  --z-fixed:                20;
+  --z-cursor:               50;
+  --z-modal:                100;
+  --z-toast:                200;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   DARK CONTEXT — for gallery panels, drawer, hero overlays
+   Use [data-theme="dark"] or .dark-context on the container.
+   ───────────────────────────────────────────────────────── */
+[data-theme="dark"],
+.dark-context {
+  --bg-primary:     var(--color-noir);
+  --bg-secondary:   var(--color-obsidian);
+  --text-primary:   var(--color-pearl-cream);
+  --text-heading:   var(--color-pearl-cream);
+  --text-secondary: var(--color-sand);
+  --border-light:   rgba(255, 255, 255, 0.10);
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   RESPONSIVE BREAKPOINTS (for reference — use in @media)
+   
+   Mobile:     < 640px
+   Tablet:     ≥ 640px  (sm)
+   Desktop:    ≥ 1024px (lg)
+   Wide:       ≥ 1440px (xl)
+   ───────────────────────────────────────────────────────── */

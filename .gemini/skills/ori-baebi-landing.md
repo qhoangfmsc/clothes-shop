@@ -2,64 +2,65 @@
 
 ## Project Overview
 
-This is a scroll-driven, full-screen fashion landing page for **Ori Baebi**, a luxury fashion brand specializing in haute couture bags, apparel, and accessories designed for global fashion shows. The site delivers a premium, immersive experience that reflects the brand's high-fashion identity.
+This is a scroll-driven, full-screen fashion landing page for **Ori Baebi**, a luxury boutique fashion brand specializing in haute couture bags, apparel, and accessories. The site delivers a premium, immersive editorial experience with a **warm champagne/cream + gold accent** aesthetic on regular pages, and **noir contrast** on gallery/hero sections.
 
 ## Tech Stack
 
 - **Next.js 15** (App Router, Turbopack) + **React 19** + **TypeScript**
-- **Tailwind CSS v4** via `@tailwindcss/postcss`
+- **Tailwind CSS v4** via `@tailwindcss/postcss` (layout/spacing only — colors use CSS tokens)
 - **GSAP 3.15** + ScrollTrigger for scroll-driven panel animation
 - **Framer Motion 12** for entry animations (staggered fade-in/slide-up)
-- **Google Fonts**: Inter Tight (weight 500)
+- **Design Tokens**: `src/styles/design-system.css` — single source of truth
+- **Fonts**: Quiche Display 400 (editorial) + Inter Tight 500 (UI)
 
 ## Architecture
 
 ```
 app/
-├── layout.tsx          # Root layout with Inter Tight font, SEO metadata
-├── page.tsx            # Main orchestrator: GSAP setup, RAF loop, scroll phases
-├── globals.css         # Tailwind import, bp-card transition/will-change
-└── components/
-    ├── CustomCursor.tsx    # 48×48 SVG cursor, mix-blend-mode exclusion, desktop only
-    ├── Logo.tsx            # Brand wordmark SVG, responsive widths, fade-in
-    ├── Caption.tsx         # Brand tagline, delayed fade-in
-    ├── HeaderNav.tsx       # ABOUT + hamburger + CART, responsive
-    ├── ProductInfo.tsx     # Circle symbol randomizer + collection label + price
-    ├── ViewButton.tsx      # Pill CTA, scales from 0→1 during outro
-    ├── VideoContainer.tsx  # Dual video: cursor-scrub (desktop) / auto-alternate (mobile)
-    ├── WhiteOverlay.tsx    # Full-screen white fade during outro
-    ├── Footer.tsx          # Brand © + privacy
-    └── BlackPanel.tsx      # Gallery with scattered grid + eased scale animations
+├── layout.tsx          # Root layout with fonts, SEO metadata
+├── page.tsx            # Re-exports default public page
+├── globals.css         # Imports design-system.css + global overrides
+└── (public)/
+    └── landing-page/
+        ├── page.tsx            # Main orchestrator: GSAP setup, RAF loop, scroll phases
+        ├── _components/
+        │   ├── Caption.tsx         # Brand tagline, delayed fade-in
+        │   ├── CollectionShowcase.tsx  # Gallery with scattered grid + scale animations
+        │   ├── OutroSection.tsx    # CTA section with gold accent heading
+        │   ├── ProductInfo.tsx     # Circle symbol randomizer + collection label
+        │   ├── VideoContainer.tsx  # Dual video: cursor-scrub (desktop) / auto-alternate (mobile)
+        │   └── ViewButton.tsx      # Pill CTA, scales from 0→1 during outro
+        └── _common/
+            └── constants.ts        # Gallery images, video paths, symbols
+
+src/styles/
+└── design-system.css   # ★ Single source of truth for all design tokens
+
+app/_components/        # Shared cross-page components
+├── CustomCursor.tsx    # 48×48 SVG cursor, mix-blend-mode exclusion, desktop only
+├── Logo.tsx            # Brand wordmark SVG, responsive widths, fade-in
+├── HeaderNav.tsx       # Nav links + hamburger, responsive
+├── HamburgerMenu.tsx   # Full-screen drawer menu (dark noir theme)
+└── Footer.tsx          # Brand © + privacy
 ```
 
 ## Key Behaviors
 
 ### Two-Phase Scroll Design
-1. **Hero phase** (0 → 100vh scroll): Full-viewport video background with overlaid UI. A black panel slides up from below via GSAP ScrollTrigger (scrub, ease: none).
-2. **Gallery phase** (100vh+): Black panel is fixed; inner wrapper scrolls up. Product images scale in/out with easeOutCubic easing. At the end, a white overlay fades in with a "view" CTA.
+1. **Hero phase** (0 → 100vh scroll): Full-viewport video background with overlaid UI (mix-blend-mode: exclusion). A black panel slides up from below via GSAP ScrollTrigger.
+2. **Gallery phase** (100vh+): Black panel is fixed (noir bg for dramatic contrast); inner wrapper scrolls up. Product images scale in/out. At the end, outro overlay fades in.
 
 ### Video Interaction
-- **Desktop**: Videos are NOT auto-played. They scrub based on cursor X position with a dead zone at the center to prevent jitter. Only updates `currentTime` when `!video.seeking`.
-- **Mobile/Tablet**: Videos auto-play alternately (left → right → left…). Respects `prefers-reduced-motion`.
-
-### Gallery Card Animation
-- Cards use `will-change: transform` and `transition: transform 0.2s cubic-bezier(...)` for smoothness.
-- Scale is computed per-frame in RAF with easeOutCubic applied to both enter (80% vh zone) and exit (35% vh zone).
-- Cards in the left half of the grid scale from `right bottom`; right half from `left bottom`.
-
-### Outro Phase
-When scroll exceeds `vh + maxScroll`:
-- White overlay opacity fades 0→1
-- Product info slides up by `outroOffset` px
-- View button scales from 0→1
-- Footer fades in
+- **Desktop**: Videos scrub based on cursor X position with dead zone. Updates `currentTime` when `!video.seeking`.
+- **Mobile/Tablet**: Videos auto-play alternately. Respects `prefers-reduced-motion`.
 
 ### Design Principles
-- All text overlays use `mix-blend-mode: exclusion`
+- **Champagne-first**: Regular pages use warm cream backgrounds
+- **Noir for contrast**: Gallery panel, drawer, hero overlay use dark context
+- All hero text overlays use `mix-blend-mode: exclusion`
 - `pointer-events-none` on all overlaid UI
-- `user-select: none` on root container
-- Circle symbol randomizes from `['8', '$', '^^', '%', '/']` on scroll (throttled 80ms)
 - Entry animations staggered: logo (0s), nav (0.15s), caption (0.3s), product info (0.45s)
+- **Color tokens only** — no hardcoded hex, no Tailwind default colors
 
 ## Responsive Breakpoints
 - **Mobile**: < 640px (2 gallery columns)

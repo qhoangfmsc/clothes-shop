@@ -1,114 +1,7 @@
 @import "tailwindcss";
+@import "../styles/design-system.css";
 
-/* ─── Ori Baebi Design System Tokens ─── */
-:root {
-  /* Pink Family */
-  --color-blush: #f2d5d5;
-  --color-petal: #f8e3e0;
-  --color-rose-milk: #fceeed;
-  --color-dusty-rose: #d4a5a5;
-
-  /* Blue Family */
-  --color-sky-mist: #d5e4ef;
-  --color-cloud: #e8f0f6;
-  --color-whisper-blue: #f0f5fa;
-  --color-sage-mist: #c5ceb5;
-
-  /* Yellow Family */
-  --color-butter: #f5ecc9;
-  --color-cream: #faf3e0;
-  --color-vanilla: #fdf8ec;
-  --color-honey-dew: #ede4c5;
-
-  /* Lavender */
-  --color-lavender: #e0d6eb;
-  --color-lavender-mist: #f0ecf5;
-
-  /* Neutrals */
-  --color-ivory: #f2ede4;
-  --color-warm-white: #fdfcfa;
-  --color-warm-grey: #9b9590;
-  --color-taupe: #b8a99a;
-  --color-charcoal: #3d3531;
-  --color-deep-brown: #1a1714;
-  --color-chocolate: #4a3728;
-
-  /* Pure */
-  --color-white: #ffffff;
-  --color-black: #000000;
-
-  /* Semantic Backgrounds */
-  --bg-primary: var(--color-ivory);
-  --bg-secondary: var(--color-cream);
-  --bg-accent-pink: var(--color-rose-milk);
-  --bg-accent-blue: var(--color-whisper-blue);
-  --bg-accent-yellow: var(--color-vanilla);
-  --bg-dark: var(--color-black);
-  --bg-panel: var(--color-deep-brown);
-
-  /* Semantic Text */
-  --text-primary: var(--color-charcoal);
-  --text-secondary: var(--color-warm-grey);
-  --text-heading: var(--color-deep-brown);
-  --text-on-dark: var(--color-white);
-  --text-accent: var(--color-dusty-rose);
-  --text-muted: var(--color-taupe);
-
-  /* Borders */
-  --border-light: var(--color-petal);
-  --border-default: var(--color-taupe);
-  --border-subtle: rgba(181, 169, 154, 0.3);
-
-  /* Accents */
-  --accent-primary: var(--color-dusty-rose);
-  --accent-secondary: var(--color-sky-mist);
-  --accent-tertiary: var(--color-butter);
-
-  /* Shadows (warm-toned, never pure black) */
-  --shadow-sm: 0 1px 3px rgba(58, 49, 42, 0.06);
-  --shadow-md: 0 4px 12px rgba(58, 49, 42, 0.08);
-  --shadow-lg: 0 8px 32px rgba(58, 49, 42, 0.12);
-  --shadow-xl: 0 16px 48px rgba(58, 49, 42, 0.16);
-
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-pill: 9999px;
-
-  /* Spacing */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-20: 80px;
-
-  /* Typography */
-  --text-xs: 11px;
-  --text-sm: 12px;
-  --text-base: 13px;
-  --text-md: 15px;
-  --text-lg: 20px;
-  --text-xl: 25px;
-  --text-2xl: 30px;
-  --text-3xl: 42px;
-
-  /* Animation */
-  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-fast: 150ms;
-  --duration-base: 300ms;
-  --duration-slow: 600ms;
-}
-
+/* ─── Global Reset ─── */
 *,
 *::before,
 *::after {
@@ -120,13 +13,14 @@
 html,
 body {
   overflow-x: hidden;
-  font-family: var(--font-quiche-display), "Inter Tight", sans-serif;
-  font-weight: 400;
+  font-family: var(--font-display), "Inter Tight", sans-serif;
+  font-weight: var(--font-weight-display);
   color: var(--text-primary);
   background: var(--bg-primary);
   letter-spacing: -0.02em;
 }
 
+/* ─── Collection Card Animation ─── */
 .collection-card {
   will-change: transform;
 }
@@ -137,9 +31,12 @@ body {
   }
 }
 
-/* ─── Drawer Styles (Dark Theme) ─── */
+/* ═══════════════════════════════════════════════════════════
+   DRAWER STYLES (Dark + Gold Theme)
+   ═══════════════════════════════════════════════════════════ */
+
 .drawer-nav-link:hover {
-  border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  border-bottom-color: rgba(201, 169, 110, 0.2) !important;
 }
 
 .drawer-nav-link:hover .drawer-nav-label {
@@ -148,10 +45,74 @@ body {
 
 .drawer-close-btn:hover {
   background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  border-color: var(--border-gold) !important;
 }
 
 .drawer-signin-btn:hover {
   opacity: 0.85;
   transform: scale(1.02);
+}
+
+/* Category links in drawer accordion */
+.drawer-category-link:hover {
+  border-bottom-color: rgba(201, 169, 110, 0.12) !important;
+}
+
+.drawer-category-link:hover .drawer-category-label {
+  color: var(--color-champagne-gold) !important;
+}
+
+/* Social links in drawer footer */
+.drawer-social-link:hover {
+  color: var(--color-champagne-gold) !important;
+}
+
+/* Featured CTA in drawer */
+.drawer-featured-cta:hover {
+  opacity: 0.75;
+}
+
+/* ── Drawer Featured Panel — responsive ── */
+@media (min-width: 640px) {
+  .drawer-featured-panel {
+    display: flex !important;
+    width: 320px;
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .drawer-featured-panel {
+    width: 380px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MEGA MENU STYLES (Desktop Only)
+   ═══════════════════════════════════════════════════════════ */
+
+.mega-menu-item-link:hover {
+  color: var(--color-champagne-gold) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .header-nav-link::after,
+  .drawer-nav-link,
+  .drawer-nav-label,
+  .drawer-category-link,
+  .drawer-category-label,
+  .drawer-close-btn,
+  .drawer-signin-btn,
+  .drawer-social-link,
+  .drawer-featured-cta,
+  .mega-menu-item-link,
+  .mega-menu-view-all,
+  .mega-menu-featured-cta,
+  .mega-menu-category-title {
+    transition: none !important;
+  }
 }

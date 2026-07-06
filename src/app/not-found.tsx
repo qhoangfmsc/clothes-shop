@@ -16,7 +16,7 @@ export default function NotFound() {
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        background: "var(--bg-accent-blue)",
+        background: "var(--color-lavender-cream)",
       }}
     >
       {/* Mood wallpaper */}
@@ -47,7 +47,7 @@ export default function NotFound() {
         style={{
           position: "absolute",
           inset: 20,
-          border: "1px solid rgba(58, 49, 42, 0.08)",
+          border: "1px solid var(--border-subtle)",
           pointerEvents: "none",
         }}
       />
@@ -146,7 +146,7 @@ export default function NotFound() {
             href="/"
             style={{
               background: "var(--accent-primary)",
-              color: "var(--color-white)",
+              color: "var(--text-on-gold)",
               borderRadius: "var(--radius-pill)",
               padding: "12px 32px",
               letterSpacing: "-0.01em",

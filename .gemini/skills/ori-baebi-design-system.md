@@ -8,61 +8,52 @@
 - Modifying existing UI elements
 - Adding CSS styles or Tailwind classes
 - Building new features with visual output
-- Creating product pages, collection pages, or any storefront views
 
 ## Mandatory Pre-Check
 
 Before writing any UI code, read these files:
-1. `DESIGN.md` — Complete design token reference (colors, typography, spacing, animation)
-2. `.agent/rules/design-system.md` — Enforcement rules
-3. `.gemini/skills/ori-baebi-brand.md` — Brand identity and storytelling context
+1. `src/styles/design-system.css` — **Single source of truth** for all tokens
+2. `DESIGN.md` — Complete design documentation
+3. `.agent/rules/design-system.md` — Enforcement rules
 
 ## Design Token Quick Reference
 
-### Color Palette (Soft Pastels — the core identity)
+### Color Palette (Champagne Canvas + Diverse Accents)
 
-**Pink family** (primary accent):
-- `--color-blush: #F2D5D5` → accent, highlights
-- `--color-petal: #F8E3E0` → card backgrounds, hover
-- `--color-rose-milk: #FCEEED` → section backgrounds
-- `--color-dusty-rose: #D4A5A5` → buttons, active states
+**Champagne family** (core canvas):
+- `--color-pearl-cream: #FBF8F1` → primary page bg
+- `--color-champagne-cream: #F5EFE0` → secondary bg
+- `--color-warm-linen: #EDE5D4` → cards, panels
+- `--color-soft-beige: #E5DBCA` → elevated surfaces
+- `--color-sand: #DDD1BC` → inputs, wells
 
-**Blue family** (secondary accent):
-- `--color-sky-mist: #D5E4EF` → secondary accent
-- `--color-cloud: #E8F0F6` → card backgrounds, tags
-- `--color-whisper-blue: #F0F5FA` → section backgrounds
+**Gold** (primary accent): `#C9A96E` / `#D4B978` / `#E8D5A3` / `#8B7335`
+**Dusty Rose** (romantic): `#D4A5A5` / `#E8C4C0` / `#F5E0DC` / `#B07878`
+**Sage** (nature): `#A3B18A` / `#C5CEB5` / `#E2E8D5` / `#7A8B65`
+**Lavender** (evening): `#B8A5C8` / `#D4C8E0` / `#EDE6F2` / `#8A7399`
+**Dusty Blue** (bags): `#8FA3B4` / `#B5C8D6` / `#DAE4EC` / `#6B8499`
+**Chocolate** (leather): `#5C4033` / `#8B7060` / `#C4AE98` / `#3D2B1F`
+**Soft Yellow** (summer): `#F0E4A6` / `#FAF3DC` / `#D4C07A`
+**Noir** (contrast): `#0A0A08` / `#1A1917` / `#2C2926` / `#4A4540` / `#6B6560`
 
-**Yellow family** (warm highlights):
-- `--color-butter: #F5ECC9` → warm highlights
-- `--color-cream: #FAF3E0` → base warm background
-- `--color-vanilla: #FDF8EC` → page background
-
-**Lavender** (supporting):
-- `--color-lavender: #E0D6EB` → tertiary accent
-- `--color-lavender-mist: #F0ECF5` → subtle overlays
-
-**Neutrals**:
-- `--color-ivory: #F5F0E8` → primary page bg
-- `--color-charcoal: #3D3531` → primary text
-- `--color-deep-brown: #1A1714` → headings
-
-### Typography
-- Font: `"Inter Tight"` weight `500` only
-- Letter-spacing: `-0.04em` headings, `-0.02em` body
-- Line-height: `100%` headings, `140%` body
-
-### Animation
-- Easing: `cubic-bezier(0.25, 0.1, 0.25, 1)`
-- Entry: staggered fade-in + slide-up (0s → 0.15s → 0.3s → 0.45s)
-- Max duration: 600ms
-- Always respect `prefers-reduced-motion`
+### Product Category → Color Mapping
+- Tops/Camisoles → Rose family
+- Skirts → Sage family
+- Bags/Accessories → Blue family
+- Jewelry → Gold family
+- Evening Wear → Lavender family
+- Leather Goods → Chocolate family
+- Summer Collection → Yellow family
 
 ### Key Constraints
-1. NEVER hardcode hex colors → use CSS custom properties
-2. NEVER use pure black for text → `--text-primary` (#3D3531)
-3. NEVER use pure white for page bg → `--bg-primary` (#F5F0E8)
-4. Section backgrounds MUST alternate: pink → ivory → blue → cream → yellow
-5. All hero text overlays MUST use `mix-blend-mode: exclusion`
-6. Shadows MUST use warm rgba: `rgba(58, 49, 42, opacity)`
-7. Buttons MUST be pill-shaped: `border-radius: 9999px`
-8. Spacing MUST follow 4px grid
+1. NEVER hardcode hex colors → use CSS custom properties from `design-system.css`
+2. NEVER use Tailwind default colors → only layout/spacing utilities
+3. Background canvas is CHAMPAGNE by default → `--bg-primary` (#FBF8F1)
+4. Noir is ONLY for contrast sections (gallery, drawer, hero)
+5. Use DIVERSE section backgrounds → rotate through tinted creams (rose, sage, lavender, etc.)
+6. Match product categories to their color family
+7. Gold is the PRIMARY accent, but other accent colors are encouraged for variety
+8. Shadows use warm brown rgba: `rgba(58, 49, 42, opacity)`
+9. Buttons MUST be pill-shaped: `border-radius: 9999px`
+10. Spacing MUST follow 4px grid
+11. New tokens MUST be added to `design-system.css` first

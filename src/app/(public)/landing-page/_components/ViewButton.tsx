@@ -1,15 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 export default function ViewButton() {
+  const router = useRouter();
+
   return (
-    <div
+    <button
+      onClick={() => router.push("/shop")}
       id="outro-buy"
       style={{
         position: "fixed",
-        pointerEvents: "none",
+        cursor: "pointer",
         zIndex: 20,
         transformOrigin: "right bottom",
-        transform: "scale(0)",
+        transform: "scale(1)",
         background: "#000",
         borderRadius: "var(--radius-pill)",
         display: "flex",
@@ -29,6 +34,6 @@ export default function ViewButton() {
       >
         explore
       </span>
-    </div>
+    </button>
   );
 }

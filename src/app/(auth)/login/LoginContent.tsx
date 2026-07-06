@@ -16,17 +16,17 @@ export default function LoginContent() {
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
-        /* Soft gradient background */
+        /* Soft warm gradient — diverse palette tints */
         background: `linear-gradient(
           160deg,
-          var(--bg-accent-pink) 0%,
-          var(--bg-primary) 40%,
-          var(--bg-accent-blue) 70%,
-          var(--bg-secondary) 100%
+          var(--color-rose-milk) 0%,
+          var(--bg-primary) 35%,
+          var(--color-lavender-cream) 65%,
+          var(--color-vanilla) 100%
         )`,
       }}
     >
-      {/* Decorative floating shapes */}
+      {/* Decorative floating shapes — diverse color blobs */}
       <div
         style={{
           position: "absolute",
@@ -36,7 +36,7 @@ export default function LoginContent() {
           height: 200,
           borderRadius: "50%",
           background: "var(--color-rose-milk)",
-          opacity: 0.4,
+          opacity: 0.5,
           filter: "blur(80px)",
           pointerEvents: "none",
         }}
@@ -49,7 +49,7 @@ export default function LoginContent() {
           width: 300,
           height: 300,
           borderRadius: "50%",
-          background: "var(--color-whisper-blue)",
+          background: "var(--color-cloud)",
           opacity: 0.5,
           filter: "blur(100px)",
           pointerEvents: "none",
@@ -63,9 +63,23 @@ export default function LoginContent() {
           width: 150,
           height: 150,
           borderRadius: "50%",
-          background: "var(--color-butter)",
-          opacity: 0.3,
+          background: "var(--color-soft-gold)",
+          opacity: 0.35,
           filter: "blur(60px)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "30%",
+          left: "20%",
+          width: 180,
+          height: 180,
+          borderRadius: "50%",
+          background: "var(--color-sage-cream)",
+          opacity: 0.4,
+          filter: "blur(70px)",
           pointerEvents: "none",
         }}
       />
@@ -83,18 +97,18 @@ export default function LoginContent() {
           alignItems: "center",
           gap: "var(--space-8)",
           padding: "var(--space-12)",
-          background: "rgba(253, 252, 250, 0.7)",
+          background: "rgba(251, 248, 241, 0.65)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           borderRadius: "var(--radius-lg)",
-          border: "1px solid var(--border-subtle)",
+          border: "1px solid var(--border-light)",
           boxShadow: "var(--shadow-lg)",
           width: "100%",
           maxWidth: 400,
         }}
         className="mx-4 sm:mx-0"
       >
-        {/* Logo */}
+        {/* Logo — using Quiche Display for brand consistency */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -106,8 +120,8 @@ export default function LoginContent() {
               y="40"
               fill="var(--text-heading)"
               fontSize="48"
-              fontFamily="'Inter Tight', sans-serif"
-              fontWeight="500"
+              fontFamily="var(--font-display), serif"
+              fontWeight="400"
               letterSpacing="-0.04em"
               textAnchor="middle"
             >
@@ -134,7 +148,8 @@ export default function LoginContent() {
               color: "var(--text-heading)",
               letterSpacing: "-0.04em",
               lineHeight: "100%",
-              fontWeight: 500,
+              fontFamily: "var(--font-display), serif",
+              fontWeight: 400,
             }}
             className="text-[25px] sm:text-[30px]"
           >
@@ -146,13 +161,14 @@ export default function LoginContent() {
               letterSpacing: "-0.02em",
               lineHeight: "140%",
               fontSize: "var(--text-base)",
+              fontFamily: "var(--font-primary)",
             }}
           >
             Sign in to access your exclusive collection
           </p>
         </motion.div>
 
-        {/* Divider */}
+        {/* Divider — gold tinted */}
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -160,7 +176,7 @@ export default function LoginContent() {
           style={{
             width: "100%",
             height: 1,
-            background: "var(--border-subtle)",
+            background: "var(--border-default)",
             transformOrigin: "center",
           }}
         />
@@ -190,7 +206,8 @@ export default function LoginContent() {
             style={{
               color: "var(--text-muted)",
               fontSize: "var(--text-sm)",
-              letterSpacing: "-0.02em",
+              fontFamily: "var(--font-primary)",
+              letterSpacing: "0.12em",
               textDecoration: "none",
               textTransform: "uppercase",
               transition: `color var(--duration-fast) var(--ease-default)`,

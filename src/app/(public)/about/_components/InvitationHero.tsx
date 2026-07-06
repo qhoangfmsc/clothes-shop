@@ -16,7 +16,7 @@ export default function InvitationHero() {
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        background: "var(--bg-accent-pink)",
+        background: "var(--color-rose-milk)",
       }}
     >
       {/* Mood wallpaper — subtle background texture */}
@@ -47,7 +47,7 @@ export default function InvitationHero() {
         style={{
           position: "absolute",
           inset: 24,
-          border: "1px solid rgba(58, 49, 42, 0.1)",
+          border: "1px solid var(--border-subtle)",
           pointerEvents: "none",
         }}
       />
@@ -73,7 +73,7 @@ export default function InvitationHero() {
             color: "var(--text-accent)",
             textTransform: "uppercase",
             fontSize: "var(--text-sm)",
-            letterSpacing: "-0.02em",
+            letterSpacing: "0.12em",
             lineHeight: "140%",
             marginBottom: 32,
           }}
@@ -90,7 +90,8 @@ export default function InvitationHero() {
             color: "var(--text-heading)",
             letterSpacing: "-0.04em",
             lineHeight: "100%",
-            fontWeight: 500,
+            fontWeight: 400,
+            fontFamily: "var(--font-display), serif",
             fontSize: "clamp(42px, 8vw, 80px)",
           }}
         >

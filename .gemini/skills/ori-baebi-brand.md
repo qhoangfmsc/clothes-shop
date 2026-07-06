@@ -73,30 +73,34 @@ As a Vietnamese-born label with global ambitions, Ori Baebi subtly weaves **Asia
 
 ## Color Universe
 
-### Primary Palette — "Soft Power"
-| Color | Hex | Usage |
-|---|---|---|
-| **Ivory Silk** | `#F5F0E8` | Base tone for hero sections, product cards, negative space |
-| **Sage Whisper** | `#C5CEB5` | Halter tops, eyelet pieces, spring collections |
-| **Dusty Rose** | `#D4A5A5` | Floral prints, ribbon details, accent color |
-| **Lavender Mist** | `#C8B8D4` | Lace overlays, evening pieces, skirt fabrics |
-| **Cream Petal** | `#FAF3E0` | Knitwear, base layers, camisoles |
+> All color tokens are defined in `src/styles/design-system.css`. See `DESIGN.md` for full palette documentation.
 
-### Secondary Palette — "Quiet Confidence"
+### Canvas Palette — "Champagne Boutique"
 | Color | Hex | Usage |
 |---|---|---|
-| **Chocolate Fondant** | `#4A3728` | Leather goods, evening wear, structural contrast |
-| **Dusty Blue** | `#7A8B9A` | Bags, hardware finishes, denim-adjacent pieces |
-| **Soft Yellow** | `#F2E8B0` | Gingham patterns, summer collection highlights |
-| **Warm Taupe** | `#B8A99A` | Knitwear, neutral styling pieces |
-| **Deep Plum** | `#5C3A4E` | Winter collection accent, velvet pieces |
+| **Pearl Cream** | `#FBF8F1` | Primary page bg — the warm canvas of the brand |
+| **Champagne Cream** | `#F5EFE0` | Secondary bg — soft champagne warmth |
+| **Warm Linen** | `#EDE5D4` | Card surfaces, panels, garment backdrop |
 
-### Neutrals — "The Canvas"
+### Accent Families — "The Product Universe"
+Each product category has its own color family, creating visual richness across the store:
+
+| Family | Colors | Inspired By |
+|---|---|---|
+| **Gold** | `#C9A96E` `#D4B978` `#E8D5A3` | Jewelry, gold hardware, premium CTA |
+| **Dusty Rose** | `#D4A5A5` `#E8C4C0` `#F5E0DC` | Romantic tops, floral prints, ribbons |
+| **Sage** | `#A3B18A` `#C5CEB5` `#E2E8D5` | Spring pieces, halter tops, nature-inspired |
+| **Lavender** | `#B8A5C8` `#D4C8E0` `#EDE6F2` | Evening lace overlays, skirt fabrics |
+| **Dusty Blue** | `#8FA3B4` `#B5C8D6` `#DAE4EC` | Bags, hardware, denim-adjacent pieces |
+| **Chocolate** | `#5C4033` `#8B7060` `#C4AE98` | Leather goods, evening wear, structure |
+| **Soft Yellow** | `#F0E4A6` `#FAF3DC` `#D4C07A` | Gingham, summer collection, warm glow |
+
+### Contrast — "Noir Accents" (use sparingly)
 | Color | Hex | Usage |
 |---|---|---|
-| **Pure White** | `#FFFFFF` | Website backgrounds, editorial space |
-| **Off-Black** | `#1A1A1A` | Typography, navigation, gallery backgrounds |
-| **Warm Grey** | `#9B9590` | Body text, secondary information |
+| **Noir** | `#0A0A08` | Gallery panel, hero sections, headings |
+| **Obsidian** | `#1A1917` | Body text on light backgrounds |
+| **Charcoal** | `#2C2926` | Secondary text, descriptions |
 
 ---
 
@@ -152,18 +156,18 @@ Ori Baebi jewelry is never loud. It is the final detail that makes someone lean 
 ## Visual Language — Digital Presence
 
 ### Photography Direction
-- **Lighting**: Always soft, diffused. Golden hour or overcast daylight. Never harsh studio flash.
-- **Setting**: Minimal — white walls, marble floors, sun-dappled gardens, vintage European apartments
-- **Model Styling**: Hair undone. Minimal makeup — dewy skin, soft lip, maybe a flush of blush. Never editorial-heavy.
-- **Composition**: Slightly off-center, breathing room. The garment is the focus but the atmosphere is the story.
-- **Post-Production**: Warm-toned, slightly desaturated. Think Petra Collins meets The Row lookbook.
+- **Lighting**: High-contrast editorial noir. Dramatic shadows, directional light. Candlelit warmth for intimate shots. Studio flash only for clean product detail shots.
+- **Setting**: Dark studios, architectural noir, candlelit interiors, marble surfaces with gold accents. Never generic white-wall catalog.
+- **Model Styling**: Editorial confidence. Intentional styling, sculpted hair, bold but refined makeup. The Ori Baebi girl doesn't whisper — she commands.
+- **Composition**: Cinematic framing. Generous negative space (dark). The garment emerges from shadow. Close-up details on gold hardware, stitching, texture.
+- **Post-Production**: Warm-toned, high contrast, rich blacks. Think Peter Lindbergh meets Bottega Veneta campaign. Champagne/amber color grading.
 
 ### Website Experience
-- **First Impression**: The website should feel like walking into an atelier — quiet, intentional, every element placed with care
-- **Scroll Experience**: Slow, luxurious. Each section unfolds like turning a page in a fashion book
-- **Typography**: Clean, modern serif or refined sans-serif. Generous letter-spacing. Uppercase for navigation, mixed case for storytelling
-- **Interactions**: Subtle hover effects — images slightly scale, text shifts weight. Nothing jarring.
-- **Gallery**: Products presented as editorial, not catalog. Full-bleed imagery. Context over commerce.
+- **First Impression**: The website should feel like entering a gilded atelier at midnight — dark, intimate, every surface gleaming with quiet luxury
+- **Scroll Experience**: Slow, cinematic. Each section reveals like a scene change in a runway show
+- **Typography**: Quiche Display for editorial voice (headings), Inter Tight for precision (UI). Wide tracking on uppercase labels. Mixed case for storytelling.
+- **Interactions**: Gold accent reveals on hover — border glow, subtle lift, text shimmer. Never jarring, always refined.
+- **Gallery**: Products presented as editorial art, not catalog. Full-bleed imagery on noir backgrounds. Context over commerce. Gold glow on featured pieces.
 
 ### Brand Voice — Copy Style
 | Context | Tone | Example |

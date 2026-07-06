@@ -6,21 +6,24 @@ import { SERVICES, INVITATION } from "../_common/constants";
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
 /**
- * Deep, warm card backgrounds — high-fashion invitation palette.
- * Each card gets a slightly different dark tone for depth.
+ * Card backgrounds — diverse tinted creams from the palette,
+ * each matching a different color family for visual richness.
  */
 const CARD_STYLES = [
   {
-    bg: "var(--color-deep-brown)",
-    border: "rgba(180, 160, 140, 0.15)",
+    bg: "var(--color-rose-milk)",
+    border: "var(--border-light)",
+    iconColor: "var(--color-dusty-rose)",
   },
   {
-    bg: "var(--color-chocolate)",
-    border: "rgba(180, 160, 140, 0.18)",
+    bg: "var(--color-sage-cream)",
+    border: "var(--border-light)",
+    iconColor: "var(--color-sage)",
   },
   {
-    bg: "var(--color-charcoal)",
-    border: "rgba(180, 160, 140, 0.15)",
+    bg: "var(--color-lavender-cream)",
+    border: "var(--border-light)",
+    iconColor: "var(--color-lavender)",
   },
 ] as const;
 
@@ -28,7 +31,7 @@ export default function ServicesSection() {
   return (
     <section
       style={{
-        background: "var(--color-petal)",
+        background: "var(--bg-secondary)",
         padding: "80px 40px",
         height: "100vh",
       }}
@@ -46,10 +49,10 @@ export default function ServicesSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [...ease] }}
           style={{
-            color: "var(--color-chocolate)",
+            color: "var(--text-accent)",
             textTransform: "uppercase",
             fontSize: "var(--text-sm)",
-            letterSpacing: "-0.02em",
+            letterSpacing: "0.12em",
             lineHeight: "140%",
             display: "block",
             marginBottom: 16,
@@ -64,10 +67,10 @@ export default function ServicesSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.1 }}
           style={{
-            color: "var(--color-deep-brown)",
+            color: "var(--text-heading)",
             letterSpacing: "-0.04em",
             lineHeight: "100%",
-            fontWeight: 500,
+            fontWeight: 400,
             fontSize: "clamp(25px, 4vw, 42px)",
             marginBottom: 64,
           }}
@@ -75,7 +78,7 @@ export default function ServicesSection() {
           What We Offer
         </motion.h2>
 
-        {/* Cards — dark invitation style */}
+        {/* Cards — diverse tinted cream backgrounds */}
         <div
           style={{
             display: "grid",
@@ -99,35 +102,34 @@ export default function ServicesSection() {
                 style={{
                   background: style.bg,
                   border: `1px solid ${style.border}`,
-                  borderRadius: 8,
+                  borderRadius: "var(--radius-md)",
                   padding: "clamp(32px, 3.5vw, 48px)",
                   display: "flex",
                   flexDirection: "column",
                   gap: 20,
                   cursor: "default",
-                  transition: `transform 300ms cubic-bezier(0.25,0.1,0.25,1), box-shadow 300ms cubic-bezier(0.25,0.1,0.25,1)`,
+                  transition: `transform var(--duration-base) var(--ease-default), box-shadow var(--duration-base) var(--ease-default), border-color var(--duration-base) var(--ease-default)`,
                 }}
                 whileHover={{
                   y: -2,
-                  boxShadow: "0 8px 32px rgba(58, 49, 42, 0.35)",
+                  boxShadow: "var(--shadow-gold-sm)",
                 }}
               >
-                {/* Icon — muted gold accent */}
+                {/* Icon — color-matched accent */}
                 <span
                   style={{
                     fontSize: 24,
-                    color: "var(--color-taupe)",
+                    color: style.iconColor,
                     lineHeight: "100%",
-                    opacity: 0.85,
                   }}
                 >
                   {service.icon}
                 </span>
 
-                {/* Title — light on dark */}
+                {/* Title */}
                 <h3
                   style={{
-                    color: "var(--color-cream)",
+                    color: "var(--text-heading)",
                     letterSpacing: "-0.04em",
                     lineHeight: "100%",
                     fontWeight: 500,
@@ -138,10 +140,10 @@ export default function ServicesSection() {
                   {service.title}
                 </h3>
 
-                {/* Description — warm muted text */}
+                {/* Description */}
                 <p
                   style={{
-                    color: "var(--color-taupe)",
+                    color: "var(--text-secondary)",
                     letterSpacing: "-0.02em",
                     lineHeight: "170%",
                     fontSize: "clamp(12px, 1.3vw, 14px)",
@@ -173,19 +175,18 @@ export default function ServicesSection() {
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "var(--color-deep-brown)",
-              color: "var(--color-cream)",
-              borderRadius: 9999,
+              background: "var(--accent-primary)",
+              color: "var(--text-on-gold)",
+              borderRadius: "var(--radius-pill)",
               padding: "14px 40px",
               fontSize: "var(--text-md)",
               letterSpacing: "-0.02em",
               textTransform: "uppercase",
               textDecoration: "none",
               fontWeight: 500,
-              border: "1px solid rgba(180, 160, 140, 0.2)",
-              boxShadow: "0 4px 20px rgba(58, 49, 42, 0.2)",
+              boxShadow: "var(--shadow-gold-sm)",
               transition:
-                "opacity 300ms cubic-bezier(0.25,0.1,0.25,1), transform 300ms cubic-bezier(0.25,0.1,0.25,1)",
+                "opacity var(--duration-base) var(--ease-default), transform var(--duration-base) var(--ease-default)",
               cursor: "pointer",
             }}
           >
@@ -196,3 +197,4 @@ export default function ServicesSection() {
     </section>
   );
 }
+
