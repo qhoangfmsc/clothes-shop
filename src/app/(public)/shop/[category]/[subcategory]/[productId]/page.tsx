@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import HeaderNav from "@/src/app/_components/HeaderNav";
-import ShopFooter from "../../../_components/ShopFooter";
+
 import ProductDetailClient from "./_components/ProductDetailClient";
 import {
   getProductById,
@@ -71,8 +71,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         subcategoryLabel={subcategory.label}
         relatedProducts={related}
       />
-
-      <ShopFooter />
     </main>
   );
 }

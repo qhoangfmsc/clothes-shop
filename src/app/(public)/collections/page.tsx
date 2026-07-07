@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import HeaderNav from "@/src/app/_components/HeaderNav";
-import ShopFooter from "../shop/_components/ShopFooter";
+
 import CollectionsClient from "./_components/CollectionsClient";
 import "./collections.css";
 import "../shop/shop.css";
@@ -16,7 +16,6 @@ export default function CollectionsPage() {
     <main style={{ minHeight: "100vh" }}>
       <HeaderNav />
       <CollectionsClient />
-      <ShopFooter />
     </main>
   );
 }

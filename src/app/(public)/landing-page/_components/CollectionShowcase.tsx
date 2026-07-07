@@ -104,7 +104,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
         ref={wrapRef}
         style={{
           width: "100%",
-          paddingTop: "80vh",
+          paddingTop: "20vh",
           paddingBottom: "80vh",
         }}
       >

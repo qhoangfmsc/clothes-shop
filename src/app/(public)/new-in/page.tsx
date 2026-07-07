@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import HeaderNav from "@/src/app/_components/HeaderNav";
-import ShopFooter from "../shop/_components/ShopFooter";
+
 import NewInClient from "./_components/NewInClient";
 import { getNewInProducts } from "../shop/_data/shop-data";
 import "./new-in.css";
@@ -19,7 +19,6 @@ export default function NewInPage() {
     <main style={{ minHeight: "100vh" }}>
       <HeaderNav />
       <NewInClient products={newProducts} />
-      <ShopFooter />
     </main>
   );
 }

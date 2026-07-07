@@ -141,11 +141,7 @@ export default function CollectionsClient() {
       );
 
       /* Scroll hint */
-      tl.to(
-        hero.querySelector(".col-hero__scroll-hint"),
-        { opacity: 1, duration: 0.5 },
-        "-=0.1"
-      );
+      tl.to(hero.querySelector(".col-hero__scroll-hint"), { opacity: 1, duration: 0.5 }, "-=0.1");
 
       /* Hero parallax on scroll */
       gsap.to(hero.querySelector(".col-hero__media img"), {
@@ -265,8 +261,8 @@ export default function CollectionsClient() {
             <span className="col-hero__title-line">Collections</span>
           </h1>
           <p className="col-hero__subtitle">
-            Stories told through fabric, form, and intention.
-            Each collection a chapter in the Ori Baebi narrative.
+            Stories told through fabric, form, and intention. Each collection a chapter in the Ori
+            Baebi narrative.
           </p>
         </div>
 
@@ -288,11 +284,7 @@ export default function CollectionsClient() {
       </div>
 
       {/* ═══ 3. HORIZONTAL SCROLL — Collection cards ═══ */}
-      <div
-        ref={horizontalRef}
-        className="col-horizontal"
-        style={{ height: `${COLLECTIONS.length * 60}vh` }}
-      >
+      <div ref={horizontalRef} className="col-horizontal">
         <div className="col-horizontal__sticky">
           {/* Section label */}
           <div className="col-horizontal__label">
@@ -306,11 +298,7 @@ export default function CollectionsClient() {
             <div style={{ width: 200, flexShrink: 0 }} />
 
             {COLLECTIONS.map((col, idx) => (
-              <Link
-                key={col.title}
-                href={col.href}
-                className="col-horizontal__card"
-              >
+              <Link key={col.title} href={col.href} className="col-horizontal__card">
                 <div className="col-horizontal__card-img">
                   <Image
                     src={col.image}
@@ -340,7 +328,9 @@ export default function CollectionsClient() {
       {EDITORIAL_SECTIONS.map((section, idx) => (
         <section
           key={section.num}
-          ref={(el) => { spreadRefs.current[idx] = el; }}
+          ref={(el) => {
+            spreadRefs.current[idx] = el;
+          }}
           className={`col-spread ${idx % 2 === 1 ? "col-spread--reverse" : ""}`}
           style={{ background: section.bgColor }}
         >
@@ -386,11 +376,7 @@ export default function CollectionsClient() {
       <div className="col-marquee" style={{ background: "var(--bg-primary)" }}>
         <div className="col-marquee__inner" style={{ animationDirection: "reverse" }}>
           {[...Array(4)].map((_, i) => (
-            <span
-              key={i}
-              className="col-marquee__text"
-              style={{ color: "var(--border-light)" }}
-            >
+            <span key={i} className="col-marquee__text" style={{ color: "var(--border-light)" }}>
               {MARQUEE_TEXT}
             </span>
           ))}

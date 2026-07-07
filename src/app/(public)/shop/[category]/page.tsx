@@ -5,7 +5,7 @@ import ShopHero from "../_components/ShopHero";
 import BreadcrumbNav from "../_components/BreadcrumbNav";
 import SubcategoryChips from "../_components/SubcategoryChips";
 import ProductGrid from "../_components/ProductGrid";
-import ShopFooter from "../_components/ShopFooter";
+
 import { getCategoryBySlug, getProducts, CATEGORIES } from "../_data/shop-data";
 import "../shop.css";
 
@@ -89,9 +89,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
         <ProductGrid products={products} />
       </div>
-
-      {/* Footer */}
-      <ShopFooter />
     </main>
   );
 }

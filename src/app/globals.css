@@ -116,3 +116,58 @@ body {
     transition: none !important;
   }
 }
+
+/* ─── Site Footer (global, simple) ─── */
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+}
+
+.site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+@media (min-width: 640px) {
+  .site-footer__inner {
+    justify-content: space-between;
+    padding: var(--space-2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-footer__inner {
+    padding: var(--space-2);
+  }
+}
+
+.site-footer__brand {
+  font-family: var(--font-display), serif;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-display);
+  color: var(--text-heading);
+  letter-spacing: -0.04em;
+}
+
+.site-footer__copy {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-disabled);
+  letter-spacing: 0.04em;
+}
+
+.site-footer__link {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.site-footer__link:hover {
+  color: var(--accent-primary);
+}

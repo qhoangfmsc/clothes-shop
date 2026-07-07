@@ -80,11 +80,64 @@ export default function HamburgerMenu() {
     setMounted(true);
   }, []);
 
-  /* Lock body scroll */
+  /* Lock body scroll — prevent background scroll while drawer is open */
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    if (!isOpen) return;
+
+    const html = document.documentElement;
+    const body = document.body;
+
+    // Prevent scrollbar-based scrolling
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+
+    // Prevent touch-based scrolling on the background (iOS Safari)
+    const handleTouchMove = (e: TouchEvent) => {
+      // Allow scrolling inside the drawer panel
+      const drawer = drawerRef.current;
+      if (!drawer) {
+        e.preventDefault();
+        return;
+      }
+
+      const target = e.target as Node;
+      // If touch is inside the drawer, check if drawer can scroll
+      if (drawer.contains(target)) {
+        const { scrollTop, scrollHeight, clientHeight } = drawer;
+        const isAtTop = scrollTop <= 0;
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+        const touchDeltaY =
+          e.touches[0].clientY -
+          (handleTouchMove as unknown as { lastY: number }).lastY;
+        (handleTouchMove as unknown as { lastY: number }).lastY =
+          e.touches[0].clientY;
+
+        // Prevent overscroll (bouncing) at edges
+        if ((isAtTop && touchDeltaY > 0) || (isAtBottom && touchDeltaY < 0)) {
+          e.preventDefault();
+        }
+        // Otherwise allow drawer scrolling
+      } else {
+        // Touch is on backdrop — block scrolling
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      (handleTouchMove as unknown as { lastY: number }).lastY =
+        e.touches[0].clientY;
+    };
+
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
     return () => {
-      document.body.style.overflow = "";
+      html.style.overflow = "";
+      body.style.overflow = "";
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
     };
   }, [isOpen]);
 

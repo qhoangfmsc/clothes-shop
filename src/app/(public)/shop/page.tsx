@@ -3,7 +3,7 @@ import HeaderNav from "@/src/app/_components/HeaderNav";
 import ShopHero from "./_components/ShopHero";
 import CategoryGrid from "./_components/CategoryGrid";
 import ProductGrid from "./_components/ProductGrid";
-import ShopFooter from "./_components/ShopFooter";
+
 import BreadcrumbNav from "./_components/BreadcrumbNav";
 import { CATEGORIES, getAllProducts } from "./_data/shop-data";
 import "./shop.css";
@@ -69,9 +69,6 @@ export default function ShopPage() {
         </div>
         <ProductGrid products={allProducts} />
       </div>
-
-      {/* Footer */}
-      <ShopFooter />
     </main>
   );
 }
