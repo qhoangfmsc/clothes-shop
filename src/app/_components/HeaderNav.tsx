@@ -65,7 +65,13 @@ const NAV_LINKS = [
   { label: "About", href: "/about", hasMegaMenu: false },
 ] as const;
 
-export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
+export default function HeaderNav({
+  isHidden,
+  onMenuToggle,
+}: {
+  isHidden?: boolean;
+  onMenuToggle?: (isOpen: boolean) => void;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -75,6 +81,11 @@ export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  /* Notify parent of menu state */
+  useEffect(() => {
+    onMenuToggle?.(menuOpen);
+  }, [menuOpen, onMenuToggle]);
 
   /* Close mega menu if header hides */
   useEffect(() => {
@@ -191,7 +202,7 @@ export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
             }}
           />
 
-          {/* Dropdown panel — slides down from top, behind the nav */}
+          {/* Dropdown panel — slides from the very top, content padded below header */}
           <motion.div
             initial={{ y: "-100%" }}
             animate={{ y: 0 }}
@@ -205,19 +216,20 @@ export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
               left: 0,
               right: 0,
               zIndex: 15,
-              background: "var(--color-noir)",
+              background: "rgba(251, 248, 241, 0.95)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
               borderBottom: "1px solid rgba(201, 169, 110, 0.12)",
+              boxShadow: "0 10px 40px rgba(58, 49, 42, 0.08)",
+              paddingTop: "var(--header-bg-height, 90px)", // Push content below header
             }}
           >
-            {/* Top spacer — pushes content below the nav bar area */}
-            <div style={{ height: 72 }} />
-
             {/* Category grid */}
             <div
               style={{
                 maxWidth: 960,
                 margin: "0 auto",
-                padding: "20px 32px 36px",
+                padding: "40px 36px 60px",
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
                 gap: 32,
@@ -262,7 +274,7 @@ export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
                           onClick={closeNow}
                           className="mega-menu-item-link"
                           style={{
-                            color: "rgba(255, 255, 255, 0.6)",
+                            color: "var(--color-obsidian)",
                             fontSize: "var(--text-base)",
                             letterSpacing: "-0.02em",
                             textDecoration: "none",
@@ -281,7 +293,7 @@ export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
                         onClick={closeNow}
                         className="mega-menu-item-link"
                         style={{
-                          color: "rgba(255, 255, 255, 0.35)",
+                          color: "rgba(10, 10, 8, 0.4)",
                           fontSize: "var(--text-xs)",
                           letterSpacing: "0.06em",
                           textTransform: "uppercase",

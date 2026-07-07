@@ -11,6 +11,7 @@ export default function SiteHeader() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [lastY, setLastY] = useState(0);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -46,7 +47,7 @@ export default function SiteHeader() {
       {/* Glassmorphism Background Layer */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: isScrolled ? 1 : 0 }}
+        animate={{ opacity: (isScrolled || isMegaMenuOpen) ? 1 : 0 }}
         transition={{ duration: 0.4 }}
         style={{
           position: "absolute",
@@ -58,23 +59,22 @@ export default function SiteHeader() {
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
           borderBottom: "1px solid rgba(201, 169, 110, 0.15)",
-          boxShadow: "0 4px 20px rgba(58, 49, 42, 0.05)",
+          boxShadow: (isScrolled || isMegaMenuOpen) ? "0 4px 20px rgba(58, 49, 42, 0.05)" : "none",
         }}
       />
 
-      {/* Content Layer — switches from exclusion to normal brand colors when scrolled */}
+      {/* Content Layer — Fixed Black Color */}
       <div
         style={{
-          mixBlendMode: "normal",
           color: "var(--color-noir)",
-          transition: "color 400ms var(--ease-default), mix-blend-mode 400ms var(--ease-default)",
+          transition: "opacity 400ms var(--ease-default)",
           position: "relative",
           width: "100%",
           height: "100%",
         }}
       >
         <Logo />
-        <HeaderNav isHidden={hidden} />
+        <HeaderNav isHidden={hidden} onMenuToggle={setIsMegaMenuOpen} />
       </div>
 
       <style>{`
