@@ -7,7 +7,7 @@ import {
   getCollections,
   getCollectionBySlug,
   getCollectionProducts,
-} from "../../shop/_data/server-fetchers";
+} from "../../shop/_lib/server-fetchers";
 import "../../shop/shop.css";
 import "./collection-detail.css";
 

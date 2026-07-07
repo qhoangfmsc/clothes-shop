@@ -7,21 +7,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Category } from "@/src/types/category";
 
-/* Hero images per category — lightweight lookup */
-const HERO_IMAGES: Record<string, string> = {
-  tops: "/images/model-intro/model_intro_1.webp",
-  skirts: "/images/model-intro/model_intro_3.webp",
-  bags: "/images/model-intro/model_intro_5.webp",
-  jewelry: "/images/model-intro/model_intro_7.webp",
-};
-
 gsap.registerPlugin(ScrollTrigger);
 
 interface CategoryGridProps {
   categories: Category[];
+  heroImages: Record<string, string>;
 }
 
-export default function CategoryGrid({ categories }: CategoryGridProps) {
+export default function CategoryGrid({ categories, heroImages }: CategoryGridProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   /* GSAP scroll-triggered stagger */
@@ -55,7 +48,7 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
     <div ref={gridRef} className="category-grid">
       {categories.map((cat) => {
         const totalItems = cat.subcategories.reduce((sum, s) => sum + s.count, 0);
-        const heroImage = HERO_IMAGES[cat.slug];
+        const heroImage = heroImages[cat.slug];
         return (
           <div key={cat.slug}>
             <Link href={`/shop/${cat.slug}`} className="category-card">

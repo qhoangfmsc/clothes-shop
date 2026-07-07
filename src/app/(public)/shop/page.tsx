@@ -4,7 +4,7 @@ import ShopHero from "./_components/ShopHero";
 import CategoryGrid from "./_components/CategoryGrid";
 import ProductGrid from "./_components/ProductGrid";
 import BreadcrumbNav from "./_components/BreadcrumbNav";
-import { getCategories, getAllProducts } from "./_data/server-fetchers";
+import { getCategoriesWithUI, getAllProducts } from "./_lib/server-fetchers";
 import "./shop.css";
 
 export const metadata: Metadata = {
@@ -14,10 +14,16 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const [categories, allProducts] = await Promise.all([
-    getCategories(),
+  const [{ categories, uiConfigs }, allProducts] = await Promise.all([
+    getCategoriesWithUI(),
     getAllProducts(),
   ]);
+
+  /* Build hero image map from API uiConfig */
+  const heroImages: Record<string, string> = {};
+  for (const [slug, config] of Object.entries(uiConfigs)) {
+    if (config.heroImage) heroImages[slug] = config.heroImage;
+  }
 
   return (
     <main
@@ -53,7 +59,7 @@ export default async function ShopPage() {
           Four curated collections, each telling its own story of elegance and intention.
         </p>
       </div>
-      <CategoryGrid categories={categories} />
+      <CategoryGrid categories={categories} heroImages={heroImages} />
 
       {/* All Products Section */}
       <div

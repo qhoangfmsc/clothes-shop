@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HeaderNav from "@/src/app/_components/HeaderNav";
 
 import NewInClient from "./_components/NewInClient";
-import { getNewInProducts } from "../shop/_data/server-fetchers";
+import { getNewInProducts } from "../shop/_lib/server-fetchers";
 import "./new-in.css";
 import "../shop/shop.css";
 

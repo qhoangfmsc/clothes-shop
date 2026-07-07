@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HeaderNav from "@/src/app/_components/HeaderNav";
 
 import CollectionsClient from "./_components/CollectionsClient";
-import { getCollections } from "../shop/_data/server-fetchers";
+import { getCollections } from "../shop/_lib/server-fetchers";
 import "./collections.css";
 import "../shop/shop.css";
 

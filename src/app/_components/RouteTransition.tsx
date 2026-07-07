@@ -25,7 +25,13 @@ export default function RouteTransition() {
   /* ── Intercept internal link clicks → fade in ── */
   const handleClick = useCallback(
     (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest("a");
+      const target = e.target as HTMLElement;
+
+      /* Skip if the actual click target is a button or inside a button
+         (e.g., "Add to Bag" inside a product card Link) */
+      if (target.closest("button, [role='button'], input, select, textarea")) return;
+
+      const anchor = target.closest("a");
       if (!anchor) return;
 
       const href = anchor.getAttribute("href");

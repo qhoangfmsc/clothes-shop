@@ -68,8 +68,8 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
   return (
     <div ref={gridRef} className="product-grid">
-      {products.map((product, idx) => (
-        <ProductCard key={product.id} product={product} index={idx} />
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );

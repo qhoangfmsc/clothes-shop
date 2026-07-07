@@ -8,7 +8,7 @@ import {
   getSubcategory,
   getProducts,
   getAllProducts,
-} from "../../../_data/server-fetchers";
+} from "../../../_lib/server-fetchers";
 import "../../../shop.css";
 import "./product-detail.css";
 

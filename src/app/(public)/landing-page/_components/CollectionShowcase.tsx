@@ -1,18 +1,10 @@
 "use client";
 
-import React, { RefObject, useMemo } from "react";
+import React, { RefObject, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useCollections } from "@/src/hooks/use-api";
 
-/* Gallery items — minimal data for the landing page gallery */
-const GALLERY_ITEMS = [
-  { image: "/images/model-intro/model_intro_1.webp", name: "Summer Reverie", slug: "summer-reverie" },
-  { image: "/images/model-intro/model_intro_7.webp", name: "Golden Craft", slug: "golden-craft" },
-  { image: "/images/model-intro/model_intro_6.webp", name: "Twilight Edit", slug: "twilight-edit" },
-  { image: "/images/model-intro/model_intro_2.webp", name: "Silk & Satin", slug: "silk-and-satin" },
-  { image: "/images/model-intro/model_intro_5.webp", name: "Resort Bags", slug: "resort-bags" },
-  { image: "/images/model-intro/model_intro_3.webp", name: "Lace & Grace", slug: "lace-and-grace" },
-  { image: "/images/model-intro/model_intro_4.webp", name: "Night Out", slug: "night-out" },
-];
+type GalleryItem = { image: string; name: string; slug: string };
 
 /* Build scattered grid layout */
 function buildLayout(count: number, cols: number): { col: number; imageIdx: number }[][] {
@@ -47,10 +39,29 @@ interface CollectionShowcaseProps {
 }
 
 export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShowcaseProps) {
+  const { collections } = useCollections();
+
+  /* Derive gallery items from API data */
+  const GALLERY_ITEMS: GalleryItem[] = useMemo(
+    () => collections.map((c) => ({ image: c.image, name: c.name, slug: c.slug })),
+    [collections]
+  );
+
+  /* When data loads, trigger recalc of parent's spacer height */
+  useEffect(() => {
+    if (GALLERY_ITEMS.length > 0) {
+      /* Small delay to let DOM update with new grid items */
+      const t = setTimeout(() => {
+        window.dispatchEvent(new Event("resize"));
+      }, 50);
+      return () => clearTimeout(t);
+    }
+  }, [GALLERY_ITEMS.length]);
+
   /* Compute layouts for each breakpoint (we'll use CSS grid + responsive cols) */
-  const cols4Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 4), []);
-  const cols3Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 3), []);
-  const cols2Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 2), []);
+  const cols4Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 4), [GALLERY_ITEMS.length]);
+  const cols3Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 3), [GALLERY_ITEMS.length]);
+  const cols2Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 2), [GALLERY_ITEMS.length]);
 
   // Build flat grid cells for N-column layout
   const renderGrid = (layout: { col: number; imageIdx: number }[][], cols: number) => {
@@ -104,7 +115,8 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
                   flexDirection: "column",
                   justifyContent: "flex-end",
                   padding: "var(--space-4)",
-                  background: "linear-gradient(to top, rgba(10, 10, 8, 0.65) 0%, rgba(10, 10, 8, 0.1) 40%, transparent 100%)",
+                  background:
+                    "linear-gradient(to top, rgba(10, 10, 8, 0.65) 0%, rgba(10, 10, 8, 0.1) 40%, transparent 100%)",
                   opacity: 0,
                   transition: "opacity 400ms cubic-bezier(0.25, 0.1, 0.25, 1)",
                 }}
@@ -137,7 +149,13 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
                 >
                   Shop Now
                   <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M3 8H13M13 8L9 4M13 8L9 12"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </span>
               </div>

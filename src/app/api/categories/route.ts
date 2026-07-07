@@ -101,5 +101,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ data: category, uiConfig: UI_CONFIG[slug] ?? null });
   }
 
-  return NextResponse.json({ data: CATEGORIES, total: CATEGORIES.length });
+  return NextResponse.json({ data: CATEGORIES, uiConfigs: UI_CONFIG, total: CATEGORIES.length });
 }

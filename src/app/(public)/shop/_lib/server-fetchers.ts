@@ -60,6 +60,17 @@ export async function getCategories(): Promise<Category[]> {
   return data;
 }
 
+export async function getCategoriesWithUI(): Promise<{
+  categories: Category[];
+  uiConfigs: Record<string, CategoryUIConfig>;
+}> {
+  const result = await apiFetch<{
+    data: Category[];
+    uiConfigs: Record<string, CategoryUIConfig>;
+  }>("/api/categories");
+  return { categories: result.data, uiConfigs: result.uiConfigs };
+}
+
 export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
   try {
     const { data } = await apiFetch<{ data: Category }>(`/api/categories?slug=${slug}`);

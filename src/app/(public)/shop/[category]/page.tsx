@@ -11,7 +11,7 @@ import {
   getCategoryUIConfig,
   getProducts,
   getCategories,
-} from "../_data/server-fetchers";
+} from "../_lib/server-fetchers";
 import "../shop.css";
 
 interface CategoryPageProps {

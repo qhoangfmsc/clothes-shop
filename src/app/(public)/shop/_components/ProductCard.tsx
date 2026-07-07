@@ -13,10 +13,9 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 
 interface ProductCardProps {
   product: Product;
-  index: number;
 }
 
-export default function ProductCard({ product, index }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const { toast } = useToast();
