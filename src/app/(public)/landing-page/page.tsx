@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import CustomCursor from "@/src/app/_components/CustomCursor";
+
 import Logo from "@/src/app/_components/Logo";
 import HeaderNav from "@/src/app/_components/HeaderNav";
 import Footer from "@/src/app/_components/Footer";
@@ -22,11 +22,7 @@ export default function LandingPage() {
   const spacerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [isTouch, setIsTouch] = useState(false);
 
-  useEffect(() => {
-    setIsTouch("ontouchstart" in window || navigator.maxTouchPoints > 0);
-  }, []);
 
   /* ── GSAP: slide black panel up during first 100vh ── */
   useEffect(() => {
@@ -173,11 +169,10 @@ export default function LandingPage() {
         userSelect: "none",
         background: "var(--bg-primary)",
         height: "500vh",
-        cursor: isTouch ? "default" : "none",
+
       }}
     >
-      {/* Custom Cursor */}
-      {!isTouch && <CustomCursor />}
+
 
       {/* Logo */}
       <Logo />
@@ -195,7 +190,7 @@ export default function LandingPage() {
       <ViewButton />
 
       {/* Video Background */}
-      <VideoContainer isTouch={isTouch} />
+      <VideoContainer />
 
       {/* Outro Section (CTA + Contact) */}
       <OutroSection />

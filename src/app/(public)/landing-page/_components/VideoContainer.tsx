@@ -3,17 +3,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { LEFT_VIDEO, RIGHT_VIDEO, FADE_MS } from "../_common/constants";
 
-interface VideoContainerProps {
-  isTouch: boolean;
-}
-
-export default function VideoContainer({ isTouch }: VideoContainerProps) {
+export default function VideoContainer() {
   const leftRef = useRef<HTMLVideoElement>(null);
   const rightRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
-  const activeSideRef = useRef<"left" | "right">("right");
-  const mouseXRef = useRef(0);
 
   const onVideoReady = useCallback(() => {
     if (!loaded) {
@@ -29,90 +23,8 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
     return () => clearTimeout(timer);
   }, [loaded]);
 
-  /* Desktop: cursor-driven video scrubbing */
+  /* Auto-play alternating videos with crossfade */
   useEffect(() => {
-    if (isTouch) return;
-
-    /* Desktop uses display toggle for instant scrub response */
-    const left = leftRef.current;
-    const right = rightRef.current;
-    if (left) {
-      left.style.transition = "none";
-      left.style.opacity = "1";
-      left.style.display = "none";
-    }
-    if (right) {
-      right.style.transition = "none";
-      right.style.opacity = "1";
-      right.style.display = "block";
-    }
-
-    const onMove = (e: MouseEvent) => {
-      mouseXRef.current = e.clientX;
-    };
-    window.addEventListener("mousemove", onMove);
-
-    let rafId: number;
-
-    const tick = () => {
-      const left = leftRef.current;
-      const right = rightRef.current;
-      const container = containerRef.current;
-      if (!left || !right || !container) {
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-
-      const width = container.offsetWidth;
-      const center = width / 2;
-      const deadZone = Math.max(30, width * 0.05);
-      const x = mouseXRef.current;
-
-      if (Math.abs(x - center) <= deadZone) {
-        /* In dead zone — hold at 0 */
-        if (!left.seeking) left.currentTime = 0;
-        if (!right.seeking) right.currentTime = 0;
-      } else if (x < center - deadZone) {
-        /* Cursor left of dead zone → show RIGHT video */
-        activeSideRef.current = "right";
-        left.style.display = "none";
-        right.style.display = "block";
-
-        const range = center - deadZone;
-        const dist = center - deadZone - x;
-        const progress = Math.max(0, Math.min(1, dist / range));
-        if (right.duration && !right.seeking) {
-          right.currentTime = progress * right.duration;
-        }
-      } else {
-        /* Cursor right of dead zone → show LEFT video */
-        activeSideRef.current = "left";
-        right.style.display = "none";
-        left.style.display = "block";
-
-        const range = width - (center + deadZone);
-        const dist = x - (center + deadZone);
-        const progress = Math.max(0, Math.min(1, dist / range));
-        if (left.duration && !left.seeking) {
-          left.currentTime = progress * left.duration;
-        }
-      }
-
-      rafId = requestAnimationFrame(tick);
-    };
-
-    rafId = requestAnimationFrame(tick);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("mousemove", onMove);
-    };
-  }, [isTouch]);
-
-  /* Mobile/Tablet: auto-play alternating with crossfade */
-  useEffect(() => {
-    if (!isTouch) return;
-
     const left = leftRef.current;
     const right = rightRef.current;
     if (!left || !right) return;
@@ -178,7 +90,7 @@ export default function VideoContainer({ isTouch }: VideoContainerProps) {
       left.removeEventListener("ended", onLeftEnd);
       right.removeEventListener("ended", onRightEnd);
     };
-  }, [isTouch]);
+  }, []);
 
   /** Base styles shared by both video elements */
   const videoBaseStyle: React.CSSProperties = {

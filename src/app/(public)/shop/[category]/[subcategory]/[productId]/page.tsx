@@ -8,8 +8,7 @@ import {
   getSubcategory,
   getProducts,
   getAllProducts,
-  CATEGORIES,
-} from "../../../_data/shop-data";
+} from "../../../_data/server-fetchers";
 import "../../../shop.css";
 import "./product-detail.css";
 
@@ -18,8 +17,9 @@ interface ProductPageProps {
 }
 
 /* ── Static params ── */
-export function generateStaticParams() {
-  return getAllProducts().map((p) => ({
+export async function generateStaticParams() {
+  const products = await getAllProducts();
+  return products.map((p) => ({
     category: p.category,
     subcategory: p.subcategory,
     productId: p.id,
@@ -29,7 +29,7 @@ export function generateStaticParams() {
 /* ── Dynamic metadata ── */
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { productId } = await params;
-  const product = getProductById(productId);
+  const product = await getProductById(productId);
   if (!product) return { title: "Not Found — Ori Baebi" };
 
   return {
@@ -41,8 +41,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { category: catSlug, subcategory: subSlug, productId } = await params;
 
-  const product = getProductById(productId);
-  const result = getSubcategory(catSlug, subSlug);
+  const product = await getProductById(productId);
+  const result = await getSubcategory(catSlug, subSlug);
 
   if (!product || !result) {
     notFound();
@@ -51,7 +51,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { category, subcategory } = result;
 
   /* Related products: same category but different product */
-  const related = getProducts(catSlug).filter((p) => p.id !== product.id);
+  const allCategoryProducts = await getProducts(catSlug);
+  const related = allCategoryProducts.filter((p) => p.id !== product.id);
 
   return (
     <main

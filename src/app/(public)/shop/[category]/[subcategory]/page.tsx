@@ -6,7 +6,12 @@ import BreadcrumbNav from "../../_components/BreadcrumbNav";
 import SubcategoryChips from "../../_components/SubcategoryChips";
 import ProductGrid from "../../_components/ProductGrid";
 
-import { getSubcategory, getProducts, CATEGORIES } from "../../_data/shop-data";
+import {
+  getSubcategory,
+  getCategoryUIConfig,
+  getProducts,
+  getCategories,
+} from "../../_data/server-fetchers";
 import "../../shop.css";
 
 interface SubcategoryPageProps {
@@ -14,8 +19,9 @@ interface SubcategoryPageProps {
 }
 
 /* ── Static params for all valid category/subcategory combos ── */
-export function generateStaticParams() {
-  return CATEGORIES.flatMap((cat) =>
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  return categories.flatMap((cat) =>
     cat.subcategories.map((sub) => ({
       category: cat.slug,
       subcategory: sub.slug,
@@ -26,7 +32,7 @@ export function generateStaticParams() {
 /* ── Dynamic metadata ── */
 export async function generateMetadata({ params }: SubcategoryPageProps): Promise<Metadata> {
   const { category: catSlug, subcategory: subSlug } = await params;
-  const result = getSubcategory(catSlug, subSlug);
+  const result = await getSubcategory(catSlug, subSlug);
   if (!result) return { title: "Not Found — Ori Baebi" };
 
   const { category, subcategory } = result;
@@ -39,14 +45,15 @@ export async function generateMetadata({ params }: SubcategoryPageProps): Promis
 
 export default async function SubcategoryPage({ params }: SubcategoryPageProps) {
   const { category: catSlug, subcategory: subSlug } = await params;
-  const result = getSubcategory(catSlug, subSlug);
+  const result = await getSubcategory(catSlug, subSlug);
 
   if (!result) {
     notFound();
   }
 
   const { category, subcategory } = result;
-  const products = getProducts(catSlug, subSlug);
+  const uiConfig = await getCategoryUIConfig(catSlug);
+  const products = await getProducts(catSlug, subSlug);
 
   return (
     <main
@@ -62,9 +69,9 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         label={`${category.title} — ${subcategory.label}`}
         title={subcategory.label}
         description={subcategory.description}
-        heroImage={category.heroImage}
-        moodImage={category.moodImage}
-        accentColor={category.accentColor}
+        heroImage={uiConfig?.heroImage ?? "/images/model-intro/model_intro_1.webp"}
+        moodImage={uiConfig?.moodImage}
+        accentColor={uiConfig?.accentColor}
       />
 
       {/* Breadcrumb */}
@@ -87,7 +94,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
       {/* Products */}
       <div
         style={{
-          background: category.bgTint,
+          background: uiConfig?.bgTint ?? "var(--bg-primary)",
           paddingTop: 1,
         }}
       >

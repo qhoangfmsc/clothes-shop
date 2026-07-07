@@ -1,7 +1,18 @@
 "use client";
 
 import React, { RefObject, useMemo } from "react";
-import { GALLERY_IMAGES } from "../_common/constants";
+import Link from "next/link";
+
+/* Gallery items — minimal data for the landing page gallery */
+const GALLERY_ITEMS = [
+  { image: "/images/model-intro/model_intro_1.webp", name: "Summer Reverie", slug: "summer-reverie" },
+  { image: "/images/model-intro/model_intro_7.webp", name: "Golden Craft", slug: "golden-craft" },
+  { image: "/images/model-intro/model_intro_6.webp", name: "Twilight Edit", slug: "twilight-edit" },
+  { image: "/images/model-intro/model_intro_2.webp", name: "Silk & Satin", slug: "silk-and-satin" },
+  { image: "/images/model-intro/model_intro_5.webp", name: "Resort Bags", slug: "resort-bags" },
+  { image: "/images/model-intro/model_intro_3.webp", name: "Lace & Grace", slug: "lace-and-grace" },
+  { image: "/images/model-intro/model_intro_4.webp", name: "Night Out", slug: "night-out" },
+];
 
 /* Build scattered grid layout */
 function buildLayout(count: number, cols: number): { col: number; imageIdx: number }[][] {
@@ -37,9 +48,9 @@ interface CollectionShowcaseProps {
 
 export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShowcaseProps) {
   /* Compute layouts for each breakpoint (we'll use CSS grid + responsive cols) */
-  const cols4Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 4), []);
-  const cols3Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 3), []);
-  const cols2Layout = useMemo(() => buildLayout(GALLERY_IMAGES.length, 2), []);
+  const cols4Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 4), []);
+  const cols3Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 3), []);
+  const cols2Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 2), []);
 
   // Build flat grid cells for N-column layout
   const renderGrid = (layout: { col: number; imageIdx: number }[][], cols: number) => {
@@ -50,34 +61,87 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
       for (let c = 0; c < cols; c++) {
         const item = row.find((r) => r.col === c);
         if (item) {
+          const galleryItem = GALLERY_ITEMS[item.imageIdx];
           /* Cards in left half of grid → origin right bottom,
              cards in right half → origin left bottom */
           const isLeftHalf = c < cols / 2;
           const origin = isLeftHalf ? "right bottom" : "left bottom";
 
           cells.push(
-            <div
+            <Link
               key={`${rowIdx}-${c}`}
+              href={`/collections/${galleryItem.slug}`}
               className="collection-card"
               style={{
                 aspectRatio: "2/3",
                 overflow: "hidden",
                 transform: "scale(0)",
                 transformOrigin: origin,
+                display: "block",
+                position: "relative",
+                textDecoration: "none",
               }}
             >
               <img
-                src={GALLERY_IMAGES[item.imageIdx]}
-                alt={`Collection outfit ${item.imageIdx + 1}`}
+                src={galleryItem.image}
+                alt={galleryItem.name}
                 style={{
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
                   display: "block",
+                  transition: "transform 600ms cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
                 loading="lazy"
               />
-            </div>
+              {/* Name overlay */}
+              <div
+                className="collection-card__overlay"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  padding: "var(--space-4)",
+                  background: "linear-gradient(to top, rgba(10, 10, 8, 0.65) 0%, rgba(10, 10, 8, 0.1) 40%, transparent 100%)",
+                  opacity: 0,
+                  transition: "opacity 400ms cubic-bezier(0.25, 0.1, 0.25, 1)",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-display), serif",
+                    fontSize: "var(--text-lg)",
+                    fontWeight: "var(--font-weight-display)",
+                    color: "var(--color-pearl-cream)",
+                    letterSpacing: "-0.04em",
+                    lineHeight: "100%",
+                    marginBottom: "var(--space-1)",
+                  }}
+                >
+                  {galleryItem.name}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-primary)",
+                    fontSize: "var(--text-xs)",
+                    fontWeight: "var(--font-weight-body)",
+                    color: "var(--color-champagne-gold)",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "var(--space-1)",
+                  }}
+                >
+                  Shop Now
+                  <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </div>
+            </Link>
           );
         } else {
           cells.push(<div key={`${rowIdx}-${c}`} style={{ aspectRatio: "2/3" }} />);
@@ -100,11 +164,26 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
         overflow: "hidden",
       }}
     >
+      {/* CSS for hover effects */}
+      <style>{`
+        .collection-card:hover img {
+          transform: scale(1.06);
+        }
+        .collection-card:hover .collection-card__overlay {
+          opacity: 1 !important;
+        }
+        @media (hover: none) {
+          .collection-card .collection-card__overlay {
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+
       <div
         ref={wrapRef}
         style={{
           width: "100%",
-          paddingTop: "20vh",
+          paddingTop: "40vh",
           paddingBottom: "80vh",
         }}
       >

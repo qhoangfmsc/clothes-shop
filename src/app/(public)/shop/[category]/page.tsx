@@ -6,7 +6,12 @@ import BreadcrumbNav from "../_components/BreadcrumbNav";
 import SubcategoryChips from "../_components/SubcategoryChips";
 import ProductGrid from "../_components/ProductGrid";
 
-import { getCategoryBySlug, getProducts, CATEGORIES } from "../_data/shop-data";
+import {
+  getCategoryBySlug,
+  getCategoryUIConfig,
+  getProducts,
+  getCategories,
+} from "../_data/server-fetchers";
 import "../shop.css";
 
 interface CategoryPageProps {
@@ -14,8 +19,9 @@ interface CategoryPageProps {
 }
 
 /* ── Static params for all valid categories ── */
-export function generateStaticParams() {
-  return CATEGORIES.map((cat) => ({
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  return categories.map((cat) => ({
     category: cat.slug,
   }));
 }
@@ -23,24 +29,26 @@ export function generateStaticParams() {
 /* ── Dynamic metadata ── */
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category: slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug);
+  const uiConfig = await getCategoryUIConfig(slug);
   if (!category) return { title: "Not Found — Ori Baebi" };
 
   return {
     title: `${category.title} — Ori Baebi Shop`,
-    description: `${category.description}. ${category.tagline} — Ori Baebi luxury collection.`,
+    description: `${category.description}. ${uiConfig?.tagline ?? ""} — Ori Baebi luxury collection.`,
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug);
+  const uiConfig = await getCategoryUIConfig(slug);
 
   if (!category) {
     notFound();
   }
 
-  const products = getProducts(slug);
+  const products = await getProducts(slug);
 
   return (
     <main
@@ -55,10 +63,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <ShopHero
         label={`Ori Baebi — ${category.title}`}
         title={category.title}
-        description={category.tagline}
-        heroImage={category.heroImage}
-        moodImage={category.moodImage}
-        accentColor={category.accentColor}
+        description={uiConfig?.tagline ?? category.description}
+        heroImage={uiConfig?.heroImage ?? "/images/model-intro/model_intro_1.webp"}
+        moodImage={uiConfig?.moodImage}
+        accentColor={uiConfig?.accentColor}
       />
 
       {/* Breadcrumb */}
@@ -79,7 +87,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Product Grid */}
       <div
         style={{
-          background: category.bgTint,
+          background: uiConfig?.bgTint ?? "var(--bg-primary)",
           paddingTop: 1,
         }}
       >

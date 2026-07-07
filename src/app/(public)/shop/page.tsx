@@ -3,9 +3,8 @@ import HeaderNav from "@/src/app/_components/HeaderNav";
 import ShopHero from "./_components/ShopHero";
 import CategoryGrid from "./_components/CategoryGrid";
 import ProductGrid from "./_components/ProductGrid";
-
 import BreadcrumbNav from "./_components/BreadcrumbNav";
-import { CATEGORIES, getAllProducts } from "./_data/shop-data";
+import { getCategories, getAllProducts } from "./_data/server-fetchers";
 import "./shop.css";
 
 export const metadata: Metadata = {
@@ -14,8 +13,11 @@ export const metadata: Metadata = {
     "Explore the full Ori Baebi collection. Luxury tops, skirts, bags, and jewelry — crafted with intention for the modern wardrobe.",
 };
 
-export default function ShopPage() {
-  const allProducts = getAllProducts();
+export default async function ShopPage() {
+  const [categories, allProducts] = await Promise.all([
+    getCategories(),
+    getAllProducts(),
+  ]);
 
   return (
     <main
@@ -51,7 +53,7 @@ export default function ShopPage() {
           Four curated collections, each telling its own story of elegance and intention.
         </p>
       </div>
-      <CategoryGrid categories={CATEGORIES} />
+      <CategoryGrid categories={categories} />
 
       {/* All Products Section */}
       <div

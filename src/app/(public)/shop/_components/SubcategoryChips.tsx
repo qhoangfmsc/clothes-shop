@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { SubCategory } from "../_data/shop-data";
+import type { SubCategory } from "@/src/types/category";
 
 interface SubcategoryChipsProps {
   categorySlug: string;

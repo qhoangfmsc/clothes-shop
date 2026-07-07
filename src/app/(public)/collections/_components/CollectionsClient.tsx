@@ -5,54 +5,23 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { Collection } from "@/src/types/collection";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Collection Data ── */
-const COLLECTIONS = [
-  {
-    title: "Silk & Satin",
-    subtitle: "Tops Collection",
-    image: "/images/model-intro/model_intro_1.webp",
-    href: "/shop/tops",
-  },
-  {
-    title: "Evening Edit",
-    subtitle: "Après-midi to midnight",
-    image: "/images/model-intro/model_intro_2.webp",
-    href: "/shop/skirts",
-  },
-  {
-    title: "Resort Bags",
-    subtitle: "Crafted companions",
-    image: "/images/model-intro/model_intro_5.webp",
-    href: "/shop/bags",
-  },
-  {
-    title: "Gold Hour",
-    subtitle: "Statement jewelry",
-    image: "/images/model-intro/model_intro_7.webp",
-    href: "/shop/jewelry",
-  },
-  {
-    title: "Lace & Grace",
-    subtitle: "Delicate details",
-    image: "/images/model-intro/model_intro_3.webp",
-    href: "/shop/skirts/lace",
-  },
-  {
-    title: "Summer Knits",
-    subtitle: "Layered warmth",
-    image: "/images/model-intro/model_intro_4.webp",
-    href: "/shop/tops/cardigans",
-  },
-  {
-    title: "Night Out",
-    subtitle: "After dark essentials",
-    image: "/images/model-intro/model_intro_6.webp",
-    href: "/shop/bags/clutches",
-  },
-];
+interface CollectionsClientProps {
+  collections: Collection[];
+}
+
+/* ── Map collection data for horizontal scroll cards ── */
+function buildHorizontalCards(collections: Collection[]) {
+  return collections.map((col) => ({
+    title: col.name,
+    subtitle: col.subtitle,
+    image: col.image,
+    href: `/collections/${col.slug}`,
+  }));
+}
 
 const EDITORIAL_SECTIONS = [
   {
@@ -64,7 +33,7 @@ const EDITORIAL_SECTIONS = [
     moodImage: "/images/mood-bg/wall_sticker_soft_pink_lace.webp",
     bgColor: "var(--color-rose-milk)",
     textColor: "var(--text-heading)",
-    cta: { label: "Shop Tops", href: "/shop/tops" },
+    cta: { label: "Explore Collection", href: "/collections/summer-reverie" },
   },
   {
     num: "02",
@@ -75,7 +44,7 @@ const EDITORIAL_SECTIONS = [
     moodImage: "/images/mood-bg/wall_sticker_yellow_botanical.webp",
     bgColor: "var(--color-vanilla)",
     textColor: "var(--text-heading)",
-    cta: { label: "Shop Jewelry", href: "/shop/jewelry" },
+    cta: { label: "Explore Collection", href: "/collections/golden-craft" },
   },
   {
     num: "03",
@@ -86,13 +55,14 @@ const EDITORIAL_SECTIONS = [
     moodImage: "/images/mood-bg/wall_sticker_lavender_damask.webp",
     bgColor: "var(--color-lavender-cream)",
     textColor: "var(--text-heading)",
-    cta: { label: "Shop Skirts", href: "/shop/skirts" },
+    cta: { label: "Explore Collection", href: "/collections/twilight-edit" },
   },
 ];
 
 const MARQUEE_TEXT = "Ori Baebi ◆ Collections ◆ Summer 2026 ◆ Crafted with Intention ◆ ";
 
-export default function CollectionsClient() {
+export default function CollectionsClient({ collections }: CollectionsClientProps) {
+  const HORIZONTAL_CARDS = buildHorizontalCards(collections);
   const heroRef = useRef<HTMLElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -297,7 +267,7 @@ export default function CollectionsClient() {
             {/* Spacer for label */}
             <div style={{ width: 200, flexShrink: 0 }} />
 
-            {COLLECTIONS.map((col, idx) => (
+            {HORIZONTAL_CARDS.map((col, idx) => (
               <Link key={col.title} href={col.href} className="col-horizontal__card">
                 <div className="col-horizontal__card-img">
                   <Image

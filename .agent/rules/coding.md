@@ -8,3 +8,4 @@ trigger: always_on
 4. Asking at least 10 questions before starting to code.
 5. Always check lint error after creating code without yarn build (Not break the session).
 6. Always ensure a responsive design, prioritizing the interface layout in the order of Phone - Desktop - iPad.
+7. Never use the index.ts file to import all the files.

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import type { Product } from "../../../../_data/shop-data";
+import type { Product } from "@/src/types/product";
+import { useToast } from "@/src/app/_components/Toast";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -25,46 +26,187 @@ export default function ProductDetailClient({
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState(false);
+  const { toast } = useToast();
 
   const images = [product.image, product.secondaryImage];
-  const sizes = ["XS", "S", "M", "L", "XL"];
+
+  /* ── Carousel: swipe / drag support ── */
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef(0);
+  const touchDeltaX = useRef(0);
+  const isDragging = useRef(false);
+
+  const goToImage = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(index, images.length - 1));
+      setActiveImage(clamped);
+    },
+    [images.length]
+  );
+
+  const handleNext = useCallback(() => goToImage(activeImage + 1), [activeImage, goToImage]);
+  const handlePrev = useCallback(() => goToImage(activeImage - 1), [activeImage, goToImage]);
+
+  /* Touch handlers */
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    isDragging.current = true;
+  }, []);
+
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging.current) return;
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    isDragging.current = false;
+    const threshold = 50;
+    if (touchDeltaX.current > threshold) {
+      handlePrev();
+    } else if (touchDeltaX.current < -threshold) {
+      handleNext();
+    }
+    touchDeltaX.current = 0;
+  }, [handlePrev, handleNext]);
+
+  /* Mouse drag handlers */
+  const onMouseDown = useCallback((e: React.MouseEvent) => {
+    touchStartX.current = e.clientX;
+    isDragging.current = true;
+  }, []);
+
+  const onMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    touchDeltaX.current = e.clientX - touchStartX.current;
+  }, []);
+
+  const onMouseUp = useCallback(() => {
+    isDragging.current = false;
+    const threshold = 50;
+    if (touchDeltaX.current > threshold) {
+      handlePrev();
+    } else if (touchDeltaX.current < -threshold) {
+      handleNext();
+    }
+    touchDeltaX.current = 0;
+  }, [handlePrev, handleNext]);
+
+  /* Keyboard navigation */
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePrev, handleNext]);
 
   const handleAddToCart = useCallback(() => {
     if (addedToCart) return;
     setAddedToCart(true);
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-      setTimeout(() => setAddedToCart(false), 400);
-    }, 2200);
-  }, [addedToCart]);
+    toast.success(`${product.name} added to your bag`);
+    setTimeout(() => setAddedToCart(false), 2200);
+  }, [addedToCart, product.name, toast]);
+
+  const handleWishlist = useCallback(() => {
+    const next = !liked;
+    setLiked(next);
+    if (next) {
+      toast.info(`${product.name} saved to wishlist`);
+    } else {
+      toast.info(`${product.name} removed from wishlist`);
+    }
+  }, [liked, product.name, toast]);
 
   return (
     <>
       {/* ── Main Content: 2-panel layout ── */}
       <div className="pdp-layout">
-        {/* LEFT: Image Gallery */}
+        {/* LEFT: Image Gallery with Carousel */}
         <div className="pdp-gallery">
-          {/* Main image */}
-          <motion.div
-            className="pdp-gallery__main"
-            key={activeImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, ease: [...ease] }}
+          {/* Main image — carousel */}
+          <div
+            ref={carouselRef}
+            className="pdp-gallery__main pdp-carousel"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseUp}
+            role="region"
+            aria-label="Product image carousel"
+            aria-roledescription="carousel"
           >
-            <Image
-              src={images[activeImage]}
-              alt={product.name}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              style={{ objectFit: "cover" }}
-            />
-          </motion.div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeImage}
+                className="pdp-carousel__slide"
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.35, ease: [...ease] }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.1}
+                onDragEnd={(_e, info) => {
+                  if (info.offset.x > 60) handlePrev();
+                  else if (info.offset.x < -60) handleNext();
+                }}
+              >
+                <Image
+                  src={images[activeImage]}
+                  alt={`${product.name} — Image ${activeImage + 1}`}
+                  fill
+                  priority={activeImage === 0}
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  style={{ objectFit: "cover", pointerEvents: "none" }}
+                />
+              </motion.div>
+            </AnimatePresence>
 
-          {/* Thumbnails */}
+            {/* Carousel navigation arrows */}
+            {activeImage > 0 && (
+              <button
+                type="button"
+                className="pdp-carousel__arrow pdp-carousel__arrow--prev"
+                onClick={handlePrev}
+                aria-label="Previous image"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
+            {activeImage < images.length - 1 && (
+              <button
+                type="button"
+                className="pdp-carousel__arrow pdp-carousel__arrow--next"
+                onClick={handleNext}
+                aria-label="Next image"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
+
+            {/* Dot indicators */}
+            <div className="pdp-carousel__dots">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`pdp-carousel__dot ${activeImage === idx ? "pdp-carousel__dot--active" : ""}`}
+                  onClick={() => setActiveImage(idx)}
+                  aria-label={`View image ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Thumbnails — desktop only */}
           <div className="pdp-gallery__thumbs">
             {images.map((img, idx) => (
               <button
@@ -164,7 +306,7 @@ export default function ProductDetailClient({
               Size {selectedSize && <span className="pdp-sizes__selected">— {selectedSize}</span>}
             </span>
             <div className="pdp-sizes__grid">
-              {sizes.map((size) => (
+              {product.sizes.map((size) => (
                 <button
                   key={size}
                   type="button"
@@ -211,7 +353,7 @@ export default function ProductDetailClient({
             <button
               type="button"
               className={`pdp-wishlist ${liked ? "pdp-wishlist--liked" : ""}`}
-              onClick={() => setLiked((prev) => !prev)}
+              onClick={handleWishlist}
               aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
             >
               <motion.svg
@@ -253,24 +395,6 @@ export default function ProductDetailClient({
           </motion.div>
         </div>
       </div>
-
-      {/* ── Toast notification ── */}
-      <AnimatePresence>
-        {showToast && (
-          <motion.div
-            className="pdp-toast"
-            initial={{ opacity: 0, y: 20, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: -10, x: "-50%" }}
-            transition={{ duration: 0.35, ease: [...ease] }}
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {product.name} added to your bag
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* ── Related Products ── */}
       {relatedProducts.length > 0 && (

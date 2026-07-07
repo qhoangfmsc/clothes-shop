@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import type { Product } from "../_data/shop-data";
+import type { Product } from "@/src/types/product";
+import { useToast } from "@/src/app/_components/Toast";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -18,7 +19,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, index }: ProductCardProps) {
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [showCartToast, setShowCartToast] = useState(false);
+  const { toast } = useToast();
 
   const badgeClass = product.badge
     ? `product-card__badge product-card__badge--${product.badge}`
@@ -27,20 +28,23 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   const handleLike = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setLiked((prev) => !prev);
-  }, []);
+    const next = !liked;
+    setLiked(next);
+    if (next) {
+      toast.info(`${product.name} saved to wishlist`);
+    } else {
+      toast.info(`${product.name} removed from wishlist`);
+    }
+  }, [liked, product.name, toast]);
 
   const handleAddToCart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (addedToCart) return;
     setAddedToCart(true);
-    setShowCartToast(true);
-    setTimeout(() => {
-      setShowCartToast(false);
-      setTimeout(() => setAddedToCart(false), 400);
-    }, 1800);
-  }, [addedToCart]);
+    toast.success(`${product.name} added to your bag`);
+    setTimeout(() => setAddedToCart(false), 2000);
+  }, [addedToCart, product.name, toast]);
 
   const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
 
@@ -147,21 +151,6 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               )}
             </button>
           </div>
-
-          {/* ── Cart toast ── */}
-          <AnimatePresence>
-            {showCartToast && (
-              <motion.div
-                className="product-card__toast"
-                initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -4, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: [...ease] }}
-              >
-                ✓ Added to your bag
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
 
         {/* Info */}

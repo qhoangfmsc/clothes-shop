@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ToastProvider } from "./_components/Toast";
+import RouteTransition from "./_components/RouteTransition";
 import "./globals.css";
 
 const quicheDisplay = localFont({
@@ -31,7 +33,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ToastProvider position="bottom-center">
+          <RouteTransition />
+          {children}
+        </ToastProvider>
+      </body>
     </html>
   );
 }
