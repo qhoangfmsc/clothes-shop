@@ -289,67 +289,99 @@
   color: var(--color-pearl-cream);
 }
 
-/* ── Wishlist Heart Button ── */
-.product-card__wishlist {
+/* ── Stacked icon buttons (top-right: wishlist + bag) ── */
+.product-card__icons {
   position: absolute;
-  top: var(--space-3);
+  bottom: var(--space-3);
   right: var(--space-3);
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2);
+  opacity: 1;
+}
+
+/* Desktop: hide icons by default, show on hover */
+@media (hover: hover) and (pointer: fine) {
+  .product-card__icons {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity var(--duration-base) var(--ease-default),
+      transform var(--duration-base) var(--ease-default);
+  }
+
+  .product-card:hover .product-card__icons {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Keep icons visible when wishlist is liked */
+  .product-card__icons:has(.product-card__icon-btn--liked) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* On desktop, hide the bag icon — hover overlay handles it */
+  .product-card__icon-btn--bag {
+    display: none;
+  }
+}
+
+/* Shared icon button base */
+.product-card__icon-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(251, 248, 241, 0.88);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 3;
   color: var(--color-slate);
   box-shadow: 0 2px 8px rgba(58, 49, 42, 0.1);
-  opacity: 0;
-  transform: scale(0.85);
   transition:
-    opacity var(--duration-base) var(--ease-default),
-    transform var(--duration-base) var(--ease-default),
     color var(--duration-fast) var(--ease-default),
-    background var(--duration-fast) var(--ease-default);
+    background var(--duration-fast) var(--ease-default),
+    transform var(--duration-fast) var(--ease-default);
 }
 
-.product-card:hover .product-card__wishlist {
-  opacity: 1;
-  transform: scale(1);
+.product-card__icon-btn:active {
+  transform: scale(0.9);
 }
 
-/* Always visible on touch devices */
-@media (hover: none) {
-  .product-card__wishlist {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.product-card__wishlist:hover {
+/* Wishlist hover */
+.product-card__icon-btn--wish:hover {
   color: var(--color-dusty-rose);
   background: rgba(255, 255, 255, 0.95);
-  transform: scale(1.1);
 }
 
-.product-card__wishlist--liked {
+.product-card__icon-btn--liked {
   color: var(--color-dusty-rose) !important;
-  opacity: 1 !important;
-  transform: scale(1) !important;
 }
 
-/* ── Quick-action overlay on hover ── */
-.product-card__actions {
+/* Bag hover */
+.product-card__icon-btn--bag:hover {
+  color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.product-card__icon-btn--bag:active {
+  background: var(--accent-primary);
+  color: var(--text-on-gold);
+}
+
+/* ── Desktop hover overlay: text "Add to Bag" button ── */
+.product-card__actions--desktop {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding: var(--space-3);
-  display: flex;
+  display: none;
   justify-content: center;
   opacity: 0;
   transform: translateY(8px);
@@ -362,9 +394,15 @@
   padding-top: var(--space-10);
 }
 
-.product-card:hover .product-card__actions {
-  opacity: 1;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .product-card__actions--desktop {
+    display: flex;
+  }
+
+  .product-card:hover .product-card__actions--desktop {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .product-card__quick-add {
@@ -594,7 +632,6 @@
   transform: translateY(0);
 }
 
-
 /* ─── Empty State ─── */
 .shop-empty {
   display: flex;
@@ -631,7 +668,6 @@
 
 /* ─── Section Title (used in shop main, lookbook) ─── */
 .shop-section-title {
-  padding: var(--space-12) var(--space-4) var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -639,13 +675,13 @@
 
 @media (min-width: 640px) {
   .shop-section-title {
-    padding: var(--space-16) var(--space-6) var(--space-8);
+    padding: var(--space-8);
   }
 }
 
 @media (min-width: 1024px) {
   .shop-section-title {
-    padding: var(--space-20) var(--space-8) var(--space-8);
+    padding: var(--space-8);
   }
 }
 
@@ -749,8 +785,9 @@
 @media (prefers-reduced-motion: reduce) {
   .product-card__image-wrap,
   .product-card__image-wrap img,
-  .product-card__wishlist,
-  .product-card__actions,
+  .product-card__icons,
+  .product-card__icon-btn,
+  .product-card__actions--desktop,
   .product-card__quick-add,
   .product-card__name,
   .category-card__image img,

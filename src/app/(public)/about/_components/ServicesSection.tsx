@@ -33,7 +33,6 @@ export default function ServicesSection() {
       style={{
         background: "var(--bg-secondary)",
         padding: "80px 40px",
-        height: "100vh",
       }}
     >
       <div
@@ -197,4 +196,3 @@ export default function ServicesSection() {
     </section>
   );
 }
-

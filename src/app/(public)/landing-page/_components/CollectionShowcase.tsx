@@ -2,6 +2,7 @@
 
 import React, { RefObject, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { useCollections } from "@/src/hooks/use-api";
 
 type GalleryItem = { image: string; name: string; slug: string };
@@ -148,15 +149,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
                   }}
                 >
                   Shop Now
-                  <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M3 8H13M13 8L9 4M13 8L9 12"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <ArrowRight size={10} />
                 </span>
               </div>
             </Link>

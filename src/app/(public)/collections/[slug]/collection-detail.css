@@ -499,13 +499,13 @@
   transform: scale(1.05);
 }
 
-.cd-shop-card__actions {
+.cd-shop-card__actions--desktop {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding: var(--space-3);
-  display: flex;
+  display: none;
   justify-content: center;
   opacity: 0;
   transform: translateY(8px);
@@ -518,13 +518,12 @@
   padding-top: var(--space-10);
 }
 
-.cd-shop-card:hover .cd-shop-card__actions {
-  opacity: 1;
-  transform: translateY(0);
-}
+@media (hover: hover) and (pointer: fine) {
+  .cd-shop-card__actions--desktop {
+    display: flex;
+  }
 
-@media (hover: none) {
-  .cd-shop-card__actions {
+  .cd-shop-card:hover .cd-shop-card__actions--desktop {
     opacity: 1;
     transform: translateY(0);
   }
@@ -658,7 +657,7 @@
   .cd-editorial__img img,
   .cd-shop-card__image img,
   .cd-shop-card__image,
-  .cd-shop-card__actions,
+  .cd-shop-card__actions--desktop,
   .cd-shop-card__name,
   .cd-cta__button,
   .cd-cta__back,

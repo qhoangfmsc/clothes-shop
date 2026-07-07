@@ -1,13 +1,15 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Collection } from "@/src/types/collection";
 import type { Product } from "@/src/types/product";
+import { useQuickAdd } from "@/src/app/_components/QuickAddDrawer";
 import { useToast } from "@/src/app/_components/Toast";
+import { Heart, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,25 +25,34 @@ export default function CollectionDetailClient({
   const heroRef = useRef<HTMLElement>(null);
   const editorialRef = useRef<HTMLDivElement>(null);
   const shopAllRef = useRef<HTMLDivElement>(null);
-  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+  const { openQuickAdd } = useQuickAdd();
   const { toast } = useToast();
+  const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
 
   const handleQuickAdd = useCallback(
     (product: Product, e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      if (addedIds.has(product.id)) return;
-      setAddedIds((prev) => new Set(prev).add(product.id));
-      toast.success(`${product.name} added to your bag`);
-      setTimeout(() => {
-        setAddedIds((prev) => {
-          const next = new Set(prev);
-          next.delete(product.id);
-          return next;
-        });
-      }, 2200);
+      openQuickAdd(product);
     },
-    [addedIds, toast]
+    [openQuickAdd]
+  );
+
+  const handleLike = useCallback(
+    (product: Product, e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const next = !likedMap[product.id];
+      setLikedMap((prev) => ({ ...prev, [product.id]: next }));
+      if (next) {
+        toast.info(
+          <>{product.name} saved — <Link href="/wishlist" onClick={(ev) => ev.stopPropagation()}>View Wishlist</Link></>
+        );
+      } else {
+        toast.info(`${product.name} removed from wishlist`);
+      }
+    },
+    [likedMap, toast]
   );
 
   /* ── Hero reveal ── */
@@ -256,9 +267,7 @@ export default function CollectionDetailClient({
                   </span>
                   <span className="cd-editorial__cta">
                     View Details
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <ArrowRight size={14} />
                   </span>
                 </div>
               </Link>
@@ -289,7 +298,6 @@ export default function CollectionDetailClient({
 
         <div ref={shopAllRef} className="cd-shop-grid">
           {gridProducts.map((product) => {
-            const isAdded = addedIds.has(product.id);
             const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
 
             return (
@@ -309,29 +317,34 @@ export default function CollectionDetailClient({
                       {product.badge === "bestseller" && "Best"}
                     </span>
                   )}
-                  <div className="cd-shop-card__actions">
+                  {/* ── Top-right icons: Wishlist + Bag (stacked) ── */}
+                  <div className="product-card__icons">
                     <button
-                      className={`product-card__quick-add ${isAdded ? "product-card__quick-add--added" : ""}`}
+                      type="button"
+                      className={`product-card__icon-btn product-card__icon-btn--wish ${likedMap[product.id] ? "product-card__icon-btn--liked" : ""}`}
+                      onClick={(e) => handleLike(product, e)}
+                      aria-label={likedMap[product.id] ? "Remove from wishlist" : "Add to wishlist"}
+                    >
+                      <Heart size={18} fill={likedMap[product.id] ? "currentColor" : "none"} />
+                    </button>
+                    <button
+                      type="button"
+                      className="product-card__icon-btn product-card__icon-btn--bag"
+                      onClick={(e) => handleQuickAdd(product, e)}
+                      aria-label="Add to bag"
+                    >
+                      <ShoppingBag size={16} />
+                    </button>
+                  </div>
+                  {/* Desktop hover overlay */}
+                  <div className="cd-shop-card__actions cd-shop-card__actions--desktop">
+                    <button
+                      className="product-card__quick-add"
                       type="button"
                       onClick={(e) => handleQuickAdd(product, e)}
                     >
-                      {isAdded ? (
-                        <>
-                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                          Added
-                        </>
-                      ) : (
-                        <>
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M3 6H21" stroke="currentColor" strokeWidth="1.5" />
-                            <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                          Add to Bag
-                        </>
-                      )}
+                      <ShoppingBag size={13} />
+                      Add to Bag
                     </button>
                   </div>
                 </div>
@@ -349,9 +362,7 @@ export default function CollectionDetailClient({
       <section className="cd-cta">
         <div className="cd-cta__inner">
           <Link href="/collections" className="cd-cta__back">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M13 8H3M3 8L7 4M3 8L7 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowLeft size={14} />
             All Collections
           </Link>
           <div className="cd-cta__divider" />
@@ -359,9 +370,7 @@ export default function CollectionDetailClient({
           <h2 className="cd-cta__heading">Explore All Collections</h2>
           <Link href="/collections" className="cd-cta__button">
             View Collections
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </section>

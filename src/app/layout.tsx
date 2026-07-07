@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ToastProvider } from "./_components/Toast";
+import { QuickAddProvider } from "./_components/QuickAddDrawer";
 import RouteTransition from "./_components/RouteTransition";
 import "./globals.css";
 
@@ -35,8 +36,10 @@ export default function RootLayout({
       </head>
       <body>
         <ToastProvider position="bottom-center">
-          <RouteTransition />
-          {children}
+          <QuickAddProvider>
+            <RouteTransition />
+            {children}
+          </QuickAddProvider>
         </ToastProvider>
       </body>
     </html>

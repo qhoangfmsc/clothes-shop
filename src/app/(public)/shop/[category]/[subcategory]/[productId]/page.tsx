@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import HeaderNav from "@/src/app/_components/HeaderNav";
 
 import ProductDetailClient from "./_components/ProductDetailClient";
 import {
@@ -61,7 +60,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         background: "var(--bg-primary)",
       }}
     >
-      <HeaderNav />
+
 
       {/* Spacer for fixed nav */}
       <div style={{ height: 80 }} />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HeaderNav from "@/src/app/_components/HeaderNav";
+
 import ShopHero from "./_components/ShopHero";
 import CategoryGrid from "./_components/CategoryGrid";
 import ProductGrid from "./_components/ProductGrid";
@@ -32,7 +32,7 @@ export default async function ShopPage() {
         background: "var(--bg-primary)",
       }}
     >
-      <HeaderNav />
+
 
       {/* Hero */}
       <ShopHero

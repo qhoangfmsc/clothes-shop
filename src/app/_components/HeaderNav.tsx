@@ -65,7 +65,7 @@ const NAV_LINKS = [
   { label: "About", href: "/about", hasMegaMenu: false },
 ] as const;
 
-export default function HeaderNav() {
+export default function HeaderNav({ isHidden }: { isHidden?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -75,6 +75,13 @@ export default function HeaderNav() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  /* Close mega menu if header hides */
+  useEffect(() => {
+    if (isHidden && menuOpen) {
+      setMenuOpen(false);
+    }
+  }, [isHidden, menuOpen]);
 
   const clearTimers = useCallback(() => {
     if (closeTimer.current) {
@@ -307,10 +314,8 @@ export default function HeaderNav() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [...ease], delay: 0.15 }}
         style={{
-          position: "fixed",
-          zIndex: 20,
+          position: "absolute",
           pointerEvents: "none",
-          mixBlendMode: "exclusion",
           height: 30,
           display: "flex",
           flexDirection: "row",
@@ -337,7 +342,7 @@ export default function HeaderNav() {
               style={{
                 fontSize: 13,
                 textTransform: "uppercase",
-                color: "white",
+                color: "currentColor",
                 letterSpacing: "-0.02em",
                 pointerEvents: "auto",
                 textDecoration: "none",
@@ -369,7 +374,7 @@ export default function HeaderNav() {
             bottom: 0;
             width: 0;
             height: 1px;
-            background: white;
+            background: currentColor;
             transition: width 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
           }
           .header-nav-link:hover::after {

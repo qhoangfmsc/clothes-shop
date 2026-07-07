@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HeaderNav from "@/src/app/_components/HeaderNav";
+
 import InvitationHero from "./_components/InvitationHero";
 import BrandStory from "./_components/BrandStory";
 import ServicesSection from "./_components/ServicesSection";
@@ -18,7 +18,7 @@ export default function AboutPage() {
         background: "var(--bg-primary)",
       }}
     >
-      <HeaderNav />
+
 
       {/* Section 1: Hero — mood wallpaper + text */}
       <InvitationHero />

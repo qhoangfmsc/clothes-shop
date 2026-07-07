@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { X, ArrowRight } from "lucide-react";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -107,10 +108,8 @@ export default function HamburgerMenu() {
         const isAtTop = scrollTop <= 0;
         const isAtBottom = scrollTop + clientHeight >= scrollHeight;
         const touchDeltaY =
-          e.touches[0].clientY -
-          (handleTouchMove as unknown as { lastY: number }).lastY;
-        (handleTouchMove as unknown as { lastY: number }).lastY =
-          e.touches[0].clientY;
+          e.touches[0].clientY - (handleTouchMove as unknown as { lastY: number }).lastY;
+        (handleTouchMove as unknown as { lastY: number }).lastY = e.touches[0].clientY;
 
         // Prevent overscroll (bouncing) at edges
         if ((isAtTop && touchDeltaY > 0) || (isAtBottom && touchDeltaY < 0)) {
@@ -124,8 +123,7 @@ export default function HamburgerMenu() {
     };
 
     const handleTouchStart = (e: TouchEvent) => {
-      (handleTouchMove as unknown as { lastY: number }).lastY =
-        e.touches[0].clientY;
+      (handleTouchMove as unknown as { lastY: number }).lastY = e.touches[0].clientY;
     };
 
     document.addEventListener("touchstart", handleTouchStart, {
@@ -255,26 +253,7 @@ export default function HamburgerMenu() {
                 }}
                 className="drawer-close-btn"
               >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1L13 13"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M13 1L1 13"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <X size={14} />
               </motion.button>
             </div>
 
@@ -570,21 +549,7 @@ export default function HamburgerMenu() {
                                   }}
                                 >
                                   View All Products
-                                  <svg
-                                    width="12"
-                                    height="12"
-                                    viewBox="0 0 16 16"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      d="M3 8H13M13 8L9 4M13 8L9 12"
-                                      stroke="currentColor"
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
+                                  <ArrowRight size={12} />
                                 </Link>
                               </motion.div>
                             </div>
@@ -630,21 +595,7 @@ export default function HamburgerMenu() {
                     }}
                   >
                     Sign In
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M3 8H13M13 8L9 4M13 8L9 12"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <ArrowRight size={14} />
                   </Link>
                 </motion.div>
               </nav>
@@ -750,21 +701,7 @@ export default function HamburgerMenu() {
                         }}
                       >
                         Discover
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M3 8H13M13 8L9 4M13 8L9 12"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <ArrowRight size={12} />
                       </Link>
 
                       {/* Image carousel dots */}
@@ -883,8 +820,8 @@ export default function HamburgerMenu() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M0 14H40" stroke="white" strokeWidth="2.5" />
-          <path d="M0 26H40" stroke="white" strokeWidth="2.5" />
+          <path d="M0 14H40" stroke="currentColor" strokeWidth="2.5" />
+          <path d="M0 26H40" stroke="currentColor" strokeWidth="2.5" />
         </svg>
       </button>
 

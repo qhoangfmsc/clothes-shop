@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import HeaderNav from "@/src/app/_components/HeaderNav";
 
 import NewInClient from "./_components/NewInClient";
 import { getNewInProducts } from "../shop/_lib/server-fetchers";
@@ -17,7 +16,7 @@ export default async function NewInPage() {
 
   return (
     <main style={{ minHeight: "100vh" }}>
-      <HeaderNav />
+
       <NewInClient products={newProducts} />
     </main>
   );

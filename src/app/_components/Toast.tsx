@@ -12,6 +12,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Check, XCircle, TriangleAlert, Info, X } from "lucide-react";
 import "@/src/styles/toast.css";
 
 /* ═══════════════════════════════════════════════════════════
@@ -30,16 +31,16 @@ type ToastPosition = "top-right" | "top-center" | "bottom-right" | "bottom-cente
 
 interface ToastItem {
   id: string;
-  message: string;
+  message: ReactNode;
   variant: ToastVariant;
   duration: number;
 }
 
 interface ToastAPI {
-  success: (message: string, duration?: number) => void;
-  error: (message: string, duration?: number) => void;
-  info: (message: string, duration?: number) => void;
-  warning: (message: string, duration?: number) => void;
+  success: (message: ReactNode, duration?: number) => void;
+  error: (message: ReactNode, duration?: number) => void;
+  info: (message: ReactNode, duration?: number) => void;
+  warning: (message: ReactNode, duration?: number) => void;
   dismiss: (id: string) => void;
   dismissAll: () => void;
 }
@@ -62,36 +63,16 @@ export function useToast(): ToastContextValue {
 /* ── Variant Icons ── */
 function ToastIcon({ variant }: { variant: ToastVariant }) {
   const size = 16;
+  const cls = "toast__icon";
   switch (variant) {
     case "success":
-      return (
-        <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className="toast__icon">
-          <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
+      return <Check size={size} className={cls} />;
     case "error":
-      return (
-        <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className="toast__icon">
-          <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      );
+      return <XCircle size={size} className={cls} />;
     case "warning":
-      return (
-        <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className="toast__icon">
-          <path d="M8 2L14.5 13.5H1.5L8 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-          <path d="M8 6.5V9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <circle cx="8" cy="11.5" r="0.5" fill="currentColor" />
-        </svg>
-      );
+      return <TriangleAlert size={size} className={cls} />;
     case "info":
-      return (
-        <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className="toast__icon">
-          <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M8 7V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <circle cx="8" cy="5" r="0.5" fill="currentColor" />
-        </svg>
-      );
+      return <Info size={size} className={cls} />;
   }
 }
 
@@ -122,9 +103,7 @@ function ToastItemComponent({
         onClick={() => onDismiss(item.id)}
         aria-label="Dismiss notification"
       >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
+        <X size={12} />
       </button>
     </motion.div>
   );
@@ -197,7 +176,7 @@ export function ToastProvider({
   }, []);
 
   const addToast = useCallback(
-    (variant: ToastVariant, message: string, duration: number = 3000) => {
+    (variant: ToastVariant, message: ReactNode, duration: number = 3000) => {
       const id = `toast-${++counterRef.current}`;
       const newToast: ToastItem = { id, message, variant, duration };
 
@@ -225,10 +204,10 @@ export function ToastProvider({
   /* Stable toast API reference — won't cause re-renders in consumers */
   const toast: ToastAPI = useMemo(
     () => ({
-      success: (msg: string, dur?: number) => addToast("success", msg, dur),
-      error: (msg: string, dur?: number) => addToast("error", msg, dur),
-      info: (msg: string, dur?: number) => addToast("info", msg, dur),
-      warning: (msg: string, dur?: number) => addToast("warning", msg, dur),
+      success: (msg: ReactNode, dur?: number) => addToast("success", msg, dur),
+      error: (msg: ReactNode, dur?: number) => addToast("error", msg, dur),
+      info: (msg: ReactNode, dur?: number) => addToast("info", msg, dur),
+      warning: (msg: ReactNode, dur?: number) => addToast("warning", msg, dur),
       dismiss,
       dismissAll,
     }),

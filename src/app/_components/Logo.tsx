@@ -20,9 +20,7 @@ export default function Logo() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [...ease], delay: 0 }}
       style={{
-        position: "fixed",
-        zIndex: 20,
-        mixBlendMode: "exclusion",
+        position: "absolute",
       }}
       className="top-4 left-4 w-[200px] sm:top-8 sm:left-8 sm:w-[266px] lg:w-[355px]"
     >
@@ -39,7 +37,7 @@ export default function Logo() {
           <text
             x="0"
             y={yPos}
-            fill="white"
+            fill="currentColor"
             fontSize={fontSize}
             fontFamily="var(--font-quiche-display), serif"
             fontWeight="400"

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import HeaderNav from "@/src/app/_components/HeaderNav";
+
 import ShopHero from "../_components/ShopHero";
 import BreadcrumbNav from "../_components/BreadcrumbNav";
 import SubcategoryChips from "../_components/SubcategoryChips";
@@ -57,7 +57,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         background: "var(--bg-primary)",
       }}
     >
-      <HeaderNav />
+
 
       {/* Hero — unique per category */}
       <ShopHero

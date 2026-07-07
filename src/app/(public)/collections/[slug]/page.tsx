@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import HeaderNav from "@/src/app/_components/HeaderNav";
 
 import CollectionDetailClient from "./_components/CollectionDetailClient";
 import {
@@ -47,7 +46,7 @@ export default async function CollectionDetailPage({ params }: CollectionDetailP
 
   return (
     <main style={{ minHeight: "100vh" }}>
-      <HeaderNav />
+
       <CollectionDetailClient collection={collection} products={products} />
     </main>
   );

@@ -1,11 +1,14 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Product } from "@/src/types/product";
+import { useQuickAdd } from "@/src/app/_components/QuickAddDrawer";
+import { useToast } from "@/src/app/_components/Toast";
+import { Heart, ShoppingBag, ArrowDown, ArrowRight, Mail } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,20 +55,35 @@ export default function NewInClient({ products }: NewInClientProps) {
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRefs = useRef<(HTMLElement | null)[]>([]);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+  const { openQuickAdd } = useQuickAdd();
+  const { toast } = useToast();
+  const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
 
-  const handleQuickAdd = useCallback((productId: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setAddedIds((prev) => new Set(prev).add(productId));
-    setTimeout(() => {
-      setAddedIds((prev) => {
-        const next = new Set(prev);
-        next.delete(productId);
-        return next;
-      });
-    }, 2000);
-  }, []);
+  const handleQuickAdd = useCallback(
+    (product: Product, e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openQuickAdd(product);
+    },
+    [openQuickAdd]
+  );
+
+  const handleLike = useCallback(
+    (product: Product, e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const next = !likedMap[product.id];
+      setLikedMap((prev) => ({ ...prev, [product.id]: next }));
+      if (next) {
+        toast.info(
+          <>{product.name} saved — <Link href="/wishlist" onClick={(ev) => ev.stopPropagation()}>View Wishlist</Link></>
+        );
+      } else {
+        toast.info(`${product.name} removed from wishlist`);
+      }
+    },
+    [likedMap, toast]
+  );
 
   /* ── Hero animation ── */
   useEffect(() => {
@@ -239,15 +257,7 @@ export default function NewInClient({ products }: NewInClientProps) {
           </p>
 
           <a href="#new-drops" className="ni-hero__cta">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M8 3V13M8 13L4 9M8 13L12 9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ArrowDown size={14} />
             Explore Drops
           </a>
 
@@ -305,15 +315,7 @@ export default function NewInClient({ products }: NewInClientProps) {
           <span className="ni-spotlight__price">{SPOTLIGHTS[0].price}</span>
           <Link href={SPOTLIGHTS[0].href} className="ni-spotlight__cta">
             Shop Now
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M3 8H13M13 8L9 4M13 8L9 12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -333,79 +335,67 @@ export default function NewInClient({ products }: NewInClientProps) {
         {/* Custom grid with stagger animation */}
         <div ref={gridRef} className="product-grid">
           {products.map((product) => {
-            const isAdded = addedIds.has(product.id);
             const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
 
             return (
-              <Link key={product.id} href={productUrl} className="ni-product-card product-card">
-                <div className="product-card__image-wrap">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <span className="product-card__badge product-card__badge--new">New</span>
+              <div key={product.id} className="product-card-wrap ni-product-card">
+                <Link href={productUrl} className="product-card">
+                  <div className="product-card__image-wrap">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                    <span className="product-card__badge product-card__badge--new">New</span>
 
-                  {/* Wishlist + Cart overlay */}
-                  <div className="product-card__actions">
-                    <button
-                      className={`product-card__quick-add ${isAdded ? "product-card__quick-add--added" : ""}`}
-                      type="button"
-                      onClick={(e) => handleQuickAdd(product.id, e)}
-                    >
-                      {isAdded ? (
-                        <>
-                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                            <path
-                              d="M3 8L6.5 11.5L13 4.5"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          Added
-                        </>
-                      ) : (
-                        <>
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                            <path
-                              d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path d="M3 6H21" stroke="currentColor" strokeWidth="1.5" />
-                            <path
-                              d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          Add to Bag
-                        </>
+                    {/* ── Top-right icons: Wishlist + Bag (stacked) ── */}
+                    <div className="product-card__icons">
+                      <button
+                        type="button"
+                        className={`product-card__icon-btn product-card__icon-btn--wish ${likedMap[product.id] ? "product-card__icon-btn--liked" : ""}`}
+                        onClick={(e) => handleLike(product, e)}
+                        aria-label={likedMap[product.id] ? "Remove from wishlist" : "Add to wishlist"}
+                      >
+                        <Heart size={18} fill={likedMap[product.id] ? "currentColor" : "none"} />
+                      </button>
+                      <button
+                        type="button"
+                        className="product-card__icon-btn product-card__icon-btn--bag"
+                        onClick={(e) => handleQuickAdd(product, e)}
+                        aria-label="Add to bag"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                    </div>
+
+                    {/* Desktop hover overlay */}
+                    <div className="product-card__actions product-card__actions--desktop">
+                      <button
+                        className="product-card__quick-add"
+                        type="button"
+                        onClick={(e) => handleQuickAdd(product, e)}
+                      >
+                        <ShoppingBag size={13} />
+                        Add to Bag
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="product-card__info">
+                    <span className="product-card__name">{product.name}</span>
+                    <div className="product-card__price-row">
+                      <span className="product-card__price">${product.price.toLocaleString()}</span>
+                      {product.originalPrice && (
+                        <span className="product-card__price product-card__price--original">
+                          ${product.originalPrice.toLocaleString()}
+                        </span>
                       )}
-                    </button>
+                    </div>
                   </div>
-                </div>
-
-                <div className="product-card__info">
-                  <span className="product-card__name">{product.name}</span>
-                  <div className="product-card__price-row">
-                    <span className="product-card__price">${product.price.toLocaleString()}</span>
-                    {product.originalPrice && (
-                      <span className="product-card__price product-card__price--original">
-                        ${product.originalPrice.toLocaleString()}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
             );
           })}
         </div>
@@ -435,15 +425,7 @@ export default function NewInClient({ products }: NewInClientProps) {
           <span className="ni-spotlight__price">{SPOTLIGHTS[1].price}</span>
           <Link href={SPOTLIGHTS[1].href} className="ni-spotlight__cta">
             Shop Now
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M3 8H13M13 8L9 4M13 8L9 12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -451,22 +433,7 @@ export default function NewInClient({ products }: NewInClientProps) {
       {/* ═══ 6. NEWSLETTER CTA ═══ */}
       <section className="ni-newsletter">
         <div className="ni-newsletter__icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M22 6L12 13L2 6"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Mail size={20} />
         </div>
         <h2 className="ni-newsletter__title">Never Miss a Drop</h2>
         <p className="ni-newsletter__desc">

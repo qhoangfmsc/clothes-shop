@@ -4,8 +4,12 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Check, ShoppingBag, Heart, Share2 } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/_components/Toast";
+import SizeGuideModal from "./SizeGuideModal";
+import ReviewsSection from "./ReviewsSection";
+import ShippingAccordion from "./ShippingAccordion";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -26,7 +30,12 @@ export default function ProductDetailClient({
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { toast } = useToast();
+
+  const isSelectionComplete = selectedSize !== null && selectedColor !== null;
 
   const images = [product.image, product.secondaryImage];
 
@@ -102,17 +111,22 @@ export default function ProductDetailClient({
   }, [handlePrev, handleNext]);
 
   const handleAddToCart = useCallback(() => {
-    if (addedToCart) return;
+    if (addedToCart || !isSelectionComplete) return;
     setAddedToCart(true);
-    toast.success(`${product.name} added to your bag`);
+    const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
+    toast.success(
+      <>{product.name} ({selectedSize}, {colorName}{quantity > 1 ? `, ×${quantity}` : ""}) added — <Link href="/cart">View Bag</Link></>
+    );
     setTimeout(() => setAddedToCart(false), 2200);
-  }, [addedToCart, product.name, toast]);
+  }, [addedToCart, isSelectionComplete, product.name, product.colors, selectedSize, selectedColor, quantity, toast]);
 
   const handleWishlist = useCallback(() => {
     const next = !liked;
     setLiked(next);
     if (next) {
-      toast.info(`${product.name} saved to wishlist`);
+      toast.info(
+        <>{product.name} saved — <Link href="/wishlist">View Wishlist</Link></>
+      );
     } else {
       toast.info(`${product.name} removed from wishlist`);
     }
@@ -174,9 +188,7 @@ export default function ProductDetailClient({
                 onClick={handlePrev}
                 aria-label="Previous image"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <ChevronLeft size={20} />
               </button>
             )}
             {activeImage < images.length - 1 && (
@@ -186,9 +198,7 @@ export default function ProductDetailClient({
                 onClick={handleNext}
                 aria-label="Next image"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <ChevronRight size={20} />
               </button>
             )}
 
@@ -304,6 +314,13 @@ export default function ProductDetailClient({
           >
             <span className="pdp-sizes__label">
               Size {selectedSize && <span className="pdp-sizes__selected">— {selectedSize}</span>}
+              <button
+                type="button"
+                className="pdp-sizes__guide-link"
+                onClick={() => setShowSizeGuide(true)}
+              >
+                Size Guide
+              </button>
             </span>
             <div className="pdp-sizes__grid">
               {product.sizes.map((size) => (
@@ -319,32 +336,105 @@ export default function ProductDetailClient({
             </div>
           </motion.div>
 
+          {/* Color selector */}
+          {product.colors.length > 0 && (
+            <motion.div
+              className="pdp-colors"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [...ease], delay: 0.38 }}
+            >
+              <span className="pdp-colors__label">
+                Color{" "}
+                {selectedColor && (
+                  <span className="pdp-colors__selected">
+                    — {product.colors.find((c) => c.hex === selectedColor)?.name}
+                  </span>
+                )}
+              </span>
+              <div className="pdp-colors__grid">
+                {product.colors.map((color) => (
+                  <button
+                    key={color.hex}
+                    type="button"
+                    className={`pdp-colors__swatch ${selectedColor === color.hex ? "pdp-colors__swatch--active" : ""}`}
+                    onClick={() => setSelectedColor(color.hex)}
+                    aria-label={`Select color: ${color.name}`}
+                    title={color.name}
+                  >
+                    <span
+                      className="pdp-colors__dot"
+                      style={{ background: color.hex }}
+                    />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Quantity selector */}
+          <motion.div
+            className="pdp-quantity"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [...ease], delay: 0.42 }}
+          >
+            <span className="pdp-quantity__label">Quantity</span>
+            <div className="pdp-quantity__controls">
+              <button
+                type="button"
+                className="pdp-quantity__btn"
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                disabled={quantity <= 1}
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <span className="pdp-quantity__value">{quantity}</span>
+              <button
+                type="button"
+                className="pdp-quantity__btn"
+                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                disabled={quantity >= 10}
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          </motion.div>
+
           {/* Actions: Add to Bag + Wishlist */}
           <motion.div
             className="pdp-actions"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [...ease], delay: 0.4 }}
+            transition={{ duration: 0.5, ease: [...ease], delay: 0.45 }}
           >
+            {/* Validation hint */}
+            {!isSelectionComplete && (
+              <p className="pdp-actions__hint">
+                {!selectedSize && !selectedColor
+                  ? "Select size & color to add to bag"
+                  : !selectedSize
+                    ? "Select a size"
+                    : "Select a color"}
+              </p>
+            )}
+            <div className="pdp-actions__row">
             <button
               type="button"
-              className={`pdp-add-to-bag ${addedToCart ? "pdp-add-to-bag--added" : ""}`}
+              className={`pdp-add-to-bag ${addedToCart ? "pdp-add-to-bag--added" : ""} ${!isSelectionComplete ? "pdp-add-to-bag--disabled" : ""}`}
               onClick={handleAddToCart}
+              disabled={!isSelectionComplete}
             >
               {addedToCart ? (
                 <>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <Check size={16} />
                   Added to Bag
                 </>
               ) : (
                 <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M3 6H21" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <ShoppingBag size={16} />
                   Add to Bag
                 </>
               )}
@@ -356,22 +446,36 @@ export default function ProductDetailClient({
               onClick={handleWishlist}
               aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
             >
-              <motion.svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill={liked ? "currentColor" : "none"}
+              <motion.div
                 animate={liked ? { scale: [1, 1.3, 1] } : {}}
                 transition={{ duration: 0.35, ease: [...ease] }}
               >
-                <path
-                  d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-              </motion.svg>
+                <Heart size={20} fill={liked ? "currentColor" : "none"} />
+              </motion.div>
             </button>
+            <button
+              type="button"
+              className="pdp-share-btn"
+              onClick={async () => {
+                const url = `${typeof window !== "undefined" ? window.location.origin : ""}/shop/${product.category}/${product.subcategory}/${product.id}`;
+                if (typeof navigator !== "undefined" && navigator.share) {
+                  try {
+                    await navigator.share({ title: product.name, text: `Check out ${product.name} from Ori Baebi`, url });
+                  } catch { /* cancelled */ }
+                } else {
+                  try {
+                    await navigator.clipboard.writeText(url);
+                    toast.success("Link copied to clipboard");
+                  } catch { /* fallback */ }
+                }
+              }}
+              aria-label="Share"
+            >
+              <Share2 size={18} />
+            </button>
+            </div>
           </motion.div>
+
 
           {/* Details accordion */}
           <motion.div
@@ -393,8 +497,20 @@ export default function ProductDetailClient({
               <span className="pdp-detail-row__value">{categoryTitle} — {subcategoryLabel}</span>
             </div>
           </motion.div>
+
+          {/* Shipping info */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [...ease], delay: 0.5 }}
+          >
+            <ShippingAccordion />
+          </motion.div>
         </div>
       </div>
+
+      {/* Reviews */}
+      <ReviewsSection productId={product.id} />
 
       {/* ── Related Products ── */}
       {relatedProducts.length > 0 && (
@@ -426,6 +542,12 @@ export default function ProductDetailClient({
           </div>
         </section>
       )}
+      {/* Size Guide Modal */}
+      <SizeGuideModal
+        category={product.category}
+        isOpen={showSizeGuide}
+        onClose={() => setShowSizeGuide(false)}
+      />
     </>
   );
 }

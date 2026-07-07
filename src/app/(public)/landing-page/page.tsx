@@ -4,8 +4,6 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import Logo from "@/src/app/_components/Logo";
-import HeaderNav from "@/src/app/_components/HeaderNav";
 import Footer from "@/src/app/_components/Footer";
 import Caption from "./_components/Caption";
 import ProductInfo from "./_components/ProductInfo";
@@ -174,14 +172,11 @@ export default function LandingPage() {
     >
 
 
-      {/* Logo */}
-      <Logo />
+
+
 
       {/* Caption */}
       <Caption />
-
-      {/* Header Nav */}
-      <HeaderNav />
 
       {/* Product Info */}
       <ProductInfo />

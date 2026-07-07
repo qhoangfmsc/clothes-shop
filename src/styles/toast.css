@@ -147,6 +147,19 @@
   line-height: 140%;
 }
 
+.toast__message a {
+  color: var(--color-champagne-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(201, 169, 110, 0.4);
+  cursor: pointer;
+  transition: text-decoration-color var(--duration-fast) var(--ease-default);
+}
+
+.toast__message a:hover {
+  text-decoration-color: var(--color-champagne-gold);
+}
+
 .toast__close {
   flex-shrink: 0;
   display: flex;

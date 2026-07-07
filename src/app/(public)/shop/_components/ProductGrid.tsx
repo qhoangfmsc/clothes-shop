@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Product } from "@/src/types/product";
+import { CirclePlus } from "lucide-react";
 import ProductCard from "./ProductCard";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -44,20 +45,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="shop-empty">
-        <svg
-          className="shop-empty__icon"
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="1.5" />
-          <path
-            d="M17 24H31M24 17V31"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
+        <CirclePlus className="shop-empty__icon" size={48} />
         <h3 className="shop-empty__title">Coming Soon</h3>
         <p className="shop-empty__text">
           New pieces are being curated for this collection. Check back soon.

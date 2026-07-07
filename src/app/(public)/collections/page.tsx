@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HeaderNav from "@/src/app/_components/HeaderNav";
+
 
 import CollectionsClient from "./_components/CollectionsClient";
 import { getCollections } from "../shop/_lib/server-fetchers";
@@ -17,7 +17,7 @@ export default async function CollectionsPage() {
 
   return (
     <main style={{ minHeight: "100vh" }}>
-      <HeaderNav />
+
       <CollectionsClient collections={collections} />
     </main>
   );
