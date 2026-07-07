@@ -1,43 +1,105 @@
 /* ═══════════════════════════════════════════════════════════
-   SERVER FETCHERS — Fetch data from API routes
+   SERVER FETCHERS — Pure FE API Simulation
    
-   These use fetch() to call API routes, same as a real FE
-   would call a real BE. When you move to a separate BE,
-   just change BASE_URL to your API domain.
-   
-   Used by Server Components and generateStaticParams.
+   These functions simulate calling a real Backend via fetch().
+   They are "Smart": 
+   1. In Runtime (Dev/Prod): They call the API endpoints via HTTP.
+   2. In Build-time: If the server isn't up, they fallback to local 
+      data handlers to ensure next build succeeds with SSG.
    ═══════════════════════════════════════════════════════════ */
 
 import type { Product } from "@/src/types/product";
 import type { Category, CategoryUIConfig } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 
-/* ── Base URL: change this when moving to separate BE ── */
+// Fallback data handlers (used only when fetch fails during build)
+import { PRODUCTS } from "@/src/app/api/products/data";
+import { CATEGORIES, UI_CONFIG } from "@/src/app/api/categories/data";
+import { COLLECTIONS } from "@/src/app/api/collections/data";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 
-/* ── Generic fetch helper ── */
 async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`API error: ${res.status} ${path}`);
-  return res.json();
+  try {
+    // Attempt real API call
+    const res = await fetch(`${BASE_URL}${path}`, {
+      next: { revalidate: 3600 } // Enable caching/ISR feel
+    });
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    return res.json();
+  } catch (error: any) {
+    /* ── Build-time Fallback Logic ── 
+       If fetch fails (ECONNREFUSED), we are likely in a build process.
+       We simulate the API response using the local data files.
+    */
+    const isConnectionError = error?.cause?.code === 'ECONNREFUSED' || error?.message?.includes('fetch failed');
+    
+    if (isConnectionError) {
+      // 1. Handle /api/products/[id] (Product detail)
+      const productDetailMatch = path.match(/\/api\/products\/([a-zA-Z0-9-]+)/);
+      if (productDetailMatch && !path.includes('?')) {
+        const id = productDetailMatch[1];
+        const product = PRODUCTS.find(p => p.id === id);
+        return { data: product } as any;
+      }
+
+      // 2. Handle /api/products (List/Filter)
+      if (path.startsWith('/api/products')) {
+        const url = new URL(path, 'http://localhost');
+        const category = url.searchParams.get('category');
+        const subcategory = url.searchParams.get('subcategory');
+        const badge = url.searchParams.get('badge');
+        
+        let data = PRODUCTS.filter(p => p.status === 'active');
+        if (category) data = data.filter(p => p.category === category);
+        if (subcategory) data = data.filter(p => p.subcategory === subcategory);
+        if (badge) data = data.filter(p => p.badge === badge);
+        
+        return { data } as any;
+      }
+      
+      // 3. Handle /api/categories
+      if (path.startsWith('/api/categories')) {
+        const url = new URL(path, 'http://localhost');
+        const slug = url.searchParams.get('slug');
+        if (slug) {
+          const category = CATEGORIES.find(c => c.slug === slug);
+          return { data: category, uiConfig: UI_CONFIG[slug] } as any;
+        }
+        return { data: CATEGORIES, uiConfigs: UI_CONFIG } as any;
+      }
+      
+      // 4. Handle /api/collections
+      if (path.startsWith('/api/collections')) {
+        const url = new URL(path, 'http://localhost');
+        const slug = url.searchParams.get('slug');
+        if (slug) {
+          const collection = COLLECTIONS.find(c => c.slug === slug);
+          const products = collection ? collection.productIds.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean) : [];
+          return { data: collection, products } as any;
+        }
+        return { data: COLLECTIONS } as any;
+      }
+    }
+    
+    throw error;
+  }
 }
 
-/* ═══ Products ═══ */
+/* ═══ Public API Simulation ═══ */
+
 export async function getProducts(category?: string, subcategory?: string): Promise<Product[]> {
   const params = new URLSearchParams();
   if (category) params.set("category", category);
   if (subcategory) params.set("subcategory", subcategory);
   const qs = params.toString();
-  const { data } = await apiFetch<{ data: Product[] }>(
-    `/api/products${qs ? `?${qs}` : ""}`
-  );
+  const { data } = await apiFetch<{ data: Product[] }>(`/api/products${qs ? `?${qs}` : ""}`);
   return data;
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  return getProducts();
+  const { data } = await apiFetch<{ data: Product[] }>("/api/products");
+  return data;
 }
 
 export async function getNewInProducts(): Promise<Product[]> {
@@ -54,7 +116,6 @@ export async function getProductById(id: string): Promise<Product | undefined> {
   }
 }
 
-/* ═══ Categories ═══ */
 export async function getCategories(): Promise<Category[]> {
   const { data } = await apiFetch<{ data: Category[] }>("/api/categories");
   return data;
@@ -102,7 +163,6 @@ export async function getSubcategory(
   return { category, subcategory };
 }
 
-/* ═══ Collections ═══ */
 export async function getCollections(): Promise<Collection[]> {
   const { data } = await apiFetch<{ data: Collection[] }>("/api/collections");
   return data;
@@ -118,8 +178,6 @@ export async function getCollectionBySlug(slug: string): Promise<Collection | un
 }
 
 export async function getCollectionProducts(slug: string): Promise<Product[]> {
-  const { products } = await apiFetch<{ products: Product[] }>(
-    `/api/collections?slug=${slug}`
-  );
+  const { products } = await apiFetch<{ products: Product[] }>(`/api/collections?slug=${slug}`);
   return products;
 }

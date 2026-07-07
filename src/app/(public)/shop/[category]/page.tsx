@@ -57,8 +57,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         background: "var(--bg-primary)",
       }}
     >
-
-
       {/* Hero — unique per category */}
       <ShopHero
         label={`Ori Baebi — ${category.title}`}

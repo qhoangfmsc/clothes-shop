@@ -60,8 +60,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         background: "var(--bg-primary)",
       }}
     >
-
-
       {/* Spacer for fixed nav */}
       <div style={{ height: 80 }} />
 

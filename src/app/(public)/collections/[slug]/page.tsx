@@ -46,7 +46,6 @@ export default async function CollectionDetailPage({ params }: CollectionDetailP
 
   return (
     <main style={{ minHeight: "100vh" }}>
-
       <CollectionDetailClient collection={collection} products={products} />
     </main>
   );

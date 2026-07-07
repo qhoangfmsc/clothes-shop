@@ -62,8 +62,6 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         background: "var(--bg-primary)",
       }}
     >
-
-
       {/* Hero */}
       <ShopHero
         label={`${category.title} — ${subcategory.label}`}

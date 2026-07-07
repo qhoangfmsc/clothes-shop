@@ -16,7 +16,6 @@ export default async function NewInPage() {
 
   return (
     <main style={{ minHeight: "100vh" }}>
-
       <NewInClient products={newProducts} />
     </main>
   );
