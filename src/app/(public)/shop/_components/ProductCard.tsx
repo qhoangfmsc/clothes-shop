@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,8 +24,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { requireAuth } = useAuthAction();
   const { isDesktop } = useBreakpoint();
 
-  /* Wishlist — read from store */
-  const isWishlisted = useWishlistStore((s) => s.isWishlisted(product.id));
+  /* Wishlist — defer to client to avoid hydration mismatch.
+     Server always renders false; after mount we sync with the real store. */
+  const storeIsWishlisted = useWishlistStore((s) => s.isWishlisted(product.id));
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  useEffect(() => {
+    setIsWishlisted(storeIsWishlisted);
+  }, [storeIsWishlisted]);
+
   const toggleItem = useWishlistStore((s) => s.toggleItem);
   const syncAdd = useWishlistStore((s) => s.syncAddToApi);
   const syncRemove = useWishlistStore((s) => s.syncRemoveFromApi);
