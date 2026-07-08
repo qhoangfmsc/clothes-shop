@@ -1,15 +1,8 @@
 /* ═══════════════════════════════════════════════════════════
    SWR HOOKS — Client-side data fetching with caching
    
-   Uses SWR's staleWhileRevalidate:
-   - First visit: show loading → fetch → cache
-   - Return visit: show cached data instantly → refetch in background
-   - Data unchanged: no re-render
-   
-   Usage:
-     const { products, isLoading } = useProducts("tops");
-     const { product, related, isLoading } = useProduct("tops-1");
-     const { reviews, average, isLoading } = useReviews("tops-1");
+   Calls real BE API at NEXT_PUBLIC_API_URL.
+   Uses SWR's staleWhileRevalidate pattern.
    ═══════════════════════════════════════════════════════════ */
 
 import useSWR from "swr";
@@ -19,6 +12,8 @@ import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
 /* ── Base fetcher ── */
 const fetcher = <T,>(url: string): Promise<T> =>
@@ -41,7 +36,7 @@ export function useProducts(category?: string, subcategory?: string) {
   const qs = params.toString();
 
   const { data, error, isLoading, mutate } = useSWR<{ data: Product[]; total: number }>(
-    `/api/products${qs ? `?${qs}` : ""}`,
+    `${API_URL}/api/products${qs ? `?${qs}` : ""}`,
     fetcher,
     defaultConfig
   );
@@ -60,7 +55,7 @@ export function useProduct(id: string | null) {
     data: Product;
     related: Product[];
   }>(
-    id ? `/api/products/${id}` : null,
+    id ? `${API_URL}/api/products/${id}` : null,
     fetcher,
     defaultConfig
   );
@@ -74,8 +69,8 @@ export function useProduct(id: string | null) {
 }
 
 export function useNewInProducts() {
-  const { data, isLoading, error } = useSWR<{ data: Product[] }>(
-    "/api/products?badge=new",
+  const { data, isLoading, error } = useSWR<{ data: Product[]; total: number }>(
+    `${API_URL}/api/products?badge=new`,
     fetcher,
     defaultConfig
   );
@@ -89,14 +84,19 @@ export function useNewInProducts() {
 
 /* ═══ Categories ═══ */
 export function useCategories() {
-  const { data, isLoading, error } = useSWR<{ data: Category[] }>(
-    "/api/categories",
+  const { data, isLoading, error } = useSWR<{
+    data: Category[];
+    uiConfigs: Record<string, CategoryUIConfig>;
+    total: number;
+  }>(
+    `${API_URL}/api/categories`,
     fetcher,
     defaultConfig
   );
 
   return {
     categories: data?.data ?? [],
+    uiConfigs: data?.uiConfigs ?? {},
     isLoading,
     isError: !!error,
   };
@@ -107,7 +107,7 @@ export function useCategory(slug: string | null) {
     data: Category;
     uiConfig: CategoryUIConfig | null;
   }>(
-    slug ? `/api/categories?slug=${slug}` : null,
+    slug ? `${API_URL}/api/categories?slug=${slug}` : null,
     fetcher,
     defaultConfig
   );
@@ -122,8 +122,8 @@ export function useCategory(slug: string | null) {
 
 /* ═══ Collections ═══ */
 export function useCollections() {
-  const { data, isLoading, error } = useSWR<{ data: Collection[] }>(
-    "/api/collections",
+  const { data, isLoading, error } = useSWR<{ data: Collection[]; total: number }>(
+    `${API_URL}/api/collections`,
     fetcher,
     defaultConfig
   );
@@ -140,7 +140,7 @@ export function useCollection(slug: string | null) {
     data: Collection;
     products: Product[];
   }>(
-    slug ? `/api/collections?slug=${slug}` : null,
+    slug ? `${API_URL}/api/collections?slug=${slug}` : null,
     fetcher,
     defaultConfig
   );
@@ -157,17 +157,22 @@ export function useCollection(slug: string | null) {
 export function useReviews(productId: string | null) {
   const { data, isLoading, error } = useSWR<{
     data: Review[];
-    average: number;
     total: number;
   }>(
-    productId ? `/api/reviews/${productId}` : null,
+    productId ? `${API_URL}/api/reviews/${productId}` : null,
     fetcher,
     defaultConfig
   );
 
+  /* Compute average on client side */
+  const reviews = data?.data ?? [];
+  const average = reviews.length > 0
+    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+    : 0;
+
   return {
-    reviews: data?.data ?? [],
-    average: data?.average ?? 0,
+    reviews,
+    average,
     total: data?.total ?? 0,
     isLoading,
     isError: !!error,
@@ -177,7 +182,7 @@ export function useReviews(productId: string | null) {
 /* ═══ Size Guide ═══ */
 export function useSizeGuide(category: string | null) {
   const { data, isLoading, error } = useSWR<{ data: SizeGuide }>(
-    category ? `/api/size-guides/${category}` : null,
+    category ? `${API_URL}/api/size-guides/${category}` : null,
     fetcher,
     defaultConfig
   );
@@ -192,7 +197,7 @@ export function useSizeGuide(category: string | null) {
 /* ═══ Shipping ═══ */
 export function useShipping() {
   const { data, isLoading, error } = useSWR<{ data: ShippingInfo }>(
-    "/api/shipping",
+    `${API_URL}/api/shipping`,
     fetcher,
     { ...defaultConfig, revalidateOnFocus: false, dedupingInterval: 300_000 }
   );

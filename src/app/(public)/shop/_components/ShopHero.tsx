@@ -12,8 +12,6 @@ interface ShopHeroProps {
   title: string;
   description?: string;
   heroImage: string;
-  moodImage?: string;
-  accentColor?: string;
 }
 
 export default function ShopHero({
@@ -21,7 +19,6 @@ export default function ShopHero({
   title,
   description,
   heroImage,
-  moodImage,
 }: ShopHeroProps) {
   const heroRef = useRef<HTMLElement>(null);
 
@@ -37,12 +34,6 @@ export default function ShopHero({
       const bgImg = el.querySelector(".shop-hero__bg img");
       if (bgImg) {
         tl.from(bgImg, { scale: 1.1, duration: 1.2, ease: "power2.out" });
-      }
-
-      /* Mood overlay fade */
-      const mood = el.querySelector(".shop-hero__mood");
-      if (mood) {
-        tl.to(mood, { opacity: 0.15, duration: 0.8, ease: "power2.out" }, "-=0.8");
       }
 
       /* Text reveals — staggered */
@@ -93,22 +84,6 @@ export default function ShopHero({
           style={{ objectFit: "cover" }}
         />
       </div>
-
-      {/* Mood wallpaper overlay — subtle texture */}
-      {moodImage && (
-        <div
-          className="shop-hero__bg shop-hero__mood"
-          style={{ mixBlendMode: "overlay", opacity: 0 }}
-        >
-          <Image
-            src={moodImage}
-            alt=""
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-      )}
 
       {/* Gradient overlay */}
       <div

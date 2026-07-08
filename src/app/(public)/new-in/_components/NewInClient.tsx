@@ -12,27 +12,21 @@ import { Heart, ShoppingBag, ArrowDown, ArrowRight, Mail } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Spotlight data (featured "hero" products) ── */
-const SPOTLIGHTS = [
-  {
-    tag: "Editor's Pick",
-    name: "Silk Camisole Rosé",
-    desc: "Our signature camisole, reimagined in a blush-rosé silk that catches the light like liquid gold. Cut on the bias for a fluid drape that moves with you — this is the piece that started it all.",
-    price: "$185",
-    image: "/images/model-intro/model_intro_1.webp",
-    href: "/shop/tops",
-    bgColor: "var(--bg-section-2)",
-  },
-  {
-    tag: "Most Wanted",
-    name: "Chain Necklace Gold",
-    desc: "Hand-finished 18k gold vermeil links, each one individually polished. Designed to be layered or worn alone as a quiet statement of intention.",
-    price: "$120",
-    image: "/images/model-intro/model_intro_7.webp",
-    href: "/shop/jewelry",
-    bgColor: "var(--bg-section-5)",
-  },
-];
+/* ── Build spotlight data from real products ── */
+const SPOTLIGHT_LABELS = ["Editor's Pick", "Most Wanted"];
+const SPOTLIGHT_BGS = ["var(--bg-section-2)", "var(--bg-section-5)"];
+
+function buildSpotlights(products: Product[]) {
+  return products.slice(0, 2).map((p, idx) => ({
+    tag: SPOTLIGHT_LABELS[idx] ?? "Featured",
+    name: p.name,
+    desc: p.description,
+    price: `$${p.price.toLocaleString()}`,
+    image: p.images[0],
+    href: `/shop/${p.category}/${p.subcategory}/${p.id}`,
+    bgColor: SPOTLIGHT_BGS[idx] ?? "var(--bg-section-2)",
+  }));
+}
 
 const TICKER_ITEMS = [
   "New Drop",
@@ -52,6 +46,7 @@ interface NewInClientProps {
 }
 
 export default function NewInClient({ products }: NewInClientProps) {
+  const SPOTLIGHTS = buildSpotlights(products);
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRefs = useRef<(HTMLElement | null)[]>([]);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -292,33 +287,35 @@ export default function NewInClient({ products }: NewInClientProps) {
       </div>
 
       {/* ═══ 3. SPOTLIGHT #1 ═══ */}
-      <section
-        ref={(el) => {
-          spotlightRefs.current[0] = el;
-        }}
-        className="ni-spotlight"
-        style={{ background: SPOTLIGHTS[0].bgColor }}
-      >
-        <div className="ni-spotlight__image">
-          <Image
-            src={SPOTLIGHTS[0].image}
-            alt={SPOTLIGHTS[0].name}
-            fill
-            sizes="(max-width: 1024px) 100vw, 55vw"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <div className="ni-spotlight__info">
-          <span className="ni-spotlight__tag">{SPOTLIGHTS[0].tag}</span>
-          <h2 className="ni-spotlight__name">{SPOTLIGHTS[0].name}</h2>
-          <p className="ni-spotlight__desc">{SPOTLIGHTS[0].desc}</p>
-          <span className="ni-spotlight__price">{SPOTLIGHTS[0].price}</span>
-          <Link href={SPOTLIGHTS[0].href} className="ni-spotlight__cta">
-            Shop Now
-            <ArrowRight size={14} />
-          </Link>
-        </div>
-      </section>
+      {SPOTLIGHTS[0] && (
+        <section
+          ref={(el) => {
+            spotlightRefs.current[0] = el;
+          }}
+          className="ni-spotlight"
+          style={{ background: SPOTLIGHTS[0].bgColor }}
+        >
+          <div className="ni-spotlight__image">
+            <Image
+              src={SPOTLIGHTS[0].image}
+              alt={SPOTLIGHTS[0].name}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+          <div className="ni-spotlight__info">
+            <span className="ni-spotlight__tag">{SPOTLIGHTS[0].tag}</span>
+            <h2 className="ni-spotlight__name">{SPOTLIGHTS[0].name}</h2>
+            <p className="ni-spotlight__desc">{SPOTLIGHTS[0].desc}</p>
+            <span className="ni-spotlight__price">{SPOTLIGHTS[0].price}</span>
+            <Link href={SPOTLIGHTS[0].href} className="ni-spotlight__cta">
+              Shop Now
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ═══ 4. PRODUCT GRID ═══ */}
       <div id="new-drops" className="ni-grid-section" style={{ background: "var(--bg-primary)" }}>
@@ -342,7 +339,7 @@ export default function NewInClient({ products }: NewInClientProps) {
                 <Link href={productUrl} className="product-card">
                   <div className="product-card__image-wrap">
                     <Image
-                      src={product.image}
+                      src={product.images[0]}
                       alt={product.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -402,33 +399,35 @@ export default function NewInClient({ products }: NewInClientProps) {
       </div>
 
       {/* ═══ 5. SPOTLIGHT #2 ═══ */}
-      <section
-        ref={(el) => {
-          spotlightRefs.current[1] = el;
-        }}
-        className="ni-spotlight ni-spotlight--reverse"
-        style={{ background: SPOTLIGHTS[1].bgColor }}
-      >
-        <div className="ni-spotlight__image">
-          <Image
-            src={SPOTLIGHTS[1].image}
-            alt={SPOTLIGHTS[1].name}
-            fill
-            sizes="(max-width: 1024px) 100vw, 55vw"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <div className="ni-spotlight__info">
-          <span className="ni-spotlight__tag">{SPOTLIGHTS[1].tag}</span>
-          <h2 className="ni-spotlight__name">{SPOTLIGHTS[1].name}</h2>
-          <p className="ni-spotlight__desc">{SPOTLIGHTS[1].desc}</p>
-          <span className="ni-spotlight__price">{SPOTLIGHTS[1].price}</span>
-          <Link href={SPOTLIGHTS[1].href} className="ni-spotlight__cta">
-            Shop Now
-            <ArrowRight size={14} />
-          </Link>
-        </div>
-      </section>
+      {SPOTLIGHTS[1] && (
+        <section
+          ref={(el) => {
+            spotlightRefs.current[1] = el;
+          }}
+          className="ni-spotlight ni-spotlight--reverse"
+          style={{ background: SPOTLIGHTS[1].bgColor }}
+        >
+          <div className="ni-spotlight__image">
+            <Image
+              src={SPOTLIGHTS[1].image}
+              alt={SPOTLIGHTS[1].name}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+          <div className="ni-spotlight__info">
+            <span className="ni-spotlight__tag">{SPOTLIGHTS[1].tag}</span>
+            <h2 className="ni-spotlight__name">{SPOTLIGHTS[1].name}</h2>
+            <p className="ni-spotlight__desc">{SPOTLIGHTS[1].desc}</p>
+            <span className="ni-spotlight__price">{SPOTLIGHTS[1].price}</span>
+            <Link href={SPOTLIGHTS[1].href} className="ni-spotlight__cta">
+              Shop Now
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ═══ 6. NEWSLETTER CTA ═══ */}
       <section className="ni-newsletter">

@@ -8,7 +8,6 @@ import ProductGrid from "../../_components/ProductGrid";
 
 import {
   getSubcategory,
-  getCategoryUIConfig,
   getProducts,
   getCategories,
 } from "../../_lib/server-fetchers";
@@ -52,7 +51,6 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   }
 
   const { category, subcategory } = result;
-  const uiConfig = await getCategoryUIConfig(catSlug);
   const products = await getProducts(catSlug, subSlug);
 
   return (
@@ -67,9 +65,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         label={`${category.title} — ${subcategory.label}`}
         title={subcategory.label}
         description={subcategory.description}
-        heroImage={uiConfig?.heroImage ?? "/images/model-intro/model_intro_1.webp"}
-        moodImage={uiConfig?.moodImage}
-        accentColor={uiConfig?.accentColor}
+        heroImage={products[0]?.images[0] ?? "/images/model-intro/model_intro_1.webp"}
       />
 
       {/* Breadcrumb */}
@@ -92,7 +88,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
       {/* Products */}
       <div
         style={{
-          background: uiConfig?.bgTint ?? "var(--bg-primary)",
+          background: "var(--bg-primary)",
           paddingTop: 1,
         }}
       >

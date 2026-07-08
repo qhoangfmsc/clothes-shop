@@ -235,7 +235,7 @@ export default function CollectionDetailClient({
               >
                 <div className="cd-editorial__img">
                   <Image
-                    src={product.image}
+                    src={product.images[0]}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 65vw"
@@ -304,7 +304,7 @@ export default function CollectionDetailClient({
               <Link key={product.id} href={productUrl} className="cd-shop-card">
                 <div className="cd-shop-card__image">
                   <Image
-                    src={product.image}
+                    src={product.images[0]}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

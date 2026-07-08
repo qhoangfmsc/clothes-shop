@@ -165,7 +165,7 @@ function QuickAddContent({
         <div className="qa-drawer__product">
           <div className="qa-drawer__thumb">
             <Image
-              src={product.image}
+              src={product.images[0]}
               alt={product.name}
               fill
               sizes="64px"

@@ -8,7 +8,6 @@ import ProductGrid from "../_components/ProductGrid";
 
 import {
   getCategoryBySlug,
-  getCategoryUIConfig,
   getProducts,
   getCategories,
 } from "../_lib/server-fetchers";
@@ -30,19 +29,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category: slug } = await params;
   const category = await getCategoryBySlug(slug);
-  const uiConfig = await getCategoryUIConfig(slug);
   if (!category) return { title: "Not Found — Ori Baebi" };
 
   return {
     title: `${category.title} — Ori Baebi Shop`,
-    description: `${category.description}. ${uiConfig?.tagline ?? ""} — Ori Baebi luxury collection.`,
+    description: `${category.description} — Ori Baebi luxury collection.`,
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: slug } = await params;
   const category = await getCategoryBySlug(slug);
-  const uiConfig = await getCategoryUIConfig(slug);
 
   if (!category) {
     notFound();
@@ -61,10 +58,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <ShopHero
         label={`Ori Baebi — ${category.title}`}
         title={category.title}
-        description={uiConfig?.tagline ?? category.description}
-        heroImage={uiConfig?.heroImage ?? "/images/model-intro/model_intro_1.webp"}
-        moodImage={uiConfig?.moodImage}
-        accentColor={uiConfig?.accentColor}
+        description={category.description}
+        heroImage={products[0]?.images[0] ?? "/images/model-intro/model_intro_1.webp"}
       />
 
       {/* Breadcrumb */}
@@ -85,7 +80,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {/* Product Grid */}
       <div
         style={{
-          background: uiConfig?.bgTint ?? "var(--bg-primary)",
+          background: "var(--bg-primary)",
           paddingTop: 1,
         }}
       >

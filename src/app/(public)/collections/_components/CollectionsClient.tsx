@@ -24,46 +24,30 @@ function buildHorizontalCards(collections: Collection[]) {
   }));
 }
 
-const EDITORIAL_SECTIONS = [
-  {
-    num: "01",
-    heading: "Summer Reverie",
-    description:
-      "A meditation on warm light and effortless draping. This season, we explored the space between structure and flow — garments that hold their form while moving with yours.",
-    image: "/images/model-intro/model_intro_1.webp",
-    moodImage: "/images/mood-bg/wall_sticker_soft_pink_lace.webp",
-    bgColor: "var(--color-rose-milk)",
-    textColor: "var(--text-heading)",
-    cta: { label: "Explore Collection", href: "/collections/summer-reverie" },
-  },
-  {
-    num: "02",
-    heading: "Golden Craft",
-    description:
-      "Every piece in this collection is a conversation between artisan and material. Hand-finished details, warm metallics, and textures that demand a second look.",
-    image: "/images/model-intro/model_intro_7.webp",
-    moodImage: "/images/mood-bg/wall_sticker_yellow_botanical.webp",
-    bgColor: "var(--color-vanilla)",
-    textColor: "var(--text-heading)",
-    cta: { label: "Explore Collection", href: "/collections/golden-craft" },
-  },
-  {
-    num: "03",
-    heading: "Twilight Edit",
-    description:
-      "For the hours between dusk and dawn. Pieces designed to catch and hold the last light — satin, structured silhouettes, and whispered metallics.",
-    image: "/images/model-intro/model_intro_6.webp",
-    moodImage: "/images/mood-bg/wall_sticker_lavender_damask.webp",
-    bgColor: "var(--color-lavender-cream)",
-    textColor: "var(--text-heading)",
-    cta: { label: "Explore Collection", href: "/collections/twilight-edit" },
-  },
+/* ── 3 rotating background tints for editorial spreads ── */
+const EDITORIAL_BG_TINTS = [
+  "var(--color-rose-milk)",
+  "var(--color-vanilla)",
+  "var(--color-lavender-cream)",
 ];
+
+function buildEditorialSections(collections: Collection[]) {
+  return collections.slice(0, 3).map((col, idx) => ({
+    num: String(idx + 1).padStart(2, "0"),
+    heading: col.name,
+    description: col.description,
+    image: col.image,
+    bgColor: EDITORIAL_BG_TINTS[idx % EDITORIAL_BG_TINTS.length],
+    textColor: "var(--text-heading)",
+    cta: { label: "Explore Collection", href: `/collections/${col.slug}` },
+  }));
+}
 
 const MARQUEE_TEXT = "Ori Baebi ◆ Collections ◆ Summer 2026 ◆ Crafted with Intention ◆ ";
 
 export default function CollectionsClient({ collections }: CollectionsClientProps) {
   const HORIZONTAL_CARDS = buildHorizontalCards(collections);
+  const EDITORIAL_SECTIONS = buildEditorialSections(collections);
   const heroRef = useRef<HTMLElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);

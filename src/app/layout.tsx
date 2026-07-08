@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ToastProvider } from "./_components/Toast";
 import { QuickAddProvider } from "./_components/QuickAddDrawer";
 import RouteTransition from "./_components/RouteTransition";
+import Providers from "./_components/Providers";
 import "./globals.css";
 
 const quicheDisplay = localFont({
@@ -35,12 +36,14 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ToastProvider position="bottom-center">
-          <QuickAddProvider>
-            <RouteTransition />
-            {children}
-          </QuickAddProvider>
-        </ToastProvider>
+        <Providers>
+          <ToastProvider position="bottom-center">
+            <QuickAddProvider>
+              <RouteTransition />
+              {children}
+            </QuickAddProvider>
+          </ToastProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -82,7 +82,7 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
               </span>
             </div>
             <h4 className="rv-card__title">{review.title}</h4>
-            <p className="rv-card__body">{review.body}</p>
+            <p className="rv-card__body">{review.content}</p>
           </div>
         ))}
       </div>

@@ -21,8 +21,10 @@ export default async function ShopPage() {
 
   /* Build hero image map from API uiConfig */
   const heroImages: Record<string, string> = {};
-  for (const [slug, config] of Object.entries(uiConfigs)) {
-    if (config.heroImage) heroImages[slug] = config.heroImage;
+  if (uiConfigs) {
+    for (const [slug, config] of Object.entries(uiConfigs)) {
+      if (config?.heroImage) heroImages[slug] = config.heroImage;
+    }
   }
 
   return (
@@ -39,8 +41,7 @@ export default async function ShopPage() {
         label="Ori Baebi Collection"
         title="Shop All"
         description="Discover our curated selection of luxury essentials — each piece designed to elevate your everyday."
-        heroImage="/images/model-intro/model_intro_2.webp"
-        moodImage="/images/mood-bg/wall_sticker_soft_cream_roses.webp"
+        heroImage={allProducts[0]?.images[0] ?? "/images/model-intro/model_intro_2.webp"}
       />
 
       {/* Breadcrumb */}

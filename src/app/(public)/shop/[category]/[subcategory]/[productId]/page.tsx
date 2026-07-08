@@ -3,9 +3,8 @@ import { notFound } from "next/navigation";
 
 import ProductDetailClient from "./_components/ProductDetailClient";
 import {
-  getProductById,
+  getProductWithRelated,
   getSubcategory,
-  getProducts,
   getAllProducts,
 } from "../../../_lib/server-fetchers";
 import "../../../shop.css";
@@ -28,30 +27,27 @@ export async function generateStaticParams() {
 /* ── Dynamic metadata ── */
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { productId } = await params;
-  const product = await getProductById(productId);
-  if (!product) return { title: "Not Found — Ori Baebi" };
+  const result = await getProductWithRelated(productId);
+  if (!result) return { title: "Not Found — Ori Baebi" };
 
   return {
-    title: `${product.name} — Ori Baebi`,
-    description: product.description,
+    title: `${result.product.name} — Ori Baebi`,
+    description: result.product.description,
   };
 }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { category: catSlug, subcategory: subSlug, productId } = await params;
 
-  const product = await getProductById(productId);
-  const result = await getSubcategory(catSlug, subSlug);
+  const productResult = await getProductWithRelated(productId);
+  const catResult = await getSubcategory(catSlug, subSlug);
 
-  if (!product || !result) {
+  if (!productResult || !catResult) {
     notFound();
   }
 
-  const { category, subcategory } = result;
-
-  /* Related products: same category but different product */
-  const allCategoryProducts = await getProducts(catSlug);
-  const related = allCategoryProducts.filter((p) => p.id !== product.id);
+  const { product, related } = productResult;
+  const { category, subcategory } = catResult;
 
   return (
     <main

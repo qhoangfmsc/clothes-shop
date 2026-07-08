@@ -1,4 +1,4 @@
-/* ── Product Types ── */
+/* ── Product Types — Matches BE schema ── */
 
 export interface Product {
   id: string;
@@ -6,13 +6,12 @@ export interface Product {
   sku: string;
   name: string;
   price: number;
-  originalPrice?: number;
-  image: string;
-  secondaryImage: string;
+  originalPrice: number | null;
+  images: string[];
   category: string;
   subcategory: string;
-  badge?: "new" | "sale" | "bestseller";
-  status: "active" | "draft" | "archived";
+  badge: string | null;
+  status: string;
   description: string;
   material: string;
   care: string;
@@ -20,6 +19,7 @@ export interface Product {
   colors: ProductColor[];
   tags: string[];
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface ProductColor {

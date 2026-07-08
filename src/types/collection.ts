@@ -1,4 +1,4 @@
-/* ── Collection Types ── */
+/* ── Collection Types — Matches BE schema ── */
 
 export interface Collection {
   id: string;
@@ -9,5 +9,6 @@ export interface Collection {
   image: string;
   productIds: string[];
   season: string;
-  bgColor: string;
+  createdAt: string;
+  updatedAt: string;
 }

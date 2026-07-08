@@ -1,4 +1,4 @@
-/* ── Review Types ── */
+/* ── Review Types — Matches BE schema ── */
 
 export interface Review {
   id: string;
@@ -7,6 +7,6 @@ export interface Review {
   rating: number;
   date: string;
   title: string;
-  body: string;
+  content: string;
   verified: boolean;
 }

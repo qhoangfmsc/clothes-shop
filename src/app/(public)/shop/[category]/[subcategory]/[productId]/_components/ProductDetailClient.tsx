@@ -37,7 +37,7 @@ export default function ProductDetailClient({
 
   const isSelectionComplete = selectedSize !== null && selectedColor !== null;
 
-  const images = [product.image, product.secondaryImage];
+  const images = product.images;
 
   /* ── Carousel: swipe / drag support ── */
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -528,7 +528,7 @@ export default function ProductDetailClient({
               >
                 <div className="pdp-related__img">
                   <Image
-                    src={rp.image}
+                    src={rp.images[0]}
                     alt={rp.name}
                     fill
                     sizes="(max-width: 640px) 50vw, 25vw"

@@ -1,4 +1,4 @@
-/* ── Category Types ── */
+/* ── Category Types — Matches BE schema ── */
 
 export interface SubCategory {
   slug: string;
