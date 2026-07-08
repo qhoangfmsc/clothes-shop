@@ -44,7 +44,7 @@ export default function GoogleSignInButton() {
    * Alternative: use implicit flow to get access_token directly
    */
   const googleLogin = useGoogleLogin({
-    flow: "auth_code",
+    flow: "auth-code",
     onSuccess: async (codeResponse) => {
       setIsLoading(true);
       setError(null);
