@@ -1,26 +1,26 @@
 # Ori Baebi — Development Progress & Feature Roadmap
 
-> Last updated: 2026-07-07
+> Last updated: 2026-07-08
 
 ---
 
 ## Overall Progress
 
 ```
-Core E-Commerce  ██████████████░░░░░░  68% (17/25 features)
-Full Store        █████████░░░░░░░░░░░  40% (17/43 features)
+Core E-Commerce  ██████████████████░░  85% (28/33 features)
+Full Store        ███████████████░░░░░  60% (28/46 features)
 ```
 
 | Category | Done | In Progress | Planned | Total |
 |----------|------|-------------|---------|-------|
 | **Storefront & Navigation** | 7 | 0 | 1 | 8 |
 | **Product Experience** | 4 | 0 | 6 | 10 |
-| **Cart & Checkout** | 0 | 0 | 5 | 5 |
-| **Auth & Account** | 2 | 0 | 2 | 4 |
+| **Cart & Checkout** | 5 | 0 | 0 | 5 |
+| **Auth & Account** | 8 | 0 | 0 | 8 |
 | **Infrastructure** | 4 | 1 | 3 | 8 |
 | **Search & Discovery** | 0 | 0 | 3 | 3 |
 | **Legal & Support** | 0 | 0 | 5 | 5 |
-| **Totals** | **17** | **1** | **25** | **43** |
+| **Totals** | **28** | **1** | **18** | **47** |
 
 ---
 
@@ -174,22 +174,27 @@ mindmap
       🔲 Shipping Info
       🔲 Share Buttons
     Cart & Checkout
-      🔲 Cart Provider (Zustand)
-      🔲 Cart Drawer
-      🔲 Cart Page
-      🔲 Checkout Page
-      🔲 Order Confirmation
+      ✅ Cart Store (Zustand + API sync)
+      ✅ Cart Page (auto-save quantities)
+      ✅ Cart FAB (floating icon)
+      ✅ Checkout Flow (address + review + place order)
+      ✅ Order Confirmation
     Auth
       ✅ Login Page
       ✅ Google Sign-In
-      🔲 Login Form Reusable
-      🔲 Login Modal
+      ✅ User Menu (Header + Drawer)
+      ✅ Account Page
+      ✅ Unauthenticated State
+      ✅ Login Prompt Modal
+      ✅ Auth-Gated Actions
+      ✅ Wishlist Page (API sync)
+      ✅ Orders Page (API history)
     Navigation
       ✅ Header Nav
       ✅ Mega Menu
       ✅ Hamburger Drawer
       ✅ Footer
-      🔲 Cart Icon + Badge
+      ✅ Cart FAB (floating icon)
     Infrastructure
       ✅ Design System
       ✅ Toast System
@@ -215,7 +220,7 @@ mindmap
 
 ## Detailed Feature Status
 
-### ✅ DONE (17 features)
+### ✅ DONE (28 features)
 
 | # | Feature | Type | Files |
 |---|---------|------|-------|
@@ -238,6 +243,15 @@ mindmap
 | 17 | Footer | CORE | Site footer |
 | 18 | API Routes (BE) | CORE | 7 routes, data inline, self-contained |
 | 19 | Data/UI Separation | CORE | FE/BE hoàn toàn tách biệt, shared types only |
+| 20 | User Menu (Header) | CORE | Avatar + dropdown, auth-aware header/drawer |
+| 21 | Account Page | CORE | Profile, wishlist, orders preview |
+| 22 | Unauthenticated State | CORE | Inline "not logged in" with Google Sign-In button |
+| 23 | Cart Store + Cart Page | CORE | Zustand + API sync, auto-save qty, cart FAB, cart page |
+| 24 | Checkout Flow | CORE | Address form → review → place order (POST /api/orders) |
+| 25 | Order Confirmation | CORE | Success page with order ID + "View My Orders" CTA |
+| 26 | Login Prompt Modal | CORE | Auth-gate popup for add-to-cart/wishlist actions |
+| 27 | Wishlist Page (API) | CORE | Server-synced wishlist, remove with API, auto-fetch on mount |
+| 28 | Orders Page (API) | CORE | Real order history from GET /api/orders, status badges |
 
 ### 🔄 IN PROGRESS
 
@@ -249,22 +263,14 @@ mindmap
 
 | # | Feature | Phase | Type | Priority |
 |---|---------|-------|------|----------|
-| 1 | Zustand Store | Infra | CORE | 🔴 High |
-| 2 | SWR Data Hooks | Infra | CORE | 🔴 High |
-| 3 | Branded Page Loading | Infra | CORE | 🔴 High |
-| 4 | Cart Provider (Zustand) | Cart | CORE | 🔴 High |
-| 5 | Cart Drawer | Cart | CORE | 🔴 High |
-| 6 | Cart Page | Cart | CORE | 🔴 High |
-| 7 | Cart Icon + Badge | Cart | CORE | 🔴 High |
-| 8 | Login Form (reusable) | Auth | CORE | 🔴 High |
-| 9 | Login Modal | Auth | CORE | 🔴 High |
-| 10 | Checkout Page | Checkout | CORE | 🔴 High |
-| 11 | Color Selector | PDP | CORE | 🟡 Medium |
-| 12 | Quantity Selector | PDP | CORE | 🟡 Medium |
-| 13 | Size Guide Modal | PDP | EXTRA | 🟡 Medium |
-| 14 | Reviews Section | PDP | EXTRA | 🟡 Medium |
-| 15 | Shipping Info | PDP | EXTRA | 🟡 Medium |
-| 16 | Share Buttons | PDP | EXTRA | 🟢 Low |
+| 1 | Branded Page Loading | Infra | CORE | 🔴 High |
+| 2 | SWR Data Hooks | Infra | CORE | 🟡 Medium |
+| 3 | Color Selector | PDP | CORE | ✅ Done |
+| 4 | Quantity Selector | PDP | CORE | ✅ Done |
+| 5 | Size Guide Modal | PDP | EXTRA | ✅ Done |
+| 6 | Reviews Section | PDP | EXTRA | ✅ Done |
+| 7 | Shipping Info | PDP | EXTRA | ✅ Done |
+| 8 | Share Buttons | PDP | EXTRA | ✅ Done |
 
 ### 🔮 FUTURE — Roadmap
 
@@ -272,8 +278,8 @@ mindmap
 |---|---------|------|----------|
 | 1 | Search | CORE | 🔴 High |
 | 2 | Filter & Sort | CORE | 🔴 High |
-| 3 | Wishlist Page | CORE | 🟡 Medium |
-| 4 | User Account | CORE | 🟡 Medium |
+| 3 | ~~Wishlist Page~~ | CORE | ✅ Done |
+| 4 | ~~User Account~~ | CORE | ✅ Done |
 | 5 | Newsletter | EXTRA | 🟡 Medium |
 | 6 | Product Zoom | EXTRA | 🟡 Medium |
 | 7 | Announcement Bar | EXTRA | 🟢 Low |
@@ -336,10 +342,10 @@ gantt
 | Layout Utilities | TailwindCSS (layout/spacing only) |
 | Animations | GSAP (scroll), Framer Motion (transitions) |
 | Fonts | Quiche Display (editorial), Inter Tight (UI) |
-| State (planned) | Zustand (global), SWR (API cache) |
-| Persistence | localStorage via Zustand persist |
-| Auth | Google Sign-In (mock — no backend yet) |
-| API | Next.js API Routes (self-contained, data inline) |
+| State | Zustand (global cart/wishlist) + API sync |
+| Persistence | localStorage via Zustand persist + Server sync |
+| Auth | Google Sign-In (OAuth via separate BE) |
+| API | External NestJS BE (localhost:7001) + Next.js API Routes |
 | Types | Shared `src/types/*` (FE + BE) |
 
 ---

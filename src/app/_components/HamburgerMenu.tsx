@@ -4,7 +4,9 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight } from "lucide-react";
+import { X, ArrowRight, User, Heart, Package, LogOut } from "lucide-react";
+import { useAuth } from "@/src/contexts/auth-context";
+import { UserAvatar } from "./UserMenu";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -62,6 +64,237 @@ const FEATURED_PRODUCTS = [
 
 /* ── Social links ── */
 const SOCIALS = [{ label: "Instagram", abbr: "IG", href: "#" }] as const;
+
+const ACCOUNT_LINKS = [
+  { label: "My Account", href: "/account", icon: User },
+  { label: "Wishlist", href: "/wishlist", icon: Heart },
+  { label: "Orders", href: "/orders", icon: Package },
+] as const;
+
+/* ── Auth-aware section in drawer ── */
+function AuthDrawerSection({ close }: { close: () => void }) {
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const delay = 0.18 + NAV_LINKS.length * 0.06 + 0.1;
+
+  if (isLoading) return null;
+
+  /* Logged OUT — Sign In CTA */
+  if (!isAuthenticated || !user) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.4,
+          ease: [...ease],
+          delay,
+        }}
+        style={{ marginTop: 32 }}
+        className="sm:!mt-[40px]"
+      >
+        <Link
+          href="/login"
+          onClick={close}
+          className="drawer-signin-btn"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            background: "#FFF",
+            color: "#000",
+            borderRadius: "var(--radius-pill)",
+            padding: "12px 32px",
+            fontSize: "var(--text-md)",
+            letterSpacing: "-0.02em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            fontWeight: 500,
+            boxShadow: "var(--shadow-sm)",
+            transition: `opacity var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-default)`,
+          }}
+        >
+          Sign In
+          <ArrowRight size={14} />
+        </Link>
+      </motion.div>
+    );
+  }
+
+  /* Logged IN — User info + account links + sign out */
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.4,
+        ease: [...ease],
+        delay,
+      }}
+      style={{
+        marginTop: 32,
+        display: "flex",
+        flexDirection: "column",
+        gap: 0,
+      }}
+      className="sm:!mt-[40px]"
+    >
+      {/* User info */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          paddingBottom: 20,
+          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        }}
+      >
+        <UserAvatar user={user} size={40} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            overflow: "hidden",
+          }}
+        >
+          <span
+            style={{
+              color: "#FFF",
+              fontSize: "var(--text-md)",
+              fontFamily: "var(--font-primary)",
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              lineHeight: "140%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {user.name ?? "User"}
+          </span>
+          <span
+            style={{
+              color: "rgba(255, 255, 255, 0.4)",
+              fontSize: "var(--text-xs)",
+              fontFamily: "var(--font-primary)",
+              letterSpacing: "-0.02em",
+              lineHeight: "140%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {user.email}
+          </span>
+        </div>
+      </div>
+
+      {/* Account links */}
+      {ACCOUNT_LINKS.map((item, idx) => {
+        const Icon = item.icon;
+        return (
+          <motion.div
+            key={item.label}
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: 0.3,
+              ease: [...ease],
+              delay: delay + 0.08 + idx * 0.04,
+            }}
+          >
+            <Link
+              href={item.href}
+              onClick={close}
+              className="drawer-category-link"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "14px 0",
+                textDecoration: "none",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
+                transition: `border-color var(--duration-fast) var(--ease-default)`,
+              }}
+            >
+              <Icon
+                size={16}
+                style={{
+                  color: "var(--color-champagne-gold)",
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                className="drawer-category-label"
+                style={{
+                  color: "rgba(255, 255, 255, 0.7)",
+                  fontSize: "var(--text-md)",
+                  letterSpacing: "-0.02em",
+                  textTransform: "uppercase",
+                  fontFamily: "var(--font-primary)",
+                  fontWeight: 500,
+                  transition: `color var(--duration-fast) var(--ease-default)`,
+                }}
+              >
+                {item.label}
+              </span>
+            </Link>
+          </motion.div>
+        );
+      })}
+
+      {/* Sign Out */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: delay + 0.24 }}
+        style={{ marginTop: 16 }}
+      >
+        <button
+          onClick={() => {
+            logout();
+            close();
+          }}
+          className="drawer-category-link"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "14px 0",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            textAlign: "left",
+            width: "100%",
+          }}
+        >
+          <LogOut
+            size={16}
+            style={{
+              color: "rgba(255, 255, 255, 0.3)",
+              flexShrink: 0,
+            }}
+          />
+          <span
+            className="drawer-category-label"
+            style={{
+              color: "rgba(255, 255, 255, 0.4)",
+              fontSize: "var(--text-sm)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              fontFamily: "var(--font-primary)",
+              fontWeight: 500,
+              transition: `color var(--duration-fast) var(--ease-default)`,
+            }}
+          >
+            Sign Out
+          </span>
+        </button>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -560,44 +793,8 @@ export default function HamburgerMenu() {
                   </motion.div>
                 ))}
 
-                {/* Sign In — CTA pill button */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.4,
-                    ease: [...ease],
-                    delay: 0.18 + NAV_LINKS.length * 0.06 + 0.1,
-                  }}
-                  style={{ marginTop: 32 }}
-                  className="sm:!mt-[40px]"
-                >
-                  <Link
-                    href="/login"
-                    onClick={close}
-                    className="drawer-signin-btn"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "8px",
-                      background: "#FFF",
-                      color: "#000",
-                      borderRadius: "var(--radius-pill)",
-                      padding: "12px 32px",
-                      fontSize: "var(--text-md)",
-                      letterSpacing: "-0.02em",
-                      textTransform: "uppercase",
-                      textDecoration: "none",
-                      fontWeight: 500,
-                      boxShadow: "var(--shadow-sm)",
-                      transition: `opacity var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-default)`,
-                    }}
-                  >
-                    Sign In
-                    <ArrowRight size={14} />
-                  </Link>
-                </motion.div>
+                {/* Auth-aware bottom section */}
+                <AuthDrawerSection close={close} />
               </nav>
 
               {/* Right panel — Featured Product (hidden on mobile, visible on sm+) */}

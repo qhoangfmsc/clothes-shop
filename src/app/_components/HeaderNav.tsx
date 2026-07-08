@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./HamburgerMenu";
+import UserMenu from "./UserMenu";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -372,6 +373,8 @@ export default function HeaderNav({
             </Link>
           </div>
         ))}
+
+        <UserMenu />
 
         <HamburgerMenu />
 

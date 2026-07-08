@@ -9,9 +9,12 @@ export interface AuthUser {
   email: string;
   name: string | null;
   image: string | null;
+  provider: string | null;
+  providerId: string | null;
   role: string;
   status: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 interface AuthState {

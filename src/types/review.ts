@@ -2,6 +2,8 @@
 
 export interface Review {
   id: string;
+  productId: string;
+  userId: string | null;
   author: string;
   avatar: string;
   rating: number;
@@ -9,4 +11,6 @@ export interface Review {
   title: string;
   content: string;
   verified: boolean;
+  createdAt: string;
+  updatedAt: string;
 }

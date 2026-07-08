@@ -18,6 +18,7 @@ import { X, Check, ShoppingBag } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/_components/Toast";
 import { useSizeGuide } from "@/src/hooks/use-api";
+import { useCartStore } from "@/src/store/cart";
 import "@/src/styles/quick-add-drawer.css";
 
 /* ═══════════════════════════════════════════════════════════
@@ -103,10 +104,29 @@ function QuickAddContent({
     [onClose]
   );
 
+  const addToCart = useCartStore((s) => s.addItem);
+  const syncCartAdd = useCartStore((s) => s.syncAddToApi);
+
   const handleAddToCart = useCallback(() => {
     if (addedToCart || !isSelectionComplete) return;
-    setAddedToCart(true);
     const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
+    addToCart(
+      {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0],
+        size: selectedSize!,
+        color: colorName,
+        colorHex: selectedColor!,
+        category: product.category,
+        subcategory: product.subcategory,
+      },
+      quantity
+    );
+    /* API sync in background */
+    syncCartAdd(product.id, selectedSize!, colorName, quantity);
+    setAddedToCart(true);
     toast.success(
       <>
         {product.name} ({selectedSize}, {colorName}
@@ -117,7 +137,7 @@ function QuickAddContent({
     setTimeout(() => {
       onClose();
     }, 800);
-  }, [addedToCart, isSelectionComplete, product, selectedSize, selectedColor, quantity, toast, onClose]);
+  }, [addedToCart, isSelectionComplete, addToCart, syncCartAdd, product, selectedSize, selectedColor, quantity, toast, onClose]);
 
   const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
 

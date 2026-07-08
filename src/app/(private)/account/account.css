@@ -1,0 +1,590 @@
+/* ═══════════════════════════════════════════════════════════
+   ACCOUNT PAGE — Scoped Styles
+   Following Ori Baebi Design System tokens strictly.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Page Layout ── */
+.account-page {
+  min-height: 100vh;
+  padding-top: 120px; /* Below fixed header */
+  padding-bottom: var(--space-16);
+  background: var(--bg-primary);
+}
+
+.account-page__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+@media (min-width: 640px) {
+  .account-page__inner {
+    padding: 0 var(--space-6);
+    gap: var(--space-10);
+  }
+}
+
+@media (min-width: 1024px) {
+  .account-page__inner {
+    padding: 0 var(--space-8);
+  }
+}
+
+/* ── Profile Header ── */
+.account-profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+}
+
+.account-profile-header__avatar-wrap {
+  position: relative;
+}
+
+.account-profile-header__avatar {
+  width: 80px !important;
+  height: 80px !important;
+  border-width: 2px !important;
+  border-color: var(--border-default) !important;
+}
+
+.account-profile-header__badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-on-gold);
+  border: 2px solid var(--bg-primary);
+}
+
+.account-profile-header__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.account-profile-header__name {
+  font-family: var(--font-display), serif;
+  font-weight: var(--font-weight-display);
+  font-size: var(--text-2xl);
+  color: var(--text-heading);
+  letter-spacing: -0.04em;
+  line-height: 100%;
+}
+
+.account-profile-header__email {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  letter-spacing: -0.02em;
+  line-height: 140%;
+}
+
+.account-profile-header__member-since {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: var(--space-1);
+}
+
+@media (min-width: 640px) {
+  .account-profile-header {
+    flex-direction: row;
+    text-align: left;
+    gap: var(--space-6);
+  }
+  .account-profile-header__name {
+    font-size: var(--text-3xl);
+  }
+}
+
+/* ── Account Section (Card) ── */
+.account-section {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.account-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.account-section__header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.account-section__title {
+  font-family: var(--font-display), serif;
+  font-weight: var(--font-weight-display);
+  font-size: var(--text-lg);
+  color: var(--text-heading);
+  letter-spacing: -0.04em;
+  line-height: 100%;
+}
+
+.account-section__count {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-on-gold);
+  background: var(--accent-primary);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 140%;
+}
+
+.account-section__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.account-section__view-all:hover {
+  opacity: 0.75;
+}
+
+/* ── Empty State ── */
+.account-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+}
+
+.account-empty-state__text {
+  font-family: var(--font-display), serif;
+  font-weight: var(--font-weight-display);
+  font-size: var(--text-lg);
+  color: var(--text-heading);
+  letter-spacing: -0.04em;
+  line-height: 100%;
+}
+
+.account-empty-state__subtext {
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  letter-spacing: -0.02em;
+  line-height: 140%;
+  max-width: 280px;
+}
+
+.account-empty-state__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .account-empty-state__actions {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+}
+
+.account-empty-state__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-light);
+  transition: background var(--duration-fast) var(--ease-default),
+              border-color var(--duration-fast) var(--ease-default);
+}
+
+.account-empty-state__cta:hover {
+  background: var(--color-champagne-cream);
+  border-color: var(--accent-primary);
+}
+
+.account-empty-state__cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.account-empty-state__cta-secondary:hover {
+  color: var(--text-accent);
+}
+
+/* ── Wishlist Grid ── */
+.account-wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border-subtle);
+}
+
+@media (min-width: 640px) {
+  .account-wishlist-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.account-wishlist-card {
+  background: var(--bg-elevated);
+}
+
+.account-wishlist-card__link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.account-wishlist-card__link:hover {
+  opacity: 0.85;
+}
+
+.account-wishlist-card__image-wrap {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: var(--color-champagne-cream);
+}
+
+.account-wishlist-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-base) var(--ease-default);
+}
+
+.account-wishlist-card__link:hover .account-wishlist-card__image {
+  transform: scale(1.03);
+}
+
+.account-wishlist-card__info {
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.account-wishlist-card__name {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 140%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-wishlist-card__price {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: -0.02em;
+}
+
+/* ── Sign Out Section ── */
+.account-signout-section {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) 0;
+}
+
+.account-signout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-light);
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: background var(--duration-fast) var(--ease-default),
+              color var(--duration-fast) var(--ease-default),
+              border-color var(--duration-fast) var(--ease-default);
+}
+
+.account-signout-btn:hover {
+  background: var(--color-champagne-cream);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+/* ── Skeleton Loading ── */
+.account-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-10) 0;
+}
+
+@media (min-width: 640px) {
+  .account-skeleton {
+    flex-direction: row;
+    gap: var(--space-6);
+  }
+}
+
+.account-skeleton__avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-champagne-cream);
+  animation: skeleton-shimmer 1.5s ease infinite;
+}
+
+.account-skeleton__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .account-skeleton__lines {
+    align-items: flex-start;
+  }
+}
+
+.account-skeleton__line {
+  height: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-champagne-cream);
+  animation: skeleton-shimmer 1.5s ease infinite;
+}
+
+.account-skeleton__line--lg {
+  width: 180px;
+  height: 24px;
+}
+
+.account-skeleton__line--sm {
+  width: 120px;
+}
+
+.account-skeleton__card {
+  height: 200px;
+  border-radius: var(--radius-lg);
+  background: var(--color-champagne-cream);
+  animation: skeleton-shimmer 1.5s ease infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-skeleton__avatar,
+  .account-skeleton__line,
+  .account-skeleton__card {
+    animation: none;
+    opacity: 0.4;
+  }
+
+  .account-wishlist-card__image {
+    transition: none;
+  }
+
+  .account-empty-state__cta,
+  .account-signout-btn,
+  .account-section__view-all,
+  .account-wishlist-card__link {
+    transition: none;
+  }
+}
+
+/* ── Orders List ── */
+.account-orders-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-order-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--duration-fast) var(--ease-default);
+}
+
+.account-order-card:last-child {
+  border-bottom: none;
+}
+
+.account-order-card:hover {
+  background: var(--color-champagne-cream);
+}
+
+/* Thumbnail Stack */
+.account-order-card__thumbs {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.account-order-card__thumb {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--bg-elevated);
+  background: var(--color-champagne-cream);
+}
+
+.account-order-card__thumb + .account-order-card__thumb {
+  margin-left: -10px;
+}
+
+.account-order-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account-order-card__thumb--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-disabled);
+}
+
+/* Order Info */
+.account-order-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.account-order-card__id {
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.account-order-card__meta {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: -0.02em;
+}
+
+/* Right side */
+.account-order-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.account-order-card__status {
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.account-order-card__total {
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  color: var(--text-heading);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.account-order-card__arrow {
+  color: var(--text-disabled);
+  flex-shrink: 0;
+}
+
+/* Skeleton */
+.account-orders-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--space-4) var(--space-6);
+}
+
+.account-orders-skeleton__row {
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--color-champagne-cream);
+  animation: skeleton-shimmer 1.5s ease infinite;
+}
+
+.account-orders-skeleton__row + .account-orders-skeleton__row {
+  margin-top: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-order-card {
+    transition: none;
+  }
+  .account-orders-skeleton__row {
+    animation: none;
+    opacity: 0.4;
+  }
+}

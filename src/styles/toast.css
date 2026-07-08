@@ -65,7 +65,8 @@
   font-size: var(--text-sm);
   font-weight: var(--font-weight-body);
   letter-spacing: 0.02em;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
   pointer-events: auto;
   cursor: default;
   max-width: 480px;

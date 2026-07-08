@@ -203,3 +203,24 @@ img[data-nimg] {
 .site-footer__link:hover {
   color: var(--accent-primary);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   USER MENU STYLES
+   ═══════════════════════════════════════════════════════════ */
+
+.user-avatar-btn:hover {
+  border-color: var(--accent-primary) !important;
+  box-shadow: var(--shadow-gold-sm) !important;
+}
+
+.user-menu-item:hover {
+  background: var(--color-champagne-cream) !important;
+  color: var(--accent-primary) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-avatar-btn,
+  .user-menu-item {
+    transition: none !important;
+  }
+}

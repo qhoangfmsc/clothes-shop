@@ -1,6 +1,7 @@
 /* ── Category Types — Matches BE schema ── */
 
 export interface SubCategory {
+  id: number;
   slug: string;
   label: string;
   description: string;
@@ -8,10 +9,13 @@ export interface SubCategory {
 }
 
 export interface Category {
+  id: string;
   slug: string;
   title: string;
   description: string;
   subcategories: SubCategory[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CategoryUIConfig {

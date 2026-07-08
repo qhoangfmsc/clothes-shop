@@ -7,6 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Check, ShoppingBag, Heart, Share2 } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/_components/Toast";
+import { useCartStore } from "@/src/store/cart";
+import { useWishlistStore } from "@/src/store/wishlist";
+import { useAuthAction } from "@/src/hooks/use-auth-action";
 import SizeGuideModal from "./SizeGuideModal";
 import ReviewsSection from "./ReviewsSection";
 import ShippingAccordion from "./ShippingAccordion";
@@ -27,13 +30,21 @@ export default function ProductDetailClient({
   relatedProducts,
 }: ProductDetailClientProps) {
   const [activeImage, setActiveImage] = useState(0);
-  const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { toast } = useToast();
+
+  /* Stores + auth */
+  const addToCart = useCartStore((s) => s.addItem);
+  const syncCartAdd = useCartStore((s) => s.syncAddToApi);
+  const isWishlisted = useWishlistStore((s) => s.isWishlisted(product.id));
+  const toggleWishlist = useWishlistStore((s) => s.toggleItem);
+  const syncWishlistAdd = useWishlistStore((s) => s.syncAddToApi);
+  const syncWishlistRemove = useWishlistStore((s) => s.syncRemoveFromApi);
+  const { requireAuth } = useAuthAction();
 
   const isSelectionComplete = selectedSize !== null && selectedColor !== null;
 
@@ -112,25 +123,53 @@ export default function ProductDetailClient({
 
   const handleAddToCart = useCallback(() => {
     if (addedToCart || !isSelectionComplete) return;
-    setAddedToCart(true);
-    const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
-    toast.success(
-      <>{product.name} ({selectedSize}, {colorName}{quantity > 1 ? `, ×${quantity}` : ""}) added — <Link href="/cart">View Bag</Link></>
-    );
-    setTimeout(() => setAddedToCart(false), 2200);
-  }, [addedToCart, isSelectionComplete, product.name, product.colors, selectedSize, selectedColor, quantity, toast]);
+    requireAuth(() => {
+      const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
+      addToCart(
+        {
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.images[0],
+          size: selectedSize!,
+          color: colorName,
+          colorHex: selectedColor!,
+          category: product.category,
+          subcategory: product.subcategory,
+        },
+        quantity
+      );
+      /* API sync in background */
+      syncCartAdd(product.id, selectedSize!, colorName, quantity);
+      setAddedToCart(true);
+      toast.success(
+        <>{product.name} ({selectedSize}, {colorName}{quantity > 1 ? `, ×${quantity}` : ""}) added — <Link href="/cart">View Bag</Link></>
+      );
+      setTimeout(() => setAddedToCart(false), 2200);
+    }, "add items to your bag");
+  }, [addedToCart, isSelectionComplete, requireAuth, addToCart, syncCartAdd, product, selectedSize, selectedColor, quantity, toast]);
 
   const handleWishlist = useCallback(() => {
-    const next = !liked;
-    setLiked(next);
-    if (next) {
-      toast.info(
-        <>{product.name} saved — <Link href="/wishlist">View Wishlist</Link></>
-      );
-    } else {
-      toast.info(`${product.name} removed from wishlist`);
-    }
-  }, [liked, product.name, toast]);
+    requireAuth(() => {
+      const added = toggleWishlist({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0],
+        category: product.category,
+        subcategory: product.subcategory,
+      });
+      if (added) {
+        syncWishlistAdd(product.id);
+        toast.info(
+          <>{product.name} saved — <Link href="/wishlist">View Wishlist</Link></>
+        );
+      } else {
+        syncWishlistRemove(product.id);
+        toast.info(`${product.name} removed from wishlist`);
+      }
+    }, "save to wishlist");
+  }, [requireAuth, toggleWishlist, syncWishlistAdd, syncWishlistRemove, product, toast]);
 
   return (
     <>
@@ -442,15 +481,15 @@ export default function ProductDetailClient({
 
             <button
               type="button"
-              className={`pdp-wishlist ${liked ? "pdp-wishlist--liked" : ""}`}
+              className={`pdp-wishlist ${isWishlisted ? "pdp-wishlist--liked" : ""}`}
               onClick={handleWishlist}
-              aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+              aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             >
               <motion.div
-                animate={liked ? { scale: [1, 1.3, 1] } : {}}
+                animate={isWishlisted ? { scale: [1, 1.3, 1] } : {}}
                 transition={{ duration: 0.35, ease: [...ease] }}
               >
-                <Heart size={20} fill={liked ? "currentColor" : "none"} />
+                <Heart size={20} fill={isWishlisted ? "currentColor" : "none"} />
               </motion.div>
             </button>
             <button

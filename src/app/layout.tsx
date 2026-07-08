@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ToastProvider } from "./_components/Toast";
 import { QuickAddProvider } from "./_components/QuickAddDrawer";
+import { LoginPromptProvider } from "./_components/LoginPromptModal";
+import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
 import Providers from "./_components/Providers";
 import "./globals.css";
+import "../styles/cart-fab.css";
 
 const quicheDisplay = localFont({
   src: "../assets/fonts/QuicheDisplay-Regular.otf",
@@ -38,10 +41,13 @@ export default function RootLayout({
       <body>
         <Providers>
           <ToastProvider position="bottom-center">
-            <QuickAddProvider>
-              <RouteTransition />
-              {children}
-            </QuickAddProvider>
+            <LoginPromptProvider>
+              <QuickAddProvider>
+                <RouteTransition />
+                <CartFAB />
+                {children}
+              </QuickAddProvider>
+            </LoginPromptProvider>
           </ToastProvider>
         </Providers>
       </body>
