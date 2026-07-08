@@ -2,6 +2,7 @@
 
 import React, { RefObject, useEffect, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useCollections } from "@/src/hooks/use-api";
 
@@ -94,17 +95,15 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
                 textDecoration: "none",
               }}
             >
-              <img
+              <Image
                 src={galleryItem.image}
                 alt={galleryItem.name}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 style={{
-                  width: "100%",
-                  height: "100%",
                   objectFit: "cover",
-                  display: "block",
                   transition: "transform 600ms cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                loading="lazy"
               />
               {/* Name overlay */}
               <div

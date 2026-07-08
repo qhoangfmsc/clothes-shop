@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Inter_Tight } from "next/font/google";
 import { ToastProvider } from "./_components/Toast";
 import { QuickAddProvider } from "./_components/QuickAddDrawer";
 import { LoginPromptProvider } from "./_components/LoginPromptModal";
@@ -17,6 +18,13 @@ const quicheDisplay = localFont({
   variable: "--font-quiche-display",
 });
 
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: "500",
+  display: "swap",
+  variable: "--font-inter-tight",
+});
+
 export const metadata: Metadata = {
   title: "Ori Baebi — Haute Couture Collection",
   description:
@@ -29,15 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${quicheDisplay.variable}`}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${quicheDisplay.variable} ${interTight.variable}`}>
       <body>
         <Providers>
           <ToastProvider position="bottom-center">

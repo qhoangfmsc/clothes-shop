@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, User, Heart, Package, LogOut } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -820,14 +821,12 @@ export default function HamburgerMenu() {
                       position: "relative",
                     }}
                   >
-                    <img
+                    <Image
                       src={FEATURED_PRODUCTS[featuredIdx].image}
                       alt={FEATURED_PRODUCTS[featuredIdx].title}
+                      fill
+                      sizes="400px"
                       style={{
-                        position: "absolute",
-                        inset: 0,
-                        width: "100%",
-                        height: "100%",
                         objectFit: "cover",
                       }}
                     />

@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Heart, Package, LogOut } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -58,11 +59,12 @@ function UserAvatar({
       }}
     >
       {user.image ? (
-        <img
+        <Image
           src={user.image}
           alt={user.name ?? "User"}
           width={size}
           height={size}
+          unoptimized
           style={{
             width: "100%",
             height: "100%",

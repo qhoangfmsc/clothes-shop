@@ -163,7 +163,7 @@
   /* ─────────────────────────────────────────────────────────
      7. TYPOGRAPHY
      ───────────────────────────────────────────────────────── */
-  --font-primary:           "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary:           var(--font-inter-tight), "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display:           var(--font-quiche-display), serif;
   --font-weight-body:       500;
   --font-weight-display:    400;

@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, Trash2, ChevronRight, ArrowLeft, ShoppingBag } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useWishlistStore } from "@/src/store/wishlist";
@@ -160,9 +161,11 @@ export default function WishlistContent() {
                   className="wishlist-card__link"
                 >
                   <div className="wishlist-card__image-wrap">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       className="wishlist-card__image"
                     />
                   </div>
@@ -337,6 +340,7 @@ export default function WishlistContent() {
           aspect-ratio: 2/3;
           overflow: hidden;
           background: var(--color-champagne-cream);
+          position: relative;
         }
 
         .wishlist-card__image {
