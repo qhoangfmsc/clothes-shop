@@ -1,99 +1,186 @@
 # 01 — Cấu trúc thư mục & Module Architecture
 
+## Nguyên tắc module hóa
+
+```
+ROOT (src/)           ← Chỉ chứa code dùng CHUNG ≥2 modules
+  lib/                ← Cross-project libraries
+  types/              ← Entity types dùng cross-module
+  hooks/              ← Hooks dùng cross-module
+  store/              ← Re-exports + cross-app stores
+
+MODULE (app/.../tên/) ← Mọi thứ riêng của module nằm TRONG module
+  _common/            ← Slice, types, constants, hooks riêng module
+  _components/        ← UI components riêng module
+```
+
+**Tuyệt đối không:** để slice, types form, constants của module ra ngoài root dir.
+
+---
+
 ## Cây thư mục chuẩn
 
 ```
 src/
-├── app/                            # App Router — pages, layouts, API routes
-│   ├── layout.tsx                  # Root layout (Server Component)
-│   ├── page.tsx                    # Root page — re-exports default public page
-│   ├── globals.css                 # Design tokens + global overrides
-│   ├── _components/                # Shared components dùng chung cross-page
-│   │   ├── Logo.tsx
-│   │   ├── HeaderNav.tsx
-│   │   ├── Footer.tsx
-│   │   └── CustomCursor.tsx
-│   ├── (auth)/                     # Route group: auth
-│   │   └── login/
-│   │       ├── page.tsx
-│   │       └── _components/
-│   ├── (private)/                  # Route group: protected pages (future)
-│   │   └── .gitkeep
-│   └── (public)/                   # Route group: public pages
-│       ├── layout.tsx              # Shared layout cho public pages
-│       ├── landing-page/           # ← Module landing-page
+├── lib/                            # ⭐ Cross-project: dùng cho toàn dự án
+│   ├── api.ts                      #   Public fetch — không auth
+│   └── auth-api.ts                 #   Auth fetch — token, refresh
+│
+├── types/                          # ⭐ Cross-module: entity types dùng ≥2 nơi
+│   ├── product.ts                  #   Product, ProductColor, ProductCategory
+│   ├── category.ts                 #   Category, SubCategory
+│   └── collection.ts               #   Collection
+│
+├── hooks/                          # ⭐ Cross-module: hooks dùng ≥2 nơi
+│   ├── use-api-auth.ts             #   Auth hook
+│   ├── use-admin-api.ts            #   Admin SWR hooks (gọi authApi)
+│   └── use-debounce.ts             #   Debounce hook
+│
+├── store/                          # ⭐ Redux store — central config + base
+│   ├── index.ts                    #   configureStore — import reducers từ modules
+│   ├── baseSlice.ts                #   BaseReducer — common CRUD state & reducers
+│   ├── hooks.ts                    #   useAppDispatch, useAppSelector (typed)
+│   └── StoreProvider.tsx           #   'use client' — Redux Provider wrapper
+│
+├── app/
+│   ├── _components/                # Shared components (≥2 modules)
+│   │   ├── DataTable.tsx
+│   │   ├── RoleGuard.tsx
+│   │   └── Toast.tsx
+│   │
+│   ├── (admin)/admin/
+│   │   ├── page.tsx
+│   │   ├── DashboardContent.tsx
+│   │   │
+│   │   ├── products/               # ← Module: admin/products
+│   │   │   ├── page.tsx
+│   │   │   ├── ProductsContent.tsx
+│   │   │   ├── _common/            # Module-internal: logic + data
+│   │   │   │   ├── moduleSlice.ts  #   Redux slice (createAsyncThunk + BaseReducer)
+│   │   │   │   ├── types.ts        #   ProductFormData, ProductListParams
+│   │   │   │   └── constants.ts    #   SORT_OPTIONS, SIZE_GROUPS, ...
+│   │   │   └── _components/        # Module-internal: UI (nếu cần tách)
+│   │   │
+│   │   ├── categories/             # ← Module: admin/categories
+│   │   │   ├── page.tsx
+│   │   │   ├── CategoriesContent.tsx
+│   │   │   └── _common/
+│   │   │       ├── moduleSlice.ts
+│   │   │       └── types.ts
+│   │   │
+│   │   ├── orders/                 # ← Module: admin/orders
+│   │   │   ├── page.tsx
+│   │   │   ├── OrdersContent.tsx
+│   │   │   └── _common/
+│   │   │       ├── moduleSlice.ts
+│   │   │       └── types.ts
+│   │   │
+│   │   ├── collections/            # ← Module: admin/collections
+│   │   └── users/                  # ← Module: admin/users
+│   │
+│   ├── (public)/                   # Route group: public pages
+│   │   ├── layout.tsx
+│   │   ├── landing-page/
+│   │   └── about/
+│   │
+│   └── (private)/                  # Route group: protected pages
+│       ├── cart/                   # ← Module: cart
 │       │   ├── page.tsx
-│       │   ├── _components/
-│       │   │   ├── BlackPanel.tsx
-│       │   │   ├── Caption.tsx
-│       │   │   ├── ProductInfo.tsx
-│       │   │   ├── VideoContainer.tsx
-│       │   │   ├── ViewButton.tsx
-│       │   │   └── WhiteOverlay.tsx
+│       │   ├── CartContent.tsx
 │       │   └── _common/
-│       │       └── constants.ts
-│       └── about/                  # ← Module about
-│           ├── page.tsx
-│           ├── _components/
-│           │   ├── InvitationHero.tsx
-│           │   ├── BrandStory.tsx
-│           │   ├── ServicesSection.tsx
-│           │   └── ContactCTA.tsx
-│           └── _common/
-│               └── constants.ts
+│       │       ├── moduleSlice.ts  #   Cart store (Zustand hoặc Redux)
+│       │       └── types.ts        #   CartItem
+│       │
+│       ├── wishlist/               # ← Module: wishlist
+│       │   ├── page.tsx
+│       │   ├── WishlistContent.tsx
+│       │   └── _common/
+│       │       ├── moduleSlice.ts  #   Wishlist store
+│       │       └── types.ts        #   WishlistItem
+│       │
+│       └── account/
 ```
 
-## Module Architecture
+---
 
-Mỗi module (route) là **đơn vị độc lập**, chứa đủ code riêng. Tham khảo mô hình domain-driven.
+## Module Anatomy (chi tiết)
 
 ```
 app/(group)/module-name/
-├── page.tsx
-├── _components/        # Components riêng module
-├── _types/             # Types/interfaces riêng module
-├── _constants/         # Constants riêng module
-├── _hooks/             # Custom hooks riêng module
-└── _common/            # Utils, constants, helpers riêng module
+├── page.tsx                        # Route entry (mỏng — chỉ re-export Content)
+├── ModuleContent.tsx               # Main component (UI + orchestration)
+├── _common/                        # Logic + data — private to module
+│   ├── moduleSlice.ts              # Redux slice (createAsyncThunk + BaseReducer)
+│   ├── types.ts                    # FormData, ListParams, Filter types
+│   ├── constants.ts                # Options, labels, configs
+│   └── hooks.ts                    # Module-specific hooks (nếu cần)
+└── _components/                    # UI components — private to module
+    ├── FormModal.tsx               # (nếu tách form khỏi Content)
+    └── DetailPanel.tsx             # (nếu có panel chi tiết)
 ```
 
-### Sub-modules
+### Quy tắc `_common/`
 
-Khi module có sub-modules → mỗi sub-module giữ `_types/` riêng. Parent chỉ chứa types **dùng chung**.
+| File | Chứa gì | Ví dụ |
+|------|---------|-------|
+| `moduleSlice.ts` | Redux slice (createAsyncThunk + BaseReducer) | `productsSlice`, `fetchProductList` |
+| `types.ts` | Types cho form data, list params, filter configs | `ProductFormData`, `ProductListParams` |
+| `constants.ts` | Constants dùng trong module | `SORT_OPTIONS`, `SIZE_GROUPS` |
+| `hooks.ts` | Custom hooks riêng module | `useProductForm()` |
 
-## Quy tắc
+### Quy tắc `_components/`
 
-1. **Prefix `_`** — mọi folder private dùng `_` để Next.js không coi là route segment.
-2. **Shared components** → `src/app/_components/`. Chỉ chứa components dùng ≥2 pages (Header, Footer, Logo, Cursor).
-3. **Components riêng module** → `module/_components/`. KHÔNG đặt trong shared nếu chỉ dùng 1 module.
-4. **Constants riêng module** → `module/_common/constants.ts`.
-5. **Không tạo `src/components/`** — tất cả shared components nằm trong `src/app/_components/`.
+- Component UI riêng của module → `_components/`
+- Ví dụ: `FormModal.tsx` (tách form khỏi Content khi quá dài)
+- Không export ra ngoài module
+
+---
+
+## Quy tắc phân loại
+
+| Code dùng ở đâu | Đặt ở đâu | Ví dụ |
+|-----------------|-----------|-------|
+| ≥2 modules admin | `src/hooks/` | `use-admin-api.ts` (SWR hooks chung) |
+| ≥2 modules bất kỳ | `src/lib/` | `api.ts`, `auth-api.ts` |
+| ≥2 modules bất kỳ | `src/app/_components/` | `DataTable`, `RoleGuard`, `Toast` |
+| ≥2 modules bất kỳ | `src/types/` | Entity types: `Product`, `Category` |
+| 1 module duy nhất | `module/_common/` | Slice, form types, constants |
+| 1 module duy nhất | `module/_components/` | FormModal, DetailPanel |
+
+---
+
+## Anti-patterns
+
+```
+❌ src/types/product.ts chứa ProductFormData    → Sai! Vào module/_common/types.ts
+❌ src/store/products-slice.ts                  → Sai! Vào module/_common/moduleSlice.ts
+❌ src/constants/admin-products.ts              → Sai! Vào module/_common/constants.ts
+❌ Component chứa SORT_OPTIONS, SIZE_GROUPS     → Sai! Vào module/_common/constants.ts
+```
+
+---
+
+## Đặt tên
+
+| Loại | Convention | Ví dụ |
+|------|-----------|-------|
+| Route folders | `kebab-case` | `landing-page/` |
+| Route groups | `(camelCase)` | `(public)/`, `(admin)/` |
+| Private folders | `_prefix` | `_common/`, `_components/` |
+| Component files | `PascalCase` | `ProductsContent.tsx` |
+| Slice file | `moduleSlice.ts` | `_common/moduleSlice.ts` |
+| Types file | `types.ts` | `_common/types.ts` |
+| Constants file | `constants.ts` | `_common/constants.ts` |
+
+---
 
 ## Import Rules
 
-| Từ                 | Đến                                | Cách import         |
-| ------------------ | ---------------------------------- | ------------------- |
-| Trong cùng module  | `_components/`, `_common/`         | Relative `./` `../` |
-| Sibling module     | `../../about/_components/`         | Relative            |
-| Shared components  | `@/src/app/_components/`           | Absolute `@/`       |
-| Root configs       | `@/src/app/globals.css`            | Absolute `@/`       |
-
-## Đặt tên thư mục
-
-| Loại            | Convention    | Ví dụ                     |
-| --------------- | ------------- | ------------------------- |
-| Route folders   | `kebab-case`  | `landing-page/`           |
-| Route groups    | `(camelCase)` | `(public)/`, `(auth)/`    |
-| Private folders | `_prefix`     | `_components/`, `_common/`|
-| Component files | `PascalCase`  | `BlackPanel.tsx`          |
-| Utility files   | `camelCase`   | `constants.ts`            |
-
-## Design System
-
-Mọi component UI **BẮT BUỘC** tham khảo `DESIGN.md` trước khi code. Tuân thủ:
-- CSS custom properties (không hardcode hex)
-- Inter Tight 500
-- 4px spacing grid
-- Section background rotation
-- Warm-toned shadows
-- `prefers-reduced-motion` fallbacks
+| Từ | Đến | Cách import |
+|----|-----|-------------|
+| Cùng module | `_common/`, `_components/` | Relative `./_common/slice` |
+| Root lib | `src/lib/` | Absolute `@/src/lib/api` |
+| Root hooks | `src/hooks/` | Absolute `@/src/hooks/use-admin-api` |
+| Root types | `src/types/` | Absolute `@/src/types/product` |
+| Shared components | `src/app/_components/` | Absolute `@/src/app/_components/DataTable` |
+| Store re-exports | `src/store/` | Absolute `@/src/store` |

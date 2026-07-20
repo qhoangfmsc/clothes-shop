@@ -1,17 +1,15 @@
 /* ═══════════════════════════════════════════════════════════
-   ADMIN API HOOKS — Authenticated data fetching for admin panel
+   ADMIN API HOOKS — SWR-based data fetching for admin panel
 
-   Uses `apiFetch` from useApiAuth() for authenticated requests.
+   Uses `authApi` from lib/auth-api for authenticated requests.
    Supports BE filter / sort / pagination params.
    ═══════════════════════════════════════════════════════════ */
 
 import useSWR from "swr";
-import { useApiAuth } from "./use-api-auth";
+import { authApi } from "@/src/lib/auth-api";
 import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
 const defaultConfig = { revalidateOnFocus: false, dedupingInterval: 10_000, keepPreviousData: true };
 
@@ -24,56 +22,60 @@ type SingleResponse<T> = { data: T };
 
 export interface ProductFilters {
   category?: string;
-  subcategory?: string;
   badge?: string;
-  sort?: string; // price_asc | price_desc | newest
+  status?: string;
+  sort?: string; // createdAt | -createdAt | price | -price | name | -name
+  search?: string;
+  page?: number;
   limit?: number;
 }
 
 /** Shape sent to POST/PATCH /api/admin/products (matches BE DTO) */
 export interface ProductFormData {
   name: string; slug: string; price: number; originalPrice: number | null;
-  images: string[]; categoryId: string; subcategoryId: number;
+  images: string[]; categoryId: string; subcategoryId: string | null;
   badge: string | null; status: string; description: string;
   material: string; care: string; sizes: string[];
   colors: { name: string; hex: string }[]; tags: string[];
 }
 
 export function useAdminProducts(filters: ProductFilters = {}) {
-  const { apiFetch } = useApiAuth();
-
   const params = new URLSearchParams();
   if (filters.category) params.set("category", filters.category);
-  if (filters.subcategory) params.set("subcategory", filters.subcategory);
   if (filters.badge) params.set("badge", filters.badge);
+  if (filters.status) params.set("status", filters.status);
   if (filters.sort) params.set("sort", filters.sort);
+  if (filters.search) params.set("search", filters.search);
+  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
   if (filters.limit) params.set("limit", String(filters.limit));
   const qs = params.toString();
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<Product>>(
-    `${API_URL}/api/products${qs ? `?${qs}` : ""}`,
-    (url: string) => apiFetch<ListResponse<Product>>(url, { public: true }),
+    `/api/admin/products?${qs}`,
+    (path: string) => authApi.get<ListResponse<Product>>(path),
     defaultConfig
   );
 
   const createProduct = async (body: ProductFormData) => {
-    const res = await apiFetch<SingleResponse<Product>>("/api/admin/products", { method: "POST", body });
+    const res = await authApi.post<SingleResponse<Product>>("/api/admin/products", body);
     await mutate();
     return res.data;
   };
   const updateProduct = async (id: string, body: Partial<ProductFormData>) => {
-    const res = await apiFetch<SingleResponse<Product>>(`/api/admin/products/${id}`, { method: "PATCH", body });
+    const res = await authApi.patch<SingleResponse<Product>>(`/api/admin/products/${id}`, body);
     await mutate();
     return res.data;
   };
   const deleteProduct = async (id: string) => {
-    await apiFetch(`/api/admin/products/${id}`, { method: "DELETE" });
+    await authApi.delete(`/api/admin/products/${id}`);
     await mutate();
   };
 
   return {
     products: data?.data ?? [],
     total: data?.total ?? 0,
+    page: data?.page ?? 1,
+    limit: data?.limit ?? 25,
     isLoading,
     isValidating,
     isError: !!error,
@@ -85,36 +87,50 @@ export function useAdminProducts(filters: ProductFilters = {}) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CATEGORIES — Public GET
+   CATEGORIES — Admin GET with BE filters
    ═══════════════════════════════════════════════════════════ */
 
-export function useAdminCategories() {
-  const { apiFetch } = useApiAuth();
+export interface CategoryFilters {
+  search?: string;
+  sort?: string; // title | -title | createdAt | -createdAt
+  page?: number;
+  limit?: number;
+}
+
+export function useAdminCategories(filters: CategoryFilters = {}) {
+  const params = new URLSearchParams();
+  if (filters.search) params.set("search", filters.search);
+  if (filters.sort) params.set("sort", filters.sort);
+  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
+  if (filters.limit) params.set("limit", String(filters.limit));
+  const qs = params.toString();
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<Category>>(
-    `${API_URL}/api/categories`,
-    (url: string) => apiFetch<ListResponse<Category>>(url, { public: true }),
+    `/api/admin/categories?${qs}`,
+    (path: string) => authApi.get<ListResponse<Category>>(path),
     defaultConfig
   );
 
   const createCategory = async (body: Partial<Category>) => {
-    const res = await apiFetch<SingleResponse<Category>>("/api/admin/categories", { method: "POST", body });
+    const res = await authApi.post<SingleResponse<Category>>("/api/admin/categories", body);
     await mutate();
     return res.data;
   };
   const updateCategory = async (id: string, body: Partial<Category>) => {
-    const res = await apiFetch<SingleResponse<Category>>(`/api/admin/categories/${id}`, { method: "PATCH", body });
+    const res = await authApi.patch<SingleResponse<Category>>(`/api/admin/categories/${id}`, body);
     await mutate();
     return res.data;
   };
   const deleteCategory = async (id: string) => {
-    await apiFetch(`/api/admin/categories/${id}`, { method: "DELETE" });
+    await authApi.delete(`/api/admin/categories/${id}`);
     await mutate();
   };
 
   return {
     categories: data?.data ?? [],
     total: data?.total ?? 0,
+    page: data?.page ?? 1,
+    limit: data?.limit ?? 25,
     isLoading,
     isValidating,
     isError: !!error,
@@ -126,36 +142,52 @@ export function useAdminCategories() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   COLLECTIONS — Public GET
+   COLLECTIONS — Admin GET with BE filters
    ═══════════════════════════════════════════════════════════ */
 
-export function useAdminCollections() {
-  const { apiFetch } = useApiAuth();
+export interface CollectionFilters {
+  search?: string;
+  season?: string;
+  sort?: string; // name | -name | createdAt | -createdAt
+  page?: number;
+  limit?: number;
+}
+
+export function useAdminCollections(filters: CollectionFilters = {}) {
+  const params = new URLSearchParams();
+  if (filters.search) params.set("search", filters.search);
+  if (filters.season) params.set("season", filters.season);
+  if (filters.sort) params.set("sort", filters.sort);
+  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
+  if (filters.limit) params.set("limit", String(filters.limit));
+  const qs = params.toString();
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<Collection>>(
-    `${API_URL}/api/collections`,
-    (url: string) => apiFetch<ListResponse<Collection>>(url, { public: true }),
+    `/api/admin/collections?${qs}`,
+    (path: string) => authApi.get<ListResponse<Collection>>(path),
     defaultConfig
   );
 
   const createCollection = async (body: Partial<Collection>) => {
-    const res = await apiFetch<SingleResponse<Collection>>("/api/admin/collections", { method: "POST", body });
+    const res = await authApi.post<SingleResponse<Collection>>("/api/admin/collections", body);
     await mutate();
     return res.data;
   };
   const updateCollection = async (id: string, body: Partial<Collection>) => {
-    const res = await apiFetch<SingleResponse<Collection>>(`/api/admin/collections/${id}`, { method: "PATCH", body });
+    const res = await authApi.patch<SingleResponse<Collection>>(`/api/admin/collections/${id}`, body);
     await mutate();
     return res.data;
   };
   const deleteCollection = async (id: string) => {
-    await apiFetch(`/api/admin/collections/${id}`, { method: "DELETE" });
+    await authApi.delete(`/api/admin/collections/${id}`);
     await mutate();
   };
 
   return {
     collections: data?.data ?? [],
     total: data?.total ?? 0,
+    page: data?.page ?? 1,
+    limit: data?.limit ?? 25,
     isLoading,
     isValidating,
     isError: !!error,
@@ -182,31 +214,33 @@ export interface AdminOrder {
 
 export interface OrderFilters {
   status?: string;
+  search?: string;
+  sort?: string; // createdAt | -createdAt
   page?: number;
   limit?: number;
 }
 
 export function useAdminOrders(filters: OrderFilters = {}) {
-  const { apiFetch } = useApiAuth();
-
   const params = new URLSearchParams();
   if (filters.status) params.set("status", filters.status);
+  if (filters.search) params.set("search", filters.search);
+  if (filters.sort) params.set("sort", filters.sort);
   if (filters.page && filters.page > 1) params.set("page", String(filters.page));
   if (filters.limit) params.set("limit", String(filters.limit));
   const qs = params.toString();
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<AdminOrder>>(
-    `${API_URL}/api/admin/orders${qs ? `?${qs}` : ""}`,
-    (url: string) => apiFetch<ListResponse<AdminOrder>>(url),
+    `/api/admin/orders?${qs}`,
+    (path: string) => authApi.get<ListResponse<AdminOrder>>(path),
     defaultConfig
   );
 
   const getOrderDetail = async (orderId: string) => {
-    const res = await apiFetch<SingleResponse<AdminOrder>>(`/api/admin/orders/${orderId}`);
+    const res = await authApi.get<SingleResponse<AdminOrder>>(`/api/admin/orders/${orderId}`);
     return res.data;
   };
   const updateOrderStatus = async (orderId: string, status: string) => {
-    const res = await apiFetch<SingleResponse<AdminOrder>>(`/api/admin/orders/${orderId}/status`, { method: "PATCH", body: { status } });
+    const res = await authApi.patch<SingleResponse<AdminOrder>>(`/api/admin/orders/${orderId}/status`, { status });
     await mutate();
     return res.data;
   };
@@ -250,8 +284,6 @@ export interface UserFilters {
 }
 
 export function useAdminUsers(filters: UserFilters = {}) {
-  const { apiFetch } = useApiAuth();
-
   const params = new URLSearchParams();
   if (filters.role) params.set("role", filters.role);
   if (filters.status) params.set("status", filters.status);
@@ -260,17 +292,17 @@ export function useAdminUsers(filters: UserFilters = {}) {
   const qs = params.toString();
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<AdminUser>>(
-    `${API_URL}/api/admin/users${qs ? `?${qs}` : ""}`,
-    (url: string) => apiFetch<ListResponse<AdminUser>>(url),
+    `/api/admin/users?${qs}`,
+    (path: string) => authApi.get<ListResponse<AdminUser>>(path),
     defaultConfig
   );
 
   const getUserDetail = async (userId: string) => {
-    const res = await apiFetch<SingleResponse<AdminUser>>(`/api/admin/users/${userId}`);
+    const res = await authApi.get<SingleResponse<AdminUser>>(`/api/admin/users/${userId}`);
     return res.data;
   };
   const updateUser = async (userId: string, body: AdminUserUpdate) => {
-    const res = await apiFetch<SingleResponse<AdminUser>>(`/api/admin/users/${userId}`, { method: "PATCH", body });
+    const res = await authApi.patch<SingleResponse<AdminUser>>(`/api/admin/users/${userId}`, body);
     await mutate();
     return res.data;
   };

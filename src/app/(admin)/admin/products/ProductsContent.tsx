@@ -1,60 +1,31 @@
 "use client";
 
-import { useState, useMemo, type FormEvent } from "react";
-import { Plus, Pencil, Trash2, Search, X, ImageIcon } from "lucide-react";
-import { useAdminProducts, useAdminCategories } from "@/src/hooks/use-admin-api";
+import { useState, useMemo, useRef, type FormEvent } from "react";
+import Image from "next/image";
+import { Plus, Pencil, Trash2, X, ImageIcon } from "lucide-react";
+import { useAdminCategories } from "@/src/hooks/use-admin-api";
 import { useToast } from "@/src/app/_components/Toast";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
+import {
+  DataTable,
+  type DataTableColumn,
+  type DataTableFetchParams,
+  type DataTableRef,
+} from "@/src/app/_components/DataTable";
 import { PERMISSIONS } from "@/src/lib/permissions";
+import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
+import {
+  fetchProductList,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "./_common/moduleSlice";
+import { SORT_OPTIONS, SIZE_GROUPS, TAG_SUGGESTIONS, EMPTY_FORM } from "./_common/constants";
+import type { ProductListResult } from "./_common/types";
 import type { Product, ProductColor } from "@/src/types/product";
 import type { Category, SubCategory } from "@/src/types/category";
 
-/* ═══════════════════════════════ Constants ═══════════════════════════════ */
-
-const EMPTY_FORM = {
-  name: "",
-  slug: "",
-  price: 0,
-  originalPrice: null as number | null,
-  images: [] as string[],
-  categoryId: "",
-  subcategoryId: null as number | null,
-  badge: null as string | null,
-  status: "active",
-  description: "",
-  material: "",
-  care: "",
-  sizes: [] as string[],
-  colors: [] as ProductColor[],
-  tags: [] as string[],
-};
-
-const SORT_OPTIONS = [
-  { value: "newest", label: "Newest" },
-  { value: "price_asc", label: "Price ↑" },
-  { value: "price_desc", label: "Price ↓" },
-];
-
-const SIZE_GROUPS: { label: string; sizes: string[] }[] = [
-  { label: "Letter", sizes: ["XS", "S", "M", "L", "XL", "XXL"] },
-  { label: "Number", sizes: ["28", "29", "30", "31", "32", "33", "34", "36", "38", "40", "42"] },
-  { label: "Special", sizes: ["One Size"] },
-];
-
-const TAG_SUGGESTIONS = [
-  "summer",
-  "winter",
-  "spring",
-  "autumn",
-  "luxury",
-  "casual",
-  "formal",
-  "streetwear",
-  "minimal",
-  "vintage",
-  "limited",
-  "organic",
-];
+/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
 
 function slugify(text: string): string {
   return text
@@ -65,29 +36,217 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/* ═══════════════════════════════ Component ═══════════════════════════════ */
+/* ═══════════════════════════════ Status/Badge styles ═══════════════════ */
+
+function statusStyle(s: string): string {
+  return s === "active"
+    ? "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]"
+    : "bg-[rgba(107,101,96,0.1)] text-[var(--color-ash)]";
+}
+
+function badgeColor(b: string): string {
+  const m: Record<string, string> = {
+    new: "bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]",
+    sale: "bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]",
+    bestseller: "bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]",
+  };
+  return m[b] ?? "bg-[rgba(107,101,96,0.05)] text-[var(--text-muted)]";
+}
+
+/* ═══════════════════════════════ Sub-components ═══════════════════════ */
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <fieldset className="border-0 border-b border-[var(--border-subtle)] pb-5 px-0 mx-0">
+      <legend className="font-primary text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.06em] p-0 mb-4">
+        {title}
+      </legend>
+      <div className="grid grid-cols-2 gap-4">{children}</div>
+    </fieldset>
+  );
+}
+
+function Field({
+  label,
+  hint,
+  required,
+  span,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  required?: boolean;
+  span?: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={`flex flex-col gap-1 ${span === 2 ? "col-span-2" : ""}`}>
+      <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
+        {label}
+        {required && <span className="text-[var(--accent-rose)]"> *</span>}
+      </span>
+      {children}
+      {hint && (
+        <span className="text-[10px] text-[var(--text-disabled)] font-primary italic">{hint}</span>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function ProductsContent() {
   const { toast } = useToast();
-  const [search, setSearch] = useState("");
-  const [filterCategory, setFilterCategory] = useState("");
-  const [filterBadge, setFilterBadge] = useState("");
-  const [filterSort, setFilterSort] = useState("newest");
+  const tableRef = useRef<DataTableRef>(null);
+  const dispatch = useAppDispatch();
 
-  const { products, total, isLoading, isValidating, createProduct, updateProduct, deleteProduct } =
-    useAdminProducts({
-      category: filterCategory || undefined,
-      badge: filterBadge || undefined,
-      sort: filterSort,
-      limit: 200,
-    });
+  const { isCreating, isUpdating, total } = useAppSelector((s) => s.products);
+  const isSaving = isCreating || isUpdating;
 
-  const { categories: catList } = useAdminCategories();
+  const { categories: catList } = useAdminCategories({ limit: 200 });
+
+  /* ── fetchData for DataTable (Redux thunk) ── */
+  const fetchProducts = async (params: DataTableFetchParams): Promise<ProductListResult> => {
+    return dispatch(
+      fetchProductList({
+        search: params.search || undefined,
+        category: params.filters.category || undefined,
+        badge: params.filters.badge || undefined,
+        status: params.filters.status || undefined,
+        sort: params.sort,
+        page: params.page,
+        limit: params.limit,
+      })
+    ).unwrap();
+  };
+
+  /* ── Column definitions ── */
+  const columns: DataTableColumn<Product>[] = useMemo(
+    () => [
+      {
+        key: "product",
+        header: "Product",
+        render: (p) => (
+          <div className="flex items-center gap-3">
+            {p.images?.[0] ? (
+              <div className="relative w-10 h-12 shrink-0">
+                <Image
+                  src={p.images[0]}
+                  alt=""
+                  fill
+                  className="object-cover rounded-sm"
+                  sizes="40px"
+                />
+              </div>
+            ) : (
+              <div className="w-10 h-12 bg-[var(--bg-elevated)] rounded-sm flex items-center justify-center text-[var(--text-muted)] shrink-0">
+                <ImageIcon size={14} />
+              </div>
+            )}
+            <div>
+              <p className="font-semibold text-sm">{p.name}</p>
+              <p className="text-xs text-[var(--text-muted)]">{p.slug}</p>
+            </div>
+          </div>
+        ),
+      },
+      {
+        key: "category",
+        header: "Category",
+        render: (p) => (
+          <>
+            <span className="text-xs text-[var(--accent-primary)] font-semibold">
+              {p.category?.slug ?? "—"}
+            </span>
+            {p.subcategory?.slug && (
+              <span className="text-xs text-[var(--text-muted)]"> / {p.subcategory.slug}</span>
+            )}
+          </>
+        ),
+      },
+      {
+        key: "price",
+        header: "Price",
+        render: (p) => (
+          <>
+            <span className="font-semibold">${Number(p.price).toFixed(2)}</span>
+            {p.originalPrice && (
+              <span className="text-xs text-[var(--text-muted)] line-through ml-1.5">
+                ${Number(p.originalPrice).toFixed(2)}
+              </span>
+            )}
+          </>
+        ),
+      },
+      {
+        key: "status",
+        header: "Status",
+        render: (p) => (
+          <span
+            className={`inline-block py-0.5 px-2 rounded-full text-xs font-semibold font-primary capitalize ${statusStyle(p.status)}`}
+          >
+            {p.status}
+          </span>
+        ),
+      },
+      {
+        key: "badge",
+        header: "Badge",
+        render: (p) =>
+          p.badge ? (
+            <span
+              className={`inline-block py-0.5 px-2 rounded-full text-xs font-semibold font-primary capitalize ${badgeColor(p.badge)}`}
+            >
+              {p.badge}
+            </span>
+          ) : (
+            <span className="text-[var(--text-disabled)]">—</span>
+          ),
+      },
+      {
+        key: "actions",
+        header: "Actions",
+        align: "right",
+        render: (p) => (
+          <div className="flex gap-1 justify-end">
+            <RoleGuard permission={PERMISSIONS.PRODUCT_UPDATE}>
+              <button
+                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-secondary)] hover:opacity-70"
+                onClick={() => openEdit(p)}
+                title="Edit"
+              >
+                <Pencil size={14} />
+              </button>
+            </RoleGuard>
+            <RoleGuard permission={PERMISSIONS.PRODUCT_DELETE}>
+              <button
+                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--accent-rose)] hover:opacity-70"
+                onClick={() => handleDelete(p.id, p.name)}
+                title="Delete"
+              >
+                <Trash2 size={14} />
+              </button>
+            </RoleGuard>
+          </div>
+        ),
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [catList]
+  );
+
+  /* ── Filter options ── */
+  const categoryFilterOptions = useMemo(
+    () =>
+      catList
+        .map((c) => ({ value: c.slug, label: c.slug }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [catList]
+  );
 
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
-  const [saving, setSaving] = useState(false);
   /* Color builder */
   const [colorName, setColorName] = useState("");
   const [colorHex, setColorHex] = useState("#333333");
@@ -95,18 +254,6 @@ export default function ProductsContent() {
   const [tagInput, setTagInput] = useState("");
 
   /* ── Derived data ── */
-  const filtered = useMemo(() => {
-    if (!search) return products;
-    const s = search.toLowerCase();
-    return products.filter(
-      (p) => p.name.toLowerCase().includes(s) || p.slug.toLowerCase().includes(s)
-    );
-  }, [products, search]);
-
-  /* Toolbar filter: all available category slugs */
-  const filterCategoryOptions = useMemo(() => catList.map((c) => c.slug).sort(), [catList]);
-
-  /* Form: selected category & its subcategories */
   const selectedCategory = useMemo<Category | undefined>(
     () => catList.find((c) => c.id === form.categoryId),
     [catList, form.categoryId]
@@ -116,7 +263,7 @@ export default function ProductsContent() {
     [selectedCategory]
   );
 
-  /* ── Pre-computed <option> arrays (avoids Turbopack key warnings) ── */
+  /* ── Pre-computed <option> arrays ── */
   const categoryOptions = useMemo(
     () =>
       catList.map((c) => (
@@ -134,15 +281,6 @@ export default function ProductsContent() {
         </option>
       )),
     [subcategoryOptions]
-  );
-  const toolbarCategoryOptions = useMemo(
-    () =>
-      filterCategoryOptions.map((slug) => (
-        <option key={slug} value={slug}>
-          {slug}
-        </option>
-      )),
-    [filterCategoryOptions]
   );
 
   /* ── Handlers ── */
@@ -164,11 +302,11 @@ export default function ProductsContent() {
     setForm({
       name: p.name,
       slug: p.slug,
-      price: p.price,
-      originalPrice: p.originalPrice,
+      price: Number(p.price) || 0,
+      originalPrice: p.originalPrice != null ? Number(p.originalPrice) : null,
       images: [...p.images],
       categoryId: p.category?.id ?? "",
-      subcategoryId: p.subcategory?.id ?? null,
+      subcategoryId: p.subcategory?.id ? String(p.subcategory.id) : "",
       badge: p.badge,
       status: p.status,
       description: p.description,
@@ -202,256 +340,138 @@ export default function ProductsContent() {
     setColorHex("#333333");
   };
 
+  /* ── CRUD operations (Redux dispatch) ── */
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    /* Validate subcategory is selected when category has subcategories */
-    if (
-      subcategoryOptions.length > 0 &&
-      (form.subcategoryId === null || form.subcategoryId === 0)
-    ) {
+    if (subcategoryOptions.length > 0 && !form.subcategoryId) {
       toast.error("Please select a subcategory (this category requires one)");
       return;
     }
 
-    setSaving(true);
     try {
-      /* Build payload: subcategoryId must be a valid number for BE */
-      const payload = { ...form, subcategoryId: form.subcategoryId ?? 0 };
+      const payload = {
+        ...form,
+        price: Number(form.price) || 0,
+        originalPrice: form.originalPrice != null ? Number(form.originalPrice) : null,
+        subcategoryId: form.subcategoryId || null,
+      };
       if (editingId) {
-        await updateProduct(editingId, payload);
+        await dispatch(updateProduct({ id: editingId, body: payload })).unwrap();
         toast.success("Product updated");
       } else {
-        await createProduct(payload);
+        await dispatch(createProduct(payload)).unwrap();
         toast.success("Product created");
       }
+      tableRef.current?.refresh();
       closeModal();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to save");
-    } finally {
-      setSaving(false);
     }
   };
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Delete "${name}"?`)) return;
     try {
-      await deleteProduct(id);
+      await dispatch(deleteProduct(id)).unwrap();
       toast.success("Product deleted");
+      tableRef.current?.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to delete");
     }
   };
 
-  const loading = isLoading || isValidating;
-
   return (
-    <div style={S.wrapper}>
+    <div className="flex flex-col gap-6">
       {/* ── Header ── */}
-      <div style={S.header}>
+      <div className="flex justify-between items-start">
         <div>
-          <h1 style={S.heading}>Products</h1>
-          <p style={S.sub}>
+          <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Products</h1>
+          <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
             {total} product{total !== 1 ? "s" : ""}
           </p>
         </div>
         <RoleGuard permission={PERMISSIONS.PRODUCT_CREATE}>
-          <button style={S.addBtn} onClick={openCreate}>
+          <button
+            className="flex items-center gap-1.5 py-[10px] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={openCreate}
+          >
             <Plus size={16} /> Add Product
           </button>
         </RoleGuard>
       </div>
 
-      {/* ── Toolbar ── */}
-      <div style={S.toolbar}>
-        <label style={{ ...S.toolField, flex: 1 }}>
-          <span style={S.toolLabel}>Search</span>
-          <div style={S.searchWrap}>
-            <Search size={14} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
-            <input
-              placeholder="Name or slug..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={S.searchInput}
-            />
-          </div>
-        </label>
-        <label style={S.toolField}>
-          <span style={S.toolLabel}>Category</span>
-          <select
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            style={S.filterSelect}
-          >
-            <option value="">All</option>
-            {toolbarCategoryOptions}
-          </select>
-        </label>
-        <label style={S.toolField}>
-          <span style={S.toolLabel}>Badge</span>
-          <select
-            value={filterBadge}
-            onChange={(e) => setFilterBadge(e.target.value)}
-            style={S.filterSelect}
-          >
-            <option value="">All</option>
-            <option value="new">New</option>
-            <option value="sale">Sale</option>
-            <option value="bestseller">Bestseller</option>
-          </select>
-        </label>
-        <label style={S.toolField}>
-          <span style={S.toolLabel}>Sort</span>
-          <select
-            value={filterSort}
-            onChange={(e) => setFilterSort(e.target.value)}
-            style={S.filterSelect}
-          >
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-
-      {/* ── Table ── */}
-      <div style={{ ...S.tableWrap, position: "relative" }}>
-        {loading && (
-          <div style={S.loadingOverlay}>
-            <span style={S.loadingText}>Loading...</span>
-          </div>
-        )}
-        <table
-          style={{
-            ...S.table,
-            opacity: loading ? 0.4 : 1,
-            transition: "opacity var(--duration-fast)",
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={S.th}>Product</th>
-              <th style={S.th}>Category</th>
-              <th style={S.th}>Price</th>
-              <th style={S.th}>Status</th>
-              <th style={S.th}>Badge</th>
-              <th style={{ ...S.th, textAlign: "right" }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 && (
-              <tr>
-                <td colSpan={6} style={S.emptyCell}>
-                  {search || filterCategory || filterBadge
-                    ? "No products match."
-                    : "No products yet."}
-                </td>
-              </tr>
-            )}
-            {filtered.map((p) => (
-              <tr key={p.id} style={S.tr}>
-                <td style={S.td}>
-                  <div style={S.prodCell}>
-                    {p.images?.[0] ? (
-                      <img src={p.images[0]} alt="" style={S.thumb} />
-                    ) : (
-                      <div style={S.noImg}>
-                        <ImageIcon size={14} />
-                      </div>
-                    )}
-                    <div>
-                      <p style={S.prodName}>{p.name}</p>
-                      <p style={S.prodSlug}>{p.slug}</p>
-                    </div>
-                  </div>
-                </td>
-                <td style={S.td}>
-                  <span style={S.catTag}>{p.category?.slug ?? "—"}</span>
-                  {p.subcategory?.slug && <span style={S.subTag}> / {p.subcategory.slug}</span>}
-                </td>
-                <td style={S.td}>
-                  <span style={S.price}>${Number(p.price).toFixed(2)}</span>
-                  {p.originalPrice && (
-                    <span style={S.origPrice}>${Number(p.originalPrice).toFixed(2)}</span>
-                  )}
-                </td>
-                <td style={S.td}>
-                  <span style={{ ...S.badge, ...statusStyle(p.status) }}>{p.status}</span>
-                </td>
-                <td style={S.td}>
-                  {p.badge ? (
-                    <span style={{ ...S.badge, ...badgeColor(p.badge) }}>{p.badge}</span>
-                  ) : (
-                    <span style={S.muted}>—</span>
-                  )}
-                </td>
-                <td style={{ ...S.td, textAlign: "right" }}>
-                  <div style={S.actions}>
-                    <RoleGuard permission={PERMISSIONS.PRODUCT_UPDATE}>
-                      <button style={S.actBtn} onClick={() => openEdit(p)} title="Edit">
-                        <Pencil size={14} />
-                      </button>
-                    </RoleGuard>
-                    <RoleGuard permission={PERMISSIONS.PRODUCT_DELETE}>
-                      <button
-                        style={{ ...S.actBtn, color: "var(--accent-rose)" }}
-                        onClick={() => handleDelete(p.id, p.name)}
-                        title="Delete"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </RoleGuard>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable<Product>
+        tableRef={tableRef}
+        columns={columns}
+        fetchData={fetchProducts}
+        searchPlaceholder="Name or slug..."
+        filters={[
+          { key: "category", label: "Category", options: categoryFilterOptions },
+          {
+            key: "status",
+            label: "Status",
+            options: [
+              { value: "active", label: "Active" },
+              { value: "disabled", label: "Disabled" },
+            ],
+          },
+          {
+            key: "badge",
+            label: "Badge",
+            options: [
+              { value: "new", label: "New" },
+              { value: "sale", label: "Sale" },
+              { value: "bestseller", label: "Bestseller" },
+            ],
+          },
+        ]}
+        sortOptions={SORT_OPTIONS as unknown as { value: string; label: string }[]}
+        defaultSort="createdAt"
+      />
 
       {/* ═══════════════════════════ MODAL FORM ═══════════════════════════ */}
       {showModal && (
-        <div style={S.overlay} onClick={closeModal}>
-          <div style={S.modal} onClick={(e) => e.stopPropagation()}>
-            <div style={S.modHead}>
-              <h2 style={S.modTitle}>{editingId ? "Edit Product" : "New Product"}</h2>
-              <button style={S.closeBtn} onClick={closeModal}>
+        <div
+          className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-[100] p-6"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-[720px] max-h-[85vh] overflow-auto shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal header */}
+            <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-[1]">
+              <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
+                {editingId ? "Edit Product" : "New Product"}
+              </h2>
+              <button
+                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)] hover:opacity-70"
+                onClick={closeModal}
+              >
                 <X size={18} />
               </button>
             </div>
-            <form onSubmit={handleSubmit} style={S.form}>
+
+            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6">
               {/* ── Basic Info ── */}
               <Section title="Basic Info">
                 <Field label="Product Name" required>
                   <input
-                    style={S.input}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.name}
                     placeholder="e.g. Classic White T-Shirt"
                     onChange={(e) => {
                       const v = e.target.value;
-                      setForm((p) => ({
-                        ...p,
-                        name: v,
-                        slug: p.slug === slugify(p.name) || !p.slug ? slugify(v) : p.slug,
-                      }));
+                      setForm((p) => ({ ...p, name: v, slug: slugify(v) }));
                     }}
-                    required
-                  />
-                </Field>
-                <Field label="Slug (URL path)" required>
-                  <input
-                    style={S.input}
-                    value={form.slug}
-                    onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
-                    placeholder="auto-generated from name"
                     required
                   />
                 </Field>
                 <Field label="Description" span={2}>
                   <textarea
-                    style={S.textarea}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full resize-y"
                     rows={3}
                     value={form.description}
                     onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
@@ -467,7 +487,7 @@ export default function ProductsContent() {
                     type="number"
                     step="0.01"
                     min="0"
-                    style={S.input}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.price}
                     onChange={(e) =>
                       setForm((p) => ({ ...p, price: parseFloat(e.target.value) || 0 }))
@@ -480,7 +500,7 @@ export default function ProductsContent() {
                     type="number"
                     step="0.01"
                     min="0"
-                    style={S.input}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.originalPrice ?? ""}
                     onChange={(e) =>
                       setForm((p) => ({
@@ -497,10 +517,10 @@ export default function ProductsContent() {
               <Section title="Classification">
                 <Field label="Category" required>
                   <select
-                    style={S.select}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.categoryId}
                     onChange={(e) =>
-                      setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: null }))
+                      setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: "" }))
                     }
                     required
                   >
@@ -510,14 +530,9 @@ export default function ProductsContent() {
                 </Field>
                 <Field label="SubCategory">
                   <select
-                    style={S.select}
-                    value={form.subcategoryId ?? ""}
-                    onChange={(e) =>
-                      setForm((p) => ({
-                        ...p,
-                        subcategoryId: e.target.value ? parseInt(e.target.value) : null,
-                      }))
-                    }
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                    value={form.subcategoryId}
+                    onChange={(e) => setForm((p) => ({ ...p, subcategoryId: e.target.value }))}
                     disabled={!form.categoryId || subcategoryOptions.length === 0}
                   >
                     <option value="">— None —</option>
@@ -526,7 +541,7 @@ export default function ProductsContent() {
                 </Field>
                 <Field label="Status">
                   <select
-                    style={S.select}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.status}
                     onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
                   >
@@ -536,7 +551,7 @@ export default function ProductsContent() {
                 </Field>
                 <Field label="Badge">
                   <select
-                    style={S.select}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.badge ?? ""}
                     onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value || null }))}
                   >
@@ -550,42 +565,40 @@ export default function ProductsContent() {
 
               {/* ── Attributes ── */}
               <Section title="Attributes">
-                <div style={{ ...FS.field, gridColumn: "1 / -1" }}>
-                  <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-                    <span style={FS.label}>Sizes</span>
+                {/* Sizes */}
+                <div className="flex flex-col gap-1 col-span-2">
+                  <div className="flex gap-5 items-center">
+                    <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
+                      Sizes
+                    </span>
                     {form.sizes.length > 0 && (
                       <button
                         type="button"
-                        style={S.clearBtn}
+                        className="inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[10px] font-primary text-[var(--text-muted)] cursor-pointer"
                         onClick={() => setForm((p) => ({ ...p, sizes: [] }))}
                       >
-                        Clear all ({form.sizes.length})<X size={10} />
+                        Clear all ({form.sizes.length})
+                        <X size={10} />
                       </button>
                     )}
                   </div>
                   {SIZE_GROUPS.map((group) => (
-                    <div key={group.label} style={{ marginBottom: 8 }}>
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          fontWeight: 600,
-                          color: "var(--text-muted)",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.06em",
-                          marginBottom: 4,
-                          display: "block",
-                        }}
-                      >
+                    <div key={group.label} className="mb-2">
+                      <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
                         {group.label}
                       </span>
-                      <div style={chipGrid}>
+                      <div className="flex flex-wrap gap-1.5">
                         {group.sizes.map((size) => {
                           const active = form.sizes.includes(size);
                           return (
                             <button
                               key={size}
                               type="button"
-                              style={{ ...chipItem, ...(active ? chipActive : chipInactive) }}
+                              className={`inline-flex items-center gap-1 py-[5px] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
+                                active
+                                  ? "bg-[var(--accent-sage)] text-white px-2 font-semibold cursor-default"
+                                  : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
+                              }`}
                               onClick={() =>
                                 setForm((p) => ({
                                   ...p,
@@ -602,14 +615,9 @@ export default function ProductsContent() {
                       </div>
                     </div>
                   ))}
-                  <div style={{ display: "flex", gap: 6, marginTop: 0 }}>
+                  <div className="flex gap-1.5 mt-0">
                     <input
-                      style={{
-                        ...S.input,
-                        fontSize: "var(--text-xs)",
-                        padding: "6px 10px",
-                        flex: 1,
-                      }}
+                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
                       placeholder="Type custom size and press Enter"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -625,18 +633,11 @@ export default function ProductsContent() {
                   </div>
                 </div>
 
+                {/* Colors */}
                 <Field label="Colors" span={2}>
-                  {/* Color builder row */}
-                  <div
-                    style={{ display: "flex", gap: 8, marginBottom: 10, alignItems: "flex-end" }}
-                  >
+                  <div className="flex gap-2 mb-2.5 items-end">
                     <input
-                      style={{
-                        ...S.input,
-                        fontSize: "var(--text-xs)",
-                        padding: "6px 10px",
-                        flex: 1,
-                      }}
+                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
                       placeholder='Color name, e.g. "Midnight Blue"'
                       value={colorName}
                       onChange={(e) => setColorName(e.target.value)}
@@ -651,46 +652,32 @@ export default function ProductsContent() {
                       type="color"
                       value={colorHex}
                       onChange={(e) => setColorHex(e.target.value)}
-                      style={{
-                        width: 40,
-                        height: 36,
-                        border: "1px solid var(--border-light)",
-                        borderRadius: "var(--radius-sm)",
-                        cursor: "pointer",
-                        padding: 2,
-                        background: "none",
-                        flexShrink: 0,
-                      }}
+                      className="w-10 h-9 border border-[var(--border-light)] rounded-sm cursor-pointer p-0.5 bg-none shrink-0"
                     />
-                    <button type="button" style={addChipBtn} onClick={addColor}>
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-8.5 h-8.5 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--accent-primary)] shrink-0 self-end"
+                      onClick={addColor}
+                    >
                       <Plus size={14} />
                     </button>
                   </div>
-                  {/* Added colors */}
                   {form.colors.length > 0 ? (
-                    <div style={chipGrid}>
+                    <div className="flex flex-wrap gap-1.5">
                       {form.colors.map((c, i) => (
-                        <span key={`${c.name}-${c.hex}`} style={chipActive}>
+                        <span
+                          key={`${c.name}-${c.hex}`}
+                          className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
+                        >
                           <span
-                            style={{
-                              display: "inline-block",
-                              width: 16,
-                              height: 16,
-                              borderRadius: "var(--radius-sm)",
-                              background: c.hex,
-                              border: "1px solid rgba(0,0,0,0.15)",
-                              flexShrink: 0,
-                            }}
+                            className="inline-block w-4 h-4 rounded-sm border border-black/15 shrink-0"
+                            style={{ background: c.hex }}
                           />
-                          <span style={{ fontSize: "var(--text-xs)", fontWeight: 500 }}>
-                            {c.name}
-                          </span>
-                          <code style={{ fontSize: "10px", color: "var(--text-muted)" }}>
-                            {c.hex}
-                          </code>
+                          <span className="text-xs font-medium">{c.name}</span>
+                          <code className="text-[10px] text-white/70">{c.hex}</code>
                           <button
                             type="button"
-                            style={chipX}
+                            className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
                             onClick={() =>
                               setForm((p) => ({ ...p, colors: p.colors.filter((_, j) => j !== i) }))
                             }
@@ -701,21 +688,13 @@ export default function ProductsContent() {
                       ))}
                     </div>
                   ) : (
-                    <p
-                      style={{
-                        fontSize: "var(--text-xs)",
-                        color: "var(--text-muted)",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      No colors added yet.
-                    </p>
+                    <p className="text-xs text-[var(--text-muted)] italic">No colors added yet.</p>
                   )}
                 </Field>
 
                 <Field label="Material">
                   <input
-                    style={S.input}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.material}
                     onChange={(e) => setForm((p) => ({ ...p, material: e.target.value }))}
                     placeholder="e.g. 100% Cotton"
@@ -723,36 +702,30 @@ export default function ProductsContent() {
                 </Field>
                 <Field label="Care Instructions">
                   <input
-                    style={S.input}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                     value={form.care}
                     onChange={(e) => setForm((p) => ({ ...p, care: e.target.value }))}
                     placeholder="e.g. Machine wash cold"
                   />
                 </Field>
 
+                {/* Tags */}
                 <Field label="Tags" span={2}>
-                  {/* Tag suggestions */}
-                  <div style={chipGrid}>
+                  <div className="flex flex-wrap gap-1.5">
                     {TAG_SUGGESTIONS.filter((t) => !form.tags.includes(t)).map((tag) => (
                       <button
                         key={tag}
                         type="button"
-                        style={chipHint}
+                        className="inline-flex items-center gap-1 py-[5px] px-2.5 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)] text-[11px] font-primary cursor-pointer border-0 transition-all"
                         onClick={() => setForm((p) => ({ ...p, tags: [...p.tags, tag] }))}
                       >
                         + {tag}
                       </button>
                     ))}
                   </div>
-                  {/* Custom tag input */}
-                  <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                  <div className="flex gap-1.5 mt-2">
                     <input
-                      style={{
-                        ...S.input,
-                        fontSize: "var(--text-xs)",
-                        padding: "6px 10px",
-                        flex: 1,
-                      }}
+                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
                       placeholder="Type tag and press Enter..."
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
@@ -768,15 +741,17 @@ export default function ProductsContent() {
                       }}
                     />
                   </div>
-                  {/* Selected tags */}
                   {form.tags.length > 0 && (
-                    <div style={{ ...chipGrid, marginTop: 8 }}>
+                    <div className="flex flex-wrap gap-1.5 mt-2">
                       {form.tags.map((tag) => (
-                        <span key={tag} style={chipActive}>
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
+                        >
                           {tag}
                           <button
                             type="button"
-                            style={chipX}
+                            className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
                             onClick={() =>
                               setForm((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }))
                             }
@@ -794,7 +769,7 @@ export default function ProductsContent() {
               <Section title="Images">
                 <Field label="Image URLs" span={2}>
                   <textarea
-                    style={S.textarea}
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full resize-y"
                     rows={4}
                     value={form.images.join("\n")}
                     placeholder="one URL per line"
@@ -812,12 +787,20 @@ export default function ProductsContent() {
               </Section>
 
               {/* ── Actions ── */}
-              <div style={S.formAct}>
-                <button type="button" style={S.cancelBtn} onClick={closeModal}>
+              <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border-subtle)]">
+                <button
+                  type="button"
+                  className="py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
+                  onClick={closeModal}
+                >
                   Cancel
                 </button>
-                <button type="submit" style={S.submitBtn} disabled={saving}>
-                  {saving ? "Saving..." : editingId ? "Update Product" : "Create Product"}
+                <button
+                  type="submit"
+                  className="py-2 px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm text-sm font-semibold font-primary cursor-pointer disabled:opacity-50"
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : editingId ? "Update Product" : "Create Product"}
                 </button>
               </div>
             </form>
@@ -827,474 +810,3 @@ export default function ProductsContent() {
     </div>
   );
 }
-
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <fieldset style={FS.fieldset}>
-      <legend style={FS.legend}>{title}</legend>
-      <div style={FS.grid}>{children}</div>
-    </fieldset>
-  );
-}
-
-function Field({
-  label,
-  hint,
-  required,
-  span,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  required?: boolean;
-  span?: number;
-  children: React.ReactNode;
-}) {
-  return (
-    <div style={{ ...FS.field, ...(span === 2 ? { gridColumn: "1 / -1" } : {}) }}>
-      <span style={FS.label}>
-        {label}
-        {required && <span style={FS.req}> *</span>}
-      </span>
-      {children}
-      {hint && <span style={FS.hint}>{hint}</span>}
-    </div>
-  );
-}
-
-function statusStyle(s: string): React.CSSProperties {
-  return s === "active"
-    ? { background: "rgba(163,177,138,0.15)", color: "var(--accent-sage)" }
-    : { background: "rgba(107,101,96,0.1)", color: "var(--color-ash)" };
-}
-
-function badgeColor(b: string): React.CSSProperties {
-  const m: Record<string, React.CSSProperties> = {
-    new: { background: "rgba(143,163,180,0.15)", color: "var(--accent-blue)" },
-    sale: { background: "rgba(212,165,165,0.15)", color: "var(--accent-rose)" },
-    bestseller: { background: "rgba(201,169,110,0.15)", color: "var(--accent-primary)" },
-  };
-  return m[b] ?? { background: "rgba(107,101,96,0.05)", color: "var(--text-muted)" };
-}
-
-/* ═══════════════════════════════ Styles ═══════════════════════════════ */
-
-const S: Record<string, React.CSSProperties> = {
-  wrapper: { display: "flex", flexDirection: "column", gap: "var(--space-6)" },
-  empty: {
-    fontSize: "var(--text-sm)",
-    color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)",
-    padding: "var(--space-8) 0",
-  },
-  header: { display: "flex", justifyContent: "space-between", alignItems: "flex-start" },
-  heading: {
-    fontFamily: "var(--font-display)",
-    fontSize: "var(--text-2xl)",
-    color: "var(--text-heading)",
-    fontWeight: 400,
-    margin: 0,
-  },
-  sub: {
-    fontSize: "var(--text-xs)",
-    color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)",
-    marginTop: 4,
-  },
-  addBtn: {
-    display: "flex",
-    alignItems: "center",
-    gap: 6,
-    padding: "10px 20px",
-    background: "var(--accent-primary)",
-    color: "var(--text-on-gold)",
-    border: "none",
-    borderRadius: "var(--radius-md)",
-    fontSize: "var(--text-sm)",
-    fontWeight: 600,
-    fontFamily: "var(--font-primary)",
-    cursor: "pointer",
-  },
-
-  toolbar: {
-    display: "flex",
-    gap: "var(--space-3)",
-    alignItems: "flex-end",
-    flexWrap: "wrap" as const,
-  },
-  toolField: { display: "flex", flexDirection: "column", gap: 3 },
-  toolLabel: {
-    fontSize: "var(--text-xs)",
-    fontWeight: 600,
-    color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)",
-  },
-  searchWrap: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    background: "var(--bg-secondary)",
-    borderRadius: "var(--radius-md)",
-    padding: "0 var(--space-4)",
-    height: 36,
-  },
-  searchInput: {
-    flex: 1,
-    border: "none",
-    background: "none",
-    padding: "0",
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-    color: "var(--text-primary)",
-    outline: "none",
-  },
-  filterSelect: {
-    padding: "8px 12px",
-    border: "none",
-    borderRadius: "var(--radius-md)",
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-    background: "var(--bg-secondary)",
-    color: "var(--text-primary)",
-    outline: "none",
-    minWidth: 130,
-    height: 36,
-  },
-
-  tableWrap: {
-    background: "var(--bg-secondary)",
-    borderRadius: "var(--radius-lg)",
-    overflow: "hidden",
-  },
-  table: { width: "100%", borderCollapse: "collapse" as const },
-  th: {
-    textAlign: "left" as const,
-    fontSize: "var(--text-xs)",
-    fontWeight: 600,
-    color: "var(--text-muted)",
-    padding: "var(--space-3) var(--space-4)",
-    borderBottom: "1px solid var(--border-subtle)",
-    fontFamily: "var(--font-primary)",
-    textTransform: "uppercase" as const,
-    letterSpacing: "0.05em",
-  },
-  tr: { borderBottom: "1px solid var(--border-subtle)" },
-  td: {
-    padding: "var(--space-3) var(--space-4)",
-    fontSize: "var(--text-sm)",
-    color: "var(--text-primary)",
-    fontFamily: "var(--font-primary)",
-    verticalAlign: "middle" as const,
-  },
-  emptyCell: {
-    padding: "var(--space-10) var(--space-4)",
-    textAlign: "center" as const,
-    color: "var(--text-muted)",
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-  },
-  prodCell: { display: "flex", alignItems: "center", gap: "var(--space-3)" },
-  thumb: {
-    width: 40,
-    height: 48,
-    objectFit: "cover" as const,
-    borderRadius: "var(--radius-sm)",
-    flexShrink: 0,
-    opacity: 1,
-  },
-  noImg: {
-    width: 40,
-    height: 48,
-    background: "var(--bg-elevated)",
-    borderRadius: "var(--radius-sm)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "var(--text-muted)",
-    flexShrink: 0,
-  },
-  prodName: { fontWeight: 600, fontSize: "var(--text-sm)" },
-  prodSlug: { fontSize: "var(--text-xs)", color: "var(--text-muted)" },
-  catTag: { fontSize: "var(--text-xs)", color: "var(--accent-primary)", fontWeight: 600 },
-  subTag: { fontSize: "var(--text-xs)", color: "var(--text-muted)" },
-  price: { fontWeight: 600 },
-  origPrice: {
-    fontSize: "var(--text-xs)",
-    color: "var(--text-muted)",
-    textDecoration: "line-through",
-    marginLeft: 6,
-  },
-  muted: { color: "var(--text-disabled)" },
-  badge: {
-    display: "inline-block",
-    padding: "2px 8px",
-    borderRadius: "var(--radius-pill)",
-    fontSize: "var(--text-xs)",
-    fontWeight: 600,
-    fontFamily: "var(--font-primary)",
-    textTransform: "capitalize" as const,
-  },
-  actions: { display: "flex", gap: 4, justifyContent: "flex-end" },
-  actBtn: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
-    height: 32,
-    border: "none",
-    borderRadius: "var(--radius-sm)",
-    background: "transparent",
-    cursor: "pointer",
-    color: "var(--text-secondary)",
-  },
-
-  overlay: {
-    position: "fixed" as const,
-    inset: 0,
-    background: "rgba(10,10,8,0.5)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 100,
-    padding: "var(--space-6)",
-  },
-  modal: {
-    background: "var(--bg-primary)",
-    borderRadius: "var(--radius-lg)",
-    width: "100%",
-    maxWidth: 720,
-    maxHeight: "85vh",
-    overflow: "auto",
-    boxShadow: "var(--shadow-xl)",
-  },
-  modHead: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "var(--space-5) var(--space-6)",
-    borderBottom: "1px solid var(--border-subtle)",
-    position: "sticky" as const,
-    top: 0,
-    background: "var(--bg-primary)",
-    zIndex: 1,
-  },
-  modTitle: {
-    fontFamily: "var(--font-display)",
-    fontSize: "var(--text-lg)",
-    color: "var(--text-heading)",
-    fontWeight: 400,
-    margin: 0,
-  },
-  closeBtn: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
-    height: 32,
-    border: "none",
-    borderRadius: "var(--radius-sm)",
-    background: "transparent",
-    cursor: "pointer",
-    color: "var(--text-muted)",
-  },
-  form: {
-    padding: "var(--space-6)",
-    display: "flex",
-    flexDirection: "column",
-    gap: "var(--space-6)",
-  },
-  input: {
-    padding: "8px 12px",
-    border: "none",
-    borderBottom: "1px solid var(--border-light)",
-    borderRadius: 0,
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-    background: "var(--bg-secondary)",
-    color: "var(--text-primary)",
-    outline: "none",
-    width: "100%",
-  },
-  select: {
-    padding: "8px 12px",
-    border: "none",
-    borderBottom: "1px solid var(--border-light)",
-    borderRadius: 0,
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-    background: "var(--bg-secondary)",
-    color: "var(--text-primary)",
-    outline: "none",
-    width: "100%",
-  },
-  textarea: {
-    padding: "8px 12px",
-    border: "none",
-    borderBottom: "1px solid var(--border-light)",
-    borderRadius: 0,
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-    background: "var(--bg-secondary)",
-    color: "var(--text-primary)",
-    outline: "none",
-    resize: "vertical" as const,
-    width: "100%",
-  },
-  formAct: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: "var(--space-3)",
-    paddingTop: "var(--space-4)",
-    borderTop: "1px solid var(--border-subtle)",
-  },
-  cancelBtn: {
-    padding: "8px 16px",
-    background: "var(--bg-elevated)",
-    border: "none",
-    borderRadius: "var(--radius-sm)",
-    fontSize: "var(--text-sm)",
-    fontFamily: "var(--font-primary)",
-    color: "var(--text-secondary)",
-    cursor: "pointer",
-  },
-  submitBtn: {
-    padding: "8px 20px",
-    background: "var(--accent-primary)",
-    color: "var(--text-on-gold)",
-    border: "none",
-    borderRadius: "var(--radius-sm)",
-    fontSize: "var(--text-sm)",
-    fontWeight: 600,
-    fontFamily: "var(--font-primary)",
-    cursor: "pointer",
-  },
-  clearBtn: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 4,
-    padding: "2px 8px",
-    background: "transparent",
-    border: "none",
-    borderRadius: "var(--radius-sm)",
-    fontSize: "10px",
-    fontFamily: "var(--font-primary)",
-    color: "var(--text-muted)",
-    cursor: "pointer",
-  },
-  loadingOverlay: {
-    position: "absolute" as const,
-    inset: 0,
-    background: "rgba(251,248,241,0.5)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-    borderRadius: "var(--radius-lg)",
-  },
-  loadingText: {
-    fontSize: "var(--text-sm)",
-    color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)",
-  },
-};
-
-/* ── Chip styles ── */
-const chipGrid: React.CSSProperties = { display: "flex", flexWrap: "wrap", gap: 6 };
-const chipItem: React.CSSProperties = {
-  padding: "5px 12px",
-  borderRadius: "var(--radius-pill)",
-  fontSize: "var(--text-xs)",
-  fontFamily: "var(--font-primary)",
-  cursor: "pointer",
-  border: "none",
-  transition: "all var(--duration-fast)",
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 4,
-};
-const chipInactive: React.CSSProperties = {
-  ...chipItem,
-  background: "var(--bg-elevated)",
-  color: "var(--text-muted)",
-};
-const chipActive: React.CSSProperties = {
-  ...chipItem,
-  background: "var(--accent-sage)",
-  color: "#fff",
-  padding: "5px 8px",
-  cursor: "default",
-  fontWeight: 600,
-};
-const chipHint: React.CSSProperties = {
-  ...chipItem,
-  background: "var(--bg-elevated)",
-  color: "var(--text-muted)",
-  fontSize: "11px",
-  padding: "5px 10px",
-};
-const chipX: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 16,
-  height: 16,
-  border: "none",
-  background: "transparent",
-  cursor: "pointer",
-  color: "var(--text-muted)",
-  padding: 0,
-  marginLeft: 2,
-  borderRadius: "50%",
-  flexShrink: 0,
-};
-const addChipBtn: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 34,
-  height: 34,
-  border: "none",
-  borderRadius: "var(--radius-sm)",
-  background: "var(--bg-elevated)",
-  cursor: "pointer",
-  color: "var(--accent-primary)",
-  flexShrink: 0,
-  alignSelf: "flex-end",
-};
-
-/* ── Section / Fieldset styles ── */
-const FS: Record<string, React.CSSProperties> = {
-  fieldset: {
-    border: "none",
-    borderBottom: "1px solid var(--border-subtle)",
-    padding: "0 0 var(--space-5) 0",
-    margin: 0,
-  },
-  legend: {
-    fontFamily: "var(--font-primary)",
-    fontSize: "var(--text-xs)",
-    fontWeight: 600,
-    color: "var(--text-secondary)",
-    textTransform: "uppercase" as const,
-    letterSpacing: "0.06em",
-    padding: 0,
-    marginBottom: "var(--space-4)",
-  },
-  grid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" },
-  field: { display: "flex", flexDirection: "column" as const, gap: 3 },
-  label: {
-    fontSize: "var(--text-xs)",
-    fontWeight: 600,
-    color: "var(--text-secondary)",
-    fontFamily: "var(--font-primary)",
-  },
-  req: { color: "var(--accent-rose)" },
-  hint: {
-    fontSize: "10px",
-    color: "var(--text-disabled)",
-    fontFamily: "var(--font-primary)",
-    fontStyle: "italic",
-  },
-};

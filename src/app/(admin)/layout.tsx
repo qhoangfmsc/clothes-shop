@@ -1,3 +1,4 @@
+import { StoreProvider } from "@/src/store/StoreProvider";
 import AdminLayoutClient from "./AdminLayoutClient";
 
 export const metadata = {
@@ -10,5 +11,9 @@ export default function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <AdminLayoutClient>{children}</AdminLayoutClient>;
+  return (
+    <StoreProvider>
+      <AdminLayoutClient>{children}</AdminLayoutClient>
+    </StoreProvider>
+  );
 }
