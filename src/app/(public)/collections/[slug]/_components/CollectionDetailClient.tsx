@@ -223,7 +223,7 @@ export default function CollectionDetailClient({
 
         <div ref={editorialRef} className="cd-editorial">
           {editorialProducts.map((product, idx) => {
-            const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
+            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
             /* Alternate: large left, small right, then reversed */
             const isOdd = idx % 2 !== 0;
 
@@ -298,7 +298,7 @@ export default function CollectionDetailClient({
 
         <div ref={shopAllRef} className="cd-shop-grid">
           {gridProducts.map((product) => {
-            const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
+            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
 
             return (
               <Link key={product.id} href={productUrl} className="cd-shop-card">

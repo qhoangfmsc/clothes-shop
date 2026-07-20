@@ -51,8 +51,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           name: product.name,
           price: product.price,
           image: product.images[0],
-          category: product.category,
-          subcategory: product.subcategory,
+          category: product.category?.slug ?? "",
+          subcategory: product.subcategory?.slug ?? "",
         });
         if (added) {
           syncAdd(product.id);
@@ -84,7 +84,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     [requireAuth, openQuickAdd, product]
   );
 
-  const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
+  const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
 
   return (
     <div>

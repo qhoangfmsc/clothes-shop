@@ -212,8 +212,8 @@ export const useCartStore = create<CartState>()(
               color: si.color,
               colorHex: matchedColor?.hex ?? si.color,
               quantity: si.quantity,
-              category: si.product?.category ?? "",
-              subcategory: si.product?.subcategory ?? "",
+              category: (si.product as any)?.category?.slug ?? (si.product as any)?.category ?? "",
+              subcategory: (si.product as any)?.subcategory?.slug ?? (si.product as any)?.subcategory ?? "",
             };
           });
 

@@ -134,8 +134,8 @@ export default function ProductDetailClient({
           size: selectedSize!,
           color: colorName,
           colorHex: selectedColor!,
-          category: product.category,
-          subcategory: product.subcategory,
+          category: product.category?.slug ?? "",
+          subcategory: product.subcategory?.slug ?? "",
         },
         quantity
       );
@@ -156,8 +156,8 @@ export default function ProductDetailClient({
         name: product.name,
         price: product.price,
         image: product.images[0],
-        category: product.category,
-        subcategory: product.subcategory,
+        category: product.category?.slug ?? "",
+        subcategory: product.subcategory?.slug ?? "",
       });
       if (added) {
         syncWishlistAdd(product.id);
@@ -288,9 +288,9 @@ export default function ProductDetailClient({
           >
             <Link href="/shop">Shop</Link>
             <span className="pdp-breadcrumb__sep">◆</span>
-            <Link href={`/shop/${product.category}`}>{categoryTitle}</Link>
+            <Link href={`/shop/${product.category?.slug ?? ""}`}>{categoryTitle}</Link>
             <span className="pdp-breadcrumb__sep">◆</span>
-            <Link href={`/shop/${product.category}/${product.subcategory}`}>
+            <Link href={`/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}`}>
               {subcategoryLabel}
             </Link>
           </motion.nav>
@@ -496,7 +496,7 @@ export default function ProductDetailClient({
               type="button"
               className="pdp-share-btn"
               onClick={async () => {
-                const url = `${typeof window !== "undefined" ? window.location.origin : ""}/shop/${product.category}/${product.subcategory}/${product.id}`;
+                const url = `${typeof window !== "undefined" ? window.location.origin : ""}/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
                 if (typeof navigator !== "undefined" && navigator.share) {
                   try {
                     await navigator.share({ title: product.name, text: `Check out ${product.name} from Ori Baebi`, url });
@@ -562,7 +562,7 @@ export default function ProductDetailClient({
             {relatedProducts.slice(0, 4).map((rp) => (
               <Link
                 key={rp.id}
-                href={`/shop/${rp.category}/${rp.subcategory}/${rp.id}`}
+                href={`/shop/${rp.category?.slug ?? ""}/${rp.subcategory?.slug ?? ""}/${rp.id}`}
                 className="pdp-related__card"
               >
                 <div className="pdp-related__img">
@@ -583,7 +583,7 @@ export default function ProductDetailClient({
       )}
       {/* Size Guide Modal */}
       <SizeGuideModal
-        category={product.category}
+        category={product.category?.slug ?? ""}
         isOpen={showSizeGuide}
         onClose={() => setShowSizeGuide(false)}
       />

@@ -13,6 +13,7 @@ export interface AuthUser {
   providerId: string | null;
   role: string;
   status: string;
+  permissions?: string[];
   createdAt: string;
   updatedAt: string;
 }

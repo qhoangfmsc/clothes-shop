@@ -23,7 +23,7 @@ function buildSpotlights(products: Product[]) {
     desc: p.description,
     price: `$${p.price.toLocaleString()}`,
     image: p.images[0],
-    href: `/shop/${p.category}/${p.subcategory}/${p.id}`,
+    href: `/shop/${p.category?.slug ?? ""}/${p.subcategory?.slug ?? ""}/${p.id}`,
     bgColor: SPOTLIGHT_BGS[idx] ?? "var(--bg-section-2)",
   }));
 }
@@ -332,7 +332,7 @@ export default function NewInClient({ products }: NewInClientProps) {
         {/* Custom grid with stagger animation */}
         <div ref={gridRef} className="product-grid">
           {products.map((product) => {
-            const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
+            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
 
             return (
               <div key={product.id} className="product-card-wrap ni-product-card">

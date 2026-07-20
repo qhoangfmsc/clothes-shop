@@ -60,7 +60,7 @@ function QuickAddContent({
   const [addedToCart, setAddedToCart] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { toast } = useToast();
-  const { sizeGuide } = useSizeGuide(showSizeGuide ? product.category : null);
+  const { sizeGuide } = useSizeGuide(showSizeGuide ? product.category?.slug ?? null : null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
   /* Detect desktop for animation direction — safe because this only renders client-side (portal) */
@@ -119,8 +119,8 @@ function QuickAddContent({
         size: selectedSize!,
         color: colorName,
         colorHex: selectedColor!,
-        category: product.category,
-        subcategory: product.subcategory,
+        category: product.category?.slug ?? "",
+        subcategory: product.subcategory?.slug ?? "",
       },
       quantity
     );
@@ -139,7 +139,7 @@ function QuickAddContent({
     }, 800);
   }, [addedToCart, isSelectionComplete, addToCart, syncCartAdd, product, selectedSize, selectedColor, quantity, toast, onClose]);
 
-  const productUrl = `/shop/${product.category}/${product.subcategory}/${product.id}`;
+  const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
 
   /* Size guide row helper */
   const getRowValue = (row: Record<string, string | undefined>, col: string): string => {

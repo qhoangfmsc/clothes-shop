@@ -18,8 +18,8 @@ interface ProductPageProps {
 export async function generateStaticParams() {
   const products = await getAllProducts();
   return products.map((p) => ({
-    category: p.category,
-    subcategory: p.subcategory,
+    category: p.category?.slug ?? "",
+    subcategory: p.subcategory?.slug ?? "",
     productId: p.id,
   }));
 }

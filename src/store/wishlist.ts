@@ -124,8 +124,8 @@ export const useWishlistStore = create<WishlistState>()(
             name: si.product?.name ?? "",
             price: Number(si.product?.price ?? 0),
             image: si.product?.images?.[0] ?? "",
-            category: si.product?.category ?? "",
-            subcategory: si.product?.subcategory ?? "",
+            category: (si.product as any)?.category?.slug ?? (si.product as any)?.category ?? "",
+            subcategory: (si.product as any)?.subcategory?.slug ?? (si.product as any)?.subcategory ?? "",
             addedAt: si.createdAt ?? new Date().toISOString(),
           }));
 

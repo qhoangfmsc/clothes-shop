@@ -38,6 +38,19 @@ img[data-nimg] {
   to { opacity: 1; }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Admin images — bypass global fade-in ─── */
+.admin-img,
+[data-admin-img] img,
+img[data-admin-img] {
+  opacity: 1 !important;
+  animation: none !important;
+}
+
 /* Stagger images slightly within grids for a polished feel */
 .product-grid img,
 .category-grid img,
