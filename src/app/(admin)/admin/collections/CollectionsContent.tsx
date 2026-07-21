@@ -132,15 +132,6 @@ export default function CollectionsContent() {
         ),
       },
       {
-        key: "slug",
-        header: "Slug",
-        render: (c) => (
-          <code className="text-xs bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono">
-            {c.slug}
-          </code>
-        ),
-      },
-      {
         key: "season",
         header: "Season",
         render: (c) =>
@@ -299,7 +290,7 @@ export default function CollectionsContent() {
         tableRef={tableRef}
         columns={columns}
         fetchData={fetchCollections}
-        searchPlaceholder="Name or slug..."
+        searchPlaceholder="Name collection..."
         filters={[
           {
             key: "season",

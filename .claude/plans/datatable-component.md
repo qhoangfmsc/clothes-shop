@@ -1,6 +1,7 @@
 # Plan: Reusable DataTable Component
 
 ## Goal
+
 Create a single `DataTable<T>` component that encapsulates search, filters, sort, pagination, loading states, and refresh — then apply it to `admin/products`.
 
 ## Component API Design
@@ -44,23 +45,23 @@ interface FetchResult<T> {
 <DataTable<T>
   columns={DataTableColumn<T>[]}
   fetchData={(params: FetchParams) => Promise<FetchResult<T>>}
-  
+
   // Search
   searchPlaceholder?: string          // default "Search..."
-  
+
   // Filters (optional)
   filters?: DataTableFilter[]
-  
-  // Sort (optional)  
+
+  // Sort (optional)
   sortOptions?: DataTableSortOption[]
   defaultSort?: string               // default "newest"
-  
+
   // Pagination
   pageSize?: number                  // default 25
-  
+
   // Refresh
   tableRef?: React.RefObject<DataTableRef>
-  
+
   // Customization
   emptyState?: string | ((hasFilters: boolean) => string)
   keyExtractor?: (row: T) => string  // default (row) => row.id
@@ -97,7 +98,7 @@ tableRef.current?.refresh();
 
 // DataTable internally:
 useImperativeHandle(tableRef, () => ({
-  refresh: () => mutate(),  // force re-fetch with current params
+  refresh: () => mutate(), // force re-fetch with current params
 }));
 ```
 
@@ -106,11 +107,13 @@ Actually, since the fetch is not SWR-based but a manual call, `refresh` just cal
 ## Implementation
 
 ### File structure:
+
 ```
 src/app/_components/DataTable.tsx   — single file (types + component + styles)
 ```
 
 ### Internal state:
+
 - `search` (string) + `debouncedSearch` (350ms)
 - `filters` (Record<string, string>) — keyed by filter key
 - `sort` (string)
@@ -120,10 +123,12 @@ src/app/_components/DataTable.tsx   — single file (types + component + styles)
 - `loading` (boolean)
 
 ### Effects:
+
 - `useEffect` on debouncedSearch + filters + sort + page → call fetchData
 - When any filter/sort/search changes → reset page to 1
 
 ### Styling:
+
 - Mirror existing styles from ProductsContent/OrdersContent — same CSS variable patterns
 - Toolbar: flex row with search + filters + sort
 - Table: contained card (`var(--bg-secondary)`, `border-radius-lg`)
@@ -132,6 +137,7 @@ src/app/_components/DataTable.tsx   — single file (types + component + styles)
 ## Apply to admin/products
 
 Replace ProductsContent's toolbar + table + pagination with:
+
 ```tsx
 const tableRef = useRef<DataTableRef>(null);
 
@@ -151,16 +157,16 @@ tableRef.current?.refresh();
   ]}
   sortOptions={SORT_OPTIONS}
   defaultSort="newest"
-  searchPlaceholder="Name or slug..."
+  searchPlaceholder="Name product..."
   headerExtra={<Add Product button>}
 />
 ```
 
 ## Files to Create/Modify
 
-| File | Action |
-|------|--------|
-| `src/app/_components/DataTable.tsx` | **Create** — reusable DataTable component |
+| File                                                 | Action                                                     |
+| ---------------------------------------------------- | ---------------------------------------------------------- |
+| `src/app/_components/DataTable.tsx`                  | **Create** — reusable DataTable component                  |
 | `src/app/(admin)/admin/products/ProductsContent.tsx` | **Modify** — use DataTable instead of manual toolbar+table |
 
 ## Trade-offs

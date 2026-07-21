@@ -104,29 +104,22 @@ export default function CategoriesContent() {
         render: (c) => <span className="font-semibold">{c.title}</span>,
       },
       {
-        key: "slug",
-        header: "Slug",
-        render: (c) => (
-          <code className="text-xs bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono">{c.slug}</code>
-        ),
-      },
-      {
         key: "subcategories",
         header: "Subcategories",
         render: (c) => (
           <div className="flex gap-1 flex-wrap">
-            {c.subcategories && c.subcategories.length > 0
-              ? c.subcategories.map((s) => (
-                  <span
-                    key={s.id}
-                    className="text-xs bg-[rgba(184,165,200,0.12)] text-[var(--accent-lavender)] py-0.5 px-1.5 rounded-sm font-medium"
-                  >
-                    {s.label}
-                  </span>
-                ))
-              : (
-                <span className="text-[var(--text-disabled)] text-xs">—</span>
-              )}
+            {c.subcategories && c.subcategories.length > 0 ? (
+              c.subcategories.map((s) => (
+                <span
+                  key={s.id}
+                  className="text-xs bg-[rgba(184,165,200,0.12)] text-[var(--accent-lavender)] py-0.5 px-1.5 rounded-sm font-medium"
+                >
+                  {s.label}
+                </span>
+              ))
+            ) : (
+              <span className="text-[var(--text-disabled)] text-xs">—</span>
+            )}
           </div>
         ),
       },
@@ -184,7 +177,10 @@ export default function CategoriesContent() {
   const addSub = () =>
     setForm((p) => ({
       ...p,
-      subcategories: [...p.subcategories, { id: 0, slug: "", label: "", description: "", count: 0 }],
+      subcategories: [
+        ...p.subcategories,
+        { id: 0, slug: "", label: "", description: "", count: 0 },
+      ],
     }));
 
   const updSub = (i: number, field: string, value: string) =>
@@ -273,7 +269,9 @@ export default function CategoriesContent() {
       {/* ── Header ── */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Categories</h1>
+          <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">
+            Categories
+          </h1>
           <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
             {total} categor{total !== 1 ? "ies" : "y"}
           </p>
@@ -292,7 +290,7 @@ export default function CategoriesContent() {
         tableRef={tableRef}
         columns={columns}
         fetchData={fetchCategories}
-        searchPlaceholder="Title or slug..."
+        searchPlaceholder="Categories..."
         sortOptions={CATEGORY_SORT_OPTIONS as unknown as { value: string; label: string }[]}
         defaultSort="createdAt"
       />
@@ -360,7 +358,9 @@ export default function CategoriesContent() {
                     </button>
                   </div>
                   {form.subcategories.length === 0 && (
-                    <p className="text-xs text-[var(--text-muted)] py-3">No subcategories yet. Click &quot;Add&quot; to create one.</p>
+                    <p className="text-xs text-[var(--text-muted)] py-3">
+                      No subcategories yet. Click &quot;Add&quot; to create one.
+                    </p>
                   )}
                   {form.subcategories.map((sub, i) => (
                     <div key={i} className="flex gap-1.5 mb-1.5 items-center">

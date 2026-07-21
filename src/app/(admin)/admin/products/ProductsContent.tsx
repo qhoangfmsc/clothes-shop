@@ -406,7 +406,7 @@ export default function ProductsContent() {
         tableRef={tableRef}
         columns={columns}
         fetchData={fetchProducts}
-        searchPlaceholder="Name or slug..."
+        searchPlaceholder="Name product..."
         filters={[
           { key: "category", label: "Category", options: categoryFilterOptions },
           {
