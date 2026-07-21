@@ -135,7 +135,9 @@ export default function CollectionsContent() {
         key: "slug",
         header: "Slug",
         render: (c) => (
-          <code className="text-xs bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono">{c.slug}</code>
+          <code className="text-xs bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono">
+            {c.slug}
+          </code>
         ),
       },
       {
@@ -245,7 +247,9 @@ export default function CollectionsContent() {
     e.preventDefault();
     try {
       if (editingId) {
-        await dispatch(updateCollection({ id: editingId, body: form as unknown as Record<string, unknown> })).unwrap();
+        await dispatch(
+          updateCollection({ id: editingId, body: form as unknown as Record<string, unknown> })
+        ).unwrap();
         toast.success("Collection updated");
       } else {
         await dispatch(createCollection(form as unknown as Record<string, unknown>)).unwrap();
@@ -274,7 +278,9 @@ export default function CollectionsContent() {
       {/* ── Header ── */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Collections</h1>
+          <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">
+            Collections
+          </h1>
           <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
             {total} collection{total !== 1 ? "s" : ""}
           </p>
@@ -425,7 +431,7 @@ export default function CollectionsContent() {
                               </div>
                             )}
                             <span className="text-[11px] max-w-24 overflow-hidden text-ellipsis whitespace-nowrap">
-                              {prod?.name ?? pid.slice(0, 8)}
+                              {prod?.name ?? pid}
                             </span>
                             <button
                               type="button"
@@ -448,7 +454,9 @@ export default function CollectionsContent() {
                   {/* Available products */}
                   <div className="max-h-50 overflow-auto border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-secondary)]">
                     {filteredProducts.length === 0 ? (
-                      <p className="p-4 text-xs text-[var(--text-muted)] text-center">No products found.</p>
+                      <p className="p-4 text-xs text-[var(--text-muted)] text-center">
+                        No products found.
+                      </p>
                     ) : (
                       filteredProducts.slice(0, 50).map((p) => {
                         const selected = form.productIds.includes(p.id);

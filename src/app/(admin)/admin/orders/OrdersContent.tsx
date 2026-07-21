@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
-import Image from "next/image";
-import { X, Package, MapPin, CreditCard } from "lucide-react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { X, AlertTriangle } from "lucide-react";
+import OrderDetailPanel from "@/src/app/_components/OrderDetailPanel";
 import { type AdminOrder } from "@/src/hooks/use-admin-api";
 import { useToast } from "@/src/app/_components/Toast";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
@@ -22,7 +23,7 @@ import type { OrderListResult } from "./_common/types";
 
 function statusStyle(s: string): string {
   const m: Record<string, string> = {
-    pending: "bg-[rgba(240,228,166,0.2)] text-[#B8A040]",
+    pending: "bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]",
     confirmed: "bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]",
     shipping: "bg-[rgba(184,165,200,0.15)] text-[var(--accent-lavender)]",
     delivered: "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]",
@@ -38,8 +39,62 @@ export default function OrdersContent() {
   const { toast } = useToast();
   const tableRef = useRef<DataTableRef>(null);
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const { isUpdating, total } = useAppSelector((s) => s.orders);
+
+  /* ── Detail Panel State ── */
+  const [detailOrder, setDetailOrder] = useState<AdminOrder | null>(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
+  const [detailError, setDetailError] = useState<string | null>(null);
+
+  /* ── URL-driven modal: auto-open when ?orderId= is present ── */
+  const urlOrderId = searchParams.get("orderId");
+  const hasAutoOpened = useRef(false);
+
+  useEffect(() => {
+    if (urlOrderId && !hasAutoOpened.current) {
+      hasAutoOpened.current = true;
+      setDetailError(null);
+      setLoadingDetail(true);
+      setDetailOrder(null);
+      dispatch(fetchOrderDetail(urlOrderId))
+        .unwrap()
+        .then((data) => setDetailOrder(data))
+        .catch(() => setDetailError(`Order #${urlOrderId} not found`))
+        .finally(() => setLoadingDetail(false));
+    }
+    /* Reset if URL has no orderId */
+    if (!urlOrderId) {
+      hasAutoOpened.current = false;
+      setDetailOrder(null);
+      setDetailError(null);
+    }
+  }, [urlOrderId, dispatch]);
+
+  /* ── openDetail: push orderId to URL ── */
+  const openDetail = async (order: AdminOrder) => {
+    setDetailError(null);
+    setDetailOrder(order);
+    setLoadingDetail(true);
+    hasAutoOpened.current = true; // prevent useEffect from re-fetching & clearing modal
+    router.push(`/admin/orders?orderId=${order.id}`, { scroll: false });
+    try {
+      const fresh = await dispatch(fetchOrderDetail(order.id)).unwrap();
+      setDetailOrder(fresh);
+    } catch {
+      /* keep cached order data */
+    } finally {
+      setLoadingDetail(false);
+    }
+  };
+
+  /* ── closeDetail: remove orderId from URL ── */
+  const closeDetail = () => {
+    hasAutoOpened.current = false;
+    router.push("/admin/orders", { scroll: false });
+  };
 
   /* ── fetchData for DataTable ── */
   const fetchOrders = async (params: DataTableFetchParams): Promise<OrderListResult> => {
@@ -62,7 +117,7 @@ export default function OrdersContent() {
         header: "Order ID",
         render: (o) => (
           <code className="text-xs bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono font-semibold">
-            #{o.id.slice(0, 8)}
+            #{o.id}
           </code>
         ),
       },
@@ -70,7 +125,9 @@ export default function OrdersContent() {
         key: "customer",
         header: "Customer",
         render: (o) => (
-          <span className="text-xs text-[var(--text-muted)]">{o.userId.slice(0, 8)}</span>
+          <span className="text-xs text-[var(--text-muted)]">
+            {(o.shippingAddress?.fullName as String) || o.userId}
+          </span>
         ),
       },
       {
@@ -143,35 +200,18 @@ export default function OrdersContent() {
     [isUpdating]
   );
 
-  /* ── Detail Panel State ── */
-  const [detailOrder, setDetailOrder] = useState<AdminOrder | null>(null);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-
   /* ── Handlers ── */
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
       await dispatch(updateOrderStatus({ id: orderId, status: newStatus })).unwrap();
-      toast.success(`Order #${orderId.slice(0, 8)} → ${newStatus}`);
+      toast.success(`Order #${orderId} → ${newStatus}`);
       if (detailOrder?.id === orderId) {
         setDetailOrder((p) => (p ? { ...p, status: newStatus } : null));
       }
       tableRef.current?.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed");
-    }
-  };
-
-  const openDetail = async (order: AdminOrder) => {
-    setDetailOrder(order);
-    setLoadingDetail(true);
-    try {
-      const fresh = await dispatch(fetchOrderDetail(order.id)).unwrap();
-      setDetailOrder(fresh);
-    } catch {
-      /* keep cached order data */
-    } finally {
-      setLoadingDetail(false);
     }
   };
 
@@ -199,157 +239,53 @@ export default function OrdersContent() {
         ]}
       />
 
-      {/* ═══════════════ DETAIL PANEL ═══════════════ */}
-      {detailOrder && (
+      {/* ═══════════════ DETAIL / ERROR PANEL ═══════════════ */}
+      {(detailOrder || detailError) && (
         <div
           className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-6"
-          onClick={() => setDetailOrder(null)}
+          onClick={closeDetail}
         >
           <div
             className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-150 max-h-[85vh] overflow-auto shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-1">
-              <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
-                Order #{detailOrder.id.slice(0, 8)}
-              </h2>
-              <button
-                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)]"
-                onClick={() => setDetailOrder(null)}
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="p-6">
-              {loadingDetail && (
-                <p className="text-xs text-[var(--text-muted)] py-4">Loading full detail...</p>
-              )}
-
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                  Status
-                </span>
-                <span
-                  className={`inline-block py-0.5 px-2 rounded-full text-xs font-semibold font-primary capitalize ${statusStyle(detailOrder.status)}`}
-                >
-                  {detailOrder.status}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                  Date
-                </span>
-                <span className="text-sm text-[var(--text-primary)] font-primary">
-                  {new Date(detailOrder.createdAt).toLocaleString()}
-                </span>
-              </div>
-
-              {/* Items */}
-              <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-primary)] font-primary mt-6 mb-3 pt-4 border-t border-[var(--border-subtle)]">
-                <Package size={14} /> Items ({detailOrder.items?.length ?? 0})
-              </h3>
-              <div className="flex flex-col gap-3">
-                {detailOrder.items?.map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    {item.productImage && (
-                      <div className="relative w-10 h-12 shrink-0">
-                        <Image
-                          src={item.productImage}
-                          alt=""
-                          fill
-                          className="object-cover rounded-sm"
-                          sizes="40px"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[var(--text-primary)]">
-                        {item.productName}
-                      </p>
-                      <p className="text-xs text-[var(--text-muted)]">
-                        {item.size && `Size: ${item.size}`}
-                        {item.size && item.color && " / "}
-                        {item.color && `Color: ${item.color}`}
-                        {" — "}Qty: {item.quantity}
-                      </p>
-                    </div>
-                    <span className="text-sm font-semibold text-[var(--text-primary)] shrink-0">
-                      ${(Number(item.price) * item.quantity).toFixed(2)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Shipping */}
-              <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-primary)] font-primary mt-6 mb-3 pt-4 border-t border-[var(--border-subtle)]">
-                <MapPin size={14} /> Shipping
-              </h3>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                  Method
-                </span>
-                <span className="text-sm text-[var(--text-primary)] font-primary">
-                  {detailOrder.shippingMethod || "—"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                  Fee
-                </span>
-                <span className="text-sm text-[var(--text-primary)] font-primary">
-                  ${Number(detailOrder.shippingFee).toFixed(2)}
-                </span>
-              </div>
-              {detailOrder.shippingAddress && (
-                <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg p-3 flex flex-col gap-0.5 mt-2">
-                  {Object.entries(detailOrder.shippingAddress).map(([k, v]) => (
-                    <span key={k} className="text-xs text-[var(--text-secondary)] font-primary">
-                      <strong>{k}:</strong> {String(v ?? "—")}
-                    </span>
-                  ))}
+            {/* ── Error state ── */}
+            {detailError && !detailOrder && (
+              <>
+                <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-1">
+                  <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
+                    Order Not Found
+                  </h2>
+                  <button
+                    className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)]"
+                    onClick={closeDetail}
+                  >
+                    <X size={18} />
+                  </button>
                 </div>
-              )}
-
-              {/* Payment */}
-              <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[var(--text-primary)] font-primary mt-6 mb-3 pt-4 border-t border-[var(--border-subtle)]">
-                <CreditCard size={14} /> Payment
-              </h3>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                  Subtotal
-                </span>
-                <span className="text-sm text-[var(--text-primary)] font-primary">
-                  ${Number(detailOrder.subtotal).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                  Shipping
-                </span>
-                <span className="text-sm text-[var(--text-primary)] font-primary">
-                  ${Number(detailOrder.shippingFee).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2 pt-3 border-t border-[var(--border-subtle)]">
-                <span className="text-xs font-semibold text-[var(--text-primary)] font-primary">
-                  Total
-                </span>
-                <span className="text-md font-semibold text-[var(--text-primary)] font-primary">
-                  ${Number(detailOrder.total).toFixed(2)}
-                </span>
-              </div>
-              {detailOrder.note && (
-                <div className="mt-4">
-                  <span className="text-xs text-[var(--text-muted)] font-primary font-medium">
-                    Note
-                  </span>
-                  <p className="text-sm text-[var(--text-secondary)] font-primary italic mt-1">
-                    {detailOrder.note}
+                <div className="p-8 text-center">
+                  <AlertTriangle size={32} className="text-[var(--accent-rose)] mx-auto mb-3" />
+                  <p className="text-sm text-[var(--text-secondary)] font-primary">
+                    {detailError}
                   </p>
+                  <button
+                    className="mt-4 py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
+                    onClick={closeDetail}
+                  >
+                    Close
+                  </button>
                 </div>
-              )}
-            </div>
+              </>
+            )}
+
+            {/* ── Detail state ── */}
+            {detailOrder && (
+              <OrderDetailPanel
+                order={detailOrder}
+                loading={loadingDetail}
+                onClose={closeDetail}
+              />
+            )}
           </div>
         </div>
       )}

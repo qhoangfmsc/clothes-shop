@@ -202,48 +202,59 @@ export default function OrdersContent() {
                 transition={{ duration: 0.4, ease: [...ease], delay: Math.min(idx * 0.05, 0.3) }}
                 className="order-card"
               >
-                <div className="order-card__header">
-                  <div className="order-card__header-left">
+                {/* ── Top Row: Date · Status · Total ── */}
+                <div className="order-card__top">
+                  <div className="order-card__top-left">
                     <span className="order-card__date">{formatDate(order.createdAt)}</span>
                     <StatusBadge status={order.status} />
                   </div>
                   <span className="order-card__total">${Number(order.total).toLocaleString()}</span>
                 </div>
 
-                {/* Product thumbnails */}
-                {order.items?.length > 0 && (
-                  <div className="order-card__thumbs">
-                    {order.items.slice(0, 4).map((item, i) => (
-                      <div key={item.id} className="order-card__thumb" style={{ zIndex: 4 - i }}>
-                        {item.productImage ? (
-                          <Image
-                            src={item.productImage}
-                            alt={item.productName}
-                            fill
-                            sizes="44px"
-                            style={{ objectFit: "cover" }}
-                          />
-                        ) : (
-                          <Package size={16} />
-                        )}
+                {/* ── Middle Row: Product Preview ── */}
+                {order.items?.length > 0 &&
+                  (() => {
+                    const first = order.items[0];
+                    return (
+                      <div className="order-card__product">
+                        <div className="order-card__product-img">
+                          {first.productImage ? (
+                            <Image
+                              src={first.productImage}
+                              alt={first.productName}
+                              fill
+                              sizes="56px"
+                              style={{ objectFit: "cover" }}
+                            />
+                          ) : (
+                            <Package size={20} style={{ color: "var(--text-disabled)" }} />
+                          )}
+                        </div>
+                        <div className="order-card__product-info">
+                          <span className="order-card__product-name">{first.productName}</span>
+                          <span className="order-card__product-meta">
+                            {[first.size, first.color].filter(Boolean).join(" · ")}
+                            {first.quantity > 1 && ` · Qty: ${first.quantity}`}
+                          </span>
+                        </div>
                       </div>
-                    ))}
-                    {order.items.length > 4 && (
-                      <span className="order-card__thumb-more">+{order.items.length - 4}</span>
-                    )}
-                  </div>
+                    );
+                  })()}
+
+                {/* ── Extra items indicator ── */}
+                {order.items?.length > 1 && (
+                  <span className="order-card__more">
+                    +{order.items.length - 1} more item{order.items.length - 1 !== 1 ? "s" : ""}
+                  </span>
                 )}
 
-                <div className="order-card__body">
+                {/* ── Bottom Row: Order ID · Action ── */}
+                <div className="order-card__footer">
                   <span className="order-card__id">Order #{order.id}</span>
-                  <span className="order-card__items">
-                    {order.items?.length ?? 0} item{(order.items?.length ?? 0) !== 1 ? "s" : ""}
-                  </span>
+                  <Link href={`/orders/${order.id}`} className="order-card__view">
+                    View Details <ChevronRight size={14} />
+                  </Link>
                 </div>
-
-                <Link href={`/orders/${order.id}`} className="order-card__view">
-                  View Details <ChevronRight size={14} />
-                </Link>
               </motion.div>
             ))}
           </div>
@@ -324,13 +335,14 @@ export default function OrdersContent() {
           gap: var(--space-3);
         }
 
-        .order-card__header {
+        /* ── Top Row ── */
+        .order-card__top {
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
 
-        .order-card__header-left {
+        .order-card__top-left {
           display: flex;
           align-items: center;
           gap: var(--space-3);
@@ -366,60 +378,83 @@ export default function OrdersContent() {
           letter-spacing: -0.02em;
         }
 
-        .order-card__thumbs {
-          display: flex;
-          align-items: center;
-          gap: 0;
-          padding: var(--space-1) 0;
-        }
-
-        .order-card__thumb {
-          position: relative;
-          width: 44px;
-          height: 44px;
-          border-radius: var(--radius-sm);
-          overflow: hidden;
-          border: 2px solid var(--bg-elevated);
-          background: var(--color-champagne-cream);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--text-disabled);
-        }
-
-        .order-card__thumb + .order-card__thumb {
-          margin-left: -8px;
-        }
-
-        .order-card__thumb-more {
-          margin-left: var(--space-2);
-          font-family: var(--font-primary);
-          font-size: var(--text-xs);
-          color: var(--text-muted);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-        }
-
-        .order-card__body {
+        /* ── Product Row ── */
+        .order-card__product {
           display: flex;
           align-items: center;
           gap: var(--space-3);
+          padding: var(--space-1) 0;
+        }
+
+        .order-card__product-img {
+          position: relative;
+          width: 56px;
+          height: 72px;
+          border-radius: var(--radius-sm);
+          overflow: hidden;
+          background: var(--color-champagne-cream);
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .order-card__product-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 0;
+        }
+
+        .order-card__product-name {
+          font-family: var(--font-primary);
+          font-size: var(--text-base);
+          color: var(--text-heading);
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          line-height: 130%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .order-card__product-meta {
           font-family: var(--font-primary);
           font-size: var(--text-xs);
           color: var(--text-muted);
+          font-weight: 500;
           letter-spacing: -0.02em;
         }
 
+        /* ── Extra items ── */
+        .order-card__more {
+          font-family: var(--font-primary);
+          font-size: var(--text-xs);
+          color: var(--text-muted);
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          padding-left: calc(56px + var(--space-3));
+        }
+
+        /* ── Footer Row ── */
+        .order-card__footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
         .order-card__id {
+          font-family: var(--font-primary);
+          font-size: var(--text-xs);
           font-weight: 500;
           color: var(--text-secondary);
+          letter-spacing: -0.02em;
         }
 
         .order-card__view {
           display: inline-flex;
           align-items: center;
           gap: 4px;
-          align-self: flex-end;
           font-family: var(--font-primary);
           font-size: var(--text-xs);
           color: var(--text-accent);

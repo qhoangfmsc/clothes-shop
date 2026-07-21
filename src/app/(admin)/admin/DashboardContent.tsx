@@ -18,13 +18,22 @@ import { useAdminOrders } from "@/src/hooks/use-admin-api";
 import { useAdminUsers } from "@/src/hooks/use-admin-api";
 
 /* ── Status style map ── */
-const STATUS_STYLE: Record<string, React.CSSProperties> = {
-  pending: { background: "rgba(240,228,166,0.2)", color: "#B8A040" },
-  confirmed: { background: "rgba(143,163,180,0.15)", color: "var(--accent-blue)" },
-  shipping: { background: "rgba(184,165,200,0.15)", color: "var(--accent-lavender)" },
-  delivered: { background: "rgba(163,177,138,0.15)", color: "var(--accent-sage)" },
-  completed: { background: "rgba(201,169,110,0.15)", color: "var(--accent-primary)" },
-  cancelled: { background: "rgba(212,165,165,0.15)", color: "var(--accent-rose)" },
+const STATUS_STYLE: Record<string, string> = {
+  pending: "bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]",
+  confirmed: "bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]",
+  shipping: "bg-[rgba(184,165,200,0.15)] text-[var(--accent-lavender)]",
+  delivered: "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]",
+  completed: "bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]",
+  cancelled: "bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]",
+};
+
+const STATUS_COLOR: Record<string, string> = {
+  pending: "var(--color-honey)",
+  confirmed: "var(--accent-blue)",
+  shipping: "var(--accent-lavender)",
+  delivered: "var(--accent-sage)",
+  completed: "var(--accent-primary)",
+  cancelled: "var(--accent-rose)",
 };
 
 const STATUS_ICON: Record<string, React.ReactNode> = {
@@ -38,9 +47,17 @@ const STATUS_ICON: Record<string, React.ReactNode> = {
 
 export default function DashboardContent() {
   /* Fetch data with large limits for stats */
-  const { products, total: totalProducts, isLoading: loadingProducts } = useAdminProducts({ limit: 200 });
+  const {
+    products,
+    total: totalProducts,
+    isLoading: loadingProducts,
+  } = useAdminProducts({ limit: 200 });
   const { orders, total: totalOrders, isLoading: loadingOrders } = useAdminOrders({ limit: 500 });
-  const { users: _users, total: totalUsers, isLoading: loadingUsers } = useAdminUsers({ limit: 200 });
+  const {
+    users: _users,
+    total: totalUsers,
+    isLoading: loadingUsers,
+  } = useAdminUsers({ limit: 200 });
 
   /* ── Computed stats ── */
   const stats = useMemo(() => {
@@ -64,7 +81,14 @@ export default function DashboardContent() {
       productsByCategory[cat] = (productsByCategory[cat] || 0) + 1;
     });
 
-    return { activeProducts, inactiveProducts, totalRevenue, ordersByStatus, productsByCategory, validOrders };
+    return {
+      activeProducts,
+      inactiveProducts,
+      totalRevenue,
+      ordersByStatus,
+      productsByCategory,
+      validOrders,
+    };
   }, [products, orders, totalProducts]);
 
   const recentOrders = orders.slice(0, 8);
@@ -72,11 +96,13 @@ export default function DashboardContent() {
   const loading = loadingProducts || loadingOrders || loadingUsers;
 
   return (
-    <div style={S.wrap}>
-      <h1 style={S.heading}>Dashboard</h1>
+    <div className="flex flex-col gap-[var(--space-8)]">
+      <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal m-0">
+        Dashboard
+      </h1>
 
       {/* ══════ KPI Cards ══════ */}
-      <div style={S.kpiGrid}>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-[var(--space-5)]">
         <KpiCard
           icon={<DollarSign size={20} />}
           label="Total Revenue"
@@ -88,7 +114,11 @@ export default function DashboardContent() {
           icon={<ShoppingBag size={20} />}
           label="Orders"
           value={loading ? "—" : totalOrders}
-          sub={loading ? "" : `${stats.ordersByStatus["pending"] || 0} pending · ${stats.ordersByStatus["completed"] || 0} completed`}
+          sub={
+            loading
+              ? ""
+              : `${stats.ordersByStatus["pending"] || 0} pending · ${stats.ordersByStatus["completed"] || 0} completed`
+          }
           accent="var(--accent-blue)"
         />
         <KpiCard
@@ -108,40 +138,72 @@ export default function DashboardContent() {
       </div>
 
       {/* ══════ Bottom Grid ══════ */}
-      <div style={S.bottomGrid}>
+      <div className="grid grid-cols-[2fr_1fr] gap-[var(--space-6)]">
         {/* Recent Orders */}
-        <div style={S.panel}>
-          <div style={S.panelHead}>
-            <TrendingUp size={16} style={{ color: "var(--accent-primary)" }} />
-            <h2 style={S.panelTitle}>Recent Orders</h2>
+        <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-[var(--space-5)]">
+          <div className="flex items-center gap-[var(--space-2)] mb-[var(--space-4)]">
+            <TrendingUp size={16} className="text-[var(--accent-primary)]" />
+            <h2 className="text-sm font-semibold text-[var(--text-primary)] font-primary m-0">
+              Recent Orders
+            </h2>
           </div>
           {loading ? (
-            <p style={S.empty}>Loading...</p>
+            <p className="text-sm text-[var(--text-muted)] font-primary py-[var(--space-6)] text-center">
+              Loading...
+            </p>
           ) : recentOrders.length === 0 ? (
-            <p style={S.empty}>No orders yet.</p>
+            <p className="text-sm text-[var(--text-muted)] font-primary py-[var(--space-6)] text-center">
+              No orders yet.
+            </p>
           ) : (
-            <table style={S.table}>
+            <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th style={S.th}>Order</th>
-                  <th style={S.th}>Status</th>
-                  <th style={S.th}>Items</th>
-                  <th style={S.th}>Total</th>
-                  <th style={S.th}>Date</th>
+                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
+                    Order
+                  </th>
+                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
+                    Status
+                  </th>
+                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
+                    Items
+                  </th>
+                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
+                    Total
+                  </th>
+                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
+                    Date
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {recentOrders.map((o) => (
-                  <tr key={o.id} style={S.tr}>
-                    <td style={S.td}><code style={S.oid}>#{o.id.slice(0, 8)}</code></td>
-                    <td style={S.td}>
-                      <span style={{ ...S.badge, ...STATUS_STYLE[o.status] }}>
+                  <tr key={o.id} className="border-b border-[var(--border-subtle)]">
+                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
+                      <code className="text-xs font-mono font-semibold bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-[var(--radius-sm)]">
+                        #{o.id}
+                      </code>
+                    </td>
+                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
+                      <span
+                        className={`inline-flex items-center gap-1 py-0.5 px-2 rounded-[var(--radius-pill)] text-xs font-semibold font-primary capitalize ${STATUS_STYLE[o.status]}`}
+                      >
                         {STATUS_ICON[o.status]} {o.status}
                       </span>
                     </td>
-                    <td style={S.td}><span style={S.muted}>{o.items?.length ?? 0}</span></td>
-                    <td style={S.td}><span style={S.bold}>${Number(o.total).toFixed(2)}</span></td>
-                    <td style={S.td}><span style={S.muted}>{new Date(o.createdAt).toLocaleDateString()}</span></td>
+                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
+                      <span className="text-xs text-[var(--text-muted)] font-primary">
+                        {o.items?.length ?? 0}
+                      </span>
+                    </td>
+                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
+                      <span className="font-semibold">${Number(o.total).toFixed(2)}</span>
+                    </td>
+                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
+                      <span className="text-xs text-[var(--text-muted)] font-primary">
+                        {new Date(o.createdAt).toLocaleDateString()}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -150,33 +212,52 @@ export default function DashboardContent() {
         </div>
 
         {/* Order Status Breakdown */}
-        <div style={S.panel}>
-          <div style={S.panelHead}>
-            <ShoppingBag size={16} style={{ color: "var(--accent-primary)" }} />
-            <h2 style={S.panelTitle}>Order Status</h2>
+        <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-[var(--space-5)]">
+          <div className="flex items-center gap-[var(--space-2)] mb-[var(--space-4)]">
+            <ShoppingBag size={16} className="text-[var(--accent-primary)]" />
+            <h2 className="text-sm font-semibold text-[var(--text-primary)] font-primary m-0">
+              Order Status
+            </h2>
           </div>
           {loading ? (
-            <p style={S.empty}>Loading...</p>
+            <p className="text-sm text-[var(--text-muted)] font-primary py-[var(--space-6)] text-center">
+              Loading...
+            </p>
           ) : (
-            <div style={S.breakdown}>
-              {["pending", "confirmed", "shipping", "delivered", "completed", "cancelled"].map((status) => {
-                const count = stats.ordersByStatus[status] || 0;
-                const pct = totalOrders > 0 ? Math.round((count / totalOrders) * 100) : 0;
-                return (
-                  <div key={status} style={S.breakRow}>
-                    <div style={S.breakLeft}>
-                      {STATUS_ICON[status]}
-                      <span style={{ textTransform: "capitalize", fontFamily: "var(--font-primary)", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>{status}</span>
-                    </div>
-                    <div style={S.breakRight}>
-                      <div style={S.barWrap}>
-                        <div style={{ ...S.bar, width: `${pct}%`, background: STATUS_STYLE[status]?.color ?? "var(--text-muted)" }} />
+            <div className="flex flex-col gap-[var(--space-3)]">
+              {["pending", "confirmed", "shipping", "delivered", "completed", "cancelled"].map(
+                (status) => {
+                  const count = stats.ordersByStatus[status] || 0;
+                  const pct = totalOrders > 0 ? Math.round((count / totalOrders) * 100) : 0;
+                  return (
+                    <div
+                      key={status}
+                      className="flex items-center justify-between gap-[var(--space-3)]"
+                    >
+                      <div className="flex items-center gap-1.5 min-w-[100px]">
+                        {STATUS_ICON[status]}
+                        <span className="capitalize font-primary text-sm text-[var(--text-primary)]">
+                          {status}
+                        </span>
                       </div>
-                      <span style={S.breakCount}>{count}</span>
+                      <div className="flex items-center gap-[var(--space-2)] flex-1">
+                        <div className="flex-1 h-1.5 bg-[var(--bg-elevated)] rounded-[var(--radius-pill)] overflow-hidden">
+                          <div
+                            className="h-full rounded-[var(--radius-pill)] transition-[width] duration-500 min-w-0.5"
+                            style={{
+                              width: `${pct}%`,
+                              background: STATUS_COLOR[status] ?? "var(--text-muted)",
+                            }}
+                          />
+                        </div>
+                        <span className="text-sm font-semibold font-primary text-[var(--text-primary)] min-w-[24px] text-right">
+                          {count}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                }
+              )}
             </div>
           )}
         </div>
@@ -186,61 +267,34 @@ export default function DashboardContent() {
 }
 
 /* ── KPI Card ── */
-function KpiCard({ icon, label, value, sub, accent }: { icon: React.ReactNode; label: string; value: string | number; sub: string; accent: string }) {
+function KpiCard({
+  icon,
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  sub: string;
+  accent: string;
+}) {
   return (
-    <div style={K.wrap}>
-      <div style={{ ...K.icon, color: accent, background: `${accent}15` }}>{icon}</div>
-      <div style={K.info}>
-        <p style={K.value}>{value}</p>
-        <p style={K.label}>{label}</p>
-        {sub && <p style={K.sub}>{sub}</p>}
+    <div className="flex items-center gap-[var(--space-4)] py-[var(--space-5)] px-[var(--space-6)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
+      <div
+        className="w-11 h-11 rounded-[var(--radius-md)] flex items-center justify-center shrink-0"
+        style={{ color: accent, background: `${accent}15` }}
+      >
+        {icon}
+      </div>
+      <div className="flex flex-col gap-0.5 min-w-0">
+        <p className="font-display text-xl text-[var(--text-heading)] leading-tight font-normal">
+          {value}
+        </p>
+        <p className="text-xs text-[var(--text-muted)] font-primary font-medium">{label}</p>
+        {sub && <p className="text-xs text-[var(--text-disabled)] font-primary mt-0.5">{sub}</p>}
       </div>
     </div>
   );
 }
-
-/* ══════════════════════ STYLES ══════════════════════ */
-const S: Record<string, React.CSSProperties> = {
-  wrap: { display: "flex", flexDirection: "column", gap: "var(--space-8)" },
-  heading: { fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", color: "var(--text-heading)", fontWeight: 400, margin: 0 },
-
-  /* KPI Grid */
-  kpiGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "var(--space-5)" },
-
-  /* Bottom */
-  bottomGrid: { display: "grid", gridTemplateColumns: "2fr 1fr", gap: "var(--space-6)" },
-
-  /* Panel */
-  panel: { background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", padding: "var(--space-5)" },
-  panelHead: { display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-4)" },
-  panelTitle: { fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-primary)", fontFamily: "var(--font-primary)", margin: 0 },
-  empty: { fontSize: "var(--text-sm)", color: "var(--text-muted)", fontFamily: "var(--font-primary)", padding: "var(--space-6) 0", textAlign: "center" },
-
-  /* Table */
-  table: { width: "100%", borderCollapse: "collapse" as const },
-  th: { textAlign: "left" as const, fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)", padding: "var(--space-2) var(--space-3)", borderBottom: "1px solid var(--border-subtle)", fontFamily: "var(--font-primary)", textTransform: "uppercase" as const, letterSpacing: "0.05em" },
-  tr: { borderBottom: "1px solid var(--border-subtle)" },
-  td: { padding: "var(--space-2) var(--space-3)", fontSize: "var(--text-sm)", fontFamily: "var(--font-primary)", color: "var(--text-primary)", verticalAlign: "middle" as const },
-  oid: { fontSize: "var(--text-xs)", fontFamily: "monospace", fontWeight: 600, background: "var(--bg-elevated)", padding: "1px 6px", borderRadius: "var(--radius-sm)" },
-  badge: { display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 8px", borderRadius: "var(--radius-pill)", fontSize: "var(--text-xs)", fontWeight: 600, fontFamily: "var(--font-primary)", textTransform: "capitalize" as const },
-  bold: { fontWeight: 600 },
-  muted: { fontSize: "var(--text-xs)", color: "var(--text-muted)", fontFamily: "var(--font-primary)" },
-
-  /* Breakdown */
-  breakdown: { display: "flex", flexDirection: "column", gap: "var(--space-3)" },
-  breakRow: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-3)" },
-  breakLeft: { display: "flex", alignItems: "center", gap: 6, minWidth: 100 },
-  breakRight: { display: "flex", alignItems: "center", gap: "var(--space-2)", flex: 1 },
-  barWrap: { flex: 1, height: 6, background: "var(--bg-elevated)", borderRadius: "var(--radius-pill)", overflow: "hidden" },
-  bar: { height: "100%", borderRadius: "var(--radius-pill)", transition: "width 0.5s var(--ease-default)", minWidth: 2 },
-  breakCount: { fontSize: "var(--text-sm)", fontWeight: 600, fontFamily: "var(--font-primary)", color: "var(--text-primary)", minWidth: 24, textAlign: "right" as const },
-};
-
-const K: Record<string, React.CSSProperties> = {
-  wrap: { display: "flex", alignItems: "center", gap: "var(--space-4)", padding: "var(--space-5) var(--space-6)", background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)" },
-  icon: { width: 44, height: 44, borderRadius: "var(--radius-md)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
-  info: { display: "flex", flexDirection: "column", gap: 1, minWidth: 0 },
-  value: { fontFamily: "var(--font-display)", fontSize: "var(--text-xl)", color: "var(--text-heading)", lineHeight: 1.1, fontWeight: 400 },
-  label: { fontSize: "var(--text-xs)", color: "var(--text-muted)", fontFamily: "var(--font-primary)", fontWeight: 500 },
-  sub: { fontSize: "var(--text-xs)", color: "var(--text-disabled)", fontFamily: "var(--font-primary)", marginTop: 1 },
-};

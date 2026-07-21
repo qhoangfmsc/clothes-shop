@@ -11,7 +11,11 @@ import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 
-const defaultConfig = { revalidateOnFocus: false, dedupingInterval: 10_000, keepPreviousData: true };
+const defaultConfig = {
+  revalidateOnFocus: false,
+  dedupingInterval: 10_000,
+  keepPreviousData: true,
+};
 
 type ListResponse<T> = { data: T[]; total: number; page?: number; limit?: number };
 type SingleResponse<T> = { data: T };
@@ -32,11 +36,21 @@ export interface ProductFilters {
 
 /** Shape sent to POST/PATCH /api/admin/products (matches BE DTO) */
 export interface ProductFormData {
-  name: string; slug: string; price: number; originalPrice: number | null;
-  images: string[]; categoryId: string; subcategoryId: string | null;
-  badge: string | null; status: string; description: string;
-  material: string; care: string; sizes: string[];
-  colors: { name: string; hex: string }[]; tags: string[];
+  name: string;
+  slug: string;
+  price: number;
+  originalPrice: number | null;
+  images: string[];
+  categoryId: string;
+  subcategoryId: string | null;
+  badge: string | null;
+  status: string;
+  description: string;
+  material: string;
+  care: string;
+  sizes: string[];
+  colors: { name: string; hex: string }[];
+  tags: string[];
 }
 
 export function useAdminProducts(filters: ProductFilters = {}) {
@@ -174,7 +188,10 @@ export function useAdminCollections(filters: CollectionFilters = {}) {
     return res.data;
   };
   const updateCollection = async (id: string, body: Partial<Collection>) => {
-    const res = await authApi.patch<SingleResponse<Collection>>(`/api/admin/collections/${id}`, body);
+    const res = await authApi.patch<SingleResponse<Collection>>(
+      `/api/admin/collections/${id}`,
+      body
+    );
     await mutate();
     return res.data;
   };
@@ -203,13 +220,28 @@ export function useAdminCollections(filters: CollectionFilters = {}) {
    ═══════════════════════════════════════════════════════════ */
 
 export interface AdminOrderItem {
-  id: string; productId: string | null; productName: string; productImage: string;
-  price: number; quantity: number; size: string; color: string;
+  id: string;
+  productId: string | null;
+  productName: string;
+  productImage: string;
+  price: number;
+  quantity: number;
+  size: string;
+  color: string;
 }
 export interface AdminOrder {
-  id: string; userId: string; status: string; subtotal: number; shippingFee: number;
-  total: number; shippingMethod: string; shippingAddress: Record<string, unknown>;
-  note: string; items: AdminOrderItem[]; createdAt: string; updatedAt: string;
+  id: string;
+  userId: string;
+  status: string;
+  subtotal: number;
+  shippingFee: number;
+  total: number;
+  shippingMethod: string;
+  shippingAddress: Record<string, unknown>;
+  note: string;
+  items: AdminOrderItem[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OrderFilters {
@@ -240,7 +272,10 @@ export function useAdminOrders(filters: OrderFilters = {}) {
     return res.data;
   };
   const updateOrderStatus = async (orderId: string, status: string) => {
-    const res = await authApi.patch<SingleResponse<AdminOrder>>(`/api/admin/orders/${orderId}/status`, { status });
+    const res = await authApi.patch<SingleResponse<AdminOrder>>(
+      `/api/admin/orders/${orderId}/status`,
+      { status }
+    );
     await mutate();
     return res.data;
   };
@@ -264,10 +299,16 @@ export function useAdminOrders(filters: OrderFilters = {}) {
    ═══════════════════════════════════════════════════════════ */
 
 export interface AdminUser {
-  id: string; email: string; name: string | null; image: string | null;
+  id: string;
+  email: string;
+  name: string | null;
+  image: string | null;
   provider: string | null;
-  role: string; status: string; permissions?: number[];
-  createdAt: string; updatedAt: string;
+  role: string;
+  status: string;
+  permissions?: number[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AdminUserUpdate {

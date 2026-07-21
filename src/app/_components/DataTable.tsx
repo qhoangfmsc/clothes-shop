@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   useImperativeHandle,
   forwardRef,
   type ReactNode,
@@ -138,9 +139,32 @@ function DataTableInner<T extends { id?: string | number }>(
   const hasActiveFilters =
     debouncedSearch !== "" || Object.values(activeFilters).some((v) => v !== "");
 
+  /* ── In-flight guard — prevents concurrent API calls (StrictMode double-fire, rapid param changes) ── */
+  const fetchingRef = useRef(false);
+  const pendingRef = useRef(false);
+  const activeParamsRef = useRef("");
+
+  const buildParamsKey = useCallback(
+    (overrides?: Partial<DataTableFetchParams>) =>
+      JSON.stringify({ debouncedSearch, activeFilters, sort, page, pageSize, ...overrides }),
+    [debouncedSearch, activeFilters, sort, page, pageSize]
+  );
+
   /* ── Core fetch ── */
   const load = useCallback(
     async (overrides?: Partial<DataTableFetchParams>) => {
+      const paramsKey = buildParamsKey(overrides);
+      if (fetchingRef.current) {
+        /* Only mark for retry if params are different from the in-flight request.
+           This prevents StrictMode double-fire from triggering a false retry. */
+        if (paramsKey !== activeParamsRef.current) {
+          pendingRef.current = true;
+        }
+        return;
+      }
+      fetchingRef.current = true;
+      pendingRef.current = false;
+      activeParamsRef.current = paramsKey;
       setLoading(true);
       try {
         const params: DataTableFetchParams = {
@@ -158,10 +182,16 @@ function DataTableInner<T extends { id?: string | number }>(
         setData([]);
         setTotal(0);
       } finally {
+        fetchingRef.current = false;
         setLoading(false);
+        /* If params changed while this request was in-flight, re-fetch with latest params */
+        if (pendingRef.current) {
+          pendingRef.current = false;
+          load();
+        }
       }
     },
-    [debouncedSearch, activeFilters, sort, page, pageSize, fetchData]
+    [buildParamsKey, fetchData]
   );
 
   /* ── Ref API ── */

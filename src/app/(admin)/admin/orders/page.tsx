@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import OrdersContent from "./OrdersContent";
 
 export default function AdminOrdersPage() {
-  return <OrdersContent />;
+  return (
+    <Suspense>
+      <OrdersContent />
+    </Suspense>
+  );
 }
