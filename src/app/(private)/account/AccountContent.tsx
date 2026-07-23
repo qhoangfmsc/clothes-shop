@@ -54,11 +54,7 @@ function ProfileHeader({
       className="flex flex-col items-center gap-5 px-6 py-8 text-center sm:flex-row sm:text-left sm:gap-6"
     >
       <div className="relative">
-        <UserAvatar
-          user={user}
-          size={80}
-          className="!border-2 !border-[var(--border-default)]"
-        />
+        <UserAvatar user={user} size={80} className="!border-2 !border-[var(--border-default)]" />
         <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-[var(--accent-primary)] flex items-center justify-center text-[var(--text-on-gold)] border-2 border-[var(--bg-primary)]">
           <Sparkles size={10} />
         </div>
@@ -301,26 +297,8 @@ function OrdersSection() {
                   href={`/orders/${order.id}`}
                   className="flex items-center gap-4 px-6 py-4 no-underline border-b border-[var(--border-subtle)] last:border-b-0 transition-colors duration-150 hover:bg-[var(--color-champagne-cream)] motion-reduce:transition-none"
                 >
-                  {/* Thumbnail stack */}
-                  <div className="flex shrink-0">
-                    {thumbs.map((src, i) => (
-                      <div
-                        key={i}
-                        className={`relative w-9 h-9 rounded-full overflow-hidden border-2 border-[var(--bg-elevated)] bg-[var(--color-champagne-cream)] ${i > 0 ? "-ml-2.5" : ""}`}
-                        style={{ zIndex: thumbs.length - i }}
-                      >
-                        <Image src={src} alt="" fill sizes="36px" style={{ objectFit: "cover" }} />
-                      </div>
-                    ))}
-                    {thumbs.length === 0 && (
-                      <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-[var(--bg-elevated)] bg-[var(--color-champagne-cream)] flex items-center justify-center text-[var(--text-disabled)]">
-                        <Package size={16} />
-                      </div>
-                    )}
-                  </div>
-
                   {/* Info */}
-                  <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                  <div className="shrink-0 flex flex-col gap-0.5">
                     <span className="font-primary text-sm font-medium text-[var(--text-primary)] tracking-[-0.02em]">
                       #{order.id}
                     </span>
@@ -333,9 +311,30 @@ function OrdersSection() {
                     </span>
                   </div>
 
+                  {/* Thumbnail stack */}
+                  <div className="flex flex-1 min-w-0 ">
+                    {thumbs.map((src, i) => (
+                      <div
+                        key={i}
+                        className={`relative w-8 h-8 rounded-full overflow-hidden border-2 border-[var(--bg-elevated)] bg-[var(--color-champagne-cream)] ${i > 0 ? "-ml-2.5" : ""}`}
+                        style={{ zIndex: thumbs.length - i }}
+                      >
+                        <Image src={src} alt="" fill sizes="30px" style={{ objectFit: "cover" }} />
+                      </div>
+                    ))}
+                    {thumbs.length === 0 && (
+                      <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-[var(--bg-elevated)] bg-[var(--color-champagne-cream)] flex items-center justify-center text-[var(--text-disabled)]">
+                        <Package size={16} />
+                      </div>
+                    )}
+                  </div>
+
                   {/* Status + Total */}
                   <div className="flex flex-col items-end gap-0.5 shrink-0">
-                    <span className="font-primary text-[11px] font-medium tracking-[0.04em] uppercase" style={{ color: sc.color }}>
+                    <span
+                      className="font-primary text-[11px] font-medium tracking-[0.04em] uppercase"
+                      style={{ color: sc.color }}
+                    >
                       {sc.label}
                     </span>
                     <span className="font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">

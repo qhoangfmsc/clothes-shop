@@ -12,7 +12,7 @@ export default function ViewButton() {
       style={{
         position: "fixed",
         cursor: "pointer",
-        zIndex: 20,
+        zIndex: 15,
         transformOrigin: "right bottom",
         transform: "scale(1)",
         background: "#000",

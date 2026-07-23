@@ -146,39 +146,6 @@ export default function OrderDetailContent() {
             </span>
           </div>
 
-          {/* Items */}
-          <div className="order-detail__section">
-            <h3 className="order-detail__section-title">
-              <Package size={16} /> Items
-            </h3>
-            <div className="order-detail__items">
-              {order.items.map((item) => (
-                <div key={item.id} className="order-detail__item">
-                  <div className="order-detail__item-img">
-                    {item.productImage && (
-                      <Image
-                        src={item.productImage}
-                        alt={item.productName}
-                        fill
-                        sizes="56px"
-                        style={{ objectFit: "cover" }}
-                      />
-                    )}
-                  </div>
-                  <div className="order-detail__item-info">
-                    <span className="order-detail__item-name">{item.productName}</span>
-                    <span className="order-detail__item-meta">
-                      {item.size} · {item.color} · Qty {item.quantity}
-                    </span>
-                  </div>
-                  <span className="order-detail__item-price">
-                    ${(Number(item.price) * item.quantity).toLocaleString()}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Shipping Address */}
           {order.shippingAddress && Object.keys(order.shippingAddress).length > 0 && (
             <div className="order-detail__section">
@@ -201,6 +168,12 @@ export default function OrderDetailContent() {
                   <p>{order.shippingAddress.country}</p>
                 )}
               </div>
+            </div>
+          )}
+
+          {order.note && (
+            <div className="order-detail__notes">
+              <strong>Notes:</strong> {order.note}
             </div>
           )}
 
@@ -230,13 +203,33 @@ export default function OrderDetailContent() {
               <span>Total</span>
               <span>${Number(order.total).toLocaleString()}</span>
             </div>
-          </div>
-
-          {order.note && (
-            <div className="order-detail__notes">
-              <strong>Notes:</strong> {order.note}
+            <div className="order-detail__items">
+              {order.items.map((item) => (
+                <div key={item.id} className="order-detail__item">
+                  <div className="order-detail__item-img">
+                    {item.productImage && (
+                      <Image
+                        src={item.productImage}
+                        alt={item.productName}
+                        fill
+                        sizes="56px"
+                        style={{ objectFit: "cover" }}
+                      />
+                    )}
+                  </div>
+                  <div className="order-detail__item-info">
+                    <span className="order-detail__item-name">{item.productName}</span>
+                    <span className="order-detail__item-meta">
+                      {item.size} · {item.color} · Qty {item.quantity}
+                    </span>
+                  </div>
+                  <span className="order-detail__item-price">
+                    ${(Number(item.price) * item.quantity).toLocaleString()}
+                  </span>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
         </motion.div>
       </div>
 
