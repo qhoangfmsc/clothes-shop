@@ -7,8 +7,7 @@ import {
   getSubcategory,
   getAllProducts,
 } from "../../../_lib/server-fetchers";
-import "../../../shop.css";
-import "./product-detail.css";
+
 
 interface ProductPageProps {
   params: Promise<{ category: string; subcategory: string; productId: string }>;

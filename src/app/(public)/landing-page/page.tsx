@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import Footer from "@/src/app/_components/Footer";
+import Footer from "./_components/Footer";
 import Caption from "./_components/Caption";
 import ProductInfo from "./_components/ProductInfo";
 import ViewButton from "./_components/ViewButton";

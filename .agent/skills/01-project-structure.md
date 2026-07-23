@@ -88,14 +88,14 @@ src/
 │       │   ├── page.tsx
 │       │   ├── CartContent.tsx
 │       │   └── _common/
-│       │       ├── moduleSlice.ts  #   Cart store (Zustand hoặc Redux)
+│       │       ├── moduleSlice.ts  #   Cart store (Redux Toolkit)
 │       │       └── types.ts        #   CartItem
 │       │
 │       ├── wishlist/               # ← Module: wishlist
 │       │   ├── page.tsx
 │       │   ├── WishlistContent.tsx
 │       │   └── _common/
-│       │       ├── moduleSlice.ts  #   Wishlist store
+│       │       ├── moduleSlice.ts  #   Wishlist store (Redux Toolkit)
 │       │       └── types.ts        #   WishlistItem
 │       │
 │       └── account/

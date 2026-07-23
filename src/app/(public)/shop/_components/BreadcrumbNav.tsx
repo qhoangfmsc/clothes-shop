@@ -13,16 +13,16 @@ interface BreadcrumbNavProps {
 
 export default function BreadcrumbNav({ crumbs }: BreadcrumbNavProps) {
   return (
-    <nav className="breadcrumb" aria-label="Breadcrumb">
+    <nav className="flex items-center gap-2 py-5 px-4 sm:py-6 sm:px-6 lg:py-8 lg:px-8 font-primary text-xs tracking-[0.06em] uppercase font-medium" aria-label="Breadcrumb">
       {crumbs.map((crumb, idx) => {
         const isLast = idx === crumbs.length - 1;
         return (
-          <span key={crumb.label} style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
-            {idx > 0 && <span className="breadcrumb__separator">◆</span>}
+          <span key={crumb.label} className="flex items-center gap-2">
+            {idx > 0 && <span className="text-[var(--text-disabled)] text-[10px]">◆</span>}
             {isLast || !crumb.href ? (
-              <span className="breadcrumb__current">{crumb.label}</span>
+              <span className="text-[var(--text-primary)]">{crumb.label}</span>
             ) : (
-              <Link href={crumb.href} className="breadcrumb__link">
+              <Link href={crumb.href} className="text-[var(--text-muted)] no-underline hover:text-[var(--accent-primary)] transition-colors duration-150">
                 {crumb.label}
               </Link>
             )}

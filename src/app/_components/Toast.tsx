@@ -13,7 +13,6 @@ import {
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, XCircle, TriangleAlert, Info, X } from "lucide-react";
-import "@/src/styles/toast.css";
 
 /* ═══════════════════════════════════════════════════════════
    TOAST SYSTEM — Global reusable toast notifications
@@ -61,20 +60,35 @@ export function useToast(): ToastContextValue {
 }
 
 /* ── Variant Icons ── */
+const variantIconColors: Record<ToastVariant, string> = {
+  success: "var(--color-champagne-gold)",
+  error: "var(--color-dusty-rose)",
+  warning: "var(--color-butter)",
+  info: "var(--color-dusty-blue)",
+};
+
 function ToastIcon({ variant }: { variant: ToastVariant }) {
   const size = 16;
-  const cls = "toast__icon";
+  const color = variantIconColors[variant];
   switch (variant) {
     case "success":
-      return <Check size={size} className={cls} />;
+      return <Check size={size} style={{ color }} />;
     case "error":
-      return <XCircle size={size} className={cls} />;
+      return <XCircle size={size} style={{ color }} />;
     case "warning":
-      return <TriangleAlert size={size} className={cls} />;
+      return <TriangleAlert size={size} style={{ color }} />;
     case "info":
-      return <Info size={size} className={cls} />;
+      return <Info size={size} style={{ color }} />;
   }
 }
+
+/* ── Variant Styles ── */
+const variantClasses: Record<ToastVariant, string> = {
+  success: "bg-[rgba(10,10,8,0.90)] border-[rgba(201,169,110,0.25)]",
+  error: "bg-[rgba(10,10,8,0.90)] border-[rgba(212,165,165,0.3)]",
+  warning: "bg-[rgba(10,10,8,0.90)] border-[rgba(240,228,166,0.25)]",
+  info: "bg-[rgba(10,10,8,0.90)] border-[rgba(143,163,180,0.3)]",
+};
 
 /* ── Single Toast Item ── */
 const motionEase = [0.25, 0.1, 0.25, 1] as const;
@@ -88,7 +102,7 @@ function ToastItemComponent({
 }) {
   return (
     <motion.div
-      className={`toast toast--${item.variant}`}
+      className={`flex items-center gap-3 py-3 px-4 sm:px-5 rounded-full font-primary text-sm font-medium tracking-[0.02em] text-[var(--color-pearl-cream)] border max-w-[480px] max-sm:max-w-full max-sm:justify-center backdrop-blur-[20px] shadow-[0_8px_32px_rgba(58,49,42,0.18)] cursor-default pointer-events-auto ${variantClasses[item.variant]}`}
       layout
       initial={{ opacity: 0, y: 16, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -96,10 +110,12 @@ function ToastItemComponent({
       transition={{ duration: 0.35, ease: [...motionEase] }}
     >
       <ToastIcon variant={item.variant} />
-      <span className="toast__message">{item.message}</span>
+      <span className="flex-1 leading-[140%] [&_a]:text-[var(--color-champagne-gold)] [&_a]:underline [&_a]:underline-offset-2">
+        {item.message}
+      </span>
       <button
         type="button"
-        className="toast__close"
+        className="flex-shrink-0 flex items-center justify-center w-6 h-6 border-none bg-transparent text-[rgba(255,255,255,0.4)] cursor-pointer rounded-full p-0 hover:text-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.08)] transition-all duration-150"
         onClick={() => onDismiss(item.id)}
         aria-label="Dismiss notification"
       >
@@ -128,9 +144,16 @@ function ToastPortal({
 
   if (!mounted) return null;
 
+  const posClasses: Record<ToastPosition, string> = {
+    "bottom-center": "bottom-6 left-1/2 -translate-x-1/2 items-center",
+    "bottom-right": "bottom-6 right-4 items-end",
+    "top-center": "top-6 left-1/2 -translate-x-1/2 items-center",
+    "top-right": "top-6 right-4 items-end",
+  };
+
   return createPortal(
     <div
-      className={`toast-container toast-container--${position}`}
+      className={`fixed z-9999 flex flex-col gap-2 pointer-events-none max-w-screen max-sm:!left-4 max-sm:!right-4 max-sm:!bottom-4 max-sm:!top-auto max-sm:!translate-x-0 max-sm:!items-stretch ${posClasses[position]}`}
       aria-live="polite"
       aria-atomic="false"
     >

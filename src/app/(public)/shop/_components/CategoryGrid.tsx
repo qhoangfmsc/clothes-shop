@@ -46,27 +46,28 @@ export default function CategoryGrid({ categories, heroImages }: CategoryGridPro
   }, []);
 
   return (
-    <div ref={gridRef} className="category-grid">
+    <div ref={gridRef} className="grid grid-cols-1 gap-4 py-8 px-4 sm:grid-cols-2 sm:gap-5 sm:py-10 sm:px-6 lg:gap-6 lg:py-12 lg:px-8">
       {categories.map((cat) => {
         const totalItems = cat.subcategories.reduce((sum, s) => sum + s.count, 0);
         const heroImage = heroImages[cat.slug];
         return (
           <div key={cat.slug}>
-            <Link href={`/shop/${cat.slug}`} className="category-card">
-              <div className="category-card__image">
+            <Link href={`/shop/${cat.slug}`} className="group relative aspect-[3/4] overflow-hidden rounded-md cursor-pointer no-underline text-inherit flex flex-col justify-end">
+              <div className="absolute inset-0 z-0">
                 <Image
                   src={heroImage ?? "/images/model-intro/model_intro_1.webp"}
                   alt={cat.title}
                   fill
                   sizes="(max-width: 640px) 100vw, 50vw"
                   style={{ objectFit: "cover" }}
+                  className="transition-transform duration-600 group-hover:scale-[1.06]"
                 />
               </div>
-              <div className="category-card__overlay" />
-              <div className="category-card__content">
-                <span className="category-card__title">{cat.title}</span>
-                <span className="category-card__subtitle">{cat.description}</span>
-                <span className="category-card__count">
+              <div className="absolute inset-0 z-1 bg-gradient-to-t from-[rgba(10,10,8,0.75)] via-[rgba(10,10,8,0.2)] via-50% to-transparent transition-all duration-300 group-hover:from-[rgba(10,10,8,0.85)] group-hover:via-[rgba(10,10,8,0.3)]" />
+              <div className="relative z-2 p-6 flex flex-col gap-2">
+                <span className="text-[var(--color-pearl-cream)] font-display text-2xl font-normal tracking-[-0.04em] leading-none">{cat.title}</span>
+                <span className="text-[rgba(255,255,255,0.55)] font-primary text-xs font-medium tracking-[-0.02em] leading-[140%]">{cat.description}</span>
+                <span className="text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.08em] uppercase mt-1 flex items-center gap-2 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                   {totalItems} pieces
                   <ArrowRight size={12} />
                 </span>

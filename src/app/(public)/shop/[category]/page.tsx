@@ -4,14 +4,9 @@ import { notFound } from "next/navigation";
 import ShopHero from "../_components/ShopHero";
 import BreadcrumbNav from "../_components/BreadcrumbNav";
 import SubcategoryChips from "../_components/SubcategoryChips";
-import ProductGrid from "../_components/ProductGrid";
+import ShopProductsClient from "../_components/ShopProductsClient";
 
-import {
-  getCategoryBySlug,
-  getProducts,
-  getCategories,
-} from "../_lib/server-fetchers";
-import "../shop.css";
+import { getCategoryBySlug, getProducts, getCategories } from "../_lib/server-fetchers";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -72,23 +67,28 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       />
 
       {/* Subcategory filter chips */}
-      <SubcategoryChips
-        categorySlug={slug}
-        subcategories={[...category.subcategories]}
-      />
+      <SubcategoryChips categorySlug={slug} subcategories={[...category.subcategories]} />
 
-      {/* Product Grid */}
+      {/* Products with Filter + Sort + Load More */}
       <div
         style={{
           background: "var(--bg-primary)",
           paddingTop: 1,
         }}
       >
-        <div className="shop-section-title">
-          <span className="shop-section-title__label">{category.description}</span>
-          <h2 className="shop-section-title__heading">{category.title} Collection</h2>
-        </div>
-        <ProductGrid products={products} />
+        <ShopProductsClient
+          products={products}
+          heading={
+            <div className="flex flex-col gap-2 px-4 sm:px-6 lg:px-8 pt-4">
+              <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium">
+                {category.description}
+              </span>
+              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none">
+                {category.title} Collection
+              </h2>
+            </div>
+          }
+        />
       </div>
     </main>
   );

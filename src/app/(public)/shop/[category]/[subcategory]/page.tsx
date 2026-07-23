@@ -6,12 +6,7 @@ import BreadcrumbNav from "../../_components/BreadcrumbNav";
 import SubcategoryChips from "../../_components/SubcategoryChips";
 import ProductGrid from "../../_components/ProductGrid";
 
-import {
-  getSubcategory,
-  getProducts,
-  getCategories,
-} from "../../_lib/server-fetchers";
-import "../../shop.css";
+import { getSubcategory, getProducts, getCategories } from "../../_lib/server-fetchers";
 
 interface SubcategoryPageProps {
   params: Promise<{ category: string; subcategory: string }>;
@@ -92,12 +87,14 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
           paddingTop: 1,
         }}
       >
-        <div className="shop-section-title">
-          <span className="shop-section-title__label">
+        <div className="flex flex-col gap-2 py-5 sm:py-6 sm:px-6">
+          <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium px-4 sm:px-0">
             {subcategory.description}
           </span>
-          <h2 className="shop-section-title__heading">{subcategory.label}</h2>
-          <p className="shop-section-title__description">
+          <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none px-4 sm:px-0">
+            {subcategory.label}
+          </h2>
+          <p className="text-[var(--text-muted)] font-primary text-[15px] tracking-[-0.02em] leading-[150%] max-w-[480px] mt-2 px-4 sm:px-0">
             {products.length} {products.length === 1 ? "piece" : "pieces"} in this collection
           </p>
         </div>

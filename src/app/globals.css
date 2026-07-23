@@ -43,6 +43,54 @@ img[data-nimg] {
   }
 }
 
+@keyframes rt-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rt-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes cart-shimmer {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes checkout-shimmer {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
 /* ─── Admin images — bypass global fade-in ─── */
 [data-admin-img] img,
 img[data-admin-img] {
@@ -164,7 +212,8 @@ img[data-admin-img] {
 /* ─── Site Footer (global, simple) ─── */
 .site-footer {
   border-top: 1px solid var(--border-subtle);
-  background: var(--bg-primary);
+  color: #ffffff81;
+  background: #000000dc;
 }
 
 .site-footer__inner {
@@ -178,35 +227,31 @@ img[data-admin-img] {
 @media (min-width: 640px) {
   .site-footer__inner {
     justify-content: space-between;
-    padding: var(--space-2);
+    padding: var(--space-1);
   }
 }
 
 @media (min-width: 1024px) {
   .site-footer__inner {
-    padding: var(--space-2);
+    padding: var(--space-1);
   }
 }
 
 .site-footer__brand {
   font-family: var(--font-display), serif;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-display);
-  color: var(--text-heading);
+  font-size: var(--text-xs);
   letter-spacing: -0.04em;
 }
 
 .site-footer__copy {
   font-family: var(--font-primary);
   font-size: var(--text-xs);
-  color: var(--text-disabled);
   letter-spacing: 0.04em;
 }
 
 .site-footer__link {
   font-family: var(--font-primary);
   font-size: var(--text-xs);
-  color: var(--text-muted);
   letter-spacing: 0.04em;
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-default);
@@ -234,5 +279,31 @@ img[data-admin-img] {
   .user-avatar-btn,
   .user-menu-item {
     transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NEW IN PAGE — Keyframe Animations
+   Used by Tailwind arbitrary animation classes
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes ni-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes ni-ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }

@@ -31,14 +31,14 @@ export default function ShopHero({
       const tl = gsap.timeline({ delay: 0.15 });
 
       /* Hero image scale-in */
-      const bgImg = el.querySelector(".shop-hero__bg img");
+      const bgImg = el.querySelector("[data-hero-bg] img");
       if (bgImg) {
         tl.from(bgImg, { scale: 1.1, duration: 1.2, ease: "power2.out" });
       }
 
       /* Text reveals — staggered */
       const textEls = el.querySelectorAll(
-        ".shop-hero__label, .shop-hero__title, .shop-hero__description"
+        "[data-hero-label], [data-hero-title], [data-hero-desc]"
       );
       gsap.set(textEls, { opacity: 0, y: 16 });
       tl.to(
@@ -72,9 +72,9 @@ export default function ShopHero({
   }, []);
 
   return (
-    <section ref={heroRef} className="shop-hero">
+    <section ref={heroRef} className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[560px] flex flex-col justify-end overflow-hidden py-16 px-4 sm:py-16 sm:px-6 lg:py-20 lg:px-8">
       {/* Background image */}
-      <div className="shop-hero__bg">
+      <div data-hero-bg className="absolute inset-0 pointer-events-none z-0">
         <Image
           src={heroImage}
           alt=""
@@ -87,7 +87,7 @@ export default function ShopHero({
 
       {/* Gradient overlay */}
       <div
-        className="shop-hero__overlay"
+        className="absolute inset-0 z-1 pointer-events-none"
         style={{
           background:
             "linear-gradient(to top, rgba(10, 10, 8, 0.85) 0%, rgba(10, 10, 8, 0.4) 50%, rgba(10, 10, 8, 0.2) 100%)",
@@ -95,10 +95,10 @@ export default function ShopHero({
       />
 
       {/* Content */}
-      <div className="shop-hero__content">
-        <span className="shop-hero__label">{label}</span>
-        <h1 className="shop-hero__title">{title}</h1>
-        {description && <p className="shop-hero__description">{description}</p>}
+      <div className="relative z-2 max-w-[720px]">
+        <span data-hero-label className="block text-[var(--color-champagne-gold)] uppercase text-xs tracking-[0.12em] leading-[140%] font-primary font-medium mb-4">{label}</span>
+        <h1 data-hero-title className="text-[var(--color-pearl-cream)] tracking-[-0.04em] leading-none font-normal font-display text-[clamp(36px,7vw,72px)] mb-4">{title}</h1>
+        {description && <p data-hero-desc className="text-[rgba(255,255,255,0.65)] tracking-[-0.02em] leading-[150%] text-[15px] font-primary max-w-[400px]">{description}</p>}
       </div>
     </section>
   );

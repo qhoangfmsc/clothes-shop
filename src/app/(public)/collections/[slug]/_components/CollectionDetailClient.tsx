@@ -18,6 +18,12 @@ interface CollectionDetailClientProps {
   products: Product[];
 }
 
+const badgeStyles: Record<string, string> = {
+  new: "bg-[rgba(201,169,110,0.9)] text-[var(--text-on-gold)]",
+  sale: "bg-[rgba(212,165,165,0.9)] text-[var(--color-pearl-cream)]",
+  bestseller: "bg-[rgba(10,10,8,0.85)] text-[var(--color-pearl-cream)]",
+};
+
 export default function CollectionDetailClient({
   collection,
   products,
@@ -46,7 +52,12 @@ export default function CollectionDetailClient({
       setLikedMap((prev) => ({ ...prev, [product.id]: next }));
       if (next) {
         toast.info(
-          <>{product.name} saved — <Link href="/wishlist" onClick={(ev) => ev.stopPropagation()}>View Wishlist</Link></>
+          <>
+            {product.name} saved —{" "}
+            <Link href="/wishlist" onClick={(ev) => ev.stopPropagation()}>
+              View Wishlist
+            </Link>
+          </>
         );
       } else {
         toast.info(`${product.name} removed from wishlist`);
@@ -123,33 +134,43 @@ export default function CollectionDetailClient({
       const items = editorial.querySelectorAll(".cd-editorial__item");
       items.forEach((item) => {
         const img = item.querySelector(".cd-editorial__img img");
-        const info = item.querySelectorAll(".cd-editorial__name, .cd-editorial__price, .cd-editorial__tag");
+        const info = item.querySelectorAll(
+          ".cd-editorial__name, .cd-editorial__price, .cd-editorial__tag"
+        );
 
         if (img) {
-          gsap.fromTo(img, { scale: 1.12 }, {
-            scale: 1,
-            duration: 1.2,
+          gsap.fromTo(
+            img,
+            { scale: 1.12 },
+            {
+              scale: 1,
+              duration: 1.2,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+
+        gsap.fromTo(
+          info,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
             ease: "power2.out",
             scrollTrigger: {
               trigger: item,
-              start: "top 80%",
+              start: "top 70%",
               toggleActions: "play none none reverse",
             },
-          });
-        }
-
-        gsap.fromTo(info, { opacity: 0, y: 20 }, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        });
+          }
+        );
       });
     }, editorial);
 
@@ -163,18 +184,22 @@ export default function CollectionDetailClient({
 
     const ctx = gsap.context(() => {
       const cards = grid.querySelectorAll(".cd-shop-card");
-      gsap.fromTo(cards, { opacity: 0, y: 40 }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: grid,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: grid,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     }, grid);
 
     return () => ctx.revert();
@@ -246,14 +271,15 @@ export default function CollectionDetailClient({
                     <span className={`cd-editorial__badge cd-editorial__badge--${product.badge}`}>
                       {product.badge === "new" && "New"}
                       {product.badge === "sale" && "Sale"}
-                      {product.badge === "bestseller" && "Best"}
+                      {product.badge === "bestseller" && "Best Seller"}
                     </span>
                   )}
                 </div>
 
                 <div className="cd-editorial__info">
                   <span className="cd-editorial__tag">
-                    {String(idx + 1).padStart(2, "0")} / {String(editorialProducts.length).padStart(2, "0")}
+                    {String(idx + 1).padStart(2, "0")} /{" "}
+                    {String(editorialProducts.length).padStart(2, "0")}
                   </span>
                   <span className="cd-editorial__name">{product.name}</span>
                   <p className="cd-editorial__desc">{product.description}</p>
@@ -278,9 +304,7 @@ export default function CollectionDetailClient({
 
       {/* ═══ 3. DIVIDER QUOTE ═══ */}
       <section className="cd-quote">
-        <blockquote className="cd-quote__text">
-          &ldquo;{collection.description}&rdquo;
-        </blockquote>
+        <blockquote className="cd-quote__text">&ldquo;{collection.description}&rdquo;</blockquote>
         <span className="cd-quote__attr">— Ori Baebi, {collection.season}</span>
       </section>
 
@@ -301,7 +325,7 @@ export default function CollectionDetailClient({
             const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
 
             return (
-              <Link key={product.id} href={productUrl} className="cd-shop-card">
+              <Link key={product.id} href={productUrl} className="cd-shop-card group">
                 <div className="cd-shop-card__image">
                   <Image
                     src={product.images[0]}
@@ -311,17 +335,23 @@ export default function CollectionDetailClient({
                     style={{ objectFit: "cover" }}
                   />
                   {product.badge && (
-                    <span className={`product-card__badge product-card__badge--${product.badge}`}>
+                    <span
+                      className={`absolute top-3 left-3 py-1 px-3 rounded-full font-primary text-xs font-medium tracking-[0.08em] uppercase z-2 backdrop-blur-lg ${
+                        badgeStyles[product.badge] ?? ""
+                      }`}
+                    >
                       {product.badge === "new" && "New"}
                       {product.badge === "sale" && "Sale"}
-                      {product.badge === "bestseller" && "Best"}
+                      {product.badge === "bestseller" && "Best Seller"}
                     </span>
                   )}
                   {/* ── Top-right icons: Wishlist + Bag (stacked) ── */}
-                  <div className="product-card__icons">
+                  <div className="absolute bottom-3 right-3 z-3 flex flex-row gap-2 opacity-100 sm:opacity-0 sm:-translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 sm:transition-all sm:duration-300 sm:[&:has(.liked)]:opacity-100 sm:[&:has(.liked)]:translate-y-0">
                     <button
                       type="button"
-                      className={`product-card__icon-btn product-card__icon-btn--wish ${likedMap[product.id] ? "product-card__icon-btn--liked" : ""}`}
+                      className={`w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 hover:text-[var(--color-dusty-rose)] hover:bg-[rgba(255,255,255,0.95)] ${
+                        likedMap[product.id] ? "!text-[var(--color-dusty-rose)] liked" : ""
+                      }`}
                       onClick={(e) => handleLike(product, e)}
                       aria-label={likedMap[product.id] ? "Remove from wishlist" : "Add to wishlist"}
                     >
@@ -329,7 +359,7 @@ export default function CollectionDetailClient({
                     </button>
                     <button
                       type="button"
-                      className="product-card__icon-btn product-card__icon-btn--bag"
+                      className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)]"
                       onClick={(e) => handleQuickAdd(product, e)}
                       aria-label="Add to bag"
                     >
@@ -339,7 +369,7 @@ export default function CollectionDetailClient({
                   {/* Desktop hover overlay */}
                   <div className="cd-shop-card__actions cd-shop-card__actions--desktop">
                     <button
-                      className="product-card__quick-add"
+                      className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150 hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
                       type="button"
                       onClick={(e) => handleQuickAdd(product, e)}
                     >

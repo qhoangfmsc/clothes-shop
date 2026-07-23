@@ -44,10 +44,10 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
   if (products.length === 0) {
     return (
-      <div className="shop-empty">
-        <CirclePlus className="shop-empty__icon" size={48} />
-        <h3 className="shop-empty__title">Coming Soon</h3>
-        <p className="shop-empty__text">
+      <div className="flex flex-col items-center justify-center py-20 px-4 text-center gap-4">
+        <CirclePlus size={48} className="text-[var(--text-disabled)]" />
+        <h3 className="font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em]">Coming Soon</h3>
+        <p className="font-primary text-[15px] text-[var(--text-muted)] tracking-[-0.02em] max-w-80 leading-[150%]">
           New pieces are being curated for this collection. Check back soon.
         </p>
       </div>
@@ -55,7 +55,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
   }
 
   return (
-    <div ref={gridRef} className="product-grid">
+    <div ref={gridRef} className="grid grid-cols-2 gap-4 px-4 pb-16 sm:grid-cols-3 sm:gap-5 sm:px-6 sm:pb-16 lg:grid-cols-4 lg:gap-6 lg:px-8 lg:pb-20">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

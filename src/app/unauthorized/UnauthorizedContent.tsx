@@ -8,44 +8,53 @@ export default function UnauthorizedContent() {
   const { user, isAuthenticated } = useAuth();
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.card}>
-        <div style={styles.iconWrap}>
+    <div className="flex items-center justify-center min-h-screen bg-[var(--bg-primary)] p-6">
+      <div className="flex flex-col items-center text-center gap-4 max-w-[440px] py-12 px-8 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg">
+        <div className="w-20 h-20 rounded-xl bg-[rgba(212,165,165,0.1)] flex items-center justify-center mb-2">
           <ShieldX size={40} style={{ color: "var(--accent-rose)" }} />
         </div>
 
-        <h1 style={styles.heading}>Access Denied</h1>
+        <h1 className="font-display font-normal text-xl text-[var(--text-heading)] m-0">
+          Access Denied
+        </h1>
 
-        <p style={styles.message}>
+        <p className="font-primary text-sm text-[var(--text-muted)] leading-[1.6] m-0">
           {isAuthenticated
             ? `Your account (${user?.email ?? "unknown"}) does not have permission to access this area.`
             : "You need to sign in to access this page."}
         </p>
 
         {isAuthenticated && user && (
-          <div style={styles.roleInfo}>
-            <span style={styles.roleLabel}>Your role:</span>
+          <div className="flex items-center gap-2 py-2 px-4 bg-[var(--bg-elevated)] rounded-md">
+            <span className="font-primary text-xs text-[var(--text-muted)]">
+              Your role:
+            </span>
             <span
-              style={{
-                ...styles.roleBadge,
-                ...(user.role === "admin"
-                  ? { background: "rgba(201,169,110,0.15)", color: "var(--accent-primary)" }
-                  : { background: "rgba(143,163,180,0.12)", color: "var(--accent-blue)" }),
-              }}
+              className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold font-primary capitalize ${
+                user.role === "admin"
+                  ? "bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]"
+                  : "bg-[rgba(143,163,180,0.12)] text-[var(--accent-blue)]"
+              }`}
             >
               {user.role}
             </span>
           </div>
         )}
 
-        <div style={styles.actions}>
+        <div className="mt-4 flex gap-3">
           {isAuthenticated ? (
-            <Link href="/" style={styles.btnPrimary}>
+            <Link
+              href="/"
+              className="flex items-center gap-2 py-2.5 px-6 bg-[var(--accent-primary)] text-[var(--text-on-gold)] no-underline rounded-md text-sm font-semibold font-primary"
+            >
               <ArrowLeft size={16} />
               <span>Back to Store</span>
             </Link>
           ) : (
-            <Link href="/login" style={styles.btnPrimary}>
+            <Link
+              href="/login"
+              className="flex items-center gap-2 py-2.5 px-6 bg-[var(--accent-primary)] text-[var(--text-on-gold)] no-underline rounded-md text-sm font-semibold font-primary"
+            >
               <LogIn size={16} />
               <span>Sign In</span>
             </Link>
@@ -55,90 +64,3 @@ export default function UnauthorizedContent() {
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  wrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    background: "var(--bg-primary)",
-    padding: "var(--space-6)",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
-    gap: "var(--space-4)",
-    maxWidth: 440,
-    padding: "var(--space-12) var(--space-8)",
-    background: "var(--bg-secondary)",
-    border: "1px solid var(--border-subtle)",
-    borderRadius: "var(--radius-lg)",
-  },
-  iconWrap: {
-    width: 80,
-    height: 80,
-    borderRadius: "var(--radius-xl)",
-    background: "rgba(212, 165, 165, 0.1)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: "var(--space-2)",
-  },
-  heading: {
-    fontFamily: "var(--font-display)",
-    fontSize: "var(--text-xl)",
-    color: "var(--text-heading)",
-    fontWeight: 400,
-    margin: 0,
-  },
-  message: {
-    fontSize: "var(--text-sm)",
-    color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)",
-    lineHeight: 1.6,
-    margin: 0,
-  },
-  roleInfo: {
-    display: "flex",
-    alignItems: "center",
-    gap: "var(--space-2)",
-    padding: "var(--space-2) var(--space-4)",
-    background: "var(--bg-elevated)",
-    borderRadius: "var(--radius-md)",
-  },
-  roleLabel: {
-    fontSize: "var(--text-xs)",
-    color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)",
-  },
-  roleBadge: {
-    display: "inline-block",
-    padding: "2px 8px",
-    borderRadius: "var(--radius-pill)",
-    fontSize: "var(--text-xs)",
-    fontWeight: 600,
-    fontFamily: "var(--font-primary)",
-    textTransform: "capitalize" as const,
-  },
-  actions: {
-    marginTop: "var(--space-4)",
-    display: "flex",
-    gap: "var(--space-3)",
-  },
-  btnPrimary: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    padding: "10px 24px",
-    background: "var(--accent-primary)",
-    color: "var(--text-on-gold)",
-    textDecoration: "none",
-    borderRadius: "var(--radius-md)",
-    fontSize: "var(--text-sm)",
-    fontWeight: 600,
-    fontFamily: "var(--font-primary)",
-  },
-};

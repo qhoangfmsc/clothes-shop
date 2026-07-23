@@ -62,7 +62,7 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
       const tl = gsap.timeline({ delay: 0.3 });
 
       /* Image scale-in */
-      tl.from(hero.querySelector(".col-hero__media img"), {
+      tl.from(hero.querySelector("[data-hero-media] img"), {
         scale: 1.2,
         duration: 1.4,
         ease: "power2.out",
@@ -70,14 +70,14 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
 
       /* Season label */
       tl.to(
-        hero.querySelector(".col-hero__season"),
+        hero.querySelector("[data-hero-season]"),
         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
         "-=0.8"
       );
 
       /* Title lines — stagger reveal */
       tl.to(
-        hero.querySelectorAll(".col-hero__title-line"),
+        hero.querySelectorAll("[data-hero-title-line]"),
         {
           opacity: 1,
           y: 0,
@@ -90,16 +90,16 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
 
       /* Subtitle */
       tl.to(
-        hero.querySelector(".col-hero__subtitle"),
+        hero.querySelector("[data-hero-subtitle]"),
         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
         "-=0.3"
       );
 
       /* Scroll hint */
-      tl.to(hero.querySelector(".col-hero__scroll-hint"), { opacity: 1, duration: 0.5 }, "-=0.1");
+      tl.to(hero.querySelector("[data-hero-scroll-hint]"), { opacity: 1, duration: 0.5 }, "-=0.1");
 
       /* Hero parallax on scroll */
-      gsap.to(hero.querySelector(".col-hero__media img"), {
+      gsap.to(hero.querySelector("[data-hero-media] img"), {
         y: "20%",
         ease: "none",
         scrollTrigger: {
@@ -150,7 +150,7 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
         if (!section) return;
 
         /* Parallax image */
-        const img = section.querySelector(".col-spread__image img");
+        const img = section.querySelector("[data-spread-image] img");
         if (img) {
           gsap.fromTo(
             img,
@@ -170,7 +170,7 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
 
         /* Text reveals */
         const textEls = section.querySelectorAll(
-          ".col-spread__num, .col-spread__heading, .col-spread__desc, .col-spread__cta"
+          "[data-spread-num], [data-spread-heading], [data-spread-desc], [data-spread-cta]"
         );
         gsap.to(textEls, {
           opacity: 1,
@@ -179,7 +179,7 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
           stagger: 0.12,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: section.querySelector(".col-spread__text"),
+            trigger: section.querySelector("[data-spread-text]"),
             start: "top 75%",
             toggleActions: "play none none reverse",
           },
@@ -196,8 +196,11 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
   return (
     <>
       {/* ═══ 1. HERO — Full-bleed cinematic ═══ */}
-      <section ref={heroRef} className="col-hero">
-        <div className="col-hero__media">
+      <section
+        ref={heroRef}
+        className="relative h-screen overflow-hidden flex items-end justify-start bg-[var(--color-noir)]"
+      >
+        <div data-hero-media className="absolute inset-0 z-0">
           <Image
             src="/images/model-intro/model_intro_6.webp"
             alt="Collections — Summer 2026"
@@ -205,33 +208,54 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
             priority
             sizes="100vw"
             style={{ objectFit: "cover" }}
+            className="will-change-transform motion-reduce:will-change-auto"
           />
         </div>
-        <div className="col-hero__vignette" />
+        <div
+          className="absolute inset-0 z-1 pointer-events-none bg-[linear-gradient(to_top,rgba(10,10,8,0.7)_0%,transparent_50%),linear-gradient(to_right,rgba(10,10,8,0.4)_0%,transparent_60%)]"
+        />
 
-        <div className="col-hero__content">
-          <span className="col-hero__season">Summer 2026</span>
-          <h1 className="col-hero__title">
-            <span className="col-hero__title-line">The</span>
-            <span className="col-hero__title-line">Collections</span>
+        <div className="relative z-2 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12 max-w-160">
+          <span
+            data-hero-season
+            className="inline-block text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.2em] uppercase mb-5 opacity-0"
+          >
+            Summer 2026
+          </span>
+          <h1 className="font-display font-normal text-[clamp(48px,10vw,120px)] text-[var(--color-pearl-cream)] tracking-tighter leading-[90%] mb-5 overflow-hidden">
+            <span data-hero-title-line className="block opacity-0 translate-y-full">
+              The
+            </span>
+            <span data-hero-title-line className="block opacity-0 translate-y-full">
+              Collections
+            </span>
           </h1>
-          <p className="col-hero__subtitle">
+          <p
+            data-hero-subtitle
+            className="text-white/55 font-primary text-[15px] font-medium tracking-[-0.02em] leading-[160%] max-w-90 opacity-0"
+          >
             Stories told through fabric, form, and intention. Each collection a chapter in the Ori
             Baebi narrative.
           </p>
         </div>
 
-        <div className="col-hero__scroll-hint">
-          <div className="col-hero__scroll-line" />
+        <div
+          data-hero-scroll-hint
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-3 flex flex-col items-center gap-2 text-white/35 font-primary text-xs tracking-[0.12em] uppercase opacity-0"
+        >
+          <div className="w-px h-10 bg-linear-to-b from-[rgba(201,169,110,0.6)] to-transparent animate-[col-scroll-pulse_1.8s_ease-in-out_infinite] motion-reduce:animate-none" />
           <span>Scroll</span>
         </div>
       </section>
 
       {/* ═══ 2. MARQUEE — Running text strip ═══ */}
-      <div className="col-marquee">
-        <div className="col-marquee__inner">
+      <div className="overflow-hidden py-10 bg-[var(--color-noir)] border-t border-b border-[rgba(201,169,110,0.1)]">
+        <div className="flex whitespace-nowrap will-change-transform animate-[col-marquee-scroll_25s_linear_infinite] motion-reduce:animate-none motion-reduce:will-change-auto">
           {[...Array(4)].map((_, i) => (
-            <span key={i} className="col-marquee__text">
+            <span
+              key={i}
+              className="font-display font-normal text-[clamp(40px,6vw,80px)] text-[rgba(201,169,110,0.12)] tracking-[-0.04em] px-10 shrink-0"
+            >
               {MARQUEE_TEXT}
             </span>
           ))}
@@ -239,36 +263,49 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
       </div>
 
       {/* ═══ 3. HORIZONTAL SCROLL — Collection cards ═══ */}
-      <div ref={horizontalRef} className="col-horizontal">
-        <div className="col-horizontal__sticky">
+      <div ref={horizontalRef} className="relative overflow-hidden bg-[var(--color-noir)]">
+        <div className="sticky top-0 h-screen overflow-hidden flex items-center">
           {/* Section label */}
-          <div className="col-horizontal__label">
-            <span className="col-horizontal__label-tag">Explore</span>
-            <span className="col-horizontal__label-title">All Collections</span>
+          <div className="absolute top-8 left-8 z-2 flex flex-col gap-2">
+            <span className="text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.15em] uppercase">
+              Explore
+            </span>
+            <span className="text-[var(--color-pearl-cream)] font-display font-normal text-2xl tracking-[-0.04em]">
+              All Collections
+            </span>
           </div>
 
           {/* Scrolling track */}
-          <div ref={trackRef} className="col-horizontal__track">
+          <div ref={trackRef} className="flex gap-6 px-8 will-change-transform motion-reduce:will-change-auto">
             {/* Spacer for label */}
             <div style={{ width: 200, flexShrink: 0 }} />
 
             {HORIZONTAL_CARDS.map((col, idx) => (
-              <Link key={col.title} href={col.href} className="col-horizontal__card">
-                <div className="col-horizontal__card-img">
+              <Link
+                key={col.title}
+                href={col.href}
+                className="group shrink-0 w-85 sm:w-95 lg:w-105 flex flex-col no-underline text-inherit cursor-pointer"
+              >
+                <div className="relative aspect-3/4 rounded-md overflow-hidden bg-[var(--color-obsidian)]">
                   <Image
                     src={col.image}
                     alt={col.title}
                     fill
                     sizes="420px"
                     style={{ objectFit: "cover" }}
+                    className="transition-transform duration-[var(--duration-slow)] [transition-timing-function:var(--ease-luxury)] group-hover:scale-[1.06] motion-reduce:transition-none"
                   />
-                  <span className="col-horizontal__card-num">
+                  <span className="absolute top-4 left-4 font-display font-normal text-3xl text-white/15 tracking-[-0.04em] leading-none pointer-events-none">
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <div className="col-horizontal__card-info">
-                  <span className="col-horizontal__card-title">{col.title}</span>
-                  <span className="col-horizontal__card-sub">{col.subtitle}</span>
+                <div className="py-4 px-1 flex flex-col gap-1">
+                  <span className="text-[var(--color-pearl-cream)] font-display font-normal text-lg tracking-[-0.04em]">
+                    {col.title}
+                  </span>
+                  <span className="text-white/40 font-primary text-sm font-medium tracking-[-0.02em]">
+                    {col.subtitle}
+                  </span>
                 </div>
               </Link>
             ))}
@@ -286,49 +323,85 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
           ref={(el) => {
             spreadRefs.current[idx] = el;
           }}
-          className={`col-spread ${idx % 2 === 1 ? "col-spread--reverse" : ""}`}
+          className={`flex flex-col min-h-screen overflow-hidden lg:flex-row ${idx % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
           style={{ background: section.bgColor }}
         >
           {/* Text side */}
-          <div className="col-spread__text">
-            <span className="col-spread__num" style={{ color: section.textColor }}>
+          <div
+            data-spread-text
+            className="flex-1 flex flex-col justify-center px-4 py-16 sm:px-6 lg:px-12 gap-6"
+          >
+            <span
+              data-spread-num
+              className="font-display font-normal text-[clamp(80px,12vw,160px)] text-[var(--border-subtle)] tracking-[-0.06em] leading-[80%] opacity-0"
+              style={{ color: section.textColor }}
+            >
               {section.num}
             </span>
-            <h2 className="col-spread__heading" style={{ color: section.textColor }}>
+            <h2
+              data-spread-heading
+              className="font-display font-normal text-[clamp(28px,4vw,48px)] tracking-[-0.04em] leading-[105%] opacity-0"
+              style={{ color: section.textColor }}
+            >
               {section.heading}
             </h2>
-            <p className="col-spread__desc" style={{ color: "var(--text-secondary)" }}>
+            <p
+              data-spread-desc
+              className="font-primary text-[15px] font-medium tracking-[-0.02em] leading-[170%] max-w-100 opacity-0"
+              style={{ color: "var(--text-secondary)" }}
+            >
               {section.description}
             </p>
-            <Link href={section.cta.href} className="col-spread__cta">
+            <Link
+              href={section.cta.href}
+              data-spread-cta
+              className="inline-flex items-center gap-2 font-primary text-xs font-medium tracking-widest uppercase no-underline text-[var(--color-champagne-gold)] opacity-0 transition-opacity duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] hover:opacity-70! motion-reduce:transition-none"
+            >
               {section.cta.label}
               <ArrowRight size={14} />
             </Link>
           </div>
 
           {/* Image side */}
-          <div className="col-spread__image">
+          <div data-spread-image className="flex-1 relative min-h-100 lg:min-h-auto overflow-hidden">
             <Image
               src={section.image}
               alt={section.heading}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               style={{ objectFit: "cover" }}
+              className="will-change-transform motion-reduce:will-change-auto"
             />
           </div>
         </section>
       ))}
 
       {/* ═══ 5. CLOSING MARQUEE ═══ */}
-      <div className="col-marquee" style={{ background: "var(--bg-primary)" }}>
-        <div className="col-marquee__inner" style={{ animationDirection: "reverse" }}>
+      <div className="overflow-hidden py-10 bg-[var(--bg-primary)] border-t border-b border-[rgba(201,169,110,0.1)]">
+        <div className="flex whitespace-nowrap will-change-transform animate-[col-marquee-scroll_25s_linear_infinite] [animation-direction:reverse] motion-reduce:animate-none motion-reduce:will-change-auto">
           {[...Array(4)].map((_, i) => (
-            <span key={i} className="col-marquee__text" style={{ color: "var(--border-light)" }}>
+            <span
+              key={i}
+              className="font-display font-normal text-[clamp(40px,6vw,80px)] text-[var(--border-light)] tracking-[-0.04em] px-10 shrink-0"
+            >
               {MARQUEE_TEXT}
             </span>
           ))}
         </div>
       </div>
+
+      {/* ─── Keyframe animations + reduced motion ─── */}
+      <style>{`
+        @keyframes col-scroll-pulse {
+          0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+          50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        @keyframes col-marquee-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </>
   );
 }

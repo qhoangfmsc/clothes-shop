@@ -284,10 +284,7 @@ export default function UserMenu() {
                       transition: `background var(--duration-fast) var(--ease-default), color var(--duration-fast) var(--ease-default)`,
                     }}
                   >
-                    <Icon
-                      size={16}
-                      style={{ color: "var(--text-muted)", flexShrink: 0 }}
-                    />
+                    <Icon size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
                     {item.label}
                   </Link>
                 );
@@ -325,10 +322,7 @@ export default function UserMenu() {
                   transition: `background var(--duration-fast) var(--ease-default), color var(--duration-fast) var(--ease-default)`,
                 }}
               >
-                <LogOut
-                  size={16}
-                  style={{ color: "var(--text-muted)", flexShrink: 0 }}
-                />
+                <LogOut size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
                 Sign Out
               </button>
             </div>

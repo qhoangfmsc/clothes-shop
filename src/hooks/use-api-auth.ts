@@ -153,7 +153,7 @@ export function useApiAuth() {
 }
 
 /**
- * Standalone (non-hook) version for use in Zustand stores.
+ * Standalone (non-hook) version for use in Redux thunks.
  * Does NOT auto-refresh — simpler for background sync.
  */
 export async function apiFetchStandalone<T = unknown>(

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./HamburgerMenu";
 import UserMenu from "./UserMenu";
+import SearchBar from "./SearchBar";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -59,7 +60,7 @@ const SHOP_CATEGORIES = [
 ] as const;
 
 const NAV_LINKS = [
-  { label: "Home", href: "/", hasMegaMenu: false },
+  // { label: "Home", href: "/", hasMegaMenu: false },
   { label: "Shop", href: "/shop", hasMegaMenu: true },
   { label: "New In", href: "/new-in", hasMegaMenu: false },
   { label: "Collections", href: "/collections", hasMegaMenu: false },
@@ -339,6 +340,11 @@ export default function HeaderNav({
           right: 32,
         }}
       >
+        {/* Search — desktop only, hidden on mobile where HamburgerMenu handles it */}
+        <div style={{ display: "var(--search-desktop-display, none)", alignItems: "center", pointerEvents: "auto" }}>
+          <SearchBar />
+        </div>
+
         {NAV_LINKS.map((link) => (
           <div
             key={link.label}
@@ -374,13 +380,15 @@ export default function HeaderNav({
           </div>
         ))}
 
-        <UserMenu />
+        {/* <UserMenu /> */}
 
         <HamburgerMenu />
 
         <style>{`
           @media (min-width: 1024px) {
             nav#header-nav { --nav-link-display: block; }
+            nav#header-nav { --search-desktop-display: flex; }
+          }
           }
           .header-nav-link::after {
             content: '';

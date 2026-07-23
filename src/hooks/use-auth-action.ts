@@ -1,42 +1,49 @@
-/* ═══════════════════════════════════════════════════════════
-   AUTH ACTION HOOK — Gate actions behind authentication
-   
-   Usage:
-     const { requireAuth } = useAuthAction();
-     
-     const handleAddToCart = () => {
-       requireAuth(() => {
-         cartStore.addItem(item);
-       }, "add items to your bag");
-     };
-   
-   If user is authenticated → runs callback immediately.
-   If not → opens LoginPromptModal, runs callback after login success.
-   ═══════════════════════════════════════════════════════════ */
+"use client";
 
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { useAuth } from "@/src/contexts/auth-context";
-import { useLoginPrompt } from "@/src/app/_components/LoginPromptModal";
 
+/**
+ * Context for triggering the login prompt modal.
+ * Set by LoginPromptProvider in the component tree.
+ */
+interface LoginPromptContextValue {
+  openLoginPrompt: (actionDescription?: string) => void;
+}
+
+const LoginPromptContextKey = "loginPrompt";
+
+/**
+ * Hook providing auth-gated action helpers.
+ *
+ * Usage:
+ *   const { requireAuth } = useAuthAction();
+ *   const handleClick = () => {
+ *     requireAuth(() => {
+ *       // do the authenticated action
+ *     }, "save to wishlist");
+ *   };
+ */
 export function useAuthAction() {
   const { isAuthenticated } = useAuth();
-  const { openLoginPrompt } = useLoginPrompt();
 
-  /**
-   * Wrap any action that requires authentication.
-   * @param callback - The function to run if authenticated
-   * @param featureLabel - Human-readable label for the login prompt (e.g. "save to wishlist")
-   */
   const requireAuth = useCallback(
-    (callback: () => void, featureLabel?: string) => {
+    (action: () => void, _actionDescription?: string) => {
       if (isAuthenticated) {
-        callback();
-        return;
+        action();
+      } else {
+        /* Dispatch custom event — LoginPromptModal listens for this */
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(
+            new CustomEvent("login-prompt:open", {
+              detail: { actionDescription: _actionDescription },
+            })
+          );
+        }
       }
-      openLoginPrompt(callback, featureLabel);
     },
-    [isAuthenticated, openLoginPrompt]
+    [isAuthenticated]
   );
 
-  return { requireAuth, isAuthenticated };
+  return { requireAuth };
 }

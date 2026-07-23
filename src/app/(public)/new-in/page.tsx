@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 
 import NewInClient from "./_components/NewInClient";
 import { getNewInProducts } from "../shop/_lib/server-fetchers";
-import "./new-in.css";
-import "../shop/shop.css";
 
 export const metadata: Metadata = {
   title: "New In — Ori Baebi",

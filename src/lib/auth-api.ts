@@ -2,7 +2,7 @@
    AUTH API CLIENT — Authenticated fetch
 
    Handles token management, 401 → refresh flow.
-   Used by Zustand stores / Redux-style slices.
+   Used by Redux Toolkit slices.
    NOT a React hook — callable from plain functions.
 
    Usage:

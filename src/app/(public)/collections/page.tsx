@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 
 import CollectionsClient from "./_components/CollectionsClient";
 import { getCollections } from "../shop/_lib/server-fetchers";
-import "./collections.css";
-import "../shop/shop.css";
 
 export const metadata: Metadata = {
   title: "Collections — Ori Baebi",

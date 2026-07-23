@@ -6,7 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, Trash2, ChevronRight, ArrowLeft, ShoppingBag } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
-import { useWishlistStore } from "@/src/store/wishlist";
+import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
+import {
+  selectWishlistItems,
+  removeWishlistItem,
+  clearWishlist,
+  fetchWishlist,
+  syncRemoveFromWishlist,
+} from "@/src/app/(private)/wishlist/_common/moduleSlice";
 import UnauthenticatedState from "@/src/app/_components/UnauthenticatedState";
 import { useToast } from "@/src/app/_components/Toast";
 
@@ -22,27 +29,24 @@ function formatDate(dateStr: string) {
 
 export default function WishlistContent() {
   const { isAuthenticated, isLoading } = useAuth();
-  const items = useWishlistStore((s) => s.items);
-  const removeItem = useWishlistStore((s) => s.removeItem);
-  const clearWishlist = useWishlistStore((s) => s.clearWishlist);
-  const fetchFromApi = useWishlistStore((s) => s.fetchWishlistFromApi);
-  const syncRemove = useWishlistStore((s) => s.syncRemoveFromApi);
+  const dispatch = useAppDispatch();
+  const items = useAppSelector(selectWishlistItems);
   const { toast } = useToast();
 
   /* Sync wishlist from API on mount (authenticated only) */
   useEffect(() => {
     if (isAuthenticated) {
-      fetchFromApi();
+      dispatch(fetchWishlist());
     }
-  }, [isAuthenticated, fetchFromApi]);
+  }, [isAuthenticated, dispatch]);
 
   const handleRemove = useCallback(
     (productId: string, name: string) => {
-      removeItem(productId);
-      syncRemove(productId);
+      dispatch(removeWishlistItem(productId));
+      dispatch(syncRemoveFromWishlist(productId));
       toast.info(`${name} removed from wishlist`);
     },
-    [removeItem, syncRemove, toast]
+    [dispatch, toast]
   );
 
   /* Loading */
@@ -97,7 +101,7 @@ export default function WishlistContent() {
 
           {items.length > 0 && (
             <button
-              onClick={clearWishlist}
+              onClick={() => dispatch(clearWishlist())}
               className="wishlist-page__clear-btn"
             >
               Clear All

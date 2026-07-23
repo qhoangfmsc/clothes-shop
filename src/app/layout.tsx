@@ -8,7 +8,6 @@ import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
 import Providers from "./_components/Providers";
 import "./globals.css";
-import "../styles/cart-fab.css";
 
 const quicheDisplay = localFont({
   src: "../assets/fonts/QuicheDisplay-Regular.otf",

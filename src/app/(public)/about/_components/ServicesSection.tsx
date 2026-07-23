@@ -29,33 +29,15 @@ const CARD_STYLES = [
 
 export default function ServicesSection() {
   return (
-    <section
-      style={{
-        background: "var(--bg-secondary)",
-        padding: "80px 40px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-        }}
-      >
+    <section className="bg-[var(--bg-secondary)] py-20 px-10">
+      <div className="max-w-[1200px] mx-auto">
         {/* Section header */}
         <motion.span
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [...ease] }}
-          style={{
-            color: "var(--text-accent)",
-            textTransform: "uppercase",
-            fontSize: "var(--text-sm)",
-            letterSpacing: "0.12em",
-            lineHeight: "140%",
-            display: "block",
-            marginBottom: 16,
-          }}
+          className="text-[var(--text-accent)] uppercase text-sm tracking-[0.12em] leading-[140%] block mb-4"
         >
           Services
         </motion.span>
@@ -65,26 +47,13 @@ export default function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.1 }}
-          style={{
-            color: "var(--text-heading)",
-            letterSpacing: "-0.04em",
-            lineHeight: "100%",
-            fontWeight: 400,
-            fontSize: "clamp(25px, 4vw, 42px)",
-            marginBottom: 64,
-          }}
+          className="text-[var(--text-heading)] tracking-[-0.04em] leading-none font-normal text-[clamp(25px,4vw,42px)] mb-16"
         >
           What We Offer
         </motion.h2>
 
         {/* Cards — diverse tinted cream backgrounds */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 16,
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
           {SERVICES.map((service, idx) => {
             const style = CARD_STYLES[idx];
             return (
@@ -98,16 +67,10 @@ export default function ServicesSection() {
                   ease: [...ease],
                   delay: idx * 0.12,
                 }}
+                className={`bg-[${style.bg}] border border-[${style.border}] rounded-md p-[clamp(32px,3.5vw,48px)] flex flex-col gap-5 cursor-default`}
                 style={{
-                  background: style.bg,
-                  border: `1px solid ${style.border}`,
-                  borderRadius: "var(--radius-md)",
-                  padding: "clamp(32px, 3.5vw, 48px)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 20,
-                  cursor: "default",
-                  transition: `transform var(--duration-base) var(--ease-default), box-shadow var(--duration-base) var(--ease-default), border-color var(--duration-base) var(--ease-default)`,
+                  transition:
+                    "transform var(--duration-base) var(--ease-default), box-shadow var(--duration-base) var(--ease-default), border-color var(--duration-base) var(--ease-default)",
                 }}
                 whileHover={{
                   y: -2,
@@ -116,38 +79,19 @@ export default function ServicesSection() {
               >
                 {/* Icon — color-matched accent */}
                 <span
-                  style={{
-                    fontSize: 24,
-                    color: style.iconColor,
-                    lineHeight: "100%",
-                  }}
+                  className="text-2xl leading-none"
+                  style={{ color: style.iconColor }}
                 >
                   {service.icon}
                 </span>
 
                 {/* Title */}
-                <h3
-                  style={{
-                    color: "var(--text-heading)",
-                    letterSpacing: "-0.04em",
-                    lineHeight: "100%",
-                    fontWeight: 500,
-                    textTransform: "uppercase",
-                    fontSize: "clamp(15px, 1.8vw, 20px)",
-                  }}
-                >
+                <h3 className="text-[var(--text-heading)] tracking-[-0.04em] leading-none font-medium uppercase text-[clamp(15px,1.8vw,20px)]">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p
-                  style={{
-                    color: "var(--text-secondary)",
-                    letterSpacing: "-0.02em",
-                    lineHeight: "170%",
-                    fontSize: "clamp(12px, 1.3vw, 14px)",
-                  }}
-                >
+                <p className="text-[var(--text-secondary)] tracking-[-0.02em] leading-[170%] text-[clamp(12px,1.3vw,14px)]">
                   {service.description}
                 </p>
               </motion.div>
@@ -161,32 +105,15 @@ export default function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.4 }}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 64,
-          }}
+          className="flex justify-center mt-16"
         >
           <motion.a
             href="mailto:hello@oribaebi.com"
             whileHover={{ scale: 1.02, opacity: 0.9 }}
+            className="inline-flex items-center justify-center bg-[var(--accent-primary)] text-[var(--text-on-gold)] rounded-[var(--radius-pill)] py-[14px] px-10 text-base tracking-[-0.02em] uppercase no-underline font-medium shadow-[var(--shadow-gold-sm)] cursor-pointer"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "var(--accent-primary)",
-              color: "var(--text-on-gold)",
-              borderRadius: "var(--radius-pill)",
-              padding: "14px 40px",
-              fontSize: "var(--text-md)",
-              letterSpacing: "-0.02em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              fontWeight: 500,
-              boxShadow: "var(--shadow-gold-sm)",
               transition:
                 "opacity var(--duration-base) var(--ease-default), transform var(--duration-base) var(--ease-default)",
-              cursor: "pointer",
             }}
           >
             {INVITATION.ctaButton}

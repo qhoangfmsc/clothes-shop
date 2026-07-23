@@ -7,8 +7,6 @@ import {
   getCollectionBySlug,
   getCollectionProducts,
 } from "../../shop/_lib/server-fetchers";
-import "../../shop/shop.css";
-import "./collection-detail.css";
 
 interface CollectionDetailPageProps {
   params: Promise<{ slug: string }>;

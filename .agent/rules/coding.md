@@ -11,3 +11,4 @@ trigger: always_on
 7. Never use the index.ts file to import all the files.
 8. **Module-first architecture.** Code dùng riêng cho 1 module phải nằm trong module đó (`_common/`, `_components/`). Không để slice, types form, constants của module ra ngoài root dir (`src/store/`, `src/types/`, `src/constants/`). Root dir CHỈ chứa code dùng chung ≥2 modules. Reference `.agent/skills/01-project-structure.md` và `.agent/skills/02-api-slice-pattern.md`.
 9. **Tailwind-first styling.** Tất cả styling dùng Tailwind utility classes. Không tạo file `.css` mới. `globals.css` chỉ cho `@keyframes`. Inline `style={}` chỉ cho dynamic values. Reference `.agent/skills/03-tailwind-styling.md`.
+10. BE path for debugging and doing task: /Users/quochoang/Documents/Projects/clothes-shop-api/. Make sure not to edit any code in BE project.

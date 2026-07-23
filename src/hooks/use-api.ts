@@ -1,10 +1,13 @@
 /* ═══════════════════════════════════════════════════════════
    SWR HOOKS — Client-side data fetching with caching
-   
+
    Calls real BE API at NEXT_PUBLIC_API_URL.
    Uses SWR's staleWhileRevalidate pattern.
+
+   Phase 1: Updated to match BE Public API (search, pagination, filter).
    ═══════════════════════════════════════════════════════════ */
 
+import { useState, useEffect, useRef, useCallback } from "react";
 import useSWR from "swr";
 import type { Product } from "@/src/types/product";
 import type { Category, CategoryUIConfig } from "@/src/types/category";
@@ -12,6 +15,7 @@ import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
+import type { ProductListParams, ProductListResponse } from "@/src/app/(public)/shop/_lib/server-fetchers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -29,13 +33,27 @@ const defaultConfig = {
 };
 
 /* ═══ Products ═══ */
-export function useProducts(category?: string, subcategory?: string) {
-  const params = new URLSearchParams();
-  if (category) params.set("category", category);
-  if (subcategory) params.set("subcategory", subcategory);
-  const qs = params.toString();
 
-  const { data, error, isLoading, mutate } = useSWR<{ data: Product[]; total: number }>(
+function buildProductQS(params: ProductListParams): string {
+  const qs = new URLSearchParams();
+  if (params.search) qs.set("search", params.search);
+  if (params.category) qs.set("category", params.category);
+  if (params.subcategory) qs.set("subcategory", params.subcategory);
+  if (params.badge) qs.set("badge", params.badge);
+  if (params.sort) qs.set("sort", params.sort);
+  if (params.minPrice != null) qs.set("minPrice", String(params.minPrice));
+  if (params.maxPrice != null) qs.set("maxPrice", String(params.maxPrice));
+  if (params.sizes) qs.set("sizes", params.sizes);
+  if (params.colors) qs.set("colors", params.colors);
+  if (params.page && params.page > 1) qs.set("page", String(params.page));
+  if (params.limit) qs.set("limit", String(params.limit));
+  return qs.toString();
+}
+
+export function useProducts(params: ProductListParams = {}) {
+  const qs = buildProductQS(params);
+
+  const { data, error, isLoading, mutate } = useSWR<ProductListResponse>(
     `${API_URL}/api/products${qs ? `?${qs}` : ""}`,
     fetcher,
     defaultConfig
@@ -44,6 +62,8 @@ export function useProducts(category?: string, subcategory?: string) {
   return {
     products: data?.data ?? [],
     total: data?.total ?? 0,
+    page: data?.page ?? 1,
+    limit: data?.limit ?? 24,
     isLoading,
     isError: !!error,
     mutate,
@@ -69,7 +89,7 @@ export function useProduct(id: string | null) {
 }
 
 export function useNewInProducts() {
-  const { data, isLoading, error } = useSWR<{ data: Product[]; total: number }>(
+  const { data, isLoading, error } = useSWR<ProductListResponse>(
     `${API_URL}/api/products?badge=new`,
     fetcher,
     defaultConfig
@@ -77,6 +97,7 @@ export function useNewInProducts() {
 
   return {
     products: data?.data ?? [],
+    total: data?.total ?? 0,
     isLoading,
     isError: !!error,
   };
@@ -154,12 +175,17 @@ export function useCollection(slug: string | null) {
 }
 
 /* ═══ Reviews ═══ */
-export function useReviews(productId: string | null) {
+export function useReviews(productId: string | null, page = 1, limit = 24) {
+  const qs = new URLSearchParams();
+  if (page > 1) qs.set("page", String(page));
+  if (limit !== 24) qs.set("limit", String(limit));
+  const q = qs.toString();
+
   const { data, isLoading, error } = useSWR<{
     data: Review[];
     total: number;
   }>(
-    productId ? `${API_URL}/api/reviews/${productId}` : null,
+    productId ? `${API_URL}/api/reviews/${productId}${q ? `?${q}` : ""}` : null,
     fetcher,
     defaultConfig
   );
@@ -207,4 +233,103 @@ export function useShipping() {
     isLoading,
     isError: !!error,
   };
+}
+
+/* ═══ Autocomplete — debounced search for nav dropdown ═══ */
+
+export interface AutocompleteItem {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  image: string;
+}
+
+export interface AutocompleteResponse {
+  data: AutocompleteItem[];
+}
+
+const MIN_QUERY_LENGTH = 2;
+const DEBOUNCE_MS = 300;
+
+export function useAutocomplete() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<AutocompleteItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  const search = useCallback((q: string) => {
+    setQuery(q);
+
+    // Clear previous debounce
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+
+    // Abort any in-flight request
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+
+    if (q.trim().length < MIN_QUERY_LENGTH) {
+      setResults([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
+    debounceRef.current = setTimeout(() => {
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      fetch(`${API_URL}/api/products/autocomplete?q=${encodeURIComponent(q.trim())}`, {
+        signal: controller.signal,
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error(`Autocomplete error: ${res.status}`);
+          return res.json() as Promise<AutocompleteResponse>;
+        })
+        .then((data) => {
+          setResults(data.data ?? []);
+          setIsLoading(false);
+          abortRef.current = null;
+        })
+        .catch((err) => {
+          if (err.name === "AbortError") return; // Ignore aborted requests
+          setResults([]);
+          setIsLoading(false);
+          abortRef.current = null;
+        });
+
+      debounceRef.current = null;
+    }, DEBOUNCE_MS);
+  }, []);
+
+  const clear = useCallback(() => {
+    setQuery("");
+    setResults([]);
+    setIsLoading(false);
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (abortRef.current) abortRef.current.abort();
+    };
+  }, []);
+
+  return { query, results, isLoading, search, clear };
 }

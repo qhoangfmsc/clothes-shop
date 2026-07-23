@@ -11,7 +11,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import "@/src/styles/route-transition.css";
 
 type Phase = "idle" | "in" | "out";
 
@@ -93,7 +92,11 @@ export default function RouteTransition() {
 
   return (
     <div
-      className={`rt-fade rt-fade--${phase}`}
+      className={`fixed inset-0 z-9999 bg-[var(--bg-primary)] pointer-events-none ${
+        phase === "in"
+          ? "animate-[rt-in_180ms_ease-out_forwards]"
+          : "animate-[rt-out_350ms_ease-in-out_forwards]"
+      }`}
       aria-hidden="true"
     />
   );
