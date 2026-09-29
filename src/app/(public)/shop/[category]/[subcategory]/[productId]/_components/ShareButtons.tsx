@@ -27,7 +27,7 @@ export default function ShareButtons({ productName, productUrl }: ShareButtonsPr
       try {
         await navigator.share({
           title: productName,
-          text: `Check out ${productName} from Ori Baebi`,
+          text: `Check out ${productName} from DOOVAN`,
           url: fullUrl,
         });
       } catch {
@@ -37,7 +37,7 @@ export default function ShareButtons({ productName, productUrl }: ShareButtonsPr
   }, [productName, fullUrl]);
 
   const shareLinks = {
-    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${productName} from Ori Baebi`)}&url=${encodeURIComponent(fullUrl)}`,
+    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${productName} from DOOVAN`)}&url=${encodeURIComponent(fullUrl)}`,
     pinterest: `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(fullUrl)}&description=${encodeURIComponent(productName)}`,
   };
 

@@ -77,7 +77,7 @@ export default function NotFound() {
             lineHeight: "140%",
           }}
         >
-          Ori Baebi
+          DOOVAN
         </motion.span>
 
         {/* Main heading — fashion editorial */}

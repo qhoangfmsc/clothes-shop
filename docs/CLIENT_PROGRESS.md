@@ -193,7 +193,7 @@ User action → Redux reducer (instant local update) → Thunk (sync BE, backgro
 | Layer | File | Trách nhiệm |
 | --- | --- | --- |
 | **Redux Store** | `cart/_common/moduleSlice.ts` | State: items[], isOpen, isSyncing. Actions: addItem, removeItem, updateQuantity, clearCart |
-| **localStorage** | `ori-baebi-cart` key | Persist cart across sessions |
+| **localStorage** | `doovan-cart` key | Persist cart across sessions |
 | **API Sync** | Thunks: `syncAddToCartItem`, `syncRemoveCartItem`, `syncUpdateCartItemQuantity`, `fetchCart`, `clearCartOnServer` | Sync với BE, map `serverItemId` |
 | **Selectors** | `selectCartItems`, `selectTotalPrice`, `selectTotalItems` | Derived state |
 
@@ -282,7 +282,7 @@ Step 3: Success (CheckCircle animation, Order ID, navigation links)
 | Layer | File | Trách nhiệm |
 | --- | --- | --- |
 | **Redux Store** | `wishlist/_common/moduleSlice.ts` | State: items[], isSyncing. Actions: toggle, remove, clear |
-| **localStorage** | `ori-baebi-wishlist` key | Persist |
+| **localStorage** | `doovan-wishlist` key | Persist |
 | **API Sync** | `syncAddToWishlist`, `syncRemoveFromWishlist`, `fetchWishlist` | Sync BE |
 | **Selectors** | `selectIsWishlisted(productId)` | Dùng trên PDP heart |
 

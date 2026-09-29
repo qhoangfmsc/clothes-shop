@@ -5,9 +5,9 @@ import BrandStory from "./_components/BrandStory";
 import ServicesSection from "./_components/ServicesSection";
 
 export const metadata: Metadata = {
-  title: "About — Ori Baebi",
+  title: "About — DOOVAN",
   description:
-    "Discover the story behind Ori Baebi. Where heritage artisanship meets avant-garde vision — luxury bags, apparel & accessories made with intention.",
+    "Discover the story behind DOOVAN. Where heritage artisanship meets avant-garde vision — luxury bags, apparel & accessories made with intention.",
 };
 
 export default function AboutPage() {

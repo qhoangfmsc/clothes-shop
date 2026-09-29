@@ -110,7 +110,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
               className="flex items-center gap-2 no-underline text-[var(--text-on-dark)]"
             >
               <span className="text-xl text-[var(--accent-primary)]">✦</span>
-              <span className="font-display text-md text-[var(--text-on-dark)]">Ori Baebi</span>
+              <span className="font-display text-md text-[var(--text-on-dark)]">DOOVAN</span>
             </Link>
             <span className="text-[9px] font-bold tracking-[0.15em] text-[var(--color-obsidian)] bg-[var(--accent-primary)] py-0.5 px-2 rounded-[var(--radius-pill)]">
               ADMIN

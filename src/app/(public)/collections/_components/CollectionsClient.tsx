@@ -43,7 +43,7 @@ function buildEditorialSections(collections: Collection[]) {
   }));
 }
 
-const MARQUEE_TEXT = "Ori Baebi ◆ Collections ◆ Summer 2026 ◆ Crafted with Intention ◆ ";
+const MARQUEE_TEXT = "DOOVAN ◆ Collections ◆ Summer 2026 ◆ Crafted with Intention ◆ ";
 
 export default function CollectionsClient({ collections }: CollectionsClientProps) {
   const HORIZONTAL_CARDS = buildHorizontalCards(collections);
@@ -234,8 +234,8 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
             data-hero-subtitle
             className="text-white/55 font-primary text-[15px] font-medium tracking-[-0.02em] leading-[160%] max-w-90 opacity-0"
           >
-            Stories told through fabric, form, and intention. Each collection a chapter in the Ori
-            Baebi narrative.
+            Stories told through fabric, form, and intention. Each collection a chapter in the
+            DOOVAN narrative.
           </p>
         </div>
 

@@ -22,7 +22,7 @@ export default function Caption() {
       }}
       className="top-[118px] left-4 w-[calc(100vw-82px)] sm:top-[180px] sm:left-4 sm:w-[calc(50vw-90px)] lg:top-[280px] lg:left-8 lg:w-[500px]"
     >
-      When luxury meets the runway, every thread tells a story. Ori Baebi crafts exclusive bags,
+      When luxury meets the runway, every thread tells a story. DOOVAN crafts exclusive bags,
       apparel &amp; accessories for the world&apos;s most discerning fashion houses — where heritage
       artisanship meets avant-garde vision.
     </motion.div>

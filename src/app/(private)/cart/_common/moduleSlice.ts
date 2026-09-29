@@ -121,7 +121,7 @@ export const clearCartOnServer = createAsyncThunk(
 
 /* ── Initial State ── */
 
-const STORAGE_KEY = "ori-baebi-cart";
+const STORAGE_KEY = "doovan-cart";
 
 function loadFromStorage(): CartItem[] {
   if (typeof window === "undefined") return [];

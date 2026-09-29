@@ -1,8 +1,8 @@
 import SiteHeader from "@/src/app/_components/SiteHeader";
 
 export const metadata = {
-  title: "Checkout — Ori Baebi",
-  description: "Complete your order from Ori Baebi.",
+  title: "Checkout — DOOVAN",
+  description: "Complete your order from DOOVAN.",
 };
 
 export default function CheckoutLayout({

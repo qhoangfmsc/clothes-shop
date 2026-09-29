@@ -4,9 +4,9 @@ import NewInClient from "./_components/NewInClient";
 import { getNewInProducts } from "../shop/_lib/server-fetchers";
 
 export const metadata: Metadata = {
-  title: "New In — Ori Baebi",
+  title: "New In — DOOVAN",
   description:
-    "Discover the latest arrivals at Ori Baebi. Fresh drops, new silhouettes, and pieces designed for those who move first.",
+    "Discover the latest arrivals at DOOVAN. Fresh drops, new silhouettes, and pieces designed for those who move first.",
 };
 
 export default async function NewInPage() {

@@ -8,7 +8,7 @@
 
 ## 📋 EXECUTIVE SUMMARY
 
-Dự án Ori Baebi đã đạt được nền tảng kỹ thuật vững chắc: BE NestJS với 22 admin endpoints + 32 client endpoints, FE Next.js với SSR/ISR + CSR hybrid, hệ thống phân quyền hoạt động đồng bộ 2 chiều. **Tuy nhiên, từ góc nhìn của một sản phẩm E-Commerce thực tế, dự án mới hoàn thành ~60% những gì cần thiết để vận hành thương mại.**
+Dự án DOOVAN đã đạt được nền tảng kỹ thuật vững chắc: BE NestJS với 22 admin endpoints + 32 client endpoints, FE Next.js với SSR/ISR + CSR hybrid, hệ thống phân quyền hoạt động đồng bộ 2 chiều. **Tuy nhiên, từ góc nhìn của một sản phẩm E-Commerce thực tế, dự án mới hoàn thành ~60% những gì cần thiết để vận hành thương mại.**
 
 Báo cáo này không liệt kê lại những gì đã làm (xem `ADMIN_PROGRESS.md` và `CLIENT_PROGRESS.md`), mà tập trung vào:
 

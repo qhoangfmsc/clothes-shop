@@ -5,9 +5,9 @@ import CollectionsClient from "./_components/CollectionsClient";
 import { getCollections } from "../shop/_lib/server-fetchers";
 
 export const metadata: Metadata = {
-  title: "Collections — Ori Baebi",
+  title: "Collections — DOOVAN",
   description:
-    "Explore the Ori Baebi collections. Curated seasonal edits and signature styles — each collection a chapter in the Ori Baebi narrative.",
+    "Explore the DOOVAN collections. Curated seasonal edits and signature styles — each collection a chapter in the DOOVAN narrative.",
 };
 
 export default async function CollectionsPage() {

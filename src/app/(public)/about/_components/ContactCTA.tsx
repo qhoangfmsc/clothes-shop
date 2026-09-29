@@ -32,7 +32,7 @@ export default function ContactCTA() {
 
       {/* CTA button */}
       <motion.a
-        href="mailto:hello@oribaebi.com"
+        href="mailto:hello@doovan.com"
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
@@ -55,7 +55,7 @@ export default function ContactCTA() {
         transition={{ duration: 0.6, ease: [...ease], delay: 0.4 }}
         className="text-[var(--text-muted)] text-xs uppercase tracking-[-0.02em] absolute bottom-10"
       >
-        ORI BAEBI ® 2026
+        DOOVAN ® 2026
       </motion.p>
     </section>
   );

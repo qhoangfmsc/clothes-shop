@@ -463,7 +463,7 @@ export default function HamburgerMenu() {
                   fontWeight: 500,
                 }}
               >
-                Ori Baebi
+                DOOVAN
               </motion.span>
 
               <motion.button
@@ -962,7 +962,7 @@ export default function HamburgerMenu() {
                   alignItems: "center",
                 }}
               >
-                <span>© 2026 Ori Baebi</span>
+                <span>© 2026 DOOVAN</span>
                 <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                   {SOCIALS.map((s) => (
                     <a

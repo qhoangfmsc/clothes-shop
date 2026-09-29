@@ -2,7 +2,7 @@ import SiteHeader from "@/src/app/_components/SiteHeader";
 import SiteFooter from "@/src/app/_components/SiteFooter";
 
 export const metadata = {
-  title: "Shopping Bag — Ori Baebi",
+  title: "Shopping Bag — DOOVAN",
   description: "Review your shopping bag and proceed to checkout.",
 };
 

@@ -347,7 +347,7 @@ export default function CollectionDetailClient({
           &ldquo;{collection.description}&rdquo;
         </blockquote>
         <span className="text-[var(--text-accent)] [font-family:var(--font-primary)] text-[11px] tracking-[0.12em] uppercase">
-          — Ori Baebi, {collection.season}
+          — DOOVAN, {collection.season}
         </span>
       </section>
 

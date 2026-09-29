@@ -83,7 +83,7 @@ Replace `useCartStore(s => s.xxx)` with `useAppSelector` + `useAppDispatch`
 
 ### Persistence Strategy
 No `redux-persist` dependency. Instead:
-1. On store creation in `configureStore`, read `localStorage.getItem("ori-baebi-cart")` and `localStorage.getItem("ori-baebi-wishlist")` to preload initial state
+1. On store creation in `configureStore`, read `localStorage.getItem("doovan-cart")` and `localStorage.getItem("doovan-wishlist")` to preload initial state
 2. Use `store.subscribe()` to persist `state.cart.items` and `state.wishlist.items` on every change (debounced with a ref)
 
 ### API Sync Pattern

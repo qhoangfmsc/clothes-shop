@@ -1,8 +1,8 @@
 import AdminLayoutClient from "./AdminLayoutClient";
 
 export const metadata = {
-  title: "Admin — Ori Baebi",
-  description: "Admin dashboard for Ori Baebi",
+  title: "Admin — DOOVAN",
+  description: "Admin dashboard for DOOVAN",
 };
 
 export default function AdminLayout({

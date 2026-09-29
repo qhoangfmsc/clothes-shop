@@ -19,7 +19,7 @@ export default function Footer() {
       }}
       className="bottom-6 gap-5 justify-between w-[calc(100%-32px)] text-[11px] sm:bottom-8 sm:gap-20 sm:w-auto sm:text-[13px]"
     >
-      <span>ORI BAEBI ® 2026</span>
+      <span>DOOVAN ® 2026</span>
       <span>PRIVACY POLICY</span>
     </div>
   );

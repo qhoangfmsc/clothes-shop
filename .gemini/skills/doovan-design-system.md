@@ -1,6 +1,6 @@
-# Ori Baebi — Design System Skills
+# DOOVAN — Design System Skills
 
-> This skill ensures design consistency when generating or modifying any UI code for the Ori Baebi store.
+> This skill ensures design consistency when generating or modifying any UI code for the DOOVAN store.
 
 ## When This Skill Activates
 

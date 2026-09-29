@@ -108,7 +108,7 @@ export default function ServicesSection() {
           className="flex justify-center mt-16"
         >
           <motion.a
-            href="mailto:hello@oribaebi.com"
+            href="mailto:hello@doovan.com"
             whileHover={{ scale: 1.02, opacity: 0.9 }}
             className="inline-flex items-center justify-center bg-[var(--accent-primary)] text-[var(--text-on-gold)] rounded-[var(--radius-pill)] py-[14px] px-10 text-base tracking-[-0.02em] uppercase no-underline font-medium shadow-[var(--shadow-gold-sm)] cursor-pointer"
             style={{

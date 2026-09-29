@@ -2,15 +2,15 @@
 trigger: always_on
 ---
 
-# Ori Baebi Design System — Mandatory Rules
+# DOOVAN Design System — Mandatory Rules
 
-> These rules are **non-negotiable**. Every component, page, and feature MUST follow them to maintain visual consistency across the Ori Baebi store.
+> These rules are **non-negotiable**. Every component, page, and feature MUST follow them to maintain visual consistency across the DOOVAN store.
 
 ## Reference
 
 1. Read `src/styles/design-system.css` — **Single source of truth** for all design tokens
 2. Read `DESIGN.md` — Complete design documentation with usage guidelines
-3. Read `.gemini/skills/ori-baebi-brand.md` — Brand identity context
+3. Read `.gemini/skills/doovan-brand.md` — Brand identity context
 
 ## Color Rules
 

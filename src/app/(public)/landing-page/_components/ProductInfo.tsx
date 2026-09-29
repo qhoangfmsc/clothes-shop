@@ -79,7 +79,7 @@ export default function ProductInfo() {
         >
           HAUTE COUTURE
           <br />
-          &ldquo;ORI BAEBI&rdquo;
+          &ldquo;DOOVAN&rdquo;
         </div>
       </div>
     </motion.div>

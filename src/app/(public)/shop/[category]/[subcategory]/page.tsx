@@ -27,13 +27,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: SubcategoryPageProps): Promise<Metadata> {
   const { category: catSlug, subcategory: subSlug } = await params;
   const result = await getSubcategory(catSlug, subSlug);
-  if (!result) return { title: "Not Found — Ori Baebi" };
+  if (!result) return { title: "Not Found — DOOVAN" };
 
   const { category, subcategory } = result;
 
   return {
-    title: `${subcategory.label} — ${category.title} — Ori Baebi`,
-    description: `${subcategory.description}. Shop ${subcategory.label} from the Ori Baebi ${category.title} collection.`,
+    title: `${subcategory.label} — ${category.title} — DOOVAN`,
+    description: `${subcategory.description}. Shop ${subcategory.label} from the DOOVAN ${category.title} collection.`,
   };
 }
 

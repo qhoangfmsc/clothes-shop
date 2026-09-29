@@ -21,7 +21,7 @@ export default function Logo() {
           pointerEvents: "auto",
           textDecoration: "none",
         }}
-        aria-label="Ori Baebi — Home"
+        aria-label="DOOVAN — Home"
       >
         <svg viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%">
           <text
@@ -33,7 +33,7 @@ export default function Logo() {
             fontWeight="400"
             letterSpacing="-0.02em"
           >
-            Ori Baebi
+            DOOVAN
           </text>
         </svg>
       </Link>

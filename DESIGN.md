@@ -1,6 +1,6 @@
-# Ori Baebi — Design System
+# DOOVAN — Design System
 
-> Single source of truth for all visual decisions across the Ori Baebi store.
+> Single source of truth for all visual decisions across the DOOVAN store.
 > Every page, component, and future feature **MUST** reference these tokens.
 > All tokens are defined in `src/styles/design-system.css`.
 
@@ -8,7 +8,7 @@
 
 ## 1. Color Palette
 
-Ori Baebi's palette is a **diverse, warm luxury palette** — champagne canvas with rich accent families inspired by the actual product universe: dusty rose for romantic pieces, sage for spring collections, lavender for evening lace, dusty blue for bags, chocolate for leather goods, soft yellow for summer gingham, and gold for premium highlights.
+DOOVAN's palette is a **diverse, warm luxury palette** — champagne canvas with rich accent families inspired by the actual product universe: dusty rose for romantic pieces, sage for spring collections, lavender for evening lace, dusty blue for bags, chocolate for leather goods, soft yellow for summer gingham, and gold for premium highlights.
 
 ### 1.1 Core Color Families
 
@@ -164,7 +164,7 @@ See `src/styles/design-system.css` for full token definitions:
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║  ORI BAEBI DESIGN — CHEAT SHEET                        ║
+║  DOOVAN DESIGN — CHEAT SHEET                           ║
 ╠══════════════════════════════════════════════════════════╣
 ║                                                          ║
 ║  CANVAS:    #FBF8F1  #F5EFE0  #EDE5D4  #E5DBCA  #DDD1BC║

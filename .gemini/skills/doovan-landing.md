@@ -1,8 +1,8 @@
-# Ori Baebi — Luxury Fashion Landing Page
+# DOOVAN — Luxury Fashion Landing Page
 
 ## Project Overview
 
-This is a scroll-driven, full-screen fashion landing page for **Ori Baebi**, a luxury boutique fashion brand specializing in haute couture bags, apparel, and accessories. The site delivers a premium, immersive editorial experience with a **warm champagne/cream + gold accent** aesthetic on regular pages, and **noir contrast** on gallery/hero sections.
+This is a scroll-driven, full-screen fashion landing page for **DOOVAN**, a luxury boutique fashion brand specializing in haute couture bags, apparel, and accessories. The site delivers a premium, immersive editorial experience with a **warm champagne/cream + gold accent** aesthetic on regular pages, and **noir contrast** on gallery/hero sections.
 
 ## Tech Stack
 

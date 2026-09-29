@@ -80,7 +80,7 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
 
 /* ── Initial State ── */
 
-const STORAGE_KEY = "ori-baebi-wishlist";
+const STORAGE_KEY = "doovan-wishlist";
 
 function loadFromStorage(): WishlistItem[] {
   if (typeof window === "undefined") return [];

@@ -125,7 +125,7 @@ export default function LoginContent() {
               letterSpacing="-0.04em"
               textAnchor="middle"
             >
-              Ori Baebi
+              DOOVAN
             </text>
           </svg>
         </motion.div>

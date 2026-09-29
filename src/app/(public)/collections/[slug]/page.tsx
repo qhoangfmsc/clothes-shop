@@ -24,10 +24,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: CollectionDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const collection = await getCollectionBySlug(slug);
-  if (!collection) return { title: "Not Found — Ori Baebi" };
+  if (!collection) return { title: "Not Found — DOOVAN" };
 
   return {
-    title: `${collection.name} — Collections — Ori Baebi`,
+    title: `${collection.name} — Collections — DOOVAN`,
     description: collection.description,
   };
 }

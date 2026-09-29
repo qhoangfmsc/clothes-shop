@@ -27,10 +27,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { productId } = await params;
   const result = await getProductWithRelated(productId);
-  if (!result) return { title: "Not Found — Ori Baebi" };
+  if (!result) return { title: "Not Found — DOOVAN" };
 
   return {
-    title: `${result.product.name} — Ori Baebi`,
+    title: `${result.product.name} — DOOVAN`,
     description: result.product.description,
   };
 }

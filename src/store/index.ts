@@ -37,8 +37,8 @@ export const store = configureStore({
 
 /* ── localStorage persistence ── */
 
-const CART_STORAGE_KEY = "ori-baebi-cart";
-const WISHLIST_STORAGE_KEY = "ori-baebi-wishlist";
+const CART_STORAGE_KEY = "doovan-cart";
+const WISHLIST_STORAGE_KEY = "doovan-wishlist";
 
 let prevCartItems = store.getState().cart.items;
 let prevWishlistItems = store.getState().wishlist.items;

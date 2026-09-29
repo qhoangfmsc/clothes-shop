@@ -17,10 +17,10 @@ interface SearchPageProps {
 
 export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
   const { q } = await searchParams;
-  if (!q) return { title: "Search — Ori Baebi" };
+  if (!q) return { title: "Search — DOOVAN" };
   return {
-    title: `"${q}" — Search — Ori Baebi`,
-    description: `Search results for "${q}" in the Ori Baebi collection.`,
+    title: `"${q}" — Search — DOOVAN`,
+    description: `Search results for "${q}" in the DOOVAN collection.`,
   };
 }
 
@@ -31,7 +31,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     return (
       <main style={{ minHeight: "100vh", background: "var(--bg-primary)" }}>
         <ShopHero
-          label="Ori Baebi"
+          label="DOOVAN"
           title="Search"
           description="Find your perfect piece."
           heroImage="/images/model-intro/model_intro_2.webp"

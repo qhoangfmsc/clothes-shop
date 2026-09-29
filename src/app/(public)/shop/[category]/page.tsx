@@ -24,11 +24,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category: slug } = await params;
   const category = await getCategoryBySlug(slug);
-  if (!category) return { title: "Not Found — Ori Baebi" };
+  if (!category) return { title: "Not Found — DOOVAN" };
 
   return {
-    title: `${category.title} — Ori Baebi Shop`,
-    description: `${category.description} — Ori Baebi luxury collection.`,
+    title: `${category.title} — DOOVAN Shop`,
+    description: `${category.description} — DOOVAN luxury collection.`,
   };
 }
 
@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     >
       {/* Hero — unique per category */}
       <ShopHero
-        label={`Ori Baebi — ${category.title}`}
+        label={`DOOVAN — ${category.title}`}
         title={category.title}
         description={category.description}
         heroImage={products[0]?.images[0] ?? "/images/model-intro/model_intro_1.webp"}

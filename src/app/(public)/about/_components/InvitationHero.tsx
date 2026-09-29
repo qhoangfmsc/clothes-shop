@@ -42,7 +42,7 @@ export default function InvitationHero() {
           transition={{ duration: 0.6, ease: [...ease], delay: 0.2 }}
           className="text-[var(--text-accent)] uppercase text-sm tracking-[0.12em] leading-[140%] mb-8"
         >
-          About — Ori Baebi
+          About — DOOVAN
         </motion.span>
 
         {/* Main heading */}
@@ -80,7 +80,7 @@ export default function InvitationHero() {
           transition={{ duration: 0.6, ease: [...ease], delay: 0.8 }}
           className="text-[var(--text-muted)] tracking-[-0.02em] uppercase text-xs leading-[140%] mt-20"
         >
-          Ori Baebi — Est. 2026
+          DOOVAN — Est. 2026
         </motion.p>
       </div>
     </section>

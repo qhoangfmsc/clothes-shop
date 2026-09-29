@@ -7,9 +7,9 @@ import ShopProductsClient from "./_components/ShopProductsClient";
 import { getCategoriesWithUI, getAllProducts } from "./_lib/server-fetchers";
 
 export const metadata: Metadata = {
-  title: "Shop — Ori Baebi",
+  title: "Shop — DOOVAN",
   description:
-    "Explore the full Ori Baebi collection. Luxury tops, skirts, bags, and jewelry — crafted with intention for the modern wardrobe.",
+    "Explore the full DOOVAN collection. Luxury tops, skirts, bags, and jewelry — crafted with intention for the modern wardrobe.",
 };
 
 export default async function ShopPage() {
@@ -35,7 +35,7 @@ export default async function ShopPage() {
     >
       {/* Hero */}
       <ShopHero
-        label="Ori Baebi Collection"
+        label="DOOVAN Collection"
         title="Shop All"
         description="Discover our curated selection of luxury essentials — each piece designed to elevate your everyday."
         heroImage={allProducts[0]?.images[0] ?? "/images/model-intro/model_intro_2.webp"}

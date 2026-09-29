@@ -25,9 +25,9 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Ori Baebi — Haute Couture Collection",
+  title: "DOOVAN — Haute Couture Collection",
   description:
-    "Discover Ori Baebi's exclusive haute couture collection. Luxury bags, apparel & accessories designed for the global fashion runway.",
+    "Discover DOOVAN's exclusive haute couture collection. Luxury bags, apparel & accessories designed for the global fashion runway.",
 };
 
 export default function RootLayout({

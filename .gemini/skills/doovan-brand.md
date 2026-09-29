@@ -1,8 +1,8 @@
-# Ori Baebi — Brand Identity & Storytelling
+# DOOVAN — Brand Identity & Storytelling
 
 ## Brand Essence
 
-**Ori Baebi** is a contemporary womenswear label that lives at the intersection of **soft femininity** and **unapologetic confidence**. The name itself is a declaration — "Ori" (original, origin, one-of-a-kind) fused with "Baebi" (a term of endearment, youthful irreverence, and self-love). Every piece whispers _"I know who I am"_ while draping the wearer in textures that feel like a love letter to her own skin.
+**DOOVAN** is a contemporary womenswear label that lives at the intersection of **soft femininity** and **unapologetic confidence**. Every piece whispers _"I know who I am"_ while draping the wearer in textures that feel like a love letter to her own skin.
 
 The brand does not chase trends — it **curates moods**. Each collection is a chapter of the same story: a girl who wakes up in sun-drenched linen, ties ribbons in her hair, and walks into a room knowing every eye will follow.
 
@@ -11,7 +11,7 @@ The brand does not chase trends — it **curates moods**. Each collection is a c
 ## Brand DNA
 
 ### Core Identity
-- **Full Name**: Ori Baebi
+- **Full Name**: DOOVAN
 - **Tagline Concepts**: _"Softly Slay"_ · _"Born Tender, Made Bold"_ · _"Where Cute Meets Couture"_
 - **Brand Archetype**: The Muse — ethereal yet magnetic, delicate yet deliberate
 - **Target Audience**: Women 18–30 who live between Pinterest mood boards and Paris Fashion Week front rows. She is the girl who curates her life with the same intention she curates her closet.
@@ -27,7 +27,7 @@ The brand does not chase trends — it **curates moods**. Each collection is a c
 
 ---
 
-## The Ori Baebi Girl
+## The DOOVAN Girl
 
 She is not one archetype — she is a spectrum:
 
@@ -42,20 +42,20 @@ She never tries too hard. She never needs to.
 ## Aesthetic Pillars
 
 ### 1. Romantic Feminism
-The foundation of Ori Baebi is **neo-romantic femininity** — a rejection of the idea that softness is weakness. Inspired by:
+The foundation of DOOVAN is **neo-romantic femininity** — a rejection of the idea that softness is weakness. Inspired by:
 - **Runway References**: Simone Rocha's sculpted tulle, Sandy Liang's bow-forward pieces, Cecilie Bahnsen's voluminous cotton poplin
 - **Visual Codes**: Ribbons as structural elements (not just decoration), lace used as overlay and texture (not lingerie), floral prints that feel handpainted rather than mass-printed
 - **Key Fabrics**: Broderie anglaise, Swiss dot cotton, chantilly lace, satin-back crepe
 
 ### 2. Coquette Minimalism
-Where **coquette** meets **quiet luxury** — Ori Baebi strips coquette styling back to its essentials:
+Where **coquette** meets **quiet luxury** — DOOVAN strips coquette styling back to its essentials:
 - No excessive bows. One perfectly placed ribbon at a neckline says more than twelve.
 - **Polka dots** are used sparingly — a midi skirt, a hair ribbon — never head-to-toe.
 - **Lace trims** appear at hems and necklines as finishing details, like a whispered secret.
 - **Ruffle construction**: Soft, controlled ruffles — not costume ruffles. Think Giambattista Valli's resort collections scaled to everyday wearability.
 
 ### 3. Undone Elegance
-The styling philosophy of Ori Baebi is **imperfect perfection** — the "I woke up like this" illusion that actually takes a trained eye:
+The styling philosophy of DOOVAN is **imperfect perfection** — the "I woke up like this" illusion that actually takes a trained eye:
 - Hair is always slightly undone — center-parted, softly waved, or pulled into a low bun with face-framing pieces
 - Tops are slightly off-shoulder, not perfectly placed
 - Skirts have asymmetric hemlines or bias cuts that move with the body
@@ -63,7 +63,7 @@ The styling philosophy of Ori Baebi is **imperfect perfection** — the "I woke 
 - **Styling rule**: One unexpected element per outfit (a structured bag with a flowy dress, a cardigan left unbuttoned over a tube top)
 
 ### 4. East-West Fusion
-As a Vietnamese-born label with global ambitions, Ori Baebi subtly weaves **Asian design sensibility** into Western silhouettes:
+As a Vietnamese-born label with global ambitions, DOOVAN subtly weaves **Asian design sensibility** into Western silhouettes:
 - Clean lines reminiscent of áo dài construction — high necklines, fitted bodices that flare below the waist
 - Silk fabrics that reference traditional Vietnamese textile heritage
 - Delicate beadwork and embroidery techniques inspired by Southeast Asian craft
@@ -107,7 +107,7 @@ Each product category has its own color family, creating visual richness across 
 ## Product Categories
 
 ### 1. TOPS — _"Second Skin"_
-The first layer of the Ori Baebi wardrobe. Every top is designed to make the wearer feel like the fabric was woven specifically for her.
+The first layer of the DOOVAN wardrobe. Every top is designed to make the wearer feel like the fabric was woven specifically for her.
 
 | Sub-Category | Design Language | Key Details |
 |---|---|---|
@@ -119,7 +119,7 @@ The first layer of the Ori Baebi wardrobe. Every top is designed to make the wea
 | **Corset Tops** | Structured, boned construction | Satin finish, ribbon lacing at back |
 
 ### 2. SKIRTS — _"The Way She Moves"_
-Ori Baebi skirts are never static. They are designed to flow, to catch light, to make the wearer want to twirl.
+DOOVAN skirts are never static. They are designed to flow, to catch light, to make the wearer want to twirl.
 
 | Sub-Category | Design Language | Key Details |
 |---|---|---|
@@ -130,7 +130,7 @@ Ori Baebi skirts are never static. They are designed to flow, to catch light, to
 | **Lace Skirts** | Overlay construction | Lined with silk or cotton slip |
 
 ### 3. BAGS — _"Carried With Intention"_
-Every Ori Baebi bag is a sculpture you carry. Not just an accessory — a statement of identity.
+Every DOOVAN bag is a sculpture you carry. Not just an accessory — a statement of identity.
 
 | Sub-Category | Design Language | Key Details |
 |---|---|---|
@@ -141,7 +141,7 @@ Every Ori Baebi bag is a sculpture you carry. Not just an accessory — a statem
 | **Tote Bags** | Everyday carry, canvas or leather | Embossed logo, internal organizer |
 
 ### 4. JEWELRY — _"The Finishing Whisper"_
-Ori Baebi jewelry is never loud. It is the final detail that makes someone lean in closer.
+DOOVAN jewelry is never loud. It is the final detail that makes someone lean in closer.
 
 | Sub-Category | Design Language | Key Details |
 |---|---|---|
@@ -158,7 +158,7 @@ Ori Baebi jewelry is never loud. It is the final detail that makes someone lean 
 ### Photography Direction
 - **Lighting**: High-contrast editorial noir. Dramatic shadows, directional light. Candlelit warmth for intimate shots. Studio flash only for clean product detail shots.
 - **Setting**: Dark studios, architectural noir, candlelit interiors, marble surfaces with gold accents. Never generic white-wall catalog.
-- **Model Styling**: Editorial confidence. Intentional styling, sculpted hair, bold but refined makeup. The Ori Baebi girl doesn't whisper — she commands.
+- **Model Styling**: Editorial confidence. Intentional styling, sculpted hair, bold but refined makeup. The DOOVAN girl doesn't whisper — she commands.
 - **Composition**: Cinematic framing. Generous negative space (dark). The garment emerges from shadow. Close-up details on gold hardware, stitching, texture.
 - **Post-Production**: Warm-toned, high contrast, rich blacks. Think Peter Lindbergh meets Bottega Veneta campaign. Champagne/amber color grading.
 
@@ -183,7 +183,7 @@ Ori Baebi jewelry is never loud. It is the final detail that makes someone lean 
 ## Runway & Fashion Show Direction
 
 ### Show Concept — _"The Living Lookbook"_
-Ori Baebi shows are not traditional catwalks. They are **experiential installations** — part fashion show, part art exhibition, part sensory journey.
+DOOVAN shows are not traditional catwalks. They are **experiential installations** — part fashion show, part art exhibition, part sensory journey.
 
 #### Stage Design
 - **Set**: Minimal architectural structures — arched doorways, draped fabric panels, scattered dried flowers
@@ -195,7 +195,7 @@ Ori Baebi shows are not traditional catwalks. They are **experiential installati
 - Models walk **barefoot** or in ballet flats — never towering heels
 - Pace is **slower than industry standard** — each look deserves its moment
 - Models may pause, turn slowly, touch the fabric — the clothing is alive
-- No stern expressions. Soft, knowing smiles. The Ori Baebi girl is in on the secret.
+- No stern expressions. Soft, knowing smiles. The DOOVAN girl is in on the secret.
 
 #### Music & Soundscape
 - Ambient, ethereal. Think Ryuichi Sakamoto, Nils Frahm, or Debussy's _Clair de Lune_ reimagined
@@ -258,7 +258,7 @@ Ori Baebi shows are not traditional catwalks. They are **experiential installati
                     ┌─────────────────────────────┐
                     │      HIGH FASHION            │
                     │                              │
-         Simone    │     ★ ORI BAEBI              │  The Row
+         Simone    │     ★ DOOVAN              │  The Row
          Rocha     │     (sweet spot)              │
                     │                              │
     ◄───────────────┼──────────────────────────────┼──────────────►
@@ -271,7 +271,7 @@ Ori Baebi shows are not traditional catwalks. They are **experiential installati
                     └─────────────────────────────┘
 ```
 
-Ori Baebi sits in the **upper-left quadrant** — unmistakably high-fashion in quality and presentation, but with a warmth, playfulness, and emotional accessibility that ultra-minimalist brands lack.
+DOOVAN sits in the **upper-left quadrant** — unmistakably high-fashion in quality and presentation, but with a warmth, playfulness, and emotional accessibility that ultra-minimalist brands lack.
 
 ---
 

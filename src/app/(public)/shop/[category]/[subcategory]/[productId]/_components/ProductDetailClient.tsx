@@ -566,7 +566,7 @@ export default function ProductDetailClient({
                     try {
                       await navigator.share({
                         title: product.name,
-                        text: `Check out ${product.name} from Ori Baebi`,
+                        text: `Check out ${product.name} from DOOVAN`,
                         url,
                       });
                     } catch {
