@@ -36,7 +36,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${quicheDisplay.variable} ${interTight.variable}`}>
+    <html
+      lang="en"
+      className={`${quicheDisplay.variable} ${interTight.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <Providers>
           <ToastProvider position="bottom-center">
