@@ -42,22 +42,6 @@ export default function OutroSection() {
           className="hidden sm:block"
         />
 
-        {/* Small uppercase label */}
-        <span
-          style={{
-            fontSize: "var(--text-xs)",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--text-muted)",
-            lineHeight: "100%",
-            marginBottom: "var(--space-6)",
-            fontFamily: '"Inter Tight", sans-serif',
-            fontWeight: 500,
-          }}
-        >
-          Summer 2026
-        </span>
-
         {/* Main heading — editorial split */}
         <h2
           style={{

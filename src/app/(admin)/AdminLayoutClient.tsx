@@ -10,6 +10,7 @@ import {
   Layers,
   ShoppingBag,
   Users,
+  Settings,
   LogOut,
   ChevronRight,
   Menu,
@@ -57,6 +58,17 @@ const NAV_GROUPS = [
         label: "Users",
         icon: Users,
         permission: PERMISSIONS.USER_ADMIN_VIEW,
+      },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      {
+        href: "/admin/site-config",
+        label: "Site Config",
+        icon: Settings,
+        permission: PERMISSIONS.SITE_CONFIG_VIEW,
       },
     ],
   },

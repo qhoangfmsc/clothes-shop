@@ -13,15 +13,9 @@ export interface Category {
   slug: string;
   title: string;
   description: string;
+  /** Hero banner image for CategoryGrid; null until an admin sets one. */
+  heroImage: string | null;
   subcategories: SubCategory[];
   createdAt: string;
   updatedAt: string;
-}
-
-export interface CategoryUIConfig {
-  heroImage: string;
-  moodImage: string;
-  tagline: string;
-  accentColor: string;
-  bgTint: string;
 }

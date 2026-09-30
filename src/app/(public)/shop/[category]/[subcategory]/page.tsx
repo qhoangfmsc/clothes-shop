@@ -48,6 +48,10 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   const { category, subcategory } = result;
   const products = await getProducts(catSlug, subSlug);
 
+  /* Hero image comes from this subcategory's first product — no placeholder
+     banner. An empty subcategory (no products yet) just shows a plain hero. */
+  const firstProductImage = products[0]?.images[0];
+
   return (
     <main
       style={{
@@ -60,7 +64,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         label={`${category.title} — ${subcategory.label}`}
         title={subcategory.label}
         description={subcategory.description}
-        heroImage={products[0]?.images[0] ?? "/images/model-intro/model_intro_1.webp"}
+        images={firstProductImage ? [firstProductImage] : []}
       />
 
       {/* Breadcrumb */}

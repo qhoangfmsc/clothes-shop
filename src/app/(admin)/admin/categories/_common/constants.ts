@@ -15,5 +15,6 @@ export const EMPTY_CATEGORY_FORM: CategoryFormData = {
   slug: "",
   title: "",
   description: "",
+  heroImage: "",
   subcategories: [],
 };

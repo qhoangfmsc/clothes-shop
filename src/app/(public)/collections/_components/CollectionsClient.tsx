@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Collection } from "@/src/types/collection";
@@ -10,8 +11,12 @@ import { ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const HERO_ROTATE_MS = 5000;
+
 interface CollectionsClientProps {
   collections: Collection[];
+  /** Hero background image(s). 1 image = static, 2+ = auto-rotating crossfade. */
+  heroImages: string[];
 }
 
 /* ── Map collection data for horizontal scroll cards ── */
@@ -43,15 +48,24 @@ function buildEditorialSections(collections: Collection[]) {
   }));
 }
 
-const MARQUEE_TEXT = "DOOVAN ◆ Collections ◆ Summer 2026 ◆ Crafted with Intention ◆ ";
+const MARQUEE_TEXT = "DOOVAN ◆ Collections ◆ Crafted with Intention ◆ Limited Editions ◆";
 
-export default function CollectionsClient({ collections }: CollectionsClientProps) {
+export default function CollectionsClient({ collections, heroImages }: CollectionsClientProps) {
   const HORIZONTAL_CARDS = buildHorizontalCards(collections);
   const EDITORIAL_SECTIONS = buildEditorialSections(collections);
   const heroRef = useRef<HTMLElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const spreadRefs = useRef<(HTMLElement | null)[]>([]);
+  const [heroIdx, setHeroIdx] = useState(0);
+
+  /* Auto-rotate hero background when there's more than one image */
+  useEffect(() => {
+    setHeroIdx(0);
+    if (heroImages.length <= 1) return;
+    const timer = setInterval(() => setHeroIdx((p) => (p + 1) % heroImages.length), HERO_ROTATE_MS);
+    return () => clearInterval(timer);
+  }, [heroImages]);
 
   /* ── Hero reveal animation ── */
   useEffect(() => {
@@ -61,8 +75,10 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
 
-      /* Image scale-in */
-      tl.from(hero.querySelector("[data-hero-media] img"), {
+      /* Image scale-in — targets the stable wrapper, not the (possibly
+         rotating) image inside it, so crossfading never disturbs this
+         tween or the scroll parallax below. */
+      tl.from(hero.querySelector("[data-hero-media]"), {
         scale: 1.2,
         duration: 1.4,
         ease: "power2.out",
@@ -99,7 +115,7 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
       tl.to(hero.querySelector("[data-hero-scroll-hint]"), { opacity: 1, duration: 0.5 }, "-=0.1");
 
       /* Hero parallax on scroll */
-      gsap.to(hero.querySelector("[data-hero-media] img"), {
+      gsap.to(hero.querySelector("[data-hero-media]"), {
         y: "20%",
         ease: "none",
         scrollTrigger: {
@@ -200,27 +216,46 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
         ref={heroRef}
         className="relative h-screen overflow-hidden flex items-end justify-start bg-[var(--color-noir)]"
       >
-        <div data-hero-media className="absolute inset-0 z-0">
-          <Image
-            src="/images/model-intro/model_intro_6.webp"
-            alt="Collections — Summer 2026"
-            fill
-            priority
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-            className="will-change-transform motion-reduce:will-change-auto"
-          />
-        </div>
+        {/* Background: a champagne base color always shows underneath, and
+            the image (when available) sits at slightly reduced opacity on
+            top — so the brand color and the photo are both visible together.
+            No image yet → the base color alone. */}
         <div
-          className="absolute inset-0 z-1 pointer-events-none bg-[linear-gradient(to_top,rgba(10,10,8,0.7)_0%,transparent_50%),linear-gradient(to_right,rgba(10,10,8,0.4)_0%,transparent_60%)]"
-        />
+          data-hero-media
+          className="absolute inset-0 z-0"
+          style={{ background: "var(--bg-section-3)" }}
+        >
+          {heroImages.length > 0 && (
+            <AnimatePresence>
+              <motion.div
+                key={heroIdx}
+                initial={{ opacity: heroImages.length > 1 ? 0 : 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={heroImages[heroIdx]}
+                  alt="Collections"
+                  fill
+                  priority
+                  sizes="100vw"
+                  style={{ objectFit: "cover", opacity: 0.85 }}
+                  className="will-change-transform motion-reduce:will-change-auto"
+                />
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
+        <div className="absolute inset-0 z-1 pointer-events-none bg-[linear-gradient(to_top,rgba(10,10,8,0.7)_0%,transparent_50%),linear-gradient(to_right,rgba(10,10,8,0.4)_0%,transparent_60%)]" />
 
         <div className="relative z-2 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12 max-w-160">
           <span
             data-hero-season
             className="inline-block text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.2em] uppercase mb-5 opacity-0"
           >
-            Summer 2026
+            Limited Edition
           </span>
           <h1 className="font-display font-normal text-[clamp(48px,10vw,120px)] text-[var(--color-pearl-cream)] tracking-tighter leading-[90%] mb-5 overflow-hidden">
             <span data-hero-title-line className="block opacity-0 translate-y-full">
@@ -276,7 +311,10 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
           </div>
 
           {/* Scrolling track */}
-          <div ref={trackRef} className="flex gap-6 px-8 will-change-transform motion-reduce:will-change-auto">
+          <div
+            ref={trackRef}
+            className="flex gap-6 px-8 will-change-transform motion-reduce:will-change-auto"
+          >
             {/* Spacer for label */}
             <div style={{ width: 200, flexShrink: 0 }} />
 
@@ -363,7 +401,10 @@ export default function CollectionsClient({ collections }: CollectionsClientProp
           </div>
 
           {/* Image side */}
-          <div data-spread-image className="flex-1 relative min-h-100 lg:min-h-auto overflow-hidden">
+          <div
+            data-spread-image
+            className="flex-1 relative min-h-100 lg:min-h-auto overflow-hidden"
+          >
             <Image
               src={section.image}
               alt={section.heading}

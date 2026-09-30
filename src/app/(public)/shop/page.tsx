@@ -4,7 +4,8 @@ import ShopHero from "./_components/ShopHero";
 import CategoryGrid from "./_components/CategoryGrid";
 import BreadcrumbNav from "./_components/BreadcrumbNav";
 import ShopProductsClient from "./_components/ShopProductsClient";
-import { getCategoriesWithUI, getAllProducts } from "./_lib/server-fetchers";
+import { getCategories, getAllProducts, getBannerConfig } from "./_lib/server-fetchers";
+import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
 
 export const metadata: Metadata = {
   title: "Shop — DOOVAN",
@@ -13,18 +14,15 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const [{ categories, uiConfigs }, allProducts] = await Promise.all([
-    getCategoriesWithUI(),
+  const [categories, allProducts, heroBanners] = await Promise.all([
+    getCategories(),
     getAllProducts(),
+    getBannerConfig(SITE_CONFIG_KEYS.SHOP_HERO_BANNERS),
   ]);
 
-  /* Build hero image map from API uiConfig */
-  const heroImages: Record<string, string> = {};
-  if (uiConfigs) {
-    for (const [slug, config] of Object.entries(uiConfigs)) {
-      if (config?.heroImage) heroImages[slug] = config.heroImage;
-    }
-  }
+  /* Hero banner images — from Site Config > SHOP_HERO_BANNERS. No fallback
+     image: if nothing is configured, ShopHero shows a plain color instead. */
+  const heroBannerImages = heroBanners.map((b) => b.image);
 
   return (
     <main
@@ -35,10 +33,10 @@ export default async function ShopPage() {
     >
       {/* Hero */}
       <ShopHero
-        label="DOOVAN Collection"
+        label=""
         title="Shop All"
         description="Discover our curated selection of luxury essentials — each piece designed to elevate your everyday."
-        heroImage={allProducts[0]?.images[0] ?? "/images/model-intro/model_intro_2.webp"}
+        images={heroBannerImages}
       />
 
       {/* Breadcrumb */}
@@ -53,10 +51,11 @@ export default async function ShopPage() {
           Find Your Piece
         </h2>
         <p className="text-[var(--text-muted)] font-primary text-[15px] tracking-[-0.02em] leading-[150%] max-w-[480px] mt-2 px-4 sm:px-0">
-          Four curated collections, each telling its own story of elegance and intention.
+          {categories.length} curated {categories.length === 1 ? "category" : "categories"}, each
+          telling its own story of elegance and intention.
         </p>
       </div>
-      <CategoryGrid categories={categories} heroImages={heroImages} />
+      <CategoryGrid categories={categories} />
 
       {/* All Products Section with Filter + Sort + Load More */}
       <div

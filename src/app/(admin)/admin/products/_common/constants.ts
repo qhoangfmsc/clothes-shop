@@ -26,7 +26,14 @@ export const SIZE_GROUPS: { label: string; sizes: string[] }[] = [
 
 /* ── Tag Suggestions ── */
 
-export const TAG_SUGGESTIONS = ["summer", "winter", "casual", "formal", "luxury", "streetwear"] as const;
+export const TAG_SUGGESTIONS = [
+  "summer",
+  "winter",
+  "casual",
+  "formal",
+  "luxury",
+  "streetwear",
+] as const;
 
 /* ── Empty Form State ── */
 

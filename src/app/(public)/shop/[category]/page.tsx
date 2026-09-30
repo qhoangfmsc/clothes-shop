@@ -42,6 +42,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const products = await getProducts(slug);
 
+  /* Hero image comes from this category's first product — no placeholder
+     banner. An empty category (no products yet) just shows a plain hero. */
+  const firstProductImage = products[0]?.images[0];
+
   return (
     <main
       style={{
@@ -54,7 +58,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         label={`DOOVAN — ${category.title}`}
         title={category.title}
         description={category.description}
-        heroImage={products[0]?.images[0] ?? "/images/model-intro/model_intro_1.webp"}
+        images={firstProductImage ? [firstProductImage] : []}
       />
 
       {/* Breadcrumb */}

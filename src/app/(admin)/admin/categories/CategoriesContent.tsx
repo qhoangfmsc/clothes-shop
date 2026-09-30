@@ -208,6 +208,7 @@ export default function CategoriesContent() {
       slug: c.slug,
       title: c.title,
       description: c.description,
+      heroImage: c.heroImage ?? "",
       subcategories: c.subcategories?.map((s) => ({ ...s })) ?? [],
     });
     setShowModal(true);
@@ -228,6 +229,7 @@ export default function CategoriesContent() {
         slug: form.slug,
         title: form.title,
         description: form.description,
+        heroImage: form.heroImage.trim() || null,
         subcategories: form.subcategories.map((s) => {
           const {
             id: _id,
@@ -338,6 +340,14 @@ export default function CategoriesContent() {
                     value={form.description}
                     onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                     placeholder="Category description..."
+                  />
+                </Field>
+                <Field label="Hero Image URL" span={2} hint="Shown on the Shop page's category grid. Leave empty to show a plain background instead.">
+                  <input
+                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                    value={form.heroImage}
+                    onChange={(e) => setForm((p) => ({ ...p, heroImage: e.target.value }))}
+                    placeholder="https://... or /images/..."
                   />
                 </Field>
               </Section>

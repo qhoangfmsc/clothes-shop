@@ -1,39 +1,17 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, User, Heart, Package, LogOut } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
+import { useCategories, useBannerConfig } from "@/src/hooks/use-api";
+import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
 import { UserAvatar } from "./UserMenu";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
-
-/* ── Navigation structure ── */
-const SHOP_CATEGORIES = [
-  {
-    title: "Tops",
-    href: "/shop/tops",
-    items: ["Camisoles", "Halter Tops", "Tank Tops", "Off-Shoulder", "Cardigans", "Corset Tops"],
-  },
-  {
-    title: "Skirts",
-    href: "/shop/skirts",
-    items: ["Slip Skirts", "Midi Skirts", "Mini Skirts", "Wrap Skirts", "Lace Skirts"],
-  },
-  {
-    title: "Bags",
-    href: "/shop/bags",
-    items: ["Hobo Bags", "Shoulder Bags", "Clutches", "Mini Bags", "Tote Bags"],
-  },
-  {
-    title: "Jewelry",
-    href: "/shop/jewelry",
-    items: ["Necklaces", "Earrings", "Rings", "Bracelets", "Hair Accessories"],
-  },
-] as const;
 
 const NAV_LINKS = [
   { label: "Home", href: "/", hasAccordion: false, description: "Welcome to our store" },
@@ -46,21 +24,6 @@ const NAV_LINKS = [
     description: "Curated seasonal edits",
   },
   { label: "About", href: "/about", hasAccordion: false, description: "Our story & vision" },
-] as const;
-
-const FEATURED_PRODUCTS = [
-  {
-    image: "/images/model-intro/model_intro_2.webp",
-    title: "Summer Essentials",
-    subtitle: "Discover the new collection",
-    href: "/shop",
-  },
-  {
-    image: "/images/model-intro/model_intro_5.webp",
-    title: "Evening Edit",
-    subtitle: "Après-midi to midnight",
-    href: "/shop",
-  },
 ] as const;
 
 /* ── Social links ── */
@@ -304,6 +267,23 @@ export default function HamburgerMenu() {
   const [featuredIdx, setFeaturedIdx] = useState(0);
   const drawerRef = useRef<HTMLDivElement>(null);
 
+  /* ── Shop categories — from API, not hardcoded ── */
+  const { categories } = useCategories();
+  const shopCategories = useMemo(
+    () =>
+      categories.map((cat) => ({
+        title: cat.title,
+        href: `/shop/${cat.slug}`,
+        items: cat.subcategories,
+      })),
+    [categories]
+  );
+
+  /* ── Featured panel banners — from API (Site Config > NAV_MENU_BANNERS).
+     No fallback: the panel just doesn't render when nothing is configured. */
+  const { banners: featuredBanners } = useBannerConfig(SITE_CONFIG_KEYS.NAV_MENU_BANNERS);
+  const currentBanner = featuredBanners[featuredIdx] ?? featuredBanners[0];
+
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => {
     setIsOpen(false);
@@ -383,14 +363,19 @@ export default function HamburgerMenu() {
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, close]);
 
-  /* Cycle featured product image */
+  /* Reset index if the banner list shrinks (e.g. config loads after mount) */
   useEffect(() => {
-    if (!isOpen) return;
+    setFeaturedIdx(0);
+  }, [featuredBanners.length]);
+
+  /* Cycle featured banner image */
+  useEffect(() => {
+    if (!isOpen || featuredBanners.length <= 1) return;
     const interval = setInterval(() => {
-      setFeaturedIdx((prev) => (prev + 1) % FEATURED_PRODUCTS.length);
+      setFeaturedIdx((prev) => (prev + 1) % featuredBanners.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [isOpen]);
+  }, [isOpen, featuredBanners.length]);
 
   /* ── Drawer content (portaled to body to escape mix-blend-mode) ── */
   const drawerContent = (
@@ -685,7 +670,7 @@ export default function HamburgerMenu() {
                                 gap: 0,
                               }}
                             >
-                              {SHOP_CATEGORIES.map((cat, catIdx) => (
+                              {shopCategories.map((cat, catIdx) => (
                                 <motion.div
                                   key={cat.title}
                                   initial={{ opacity: 0, x: 16 }}
@@ -761,7 +746,7 @@ export default function HamburgerMenu() {
                                 animate={{ opacity: 1 }}
                                 transition={{
                                   duration: 0.3,
-                                  delay: SHOP_CATEGORIES.length * 0.04 + 0.1,
+                                  delay: shopCategories.length * 0.04 + 0.1,
                                 }}
                                 style={{ marginTop: 8 }}
                               >
@@ -798,7 +783,9 @@ export default function HamburgerMenu() {
                 <AuthDrawerSection close={close} />
               </nav>
 
-              {/* Right panel — Featured Product (hidden on mobile, visible on sm+) */}
+              {/* Right panel — Featured banner (hidden on mobile, visible on sm+).
+                  Doesn't render at all when no NAV_MENU_BANNERS are configured. */}
+              {featuredBanners.length > 0 && (
               <div
                 className="drawer-featured-panel"
                 style={{
@@ -822,8 +809,8 @@ export default function HamburgerMenu() {
                     }}
                   >
                     <Image
-                      src={FEATURED_PRODUCTS[featuredIdx].image}
-                      alt={FEATURED_PRODUCTS[featuredIdx].title}
+                      src={currentBanner.image}
+                      alt={currentBanner.title ?? ""}
                       fill
                       sizes="400px"
                       style={{
@@ -857,29 +844,33 @@ export default function HamburgerMenu() {
                       >
                         Featured
                       </span>
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: "var(--text-lg)",
-                          letterSpacing: "-0.04em",
-                          fontFamily: "var(--font-display)",
-                          lineHeight: "100%",
-                        }}
-                      >
-                        {FEATURED_PRODUCTS[featuredIdx].title}
-                      </span>
-                      <span
-                        style={{
-                          color: "rgba(255, 255, 255, 0.5)",
-                          fontSize: "var(--text-sm)",
-                          letterSpacing: "-0.02em",
-                          fontFamily: "var(--font-primary)",
-                        }}
-                      >
-                        {FEATURED_PRODUCTS[featuredIdx].subtitle}
-                      </span>
+                      {currentBanner.title && (
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: "var(--text-lg)",
+                            letterSpacing: "-0.04em",
+                            fontFamily: "var(--font-display)",
+                            lineHeight: "100%",
+                          }}
+                        >
+                          {currentBanner.title}
+                        </span>
+                      )}
+                      {currentBanner.subtitle && (
+                        <span
+                          style={{
+                            color: "rgba(255, 255, 255, 0.5)",
+                            fontSize: "var(--text-sm)",
+                            letterSpacing: "-0.02em",
+                            fontFamily: "var(--font-primary)",
+                          }}
+                        >
+                          {currentBanner.subtitle}
+                        </span>
+                      )}
                       <Link
-                        href={FEATURED_PRODUCTS[featuredIdx].href}
+                        href={currentBanner.ctaHref ?? "/shop"}
                         onClick={close}
                         className="drawer-featured-cta"
                         style={{
@@ -896,11 +887,12 @@ export default function HamburgerMenu() {
                           transition: "opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
                         }}
                       >
-                        Discover
+                        {currentBanner.ctaLabel ?? "Discover"}
                         <ArrowRight size={12} />
                       </Link>
 
-                      {/* Image carousel dots */}
+                      {/* Image carousel dots — only when there's more than one banner */}
+                      {featuredBanners.length > 1 && (
                       <div
                         style={{
                           display: "flex",
@@ -908,7 +900,7 @@ export default function HamburgerMenu() {
                           marginTop: 12,
                         }}
                       >
-                        {FEATURED_PRODUCTS.map((_, dotIdx) => (
+                        {featuredBanners.map((_, dotIdx) => (
                           <button
                             key={dotIdx}
                             onClick={() => setFeaturedIdx(dotIdx)}
@@ -930,10 +922,12 @@ export default function HamburgerMenu() {
                           />
                         ))}
                       </div>
+                      )}
                     </div>
                   </motion.div>
                 </AnimatePresence>
               </div>
+              )}
             </div>
 
             {/* ── Footer ── */}

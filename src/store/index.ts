@@ -18,6 +18,7 @@ import { categoriesReducer } from "@/src/app/(admin)/admin/categories/_common/mo
 import { collectionsReducer } from "@/src/app/(admin)/admin/collections/_common/moduleSlice";
 import { usersReducer } from "@/src/app/(admin)/admin/users/_common/moduleSlice";
 import { ordersReducer } from "@/src/app/(admin)/admin/orders/_common/moduleSlice";
+import { siteConfigReducer } from "@/src/app/(admin)/admin/site-config/_common/moduleSlice";
 import { cartReducer } from "@/src/app/(private)/cart/_common/moduleSlice";
 import { wishlistReducer } from "@/src/app/(private)/wishlist/_common/moduleSlice";
 
@@ -29,6 +30,7 @@ export const store = configureStore({
     collections: collectionsReducer,
     users: usersReducer,
     orders: ordersReducer,
+    siteConfig: siteConfigReducer,
     // CLIENT
     cart: cartReducer,
     wishlist: wishlistReducer,

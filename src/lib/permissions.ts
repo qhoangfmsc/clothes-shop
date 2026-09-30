@@ -38,6 +38,11 @@ export const PERMISSIONS = {
   /* Users */
   USER_ADMIN_VIEW: "USER_ADMIN_VIEW",
   USER_ADMIN_UPDATE: "USER_ADMIN_UPDATE",
+
+  /* Site Config */
+  SITE_CONFIG_VIEW: "SITE_CONFIG_VIEW",
+  SITE_CONFIG_UPSERT: "SITE_CONFIG_UPSERT",
+  SITE_CONFIG_DELETE: "SITE_CONFIG_DELETE",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
@@ -58,6 +63,9 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     PERMISSIONS.ORDER_ADMIN_UPDATE_STATUS,
     PERMISSIONS.USER_ADMIN_VIEW,
     PERMISSIONS.USER_ADMIN_UPDATE,
+    PERMISSIONS.SITE_CONFIG_VIEW,
+    PERMISSIONS.SITE_CONFIG_UPSERT,
+    PERMISSIONS.SITE_CONFIG_DELETE,
   ],
   user: [],
 };
@@ -77,6 +85,9 @@ export const PERMISSION_CODES: Record<Permission, number> = {
   [PERMISSIONS.ORDER_ADMIN_UPDATE_STATUS]: 9001,
   [PERMISSIONS.USER_ADMIN_VIEW]: 10000,
   [PERMISSIONS.USER_ADMIN_UPDATE]: 10001,
+  [PERMISSIONS.SITE_CONFIG_VIEW]: 11000,
+  [PERMISSIONS.SITE_CONFIG_UPSERT]: 11001,
+  [PERMISSIONS.SITE_CONFIG_DELETE]: 11002,
 };
 
 /** Convert FE permission string names → BE numeric codes */
@@ -105,6 +116,9 @@ export const PERMISSION_LABELS: Record<Permission, string> = {
   [PERMISSIONS.ORDER_ADMIN_UPDATE_STATUS]: "Update Order Status",
   [PERMISSIONS.USER_ADMIN_VIEW]: "View Users",
   [PERMISSIONS.USER_ADMIN_UPDATE]: "Manage Users",
+  [PERMISSIONS.SITE_CONFIG_VIEW]: "View Site Config",
+  [PERMISSIONS.SITE_CONFIG_UPSERT]: "Update Site Config",
+  [PERMISSIONS.SITE_CONFIG_DELETE]: "Delete Site Config",
 };
 
 /* ── Permission groups (for display) ── */
@@ -140,6 +154,14 @@ export const PERMISSION_GROUPS: { label: string; permissions: Permission[] }[] =
   {
     label: "Users",
     permissions: [PERMISSIONS.USER_ADMIN_VIEW, PERMISSIONS.USER_ADMIN_UPDATE],
+  },
+  {
+    label: "Site Config",
+    permissions: [
+      PERMISSIONS.SITE_CONFIG_VIEW,
+      PERMISSIONS.SITE_CONFIG_UPSERT,
+      PERMISSIONS.SITE_CONFIG_DELETE,
+    ],
   },
 ];
 

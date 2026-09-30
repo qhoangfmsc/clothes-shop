@@ -7,14 +7,15 @@
    Phase 1: Updated to match BE Public API (search, pagination, filter).
    ═══════════════════════════════════════════════════════════ */
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useSWR from "swr";
 import type { Product } from "@/src/types/product";
-import type { Category, CategoryUIConfig } from "@/src/types/category";
+import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
+import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ProductListParams, ProductListResponse } from "@/src/app/(public)/shop/_lib/server-fetchers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
@@ -107,7 +108,6 @@ export function useNewInProducts() {
 export function useCategories() {
   const { data, isLoading, error } = useSWR<{
     data: Category[];
-    uiConfigs: Record<string, CategoryUIConfig>;
     total: number;
   }>(
     `${API_URL}/api/categories`,
@@ -117,7 +117,6 @@ export function useCategories() {
 
   return {
     categories: data?.data ?? [],
-    uiConfigs: data?.uiConfigs ?? {},
     isLoading,
     isError: !!error,
   };
@@ -126,7 +125,6 @@ export function useCategories() {
 export function useCategory(slug: string | null) {
   const { data, isLoading, error } = useSWR<{
     data: Category;
-    uiConfig: CategoryUIConfig | null;
   }>(
     slug ? `${API_URL}/api/categories?slug=${slug}` : null,
     fetcher,
@@ -135,7 +133,6 @@ export function useCategory(slug: string | null) {
 
   return {
     category: data?.data ?? null,
-    uiConfig: data?.uiConfig ?? null,
     isLoading,
     isError: !!error,
   };
@@ -235,6 +232,30 @@ export function useShipping() {
   };
 }
 
+/* ═══ Site Config (banners) ═══
+   Decorative/replaceable content — a failed or missing config never
+   surfaces as isError to the caller; it just resolves to an empty
+   banners array so the component falls back to its own default. */
+export function useBannerConfig(key: string) {
+  const { data, isLoading } = useSWR<{ data: SiteConfig | null }>(
+    `${API_URL}/api/site-config?key=${key}`,
+    fetcher,
+    defaultConfig
+  );
+
+  const banners: BannerItem[] = useMemo(() => {
+    if (!data?.data?.value) return [];
+    try {
+      const parsed = JSON.parse(data.data.value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }, [data]);
+
+  return { banners, isLoading };
+}
+
 /* ═══ Autocomplete — debounced search for nav dropdown ═══ */
 
 export interface AutocompleteItem {
@@ -332,4 +353,22 @@ export function useAutocomplete() {
   }, []);
 
   return { query, results, isLoading, search, clear };
+}
+
+/**
+ * Resolve a product's real detail-page URL (`/shop/{category}/{subcategory}/{id}`).
+ * Autocomplete results only carry id/name/slug/price/image — not enough to build
+ * the URL — so this looks the product up by id first. Used on click, not render,
+ * so it's a plain fetch rather than a hook.
+ */
+export async function getProductUrl(id: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${API_URL}/api/products/${id}`);
+    if (!res.ok) return null;
+    const { data }: { data: Product } = await res.json();
+    if (!data.category || !data.subcategory) return null;
+    return `/shop/${data.category.slug}/${data.subcategory.slug}/${data.id}`;
+  } catch {
+    return null;
+  }
 }

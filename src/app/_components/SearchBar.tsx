@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Search, X } from "lucide-react";
-import { useAutocomplete, type AutocompleteItem } from "@/src/hooks/use-api";
+import { useAutocomplete, getProductUrl, type AutocompleteItem } from "@/src/hooks/use-api";
 
 export default function SearchBar() {
   const router = useRouter();
@@ -73,24 +73,16 @@ export default function SearchBar() {
   );
 
   const navigateToProduct = useCallback(
-    (item: AutocompleteItem) => {
+    async (item: AutocompleteItem) => {
       setExpanded(false);
       setQuery("");
       setHighlightIdx(-1);
       clearAutocomplete();
-      router.push(`/shop/${item.slug}`);
+      const url = await getProductUrl(item.id);
+      router.push(url ?? "/shop");
     },
     [router, clearAutocomplete]
   );
-
-  const navigateToSearch = useCallback(() => {
-    const trimmed = query.trim();
-    if (!trimmed) return;
-    setExpanded(false);
-    setHighlightIdx(-1);
-    clearAutocomplete();
-    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
-  }, [query, router, clearAutocomplete]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -127,16 +119,6 @@ export default function SearchBar() {
   const handleItemHover = useCallback((idx: number) => {
     setHighlightIdx(idx);
   }, []);
-
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      const trimmed = query.trim();
-      if (!trimmed) return;
-      navigateToSearch();
-    },
-    [query, navigateToSearch]
-  );
 
   const handleClear = useCallback(() => {
     setQuery("");
@@ -191,8 +173,7 @@ export default function SearchBar() {
         />
 
         {/* Input + clear button */}
-        <form
-          onSubmit={handleSubmit}
+        <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -246,7 +227,7 @@ export default function SearchBar() {
               <X size={12} />
             </button>
           )}
-        </form>
+        </div>
       </div>
 
       {/* Autocomplete dropdown — rendered via portal so it escapes parent overflow */}
@@ -259,7 +240,6 @@ export default function SearchBar() {
           query={query}
           onSelect={navigateToProduct}
           onHover={handleItemHover}
-          onSearchAll={navigateToSearch}
         />
       )}
     </div>
@@ -275,7 +255,6 @@ function SearchDropdown({
   query,
   onSelect,
   onHover,
-  onSearchAll,
 }: {
   anchorRef: React.RefObject<HTMLDivElement | null>;
   results: AutocompleteItem[];
@@ -284,7 +263,6 @@ function SearchDropdown({
   query: string;
   onSelect: (item: AutocompleteItem) => void;
   onHover: (idx: number) => void;
-  onSearchAll: () => void;
 }) {
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
   const [mounted, setMounted] = useState(false);
@@ -435,43 +413,6 @@ function SearchDropdown({
           </button>
         ))}
       </div>
-
-      {/* See all results footer */}
-      {results.length > 0 && (
-        <button
-          type="button"
-          onClick={onSearchAll}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            width: "100%",
-            border: "none",
-            borderTop: "1px solid var(--border-subtle)",
-            background: "var(--bg-primary)",
-            padding: "11px 16px",
-            cursor: "pointer",
-            fontFamily: "var(--font-primary)",
-            fontSize: 10,
-            fontWeight: 500,
-            color: "var(--text-secondary)",
-            letterSpacing: "0.04em",
-            transition: "color 150ms, background 150ms",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "var(--accent-primary)";
-            e.currentTarget.style.background = "rgba(201, 169, 110, 0.04)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "var(--text-secondary)";
-            e.currentTarget.style.background = "var(--bg-primary)";
-          }}
-        >
-          See all results for &ldquo;{query}&rdquo;
-          <Search size={12} />
-        </button>
-      )}
     </div>
   );
 }

@@ -360,7 +360,7 @@ export default function UsersContent() {
         </div>
       )}
 
-      {/* ══════════ ORDER DETAIL MODAL (chồng lên Edit User modal) ══════════ */}
+      {/* ══════════ ORDER DETAIL MODAL (stacks on top of the Edit User modal) ══════════ */}
       {selectedOrder && (
         <div
           className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-110 p-6"

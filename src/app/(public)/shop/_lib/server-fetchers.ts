@@ -9,9 +9,10 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { Product } from "@/src/types/product";
-import type { Category, CategoryUIConfig } from "@/src/types/category";
+import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
+import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -54,7 +55,6 @@ export interface ProductListResponse {
 
 export interface CategoryListResponse {
   data: Category[];
-  uiConfigs?: Record<string, CategoryUIConfig>;
   total: number;
   page: number;
   limit: number;
@@ -148,31 +148,10 @@ export async function getCategories(): Promise<Category[]> {
   return data;
 }
 
-export async function getCategoriesWithUI(): Promise<{
-  categories: Category[];
-  uiConfigs: Record<string, CategoryUIConfig>;
-}> {
-  const result = await apiFetch<CategoryListResponse>("/api/categories");
-  return { categories: result.data, uiConfigs: result.uiConfigs ?? {} };
-}
-
 export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
   try {
-    const { data } = await apiFetch<{ data: Category; uiConfig: CategoryUIConfig | null }>(
-      `/api/categories?slug=${slug}`
-    );
+    const { data } = await apiFetch<{ data: Category }>(`/api/categories?slug=${slug}`);
     return data;
-  } catch {
-    return undefined;
-  }
-}
-
-export async function getCategoryUIConfig(slug: string): Promise<CategoryUIConfig | undefined> {
-  try {
-    const result = await apiFetch<{ data: Category; uiConfig: CategoryUIConfig | null }>(
-      `/api/categories?slug=${slug}`
-    );
-    return result.uiConfig ?? undefined;
   } catch {
     return undefined;
   }
@@ -214,6 +193,25 @@ export async function getCollectionProducts(slug: string): Promise<Product[]> {
     `/api/collections?slug=${slug}`
   );
   return products;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SITE CONFIG (banners)
+
+   Decorative/replaceable content — never let a config fetch
+   failure break the page. Always falls back to [] (caller then
+   uses its own built-in default banner/copy).
+   ═══════════════════════════════════════════════════════════ */
+
+export async function getBannerConfig(key: string): Promise<BannerItem[]> {
+  try {
+    const { data } = await apiFetch<{ data: SiteConfig | null }>(`/api/site-config?key=${key}`);
+    if (!data?.value) return [];
+    const parsed = JSON.parse(data.value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════

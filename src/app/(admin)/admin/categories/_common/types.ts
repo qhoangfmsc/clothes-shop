@@ -16,6 +16,7 @@ export interface CategoryFormData {
   slug: string;
   title: string;
   description: string;
+  heroImage: string;
   subcategories: {
     id?: number;
     slug: string;

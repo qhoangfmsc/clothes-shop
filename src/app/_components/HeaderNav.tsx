@@ -1,63 +1,15 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./HamburgerMenu";
 import UserMenu from "./UserMenu";
 import SearchBar from "./SearchBar";
+import { useCategories } from "@/src/hooks/use-api";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
-
-/* ── Shop categories with sub-items ── */
-const SHOP_CATEGORIES = [
-  {
-    title: "Tops",
-    href: "/shop/tops",
-    items: [
-      { label: "Camisoles", href: "/shop/tops/camisoles" },
-      { label: "Halter Tops", href: "/shop/tops/halter" },
-      { label: "Tank Tops", href: "/shop/tops/tank" },
-      { label: "Off-Shoulder", href: "/shop/tops/off-shoulder" },
-      { label: "Cardigans", href: "/shop/tops/cardigans" },
-      { label: "Corset Tops", href: "/shop/tops/corset" },
-    ],
-  },
-  {
-    title: "Skirts",
-    href: "/shop/skirts",
-    items: [
-      { label: "Slip Skirts", href: "/shop/skirts/slip" },
-      { label: "Midi Skirts", href: "/shop/skirts/midi" },
-      { label: "Mini Skirts", href: "/shop/skirts/mini" },
-      { label: "Wrap Skirts", href: "/shop/skirts/wrap" },
-      { label: "Lace Skirts", href: "/shop/skirts/lace" },
-    ],
-  },
-  {
-    title: "Bags",
-    href: "/shop/bags",
-    items: [
-      { label: "Hobo Bags", href: "/shop/bags/hobo" },
-      { label: "Shoulder Bags", href: "/shop/bags/shoulder" },
-      { label: "Clutches", href: "/shop/bags/clutches" },
-      { label: "Mini Bags", href: "/shop/bags/mini" },
-      { label: "Tote Bags", href: "/shop/bags/tote" },
-    ],
-  },
-  {
-    title: "Jewelry",
-    href: "/shop/jewelry",
-    items: [
-      { label: "Necklaces", href: "/shop/jewelry/necklaces" },
-      { label: "Earrings", href: "/shop/jewelry/earrings" },
-      { label: "Rings", href: "/shop/jewelry/rings" },
-      { label: "Bracelets", href: "/shop/jewelry/bracelets" },
-      { label: "Hair Accessories", href: "/shop/jewelry/hair" },
-    ],
-  },
-] as const;
 
 const NAV_LINKS = [
   // { label: "Home", href: "/", hasMegaMenu: false },
@@ -79,6 +31,21 @@ export default function HeaderNav({
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cooldown = useRef(false);
+
+  /* ── Shop categories with sub-items — from API, not hardcoded ── */
+  const { categories } = useCategories();
+  const shopCategories = useMemo(
+    () =>
+      categories.map((cat) => ({
+        title: cat.title,
+        href: `/shop/${cat.slug}`,
+        items: cat.subcategories.map((sub) => ({
+          label: sub.label,
+          href: `/shop/${cat.slug}/${sub.slug}`,
+        })),
+      })),
+    [categories]
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -187,7 +154,7 @@ export default function HeaderNav({
   /* ── Dropdown: sits BEHIND the nav (lower z-index) ── */
   const dropdown = (
     <AnimatePresence>
-      {menuOpen && (
+      {menuOpen && shopCategories.length > 0 && (
         <>
           {/* Backdrop — click to close */}
           <motion.div
@@ -237,7 +204,7 @@ export default function HeaderNav({
                 gap: 32,
               }}
             >
-              {SHOP_CATEGORIES.map((cat) => (
+              {shopCategories.map((cat) => (
                 <div key={cat.title}>
                   <Link
                     href={cat.href}
