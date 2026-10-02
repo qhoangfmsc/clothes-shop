@@ -216,9 +216,9 @@ export default function OrdersContent() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 h-full min-h-0">
       {/* ── Header ── */}
-      <div>
+      <div className="shrink-0">
         <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Orders</h1>
         <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
           {total} order{total !== 1 ? "s" : ""} total
@@ -265,9 +265,7 @@ export default function OrdersContent() {
                 </div>
                 <div className="p-8 text-center">
                   <AlertTriangle size={32} className="text-[var(--accent-rose)] mx-auto mb-3" />
-                  <p className="text-sm text-[var(--text-secondary)] font-primary">
-                    {detailError}
-                  </p>
+                  <p className="text-sm text-[var(--text-secondary)] font-primary">{detailError}</p>
                   <button
                     className="mt-4 py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
                     onClick={closeDetail}
@@ -280,11 +278,7 @@ export default function OrdersContent() {
 
             {/* ── Detail state ── */}
             {detailOrder && (
-              <OrderDetailPanel
-                order={detailOrder}
-                loading={loadingDetail}
-                onClose={closeDetail}
-              />
+              <OrderDetailPanel order={detailOrder} loading={loadingDetail} onClose={closeDetail} />
             )}
           </div>
         </div>

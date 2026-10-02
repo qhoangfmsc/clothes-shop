@@ -45,6 +45,37 @@ const STATUS_ICON: Record<string, React.ReactNode> = {
   cancelled: <XCircle size={14} />,
 };
 
+/* ── KPI accent palette — tint/border are literal rgba so they stay valid
+   CSS (var() can't be string-concatenated with an alpha suffix). Reuses
+   the same hues as the status badges above for visual consistency. */
+const KPI_ACCENTS = {
+  gold: {
+    text: "var(--accent-primary)",
+    tint: "rgba(201,169,110,0.1)",
+    border: "rgba(201,169,110,0.3)",
+  },
+  blue: {
+    text: "var(--accent-blue)",
+    tint: "rgba(143,163,180,0.1)",
+    border: "rgba(143,163,180,0.3)",
+  },
+  honey: {
+    text: "var(--color-honey)",
+    tint: "rgba(240,228,166,0.18)",
+    border: "rgba(201,169,110,0.35)",
+  },
+  sage: {
+    text: "var(--accent-sage)",
+    tint: "rgba(163,177,138,0.1)",
+    border: "rgba(163,177,138,0.3)",
+  },
+  lavender: {
+    text: "var(--accent-lavender)",
+    tint: "rgba(184,165,200,0.1)",
+    border: "rgba(184,165,200,0.3)",
+  },
+} as const;
+
 export default function DashboardContent() {
   /* Fetch data with large limits for stats */
   const {
@@ -88,6 +119,7 @@ export default function DashboardContent() {
       ordersByStatus,
       productsByCategory,
       validOrders,
+      pendingOrders: ordersByStatus["pending"] || 0,
     };
   }, [products, orders, totalProducts]);
 
@@ -108,32 +140,36 @@ export default function DashboardContent() {
           label="Total Revenue"
           value={loading ? "—" : `$${stats.totalRevenue.toLocaleString()}`}
           sub={`from ${stats.validOrders.length} completed orders`}
-          accent="var(--accent-primary)"
+          {...KPI_ACCENTS.gold}
+        />
+        <KpiCard
+          icon={<Clock size={20} />}
+          label="Needs Processing"
+          value={loading ? "—" : stats.pendingOrders}
+          sub="pending orders"
+          highlight={!loading && stats.pendingOrders > 0}
+          {...KPI_ACCENTS.honey}
         />
         <KpiCard
           icon={<ShoppingBag size={20} />}
           label="Orders"
           value={loading ? "—" : totalOrders}
-          sub={
-            loading
-              ? ""
-              : `${stats.ordersByStatus["pending"] || 0} pending · ${stats.ordersByStatus["completed"] || 0} completed`
-          }
-          accent="var(--accent-blue)"
+          sub={loading ? "" : `${stats.ordersByStatus["completed"] || 0} completed`}
+          {...KPI_ACCENTS.blue}
         />
         <KpiCard
           icon={<Shirt size={20} />}
           label="Products"
           value={loading ? "—" : totalProducts}
           sub={loading ? "" : `${stats.activeProducts} active · ${stats.inactiveProducts} inactive`}
-          accent="var(--accent-sage)"
+          {...KPI_ACCENTS.sage}
         />
         <KpiCard
           icon={<Users size={20} />}
           label="Users"
           value={loading ? "—" : totalUsers}
           sub="registered accounts"
-          accent="var(--accent-lavender)"
+          {...KPI_ACCENTS.lavender}
         />
       </div>
 
@@ -196,8 +232,10 @@ export default function DashboardContent() {
                         {o.items?.length ?? 0}
                       </span>
                     </td>
-                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
-                      <span className="font-semibold">${Number(o.total).toFixed(2)}</span>
+                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary align-middle">
+                      <span className="font-semibold" style={{ color: "var(--accent-primary)" }}>
+                        ${Number(o.total).toFixed(2)}
+                      </span>
                     </td>
                     <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
                       <span className="text-xs text-[var(--text-muted)] font-primary">
@@ -235,7 +273,7 @@ export default function DashboardContent() {
                       className="flex items-center justify-between gap-[var(--space-3)]"
                     >
                       <div className="flex items-center gap-1.5 min-w-[100px]">
-                        {STATUS_ICON[status]}
+                        <span style={{ color: STATUS_COLOR[status] }}>{STATUS_ICON[status]}</span>
                         <span className="capitalize font-primary text-sm text-[var(--text-primary)]">
                           {status}
                         </span>
@@ -250,7 +288,10 @@ export default function DashboardContent() {
                             }}
                           />
                         </div>
-                        <span className="text-sm font-semibold font-primary text-[var(--text-primary)] min-w-[24px] text-right">
+                        <span
+                          className="text-sm font-semibold font-primary min-w-[24px] text-right"
+                          style={{ color: STATUS_COLOR[status] ?? "var(--text-primary)" }}
+                        >
                           {count}
                         </span>
                       </div>
@@ -272,28 +313,43 @@ function KpiCard({
   label,
   value,
   sub,
-  accent,
+  text,
+  tint,
+  border,
+  highlight,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string | number;
   sub: string;
-  accent: string;
+  text: string;
+  tint: string;
+  border: string;
+  highlight?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-[var(--space-4)] py-[var(--space-5)] px-[var(--space-6)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
+    <div
+      className="relative flex items-center gap-[var(--space-4)] py-[var(--space-5)] px-[var(--space-6)] border rounded-[var(--radius-lg)]"
+      style={{ background: tint, borderColor: border, borderWidth: highlight ? 1.5 : 1 }}
+    >
+      {highlight && (
+        <span
+          className="absolute top-3 right-3 w-2 h-2 rounded-full animate-pulse"
+          style={{ background: text }}
+        />
+      )}
       <div
         className="w-11 h-11 rounded-[var(--radius-md)] flex items-center justify-center shrink-0"
-        style={{ color: accent, background: `${accent}15` }}
+        style={{ color: text, background: border }}
       >
         {icon}
       </div>
       <div className="flex flex-col gap-0.5 min-w-0">
-        <p className="font-display text-xl text-[var(--text-heading)] leading-tight font-normal">
+        <p className="font-display text-xl leading-tight font-semibold" style={{ color: text }}>
           {value}
         </p>
-        <p className="text-xs text-[var(--text-muted)] font-primary font-medium">{label}</p>
-        {sub && <p className="text-xs text-[var(--text-disabled)] font-primary mt-0.5">{sub}</p>}
+        <p className="text-xs text-[var(--text-secondary)] font-primary font-semibold">{label}</p>
+        {sub && <p className="text-xs text-[var(--text-muted)] font-primary mt-0.5">{sub}</p>}
       </div>
     </div>
   );

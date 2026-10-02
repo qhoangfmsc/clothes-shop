@@ -13,7 +13,8 @@ import {
   type DataTableRef,
 } from "@/src/app/_components/DataTable";
 import {
-  FormModalShell,
+  ModalShell,
+  ModalBody,
   FormTabs,
   FormSection,
   FormField,
@@ -242,9 +243,9 @@ export default function CollectionsContent() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 h-full min-h-0">
       {/* ── Header ── */}
-      <div className="flex justify-between items-start">
+      <div className="shrink-0 flex justify-between items-start">
         <div>
           <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">
             Collections
@@ -279,202 +280,201 @@ export default function CollectionsContent() {
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
-        <FormModalShell
-          title={editingId ? "Edit Collection" : "New Collection"}
-          onClose={closeModal}
-        >
+        <ModalShell title={editingId ? "Edit Collection" : "New Collection"} onClose={closeModal}>
           <FormTabs tabs={COLLECTION_TABS} active={activeTab} onChange={setActiveTab} />
 
-          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-auto">
-            {activeTab === "info" && (
-              <>
-                <FormSection title="Basic Info">
-                  <FormField label="Name" required>
-                    <input
-                      className={inputClass}
-                      value={form.name}
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        setForm((p) => ({
-                          ...p,
-                          name: v,
-                          slug: slugify(v),
-                        }));
-                      }}
-                      required
-                    />
-                  </FormField>
-                  <FormField label="Subtitle" info="Short tagline shown below the name">
-                    <input
-                      className={inputClass}
-                      value={form.subtitle}
-                      onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}
-                    />
-                  </FormField>
-                  <FormField label="Season">
-                    <input
-                      className={inputClass}
-                      value={form.season}
-                      onChange={(e) => setForm((p) => ({ ...p, season: e.target.value }))}
-                      list="season-list"
-                      placeholder="pick from list or type your own"
-                    />
-                    <datalist id="season-list">
-                      {SEASONS.map((s) => (
-                        <option key={s} value={s} />
-                      ))}
-                    </datalist>
-                  </FormField>
-                </FormSection>
-
-                <FormSection title="Details">
-                  <FormField label="Cover Image URL">
-                    <input
-                      className={inputClass}
-                      value={form.image}
-                      onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))}
-                      placeholder="primary collection image URL"
-                    />
-                  </FormField>
-                  <FormField label="Description">
-                    <textarea
-                      className={`${inputClass} resize-y`}
-                      rows={3}
-                      value={form.description}
-                      onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                      placeholder="shown on collection page"
-                    />
-                  </FormField>
-                </FormSection>
-              </>
-            )}
-
-            {activeTab === "products" && (
-              <FormSection>
-                <FormField label={`Add Products (${form.productIds.length} selected)`}>
-                  <div className="flex gap-1.5 mb-2">
-                    <div className="flex items-center gap-2 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg px-3 flex-1">
-                      <Search size={14} className="text-[var(--text-muted)] shrink-0" />
+          <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col">
+            <ModalBody>
+              {activeTab === "info" && (
+                <>
+                  <FormSection title="Basic Info">
+                    <FormField label="Name" required>
                       <input
-                        placeholder="Search products..."
-                        value={productSearch}
-                        onChange={(e) => setProductSearch(e.target.value)}
-                        className="flex-1 border-0 bg-transparent py-2 px-0 text-xs font-primary text-[var(--text-primary)] outline-none"
+                        className={inputClass}
+                        value={form.name}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setForm((p) => ({
+                            ...p,
+                            name: v,
+                            slug: slugify(v),
+                          }));
+                        }}
+                        required
                       />
-                    </div>
-                  </div>
+                    </FormField>
+                    <FormField label="Subtitle" info="Short tagline shown below the name">
+                      <input
+                        className={inputClass}
+                        value={form.subtitle}
+                        onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}
+                      />
+                    </FormField>
+                    <FormField label="Season">
+                      <input
+                        className={inputClass}
+                        value={form.season}
+                        onChange={(e) => setForm((p) => ({ ...p, season: e.target.value }))}
+                        list="season-list"
+                        placeholder="pick from list or type your own"
+                      />
+                      <datalist id="season-list">
+                        {SEASONS.map((s) => (
+                          <option key={s} value={s} />
+                        ))}
+                      </datalist>
+                    </FormField>
+                  </FormSection>
 
-                  {/* Selected products */}
-                  {form.productIds.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                      {form.productIds.map((pid) => {
-                        const prod = allProducts.find((p) => p.id === pid);
-                        return (
-                          <span
-                            key={pid}
-                            className="inline-flex items-center gap-0.5 py-0.5 px-1.5 rounded-full bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)] text-[11px] font-medium border border-[rgba(163,177,138,0.25)]"
-                          >
-                            {prod?.images?.[0] && (
-                              <div className="relative w-3.5 h-4.5 shrink-0">
-                                <Image
-                                  src={prod.images[0]}
-                                  alt=""
-                                  fill
-                                  className="object-cover rounded-xs"
-                                  sizes="14px"
-                                />
-                              </div>
-                            )}
-                            <span className="text-[11px] max-w-24 overflow-hidden text-ellipsis whitespace-nowrap">
-                              {prod?.name ?? pid}
+                  <FormSection title="Details">
+                    <FormField label="Cover Image URL">
+                      <input
+                        className={inputClass}
+                        value={form.image}
+                        onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))}
+                        placeholder="primary collection image URL"
+                      />
+                    </FormField>
+                    <FormField label="Description">
+                      <textarea
+                        className={`${inputClass} resize-y`}
+                        rows={3}
+                        value={form.description}
+                        onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                        placeholder="shown on collection page"
+                      />
+                    </FormField>
+                  </FormSection>
+                </>
+              )}
+
+              {activeTab === "products" && (
+                <FormSection>
+                  <FormField label={`Add Products (${form.productIds.length} selected)`}>
+                    <div className="flex gap-1.5 mb-2">
+                      <div className="flex items-center gap-2 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg px-3 flex-1">
+                        <Search size={14} className="text-[var(--text-muted)] shrink-0" />
+                        <input
+                          placeholder="Search products..."
+                          value={productSearch}
+                          onChange={(e) => setProductSearch(e.target.value)}
+                          className="flex-1 border-0 bg-transparent py-2 px-0 text-xs font-primary text-[var(--text-primary)] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Selected products */}
+                    {form.productIds.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {form.productIds.map((pid) => {
+                          const prod = allProducts.find((p) => p.id === pid);
+                          return (
+                            <span
+                              key={pid}
+                              className="inline-flex items-center gap-0.5 py-0.5 px-1.5 rounded-full bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)] text-[11px] font-medium border border-[rgba(163,177,138,0.25)]"
+                            >
+                              {prod?.images?.[0] && (
+                                <div className="relative w-3.5 h-4.5 shrink-0">
+                                  <Image
+                                    src={prod.images[0]}
+                                    alt=""
+                                    fill
+                                    className="object-cover rounded-xs"
+                                    sizes="14px"
+                                  />
+                                </div>
+                              )}
+                              <span className="text-[11px] max-w-24 overflow-hidden text-ellipsis whitespace-nowrap">
+                                {prod?.name ?? pid}
+                              </span>
+                              <button
+                                type="button"
+                                className="inline-flex items-center justify-center w-3.5 h-3.5 border-0 bg-transparent cursor-pointer text-[var(--accent-sage)]/60 p-0 rounded-full shrink-0"
+                                onClick={() =>
+                                  setForm((p) => ({
+                                    ...p,
+                                    productIds: p.productIds.filter((id) => id !== pid),
+                                  }))
+                                }
+                              >
+                                <X size={9} />
+                              </button>
                             </span>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Available products */}
+                    <div className="max-h-50 overflow-auto border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-secondary)]">
+                      {filteredProducts.length === 0 ? (
+                        <p className="p-4 text-xs text-[var(--text-muted)] text-center">
+                          No products found.
+                        </p>
+                      ) : (
+                        filteredProducts.slice(0, 50).map((p) => {
+                          const selected = form.productIds.includes(p.id);
+                          return (
                             <button
+                              key={p.id}
                               type="button"
-                              className="inline-flex items-center justify-center w-3.5 h-3.5 border-0 bg-transparent cursor-pointer text-[var(--accent-sage)]/60 p-0 rounded-full shrink-0"
+                              className={`flex items-center gap-3 py-2 px-3 w-full border-0 border-b border-[var(--border-subtle)] cursor-pointer transition-colors text-left ${
+                                selected
+                                  ? "bg-[var(--accent-sage)] text-white"
+                                  : "bg-transparent hover:bg-[var(--bg-elevated)]"
+                              }`}
                               onClick={() =>
-                                setForm((p) => ({
-                                  ...p,
-                                  productIds: p.productIds.filter((id) => id !== pid),
+                                setForm((prev) => ({
+                                  ...prev,
+                                  productIds: selected
+                                    ? prev.productIds.filter((id) => id !== p.id)
+                                    : [...prev.productIds, p.id],
                                 }))
                               }
                             >
-                              <X size={9} />
+                              {p.images?.[0] ? (
+                                <div className="relative w-7 h-9 shrink-0">
+                                  <Image
+                                    src={p.images[0]}
+                                    alt=""
+                                    fill
+                                    className="object-cover rounded-sm"
+                                    sizes="28px"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-7 h-9 bg-[var(--bg-elevated)] rounded-sm flex items-center justify-center shrink-0">
+                                  <ImageIcon size={10} className="text-[var(--text-disabled)]" />
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <div
+                                  className={`text-xs font-medium overflow-hidden text-ellipsis whitespace-nowrap ${
+                                    selected ? "text-white" : "text-[var(--text-primary)]"
+                                  }`}
+                                >
+                                  {p.name}
+                                </div>
+                                <div
+                                  className={`text-[10px] ${
+                                    selected ? "text-white/70" : "text-[var(--text-muted)]"
+                                  }`}
+                                >
+                                  {p.category?.slug ?? "—"} — ${Number(p.price).toFixed(2)}
+                                </div>
+                              </div>
+                              {selected && (
+                                <span className="text-xs font-semibold text-white shrink-0">✓</span>
+                              )}
                             </button>
-                          </span>
-                        );
-                      })}
+                          );
+                        })
+                      )}
                     </div>
-                  )}
-
-                  {/* Available products */}
-                  <div className="max-h-50 overflow-auto border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-secondary)]">
-                    {filteredProducts.length === 0 ? (
-                      <p className="p-4 text-xs text-[var(--text-muted)] text-center">
-                        No products found.
-                      </p>
-                    ) : (
-                      filteredProducts.slice(0, 50).map((p) => {
-                        const selected = form.productIds.includes(p.id);
-                        return (
-                          <button
-                            key={p.id}
-                            type="button"
-                            className={`flex items-center gap-3 py-2 px-3 w-full border-0 border-b border-[var(--border-subtle)] cursor-pointer transition-colors text-left ${
-                              selected
-                                ? "bg-[var(--accent-sage)] text-white"
-                                : "bg-transparent hover:bg-[var(--bg-elevated)]"
-                            }`}
-                            onClick={() =>
-                              setForm((prev) => ({
-                                ...prev,
-                                productIds: selected
-                                  ? prev.productIds.filter((id) => id !== p.id)
-                                  : [...prev.productIds, p.id],
-                              }))
-                            }
-                          >
-                            {p.images?.[0] ? (
-                              <div className="relative w-7 h-9 shrink-0">
-                                <Image
-                                  src={p.images[0]}
-                                  alt=""
-                                  fill
-                                  className="object-cover rounded-sm"
-                                  sizes="28px"
-                                />
-                              </div>
-                            ) : (
-                              <div className="w-7 h-9 bg-[var(--bg-elevated)] rounded-sm flex items-center justify-center shrink-0">
-                                <ImageIcon size={10} className="text-[var(--text-disabled)]" />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <div
-                                className={`text-xs font-medium overflow-hidden text-ellipsis whitespace-nowrap ${
-                                  selected ? "text-white" : "text-[var(--text-primary)]"
-                                }`}
-                              >
-                                {p.name}
-                              </div>
-                              <div
-                                className={`text-[10px] ${
-                                  selected ? "text-white/70" : "text-[var(--text-muted)]"
-                                }`}
-                              >
-                                {p.category?.slug ?? "—"} — ${Number(p.price).toFixed(2)}
-                              </div>
-                            </div>
-                            {selected && (
-                              <span className="text-xs font-semibold text-white shrink-0">✓</span>
-                            )}
-                          </button>
-                        );
-                      })
-                    )}
-                  </div>
-                </FormField>
-              </FormSection>
-            )}
+                  </FormField>
+                </FormSection>
+              )}
+            </ModalBody>
 
             <FormActions
               onCancel={closeModal}
@@ -482,7 +482,7 @@ export default function CollectionsContent() {
               submitLabel={editingId ? "Update Collection" : "Create Collection"}
             />
           </form>
-        </FormModalShell>
+        </ModalShell>
       )}
     </div>
   );

@@ -113,7 +113,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
         </div>
       }
     >
-      <div className="flex min-h-screen bg-[var(--bg-primary)]">
+      <div className="flex h-screen overflow-hidden bg-[var(--bg-primary)]">
         {/* Sidebar — sticky, independent scroll */}
         <aside className="w-[240px] min-w-[240px] bg-[var(--color-obsidian)] text-[var(--text-on-dark)] flex flex-col p-[var(--space-6)] gap-[var(--space-8)] fixed top-0 left-0 h-screen overflow-y-auto z-20">
           <div className="flex items-center justify-between">
@@ -203,8 +203,8 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
         </aside>
 
         {/* Main */}
-        <main className="flex-1 flex flex-col min-w-0 min-h-screen ml-[240px]">
-          <div className="flex items-center gap-[var(--space-4)] py-[var(--space-4)] px-[var(--space-8)] border-b border-[var(--border-subtle)] bg-[var(--bg-primary)] sticky top-0 z-10">
+        <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden ml-[240px]">
+          <div className="shrink-0 flex items-center gap-[var(--space-4)] py-[var(--space-4)] px-[var(--space-8)] border-b border-[var(--border-subtle)] bg-[var(--bg-primary)]">
             <button
               className="hidden bg-transparent border-none text-[var(--text-primary)] cursor-pointer p-1"
               aria-label="Menu"
@@ -234,7 +234,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
                 })}
             </div>
           </div>
-          <div className="p-[var(--space-8)] flex-1">{children}</div>
+          <div className="p-[var(--space-8)] flex-1 min-h-0 overflow-y-auto">{children}</div>
         </main>
       </div>
     </AdminGuard>

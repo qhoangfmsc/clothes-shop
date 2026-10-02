@@ -27,7 +27,9 @@ const NAV_LINKS = [
 ] as const;
 
 /* ── Social links ── */
-const SOCIALS = [{ label: "Instagram", abbr: "IG", href: "#" }] as const;
+const SOCIALS = [
+  { label: "Instagram", abbr: "IG", href: "https://www.instagram.com/qhoangfmsc/" },
+] as const;
 
 const ACCOUNT_LINKS = [
   { label: "My Account", href: "/account", icon: User },
@@ -786,147 +788,147 @@ export default function HamburgerMenu() {
               {/* Right panel — Featured banner (hidden on mobile, visible on sm+).
                   Doesn't render at all when no NAV_MENU_BANNERS are configured. */}
               {featuredBanners.length > 0 && (
-              <div
-                className="drawer-featured-panel"
-                style={{
-                  display: "none",
-                  flexDirection: "column",
-                  borderLeft: "1px solid rgba(255, 255, 255, 0.06)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={featuredIdx}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.6, ease: [...ease] }}
-                    style={{
-                      flex: 1,
-                      position: "relative",
-                    }}
-                  >
-                    <ResponsiveBannerImage
-                      banner={currentBanner}
-                      alt={currentBanner.title ?? ""}
-                      fill
-                      sizes="400px"
+                <div
+                  className="drawer-featured-panel"
+                  style={{
+                    display: "none",
+                    flexDirection: "column",
+                    borderLeft: "1px solid rgba(255, 255, 255, 0.06)",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={featuredIdx}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.6, ease: [...ease] }}
                       style={{
-                        objectFit: "cover",
-                      }}
-                    />
-
-                    {/* Gradient overlay + info */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        padding: "80px 24px 24px",
-                        background:
-                          "linear-gradient(to top, rgba(10, 10, 8, 0.85) 0%, transparent 100%)",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 6,
+                        flex: 1,
+                        position: "relative",
                       }}
                     >
-                      <span
+                      <ResponsiveBannerImage
+                        banner={currentBanner}
+                        alt={currentBanner.title ?? ""}
+                        fill
+                        sizes="400px"
                         style={{
-                          color: "var(--color-soft-gold)",
-                          fontSize: "var(--text-xs)",
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                          fontFamily: "var(--font-primary)",
+                          objectFit: "cover",
+                        }}
+                      />
+
+                      {/* Gradient overlay + info */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          padding: "80px 24px 24px",
+                          background:
+                            "linear-gradient(to top, rgba(10, 10, 8, 0.85) 0%, transparent 100%)",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 6,
                         }}
                       >
-                        Featured
-                      </span>
-                      {currentBanner.title && (
                         <span
                           style={{
-                            color: "white",
-                            fontSize: "var(--text-lg)",
-                            letterSpacing: "-0.04em",
-                            fontFamily: "var(--font-display)",
-                            lineHeight: "100%",
-                          }}
-                        >
-                          {currentBanner.title}
-                        </span>
-                      )}
-                      {currentBanner.subtitle && (
-                        <span
-                          style={{
-                            color: "rgba(255, 255, 255, 0.5)",
-                            fontSize: "var(--text-sm)",
-                            letterSpacing: "-0.02em",
+                            color: "var(--color-soft-gold)",
+                            fontSize: "var(--text-xs)",
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
                             fontFamily: "var(--font-primary)",
                           }}
                         >
-                          {currentBanner.subtitle}
+                          Featured
                         </span>
-                      )}
-                      <Link
-                        href={currentBanner.ctaHref ?? "/shop"}
-                        onClick={close}
-                        className="drawer-featured-cta"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 6,
-                          color: "var(--color-champagne-gold)",
-                          fontSize: "var(--text-xs)",
-                          letterSpacing: "0.08em",
-                          textTransform: "uppercase",
-                          textDecoration: "none",
-                          fontFamily: "var(--font-primary)",
-                          marginTop: 8,
-                          transition: "opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
-                        }}
-                      >
-                        {currentBanner.ctaLabel ?? "Discover"}
-                        <ArrowRight size={12} />
-                      </Link>
-
-                      {/* Image carousel dots — only when there's more than one banner */}
-                      {featuredBanners.length > 1 && (
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: 6,
-                          marginTop: 12,
-                        }}
-                      >
-                        {featuredBanners.map((_, dotIdx) => (
-                          <button
-                            key={dotIdx}
-                            onClick={() => setFeaturedIdx(dotIdx)}
-                            aria-label={`Show featured ${dotIdx + 1}`}
+                        {currentBanner.title && (
+                          <span
                             style={{
-                              width: dotIdx === featuredIdx ? 20 : 6,
-                              height: 6,
-                              borderRadius: 3,
-                              background:
-                                dotIdx === featuredIdx
-                                  ? "var(--color-champagne-gold)"
-                                  : "rgba(255, 255, 255, 0.3)",
-                              border: "none",
-                              cursor: "pointer",
-                              padding: 0,
-                              transition:
-                                "width 300ms cubic-bezier(0.25, 0.1, 0.25, 1), background 300ms cubic-bezier(0.25, 0.1, 0.25, 1)",
+                              color: "white",
+                              fontSize: "var(--text-lg)",
+                              letterSpacing: "-0.04em",
+                              fontFamily: "var(--font-display)",
+                              lineHeight: "100%",
                             }}
-                          />
-                        ))}
+                          >
+                            {currentBanner.title}
+                          </span>
+                        )}
+                        {currentBanner.subtitle && (
+                          <span
+                            style={{
+                              color: "rgba(255, 255, 255, 0.5)",
+                              fontSize: "var(--text-sm)",
+                              letterSpacing: "-0.02em",
+                              fontFamily: "var(--font-primary)",
+                            }}
+                          >
+                            {currentBanner.subtitle}
+                          </span>
+                        )}
+                        <Link
+                          href={currentBanner.ctaHref ?? "/shop"}
+                          onClick={close}
+                          className="drawer-featured-cta"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            color: "var(--color-champagne-gold)",
+                            fontSize: "var(--text-xs)",
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            textDecoration: "none",
+                            fontFamily: "var(--font-primary)",
+                            marginTop: 8,
+                            transition: "opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
+                          }}
+                        >
+                          {currentBanner.ctaLabel ?? "Discover"}
+                          <ArrowRight size={12} />
+                        </Link>
+
+                        {/* Image carousel dots — only when there's more than one banner */}
+                        {featuredBanners.length > 1 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: 6,
+                              marginTop: 12,
+                            }}
+                          >
+                            {featuredBanners.map((_, dotIdx) => (
+                              <button
+                                key={dotIdx}
+                                onClick={() => setFeaturedIdx(dotIdx)}
+                                aria-label={`Show featured ${dotIdx + 1}`}
+                                style={{
+                                  width: dotIdx === featuredIdx ? 20 : 6,
+                                  height: 6,
+                                  borderRadius: 3,
+                                  background:
+                                    dotIdx === featuredIdx
+                                      ? "var(--color-champagne-gold)"
+                                      : "rgba(255, 255, 255, 0.3)",
+                                  border: "none",
+                                  cursor: "pointer",
+                                  padding: 0,
+                                  transition:
+                                    "width 300ms cubic-bezier(0.25, 0.1, 0.25, 1), background 300ms cubic-bezier(0.25, 0.1, 0.25, 1)",
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      )}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               )}
             </div>
 

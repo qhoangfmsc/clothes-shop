@@ -32,9 +32,14 @@ export function InfoHint({ text }: { text: string }) {
   );
 }
 
-/* ═══════════════════════════════ Modal shell ══════════════════════════════ */
+/* ═══════════════════════════════ Modal shell ══════════════════════════════
+   The one modal frame every popup (admin or otherwise) should be built from:
+   header and footer are pinned, only the middle content scrolls. Compose it
+   as <ModalShell><form>...<ModalBody>fields</ModalBody><Footer /></form></ModalShell> —
+   the shell never scrolls itself, so a footer rendered as a sibling of
+   ModalBody (even several components below) always stays visible. */
 
-export function FormModalShell({
+export function ModalShell({
   title,
   onClose,
   maxWidthClass = "max-w-160",
@@ -51,10 +56,10 @@ export function FormModalShell({
       onClick={onClose}
     >
       <div
-        className={`bg-[var(--bg-primary)] rounded-2xl w-full ${maxWidthClass} max-h-[85vh] overflow-auto shadow-xl flex flex-col`}
+        className={`bg-[var(--bg-primary)] rounded-2xl w-full ${maxWidthClass} max-h-[85vh] overflow-hidden shadow-xl flex flex-col`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-1 shrink-0">
+        <div className="shrink-0 flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)]">
           <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
             {title}
           </h2>
@@ -66,8 +71,27 @@ export function FormModalShell({
             <X size={18} />
           </button>
         </div>
-        {children}
+        {/* Everything below the header — tabs, the scrollable body, and the
+           footer — lives in this bounded flex column so only ModalBody
+           scrolls while its siblings (tabs above, footer below) stay put. */}
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">{children}</div>
       </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════ Scrollable body ════════════════════════ */
+
+export function ModalBody({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`flex-1 min-h-0 overflow-y-auto p-6 flex flex-col gap-6 ${className}`}>
+      {children}
     </div>
   );
 }
@@ -160,7 +184,7 @@ export function FormActions({
   savingLabel?: string;
 }) {
   return (
-    <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border-subtle)]">
+    <div className="shrink-0 flex justify-end gap-3 py-4 px-6 border-t border-[var(--border-subtle)]">
       <button
         type="button"
         className="py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"

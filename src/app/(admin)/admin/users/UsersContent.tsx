@@ -206,9 +206,9 @@ export default function UsersContent() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 h-full min-h-0">
       {/* ── Header ── */}
-      <div>
+      <div className="shrink-0">
         <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Users</h1>
         <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
           {total} user{total !== 1 ? "s" : ""} total
@@ -285,7 +285,9 @@ export default function UsersContent() {
               </div>
 
               {ordersLoading ? (
-                <p className="text-xs text-[var(--text-muted)] py-8 text-center">Loading orders...</p>
+                <p className="text-xs text-[var(--text-muted)] py-8 text-center">
+                  Loading orders...
+                </p>
               ) : userOrders.length === 0 ? (
                 <div className="py-10 text-center">
                   <Package size={28} className="text-[var(--text-disabled)] mx-auto mb-2" />
@@ -305,7 +307,8 @@ export default function UsersContent() {
                           #{order.id}
                         </code>
                         <span className="text-[11px] text-[var(--text-muted)] shrink-0">
-                          {order.items?.length ?? 0} item{(order.items?.length ?? 0) !== 1 ? "s" : ""}
+                          {order.items?.length ?? 0} item
+                          {(order.items?.length ?? 0) !== 1 ? "s" : ""}
                         </span>
                         <span className="text-[11px] text-[var(--text-muted)] shrink-0 hidden sm:block">
                           {new Date(order.createdAt).toLocaleDateString()}
@@ -341,7 +344,9 @@ export default function UsersContent() {
                       </span>
                       <button
                         className="flex items-center justify-center w-7 h-7 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
-                        disabled={ordersPage >= Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) || ordersLoading}
+                        disabled={
+                          ordersPage >= Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) || ordersLoading
+                        }
                         onClick={() => {
                           const next = ordersPage + 1;
                           setOrdersPage(next);
@@ -354,7 +359,6 @@ export default function UsersContent() {
                   )}
                 </>
               )}
-
             </div>
           </div>
         </div>

@@ -5,7 +5,8 @@ import { Plus, X, ImageIcon, ChevronDown, ChevronUp, Check } from "lucide-react"
 import { useToast } from "@/src/app/_components/Toast";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
 import {
-  FormModalShell,
+  ModalShell,
+  ModalBody,
   FormSection,
   FormField,
   FormActions,
@@ -242,179 +243,185 @@ export default function SiteConfigContent() {
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}
       {editingRow && (
-        <FormModalShell
+        <ModalShell
           title={SITE_CONFIG_KEY_LABELS[editingRow.key] ?? editingRow.key}
           onClose={closeModal}
           maxWidthClass="max-w-180"
         >
-          <form onSubmit={handleSave} className="p-6 flex flex-col gap-5 overflow-auto">
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary flex items-center gap-1.5">
-                <ImageIcon size={14} /> Banners ({bannerItems.length})
-              </span>
-              <button
-                type="button"
-                className="flex items-center gap-1 py-1 px-2.5 bg-transparent border border-[var(--border-subtle)] rounded-sm text-xs font-primary text-[var(--text-secondary)] cursor-pointer"
-                onClick={addBanner}
-              >
-                <Plus size={12} /> Add banner
-              </button>
-            </div>
-
-            {bannerItems.length === 0 && (
-              <p className="text-xs text-[var(--text-muted)] py-3">
-                No banners yet. Click &quot;Add banner&quot; to start — leave it empty and the page
-                keeps its built-in default.
-              </p>
-            )}
-
-            {bannerItems.map((b, i) => {
-              const isCollapsed = collapsedBanners.has(i);
-              return (
-                <div
-                  key={i}
-                  className="relative border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col gap-4"
+          <form onSubmit={handleSave} className="flex-1 min-h-0 flex flex-col">
+            <ModalBody>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary flex items-center gap-1.5">
+                  <ImageIcon size={14} /> Banners ({bannerItems.length})
+                </span>
+                <button
+                  type="button"
+                  className="flex items-center gap-1 py-1 px-2.5 bg-transparent border border-[var(--border-subtle)] rounded-sm text-xs font-primary text-[var(--text-secondary)] cursor-pointer"
+                  onClick={addBanner}
                 >
-                  <button
-                    type="button"
-                    className="absolute top-3 right-3 flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)]"
-                    onClick={() => rmBanner(i)}
-                  >
-                    <X size={13} />
-                  </button>
+                  <Plus size={12} /> Add banner
+                </button>
+              </div>
 
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 bg-transparent border-0 p-0 pr-8 cursor-pointer text-left"
-                    onClick={() => toggleBannerCollapse(i)}
+              {bannerItems.length === 0 && (
+                <p className="text-xs text-[var(--text-muted)] py-3">
+                  No banners yet. Click &quot;Add banner&quot; to start — leave it empty and the
+                  page keeps its built-in default.
+                </p>
+              )}
+
+              {bannerItems.map((b, i) => {
+                const isCollapsed = collapsedBanners.has(i);
+                return (
+                  <div
+                    key={i}
+                    className="relative border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col gap-4"
                   >
-                    {isCollapsed ? (
-                      <ChevronDown size={14} className="text-[var(--text-muted)] shrink-0" />
-                    ) : (
-                      <ChevronUp size={14} className="text-[var(--text-muted)] shrink-0" />
-                    )}
-                    <span className="text-xs font-semibold text-[var(--text-muted)] font-primary shrink-0">
-                      Banner {i + 1}
-                    </span>
-                    {isCollapsed && (
+                    <button
+                      type="button"
+                      className="absolute top-3 right-3 flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)]"
+                      onClick={() => rmBanner(i)}
+                    >
+                      <X size={13} />
+                    </button>
+
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 bg-transparent border-0 p-0 pr-8 cursor-pointer text-left"
+                      onClick={() => toggleBannerCollapse(i)}
+                    >
+                      {isCollapsed ? (
+                        <ChevronDown size={14} className="text-[var(--text-muted)] shrink-0" />
+                      ) : (
+                        <ChevronUp size={14} className="text-[var(--text-muted)] shrink-0" />
+                      )}
+                      <span className="text-xs font-semibold text-[var(--text-muted)] font-primary shrink-0">
+                        Banner {i + 1}
+                      </span>
+                      {isCollapsed && (
+                        <>
+                          <span className="text-[var(--border-light)] shrink-0">|</span>
+                          <span className="flex items-center gap-3 overflow-hidden">
+                            {[
+                              { label: "Desktop", has: !!b.image?.trim() },
+                              { label: "Tablet", has: !!b.responsiveImages?.tablet?.trim() },
+                              { label: "Mobile", has: !!b.responsiveImages?.mobile?.trim() },
+                            ].map(({ label, has }) => (
+                              <span
+                                key={label}
+                                className={`flex items-center gap-1 text-xs font-primary whitespace-nowrap ${
+                                  has
+                                    ? "text-[var(--text-secondary)]"
+                                    : "text-[var(--text-disabled)] opacity-40"
+                                }`}
+                              >
+                                {has ? (
+                                  <Check size={12} className="text-[var(--color-sage)] shrink-0" />
+                                ) : (
+                                  <span className="w-3 shrink-0" />
+                                )}
+                                {label}
+                              </span>
+                            ))}
+                          </span>
+                        </>
+                      )}
+                    </button>
+
+                    {!isCollapsed && (
                       <>
-                        <span className="text-[var(--border-light)] shrink-0">|</span>
-                        <span className="flex items-center gap-3 overflow-hidden">
-                          {[
-                            { label: "Desktop", has: !!b.image?.trim() },
-                            { label: "Tablet", has: !!b.responsiveImages?.tablet?.trim() },
-                            { label: "Mobile", has: !!b.responsiveImages?.mobile?.trim() },
-                          ].map(({ label, has }) => (
-                            <span
-                              key={label}
-                              className={`flex items-center gap-1 text-xs font-primary whitespace-nowrap ${
-                                has
-                                  ? "text-[var(--text-secondary)]"
-                                  : "text-[var(--text-disabled)] opacity-40"
-                              }`}
-                            >
-                              {has ? (
-                                <Check size={12} className="text-[var(--color-sage)] shrink-0" />
-                              ) : (
-                                <span className="w-3 shrink-0" />
-                              )}
-                              {label}
-                            </span>
-                          ))}
-                        </span>
+                        <FormSection title="Banner images">
+                          <FormField
+                            label="Desktop"
+                            required
+                            info="Laptop / PC, ≥ 1024px — also the fallback for tablet & mobile"
+                          >
+                            <input
+                              className={inputClass}
+                              value={b.image}
+                              onChange={(e) => updBanner(i, "image", e.target.value)}
+                              placeholder="https://... or /images/..."
+                              required
+                            />
+                          </FormField>
+
+                          <FormField
+                            label="Tablet"
+                            info="iPad / tablets, ≥ 640px — optional, falls back to Desktop"
+                          >
+                            <input
+                              className={inputClass}
+                              value={b.responsiveImages?.tablet ?? ""}
+                              onChange={(e) =>
+                                updBannerResponsiveImage(i, "tablet", e.target.value)
+                              }
+                              placeholder="https://... or /images/..."
+                            />
+                          </FormField>
+
+                          <FormField
+                            label="Mobile"
+                            info="Phones, < 640px — optional, falls back to Tablet, then Desktop"
+                          >
+                            <input
+                              className={inputClass}
+                              value={b.responsiveImages?.mobile ?? ""}
+                              onChange={(e) =>
+                                updBannerResponsiveImage(i, "mobile", e.target.value)
+                              }
+                              placeholder="https://... or /images/..."
+                            />
+                          </FormField>
+                        </FormSection>
+
+                        <FormSection title="Content">
+                          <FormField label="Label" info="Small label above the title (optional)">
+                            <input
+                              className={inputClass}
+                              value={b.label ?? ""}
+                              onChange={(e) => updBanner(i, "label", e.target.value)}
+                            />
+                          </FormField>
+                          <FormField label="Title" info="Heading (optional)">
+                            <input
+                              className={inputClass}
+                              value={b.title ?? ""}
+                              onChange={(e) => updBanner(i, "title", e.target.value)}
+                            />
+                          </FormField>
+                          <FormField label="Subtitle" info="Short description (optional)">
+                            <input
+                              className={inputClass}
+                              value={b.subtitle ?? ""}
+                              onChange={(e) => updBanner(i, "subtitle", e.target.value)}
+                            />
+                          </FormField>
+                          <FormField label="CTA Label" info='e.g. "Shop Now"'>
+                            <input
+                              className={inputClass}
+                              value={b.ctaLabel ?? ""}
+                              onChange={(e) => updBanner(i, "ctaLabel", e.target.value)}
+                            />
+                          </FormField>
+                          <FormField label="CTA Href" info="e.g. /shop">
+                            <input
+                              className={inputClass}
+                              value={b.ctaHref ?? ""}
+                              onChange={(e) => updBanner(i, "ctaHref", e.target.value)}
+                              placeholder="/shop"
+                            />
+                          </FormField>
+                        </FormSection>
                       </>
                     )}
-                  </button>
-
-                  {!isCollapsed && (
-                    <>
-                      <FormSection title="Banner images">
-                        <FormField
-                          label="Desktop"
-                          required
-                          info="Laptop / PC, ≥ 1024px — also the fallback for tablet & mobile"
-                        >
-                          <input
-                            className={inputClass}
-                            value={b.image}
-                            onChange={(e) => updBanner(i, "image", e.target.value)}
-                            placeholder="https://... or /images/..."
-                            required
-                          />
-                        </FormField>
-
-                        <FormField
-                          label="Tablet"
-                          info="iPad / tablets, ≥ 640px — optional, falls back to Desktop"
-                        >
-                          <input
-                            className={inputClass}
-                            value={b.responsiveImages?.tablet ?? ""}
-                            onChange={(e) => updBannerResponsiveImage(i, "tablet", e.target.value)}
-                            placeholder="https://... or /images/..."
-                          />
-                        </FormField>
-
-                        <FormField
-                          label="Mobile"
-                          info="Phones, < 640px — optional, falls back to Tablet, then Desktop"
-                        >
-                          <input
-                            className={inputClass}
-                            value={b.responsiveImages?.mobile ?? ""}
-                            onChange={(e) => updBannerResponsiveImage(i, "mobile", e.target.value)}
-                            placeholder="https://... or /images/..."
-                          />
-                        </FormField>
-                      </FormSection>
-
-                      <FormSection title="Content">
-                        <FormField label="Label" info="Small label above the title (optional)">
-                          <input
-                            className={inputClass}
-                            value={b.label ?? ""}
-                            onChange={(e) => updBanner(i, "label", e.target.value)}
-                          />
-                        </FormField>
-                        <FormField label="Title" info="Heading (optional)">
-                          <input
-                            className={inputClass}
-                            value={b.title ?? ""}
-                            onChange={(e) => updBanner(i, "title", e.target.value)}
-                          />
-                        </FormField>
-                        <FormField label="Subtitle" info="Short description (optional)">
-                          <input
-                            className={inputClass}
-                            value={b.subtitle ?? ""}
-                            onChange={(e) => updBanner(i, "subtitle", e.target.value)}
-                          />
-                        </FormField>
-                        <FormField label="CTA Label" info='e.g. "Shop Now"'>
-                          <input
-                            className={inputClass}
-                            value={b.ctaLabel ?? ""}
-                            onChange={(e) => updBanner(i, "ctaLabel", e.target.value)}
-                          />
-                        </FormField>
-                        <FormField label="CTA Href" info="e.g. /shop">
-                          <input
-                            className={inputClass}
-                            value={b.ctaHref ?? ""}
-                            onChange={(e) => updBanner(i, "ctaHref", e.target.value)}
-                            placeholder="/shop"
-                          />
-                        </FormField>
-                      </FormSection>
-                    </>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
+            </ModalBody>
 
             <FormActions onCancel={closeModal} isSaving={isUpdating} submitLabel="Save" />
           </form>
-        </FormModalShell>
+        </ModalShell>
       )}
     </div>
   );

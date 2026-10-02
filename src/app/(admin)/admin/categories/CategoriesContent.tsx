@@ -11,7 +11,8 @@ import {
   type DataTableRef,
 } from "@/src/app/_components/DataTable";
 import {
-  FormModalShell,
+  ModalShell,
+  ModalBody,
   FormTabs,
   FormSection,
   FormField,
@@ -244,9 +245,9 @@ export default function CategoriesContent() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 h-full min-h-0">
       {/* ── Header ── */}
-      <div className="flex justify-between items-start">
+      <div className="shrink-0 flex justify-between items-start">
         <div>
           <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">
             Categories
@@ -276,103 +277,105 @@ export default function CategoriesContent() {
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
-        <FormModalShell title={editingId ? "Edit Category" : "New Category"} onClose={closeModal}>
+        <ModalShell title={editingId ? "Edit Category" : "New Category"} onClose={closeModal}>
           <FormTabs tabs={CATEGORY_TABS} active={activeTab} onChange={setActiveTab} />
 
-          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-auto">
-            {activeTab === "info" && (
-              <FormSection>
-                <FormField label="Title" required>
-                  <input
-                    className={inputClass}
-                    value={form.title}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setForm((p) => ({ ...p, title: v, slug: slugify(v) }));
-                    }}
-                    placeholder="e.g. Tops"
-                    required
-                  />
-                </FormField>
-                <FormField label="Description">
-                  <textarea
-                    className={`${inputClass} resize-y`}
-                    rows={3}
-                    value={form.description}
-                    onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                    placeholder="Category description..."
-                  />
-                </FormField>
-                <FormField
-                  label="Hero Image URL"
-                  info="Shown on the Shop page's category grid. Leave empty to show a plain background instead."
-                >
-                  <input
-                    className={inputClass}
-                    value={form.heroImage}
-                    onChange={(e) => setForm((p) => ({ ...p, heroImage: e.target.value }))}
-                    placeholder="https://... or /images/..."
-                  />
-                </FormField>
-              </FormSection>
-            )}
-
-            {activeTab === "subcategories" && (
-              <FormSection>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary flex items-center gap-1.5">
-                    <FolderTree size={14} /> Subcategories ({form.subcategories.length})
-                  </span>
-                  <button
-                    type="button"
-                    className="flex items-center gap-1 py-1 px-2.5 bg-transparent border border-[var(--border-subtle)] rounded-sm text-xs font-primary text-[var(--text-secondary)] cursor-pointer"
-                    onClick={addSub}
-                  >
-                    <Plus size={12} /> Add
-                  </button>
-                </div>
-                {form.subcategories.length === 0 && (
-                  <p className="text-xs text-[var(--text-muted)] py-3">
-                    No subcategories yet. Click &quot;Add&quot; to create one.
-                  </p>
-                )}
-                {form.subcategories.map((sub, i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col gap-2 p-3 border border-[var(--border-subtle)] rounded-lg"
-                  >
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em]">
-                        Subcategory {i + 1}
-                      </span>
-                      <button
-                        type="button"
-                        className="flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)] shrink-0"
-                        onClick={() => rmSub(i)}
-                      >
-                        <X size={12} />
-                      </button>
-                    </div>
+          <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col">
+            <ModalBody>
+              {activeTab === "info" && (
+                <FormSection>
+                  <FormField label="Title" required>
                     <input
                       className={inputClass}
-                      placeholder="Label"
-                      value={sub.label}
+                      value={form.title}
                       onChange={(e) => {
                         const v = e.target.value;
-                        updSub(i, "label", v);
-                        updSub(i, "slug", slugify(v));
+                        setForm((p) => ({ ...p, title: v, slug: slugify(v) }));
                       }}
+                      placeholder="e.g. Tops"
+                      required
                     />
+                  </FormField>
+                  <FormField label="Description">
+                    <textarea
+                      className={`${inputClass} resize-y`}
+                      rows={3}
+                      value={form.description}
+                      onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                      placeholder="Category description..."
+                    />
+                  </FormField>
+                  <FormField
+                    label="Hero Image URL"
+                    info="Shown on the Shop page's category grid. Leave empty to show a plain background instead."
+                  >
                     <input
                       className={inputClass}
-                      placeholder="Description"
-                      value={sub.description}
-                      onChange={(e) => updSub(i, "description", e.target.value)}
+                      value={form.heroImage}
+                      onChange={(e) => setForm((p) => ({ ...p, heroImage: e.target.value }))}
+                      placeholder="https://... or /images/..."
                     />
+                  </FormField>
+                </FormSection>
+              )}
+
+              {activeTab === "subcategories" && (
+                <FormSection>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary flex items-center gap-1.5">
+                      <FolderTree size={14} /> Subcategories ({form.subcategories.length})
+                    </span>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 py-1 px-2.5 bg-transparent border border-[var(--border-subtle)] rounded-sm text-xs font-primary text-[var(--text-secondary)] cursor-pointer"
+                      onClick={addSub}
+                    >
+                      <Plus size={12} /> Add
+                    </button>
                   </div>
-                ))}
-              </FormSection>
-            )}
+                  {form.subcategories.length === 0 && (
+                    <p className="text-xs text-[var(--text-muted)] py-3">
+                      No subcategories yet. Click &quot;Add&quot; to create one.
+                    </p>
+                  )}
+                  {form.subcategories.map((sub, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col gap-2 p-3 border border-[var(--border-subtle)] rounded-lg"
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em]">
+                          Subcategory {i + 1}
+                        </span>
+                        <button
+                          type="button"
+                          className="flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)] shrink-0"
+                          onClick={() => rmSub(i)}
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                      <input
+                        className={inputClass}
+                        placeholder="Label"
+                        value={sub.label}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          updSub(i, "label", v);
+                          updSub(i, "slug", slugify(v));
+                        }}
+                      />
+                      <input
+                        className={inputClass}
+                        placeholder="Description"
+                        value={sub.description}
+                        onChange={(e) => updSub(i, "description", e.target.value)}
+                      />
+                    </div>
+                  ))}
+                </FormSection>
+              )}
+            </ModalBody>
 
             <FormActions
               onCancel={closeModal}
@@ -380,7 +383,7 @@ export default function CategoriesContent() {
               submitLabel={editingId ? "Update Category" : "Create Category"}
             />
           </form>
-        </FormModalShell>
+        </ModalShell>
       )}
     </div>
   );

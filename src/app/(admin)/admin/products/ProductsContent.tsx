@@ -13,7 +13,8 @@ import {
   type DataTableRef,
 } from "@/src/app/_components/DataTable";
 import {
-  FormModalShell,
+  ModalShell,
+  ModalBody,
   FormTabs,
   FormSection,
   FormField,
@@ -361,9 +362,9 @@ export default function ProductsContent() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 h-full min-h-0">
       {/* ── Header ── */}
-      <div className="flex justify-between items-start">
+      <div className="shrink-0 flex justify-between items-start">
         <div>
           <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Products</h1>
           <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
@@ -411,347 +412,357 @@ export default function ProductsContent() {
 
       {/* ═══════════════════════════ MODAL FORM ═══════════════════════════ */}
       {showModal && (
-        <FormModalShell
+        <ModalShell
           title={editingId ? "Edit Product" : "New Product"}
           onClose={closeModal}
           maxWidthClass="max-w-160"
         >
           <FormTabs tabs={PRODUCT_TABS} active={activeTab} onChange={setActiveTab} />
 
-          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-auto">
-            {/* ── General ── */}
-            {activeTab === "general" && (
-              <>
-                <FormSection title="Basic Info">
-                  <FormField label="Product Name" required>
+          <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col">
+            <ModalBody>
+              {/* ── General ── */}
+              {activeTab === "general" && (
+                <>
+                  <FormSection title="Basic Info">
+                    <FormField label="Product Name" required>
+                      <input
+                        className={inputClass}
+                        value={form.name}
+                        placeholder="e.g. Classic White T-Shirt"
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setForm((p) => ({ ...p, name: v, slug: slugify(v) }));
+                        }}
+                        required
+                      />
+                    </FormField>
+                    <FormField label="Description">
+                      <textarea
+                        className={`${inputClass} resize-y`}
+                        rows={3}
+                        value={form.description}
+                        onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                        placeholder="Product description..."
+                      />
+                    </FormField>
+                  </FormSection>
+
+                  <FormSection title="Pricing">
+                    <FormField label="Price ($)" required>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        className={inputClass}
+                        value={form.price}
+                        onChange={(e) =>
+                          setForm((p) => ({ ...p, price: parseFloat(e.target.value) || 0 }))
+                        }
+                        required
+                      />
+                    </FormField>
+                    <FormField
+                      label="Original Price ($)"
+                      info="Leave empty if there's no discount."
+                    >
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        className={inputClass}
+                        value={form.originalPrice ?? ""}
+                        onChange={(e) =>
+                          setForm((p) => ({
+                            ...p,
+                            originalPrice: e.target.value ? parseFloat(e.target.value) : null,
+                          }))
+                        }
+                      />
+                    </FormField>
+                  </FormSection>
+
+                  <FormSection title="Classification">
+                    <FormField label="Category" required>
+                      <select
+                        className={inputClass}
+                        value={form.categoryId}
+                        onChange={(e) =>
+                          setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: "" }))
+                        }
+                        required
+                      >
+                        <option value="">— Select a category —</option>
+                        {categoryOptions}
+                      </select>
+                    </FormField>
+                    <FormField label="SubCategory">
+                      <select
+                        className={inputClass}
+                        value={form.subcategoryId}
+                        onChange={(e) => setForm((p) => ({ ...p, subcategoryId: e.target.value }))}
+                        disabled={!form.categoryId || subcategoryOptions.length === 0}
+                      >
+                        <option value="">— None —</option>
+                        {subcategorySelectOptions}
+                      </select>
+                    </FormField>
+                    <FormField
+                      label="Status"
+                      info="Disabled products are hidden from the storefront."
+                    >
+                      <select
+                        className={inputClass}
+                        value={form.status}
+                        onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
+                      >
+                        <option value="active">Active</option>
+                        <option value="disabled">Disabled</option>
+                      </select>
+                    </FormField>
+                    <FormField label="Badge">
+                      <select
+                        className={inputClass}
+                        value={form.badge ?? ""}
+                        onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value || null }))}
+                      >
+                        <option value="">None</option>
+                        <option value="new">New</option>
+                        <option value="sale">Sale</option>
+                        <option value="bestseller">Bestseller</option>
+                      </select>
+                    </FormField>
+                  </FormSection>
+                </>
+              )}
+
+              {/* ── Variants & Tags ── */}
+              {activeTab === "variants" && (
+                <FormSection>
+                  <FormField label="Sizes">
+                    <div className="flex flex-col gap-1">
+                      {form.sizes.length > 0 && (
+                        <button
+                          type="button"
+                          className="self-start inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[10px] font-primary text-[var(--text-muted)] cursor-pointer"
+                          onClick={() => setForm((p) => ({ ...p, sizes: [] }))}
+                        >
+                          Clear all ({form.sizes.length})
+                          <X size={10} />
+                        </button>
+                      )}
+                      {SIZE_GROUPS.map((group) => (
+                        <div key={group.label} className="mb-2">
+                          <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
+                            {group.label}
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {group.sizes.map((size) => {
+                              const active = form.sizes.includes(size);
+                              return (
+                                <button
+                                  key={size}
+                                  type="button"
+                                  className={`inline-flex items-center gap-1 py-[5px] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
+                                    active
+                                      ? "bg-[var(--accent-sage)] text-white px-2 font-semibold cursor-default"
+                                      : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
+                                  }`}
+                                  onClick={() =>
+                                    setForm((p) => ({
+                                      ...p,
+                                      sizes: active
+                                        ? p.sizes.filter((s) => s !== size)
+                                        : [...p.sizes, size],
+                                    }))
+                                  }
+                                >
+                                  {size}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                      <input
+                        className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                        placeholder="Type custom size and press Enter"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            const v = (e.target as HTMLInputElement).value.trim().toUpperCase();
+                            if (v && !form.sizes.includes(v)) {
+                              setForm((p) => ({ ...p, sizes: [...p.sizes, v] }));
+                              (e.target as HTMLInputElement).value = "";
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                  </FormField>
+
+                  <FormField label="Colors">
+                    <div className="flex gap-2 mb-2.5 items-end">
+                      <input
+                        className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
+                        placeholder='Color name, e.g. "Midnight Blue"'
+                        value={colorName}
+                        onChange={(e) => setColorName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addColor();
+                          }
+                        }}
+                      />
+                      <input
+                        type="color"
+                        value={colorHex}
+                        onChange={(e) => setColorHex(e.target.value)}
+                        className="w-10 h-9 border border-[var(--border-light)] rounded-sm cursor-pointer p-0.5 bg-none shrink-0"
+                      />
+                      <button
+                        type="button"
+                        className="flex items-center justify-center w-8.5 h-8.5 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--accent-primary)] shrink-0 self-end"
+                        onClick={addColor}
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                    {form.colors.length > 0 ? (
+                      <div className="flex flex-wrap gap-1.5">
+                        {form.colors.map((c, i) => (
+                          <span
+                            key={`${c.name}-${c.hex}`}
+                            className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
+                          >
+                            <span
+                              className="inline-block w-4 h-4 rounded-sm border border-black/15 shrink-0"
+                              style={{ background: c.hex }}
+                            />
+                            <span className="text-xs font-medium">{c.name}</span>
+                            <code className="text-[10px] text-white/70">{c.hex}</code>
+                            <button
+                              type="button"
+                              className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
+                              onClick={() =>
+                                setForm((p) => ({
+                                  ...p,
+                                  colors: p.colors.filter((_, j) => j !== i),
+                                }))
+                              }
+                            >
+                              <X size={10} />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-[var(--text-muted)] italic">
+                        No colors added yet.
+                      </p>
+                    )}
+                  </FormField>
+
+                  <FormField label="Material">
                     <input
                       className={inputClass}
-                      value={form.name}
-                      placeholder="e.g. Classic White T-Shirt"
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        setForm((p) => ({ ...p, name: v, slug: slugify(v) }));
-                      }}
-                      required
+                      value={form.material}
+                      onChange={(e) => setForm((p) => ({ ...p, material: e.target.value }))}
+                      placeholder="e.g. 100% Cotton"
                     />
                   </FormField>
-                  <FormField label="Description">
-                    <textarea
-                      className={`${inputClass} resize-y`}
-                      rows={3}
-                      value={form.description}
-                      onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                      placeholder="Product description..."
+                  <FormField label="Care Instructions">
+                    <input
+                      className={inputClass}
+                      value={form.care}
+                      onChange={(e) => setForm((p) => ({ ...p, care: e.target.value }))}
+                      placeholder="e.g. Machine wash cold"
                     />
+                  </FormField>
+
+                  <FormField label="Tags">
+                    <div className="flex flex-wrap gap-1.5">
+                      {TAG_SUGGESTIONS.filter((t) => !form.tags.includes(t)).map((tag) => (
+                        <button
+                          key={tag}
+                          type="button"
+                          className="inline-flex items-center gap-1 py-[5px] px-2.5 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)] text-[11px] font-primary cursor-pointer border-0 transition-all"
+                          onClick={() => setForm((p) => ({ ...p, tags: [...p.tags, tag] }))}
+                        >
+                          + {tag}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex gap-1.5 mt-2">
+                      <input
+                        className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
+                        placeholder="Type tag and press Enter..."
+                        value={tagInput}
+                        onChange={(e) => setTagInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            const v = tagInput.trim().toLowerCase();
+                            if (v && !form.tags.includes(v)) {
+                              setForm((p) => ({ ...p, tags: [...p.tags, v] }));
+                              setTagInput("");
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                    {form.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {form.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
+                          >
+                            {tag}
+                            <button
+                              type="button"
+                              className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
+                              onClick={() =>
+                                setForm((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }))
+                              }
+                            >
+                              <X size={10} />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </FormField>
                 </FormSection>
+              )}
 
-                <FormSection title="Pricing">
-                  <FormField label="Price ($)" required>
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      className={inputClass}
-                      value={form.price}
-                      onChange={(e) =>
-                        setForm((p) => ({ ...p, price: parseFloat(e.target.value) || 0 }))
-                      }
-                      required
-                    />
-                  </FormField>
-                  <FormField label="Original Price ($)" info="Leave empty if there's no discount.">
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      className={inputClass}
-                      value={form.originalPrice ?? ""}
+              {/* ── Images ── */}
+              {activeTab === "images" && (
+                <FormSection>
+                  <FormField
+                    label="Image URLs"
+                    info="One URL per line. The first one is used as the main thumbnail."
+                  >
+                    <textarea
+                      className={`${inputClass} resize-y`}
+                      rows={6}
+                      value={form.images.join("\n")}
+                      placeholder="one URL per line"
                       onChange={(e) =>
                         setForm((p) => ({
                           ...p,
-                          originalPrice: e.target.value ? parseFloat(e.target.value) : null,
+                          images: e.target.value
+                            .split("\n")
+                            .map((s) => s.trim())
+                            .filter(Boolean),
                         }))
                       }
                     />
                   </FormField>
                 </FormSection>
-
-                <FormSection title="Classification">
-                  <FormField label="Category" required>
-                    <select
-                      className={inputClass}
-                      value={form.categoryId}
-                      onChange={(e) =>
-                        setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: "" }))
-                      }
-                      required
-                    >
-                      <option value="">— Select a category —</option>
-                      {categoryOptions}
-                    </select>
-                  </FormField>
-                  <FormField label="SubCategory">
-                    <select
-                      className={inputClass}
-                      value={form.subcategoryId}
-                      onChange={(e) => setForm((p) => ({ ...p, subcategoryId: e.target.value }))}
-                      disabled={!form.categoryId || subcategoryOptions.length === 0}
-                    >
-                      <option value="">— None —</option>
-                      {subcategorySelectOptions}
-                    </select>
-                  </FormField>
-                  <FormField
-                    label="Status"
-                    info="Disabled products are hidden from the storefront."
-                  >
-                    <select
-                      className={inputClass}
-                      value={form.status}
-                      onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
-                    >
-                      <option value="active">Active</option>
-                      <option value="disabled">Disabled</option>
-                    </select>
-                  </FormField>
-                  <FormField label="Badge">
-                    <select
-                      className={inputClass}
-                      value={form.badge ?? ""}
-                      onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value || null }))}
-                    >
-                      <option value="">None</option>
-                      <option value="new">New</option>
-                      <option value="sale">Sale</option>
-                      <option value="bestseller">Bestseller</option>
-                    </select>
-                  </FormField>
-                </FormSection>
-              </>
-            )}
-
-            {/* ── Variants & Tags ── */}
-            {activeTab === "variants" && (
-              <FormSection>
-                <FormField label="Sizes">
-                  <div className="flex flex-col gap-1">
-                    {form.sizes.length > 0 && (
-                      <button
-                        type="button"
-                        className="self-start inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[10px] font-primary text-[var(--text-muted)] cursor-pointer"
-                        onClick={() => setForm((p) => ({ ...p, sizes: [] }))}
-                      >
-                        Clear all ({form.sizes.length})
-                        <X size={10} />
-                      </button>
-                    )}
-                    {SIZE_GROUPS.map((group) => (
-                      <div key={group.label} className="mb-2">
-                        <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
-                          {group.label}
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {group.sizes.map((size) => {
-                            const active = form.sizes.includes(size);
-                            return (
-                              <button
-                                key={size}
-                                type="button"
-                                className={`inline-flex items-center gap-1 py-[5px] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
-                                  active
-                                    ? "bg-[var(--accent-sage)] text-white px-2 font-semibold cursor-default"
-                                    : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
-                                }`}
-                                onClick={() =>
-                                  setForm((p) => ({
-                                    ...p,
-                                    sizes: active
-                                      ? p.sizes.filter((s) => s !== size)
-                                      : [...p.sizes, size],
-                                  }))
-                                }
-                              >
-                                {size}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                    <input
-                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                      placeholder="Type custom size and press Enter"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          const v = (e.target as HTMLInputElement).value.trim().toUpperCase();
-                          if (v && !form.sizes.includes(v)) {
-                            setForm((p) => ({ ...p, sizes: [...p.sizes, v] }));
-                            (e.target as HTMLInputElement).value = "";
-                          }
-                        }
-                      }}
-                    />
-                  </div>
-                </FormField>
-
-                <FormField label="Colors">
-                  <div className="flex gap-2 mb-2.5 items-end">
-                    <input
-                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
-                      placeholder='Color name, e.g. "Midnight Blue"'
-                      value={colorName}
-                      onChange={(e) => setColorName(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addColor();
-                        }
-                      }}
-                    />
-                    <input
-                      type="color"
-                      value={colorHex}
-                      onChange={(e) => setColorHex(e.target.value)}
-                      className="w-10 h-9 border border-[var(--border-light)] rounded-sm cursor-pointer p-0.5 bg-none shrink-0"
-                    />
-                    <button
-                      type="button"
-                      className="flex items-center justify-center w-8.5 h-8.5 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--accent-primary)] shrink-0 self-end"
-                      onClick={addColor}
-                    >
-                      <Plus size={14} />
-                    </button>
-                  </div>
-                  {form.colors.length > 0 ? (
-                    <div className="flex flex-wrap gap-1.5">
-                      {form.colors.map((c, i) => (
-                        <span
-                          key={`${c.name}-${c.hex}`}
-                          className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
-                        >
-                          <span
-                            className="inline-block w-4 h-4 rounded-sm border border-black/15 shrink-0"
-                            style={{ background: c.hex }}
-                          />
-                          <span className="text-xs font-medium">{c.name}</span>
-                          <code className="text-[10px] text-white/70">{c.hex}</code>
-                          <button
-                            type="button"
-                            className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
-                            onClick={() =>
-                              setForm((p) => ({ ...p, colors: p.colors.filter((_, j) => j !== i) }))
-                            }
-                          >
-                            <X size={10} />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-[var(--text-muted)] italic">No colors added yet.</p>
-                  )}
-                </FormField>
-
-                <FormField label="Material">
-                  <input
-                    className={inputClass}
-                    value={form.material}
-                    onChange={(e) => setForm((p) => ({ ...p, material: e.target.value }))}
-                    placeholder="e.g. 100% Cotton"
-                  />
-                </FormField>
-                <FormField label="Care Instructions">
-                  <input
-                    className={inputClass}
-                    value={form.care}
-                    onChange={(e) => setForm((p) => ({ ...p, care: e.target.value }))}
-                    placeholder="e.g. Machine wash cold"
-                  />
-                </FormField>
-
-                <FormField label="Tags">
-                  <div className="flex flex-wrap gap-1.5">
-                    {TAG_SUGGESTIONS.filter((t) => !form.tags.includes(t)).map((tag) => (
-                      <button
-                        key={tag}
-                        type="button"
-                        className="inline-flex items-center gap-1 py-[5px] px-2.5 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)] text-[11px] font-primary cursor-pointer border-0 transition-all"
-                        onClick={() => setForm((p) => ({ ...p, tags: [...p.tags, tag] }))}
-                      >
-                        + {tag}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex gap-1.5 mt-2">
-                    <input
-                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
-                      placeholder="Type tag and press Enter..."
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          const v = tagInput.trim().toLowerCase();
-                          if (v && !form.tags.includes(v)) {
-                            setForm((p) => ({ ...p, tags: [...p.tags, v] }));
-                            setTagInput("");
-                          }
-                        }
-                      }}
-                    />
-                  </div>
-                  {form.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {form.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
-                        >
-                          {tag}
-                          <button
-                            type="button"
-                            className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
-                            onClick={() =>
-                              setForm((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }))
-                            }
-                          >
-                            <X size={10} />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </FormField>
-              </FormSection>
-            )}
-
-            {/* ── Images ── */}
-            {activeTab === "images" && (
-              <FormSection>
-                <FormField
-                  label="Image URLs"
-                  info="One URL per line. The first one is used as the main thumbnail."
-                >
-                  <textarea
-                    className={`${inputClass} resize-y`}
-                    rows={6}
-                    value={form.images.join("\n")}
-                    placeholder="one URL per line"
-                    onChange={(e) =>
-                      setForm((p) => ({
-                        ...p,
-                        images: e.target.value
-                          .split("\n")
-                          .map((s) => s.trim())
-                          .filter(Boolean),
-                      }))
-                    }
-                  />
-                </FormField>
-              </FormSection>
-            )}
+              )}
+            </ModalBody>
 
             <FormActions
               onCancel={closeModal}
@@ -759,7 +770,7 @@ export default function ProductsContent() {
               submitLabel={editingId ? "Update Product" : "Create Product"}
             />
           </form>
-        </FormModalShell>
+        </ModalShell>
       )}
     </div>
   );

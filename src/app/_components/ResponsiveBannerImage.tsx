@@ -1,56 +1,70 @@
-"use client";
-
-import Image, { type ImageProps } from "next/image";
-import { BANNER_BREAKPOINTS, resolveBannerImage, type BannerItem } from "@/src/types/site-config";
-
-/* Tailwind prefix that turns a tier "on" at its min-width, keyed by the
-   breakpoint that comes right after it in BANNER_BREAKPOINTS. Matches the
-   site's existing sm/lg usage (Tailwind v4 defaults: 640/1024px). */
-const TIER_ON_PREFIX: Record<string, string> = {
-  tablet: "sm:",
-  desktop: "lg:",
-};
+import { getImageProps, type ImageProps } from "next/image";
+import { resolveBannerImage, type BannerItem } from "@/src/types/site-config";
 
 type ResponsiveBannerImageProps = {
   banner: BannerItem;
 } & Omit<ImageProps, "src">;
 
-/** Renders a banner's image, swapping to a different source per breakpoint
- *  (mobile/tablet/desktop/wide) via pure CSS visibility — no JS resize
- *  listeners, no hydration mismatch. Consecutive tiers that resolve to the
- *  same image are collapsed into a single <Image>, so a banner with no
- *  responsive overrides renders exactly one element, same as before. */
-export default function ResponsiveBannerImage({ banner, alt, ...imageProps }: ResponsiveBannerImageProps) {
-  const tierSrcs = BANNER_BREAKPOINTS.map(({ key }) => resolveBannerImage(banner, key));
+/** Builds just the `srcSet` Next.js would emit for this src, so we can hang
+ *  it off a <source> without rendering a second <img>. */
+function srcSetFor(src: string, alt: string, imageProps: Omit<ImageProps, "src" | "alt">): string {
+  const { props } = getImageProps({ ...imageProps, alt, src });
+  return props.srcSet ?? props.src;
+}
 
-  const runs: { start: number; end: number; src: string }[] = [];
-  tierSrcs.forEach((src, i) => {
-    const last = runs[runs.length - 1];
-    if (last && last.src === src) {
-      last.end = i;
-    } else {
-      runs.push({ start: i, end: i, src });
-    }
-  });
+/** Renders a banner's image as a <picture> with one <source media=...> per
+ *  breakpoint that actually needs a different image, plus a single
+ *  fallback <img> for the rest — so the BROWSER's native resource
+ *  selection picks exactly one file to download, the same way it would for
+ *  a hand-written responsive <picture>. This matters most for priority
+ *  (above-the-fold) hero banners: a CSS-only show/hide approach still
+ *  renders N separate <img> elements, and a `priority` one gets preloaded
+ *  and fetched even while hidden — wasting bandwidth and hurting LCP.
+ *
+ *  Breakpoints are plain viewport-width media queries (mirroring the
+ *  sm/lg tiers used across the site's Tailwind classes), so rotating a
+ *  phone or iPad re-evaluates them live with no JS resize listener and no
+ *  hydration mismatch — landscape phones/tablets naturally fall into
+ *  whichever tier actually matches their current width.
+ *
+ *  Fallback chain (handled by `resolveBannerImage`): mobile → tablet →
+ *  desktop, tablet → desktop. A banner with no responsive overrides at all
+ *  collapses back to a single plain <img>, same as before this component
+ *  existed. */
+export default function ResponsiveBannerImage({
+  banner,
+  alt = "",
+  ...imageProps
+}: ResponsiveBannerImageProps) {
+  const mobileSrc = resolveBannerImage(banner, "mobile");
+  const tabletSrc = resolveBannerImage(banner, "tablet");
+  const desktopSrc = banner.image;
+
+  const { props: desktopProps } = getImageProps({ ...imageProps, alt, src: desktopSrc });
+
+  /* List narrowest-first: <picture> uses the FIRST <source> whose `media`
+     matches, so a source's `max-width` only "wins" for viewports not
+     already claimed by an earlier, more specific source. */
+  const sources: { media: string; src: string }[] = [];
+  if (mobileSrc !== tabletSrc) {
+    sources.push({ media: "(max-width: 639px)", src: mobileSrc });
+  }
+  if (tabletSrc !== desktopSrc) {
+    sources.push({ media: "(max-width: 1023px)", src: tabletSrc });
+  }
 
   return (
-    <>
-      {runs.map(({ start, end, src }) => {
-        const classes: string[] = [start === 0 ? "block" : "hidden"];
-        if (start > 0) classes.push(`${TIER_ON_PREFIX[BANNER_BREAKPOINTS[start].key]}block`);
-        if (end < BANNER_BREAKPOINTS.length - 1) {
-          classes.push(`${TIER_ON_PREFIX[BANNER_BREAKPOINTS[end + 1].key]}hidden`);
-        }
-        return (
-          <Image
-            key={`${start}-${src}`}
-            src={src}
-            alt={alt}
-            {...imageProps}
-            className={[classes.join(" "), imageProps.className].filter(Boolean).join(" ")}
-          />
-        );
-      })}
-    </>
+    <picture>
+      {sources.map(({ media, src }) => (
+        <source
+          key={media}
+          media={media}
+          sizes={imageProps.sizes}
+          srcSet={srcSetFor(src, alt, imageProps)}
+        />
+      ))}
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from desktopProps */}
+      <img {...desktopProps} />
+    </picture>
   );
 }

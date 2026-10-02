@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, type ReactElement } from "react";
 import { Truck, Zap, Home, ChevronDown, Check } from "lucide-react";
 import { useShipping } from "@/src/hooks/use-api";
 
-const ICON_MAP: Record<string, () => JSX.Element> = {
+const ICON_MAP: Record<string, () => ReactElement> = {
   truck: () => <Truck size={18} />,
   express: () => <Zap size={18} />,
   store: () => <Home size={18} />,

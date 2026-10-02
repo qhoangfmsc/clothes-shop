@@ -92,6 +92,20 @@ function defaultEmpty(hasFilters: boolean): string {
   return hasFilters ? "No results match your filters." : "Nothing yet.";
 }
 
+/* Page numbers to render, with "…" gaps — always keeps first, last, and a
+   window around the current page so the control stays a fixed width. */
+function getPageRange(current: number, total: number): (number | "...")[] {
+  const range: (number | "...")[] = [];
+  for (let i = 1; i <= total; i++) {
+    if (i === 1 || i === total || Math.abs(i - current) <= 1) {
+      range.push(i);
+    } else if (range[range.length - 1] !== "...") {
+      range.push("...");
+    }
+  }
+  return range;
+}
+
 /* ═══════════════════════════════ Styles ═════════════════════════════════════ */
 
 const inputClass =
@@ -228,12 +242,14 @@ function DataTableInner<T extends { id?: string | number }>(
 
   /* ── Render ── */
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 flex-1 min-h-0">
       {/* ── Toolbar ── */}
-      <div className="flex gap-3 items-end flex-wrap">
+      <div className="shrink-0 flex gap-3 items-end flex-wrap">
         {/* Search */}
         <label className="flex flex-col gap-0.75 flex-1">
-          <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">Search</span>
+          <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
+            Search
+          </span>
           <div className="flex items-center gap-2 bg-[var(--bg-secondary)] rounded-lg px-4 h-9">
             <Search size={14} className="text-[var(--text-muted)] shrink-0" />
             <input
@@ -261,7 +277,9 @@ function DataTableInner<T extends { id?: string | number }>(
           const isActive = val !== (fil.defaultValue ?? "");
           return (
             <label key={fil.key} className="flex flex-col gap-0.75">
-              <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">{fil.label}</span>
+              <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
+                {fil.label}
+              </span>
               <div className="flex gap-1 items-center">
                 <select
                   value={val}
@@ -293,7 +311,9 @@ function DataTableInner<T extends { id?: string | number }>(
         {/* Sort */}
         {sortOptions.length > 0 && (
           <label className="flex flex-col gap-0.75">
-            <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">Sort</span>
+            <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
+              Sort
+            </span>
             <div className="flex gap-1 items-center">
               <select
                 value={sort}
@@ -328,85 +348,124 @@ function DataTableInner<T extends { id?: string | number }>(
       </div>
 
       {/* ── Table ── */}
-      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden">
+      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden flex-1 min-h-0 flex flex-col">
         {loading && (
           <div className="absolute inset-0 bg-[rgba(251,248,241,0.5)] flex items-center justify-center z-10 rounded-2xl">
             <span className="text-sm text-[var(--text-muted)] font-primary">Loading...</span>
           </div>
         )}
-        <table
-          className="w-full border-collapse"
-          style={{
-            opacity: loading ? 0.4 : 1,
-            transition: "opacity var(--duration-fast)",
-          }}
-        >
-          <thead>
-            <tr>
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  className={`text-left text-xs font-semibold text-[var(--text-muted)] py-3 px-4 border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em] ${
-                    col.align === "right" ? "text-right" : ""
-                  }`}
-                  style={col.width ? { width: col.width } : undefined}
-                >
-                  {col.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.length === 0 && (
+        <div className="flex-1 min-h-0 overflow-auto">
+          <table
+            className="w-full border-collapse"
+            style={{
+              opacity: loading ? 0.4 : 1,
+              transition: "opacity var(--duration-fast)",
+            }}
+          >
+            <thead>
               <tr>
-                <td
-                  colSpan={columns.length}
-                  className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
-                >
-                  {typeof emptyMessage === "function"
-                    ? emptyMessage(hasActiveFilters)
-                    : (emptyMessage ?? defaultEmpty(hasActiveFilters))}
-                </td>
-              </tr>
-            )}
-            {data.map((row) => (
-              <tr key={keyExtractor(row)} className="border-b border-[var(--border-subtle)]">
                 {columns.map((col) => (
-                  <td
+                  <th
                     key={col.key}
-                    className={`py-3 px-4 text-sm text-[var(--text-primary)] font-primary align-middle ${
+                    className={`sticky top-0 z-[1] bg-[var(--bg-secondary)] text-left text-xs font-semibold text-[var(--text-muted)] py-3 px-4 border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em] ${
                       col.align === "right" ? "text-right" : ""
                     }`}
+                    style={col.width ? { width: col.width } : undefined}
                   >
-                    {col.render(row)}
-                  </td>
+                    {col.header}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
+                  >
+                    {typeof emptyMessage === "function"
+                      ? emptyMessage(hasActiveFilters)
+                      : (emptyMessage ?? defaultEmpty(hasActiveFilters))}
+                  </td>
+                </tr>
+              )}
+              {data.map((row) => (
+                <tr key={keyExtractor(row)} className="border-b border-[var(--border-subtle)]">
+                  {columns.map((col) => (
+                    <td
+                      key={col.key}
+                      className={`py-3 px-4 text-sm text-[var(--text-primary)] font-primary align-middle ${
+                        col.align === "right" ? "text-right" : ""
+                      }`}
+                    >
+                      {col.render(row)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* ── Pagination ── */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4">
-          <button
-            className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-          >
-            <ChevronLeft size={14} />
-          </button>
-          <span className="text-sm text-[var(--text-muted)] font-primary">
-            Page {page} of {totalPages}
+        <div className="shrink-0 flex justify-end items-center gap-5 flex-wrap">
+          <span className="text-xs text-[var(--text-muted)] font-primary">
+            Showing{" "}
+            <span className="font-semibold text-[var(--text-secondary)]">
+              {Math.min((page - 1) * pageSize + 1, total)}
+            </span>
+            {"–"}
+            <span className="font-semibold text-[var(--text-secondary)]">
+              {Math.min(page * pageSize, total)}
+            </span>{" "}
+            of <span className="font-semibold text-[var(--text-secondary)]">{total}</span>
           </span>
-          <button
-            className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
-            disabled={page >= totalPages}
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          >
-            <ChevronRight size={14} />
-          </button>
+
+          <div className="flex items-center gap-1">
+            <button
+              className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              title="Previous page"
+            >
+              <ChevronLeft size={14} />
+            </button>
+
+            {getPageRange(page, totalPages).map((p, i) =>
+              p === "..." ? (
+                <span
+                  key={`ellipsis-${i}`}
+                  className="flex items-center justify-center w-8 h-8 text-xs text-[var(--text-disabled)] font-primary"
+                >
+                  …
+                </span>
+              ) : (
+                <button
+                  key={p}
+                  className={`flex items-center justify-center w-8 h-8 border-0 rounded-sm cursor-pointer text-sm font-primary font-semibold transition-colors ${
+                    p === page
+                      ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)]"
+                      : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)]"
+                  }`}
+                  onClick={() => setPage(p)}
+                >
+                  {p}
+                </button>
+              )
+            )}
+
+            <button
+              className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              title="Next page"
+            >
+              <ChevronRight size={14} />
+            </button>
+          </div>
         </div>
       )}
     </div>
