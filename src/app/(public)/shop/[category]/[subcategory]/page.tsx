@@ -64,7 +64,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         label={`${category.title} — ${subcategory.label}`}
         title={subcategory.label}
         description={subcategory.description}
-        images={firstProductImage ? [firstProductImage] : []}
+        banners={firstProductImage ? [{ image: firstProductImage }] : []}
       />
 
       {/* Breadcrumb */}

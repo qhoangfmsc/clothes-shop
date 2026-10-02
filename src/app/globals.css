@@ -98,6 +98,22 @@ img[data-admin-img] {
   animation: none !important;
 }
 
+/* ─── Cursor artwork — bypass global fade-in, framer-motion drives its own opacity ─── */
+img[data-cursor-img] {
+  opacity: 1;
+  animation: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+   Hides the native OS cursor once the module confirms a fine
+   pointer is present (see src/app/_components/cursor).
+   ═══════════════════════════════════════════════════════════ */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
 /* Stagger images slightly within grids for a polished feel */
 .product-grid img,
 .category-grid img,

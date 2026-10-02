@@ -22,6 +22,7 @@ export const SITE_CONFIG_KEY_DESCRIPTIONS: Record<string, string> = {
 
 export const EMPTY_BANNER_ITEM: BannerItem = {
   image: "",
+  responsiveImages: {},
   label: "",
   title: "",
   subtitle: "",

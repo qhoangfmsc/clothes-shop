@@ -17,14 +17,9 @@ export default async function CollectionsPage() {
     getBannerConfig(SITE_CONFIG_KEYS.COLLECTIONS_HERO_BANNERS),
   ]);
 
-  /* Hero banner images — from Site Config > COLLECTIONS_HERO_BANNERS. No
-     fallback image: if nothing is configured, CollectionsClient shows a
-     plain color instead. */
-  const heroImages = heroBanners.map((b) => b.image);
-
   return (
     <main style={{ minHeight: "100vh" }}>
-      <CollectionsClient collections={collections} heroImages={heroImages} />
+      <CollectionsClient collections={collections} heroBanners={heroBanners} />
     </main>
   );
 }

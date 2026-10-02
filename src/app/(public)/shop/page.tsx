@@ -20,10 +20,6 @@ export default async function ShopPage() {
     getBannerConfig(SITE_CONFIG_KEYS.SHOP_HERO_BANNERS),
   ]);
 
-  /* Hero banner images — from Site Config > SHOP_HERO_BANNERS. No fallback
-     image: if nothing is configured, ShopHero shows a plain color instead. */
-  const heroBannerImages = heroBanners.map((b) => b.image);
-
   return (
     <main
       style={{
@@ -36,7 +32,7 @@ export default async function ShopPage() {
         label=""
         title="Shop All"
         description="Discover our curated selection of luxury essentials — each piece designed to elevate your everyday."
-        images={heroBannerImages}
+        banners={heroBanners}
       />
 
       {/* Breadcrumb */}

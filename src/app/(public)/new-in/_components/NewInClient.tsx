@@ -9,6 +9,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Product } from "@/src/types/product";
 import { ArrowDown, ArrowRight, Mail } from "lucide-react";
 import ShopProductsClient from "../../shop/_components/ShopProductsClient";
+import ResponsiveBannerImage from "@/src/app/_components/ResponsiveBannerImage";
+import type { BannerItem } from "@/src/types/site-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,11 +36,11 @@ const TICKER_ITEMS = ["New Drop", "Limited Edition", "Handcrafted"];
 
 interface NewInClientProps {
   products: Product[];
-  /** Hero background image(s). 1 image = static, 2+ = auto-rotating crossfade. */
-  heroImages: string[];
+  /** Hero background banner(s). 1 = static, 2+ = auto-rotating crossfade. */
+  heroBanners: BannerItem[];
 }
 
-export default function NewInClient({ products, heroImages }: NewInClientProps) {
+export default function NewInClient({ products, heroBanners }: NewInClientProps) {
   const SPOTLIGHTS = buildSpotlights(products);
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRefs = useRef<(HTMLElement | null)[]>([]);
@@ -53,13 +55,13 @@ export default function NewInClient({ products, heroImages }: NewInClientProps) 
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  /* Auto-rotate hero background when there's more than one image */
+  /* Auto-rotate hero background when there's more than one banner */
   useEffect(() => {
     setHeroIdx(0);
-    if (heroImages.length <= 1) return;
-    const timer = setInterval(() => setHeroIdx((p) => (p + 1) % heroImages.length), HERO_ROTATE_MS);
+    if (heroBanners.length <= 1) return;
+    const timer = setInterval(() => setHeroIdx((p) => (p + 1) % heroBanners.length), HERO_ROTATE_MS);
     return () => clearInterval(timer);
-  }, [heroImages]);
+  }, [heroBanners]);
 
   /* ── Hero animation ── */
   useEffect(() => {
@@ -249,18 +251,18 @@ export default function NewInClient({ products, heroImages }: NewInClientProps) 
           data-ni-hero-image
           style={{ background: "var(--bg-section-3)" }}
         >
-          {heroImages.length > 0 && (
+          {heroBanners.length > 0 && (
             <AnimatePresence>
               <motion.div
                 key={heroIdx}
-                initial={{ opacity: heroImages.length > 1 ? 0 : 1 }}
+                initial={{ opacity: heroBanners.length > 1 ? 0 : 1 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8, ease: "easeInOut" }}
                 className="absolute inset-0"
               >
-                <Image
-                  src={heroImages[heroIdx]}
+                <ResponsiveBannerImage
+                  banner={heroBanners[heroIdx]}
                   alt="New Arrival"
                   fill
                   priority

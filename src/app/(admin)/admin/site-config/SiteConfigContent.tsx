@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
-import { Plus, X, ImageIcon } from "lucide-react";
+import { Plus, X, ImageIcon, ChevronDown, ChevronUp, Check } from "lucide-react";
 import { useToast } from "@/src/app/_components/Toast";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
 import { PERMISSIONS } from "@/src/lib/permissions";
@@ -18,7 +18,7 @@ import {
   EMPTY_BANNER_ITEM,
 } from "./_common/constants";
 import type { SiteConfigRow } from "./_common/types";
-import type { BannerItem } from "@/src/types/site-config";
+import type { BannerItem, BannerResponsiveImages } from "@/src/types/site-config";
 
 /* ═══════════════════════════════ Sub-components ═══════════════════════ */
 
@@ -91,10 +91,15 @@ export default function SiteConfigContent() {
   /* ── Modal / form state ── */
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [bannerItems, setBannerItems] = useState<BannerItem[]>([]);
+  /* Which banner cards are collapsed down to just their header — lets admins
+     tuck away banners they're done configuring so the ones they're actively
+     working on don't get lost in a long list. */
+  const [collapsedBanners, setCollapsedBanners] = useState<Set<number>>(new Set());
   const editingRow = rows.find((r) => r.key === editingKey) ?? null;
 
   const openEdit = (row: SiteConfigRow) => {
     setEditingKey(row.key);
+    setCollapsedBanners(new Set());
     if (row.config?.value) {
       try {
         const parsed = JSON.parse(row.config.value);
@@ -110,7 +115,16 @@ export default function SiteConfigContent() {
   const closeModal = () => {
     setEditingKey(null);
     setBannerItems([]);
+    setCollapsedBanners(new Set());
   };
+
+  const toggleBannerCollapse = (i: number) =>
+    setCollapsedBanners((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
 
   /* ── Banner item helpers ── */
   const addBanner = () => setBannerItems((p) => [...p, { ...EMPTY_BANNER_ITEM }]);
@@ -122,6 +136,16 @@ export default function SiteConfigContent() {
       return next;
     });
 
+  const updBannerResponsiveImage = (i: number, breakpoint: keyof BannerResponsiveImages, value: string) =>
+    setBannerItems((p) => {
+      const next = [...p];
+      next[i] = {
+        ...next[i],
+        responsiveImages: { ...next[i].responsiveImages, [breakpoint]: value },
+      };
+      return next;
+    });
+
   const rmBanner = (i: number) => setBannerItems((p) => p.filter((_, j) => j !== i));
 
   /* ── Save / Reset ── */
@@ -129,11 +153,22 @@ export default function SiteConfigContent() {
     e.preventDefault();
     if (!editingKey) return;
     if (bannerItems.some((b) => !b.image.trim())) {
-      toast.error("Every banner needs an Image URL");
+      toast.error("Every banner needs a Desktop image");
       return;
     }
     try {
-      const value = JSON.stringify(bannerItems);
+      /* Drop empty responsive overrides so unfilled fields don't bloat the
+         stored JSON with `{ mobile: "", tablet: "", ... }` noise. */
+      const cleaned = bannerItems.map((b) => {
+        const responsiveImages = Object.fromEntries(
+          Object.entries(b.responsiveImages ?? {}).filter(([, v]) => v?.trim())
+        );
+        return {
+          ...b,
+          responsiveImages: Object.keys(responsiveImages).length > 0 ? responsiveImages : undefined,
+        };
+      });
+      const value = JSON.stringify(cleaned);
       await dispatch(upsertSiteConfig({ key: editingKey, value })).unwrap();
       toast.success("Config saved");
       closeModal();
@@ -269,75 +304,151 @@ export default function SiteConfigContent() {
                 </p>
               )}
 
-              {bannerItems.map((b, i) => (
-                <div
-                  key={i}
-                  className="relative border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col gap-3"
-                >
-                  <button
-                    type="button"
-                    className="absolute top-3 right-3 flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)]"
-                    onClick={() => rmBanner(i)}
+              {bannerItems.map((b, i) => {
+                const isCollapsed = collapsedBanners.has(i);
+                return (
+                  <div
+                    key={i}
+                    className="relative border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col gap-3"
                   >
-                    <X size={13} />
-                  </button>
-                  <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
-                    Banner {i + 1}
-                  </span>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Field
-                      label="Image URL"
-                      required
-                      span={2}
-                      hint="Background image for this banner"
+                    <button
+                      type="button"
+                      className="absolute top-3 right-3 flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)]"
+                      onClick={() => rmBanner(i)}
                     >
-                      <input
-                        className={inputClass}
-                        value={b.image}
-                        onChange={(e) => updBanner(i, "image", e.target.value)}
-                        placeholder="https://... or /images/..."
-                        required
-                      />
-                    </Field>
-                    <Field label="Label" hint="Small label above the title (optional)">
-                      <input
-                        className={inputClass}
-                        value={b.label ?? ""}
-                        onChange={(e) => updBanner(i, "label", e.target.value)}
-                      />
-                    </Field>
-                    <Field label="Title" hint="Heading (optional)">
-                      <input
-                        className={inputClass}
-                        value={b.title ?? ""}
-                        onChange={(e) => updBanner(i, "title", e.target.value)}
-                      />
-                    </Field>
-                    <Field label="Subtitle" span={2} hint="Short description (optional)">
-                      <input
-                        className={inputClass}
-                        value={b.subtitle ?? ""}
-                        onChange={(e) => updBanner(i, "subtitle", e.target.value)}
-                      />
-                    </Field>
-                    <Field label="CTA Label" hint='e.g. "Shop Now"'>
-                      <input
-                        className={inputClass}
-                        value={b.ctaLabel ?? ""}
-                        onChange={(e) => updBanner(i, "ctaLabel", e.target.value)}
-                      />
-                    </Field>
-                    <Field label="CTA Href" hint="e.g. /shop">
-                      <input
-                        className={inputClass}
-                        value={b.ctaHref ?? ""}
-                        onChange={(e) => updBanner(i, "ctaHref", e.target.value)}
-                        placeholder="/shop"
-                      />
-                    </Field>
+                      <X size={13} />
+                    </button>
+
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 bg-transparent border-0 p-0 pr-8 cursor-pointer text-left"
+                      onClick={() => toggleBannerCollapse(i)}
+                    >
+                      {isCollapsed ? (
+                        <ChevronDown size={14} className="text-[var(--text-muted)] shrink-0" />
+                      ) : (
+                        <ChevronUp size={14} className="text-[var(--text-muted)] shrink-0" />
+                      )}
+                      <span className="text-xs font-semibold text-[var(--text-muted)] font-primary shrink-0">
+                        Banner {i + 1}
+                      </span>
+                      {isCollapsed && (
+                        <>
+                          <span className="text-[var(--border-light)] shrink-0">|</span>
+                          <span className="flex items-center gap-3 overflow-hidden">
+                            {[
+                              { label: "Desktop", has: !!b.image?.trim() },
+                              { label: "Tablet", has: !!b.responsiveImages?.tablet?.trim() },
+                              { label: "Mobile", has: !!b.responsiveImages?.mobile?.trim() },
+                            ].map(({ label, has }) => (
+                              <span
+                                key={label}
+                                className={`flex items-center gap-1 text-xs font-primary whitespace-nowrap ${
+                                  has
+                                    ? "text-[var(--text-secondary)]"
+                                    : "text-[var(--text-disabled)] opacity-40"
+                                }`}
+                              >
+                                {has ? (
+                                  <Check size={12} className="text-[var(--color-sage)] shrink-0" />
+                                ) : (
+                                  <span className="w-3 shrink-0" />
+                                )}
+                                {label}
+                              </span>
+                            ))}
+                          </span>
+                        </>
+                      )}
+                    </button>
+
+                    {!isCollapsed && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="col-span-2 flex flex-col gap-3 py-3 px-3 rounded-lg bg-[var(--bg-secondary)]">
+                          <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
+                            Banner images
+                          </span>
+
+                          <Field
+                            label="Desktop"
+                            required
+                            hint="Laptop / PC, ≥ 1024px — also the fallback for tablet & mobile"
+                          >
+                            <input
+                              className={inputClass}
+                              value={b.image}
+                              onChange={(e) => updBanner(i, "image", e.target.value)}
+                              placeholder="https://... or /images/..."
+                              required
+                            />
+                          </Field>
+
+                          <Field
+                            label="Tablet"
+                            hint="iPad / tablets, ≥ 640px — optional, falls back to Desktop"
+                          >
+                            <input
+                              className={inputClass}
+                              value={b.responsiveImages?.tablet ?? ""}
+                              onChange={(e) => updBannerResponsiveImage(i, "tablet", e.target.value)}
+                              placeholder="https://... or /images/..."
+                            />
+                          </Field>
+
+                          <Field
+                            label="Mobile"
+                            hint="Phones, < 640px — optional, falls back to Tablet, then Desktop"
+                          >
+                            <input
+                              className={inputClass}
+                              value={b.responsiveImages?.mobile ?? ""}
+                              onChange={(e) => updBannerResponsiveImage(i, "mobile", e.target.value)}
+                              placeholder="https://... or /images/..."
+                            />
+                          </Field>
+                        </div>
+
+                        <Field label="Label" hint="Small label above the title (optional)">
+                          <input
+                            className={inputClass}
+                            value={b.label ?? ""}
+                            onChange={(e) => updBanner(i, "label", e.target.value)}
+                          />
+                        </Field>
+                        <Field label="Title" hint="Heading (optional)">
+                          <input
+                            className={inputClass}
+                            value={b.title ?? ""}
+                            onChange={(e) => updBanner(i, "title", e.target.value)}
+                          />
+                        </Field>
+                        <Field label="Subtitle" span={2} hint="Short description (optional)">
+                          <input
+                            className={inputClass}
+                            value={b.subtitle ?? ""}
+                            onChange={(e) => updBanner(i, "subtitle", e.target.value)}
+                          />
+                        </Field>
+                        <Field label="CTA Label" hint='e.g. "Shop Now"'>
+                          <input
+                            className={inputClass}
+                            value={b.ctaLabel ?? ""}
+                            onChange={(e) => updBanner(i, "ctaLabel", e.target.value)}
+                          />
+                        </Field>
+                        <Field label="CTA Href" hint="e.g. /shop">
+                          <input
+                            className={inputClass}
+                            value={b.ctaHref ?? ""}
+                            onChange={(e) => updBanner(i, "ctaHref", e.target.value)}
+                            placeholder="/shop"
+                          />
+                        </Field>
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border-subtle)]">
                 <button

@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ResponsiveBannerImage from "@/src/app/_components/ResponsiveBannerImage";
+import type { BannerItem } from "@/src/types/site-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,25 +15,25 @@ interface ShopHeroProps {
   label: string;
   title: string;
   description?: string;
-  /** Background image(s). 0 = plain color (no image available yet), 1 = static, 2+ = auto-rotating crossfade. */
-  images: string[];
+  /** Background banner(s). 0 = plain color (no banner configured yet), 1 = static, 2+ = auto-rotating crossfade. */
+  banners: BannerItem[];
 }
 
-export default function ShopHero({ label, title, description, images }: ShopHeroProps) {
+export default function ShopHero({ label, title, description, banners }: ShopHeroProps) {
   const heroRef = useRef<HTMLElement>(null);
   const [idx, setIdx] = useState(0);
 
-  /* Reset to the first slide whenever the image list itself changes */
+  /* Reset to the first slide whenever the banner list itself changes */
   useEffect(() => {
     setIdx(0);
-  }, [images]);
+  }, [banners]);
 
-  /* Auto-rotate when there's more than one image */
+  /* Auto-rotate when there's more than one banner */
   useEffect(() => {
-    if (images.length <= 1) return;
-    const timer = setInterval(() => setIdx((p) => (p + 1) % images.length), ROTATE_MS);
+    if (banners.length <= 1) return;
+    const timer = setInterval(() => setIdx((p) => (p + 1) % banners.length), ROTATE_MS);
     return () => clearInterval(timer);
-  }, [images]);
+  }, [banners]);
 
   useEffect(() => {
     const el = heroRef.current;
@@ -96,18 +97,18 @@ export default function ShopHero({ label, title, description, images }: ShopHero
         className="absolute inset-0 pointer-events-none z-0"
         style={{ background: "var(--bg-section-3)" }}
       >
-        {images.length > 0 && (
+        {banners.length > 0 && (
           <AnimatePresence>
             <motion.div
               key={idx}
-              initial={{ opacity: images.length > 1 ? 0 : 1 }}
+              initial={{ opacity: banners.length > 1 ? 0 : 1 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
               className="absolute inset-0"
             >
-              <Image
-                src={images[idx]}
+              <ResponsiveBannerImage
+                banner={banners[idx]}
                 alt=""
                 fill
                 priority

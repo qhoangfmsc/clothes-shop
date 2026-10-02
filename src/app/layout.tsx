@@ -7,6 +7,7 @@ import { LoginPromptProvider } from "./_components/LoginPromptModal";
 import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
 import Providers from "./_components/Providers";
+import { CustomCursor } from "./_components/cursor";
 import "./globals.css";
 
 const quicheDisplay = localFont({
@@ -42,6 +43,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
+        <CustomCursor />
         <Providers>
           <ToastProvider position="bottom-center">
             <LoginPromptProvider>

@@ -16,13 +16,9 @@ export default async function NewInPage() {
     getBannerConfig(SITE_CONFIG_KEYS.NEW_IN_HERO_BANNERS),
   ]);
 
-  /* Hero banner images — from Site Config > NEW_IN_HERO_BANNERS. No fallback
-     image: if nothing is configured, NewInClient shows a plain color instead. */
-  const heroImages = heroBanners.map((b) => b.image);
-
   return (
     <main style={{ minHeight: "100vh" }}>
-      <NewInClient products={newProducts} heroImages={heroImages} />
+      <NewInClient products={newProducts} heroBanners={heroBanners} />
     </main>
   );
 }

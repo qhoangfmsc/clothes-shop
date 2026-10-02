@@ -7,6 +7,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Collection } from "@/src/types/collection";
+import type { BannerItem } from "@/src/types/site-config";
+import ResponsiveBannerImage from "@/src/app/_components/ResponsiveBannerImage";
 import { ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,8 +17,8 @@ const HERO_ROTATE_MS = 5000;
 
 interface CollectionsClientProps {
   collections: Collection[];
-  /** Hero background image(s). 1 image = static, 2+ = auto-rotating crossfade. */
-  heroImages: string[];
+  /** Hero background banner(s). 1 = static, 2+ = auto-rotating crossfade. */
+  heroBanners: BannerItem[];
 }
 
 /* ── Map collection data for horizontal scroll cards ── */
@@ -50,7 +52,7 @@ function buildEditorialSections(collections: Collection[]) {
 
 const MARQUEE_TEXT = "DOOVAN ◆ Collections ◆ Crafted with Intention ◆ Limited Editions ◆";
 
-export default function CollectionsClient({ collections, heroImages }: CollectionsClientProps) {
+export default function CollectionsClient({ collections, heroBanners }: CollectionsClientProps) {
   const HORIZONTAL_CARDS = buildHorizontalCards(collections);
   const EDITORIAL_SECTIONS = buildEditorialSections(collections);
   const heroRef = useRef<HTMLElement>(null);
@@ -59,13 +61,13 @@ export default function CollectionsClient({ collections, heroImages }: Collectio
   const spreadRefs = useRef<(HTMLElement | null)[]>([]);
   const [heroIdx, setHeroIdx] = useState(0);
 
-  /* Auto-rotate hero background when there's more than one image */
+  /* Auto-rotate hero background when there's more than one banner */
   useEffect(() => {
     setHeroIdx(0);
-    if (heroImages.length <= 1) return;
-    const timer = setInterval(() => setHeroIdx((p) => (p + 1) % heroImages.length), HERO_ROTATE_MS);
+    if (heroBanners.length <= 1) return;
+    const timer = setInterval(() => setHeroIdx((p) => (p + 1) % heroBanners.length), HERO_ROTATE_MS);
     return () => clearInterval(timer);
-  }, [heroImages]);
+  }, [heroBanners]);
 
   /* ── Hero reveal animation ── */
   useEffect(() => {
@@ -225,18 +227,18 @@ export default function CollectionsClient({ collections, heroImages }: Collectio
           className="absolute inset-0 z-0"
           style={{ background: "var(--bg-section-3)" }}
         >
-          {heroImages.length > 0 && (
+          {heroBanners.length > 0 && (
             <AnimatePresence>
               <motion.div
                 key={heroIdx}
-                initial={{ opacity: heroImages.length > 1 ? 0 : 1 }}
+                initial={{ opacity: heroBanners.length > 1 ? 0 : 1 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8, ease: "easeInOut" }}
                 className="absolute inset-0"
               >
-                <Image
-                  src={heroImages[heroIdx]}
+                <ResponsiveBannerImage
+                  banner={heroBanners[heroIdx]}
                   alt="Collections"
                   fill
                   priority
@@ -250,20 +252,24 @@ export default function CollectionsClient({ collections, heroImages }: Collectio
         </div>
         <div className="absolute inset-0 z-1 pointer-events-none bg-[linear-gradient(to_top,rgba(10,10,8,0.7)_0%,transparent_50%),linear-gradient(to_right,rgba(10,10,8,0.4)_0%,transparent_60%)]" />
 
-        <div className="relative z-2 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12 max-w-160">
+        <div className="relative z-2 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
           <span
             data-hero-season
             className="inline-block text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.2em] uppercase mb-5 opacity-0"
           >
             Limited Edition
           </span>
-          <h1 className="font-display font-normal text-[clamp(48px,10vw,120px)] text-[var(--color-pearl-cream)] tracking-tighter leading-[90%] mb-5 overflow-hidden">
-            <span data-hero-title-line className="block opacity-0 translate-y-full">
-              The
-            </span>
-            <span data-hero-title-line className="block opacity-0 translate-y-full">
-              Collections
-            </span>
+          <h1 className="font-display font-normal text-[clamp(48px,10vw,120px)] text-[var(--color-pearl-cream)] tracking-tight leading-[1] mb-5">
+            <div className="overflow-hidden">
+              <span data-hero-title-line className="block opacity-0 translate-y-full">
+                The
+              </span>
+            </div>
+            <div className="overflow-hidden">
+              <span data-hero-title-line className="block opacity-0 translate-y-full">
+                Collections
+              </span>
+            </div>
           </h1>
           <p
             data-hero-subtitle

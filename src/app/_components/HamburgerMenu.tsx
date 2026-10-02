@@ -3,13 +3,13 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, User, Heart, Package, LogOut } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useCategories, useBannerConfig } from "@/src/hooks/use-api";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
 import { UserAvatar } from "./UserMenu";
+import ResponsiveBannerImage from "./ResponsiveBannerImage";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -808,8 +808,8 @@ export default function HamburgerMenu() {
                       position: "relative",
                     }}
                   >
-                    <Image
-                      src={currentBanner.image}
+                    <ResponsiveBannerImage
+                      banner={currentBanner}
                       alt={currentBanner.title ?? ""}
                       fill
                       sizes="400px"

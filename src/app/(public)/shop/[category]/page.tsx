@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         label={`DOOVAN — ${category.title}`}
         title={category.title}
         description={category.description}
-        images={firstProductImage ? [firstProductImage] : []}
+        banners={firstProductImage ? [{ image: firstProductImage }] : []}
       />
 
       {/* Breadcrumb */}
