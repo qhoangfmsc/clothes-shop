@@ -12,6 +12,15 @@ import {
   type DataTableFetchParams,
   type DataTableRef,
 } from "@/src/app/_components/DataTable";
+import {
+  FormModalShell,
+  FormTabs,
+  FormSection,
+  FormField,
+  FormActions,
+  inputClass,
+  type FormTab,
+} from "@/src/app/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -35,45 +44,10 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/* ═══════════════════════════════ Sub-components ═══════════════════════ */
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <fieldset className="border-0 border-b border-[var(--border-subtle)] pb-5 px-0 mx-0">
-      <legend className="font-primary text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.06em] p-0 mb-4">
-        {title}
-      </legend>
-      <div className="grid grid-cols-2 gap-4">{children}</div>
-    </fieldset>
-  );
-}
-
-function Field({
-  label,
-  hint,
-  required,
-  span,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  required?: boolean;
-  span?: number;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={`flex flex-col gap-1 ${span === 2 ? "col-span-2" : ""}`}>
-      <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
-        {label}
-        {required && <span className="text-[var(--accent-rose)]"> *</span>}
-      </span>
-      {children}
-      {hint && (
-        <span className="text-[10px] text-[var(--text-disabled)] font-primary italic">{hint}</span>
-      )}
-    </div>
-  );
-}
+const COLLECTION_TABS: FormTab[] = [
+  { id: "info", label: "Info" },
+  { id: "products", label: "Products" },
+];
 
 /* ═══════════════════════════════ Main Component ═══════════════════════ */
 
@@ -187,6 +161,7 @@ export default function CollectionsContent() {
   /* ── Form state ── */
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>(COLLECTION_TABS[0].id);
   const [form, setForm] = useState(EMPTY_COLLECTION_FORM);
   const [productSearch, setProductSearch] = useState("");
 
@@ -208,6 +183,7 @@ export default function CollectionsContent() {
   const openCreate = () => {
     setEditingId(null);
     resetForm();
+    setActiveTab(COLLECTION_TABS[0].id);
     setShowModal(true);
   };
 
@@ -223,6 +199,7 @@ export default function CollectionsContent() {
       season: c.season,
     });
     setProductSearch("");
+    setActiveTab(COLLECTION_TABS[0].id);
     setShowModal(true);
   };
 
@@ -302,92 +279,79 @@ export default function CollectionsContent() {
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
-        <div
-          className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-6"
-          onClick={closeModal}
+        <FormModalShell
+          title={editingId ? "Edit Collection" : "New Collection"}
+          onClose={closeModal}
         >
-          <div
-            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-160 max-h-[85vh] overflow-auto shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-1">
-              <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
-                {editingId ? "Edit Collection" : "New Collection"}
-              </h2>
-              <button
-                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)]"
-                onClick={closeModal}
-              >
-                <X size={18} />
-              </button>
-            </div>
+          <FormTabs tabs={COLLECTION_TABS} active={activeTab} onChange={setActiveTab} />
 
-            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6">
-              {/* ── Basic Info ── */}
-              <Section title="Basic Info">
-                <Field label="Name" required>
-                  <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.name}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setForm((p) => ({
-                        ...p,
-                        name: v,
-                        slug: slugify(v),
-                      }));
-                    }}
-                    required
-                  />
-                </Field>
-                <Field label="Subtitle">
-                  <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.subtitle}
-                    onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}
-                    placeholder="short tagline shown below name"
-                  />
-                </Field>
-                <Field label="Season">
-                  <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.season}
-                    onChange={(e) => setForm((p) => ({ ...p, season: e.target.value }))}
-                    list="season-list"
-                    placeholder="pick from list or type your own"
-                  />
-                  <datalist id="season-list">
-                    {SEASONS.map((s) => (
-                      <option key={s} value={s} />
-                    ))}
-                  </datalist>
-                </Field>
-              </Section>
+          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-auto">
+            {activeTab === "info" && (
+              <>
+                <FormSection title="Basic Info">
+                  <FormField label="Name" required>
+                    <input
+                      className={inputClass}
+                      value={form.name}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setForm((p) => ({
+                          ...p,
+                          name: v,
+                          slug: slugify(v),
+                        }));
+                      }}
+                      required
+                    />
+                  </FormField>
+                  <FormField label="Subtitle" info="Short tagline shown below the name">
+                    <input
+                      className={inputClass}
+                      value={form.subtitle}
+                      onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}
+                    />
+                  </FormField>
+                  <FormField label="Season">
+                    <input
+                      className={inputClass}
+                      value={form.season}
+                      onChange={(e) => setForm((p) => ({ ...p, season: e.target.value }))}
+                      list="season-list"
+                      placeholder="pick from list or type your own"
+                    />
+                    <datalist id="season-list">
+                      {SEASONS.map((s) => (
+                        <option key={s} value={s} />
+                      ))}
+                    </datalist>
+                  </FormField>
+                </FormSection>
 
-              {/* ── Details ── */}
-              <Section title="Details">
-                <Field label="Cover Image URL" span={2}>
-                  <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.image}
-                    onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))}
-                    placeholder="primary collection image URL"
-                  />
-                </Field>
-                <Field label="Description" span={2}>
-                  <textarea
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full resize-y"
-                    rows={3}
-                    value={form.description}
-                    onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                    placeholder="shown on collection page"
-                  />
-                </Field>
-              </Section>
+                <FormSection title="Details">
+                  <FormField label="Cover Image URL">
+                    <input
+                      className={inputClass}
+                      value={form.image}
+                      onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))}
+                      placeholder="primary collection image URL"
+                    />
+                  </FormField>
+                  <FormField label="Description">
+                    <textarea
+                      className={`${inputClass} resize-y`}
+                      rows={3}
+                      value={form.description}
+                      onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                      placeholder="shown on collection page"
+                    />
+                  </FormField>
+                </FormSection>
+              </>
+            )}
 
-              {/* ── Products Multi-Select ── */}
-              <Section title="Products">
-                <Field label={`Add Products (${form.productIds.length} selected)`} span={2}>
+            {activeTab === "products" && (
+              <FormSection>
+                <FormField label={`Add Products (${form.productIds.length} selected)`}>
                   <div className="flex gap-1.5 mb-2">
                     <div className="flex items-center gap-2 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg px-3 flex-1">
                       <Search size={14} className="text-[var(--text-muted)] shrink-0" />
@@ -508,29 +472,17 @@ export default function CollectionsContent() {
                       })
                     )}
                   </div>
-                </Field>
-              </Section>
+                </FormField>
+              </FormSection>
+            )}
 
-              {/* ── Actions ── */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border-subtle)]">
-                <button
-                  type="button"
-                  className="py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="py-2 px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm text-sm font-semibold font-primary cursor-pointer disabled:opacity-50"
-                  disabled={isSaving}
-                >
-                  {isSaving ? "Saving..." : editingId ? "Update Collection" : "Create Collection"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <FormActions
+              onCancel={closeModal}
+              isSaving={isSaving}
+              submitLabel={editingId ? "Update Collection" : "Create Collection"}
+            />
+          </form>
+        </FormModalShell>
       )}
     </div>
   );

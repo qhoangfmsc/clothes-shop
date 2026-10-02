@@ -10,6 +10,15 @@ import {
   type DataTableFetchParams,
   type DataTableRef,
 } from "@/src/app/_components/DataTable";
+import {
+  FormModalShell,
+  FormTabs,
+  FormSection,
+  FormField,
+  FormActions,
+  inputClass,
+  type FormTab,
+} from "@/src/app/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -33,45 +42,10 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/* ═══════════════════════════════ Sub-components ═══════════════════════ */
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <fieldset className="border-0 border-b border-[var(--border-subtle)] pb-5 px-0 mx-0">
-      <legend className="font-primary text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.06em] p-0 mb-4">
-        {title}
-      </legend>
-      <div className="grid grid-cols-2 gap-4">{children}</div>
-    </fieldset>
-  );
-}
-
-function Field({
-  label,
-  hint,
-  required,
-  span,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  required?: boolean;
-  span?: number;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={`flex flex-col gap-1 ${span === 2 ? "col-span-2" : ""}`}>
-      <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
-        {label}
-        {required && <span className="text-[var(--accent-rose)]"> *</span>}
-      </span>
-      {children}
-      {hint && (
-        <span className="text-[10px] text-[var(--text-disabled)] font-primary italic">{hint}</span>
-      )}
-    </div>
-  );
-}
+const CATEGORY_TABS: FormTab[] = [
+  { id: "info", label: "Info" },
+  { id: "subcategories", label: "Subcategories" },
+];
 
 /* ═══════════════════════════════ Main Component ═══════════════════════ */
 
@@ -171,6 +145,7 @@ export default function CategoriesContent() {
   /* ── Form state ── */
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>(CATEGORY_TABS[0].id);
   const [form, setForm] = useState(EMPTY_CATEGORY_FORM);
 
   /* ── Subcategory helpers ── */
@@ -199,6 +174,7 @@ export default function CategoriesContent() {
   const openCreate = () => {
     setEditingId(null);
     resetForm();
+    setActiveTab(CATEGORY_TABS[0].id);
     setShowModal(true);
   };
 
@@ -211,6 +187,7 @@ export default function CategoriesContent() {
       heroImage: c.heroImage ?? "",
       subcategories: c.subcategories?.map((s) => ({ ...s })) ?? [],
     });
+    setActiveTab(CATEGORY_TABS[0].id);
     setShowModal(true);
   };
 
@@ -299,31 +276,15 @@ export default function CategoriesContent() {
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
-        <div
-          className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-6"
-          onClick={closeModal}
-        >
-          <div
-            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-160 max-h-[85vh] overflow-auto shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-1">
-              <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
-                {editingId ? "Edit Category" : "New Category"}
-              </h2>
-              <button
-                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)]"
-                onClick={closeModal}
-              >
-                <X size={18} />
-              </button>
-            </div>
+        <FormModalShell title={editingId ? "Edit Category" : "New Category"} onClose={closeModal}>
+          <FormTabs tabs={CATEGORY_TABS} active={activeTab} onChange={setActiveTab} />
 
-            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6">
-              <Section title="Basic Info">
-                <Field label="Title" required>
+          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-auto">
+            {activeTab === "info" && (
+              <FormSection>
+                <FormField label="Title" required>
                   <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                    className={inputClass}
                     value={form.title}
                     onChange={(e) => {
                       const v = e.target.value;
@@ -332,95 +293,94 @@ export default function CategoriesContent() {
                     placeholder="e.g. Tops"
                     required
                   />
-                </Field>
-                <Field label="Description" span={2}>
+                </FormField>
+                <FormField label="Description">
                   <textarea
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full resize-y"
-                    rows={2}
+                    className={`${inputClass} resize-y`}
+                    rows={3}
                     value={form.description}
                     onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                     placeholder="Category description..."
                   />
-                </Field>
-                <Field label="Hero Image URL" span={2} hint="Shown on the Shop page's category grid. Leave empty to show a plain background instead.">
+                </FormField>
+                <FormField
+                  label="Hero Image URL"
+                  info="Shown on the Shop page's category grid. Leave empty to show a plain background instead."
+                >
                   <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                    className={inputClass}
                     value={form.heroImage}
                     onChange={(e) => setForm((p) => ({ ...p, heroImage: e.target.value }))}
                     placeholder="https://... or /images/..."
                   />
-                </Field>
-              </Section>
+                </FormField>
+              </FormSection>
+            )}
 
-              {/* Subcategories */}
-              <Section title="Subcategories">
-                <div className="col-span-2">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary flex items-center gap-1.5">
-                      <FolderTree size={14} /> Subcategories
-                    </span>
-                    <button
-                      type="button"
-                      className="flex items-center gap-1 py-1 px-2.5 bg-transparent border border-[var(--border-subtle)] rounded-sm text-xs font-primary text-[var(--text-secondary)] cursor-pointer"
-                      onClick={addSub}
-                    >
-                      <Plus size={12} /> Add
-                    </button>
-                  </div>
-                  {form.subcategories.length === 0 && (
-                    <p className="text-xs text-[var(--text-muted)] py-3">
-                      No subcategories yet. Click &quot;Add&quot; to create one.
-                    </p>
-                  )}
-                  {form.subcategories.map((sub, i) => (
-                    <div key={i} className="flex gap-1.5 mb-1.5 items-center">
-                      <input
-                        className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
-                        placeholder="Label"
-                        value={sub.label}
-                        onChange={(e) => {
-                          const v = e.target.value;
-                          updSub(i, "label", v);
-                          updSub(i, "slug", slugify(v));
-                        }}
-                      />
-                      <input
-                        className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
-                        placeholder="Description"
-                        value={sub.description}
-                        onChange={(e) => updSub(i, "description", e.target.value)}
-                      />
+            {activeTab === "subcategories" && (
+              <FormSection>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary flex items-center gap-1.5">
+                    <FolderTree size={14} /> Subcategories ({form.subcategories.length})
+                  </span>
+                  <button
+                    type="button"
+                    className="flex items-center gap-1 py-1 px-2.5 bg-transparent border border-[var(--border-subtle)] rounded-sm text-xs font-primary text-[var(--text-secondary)] cursor-pointer"
+                    onClick={addSub}
+                  >
+                    <Plus size={12} /> Add
+                  </button>
+                </div>
+                {form.subcategories.length === 0 && (
+                  <p className="text-xs text-[var(--text-muted)] py-3">
+                    No subcategories yet. Click &quot;Add&quot; to create one.
+                  </p>
+                )}
+                {form.subcategories.map((sub, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col gap-2 p-3 border border-[var(--border-subtle)] rounded-lg"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em]">
+                        Subcategory {i + 1}
+                      </span>
                       <button
                         type="button"
-                        className="flex items-center justify-center w-7 h-7 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)] shrink-0"
+                        className="flex items-center justify-center w-6 h-6 border-0 bg-transparent cursor-pointer text-[var(--accent-rose)] shrink-0"
                         onClick={() => rmSub(i)}
                       >
                         <X size={12} />
                       </button>
                     </div>
-                  ))}
-                </div>
-              </Section>
+                    <input
+                      className={inputClass}
+                      placeholder="Label"
+                      value={sub.label}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        updSub(i, "label", v);
+                        updSub(i, "slug", slugify(v));
+                      }}
+                    />
+                    <input
+                      className={inputClass}
+                      placeholder="Description"
+                      value={sub.description}
+                      onChange={(e) => updSub(i, "description", e.target.value)}
+                    />
+                  </div>
+                ))}
+              </FormSection>
+            )}
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border-subtle)]">
-                <button
-                  type="button"
-                  className="py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="py-2 px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm text-sm font-semibold font-primary cursor-pointer disabled:opacity-50"
-                  disabled={isSaving}
-                >
-                  {isSaving ? "Saving..." : editingId ? "Update Category" : "Create Category"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <FormActions
+              onCancel={closeModal}
+              isSaving={isSaving}
+              submitLabel={editingId ? "Update Category" : "Create Category"}
+            />
+          </form>
+        </FormModalShell>
       )}
     </div>
   );

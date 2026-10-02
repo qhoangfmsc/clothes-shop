@@ -12,6 +12,15 @@ import {
   type DataTableFetchParams,
   type DataTableRef,
 } from "@/src/app/_components/DataTable";
+import {
+  FormModalShell,
+  FormTabs,
+  FormSection,
+  FormField,
+  FormActions,
+  inputClass,
+  type FormTab,
+} from "@/src/app/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -53,45 +62,11 @@ function badgeColor(b: string): string {
   return m[b] ?? "bg-[rgba(107,101,96,0.05)] text-[var(--text-muted)]";
 }
 
-/* ═══════════════════════════════ Sub-components ═══════════════════════ */
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <fieldset className="border-0 border-b border-[var(--border-subtle)] pb-5 px-0 mx-0">
-      <legend className="font-primary text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-[0.06em] p-0 mb-4">
-        {title}
-      </legend>
-      <div className="grid grid-cols-2 gap-4">{children}</div>
-    </fieldset>
-  );
-}
-
-function Field({
-  label,
-  hint,
-  required,
-  span,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  required?: boolean;
-  span?: number;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={`flex flex-col gap-1 ${span === 2 ? "col-span-2" : ""}`}>
-      <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
-        {label}
-        {required && <span className="text-[var(--accent-rose)]"> *</span>}
-      </span>
-      {children}
-      {hint && (
-        <span className="text-[10px] text-[var(--text-disabled)] font-primary italic">{hint}</span>
-      )}
-    </div>
-  );
-}
+const PRODUCT_TABS: FormTab[] = [
+  { id: "general", label: "General" },
+  { id: "variants", label: "Variants & Tags" },
+  { id: "images", label: "Images" },
+];
 
 /* ═══════════════════════════════ Main Component ═══════════════════════ */
 
@@ -246,6 +221,7 @@ export default function ProductsContent() {
 
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>(PRODUCT_TABS[0].id);
   const [form, setForm] = useState(EMPTY_FORM);
   /* Color builder */
   const [colorName, setColorName] = useState("");
@@ -294,6 +270,7 @@ export default function ProductsContent() {
   const openCreate = () => {
     setEditingId(null);
     resetForm();
+    setActiveTab(PRODUCT_TABS[0].id);
     setShowModal(true);
   };
 
@@ -319,6 +296,7 @@ export default function ProductsContent() {
     setColorName("");
     setColorHex("#333333");
     setTagInput("");
+    setActiveTab(PRODUCT_TABS[0].id);
     setShowModal(true);
   };
 
@@ -433,191 +411,176 @@ export default function ProductsContent() {
 
       {/* ═══════════════════════════ MODAL FORM ═══════════════════════════ */}
       {showModal && (
-        <div
-          className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-[100] p-6"
-          onClick={closeModal}
+        <FormModalShell
+          title={editingId ? "Edit Product" : "New Product"}
+          onClose={closeModal}
+          maxWidthClass="max-w-160"
         >
-          <div
-            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-[720px] max-h-[85vh] overflow-auto shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal header */}
-            <div className="flex justify-between items-center py-5 px-6 border-b border-[var(--border-subtle)] sticky top-0 bg-[var(--bg-primary)] z-[1]">
-              <h2 className="font-display text-lg text-[var(--text-heading)] font-normal m-0">
-                {editingId ? "Edit Product" : "New Product"}
-              </h2>
-              <button
-                className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)] hover:opacity-70"
-                onClick={closeModal}
-              >
-                <X size={18} />
-              </button>
-            </div>
+          <FormTabs tabs={PRODUCT_TABS} active={activeTab} onChange={setActiveTab} />
 
-            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6">
-              {/* ── Basic Info ── */}
-              <Section title="Basic Info">
-                <Field label="Product Name" required>
-                  <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.name}
-                    placeholder="e.g. Classic White T-Shirt"
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setForm((p) => ({ ...p, name: v, slug: slugify(v) }));
-                    }}
-                    required
-                  />
-                </Field>
-                <Field label="Description" span={2}>
-                  <textarea
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full resize-y"
-                    rows={3}
-                    value={form.description}
-                    onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                    placeholder="Product description..."
-                  />
-                </Field>
-              </Section>
+          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-auto">
+            {/* ── General ── */}
+            {activeTab === "general" && (
+              <>
+                <FormSection title="Basic Info">
+                  <FormField label="Product Name" required>
+                    <input
+                      className={inputClass}
+                      value={form.name}
+                      placeholder="e.g. Classic White T-Shirt"
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setForm((p) => ({ ...p, name: v, slug: slugify(v) }));
+                      }}
+                      required
+                    />
+                  </FormField>
+                  <FormField label="Description">
+                    <textarea
+                      className={`${inputClass} resize-y`}
+                      rows={3}
+                      value={form.description}
+                      onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                      placeholder="Product description..."
+                    />
+                  </FormField>
+                </FormSection>
 
-              {/* ── Pricing ── */}
-              <Section title="Pricing">
-                <Field label="Price ($)" required>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.price}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, price: parseFloat(e.target.value) || 0 }))
-                    }
-                    required
-                  />
-                </Field>
-                <Field label="Original Price ($)">
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.originalPrice ?? ""}
-                    onChange={(e) =>
-                      setForm((p) => ({
-                        ...p,
-                        originalPrice: e.target.value ? parseFloat(e.target.value) : null,
-                      }))
-                    }
-                    placeholder="leave empty if no discount"
-                  />
-                </Field>
-              </Section>
+                <FormSection title="Pricing">
+                  <FormField label="Price ($)" required>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      className={inputClass}
+                      value={form.price}
+                      onChange={(e) =>
+                        setForm((p) => ({ ...p, price: parseFloat(e.target.value) || 0 }))
+                      }
+                      required
+                    />
+                  </FormField>
+                  <FormField label="Original Price ($)" info="Leave empty if there's no discount.">
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      className={inputClass}
+                      value={form.originalPrice ?? ""}
+                      onChange={(e) =>
+                        setForm((p) => ({
+                          ...p,
+                          originalPrice: e.target.value ? parseFloat(e.target.value) : null,
+                        }))
+                      }
+                    />
+                  </FormField>
+                </FormSection>
 
-              {/* ── Classification ── */}
-              <Section title="Classification">
-                <Field label="Category" required>
-                  <select
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.categoryId}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: "" }))
-                    }
-                    required
+                <FormSection title="Classification">
+                  <FormField label="Category" required>
+                    <select
+                      className={inputClass}
+                      value={form.categoryId}
+                      onChange={(e) =>
+                        setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: "" }))
+                      }
+                      required
+                    >
+                      <option value="">— Select a category —</option>
+                      {categoryOptions}
+                    </select>
+                  </FormField>
+                  <FormField label="SubCategory">
+                    <select
+                      className={inputClass}
+                      value={form.subcategoryId}
+                      onChange={(e) => setForm((p) => ({ ...p, subcategoryId: e.target.value }))}
+                      disabled={!form.categoryId || subcategoryOptions.length === 0}
+                    >
+                      <option value="">— None —</option>
+                      {subcategorySelectOptions}
+                    </select>
+                  </FormField>
+                  <FormField
+                    label="Status"
+                    info="Disabled products are hidden from the storefront."
                   >
-                    <option value="">— Select a category —</option>
-                    {categoryOptions}
-                  </select>
-                </Field>
-                <Field label="SubCategory">
-                  <select
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.subcategoryId}
-                    onChange={(e) => setForm((p) => ({ ...p, subcategoryId: e.target.value }))}
-                    disabled={!form.categoryId || subcategoryOptions.length === 0}
-                  >
-                    <option value="">— None —</option>
-                    {subcategorySelectOptions}
-                  </select>
-                </Field>
-                <Field label="Status">
-                  <select
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.status}
-                    onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
-                  >
-                    <option value="active">Active — visible in store</option>
-                    <option value="disabled">Disabled — hidden</option>
-                  </select>
-                </Field>
-                <Field label="Badge">
-                  <select
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
-                    value={form.badge ?? ""}
-                    onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value || null }))}
-                  >
-                    <option value="">None</option>
-                    <option value="new">New</option>
-                    <option value="sale">Sale</option>
-                    <option value="bestseller">Bestseller</option>
-                  </select>
-                </Field>
-              </Section>
+                    <select
+                      className={inputClass}
+                      value={form.status}
+                      onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
+                    >
+                      <option value="active">Active</option>
+                      <option value="disabled">Disabled</option>
+                    </select>
+                  </FormField>
+                  <FormField label="Badge">
+                    <select
+                      className={inputClass}
+                      value={form.badge ?? ""}
+                      onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value || null }))}
+                    >
+                      <option value="">None</option>
+                      <option value="new">New</option>
+                      <option value="sale">Sale</option>
+                      <option value="bestseller">Bestseller</option>
+                    </select>
+                  </FormField>
+                </FormSection>
+              </>
+            )}
 
-              {/* ── Attributes ── */}
-              <Section title="Attributes">
-                {/* Sizes */}
-                <div className="flex flex-col gap-1 col-span-2">
-                  <div className="flex gap-5 items-center">
-                    <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
-                      Sizes
-                    </span>
+            {/* ── Variants & Tags ── */}
+            {activeTab === "variants" && (
+              <FormSection>
+                <FormField label="Sizes">
+                  <div className="flex flex-col gap-1">
                     {form.sizes.length > 0 && (
                       <button
                         type="button"
-                        className="inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[10px] font-primary text-[var(--text-muted)] cursor-pointer"
+                        className="self-start inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[10px] font-primary text-[var(--text-muted)] cursor-pointer"
                         onClick={() => setForm((p) => ({ ...p, sizes: [] }))}
                       >
                         Clear all ({form.sizes.length})
                         <X size={10} />
                       </button>
                     )}
-                  </div>
-                  {SIZE_GROUPS.map((group) => (
-                    <div key={group.label} className="mb-2">
-                      <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
-                        {group.label}
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {group.sizes.map((size) => {
-                          const active = form.sizes.includes(size);
-                          return (
-                            <button
-                              key={size}
-                              type="button"
-                              className={`inline-flex items-center gap-1 py-[5px] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
-                                active
-                                  ? "bg-[var(--accent-sage)] text-white px-2 font-semibold cursor-default"
-                                  : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
-                              }`}
-                              onClick={() =>
-                                setForm((p) => ({
-                                  ...p,
-                                  sizes: active
-                                    ? p.sizes.filter((s) => s !== size)
-                                    : [...p.sizes, size],
-                                }))
-                              }
-                            >
-                              {size}
-                            </button>
-                          );
-                        })}
+                    {SIZE_GROUPS.map((group) => (
+                      <div key={group.label} className="mb-2">
+                        <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
+                          {group.label}
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {group.sizes.map((size) => {
+                            const active = form.sizes.includes(size);
+                            return (
+                              <button
+                                key={size}
+                                type="button"
+                                className={`inline-flex items-center gap-1 py-[5px] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
+                                  active
+                                    ? "bg-[var(--accent-sage)] text-white px-2 font-semibold cursor-default"
+                                    : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
+                                }`}
+                                onClick={() =>
+                                  setForm((p) => ({
+                                    ...p,
+                                    sizes: active
+                                      ? p.sizes.filter((s) => s !== size)
+                                      : [...p.sizes, size],
+                                  }))
+                                }
+                              >
+                                {size}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  <div className="flex gap-1.5 mt-0">
+                    ))}
                     <input
-                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
+                      className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
                       placeholder="Type custom size and press Enter"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -631,10 +594,9 @@ export default function ProductsContent() {
                       }}
                     />
                   </div>
-                </div>
+                </FormField>
 
-                {/* Colors */}
-                <Field label="Colors" span={2}>
+                <FormField label="Colors">
                   <div className="flex gap-2 mb-2.5 items-end">
                     <input
                       className="py-1.5 px-2.5 border-0 border-b border-[var(--border-light)] rounded-none text-xs font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none flex-1"
@@ -690,27 +652,26 @@ export default function ProductsContent() {
                   ) : (
                     <p className="text-xs text-[var(--text-muted)] italic">No colors added yet.</p>
                   )}
-                </Field>
+                </FormField>
 
-                <Field label="Material">
+                <FormField label="Material">
                   <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                    className={inputClass}
                     value={form.material}
                     onChange={(e) => setForm((p) => ({ ...p, material: e.target.value }))}
                     placeholder="e.g. 100% Cotton"
                   />
-                </Field>
-                <Field label="Care Instructions">
+                </FormField>
+                <FormField label="Care Instructions">
                   <input
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full"
+                    className={inputClass}
                     value={form.care}
                     onChange={(e) => setForm((p) => ({ ...p, care: e.target.value }))}
                     placeholder="e.g. Machine wash cold"
                   />
-                </Field>
+                </FormField>
 
-                {/* Tags */}
-                <Field label="Tags" span={2}>
+                <FormField label="Tags">
                   <div className="flex flex-wrap gap-1.5">
                     {TAG_SUGGESTIONS.filter((t) => !form.tags.includes(t)).map((tag) => (
                       <button
@@ -762,15 +723,20 @@ export default function ProductsContent() {
                       ))}
                     </div>
                   )}
-                </Field>
-              </Section>
+                </FormField>
+              </FormSection>
+            )}
 
-              {/* ── Images ── */}
-              <Section title="Images">
-                <Field label="Image URLs" span={2}>
+            {/* ── Images ── */}
+            {activeTab === "images" && (
+              <FormSection>
+                <FormField
+                  label="Image URLs"
+                  info="One URL per line. The first one is used as the main thumbnail."
+                >
                   <textarea
-                    className="py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none w-full resize-y"
-                    rows={4}
+                    className={`${inputClass} resize-y`}
+                    rows={6}
                     value={form.images.join("\n")}
                     placeholder="one URL per line"
                     onChange={(e) =>
@@ -783,29 +749,17 @@ export default function ProductsContent() {
                       }))
                     }
                   />
-                </Field>
-              </Section>
+                </FormField>
+              </FormSection>
+            )}
 
-              {/* ── Actions ── */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border-subtle)]">
-                <button
-                  type="button"
-                  className="py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="py-2 px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm text-sm font-semibold font-primary cursor-pointer disabled:opacity-50"
-                  disabled={isSaving}
-                >
-                  {isSaving ? "Saving..." : editingId ? "Update Product" : "Create Product"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <FormActions
+              onCancel={closeModal}
+              isSaving={isSaving}
+              submitLabel={editingId ? "Update Product" : "Create Product"}
+            />
+          </form>
+        </FormModalShell>
       )}
     </div>
   );
