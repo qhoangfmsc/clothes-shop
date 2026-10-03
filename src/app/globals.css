@@ -14,7 +14,7 @@ body {
 
 /* ─── Global Image Fade-In ───
    All images appear with a smooth fade instead of popping in.
-   Prevents "giật" effect when navigating to pages with images. */
+   Prevents a jarring "pop-in" effect when navigating to pages with images. */
 img {
   opacity: 0;
   animation: img-fade-in 0.4s ease-out forwards;

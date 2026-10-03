@@ -5,7 +5,9 @@ import Image from "next/image";
 import { Plus, Pencil, Trash2, X, ImageIcon } from "lucide-react";
 import { useAdminCategories } from "@/src/hooks/use-admin-api";
 import { useToast } from "@/src/app/_components/Toast";
+import { useConfirm } from "@/src/app/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
+import { ImageListField } from "@/src/app/_components/ImageListField";
 import {
   DataTable,
   type DataTableColumn,
@@ -73,6 +75,7 @@ const PRODUCT_TABS: FormTab[] = [
 
 export default function ProductsContent() {
   const { toast } = useToast();
+  const confirm = useConfirm();
   const tableRef = useRef<DataTableRef>(null);
   const dispatch = useAppDispatch();
 
@@ -351,7 +354,13 @@ export default function ProductsContent() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete "${name}"?`)) return;
+    const ok = await confirm({
+      title: "Delete product",
+      message: `Delete "${name}"?`,
+      confirmLabel: "Delete",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await dispatch(deleteProduct(id)).unwrap();
       toast.success("Product deleted");
@@ -741,23 +750,12 @@ export default function ProductsContent() {
               {activeTab === "images" && (
                 <FormSection>
                   <FormField
-                    label="Image URLs"
-                    info="One URL per line. The first one is used as the main thumbnail."
+                    label="Images"
+                    info="Upload files or paste URLs. The first image is used as the main thumbnail."
                   >
-                    <textarea
-                      className={`${inputClass} resize-y`}
-                      rows={6}
-                      value={form.images.join("\n")}
-                      placeholder="one URL per line"
-                      onChange={(e) =>
-                        setForm((p) => ({
-                          ...p,
-                          images: e.target.value
-                            .split("\n")
-                            .map((s) => s.trim())
-                            .filter(Boolean),
-                        }))
-                      }
+                    <ImageListField
+                      value={form.images}
+                      onChange={(images) => setForm((p) => ({ ...p, images }))}
                     />
                   </FormField>
                 </FormSection>

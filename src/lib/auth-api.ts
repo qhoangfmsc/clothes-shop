@@ -23,6 +23,10 @@ function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
 
+/** Exposed for callers that need to build their own authenticated requests
+ *  (e.g. hitting a local Next.js API route instead of the backend). */
+export const getAccessToken = getToken;
+
 function getRefreshToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem(REFRESH_KEY);

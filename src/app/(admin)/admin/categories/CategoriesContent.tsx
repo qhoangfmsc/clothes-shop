@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, type FormEvent } from "react";
 import { Plus, Pencil, Trash2, X, FolderTree } from "lucide-react";
 import { useToast } from "@/src/app/_components/Toast";
+import { useConfirm } from "@/src/app/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
 import {
   DataTable,
@@ -20,6 +21,7 @@ import {
   inputClass,
   type FormTab,
 } from "@/src/app/_components/AdminFormKit";
+import { ImageUrlField } from "@/src/app/_components/ImageUrlField";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -52,6 +54,7 @@ const CATEGORY_TABS: FormTab[] = [
 
 export default function CategoriesContent() {
   const { toast } = useToast();
+  const confirm = useConfirm();
   const tableRef = useRef<DataTableRef>(null);
   const dispatch = useAppDispatch();
 
@@ -234,7 +237,13 @@ export default function CategoriesContent() {
   };
 
   const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Delete "${title}"?`)) return;
+    const ok = await confirm({
+      title: "Delete category",
+      message: `Delete "${title}"?`,
+      confirmLabel: "Delete",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await dispatch(deleteCategory(id)).unwrap();
       toast.success("Deleted");
@@ -306,14 +315,13 @@ export default function CategoriesContent() {
                     />
                   </FormField>
                   <FormField
-                    label="Hero Image URL"
+                    label="Hero Image"
                     info="Shown on the Shop page's category grid. Leave empty to show a plain background instead."
                   >
-                    <input
-                      className={inputClass}
+                    <ImageUrlField
                       value={form.heroImage}
-                      onChange={(e) => setForm((p) => ({ ...p, heroImage: e.target.value }))}
-                      placeholder="https://... or /images/..."
+                      onChange={(url) => setForm((p) => ({ ...p, heroImage: url }))}
+                      placeholder="https://... or upload a file"
                     />
                   </FormField>
                 </FormSection>

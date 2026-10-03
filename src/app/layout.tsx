@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter_Tight } from "next/font/google";
 import { ToastProvider } from "./_components/Toast";
+import { ConfirmProvider } from "./_components/ConfirmDialog";
+import { SystemPasswordPromptProvider } from "./_components/SystemPasswordPrompt";
 import { QuickAddProvider } from "./_components/QuickAddDrawer";
 import { LoginPromptProvider } from "./_components/LoginPromptModal";
 import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
 import Providers from "./_components/Providers";
 import { CustomCursor } from "./_components/cursor";
+import AppwritePing from "./_components/AppwritePing";
 import "./globals.css";
 
 const quicheDisplay = localFont({
@@ -43,16 +46,21 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
+        <AppwritePing />
         <CustomCursor />
         <Providers>
           <ToastProvider position="bottom-center">
-            <LoginPromptProvider>
-              <QuickAddProvider>
-                <RouteTransition />
-                <CartFAB />
-                {children}
-              </QuickAddProvider>
-            </LoginPromptProvider>
+            <ConfirmProvider>
+              <SystemPasswordPromptProvider>
+                <LoginPromptProvider>
+                  <QuickAddProvider>
+                    <RouteTransition />
+                    <CartFAB />
+                    {children}
+                  </QuickAddProvider>
+                </LoginPromptProvider>
+              </SystemPasswordPromptProvider>
+            </ConfirmProvider>
           </ToastProvider>
         </Providers>
       </body>

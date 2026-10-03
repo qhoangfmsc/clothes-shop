@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Plus, X, ImageIcon, ChevronDown, ChevronUp, Check } from "lucide-react";
 import { useToast } from "@/src/app/_components/Toast";
+import { useConfirm } from "@/src/app/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
+import { ImageUrlField } from "@/src/app/_components/ImageUrlField";
 import {
   ModalShell,
   ModalBody,
@@ -32,6 +34,7 @@ import type { BannerItem, BannerResponsiveImages } from "@/src/types/site-config
 
 export default function SiteConfigContent() {
   const { toast } = useToast();
+  const confirm = useConfirm();
   const dispatch = useAppDispatch();
   const { keys, items, isListLoading, isUpdating } = useAppSelector((s) => s.siteConfig);
 
@@ -158,7 +161,13 @@ export default function SiteConfigContent() {
   };
 
   const handleReset = async (key: string) => {
-    if (!confirm("Delete this config? The page will fall back to its default content.")) return;
+    const ok = await confirm({
+      title: "Delete config",
+      message: "Delete this config? The page will fall back to its default content.",
+      confirmLabel: "Delete",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await dispatch(deleteSiteConfig(key)).unwrap();
       toast.success("Config deleted");
@@ -336,12 +345,10 @@ export default function SiteConfigContent() {
                             required
                             info="Laptop / PC, ≥ 1024px — also the fallback for tablet & mobile"
                           >
-                            <input
-                              className={inputClass}
+                            <ImageUrlField
                               value={b.image}
-                              onChange={(e) => updBanner(i, "image", e.target.value)}
-                              placeholder="https://... or /images/..."
-                              required
+                              onChange={(url) => updBanner(i, "image", url)}
+                              placeholder="https://... or upload a file"
                             />
                           </FormField>
 
@@ -349,13 +356,10 @@ export default function SiteConfigContent() {
                             label="Tablet"
                             info="iPad / tablets, ≥ 640px — optional, falls back to Desktop"
                           >
-                            <input
-                              className={inputClass}
+                            <ImageUrlField
                               value={b.responsiveImages?.tablet ?? ""}
-                              onChange={(e) =>
-                                updBannerResponsiveImage(i, "tablet", e.target.value)
-                              }
-                              placeholder="https://... or /images/..."
+                              onChange={(url) => updBannerResponsiveImage(i, "tablet", url)}
+                              placeholder="https://... or upload a file"
                             />
                           </FormField>
 
@@ -363,13 +367,10 @@ export default function SiteConfigContent() {
                             label="Mobile"
                             info="Phones, < 640px — optional, falls back to Tablet, then Desktop"
                           >
-                            <input
-                              className={inputClass}
+                            <ImageUrlField
                               value={b.responsiveImages?.mobile ?? ""}
-                              onChange={(e) =>
-                                updBannerResponsiveImage(i, "mobile", e.target.value)
-                              }
-                              placeholder="https://... or /images/..."
+                              onChange={(url) => updBannerResponsiveImage(i, "mobile", url)}
+                              placeholder="https://... or upload a file"
                             />
                           </FormField>
                         </FormSection>

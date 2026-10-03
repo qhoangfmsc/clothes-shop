@@ -5,7 +5,9 @@ import Image from "next/image";
 import { Plus, Pencil, Trash2, X, ImageIcon, Search } from "lucide-react";
 import { useAdminProducts } from "@/src/hooks/use-admin-api";
 import { useToast } from "@/src/app/_components/Toast";
+import { useConfirm } from "@/src/app/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/_components/RoleGuard";
+import { ImageUrlField } from "@/src/app/_components/ImageUrlField";
 import {
   DataTable,
   type DataTableColumn,
@@ -54,6 +56,7 @@ const COLLECTION_TABS: FormTab[] = [
 
 export default function CollectionsContent() {
   const { toast } = useToast();
+  const confirm = useConfirm();
   const tableRef = useRef<DataTableRef>(null);
   const dispatch = useAppDispatch();
 
@@ -232,7 +235,13 @@ export default function CollectionsContent() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete "${name}"?`)) return;
+    const ok = await confirm({
+      title: "Delete collection",
+      message: `Delete "${name}"?`,
+      confirmLabel: "Delete",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await dispatch(deleteCollection(id)).unwrap();
       toast.success("Deleted");
@@ -327,12 +336,11 @@ export default function CollectionsContent() {
                   </FormSection>
 
                   <FormSection title="Details">
-                    <FormField label="Cover Image URL">
-                      <input
-                        className={inputClass}
+                    <FormField label="Cover Image">
+                      <ImageUrlField
                         value={form.image}
-                        onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))}
-                        placeholder="primary collection image URL"
+                        onChange={(url) => setForm((p) => ({ ...p, image: url }))}
+                        placeholder="primary collection image URL or upload"
                       />
                     </FormField>
                     <FormField label="Description">
