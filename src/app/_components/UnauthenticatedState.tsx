@@ -116,25 +116,6 @@ export default function UnauthenticatedState() {
               Go to Home
             </Link>
           </motion.div>
-
-          {/* Features preview */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, ease: [...ease], delay: 0.5 }}
-            className="unauth-modal__features"
-          >
-            {[
-              "Track your orders",
-              "Save your wishlist",
-              "Exclusive member offers",
-            ].map((feature) => (
-              <div key={feature} className="unauth-modal__feature-item">
-                <Sparkles size={12} style={{ color: "var(--accent-primary)", flexShrink: 0 }} />
-                <span>{feature}</span>
-              </div>
-            ))}
-          </motion.div>
         </motion.div>
       </div>
 
