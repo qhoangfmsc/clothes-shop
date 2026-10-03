@@ -32,6 +32,20 @@ export const metadata: Metadata = {
   title: "DOOVAN — Haute Couture Collection",
   description:
     "Discover DOOVAN's exclusive haute couture collection. Luxury bags, apparel & accessories designed for the global fashion runway.",
+  openGraph: {
+    images: [
+      {
+        url: "/brand/brand_og.png",
+        width: 1200,
+        height: 630,
+        alt: "Website thumbnail",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/brand/brand_og.png"],
+  },
 };
 
 export default function RootLayout({
