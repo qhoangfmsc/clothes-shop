@@ -1,12 +1,17 @@
 /* ═══════════════════════════════════════════════════════════
-   ADMIN MEDIA — SWR-based listing for the Appwrite (s3host) bucket
+   ADMIN MEDIA — SWR-based listing backed by clothes-shop-api
 
-   Hits local Next.js API routes (/api/admin/media/*), NOT the
-   backend — those routes hold the Appwrite API key server-side.
+   Hits the backend directly (/api/admin/media/*), which holds the
+   Supabase service role key and the media_files metadata table.
    ═══════════════════════════════════════════════════════════ */
 
 import useSWR from "swr";
 import { getAccessToken } from "@/src/lib/auth-api";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
+
+/** errorCode the backend returns when Supabase isn't configured yet. */
+export const MEDIA_NOT_CONFIGURED_CODE = 1601;
 
 export interface MediaFile {
   id: string;
@@ -20,24 +25,27 @@ export interface MediaFile {
 export interface MediaListResponse {
   data: MediaFile[];
   total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 export class MediaApiError extends Error {
-  code?: string;
-  constructor(message: string, code?: string) {
+  errorCode?: number;
+  constructor(message: string, errorCode?: number) {
     super(message);
-    this.code = code;
+    this.errorCode = errorCode;
   }
 }
 
 async function mediaFetch<T>(path: string): Promise<T> {
   const token = getAccessToken();
-  const res = await fetch(path, {
+  const res = await fetch(`${API_URL}${path}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new MediaApiError(body.message || `Request failed: ${res.status}`, body.code);
+    throw new MediaApiError(body.message || `Request failed: ${res.status}`, body.errorCode);
   }
   return res.json();
 }
@@ -61,13 +69,13 @@ export function useAdminMedia(filters: MediaFilters = {}) {
 
   const deleteOne = async (id: string) => {
     const token = getAccessToken();
-    const res = await fetch(`/api/admin/media/${id}`, {
+    const res = await fetch(`${API_URL}/api/admin/media/${id}`, {
       method: "DELETE",
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      throw new MediaApiError(body.message || "Delete failed", body.code);
+      throw new MediaApiError(body.message || "Delete failed", body.errorCode);
     }
   };
 
@@ -96,8 +104,4 @@ export function useAdminMedia(filters: MediaFilters = {}) {
     deleteFile,
     deleteFiles,
   };
-}
-
-export function mediaPreviewUrl(fileId: string, width = 400): string {
-  return `/api/admin/media/${fileId}/preview?w=${width}`;
 }

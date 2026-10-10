@@ -9,9 +9,8 @@ import { X } from "lucide-react";
 
    Portaled to <body> so it isn't clipped by whatever modal or
    scroll container it's opened from. Callers supply the actual
-   image element as `children` (plain <img> for public URLs,
-   <AuthedImage> for routes that need an Authorization header) —
-   this component only owns the overlay chrome.
+   image element as `children` (a plain <img> pointed at a public
+   URL) — this component only owns the overlay chrome.
 
    Usage:
      <ImagePreviewLightbox open={open} onClose={() => setOpen(false)} caption="...">

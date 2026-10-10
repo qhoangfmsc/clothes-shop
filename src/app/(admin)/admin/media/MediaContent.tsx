@@ -15,11 +15,16 @@ import {
 } from "lucide-react";
 import { useToast } from "@/src/app/_components/Toast";
 import { useConfirm } from "@/src/app/_components/ConfirmDialog";
-import { useAdminMedia, mediaPreviewUrl, type MediaFile } from "@/src/hooks/use-admin-media";
+import {
+  useAdminMedia,
+  MEDIA_NOT_CONFIGURED_CODE,
+  type MediaFile,
+} from "@/src/hooks/use-admin-media";
 import { uploadMediaFile } from "@/src/hooks/use-media-upload";
-import { appwriteClient } from "@/src/lib/appwrite-client";
+import { getAccessToken } from "@/src/lib/auth-api";
 import { ImagePreviewLightbox } from "@/src/app/_components/ImagePreviewLightbox";
-import { AuthedImage } from "./_components/AuthedImage";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
 const PAGE_SIZE = 24;
 
@@ -52,7 +57,7 @@ export default function MediaContent() {
   const { files, total, isLoading, isValidating, error, mutate, deleteFile, deleteFiles } =
     useAdminMedia({ page, limit: PAGE_SIZE });
 
-  const notConfigured = error?.code === "NOT_CONFIGURED";
+  const notConfigured = error?.errorCode === MEDIA_NOT_CONFIGURED_CODE;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const goToPage = (next: number) => {
@@ -122,10 +127,15 @@ export default function MediaContent() {
   const handlePing = async () => {
     setIsPinging(true);
     try {
-      await appwriteClient.ping();
-      toast.success("Ping OK — s3host is reachable");
+      const token = getAccessToken();
+      const res = await fetch(`${API_URL}/api/admin/media/ping`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.message || "Ping failed");
+      toast.success("Ping OK — Supabase Storage is reachable");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Ping failed — is s3host running?");
+      toast.error(err instanceof Error ? err.message : "Ping failed — check Supabase config");
     } finally {
       setIsPinging(false);
     }
@@ -137,7 +147,7 @@ export default function MediaContent() {
       <div className="shrink-0">
         <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Media</h1>
         <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
-          Images stored on s3host (Appwrite Storage)
+          Images stored in Supabase Storage
         </p>
       </div>
 
@@ -175,9 +185,9 @@ export default function MediaContent() {
             className="flex items-center gap-1.5 py-2 px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40"
             onClick={handlePing}
             disabled={isPinging}
-            title="Calls client.ping() against Appwrite (s3host) to confirm the SDK is connected"
+            title="Checks that the Supabase service role key and bucket are reachable"
           >
-            <Wifi size={14} className={isPinging ? "animate-pulse" : ""} /> Ping Appwrite
+            <Wifi size={14} className={isPinging ? "animate-pulse" : ""} /> Ping Supabase
           </button>
           <button
             className="flex items-center gap-1.5 py-2 px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40"
@@ -193,30 +203,33 @@ export default function MediaContent() {
       {notConfigured && (
         <div className="flex flex-col gap-3 p-6 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-secondary)] max-w-[640px]">
           <h2 className="font-display text-lg text-[var(--text-heading)] font-normal">
-            Appwrite is not configured yet
+            Supabase Storage is not configured yet
           </h2>
           <p className="text-sm text-[var(--text-muted)] font-primary leading-relaxed">
-            The bucket and API key for s3host are missing. Open the{" "}
+            The bucket and service role key are missing. Open your{" "}
             <a
-              href="http://localhost:8080"
+              href="https://supabase.com/dashboard"
               target="_blank"
               rel="noreferrer"
               className="text-[var(--accent-primary)] underline"
             >
-              Appwrite console
+              Supabase dashboard
             </a>{" "}
-            (project <code>main</code>) and follow these steps:
+            and follow these steps:
           </p>
           <ol className="text-sm text-[var(--text-secondary)] font-primary leading-relaxed list-decimal pl-5 space-y-1">
             <li>
-              Storage → Create bucket (e.g. id/name: <code>images</code>).
+              Storage → Create a new bucket (e.g. <code>media</code>) and mark it{" "}
+              <strong>public</strong>.
             </li>
             <li>
-              Project Settings → API keys → Create key, grant the Storage scope (read + write).
+              Project Settings → API → copy the Project URL and the <code>service_role</code> secret
+              key.
             </li>
             <li>
-              Fill in <code>APPWRITE_BUCKET_ID</code> and <code>APPWRITE_API_KEY</code> in{" "}
-              <code>.env.local</code>, then restart <code>npm run dev</code>.
+              Fill in <code>SUPABASE_URL</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code> and{" "}
+              <code>SUPABASE_STORAGE_BUCKET</code> in the backend&apos;s <code>.env</code>{" "}
+              (clothes-shop-api), then restart it.
             </li>
           </ol>
           <button
@@ -278,8 +291,9 @@ export default function MediaContent() {
                 }`}
               >
                 <div className="relative">
-                  <AuthedImage
-                    src={mediaPreviewUrl(file.id, 360)}
+                  {/* eslint-disable-next-line @next/next/no-img-element -- public Supabase Storage URL */}
+                  <img
+                    src={file.url}
                     alt={file.name}
                     className="w-full h-[160px] object-cover cursor-pointer"
                     onClick={() => setPreview(file)}
@@ -367,8 +381,9 @@ export default function MediaContent() {
         }
       >
         {preview && (
-          <AuthedImage
-            src={mediaPreviewUrl(preview.id, 1400)}
+          // eslint-disable-next-line @next/next/no-img-element -- public Supabase Storage URL
+          <img
+            src={preview.url}
             alt={preview.name}
             className="max-w-[90vw] max-h-[75vh] object-contain rounded-md"
           />

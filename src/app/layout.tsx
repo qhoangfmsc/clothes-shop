@@ -10,7 +10,6 @@ import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
 import Providers from "./_components/Providers";
 import { CustomCursor } from "./_components/cursor";
-import AppwritePing from "./_components/AppwritePing";
 import "./globals.css";
 
 const quicheDisplay = localFont({
@@ -60,7 +59,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <AppwritePing />
         <CustomCursor />
         <Providers>
           <ToastProvider position="bottom-center">

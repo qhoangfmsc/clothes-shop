@@ -8,7 +8,7 @@ import { inputClass } from "./AdminFormKit";
 import { ImagePreviewLightbox } from "./ImagePreviewLightbox";
 
 /** A single image-URL input that also accepts a direct upload — the
- *  upload goes to the s3host Appwrite bucket and fills the field with
+ *  upload goes to the Supabase Storage bucket and fills the field with
  *  the resulting public URL. Used by Categories (hero image) and
  *  Collections (cover image). */
 export function ImageUrlField({
