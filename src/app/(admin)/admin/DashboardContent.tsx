@@ -13,7 +13,8 @@ import {
   Truck,
   XCircle,
 } from "lucide-react";
-import { useAdminProducts } from "@/src/hooks/use-admin-api";
+import { DataTable, type DataTableColumn } from "@/src/app/_components/DataTable";
+import { useAdminProducts, type AdminOrder } from "@/src/hooks/use-admin-api";
 import { useAdminOrders } from "@/src/hooks/use-admin-api";
 import { useAdminUsers } from "@/src/hooks/use-admin-api";
 
@@ -44,6 +45,54 @@ const STATUS_ICON: Record<string, React.ReactNode> = {
   completed: <CheckCircle2 size={14} />,
   cancelled: <XCircle size={14} />,
 };
+
+const RECENT_ORDER_COLUMNS: DataTableColumn<AdminOrder>[] = [
+  {
+    key: "order",
+    header: "Order",
+    render: (o) => (
+      <code className="text-xs font-mono font-semibold bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-[var(--radius-sm)]">
+        #{o.id}
+      </code>
+    ),
+  },
+  {
+    key: "status",
+    header: "Status",
+    render: (o) => (
+      <span
+        className={`inline-flex items-center gap-1 py-0.5 px-2 rounded-[var(--radius-pill)] text-xs font-semibold font-primary capitalize ${STATUS_STYLE[o.status]}`}
+      >
+        {STATUS_ICON[o.status]} {o.status}
+      </span>
+    ),
+  },
+  {
+    key: "items",
+    header: "Items",
+    hideBelow: "sm",
+    render: (o) => <span className="text-xs text-[var(--text-muted)]">{o.items?.length ?? 0}</span>,
+  },
+  {
+    key: "total",
+    header: "Total",
+    render: (o) => (
+      <span className="font-semibold text-[var(--accent-primary)]">
+        ${Number(o.total).toFixed(2)}
+      </span>
+    ),
+  },
+  {
+    key: "date",
+    header: "Date",
+    hideBelow: "sm",
+    render: (o) => (
+      <span className="text-xs text-[var(--text-muted)]">
+        {new Date(o.createdAt).toLocaleDateString()}
+      </span>
+    ),
+  },
+];
 
 /* ── KPI accent palette — tint/border are literal rgba so they stay valid
    CSS (var() can't be string-concatenated with an alpha suffix). Reuses
@@ -183,70 +232,13 @@ export default function DashboardContent() {
               Recent Orders
             </h2>
           </div>
-          {loading ? (
-            <p className="text-sm text-[var(--text-muted)] font-primary py-[var(--space-6)] text-center">
-              Loading...
-            </p>
-          ) : recentOrders.length === 0 ? (
-            <p className="text-sm text-[var(--text-muted)] font-primary py-[var(--space-6)] text-center">
-              No orders yet.
-            </p>
-          ) : (
-            <table className="w-full border-collapse">
-              <thead>
-                <tr>
-                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
-                    Order
-                  </th>
-                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
-                    Status
-                  </th>
-                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
-                    Items
-                  </th>
-                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
-                    Total
-                  </th>
-                  <th className="text-left text-xs font-semibold text-[var(--text-muted)] py-[var(--space-2)] px-[var(--space-3)] border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em]">
-                    Date
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((o) => (
-                  <tr key={o.id} className="border-b border-[var(--border-subtle)]">
-                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
-                      <code className="text-xs font-mono font-semibold bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-[var(--radius-sm)]">
-                        #{o.id}
-                      </code>
-                    </td>
-                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
-                      <span
-                        className={`inline-flex items-center gap-1 py-0.5 px-2 rounded-[var(--radius-pill)] text-xs font-semibold font-primary capitalize ${STATUS_STYLE[o.status]}`}
-                      >
-                        {STATUS_ICON[o.status]} {o.status}
-                      </span>
-                    </td>
-                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
-                      <span className="text-xs text-[var(--text-muted)] font-primary">
-                        {o.items?.length ?? 0}
-                      </span>
-                    </td>
-                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary align-middle">
-                      <span className="font-semibold" style={{ color: "var(--accent-primary)" }}>
-                        ${Number(o.total).toFixed(2)}
-                      </span>
-                    </td>
-                    <td className="py-[var(--space-2)] px-[var(--space-3)] text-sm font-primary text-[var(--text-primary)] align-middle">
-                      <span className="text-xs text-[var(--text-muted)] font-primary">
-                        {new Date(o.createdAt).toLocaleDateString()}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <DataTable<AdminOrder>
+            columns={RECENT_ORDER_COLUMNS}
+            rows={recentOrders}
+            loading={loading}
+            searchable={false}
+            emptyMessage="No orders yet."
+          />
         </div>
 
         {/* Order Status Breakdown */}

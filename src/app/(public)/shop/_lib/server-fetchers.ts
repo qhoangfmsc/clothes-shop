@@ -13,6 +13,7 @@ import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
+import { mapMediaUrls } from "@/src/lib/media-url";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -25,7 +26,7 @@ async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
     throw new Error(`API ${path} failed: ${res.status}`);
   }
 
-  return res.json();
+  return mapMediaUrls(await res.json());
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -208,7 +209,7 @@ export async function getBannerConfig(key: string): Promise<BannerItem[]> {
     const { data } = await apiFetch<{ data: SiteConfig | null }>(`/api/site-config?key=${key}`);
     if (!data?.value) return [];
     const parsed = JSON.parse(data.value);
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? mapMediaUrls(parsed) : [];
   } catch {
     return [];
   }

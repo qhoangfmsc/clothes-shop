@@ -17,6 +17,7 @@ import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ProductListParams, ProductListResponse } from "@/src/app/(public)/shop/_lib/server-fetchers";
+import { mapMediaUrls } from "@/src/lib/media-url";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -24,7 +25,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 const fetcher = <T,>(url: string): Promise<T> =>
   fetch(url).then((res) => {
     if (!res.ok) throw new Error(`API error: ${res.status}`);
-    return res.json();
+    return res.json().then(mapMediaUrls) as Promise<T>;
   });
 
 /* ── SWR default config ── */
@@ -247,7 +248,7 @@ export function useBannerConfig(key: string) {
     if (!data?.data?.value) return [];
     try {
       const parsed = JSON.parse(data.data.value);
-      return Array.isArray(parsed) ? parsed : [];
+      return Array.isArray(parsed) ? mapMediaUrls(parsed) : [];
     } catch {
       return [];
     }
@@ -312,7 +313,7 @@ export function useAutocomplete() {
       })
         .then((res) => {
           if (!res.ok) throw new Error(`Autocomplete error: ${res.status}`);
-          return res.json() as Promise<AutocompleteResponse>;
+          return res.json().then(mapMediaUrls) as Promise<AutocompleteResponse>;
         })
         .then((data) => {
           setResults(data.data ?? []);

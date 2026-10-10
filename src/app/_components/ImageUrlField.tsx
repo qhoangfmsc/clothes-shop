@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Upload, Loader2, ImageOff, Eye } from "lucide-react";
 import { useToast } from "./Toast";
 import { uploadMediaFile } from "@/src/hooks/use-media-upload";
+import { toMediaUrl } from "@/src/lib/media-url";
 import { inputClass } from "./AdminFormKit";
 import { ImagePreviewLightbox } from "./ImagePreviewLightbox";
 
@@ -86,7 +87,7 @@ export function ImageUrlField({
             <>
               {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary admin-entered URL, not an optimizable next/image domain */}
               <img
-                src={value}
+                src={toMediaUrl(value)}
                 alt=""
                 className="w-full h-full object-cover"
                 onError={() => setPreviewFailed(true)}
@@ -105,7 +106,7 @@ export function ImageUrlField({
       {value && !previewFailed && (
         <ImagePreviewLightbox open={showPreview} onClose={() => setShowPreview(false)}>
           {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary admin-entered URL, not an optimizable next/image domain */}
-          <img src={value} alt="" className="max-w-[90vw] max-h-[85vh] object-contain rounded-md" />
+          <img src={toMediaUrl(value)} alt="" className="max-w-[90vw] max-h-[85vh] object-contain rounded-md" />
         </ImagePreviewLightbox>
       )}
     </div>

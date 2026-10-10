@@ -11,6 +11,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import { useCallback, useRef } from "react";
+import { mapMediaUrls } from "@/src/lib/media-url";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 const TOKEN_KEY = "clothes_shop_access_token";
@@ -144,7 +145,7 @@ export function useApiAuth() {
         );
       }
 
-      return res.json();
+      return mapMediaUrls(await res.json());
     },
     [refreshOnce]
   );
@@ -182,5 +183,5 @@ export async function apiFetchStandalone<T = unknown>(
     );
   }
 
-  return res.json();
+  return mapMediaUrls(await res.json());
 }

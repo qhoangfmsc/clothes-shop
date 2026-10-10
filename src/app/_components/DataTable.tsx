@@ -19,7 +19,16 @@ export interface DataTableColumn<T> {
   header: string;
   width?: string;
   align?: "left" | "right";
+  /** Hide the column below this breakpoint (phone-first admin tables). */
+  hideBelow?: "sm" | "md" | "lg";
   render: (row: T) => ReactNode;
+}
+
+/** What `renderBulkActions` receives when one or more rows are ticked. */
+export interface DataTableSelection<T> {
+  keys: string[];
+  rows: T[];
+  clear: () => void;
 }
 
 export interface DataTableFilter {
@@ -54,9 +63,19 @@ export interface DataTableRef {
 
 export interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
-  fetchData: (params: DataTableFetchParams) => Promise<DataTableFetchResult<T>>;
+  /** Server-driven mode: called on mount and whenever search/filter/sort/page change. */
+  fetchData?: (params: DataTableFetchParams) => Promise<DataTableFetchResult<T>>;
+
+  /* ── Static mode (no `fetchData`) ── */
+  /** Rows the parent already has (e.g. from an SWR hook). No fetching, search,
+   *  filters or sorting — just the shared table chrome. */
+  rows?: T[];
+  /** Static mode only: show the loading overlay while the parent is fetching. */
+  loading?: boolean;
 
   /* ── Search ── */
+  /** Set false for APIs without a search param — hides the search box. */
+  searchable?: boolean;
   searchPlaceholder?: string;
 
   /* ── Filters ── */
@@ -71,6 +90,15 @@ export interface DataTableProps<T> {
 
   /* ── Data ── */
   keyExtractor?: (row: T) => string;
+
+  /* ── Row selection ── */
+  /** Adds a checkbox column + a bar with `renderBulkActions` while rows are ticked. */
+  selectable?: boolean;
+  renderBulkActions?: (selection: DataTableSelection<T>) => ReactNode;
+
+  /* ── Errors ── */
+  /** Called when `fetchData` rejects (the table itself just shows as empty). */
+  onError?: (error: unknown) => void;
 
   /* ── Empty state ── */
   emptyMessage?: string | ((hasActiveFilters: boolean) => string);
@@ -87,6 +115,12 @@ const DEBOUNCE_MS = 350;
 function defaultKeyExtractor<T extends { id?: string | number }>(row: T): string {
   return String(row.id ?? "");
 }
+
+const HIDE_BELOW_CLASS = {
+  sm: "hidden sm:table-cell",
+  md: "hidden md:table-cell",
+  lg: "hidden lg:table-cell",
+} as const;
 
 function defaultEmpty(hasFilters: boolean): string {
   return hasFilters ? "No results match your filters." : "Nothing yet.";
@@ -122,6 +156,9 @@ function DataTableInner<T extends { id?: string | number }>(
   const {
     columns,
     fetchData,
+    rows,
+    loading: externalLoading,
+    searchable = true,
     searchPlaceholder = "Search...",
     filters = [],
     sortOptions = [],
@@ -130,6 +167,9 @@ function DataTableInner<T extends { id?: string | number }>(
     keyExtractor = defaultKeyExtractor,
     emptyMessage,
     tableRef,
+    selectable = false,
+    renderBulkActions,
+    onError,
   } = props;
 
   /* ── State ── */
@@ -144,9 +184,15 @@ function DataTableInner<T extends { id?: string | number }>(
   const [activeFilters, setActiveFilters] = useState<Record<string, string>>(initFilters);
   const [sort, setSort] = useState(defaultSort);
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<T[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [fetchedData, setData] = useState<T[]>([]);
+  const [fetchedTotal, setTotal] = useState(0);
+  const [fetching, setLoading] = useState(!!fetchData);
+
+  const isStatic = !fetchData;
+  const data = isStatic ? (rows ?? []) : fetchedData;
+  const total = isStatic ? data.length : fetchedTotal;
+  const loading = isStatic ? !!externalLoading : fetching;
+  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -167,6 +213,7 @@ function DataTableInner<T extends { id?: string | number }>(
   /* ── Core fetch ── */
   const load = useCallback(
     async (overrides?: Partial<DataTableFetchParams>) => {
+      if (!fetchData) return;
       const paramsKey = buildParamsKey(overrides);
       if (fetchingRef.current) {
         /* Only mark for retry if params are different from the in-flight request.
@@ -192,9 +239,18 @@ function DataTableInner<T extends { id?: string | number }>(
         const result = await fetchData(params);
         setData(result.data);
         setTotal(result.total);
-      } catch {
+        /* Keep only ticked rows that are still on screen (page/filter change, deletes). */
+        const visibleKeys = new Set(result.data.map(keyExtractor));
+        setSelectedKeys((prev) => new Set([...prev].filter((k) => visibleKeys.has(k))));
+        /* Last row of the last page was removed → step back instead of showing an empty page. */
+        if (result.data.length === 0 && result.total > 0 && params.page > 1) {
+          setPage(Math.max(1, Math.ceil(result.total / params.limit)));
+        }
+      } catch (err) {
         setData([]);
         setTotal(0);
+        setSelectedKeys(new Set());
+        onError?.(err);
       } finally {
         fetchingRef.current = false;
         setLoading(false);
@@ -207,6 +263,25 @@ function DataTableInner<T extends { id?: string | number }>(
     },
     [buildParamsKey, fetchData]
   );
+
+  /* ── Selection ── */
+  const allSelected = data.length > 0 && data.every((row) => selectedKeys.has(keyExtractor(row)));
+  const someSelected = selectedKeys.size > 0 && !allSelected;
+
+  const toggleRow = (key: string) => {
+    setSelectedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    setSelectedKeys(allSelected ? new Set() : new Set(data.map(keyExtractor)));
+  };
+
+  const clearSelection = () => setSelectedKeys(new Set());
 
   /* ── Ref API ── */
   useImperativeHandle(tableRef ?? ref, () => ({
@@ -244,114 +319,138 @@ function DataTableInner<T extends { id?: string | number }>(
   return (
     <div className="flex flex-col gap-6 flex-1 min-h-0">
       {/* ── Toolbar ── */}
-      <div className="shrink-0 flex gap-3 items-end flex-wrap">
-        {/* Search */}
-        <label className="flex flex-col gap-0.75 flex-1">
-          <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
-            Search
-          </span>
-          <div className="flex items-center gap-2 bg-[var(--bg-secondary)] rounded-lg px-4 h-9">
-            <Search size={14} className="text-[var(--text-muted)] shrink-0" />
-            <input
-              placeholder={searchPlaceholder}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 border-0 bg-transparent p-0 text-sm font-primary text-[var(--text-primary)] outline-none"
-            />
-            {search && (
-              <button
-                type="button"
-                className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
-                onClick={clearSearch}
-                title="Clear search"
-              >
-                <X size={12} />
-              </button>
-            )}
-          </div>
-        </label>
-
-        {/* Filters */}
-        {filters.map((fil) => {
-          const val = activeFilters[fil.key] ?? "";
-          const isActive = val !== (fil.defaultValue ?? "");
-          return (
-            <label key={fil.key} className="flex flex-col gap-0.75">
+      {(searchable || filters.length > 0 || sortOptions.length > 0) && (
+        <div className="shrink-0 flex gap-3 items-end flex-wrap">
+          {/* Search */}
+          {searchable && (
+            <label className="flex flex-col gap-0.75 flex-1">
               <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
-                {fil.label}
+                Search
+              </span>
+              <div className="flex items-center gap-2 bg-[var(--bg-secondary)] rounded-lg px-4 h-9">
+                <Search size={14} className="text-[var(--text-muted)] shrink-0" />
+                <input
+                  placeholder={searchPlaceholder}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="flex-1 border-0 bg-transparent p-0 text-sm font-primary text-[var(--text-primary)] outline-none"
+                />
+                {search && (
+                  <button
+                    type="button"
+                    className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
+                    onClick={clearSearch}
+                    title="Clear search"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
+            </label>
+          )}
+
+          {/* Filters */}
+          {filters.map((fil) => {
+            const val = activeFilters[fil.key] ?? "";
+            const isActive = val !== (fil.defaultValue ?? "");
+            return (
+              <label key={fil.key} className="flex flex-col gap-0.75">
+                <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
+                  {fil.label}
+                </span>
+                <div className="flex gap-1 items-center">
+                  <select
+                    value={val}
+                    onChange={(e) => setFilter(fil.key, e.target.value)}
+                    className={selectClass}
+                  >
+                    <option value="">All</option>
+                    {fil.options.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                  {isActive && (
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
+                      onClick={() => resetFilter(fil.key, fil.defaultValue ?? "")}
+                      title={`Reset ${fil.label.toLowerCase()}`}
+                    >
+                      <RotateCcw size={12} />
+                    </button>
+                  )}
+                </div>
+              </label>
+            );
+          })}
+
+          {/* Sort */}
+          {sortOptions.length > 0 && (
+            <label className="flex flex-col gap-0.75">
+              <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
+                Sort
               </span>
               <div className="flex gap-1 items-center">
                 <select
-                  value={val}
-                  onChange={(e) => setFilter(fil.key, e.target.value)}
+                  value={sort}
+                  onChange={(e) => {
+                    setSort(e.target.value);
+                    setPage(1);
+                  }}
                   className={selectClass}
                 >
-                  <option value="">All</option>
-                  {fil.options.map((o) => (
+                  {sortOptions.map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label}
                     </option>
                   ))}
                 </select>
-                {isActive && (
+                {sort !== defaultSort && (
                   <button
                     type="button"
                     className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
-                    onClick={() => resetFilter(fil.key, fil.defaultValue ?? "")}
-                    title={`Reset ${fil.label.toLowerCase()}`}
+                    onClick={() => {
+                      setSort(defaultSort);
+                      setPage(1);
+                    }}
+                    title="Reset sort"
                   >
                     <RotateCcw size={12} />
                   </button>
                 )}
               </div>
             </label>
-          );
-        })}
-
-        {/* Sort */}
-        {sortOptions.length > 0 && (
-          <label className="flex flex-col gap-0.75">
-            <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
-              Sort
-            </span>
-            <div className="flex gap-1 items-center">
-              <select
-                value={sort}
-                onChange={(e) => {
-                  setSort(e.target.value);
-                  setPage(1);
-                }}
-                className={selectClass}
-              >
-                {sortOptions.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-              {sort !== defaultSort && (
-                <button
-                  type="button"
-                  className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
-                  onClick={() => {
-                    setSort(defaultSort);
-                    setPage(1);
-                  }}
-                  title="Reset sort"
-                >
-                  <RotateCcw size={12} />
-                </button>
-              )}
-            </div>
-          </label>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {/* ── Table ── */}
       <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden flex-1 min-h-0 flex flex-col">
         {loading && (
           <div className="absolute inset-0 bg-[rgba(251,248,241,0.5)] flex items-center justify-center z-10 rounded-2xl">
             <span className="text-sm text-[var(--text-muted)] font-primary">Loading...</span>
+          </div>
+        )}
+        {selectable && selectedKeys.size > 0 && (
+          <div className="shrink-0 flex items-center gap-3 py-2 px-4 bg-[var(--bg-elevated)] border-b border-[var(--border-subtle)]">
+            <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
+              {selectedKeys.size} selected
+            </span>
+            {renderBulkActions?.({
+              keys: Array.from(selectedKeys),
+              rows: data.filter((row) => selectedKeys.has(keyExtractor(row))),
+              clear: clearSelection,
+            })}
+            <button
+              type="button"
+              className="ml-auto flex items-center justify-center w-7 h-7 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--text-muted)] hover:bg-[var(--bg-secondary)]"
+              onClick={clearSelection}
+              title="Clear selection"
+            >
+              <X size={13} />
+            </button>
           </div>
         )}
         <div className="flex-1 min-h-0 overflow-auto">
@@ -364,12 +463,27 @@ function DataTableInner<T extends { id?: string | number }>(
           >
             <thead>
               <tr>
+                {selectable && (
+                  <th className="sticky top-0 z-[1] bg-[var(--bg-secondary)] w-12 py-3 px-4 border-b border-[var(--border-subtle)]">
+                    <input
+                      type="checkbox"
+                      className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
+                      checked={allSelected}
+                      ref={(el) => {
+                        if (el) el.indeterminate = someSelected;
+                      }}
+                      onChange={toggleAll}
+                      disabled={data.length === 0}
+                      aria-label="Select all rows on this page"
+                    />
+                  </th>
+                )}
                 {columns.map((col) => (
                   <th
                     key={col.key}
                     className={`sticky top-0 z-[1] bg-[var(--bg-secondary)] text-left text-xs font-semibold text-[var(--text-muted)] py-3 px-4 border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em] ${
                       col.align === "right" ? "text-right" : ""
-                    }`}
+                    } ${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : ""}`}
                     style={col.width ? { width: col.width } : undefined}
                   >
                     {col.header}
@@ -381,7 +495,7 @@ function DataTableInner<T extends { id?: string | number }>(
               {data.length === 0 && (
                 <tr>
                   <td
-                    colSpan={columns.length}
+                    colSpan={columns.length + (selectable ? 1 : 0)}
                     className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
                   >
                     {typeof emptyMessage === "function"
@@ -390,20 +504,40 @@ function DataTableInner<T extends { id?: string | number }>(
                   </td>
                 </tr>
               )}
-              {data.map((row) => (
-                <tr key={keyExtractor(row)} className="border-b border-[var(--border-subtle)]">
-                  {columns.map((col) => (
-                    <td
-                      key={col.key}
-                      className={`py-3 px-4 text-sm text-[var(--text-primary)] font-primary align-middle ${
-                        col.align === "right" ? "text-right" : ""
-                      }`}
-                    >
-                      {col.render(row)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              {data.map((row) => {
+                const rowKey = keyExtractor(row);
+                const isSelected = selectedKeys.has(rowKey);
+                return (
+                  <tr
+                    key={rowKey}
+                    className={`border-b border-[var(--border-subtle)] transition-opacity hover:opacity-45 ${
+                      isSelected ? "bg-[rgba(201,169,110,0.08)]" : ""
+                    }`}
+                  >
+                    {selectable && (
+                      <td className="py-3 px-4 align-middle">
+                        <input
+                          type="checkbox"
+                          className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
+                          checked={isSelected}
+                          onChange={() => toggleRow(rowKey)}
+                          aria-label="Select row"
+                        />
+                      </td>
+                    )}
+                    {columns.map((col) => (
+                      <td
+                        key={col.key}
+                        className={`py-3 px-4 text-sm text-[var(--text-primary)] font-primary align-middle ${
+                          col.align === "right" ? "text-right" : ""
+                        } ${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : ""}`}
+                      >
+                        {col.render(row)}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

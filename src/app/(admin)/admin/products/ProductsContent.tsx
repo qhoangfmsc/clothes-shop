@@ -36,6 +36,7 @@ import { SORT_OPTIONS, SIZE_GROUPS, TAG_SUGGESTIONS, EMPTY_FORM } from "./_commo
 import type { ProductListResult } from "./_common/types";
 import type { Product, ProductColor } from "@/src/types/product";
 import type { Category, SubCategory } from "@/src/types/category";
+import { toMediaUrl } from "@/src/lib/media-url";
 
 /* ═══════════════════════════════ Helpers ═══════════════════════════════ */
 
@@ -110,7 +111,7 @@ export default function ProductsContent() {
             {p.images?.[0] ? (
               <div className="relative w-10 h-12 shrink-0">
                 <Image
-                  src={p.images[0]}
+                  src={toMediaUrl(p.images[0])}
                   alt=""
                   fill
                   className="object-cover rounded-sm"

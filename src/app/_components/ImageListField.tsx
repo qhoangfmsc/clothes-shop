@@ -4,6 +4,7 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import { Plus, X, Eye, Loader2 } from "lucide-react";
 import { useToast } from "./Toast";
 import { uploadMediaFile } from "@/src/hooks/use-media-upload";
+import { toMediaUrl } from "@/src/lib/media-url";
 import { inputClass } from "./AdminFormKit";
 import { ImagePreviewLightbox } from "./ImagePreviewLightbox";
 
@@ -62,7 +63,7 @@ export function ImageListField({
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary admin-entered/uploaded URL */}
             <img
-              src={url}
+              src={toMediaUrl(url)}
               alt=""
               className="w-full h-full object-cover cursor-pointer"
               onClick={() => setPreviewUrl(url)}
@@ -132,7 +133,7 @@ export function ImageListField({
         {previewUrl && (
           // eslint-disable-next-line @next/next/no-img-element -- arbitrary admin-entered/uploaded URL
           <img
-            src={previewUrl}
+            src={toMediaUrl(previewUrl)}
             alt=""
             className="max-w-[90vw] max-h-[85vh] object-contain rounded-md"
           />

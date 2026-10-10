@@ -1,32 +1,33 @@
 "use client";
 
-import { useRef, useState } from "react";
-import {
-  ImageIcon,
-  Trash2,
-  Eye,
-  Plus,
-  Loader2,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  RefreshCw,
-  Wifi,
-} from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { Trash2, Eye, Download, Upload, Loader2, RefreshCw, Wifi } from "lucide-react";
 import { useToast } from "@/src/app/_components/Toast";
 import { useConfirm } from "@/src/app/_components/ConfirmDialog";
 import {
-  useAdminMedia,
+  DataTable,
+  type DataTableColumn,
+  type DataTableFetchParams,
+  type DataTableFetchResult,
+  type DataTableRef,
+} from "@/src/app/_components/DataTable";
+import {
+  fetchMediaList,
+  deleteMediaFile,
+  deleteMediaFiles,
   MEDIA_NOT_CONFIGURED_CODE,
+  MediaApiError,
   type MediaFile,
 } from "@/src/hooks/use-admin-media";
 import { uploadMediaFile } from "@/src/hooks/use-media-upload";
 import { getAccessToken } from "@/src/lib/auth-api";
+import { toMediaUrl } from "@/src/lib/media-url";
 import { ImagePreviewLightbox } from "@/src/app/_components/ImagePreviewLightbox";
+import { downloadMediaFile } from "./_common/download";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 20;
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -45,45 +46,79 @@ function formatDate(iso: string): string {
   });
 }
 
+/** "image/svg+xml" → "SVG", "image/webp" → "WEBP" */
+function formatType(mimeType: string): string {
+  return (mimeType.split("/")[1] ?? mimeType).split("+")[0].toUpperCase();
+}
+
+const secondaryButtonClass =
+  "flex items-center gap-1.5 py-[10px] px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40";
+const actionButtonClass =
+  "flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer hover:opacity-70 disabled:opacity-40";
+
 export default function MediaContent() {
   const { toast } = useToast();
   const confirm = useConfirm();
-  const [page, setPage] = useState(1);
+  const tableRef = useRef<DataTableRef>(null);
+  const uploadInputRef = useRef<HTMLInputElement>(null);
+  const dragDepthRef = useRef(0);
+
+  const [total, setTotal] = useState(0);
+  const [loadError, setLoadError] = useState<MediaApiError | null>(null);
   const [preview, setPreview] = useState<MediaFile | null>(null);
   const [isPinging, setIsPinging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const uploadInputRef = useRef<HTMLInputElement>(null);
-  const { files, total, isLoading, isValidating, error, mutate, deleteFile, deleteFiles } =
-    useAdminMedia({ page, limit: PAGE_SIZE });
+  const [isDragging, setIsDragging] = useState(false);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
-  const notConfigured = error?.errorCode === MEDIA_NOT_CONFIGURED_CODE;
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const notConfigured = loadError?.errorCode === MEDIA_NOT_CONFIGURED_CODE;
 
-  const goToPage = (next: number) => {
-    setPage(next);
-    setSelected(new Set());
+  /* ── fetchData for DataTable ── */
+  const fetchMedia = async (
+    params: DataTableFetchParams
+  ): Promise<DataTableFetchResult<MediaFile>> => {
+    const res = await fetchMediaList({ page: params.page, limit: params.limit });
+    setLoadError(null);
+    setTotal(res.total);
+    return { data: res.data, total: res.total };
   };
 
-  const toggleSelect = (id: string) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const handleUpload = async (fileList: FileList) => {
+  const handleUpload = async (fileList: File[]) => {
+    const images = fileList.filter((f) => f.type.startsWith("image/"));
+    if (images.length === 0) {
+      toast.error("Only image files can be uploaded");
+      return;
+    }
     setIsUploading(true);
     try {
-      const uploaded = await Promise.all(Array.from(fileList).map((f) => uploadMediaFile(f)));
-      toast.success(`${uploaded.length} image${uploaded.length !== 1 ? "s" : ""} uploaded`);
-      await mutate();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Upload failed");
+      const results = await Promise.allSettled(images.map((f) => uploadMediaFile(f)));
+      const succeeded = results.filter((r) => r.status === "fulfilled").length;
+      const firstError = results.find((r): r is PromiseRejectedResult => r.status === "rejected");
+      if (succeeded > 0) toast.success(`${succeeded} image${succeeded !== 1 ? "s" : ""} uploaded`);
+      if (firstError) {
+        const failed = images.length - succeeded;
+        const reason =
+          firstError.reason instanceof Error ? firstError.reason.message : "Upload failed";
+        toast.error(failed > 1 ? `${failed} images failed to upload — ${reason}` : reason);
+      }
+      if (succeeded > 0) {
+        /* Newest first: jump back to page 1 so the new files are visible. */
+        tableRef.current?.reset();
+        tableRef.current?.refresh();
+      }
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleDownload = async (file: MediaFile) => {
+    setDownloadingId(file.id);
+    try {
+      await downloadMediaFile(file);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to download image");
+    } finally {
+      setDownloadingId(null);
     }
   };
 
@@ -96,21 +131,16 @@ export default function MediaContent() {
     });
     if (!ok) return;
     try {
-      await deleteFile(file.id);
+      await deleteMediaFile(file.id);
       toast.success("Image deleted");
-      if (preview?.id === file.id) setPreview(null);
-      setSelected((prev) => {
-        const next = new Set(prev);
-        next.delete(file.id);
-        return next;
-      });
+      setPreview((current) => (current?.id === file.id ? null : current));
+      tableRef.current?.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to delete image");
     }
   };
 
-  const handleBulkDelete = async () => {
-    const ids = Array.from(selected);
+  const handleBulkDelete = async (ids: string[], clearSelection: () => void) => {
     const ok = await confirm({
       title: "Delete images",
       message: `Delete ${ids.length} image${ids.length !== 1 ? "s" : ""}? This cannot be undone.`,
@@ -118,10 +148,11 @@ export default function MediaContent() {
       danger: true,
     });
     if (!ok) return;
-    const { succeeded, failed } = await deleteFiles(ids);
+    const { succeeded, failed } = await deleteMediaFiles(ids);
     if (succeeded > 0) toast.success(`${succeeded} image${succeeded !== 1 ? "s" : ""} deleted`);
     if (failed > 0) toast.error(`${failed} image${failed !== 1 ? "s" : ""} failed to delete`);
-    setSelected(new Set());
+    clearSelection();
+    tableRef.current?.refresh();
   };
 
   const handlePing = async () => {
@@ -141,61 +172,190 @@ export default function MediaContent() {
     }
   };
 
-  return (
-    <div className="flex flex-col gap-6 h-full min-h-0">
-      {/* ── Header ── */}
-      <div className="shrink-0">
-        <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Media</h1>
-        <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
-          Images stored in Supabase Storage
-        </p>
-      </div>
-
-      {/* ── Toolbar (always visible) ── */}
-      <div className="shrink-0 flex items-center justify-between py-2 px-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg">
-        <div className="flex items-center gap-3">
-          {selected.size > 0 ? (
-            <>
-              <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
-                {selected.size} / {total} selected
-              </span>
-              <button
-                className="flex items-center justify-center w-7 h-7 border-0 rounded-sm bg-[var(--accent-rose)] text-[var(--color-noir)] cursor-pointer"
-                onClick={handleBulkDelete}
-                title="Delete selected"
-              >
-                <Trash2 size={13} />
-              </button>
-              <button
-                className="flex items-center justify-center w-7 h-7 border-0 rounded-sm bg-[var(--bg-elevated)] text-[var(--text-secondary)] cursor-pointer"
-                onClick={() => setSelected(new Set())}
-                title="Cancel selection"
-              >
-                <X size={13} />
-              </button>
-            </>
-          ) : (
-            <span className="text-xs font-semibold text-[var(--text-secondary)] font-primary">
-              {total} image{total !== 1 ? "s" : ""}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
+  /* ── Column definitions ── */
+  const columns: DataTableColumn<MediaFile>[] = useMemo(
+    () => [
+      {
+        key: "preview",
+        header: "Preview",
+        width: "88px",
+        render: (file) => (
           <button
-            className="flex items-center gap-1.5 py-2 px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40"
+            type="button"
+            className="block w-12 h-12 p-0 border border-[var(--border-subtle)] rounded-sm overflow-hidden bg-[var(--bg-elevated)] cursor-pointer"
+            onClick={() => setPreview(file)}
+            title="Preview"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- public Supabase Storage URL */}
+            <img
+              src={toMediaUrl(file.url)}
+              alt={file.name}
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
+          </button>
+        ),
+      },
+      {
+        key: "name",
+        header: "Name",
+        render: (file) => (
+          <div className="max-w-[240px]">
+            <p className="font-semibold text-sm truncate" title={file.name}>
+              {file.name}
+            </p>
+            <p className="sm:hidden text-xs text-[var(--text-muted)] mt-0.5">
+              {formatType(file.mimeType)} · {formatBytes(file.sizeOriginal)}
+            </p>
+          </div>
+        ),
+      },
+      {
+        key: "type",
+        header: "Type",
+        hideBelow: "md",
+        render: (file) => (
+          <span className="inline-block py-0.5 px-2 rounded-full text-xs font-semibold font-primary bg-[rgba(107,101,96,0.08)] text-[var(--text-muted)]">
+            {formatType(file.mimeType)}
+          </span>
+        ),
+      },
+      {
+        key: "size",
+        header: "Size",
+        hideBelow: "sm",
+        render: (file) => (
+          <span className="whitespace-nowrap text-[var(--text-secondary)]">
+            {formatBytes(file.sizeOriginal)}
+          </span>
+        ),
+      },
+      {
+        key: "uploaded",
+        header: "Uploaded",
+        hideBelow: "lg",
+        render: (file) => (
+          <span className="whitespace-nowrap text-[var(--text-secondary)]">
+            {formatDate(file.createdAt)}
+          </span>
+        ),
+      },
+      {
+        key: "actions",
+        header: "Actions",
+        align: "right",
+        render: (file) => (
+          <div className="flex gap-1 justify-end">
+            <button
+              className={`${actionButtonClass} text-[var(--text-secondary)]`}
+              onClick={() => setPreview(file)}
+              title="Preview"
+            >
+              <Eye size={14} />
+            </button>
+            <button
+              className={`${actionButtonClass} text-[var(--text-secondary)]`}
+              onClick={() => handleDownload(file)}
+              disabled={downloadingId === file.id}
+              title="Download"
+            >
+              {downloadingId === file.id ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : (
+                <Download size={14} />
+              )}
+            </button>
+            <button
+              className={`${actionButtonClass} text-[var(--accent-rose)]`}
+              onClick={() => handleDelete(file)}
+              title="Delete"
+            >
+              <Trash2 size={14} />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [downloadingId]
+  );
+
+  /* ── Drag & drop — depth counter because dragenter/leave also fire on children ── */
+  const hasFiles = (e: React.DragEvent) => Array.from(e.dataTransfer.types).includes("Files");
+  const dropHandlers = loadError
+    ? {}
+    : {
+        onDragEnter: (e: React.DragEvent) => {
+          if (!hasFiles(e)) return;
+          dragDepthRef.current += 1;
+          setIsDragging(true);
+        },
+        onDragOver: (e: React.DragEvent) => {
+          if (hasFiles(e)) e.preventDefault();
+        },
+        onDragLeave: (e: React.DragEvent) => {
+          if (!hasFiles(e)) return;
+          dragDepthRef.current = Math.max(0, dragDepthRef.current - 1);
+          if (dragDepthRef.current === 0) setIsDragging(false);
+        },
+        onDrop: (e: React.DragEvent) => {
+          if (!hasFiles(e)) return;
+          e.preventDefault();
+          dragDepthRef.current = 0;
+          setIsDragging(false);
+          if (!isUploading) handleUpload(Array.from(e.dataTransfer.files));
+        },
+      };
+
+  return (
+    <div className="relative flex flex-col gap-6 h-full min-h-0" {...dropHandlers}>
+      {/* ── Header ── */}
+      <div className="shrink-0 flex flex-wrap justify-between items-start gap-3">
+        <div>
+          <h1 className="font-display text-2xl text-[var(--text-heading)] font-normal">Media</h1>
+          <p className="text-xs text-[var(--text-muted)] font-primary mt-1">
+            {total} image{total !== 1 ? "s" : ""} stored in Supabase Storage
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            className={secondaryButtonClass}
             onClick={handlePing}
             disabled={isPinging}
             title="Checks that the Supabase service role key and bucket are reachable"
           >
-            <Wifi size={14} className={isPinging ? "animate-pulse" : ""} /> Ping Supabase
+            <Wifi size={14} className={isPinging ? "animate-pulse" : ""} />
+            <span className="hidden sm:inline">Ping Supabase</span>
           </button>
           <button
-            className="flex items-center gap-1.5 py-2 px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40"
-            onClick={() => mutate()}
-            disabled={isValidating}
+            className={secondaryButtonClass}
+            onClick={() => (loadError ? setLoadError(null) : tableRef.current?.refresh())}
+            title="Refresh"
           >
-            <RefreshCw size={14} className={isValidating ? "animate-spin" : ""} /> Refresh
+            <RefreshCw size={14} />
+            <span className="hidden sm:inline">Refresh</span>
           </button>
+          {!loadError && (
+            <button
+              className="flex items-center gap-1.5 py-[10px] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-60"
+              onClick={() => uploadInputRef.current?.click()}
+              disabled={isUploading}
+            >
+              {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+              {isUploading ? "Uploading..." : "Upload"}
+            </button>
+          )}
+          <input
+            ref={uploadInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={(e) => {
+              if (e.target.files?.length) handleUpload(Array.from(e.target.files));
+              e.target.value = "";
+            }}
+          />
         </div>
       </div>
 
@@ -234,7 +394,7 @@ export default function MediaContent() {
           </ol>
           <button
             className="self-start mt-1 flex items-center gap-1.5 py-2 px-4 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer"
-            onClick={() => mutate()}
+            onClick={() => setLoadError(null)}
           >
             <RefreshCw size={14} /> Retry
           </button>
@@ -242,127 +402,48 @@ export default function MediaContent() {
       )}
 
       {/* ── Generic error ── */}
-      {error && !notConfigured && (
-        <div className="p-4 border border-[var(--accent-rose)] rounded-lg text-sm text-[var(--accent-rose)] font-primary max-w-[640px]">
-          {error.message}
-        </div>
-      )}
-
-      {/* ── Empty hint (upload tile below still shows) ── */}
-      {!error && !isLoading && files.length === 0 && (
-        <div className="flex items-center gap-2 text-sm text-[var(--text-muted)] font-primary">
-          <ImageIcon size={16} className="text-[var(--text-disabled)]" />
-          No images in the bucket yet — upload your first one below.
-        </div>
-      )}
-
-      {/* ── Grid ── */}
-      {!notConfigured && (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
-          {/* Upload tile — always first */}
-          <button
-            type="button"
-            className="h-[203px] rounded-lg border-2 border-dashed border-[var(--border-light)] bg-transparent flex flex-col items-center justify-center gap-2 cursor-pointer text-[var(--text-disabled)] hover:text-[var(--accent-primary)] hover:border-[var(--accent-primary)] transition-colors disabled:opacity-50"
-            onClick={() => uploadInputRef.current?.click()}
-            disabled={isUploading}
-          >
-            {isUploading ? <Loader2 size={26} className="animate-spin" /> : <Plus size={30} />}
-            <span className="text-xs font-primary">{isUploading ? "Uploading..." : "Upload"}</span>
+      {loadError && !notConfigured && (
+        <div className="flex flex-col items-start gap-3 p-4 border border-[var(--accent-rose)] rounded-lg max-w-[640px]">
+          <p className="text-sm text-[var(--accent-rose)] font-primary">{loadError.message}</p>
+          <button className={secondaryButtonClass} onClick={() => setLoadError(null)}>
+            <RefreshCw size={14} /> Retry
           </button>
-          <input
-            ref={uploadInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={(e) => {
-              if (e.target.files?.length) handleUpload(e.target.files);
-              e.target.value = "";
-            }}
-          />
-
-          {files.map((file) => {
-            const isSelected = selected.has(file.id);
-            return (
-              <div
-                key={file.id}
-                className={`flex flex-col rounded-lg border overflow-hidden bg-[var(--bg-secondary)] group ${
-                  isSelected ? "border-[var(--accent-primary)]" : "border-[var(--border-subtle)]"
-                }`}
-              >
-                <div className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- public Supabase Storage URL */}
-                  <img
-                    src={file.url}
-                    alt={file.name}
-                    className="w-full h-[160px] object-cover cursor-pointer"
-                    onClick={() => setPreview(file)}
-                  />
-                  <label
-                    className="absolute top-1.5 left-1.5 flex items-center justify-center w-5 h-5 rounded-sm bg-black/50 cursor-pointer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <input
-                      type="checkbox"
-                      className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer"
-                      checked={isSelected}
-                      onChange={() => toggleSelect(file.id)}
-                    />
-                  </label>
-                  <button
-                    className="absolute top-1.5 right-1.5 flex items-center justify-center w-6 h-6 rounded-sm bg-black/50 border-0 text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => setPreview(file)}
-                    title="Review"
-                  >
-                    <Eye size={13} />
-                  </button>
-                </div>
-                <div className="flex flex-col gap-1 p-3">
-                  <span
-                    className="text-xs font-semibold text-[var(--text-secondary)] font-primary overflow-hidden text-ellipsis whitespace-nowrap"
-                    title={file.name}
-                  >
-                    {file.name}
-                  </span>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[11px] text-[var(--text-muted)] font-primary">
-                      {formatBytes(file.sizeOriginal)}
-                    </span>
-                    <button
-                      className="flex items-center justify-center w-7 h-7 border-0 rounded-sm bg-transparent cursor-pointer text-[var(--accent-rose)] opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={() => handleDelete(file)}
-                      title="Delete"
-                    >
-                      <Trash2 size={13} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
         </div>
       )}
 
-      {/* ── Pagination ── */}
-      {!notConfigured && total > PAGE_SIZE && (
-        <div className="shrink-0 flex items-center justify-center gap-3 pt-2">
-          <button
-            className="flex items-center justify-center w-8 h-8 border border-[var(--border-subtle)] rounded-sm bg-transparent cursor-pointer text-[var(--text-secondary)] disabled:opacity-30"
-            onClick={() => goToPage(Math.max(1, page - 1))}
-            disabled={page <= 1}
-          >
-            <ChevronLeft size={14} />
-          </button>
-          <span className="text-xs text-[var(--text-muted)] font-primary">
-            Page {page} / {totalPages}
+      {/* ── Table ── */}
+      {!loadError && (
+        <DataTable<MediaFile>
+          tableRef={tableRef}
+          columns={columns}
+          fetchData={fetchMedia}
+          pageSize={PAGE_SIZE}
+          searchable={false}
+          selectable
+          onError={(err) =>
+            setLoadError(
+              err instanceof MediaApiError ? err : new MediaApiError("Failed to load images")
+            )
+          }
+          renderBulkActions={({ keys, clear }) => (
+            <button
+              className="flex items-center gap-1.5 h-7 px-3 border-0 rounded-sm bg-[var(--accent-rose)] text-[var(--color-noir)] text-xs font-semibold font-primary cursor-pointer"
+              onClick={() => handleBulkDelete(keys, clear)}
+            >
+              <Trash2 size={13} /> Delete
+            </button>
+          )}
+          emptyMessage="No images yet — upload your first one, or drag files anywhere on this page."
+        />
+      )}
+
+      {/* ── Drop overlay ── */}
+      {isDragging && (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[var(--accent-primary)] bg-[rgba(251,248,241,0.9)] pointer-events-none">
+          <Upload size={30} className="text-[var(--accent-primary)]" />
+          <span className="text-sm font-semibold text-[var(--text-secondary)] font-primary">
+            Drop images to upload
           </span>
-          <button
-            className="flex items-center justify-center w-8 h-8 border border-[var(--border-subtle)] rounded-sm bg-transparent cursor-pointer text-[var(--text-secondary)] disabled:opacity-30"
-            onClick={() => goToPage(Math.min(totalPages, page + 1))}
-            disabled={page >= totalPages}
-          >
-            <ChevronRight size={14} />
-          </button>
         </div>
       )}
 
@@ -376,6 +457,18 @@ export default function MediaContent() {
               <span>{preview.name}</span>
               <span>{formatBytes(preview.sizeOriginal)}</span>
               <span>{formatDate(preview.createdAt)}</span>
+              <button
+                className="flex items-center gap-1.5 py-1 px-3 rounded-full bg-white/15 border-0 text-white text-xs font-primary cursor-pointer hover:bg-white/25 transition-colors disabled:opacity-50"
+                onClick={() => handleDownload(preview)}
+                disabled={downloadingId === preview.id}
+              >
+                {downloadingId === preview.id ? (
+                  <Loader2 size={12} className="animate-spin" />
+                ) : (
+                  <Download size={12} />
+                )}
+                Download
+              </button>
             </>
           )
         }
@@ -383,7 +476,7 @@ export default function MediaContent() {
         {preview && (
           // eslint-disable-next-line @next/next/no-img-element -- public Supabase Storage URL
           <img
-            src={preview.url}
+            src={toMediaUrl(preview.url)}
             alt={preview.name}
             className="max-w-[90vw] max-h-[75vh] object-contain rounded-md"
           />

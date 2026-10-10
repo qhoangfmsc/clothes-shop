@@ -35,6 +35,7 @@ import {
 import { SEASONS, EMPTY_COLLECTION_FORM } from "./_common/constants";
 import type { CollectionListResult } from "./_common/types";
 import type { Collection } from "@/src/types/collection";
+import { toMediaUrl } from "@/src/lib/media-url";
 
 /* ═══════════════════════════════ Helpers ═══════════════════════════════ */
 
@@ -95,7 +96,7 @@ export default function CollectionsContent() {
           <div className="flex items-center gap-3">
             {c.image ? (
               <div className="relative w-12 h-9 shrink-0">
-                <Image src={c.image} alt="" fill className="object-cover rounded-sm" sizes="48px" />
+                <Image src={toMediaUrl(c.image)} alt="" fill className="object-cover rounded-sm" sizes="48px" />
               </div>
             ) : (
               <div className="w-12 h-9 bg-[var(--bg-elevated)] rounded-sm flex items-center justify-center text-[var(--text-muted)] shrink-0">
@@ -384,7 +385,7 @@ export default function CollectionsContent() {
                               {prod?.images?.[0] && (
                                 <div className="relative w-3.5 h-4.5 shrink-0">
                                   <Image
-                                    src={prod.images[0]}
+                                    src={toMediaUrl(prod.images[0])}
                                     alt=""
                                     fill
                                     className="object-cover rounded-xs"
@@ -443,7 +444,7 @@ export default function CollectionsContent() {
                               {p.images?.[0] ? (
                                 <div className="relative w-7 h-9 shrink-0">
                                   <Image
-                                    src={p.images[0]}
+                                    src={toMediaUrl(p.images[0])}
                                     alt=""
                                     fill
                                     className="object-cover rounded-sm"
