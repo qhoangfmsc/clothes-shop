@@ -1,0 +1,18 @@
+{
+  "url": {
+    "placeholder": "https://... or upload a file",
+    "upload": "Upload"
+  },
+  "list": {
+    "main": "Main",
+    "remove": "Remove",
+    "uploadImage": "Upload image",
+    "urlPlaceholder": "Paste an image URL and press Enter",
+    "addUrl": "Add URL"
+  },
+  "toast": {
+    "imageUploaded": "Image uploaded",
+    "imagesUploaded": "{count, plural, one {# image uploaded} other {# images uploaded}}",
+    "uploadFailed": "Upload failed"
+  }
+}

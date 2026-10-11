@@ -1,0 +1,42 @@
+{
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "newIn": "New In",
+    "collections": "Collections",
+    "about": "About"
+  },
+  "navDescription": {
+    "home": "Welcome to our store",
+    "newIn": "Latest arrivals",
+    "collections": "Curated seasonal edits",
+    "about": "Our story & vision"
+  },
+  "account": {
+    "myAccount": "My Account",
+    "wishlist": "Wishlist",
+    "orders": "Orders",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "userMenu": "User menu",
+    "userFallback": "User"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "loading": "Searching...",
+    "noResults": "No results for “{query}”",
+    "clear": "Clear search"
+  },
+  "megaMenu": {
+    "viewAll": "View All →",
+    "viewAllProducts": "View All Products"
+  },
+  "drawer": {
+    "open": "Open menu",
+    "close": "Close menu",
+    "featured": "Featured",
+    "showFeatured": "Show featured {index}",
+    "copyright": "© {year} DOOVAN",
+    "tagline": "Crafted with intention"
+  }
+}

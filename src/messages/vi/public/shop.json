@@ -1,0 +1,80 @@
+{
+  "components": {
+    "breadcrumb": {
+      "aria": "Đường dẫn"
+    },
+    "categoryGrid": {
+      "pieces": "{count} sản phẩm"
+    },
+    "subcategoryChips": {
+      "all": "Tất cả"
+    },
+    "productGrid": {
+      "comingSoon": "Sắp ra mắt",
+      "comingSoonDescription": "Các sản phẩm mới đang được tuyển chọn cho bộ sưu tập này. Hãy quay lại sớm nhé."
+    },
+    "productCard": {
+      "saved": "Đã lưu {name} — <link>Xem danh sách yêu thích</link>",
+      "removed": "Đã xóa {name} khỏi danh sách yêu thích",
+      "addToWishlist": "Thêm vào yêu thích",
+      "removeFromWishlist": "Xóa khỏi yêu thích",
+      "addToBagAria": "Thêm vào giỏ",
+      "addToBag": "Thêm vào giỏ"
+    },
+    "filters": {
+      "count": "{count} sản phẩm",
+      "filter": "Bộ lọc",
+      "clearAll": "Xóa tất cả",
+      "priceRange": "Khoảng giá",
+      "to": "đến",
+      "size": "Kích cỡ",
+      "color": "Màu sắc",
+      "sort": {
+        "newest": "Mới nhất",
+        "price_asc": "Giá: Thấp → Cao",
+        "price_desc": "Giá: Cao → Thấp",
+        "name_asc": "Tên: A → Z",
+        "name_desc": "Tên: Z → A"
+      }
+    },
+    "productsClient": {
+      "loadMore": "Xem thêm (còn {remaining})"
+    }
+  },
+  "pages": {
+    "index": {
+      "meta": {
+        "title": "Cửa hàng",
+        "description": "Khám phá toàn bộ bộ sưu tập DOOVAN. Áo, váy, túi xách và trang sức cao cấp — được chế tác có chủ đích cho tủ đồ hiện đại."
+      },
+      "hero": {
+        "title": "Tất cả sản phẩm",
+        "description": "Khám phá tuyển chọn những món đồ thiết yếu cao cấp — mỗi sản phẩm được thiết kế để nâng tầm mỗi ngày của bạn."
+      },
+      "browse": {
+        "label": "Duyệt theo danh mục",
+        "title": "Tìm món đồ của bạn",
+        "description": "{count} danh mục tuyển chọn, mỗi danh mục kể một câu chuyện riêng về sự thanh lịch và chủ đích."
+      },
+      "all": {
+        "label": "Tất cả sản phẩm",
+        "title": "Toàn bộ tuyển chọn",
+        "description": "Mọi sản phẩm trong bộ sưu tập, sẵn sàng để bạn khám phá."
+      }
+    },
+    "category": {
+      "meta": {
+        "title": "{category} — Cửa hàng DOOVAN",
+        "description": "{description} — Bộ sưu tập cao cấp DOOVAN."
+      },
+      "heroLabel": "DOOVAN — {category}",
+      "collectionHeading": "Bộ sưu tập {category}"
+    },
+    "subcategory": {
+      "meta": {
+        "description": "{description}. Mua {subcategory} từ bộ sưu tập {category} của DOOVAN."
+      },
+      "pieceCount": "{count} sản phẩm trong bộ sưu tập này"
+    }
+  }
+}

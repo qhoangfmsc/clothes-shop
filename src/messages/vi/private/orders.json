@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "title": "Lịch sử đơn hàng",
+    "description": "Xem lịch sử đơn hàng và theo dõi giao hàng từ DOOVAN."
+  },
+  "list": {
+    "back": "Tài khoản",
+    "title": "Lịch sử đơn hàng",
+    "empty": {
+      "title": "Chưa có đơn hàng",
+      "description": "Khi bạn đặt đơn hàng đầu tiên, đơn hàng sẽ xuất hiện ở đây cùng thông tin theo dõi và trạng thái giao hàng.",
+      "cta": "Bắt đầu mua sắm",
+      "features": {
+        "tracking": "Theo dõi đơn hàng theo thời gian thực",
+        "updates": "Cập nhật trạng thái giao hàng",
+        "returns": "Đổi trả dễ dàng"
+      }
+    },
+    "card": {
+      "quantity": "SL: {quantity}",
+      "more": "+{count} sản phẩm khác",
+      "orderNumber": "Đơn hàng #{id}",
+      "viewDetails": "Xem chi tiết"
+    }
+  },
+  "detail": {
+    "notFound": "Không tìm thấy đơn hàng.",
+    "back": "Tất cả đơn hàng",
+    "title": "Đơn hàng #{id}",
+    "shippingAddress": "Địa chỉ giao hàng",
+    "notes": "Ghi chú:",
+    "subtotal": "Tạm tính",
+    "shipping": "Vận chuyển",
+    "shippingMethod": {
+      "express": "Hỏa tốc",
+      "standard": "Tiêu chuẩn"
+    },
+    "free": "Miễn phí",
+    "total": "Tổng cộng",
+    "itemMeta": "{size} · {color} · SL {quantity}"
+  }
+}

@@ -157,10 +157,9 @@
   /* ─────────────────────────────────────────────────────────
      7. TYPOGRAPHY
      ───────────────────────────────────────────────────────── */
-  --font-primary:
-    var(--font-inter-tight), "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: var(--font-quiche-display), serif;
-  --font-weight-body: 500;
+  --font-primary: var(--font-site), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-site), Georgia, "Times New Roman", serif;
+  --font-weight-body: 400;
   --font-weight-display: 400;
 
   /* Type Scale */

@@ -1,0 +1,31 @@
+{
+  "search": {
+    "label": "Search",
+    "placeholder": "Search...",
+    "clear": "Clear search"
+  },
+  "filter": {
+    "all": "All",
+    "reset": "Reset {filter}"
+  },
+  "sort": {
+    "label": "Sort",
+    "reset": "Reset sort"
+  },
+  "loading": "Loading...",
+  "selection": {
+    "count": "{count} selected",
+    "clear": "Clear selection",
+    "selectAll": "Select all rows on this page",
+    "selectRow": "Select row"
+  },
+  "empty": {
+    "filtered": "No results match your filters.",
+    "none": "Nothing yet."
+  },
+  "pagination": {
+    "showing": "Showing <b>{from}</b>–<b>{to}</b> of <b>{total}</b>",
+    "previous": "Previous page",
+    "next": "Next page"
+  }
+}

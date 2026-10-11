@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Thanh toán",
+    "description": "Hoàn tất đơn hàng của bạn tại DOOVAN."
+  },
+  "empty": {
+    "title": "Chưa có gì để thanh toán",
+    "description": "Hãy thêm sản phẩm vào giỏ trước",
+    "browse": "Xem cửa hàng"
+  },
+  "back": {
+    "editAddress": "Sửa địa chỉ",
+    "toBag": "Quay lại giỏ hàng"
+  },
+  "steps": {
+    "address": "Địa chỉ",
+    "review": "Xem lại"
+  },
+  "address": {
+    "title": "Địa chỉ giao hàng",
+    "contactSection": "Thông tin liên hệ",
+    "deliverySection": "Địa chỉ nhận hàng",
+    "fullName": "Họ và tên",
+    "phone": "Số điện thoại",
+    "street": "Địa chỉ",
+    "line2": "Căn hộ / Phòng / Tầng",
+    "city": "Thành phố / Quận",
+    "province": "Tỉnh / Thành",
+    "postalCode": "Mã bưu chính",
+    "country": "Quốc gia",
+    "notes": "Ghi chú giao hàng",
+    "placeholders": {
+      "fullName": "Nhập họ và tên của bạn",
+      "phone": "0123 456 789",
+      "street": "Số nhà, tên đường...",
+      "line2": "Căn hộ, phòng, tầng, tòa nhà...",
+      "city": "Thành phố hoặc quận",
+      "province": "Tỉnh hoặc bang",
+      "postalCode": "Mã bưu chính / ZIP",
+      "country": "Quốc gia",
+      "notes": "Mã cổng, địa điểm nhận biết, hướng dẫn đặc biệt..."
+    },
+    "errors": {
+      "fullName": "Vui lòng nhập họ và tên",
+      "phone": "Vui lòng nhập số điện thoại",
+      "street": "Vui lòng nhập địa chỉ",
+      "city": "Vui lòng nhập thành phố"
+    },
+    "continue": "Tiếp tục xem lại"
+  },
+  "review": {
+    "title": "Xem lại đơn hàng",
+    "shippingTo": "Giao đến",
+    "note": "Ghi chú: {note}",
+    "items": "Sản phẩm ({count})",
+    "itemMeta": "{size} · {color} · SL {quantity}",
+    "total": "Tổng cộng",
+    "paymentNote": "Thanh toán sẽ được sắp xếp sau khi xác nhận đơn hàng. Đội ngũ của chúng tôi sẽ liên hệ qua điện thoại hoặc email với thông tin thanh toán.",
+    "placing": "Đang đặt hàng...",
+    "place": "Đặt hàng"
+  },
+  "success": {
+    "title": "Đặt hàng thành công!",
+    "description": "Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ sớm liên hệ để xác nhận thanh toán và thông tin giao hàng.",
+    "orderId": "Mã đơn hàng: <strong>{id}</strong>",
+    "viewOrders": "Xem đơn hàng của tôi",
+    "continue": "Tiếp tục mua sắm"
+  },
+  "toast": {
+    "placed": "Đặt hàng thành công!",
+    "failed": "Đặt hàng thất bại",
+    "addressFailed": "Không thể lưu địa chỉ"
+  }
+}

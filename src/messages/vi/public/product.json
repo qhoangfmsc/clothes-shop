@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "{name} — DOOVAN"
+  },
+  "detail": {
+    "carouselAria": "Thư viện ảnh sản phẩm",
+    "imageAlt": "{name} — Ảnh {index}",
+    "previousImage": "Ảnh trước",
+    "nextImage": "Ảnh sau",
+    "viewImage": "Xem ảnh {index}",
+    "badge": {
+      "new": "Hàng mới về",
+      "sale": "Đang giảm giá",
+      "bestseller": "Bán chạy"
+    },
+    "size": "Kích cỡ",
+    "sizeGuide": "Bảng size",
+    "color": "Màu sắc",
+    "selectColor": "Chọn màu: {name}",
+    "quantity": "Số lượng",
+    "decrease": "Giảm số lượng",
+    "increase": "Tăng số lượng",
+    "hintBoth": "Chọn kích cỡ và màu sắc để thêm vào giỏ",
+    "hintSize": "Chọn kích cỡ",
+    "hintColor": "Chọn màu sắc",
+    "addedToBag": "Đã thêm vào giỏ",
+    "addToBag": "Thêm vào giỏ",
+    "addToWishlist": "Thêm vào yêu thích",
+    "removeFromWishlist": "Xóa khỏi yêu thích",
+    "share": "Chia sẻ",
+    "shareText": "Xem {name} từ DOOVAN",
+    "linkCopied": "Đã sao chép liên kết",
+    "material": "Chất liệu",
+    "care": "Bảo quản",
+    "category": "Danh mục",
+    "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>",
+    "toastSaved": "Đã lưu {name} — <link>Xem danh sách yêu thích</link>",
+    "toastRemoved": "Đã xóa {name} khỏi danh sách yêu thích",
+    "related": {
+      "label": "Có thể bạn cũng thích",
+      "title": "Hoàn thiện set đồ"
+    }
+  },
+  "reviews": {
+    "starsAria": "{rating} trên 5 sao",
+    "label": "Đánh giá của khách hàng",
+    "title": "Khách hàng nói gì về chúng tôi",
+    "basedOn": "Dựa trên {count} đánh giá",
+    "verified": "Đã xác minh",
+    "showLess": "Thu gọn",
+    "showAll": "Xem tất cả {count} đánh giá"
+  },
+  "shipping": {
+    "title": "Vận chuyển & Đổi trả",
+    "freeOver": "Miễn phí vận chuyển cho đơn hàng trên {amount}",
+    "free": "Miễn phí",
+    "returns": "Đổi trả"
+  },
+  "sizeGuideModal": {
+    "title": "Bảng size",
+    "close": "Đóng bảng size",
+    "loading": "Đang tải bảng size…",
+    "fitTips": "Gợi ý chọn size",
+    "unavailable": "Chưa có bảng size cho danh mục này."
+  },
+  "share": {
+    "label": "Chia sẻ",
+    "copyLink": "Sao chép liên kết",
+    "copied": "Đã sao chép liên kết",
+    "copyFailed": "Không thể sao chép liên kết",
+    "shareOnX": "Chia sẻ lên X",
+    "shareOnPinterest": "Chia sẻ lên Pinterest",
+    "text": "Xem {name} từ DOOVAN"
+  }
+}

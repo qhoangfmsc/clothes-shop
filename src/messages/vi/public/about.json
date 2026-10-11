@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "title": "Giới thiệu",
+    "description": "Khám phá câu chuyện đằng sau DOOVAN. Nơi nghề thủ công truyền thống gặp tầm nhìn tiên phong — túi xách, trang phục và phụ kiện cao cấp được tạo nên có chủ đích."
+  },
+  "hero": {
+    "label": "Giới thiệu — DOOVAN",
+    "heading": "Mời bạn trải nghiệm",
+    "subheading": "Để trải nghiệm điều được tạo nên có chủ đích",
+    "established": "DOOVAN — Thành lập 2026"
+  },
+  "story": {
+    "subtitle": "Nơi di sản gặp tầm nhìn",
+    "title": "Câu chuyện của chúng tôi",
+    "paragraphs": {
+      "first": "DOOVAN ra đời từ một niềm tin giản dị — thời trang phải mang tính cá nhân, có chủ đích và sống động. Mỗi sản phẩm chúng tôi tạo ra đều mang hơi ấm của thủ công và sự tinh xảo của haute couture.",
+      "second": "Thành lập năm 2026, chúng tôi kết nối nghề thủ công vượt thời gian với thiết kế hiện đại. Xưởng may của chúng tôi sử dụng những chất liệu tốt nhất, có nguồn gốc đạo đức, được tạo hình bởi những đôi tay thấu hiểu ngôn ngữ của vải.",
+      "third": "Chúng tôi không chạy theo xu hướng. Chúng tôi tạo ra những thiết kế trở thành một phần câu chuyện của bạn — túi xách già đi một cách duyên dáng, trang phục chuyển động cùng bạn, phụ kiện thì thầm thay vì phô trương."
+    },
+    "quote": "“Chúng tôi không chạy theo xu hướng — chúng tôi tạo ra những câu chuyện bạn mặc trên người.”",
+    "imageAlt": "Những chất liệu mềm mại truyền cảm hứng cho nghề của chúng tôi"
+  },
+  "services": {
+    "label": "Dịch vụ",
+    "title": "Chúng tôi mang đến",
+    "items": {
+      "curated": {
+        "title": "Bộ sưu tập tuyển chọn",
+        "description": "Túi xách, trang phục và phụ kiện đặc trưng — được chọn lọc kỹ lưỡng, chế tác hoàn hảo."
+      },
+      "custom": {
+        "title": "Thiết kế riêng",
+        "description": "Dịch vụ may đo riêng một-một. Tầm nhìn của bạn, tay nghề của chúng tôi — dành riêng cho bạn."
+      },
+      "styling": {
+        "title": "Tư vấn phong cách",
+        "description": "Tuyển chọn tủ đồ cân bằng giữa sự vượt thời gian và cá tính. Luôn nhẹ nhàng, tự nhiên."
+      }
+    }
+  },
+  "cta": {
+    "text": "Hãy để chúng tôi tạo nên điều đẹp đẽ dành cho bạn",
+    "button": "Liên hệ",
+    "copyright": "DOOVAN ® {year}"
+  }
+}

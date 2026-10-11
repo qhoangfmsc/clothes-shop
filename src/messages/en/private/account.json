@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "My Account",
+    "description": "Manage your DOOVAN account, wishlist, and order history."
+  },
+  "profile": {
+    "welcome": "Welcome",
+    "memberSince": "Member since {date}"
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "viewAll": "View All",
+    "emptyTitle": "Your wishlist is empty",
+    "emptyDescription": "Tap the heart icon on any product to save it here",
+    "browse": "Browse Shop",
+    "goTo": "Go to Wishlist"
+  },
+  "orders": {
+    "title": "Order History",
+    "viewAll": "View All",
+    "emptyTitle": "No orders yet",
+    "emptyDescription": "When you place your first order, it will appear here",
+    "startShopping": "Start Shopping",
+    "goTo": "Go to Orders",
+    "summary": "{count, plural, one {# item} other {# items}} · {date}"
+  },
+  "signOut": "Sign Out"
+}

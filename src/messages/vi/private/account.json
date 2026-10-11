@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "Tài khoản của tôi",
+    "description": "Quản lý tài khoản DOOVAN, danh sách yêu thích và lịch sử đơn hàng."
+  },
+  "profile": {
+    "welcome": "Xin chào",
+    "memberSince": "Thành viên từ {date}"
+  },
+  "wishlist": {
+    "title": "Yêu thích",
+    "viewAll": "Xem tất cả",
+    "emptyTitle": "Danh sách yêu thích của bạn đang trống",
+    "emptyDescription": "Nhấn biểu tượng trái tim trên bất kỳ sản phẩm nào để lưu vào đây",
+    "browse": "Xem cửa hàng",
+    "goTo": "Đến danh sách yêu thích"
+  },
+  "orders": {
+    "title": "Lịch sử đơn hàng",
+    "viewAll": "Xem tất cả",
+    "emptyTitle": "Chưa có đơn hàng",
+    "emptyDescription": "Khi bạn đặt đơn hàng đầu tiên, nó sẽ xuất hiện ở đây",
+    "startShopping": "Bắt đầu mua sắm",
+    "goTo": "Đến đơn hàng",
+    "summary": "{count} sản phẩm · {date}"
+  },
+  "signOut": "Đăng xuất"
+}

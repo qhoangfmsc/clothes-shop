@@ -133,7 +133,7 @@ export function useApiAuth() {
         if (newToken) {
           res = await doFetch(newToken);
         } else {
-          throw createApiError("Authentication required", 401);
+          throw createApiError("", 401);
         }
       }
 

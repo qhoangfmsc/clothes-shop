@@ -1,0 +1,25 @@
+{
+  "toast": {
+    "dismiss": "Đóng thông báo"
+  },
+  "loginPrompt": {
+    "title": "Đăng nhập để tiếp tục",
+    "subtitle": {
+      "continue": "Đăng nhập để tiếp tục. Lựa chọn của bạn sẽ được lưu lại.",
+      "addToBag": "Đăng nhập để thêm sản phẩm vào giỏ. Lựa chọn của bạn sẽ được lưu lại.",
+      "saveToWishlist": "Đăng nhập để lưu sản phẩm vào danh sách yêu thích. Lựa chọn của bạn sẽ được lưu lại."
+    },
+    "dismiss": "Tiếp tục xem hàng"
+  },
+  "unauthenticated": {
+    "title": "Phiên đăng nhập đã hết hạn",
+    "subtitle": "Vui lòng đăng nhập lại để truy cập tài khoản, danh sách yêu thích và lịch sử đơn hàng.",
+    "or": "hoặc",
+    "home": "Về trang chủ"
+  },
+  "systemPassword": {
+    "title": "Nhập mật khẩu để tiếp tục",
+    "placeholder": "Mật khẩu",
+    "error": "Mật khẩu không đúng. Vui lòng thử lại."
+  }
+}

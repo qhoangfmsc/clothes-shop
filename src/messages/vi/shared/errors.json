@@ -1,0 +1,26 @@
+{
+  "notFound": {
+    "title": "Lạc trong xưởng may",
+    "description": "Trang này dường như đã rời khỏi sàn catwalk. Hãy để chúng tôi đưa bạn quay lại bộ sưu tập.",
+    "home": "Về trang chủ",
+    "explore": "Khám phá"
+  },
+  "serverError": {
+    "title": "Đã xảy ra sự cố",
+    "description": "Hiện chưa thể tải trang này. Vui lòng thử lại sau ít phút.",
+    "retry": "Thử lại",
+    "home": "Về trang chủ"
+  },
+  "unauthorized": {
+    "meta": {
+      "title": "Từ chối truy cập"
+    },
+    "title": "Từ chối truy cập",
+    "signedIn": "Tài khoản của bạn ({email}) không có quyền truy cập khu vực này.",
+    "unknownEmail": "không xác định",
+    "signedOut": "Bạn cần đăng nhập để truy cập trang này.",
+    "role": "Vai trò của bạn:",
+    "back": "Về cửa hàng",
+    "signIn": "Đăng nhập"
+  }
+}

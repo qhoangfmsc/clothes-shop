@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "title": "Order History",
+    "description": "View your order history and track deliveries from DOOVAN."
+  },
+  "list": {
+    "back": "Account",
+    "title": "Order History",
+    "empty": {
+      "title": "No orders yet",
+      "description": "When you place your first order, it will appear here with tracking details and delivery status.",
+      "cta": "Start Shopping",
+      "features": {
+        "tracking": "Real-time order tracking",
+        "updates": "Delivery status updates",
+        "returns": "Easy returns & exchanges"
+      }
+    },
+    "card": {
+      "quantity": "Qty: {quantity}",
+      "more": "+{count, plural, one {# more item} other {# more items}}",
+      "orderNumber": "Order #{id}",
+      "viewDetails": "View Details"
+    }
+  },
+  "detail": {
+    "notFound": "Order not found.",
+    "back": "All Orders",
+    "title": "Order #{id}",
+    "shippingAddress": "Shipping Address",
+    "notes": "Notes:",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "shippingMethod": {
+      "express": "Express",
+      "standard": "Standard"
+    },
+    "free": "Free",
+    "total": "Total",
+    "itemMeta": "{size} · {color} · Qty {quantity}"
+  }
+}

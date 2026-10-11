@@ -1,0 +1,109 @@
+{
+  "page": {
+    "title": "Sản phẩm",
+    "count": "{count} sản phẩm",
+    "add": "Thêm sản phẩm"
+  },
+  "table": {
+    "searchPlaceholder": "Tên sản phẩm...",
+    "columns": {
+      "product": "Sản phẩm",
+      "category": "Danh mục",
+      "price": "Giá",
+      "status": "Trạng thái",
+      "badge": "Nhãn",
+      "actions": "Thao tác"
+    },
+    "filters": {
+      "category": "Danh mục",
+      "status": "Trạng thái",
+      "badge": "Nhãn"
+    },
+    "sort": {
+      "newest": "Mới nhất",
+      "oldest": "Cũ nhất",
+      "priceDown": "Giá ↓",
+      "priceUp": "Giá ↑",
+      "nameAsc": "Tên A-Z",
+      "nameDesc": "Tên Z-A"
+    }
+  },
+  "form": {
+    "titleCreate": "Sản phẩm mới",
+    "titleEdit": "Sửa sản phẩm",
+    "tabs": {
+      "general": "Chung",
+      "variants": "Biến thể & Thẻ",
+      "images": "Hình ảnh"
+    },
+    "sections": {
+      "basic": "Thông tin cơ bản",
+      "pricing": "Giá bán",
+      "classification": "Phân loại"
+    },
+    "fields": {
+      "name": "Tên sản phẩm",
+      "description": "Mô tả",
+      "price": "Giá ($)",
+      "originalPrice": "Giá gốc ($)",
+      "category": "Danh mục",
+      "subcategory": "Danh mục con",
+      "status": "Trạng thái",
+      "badge": "Nhãn",
+      "sizes": "Kích cỡ",
+      "colors": "Màu sắc",
+      "material": "Chất liệu",
+      "care": "Hướng dẫn bảo quản",
+      "tags": "Thẻ",
+      "images": "Hình ảnh"
+    },
+    "info": {
+      "originalPrice": "Để trống nếu không giảm giá.",
+      "status": "Sản phẩm bị vô hiệu hóa sẽ bị ẩn khỏi cửa hàng.",
+      "images": "Tải tệp lên hoặc dán URL. Ảnh đầu tiên được dùng làm ảnh đại diện chính."
+    },
+    "placeholders": {
+      "name": "VD: Áo thun trắng cổ điển",
+      "description": "Mô tả sản phẩm...",
+      "colorName": "Tên màu, VD: \"Xanh đêm\"",
+      "customSize": "Nhập kích cỡ tùy chỉnh rồi nhấn Enter",
+      "material": "VD: 100% Cotton",
+      "care": "VD: Giặt máy nước lạnh",
+      "tag": "Nhập thẻ rồi nhấn Enter..."
+    },
+    "options": {
+      "selectCategory": "— Chọn danh mục —",
+      "noneDash": "— Không —",
+      "none": "Không"
+    },
+    "sizes": {
+      "clearAll": "Xóa tất cả ({count})",
+      "groups": {
+        "letter": "Chữ",
+        "number": "Số",
+        "special": "Đặc biệt"
+      }
+    },
+    "colors": {
+      "empty": "Chưa thêm màu nào.",
+      "add": "Thêm màu",
+      "remove": "Xóa {name}"
+    },
+    "tagsRemove": "Xóa thẻ {tag}",
+    "submitCreate": "Tạo sản phẩm",
+    "submitUpdate": "Cập nhật sản phẩm"
+  },
+  "toast": {
+    "colorExists": "Tên màu đã tồn tại",
+    "subcategoryRequired": "Vui lòng chọn danh mục con (danh mục này yêu cầu)",
+    "updated": "Đã cập nhật sản phẩm",
+    "created": "Đã tạo sản phẩm",
+    "saveFailed": "Lưu thất bại",
+    "deleted": "Đã xóa sản phẩm",
+    "deleteFailed": "Xóa thất bại"
+  },
+  "confirmDelete": {
+    "title": "Xóa sản phẩm",
+    "message": "Xóa \"{name}\"?"
+  }
+}

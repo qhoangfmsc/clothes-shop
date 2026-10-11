@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Bộ sưu tập",
+    "count": "{count} bộ sưu tập",
+    "add": "Thêm bộ sưu tập"
+  },
+  "table": {
+    "searchPlaceholder": "Tên bộ sưu tập...",
+    "columns": {
+      "collection": "Bộ sưu tập",
+      "season": "Mùa",
+      "products": "Sản phẩm",
+      "actions": "Thao tác"
+    },
+    "productCount": "{count} sản phẩm",
+    "filters": {
+      "season": "Mùa"
+    }
+  },
+  "form": {
+    "titleCreate": "Bộ sưu tập mới",
+    "titleEdit": "Sửa bộ sưu tập",
+    "tabs": {
+      "info": "Thông tin",
+      "products": "Sản phẩm"
+    },
+    "sections": {
+      "basic": "Thông tin cơ bản",
+      "details": "Chi tiết"
+    },
+    "fields": {
+      "name": "Tên",
+      "subtitle": "Phụ đề",
+      "season": "Mùa",
+      "coverImage": "Ảnh bìa",
+      "description": "Mô tả"
+    },
+    "subtitleInfo": "Dòng giới thiệu ngắn hiển thị bên dưới tên",
+    "placeholders": {
+      "season": "chọn từ danh sách hoặc tự nhập",
+      "coverImage": "URL ảnh chính của bộ sưu tập hoặc tải lên",
+      "description": "hiển thị trên trang bộ sưu tập"
+    },
+    "submitCreate": "Tạo bộ sưu tập",
+    "submitUpdate": "Cập nhật bộ sưu tập"
+  },
+  "products": {
+    "addLabel": "Thêm sản phẩm (đã chọn {count})",
+    "searchPlaceholder": "Tìm sản phẩm...",
+    "removeProduct": "Bỏ {name}",
+    "empty": "Không tìm thấy sản phẩm."
+  },
+  "toast": {
+    "updated": "Đã cập nhật bộ sưu tập",
+    "created": "Đã tạo bộ sưu tập"
+  },
+  "confirmDelete": {
+    "title": "Xóa bộ sưu tập",
+    "message": "Xóa \"{name}\"?"
+  }
+}

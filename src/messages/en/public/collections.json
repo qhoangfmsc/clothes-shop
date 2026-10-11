@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Collections",
+    "description": "Explore the DOOVAN collections. Curated seasonal edits and signature styles — each collection a chapter in the DOOVAN narrative."
+  },
+  "detailMeta": {
+    "title": "{name} — Collections — DOOVAN"
+  },
+  "list": {
+    "heroSeason": "Limited Edition",
+    "heroTitleLine1": "The",
+    "heroTitleLine2": "Collections",
+    "heroSubtitle": "Stories told through fabric, form, and intention. Each collection a chapter in the DOOVAN narrative.",
+    "heroAlt": "Collections",
+    "scroll": "Scroll",
+    "marquee": "DOOVAN ◆ Collections ◆ Crafted with Intention ◆ Limited Editions ◆",
+    "exploreLabel": "Explore",
+    "allCollections": "All Collections",
+    "exploreCollection": "Explore Collection"
+  },
+  "detail": {
+    "scroll": "Scroll",
+    "lookbook": "The Lookbook",
+    "curatedPieces": "Curated Pieces",
+    "viewDetails": "View Details",
+    "quoteBy": "— DOOVAN, {season}",
+    "shopCollection": "Shop the Collection",
+    "pieces": "{count, plural, one {# piece} other {# pieces}}",
+    "saved": "{name} saved — <link>View Wishlist</link>",
+    "removed": "{name} removed from wishlist",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "addToBagAria": "Add to bag",
+    "addToBag": "Add to Bag",
+    "allCollections": "All Collections",
+    "discoverMore": "Discover More",
+    "exploreAll": "Explore All Collections",
+    "viewCollections": "View Collections"
+  }
+}

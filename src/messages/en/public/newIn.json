@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "New In",
+    "description": "Discover the latest arrivals at DOOVAN. Fresh drops, new silhouettes, and pieces designed for those who move first."
+  },
+  "hero": {
+    "live": "Live Now",
+    "titleLine1": "New",
+    "titleLine2": "Arrivals",
+    "subtitle": "Be the first to discover what's next. Fresh drops, new silhouettes, and pieces designed for those who move first.",
+    "cta": "Explore Drops",
+    "watermark": "N",
+    "alt": "New Arrival"
+  },
+  "spotlight": {
+    "editorsPick": "Editor's Pick",
+    "mostWanted": "Most Wanted",
+    "featured": "Featured",
+    "shopNow": "Shop Now"
+  },
+  "ticker": {
+    "newDrop": "New Drop",
+    "limited": "Limited Edition",
+    "handcrafted": "Handcrafted"
+  },
+  "grid": {
+    "label": "Just Dropped",
+    "title": "All New Pieces"
+  },
+  "newsletter": {
+    "title": "Never Miss a Drop",
+    "description": "Be the first to know when new pieces land. Join our inner circle for early access and exclusive previews.",
+    "placeholder": "your@email.com",
+    "emailAria": "Email address",
+    "join": "Join"
+  }
+}

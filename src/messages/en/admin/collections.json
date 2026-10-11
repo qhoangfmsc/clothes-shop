@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Collections",
+    "count": "{count, plural, one {# collection} other {# collections}}",
+    "add": "Add Collection"
+  },
+  "table": {
+    "searchPlaceholder": "Name collection...",
+    "columns": {
+      "collection": "Collection",
+      "season": "Season",
+      "products": "Products",
+      "actions": "Actions"
+    },
+    "productCount": "{count, plural, one {# product} other {# products}}",
+    "filters": {
+      "season": "Season"
+    }
+  },
+  "form": {
+    "titleCreate": "New Collection",
+    "titleEdit": "Edit Collection",
+    "tabs": {
+      "info": "Info",
+      "products": "Products"
+    },
+    "sections": {
+      "basic": "Basic Info",
+      "details": "Details"
+    },
+    "fields": {
+      "name": "Name",
+      "subtitle": "Subtitle",
+      "season": "Season",
+      "coverImage": "Cover Image",
+      "description": "Description"
+    },
+    "subtitleInfo": "Short tagline shown below the name",
+    "placeholders": {
+      "season": "pick from list or type your own",
+      "coverImage": "primary collection image URL or upload",
+      "description": "shown on collection page"
+    },
+    "submitCreate": "Create Collection",
+    "submitUpdate": "Update Collection"
+  },
+  "products": {
+    "addLabel": "Add Products ({count} selected)",
+    "searchPlaceholder": "Search products...",
+    "removeProduct": "Remove {name}",
+    "empty": "No products found."
+  },
+  "toast": {
+    "updated": "Collection updated",
+    "created": "Collection created"
+  },
+  "confirmDelete": {
+    "title": "Delete collection",
+    "message": "Delete \"{name}\"?"
+  }
+}

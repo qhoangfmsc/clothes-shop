@@ -1,0 +1,22 @@
+{
+  "title": "Order #{id}",
+  "close": "Close",
+  "status": "Status",
+  "date": "Date",
+  "items": "Items ({count})",
+  "size": "Size: {size}",
+  "color": "Color: {color}",
+  "quantity": "Qty: {quantity}",
+  "shipping": {
+    "title": "Shipping",
+    "method": "Method",
+    "fee": "Fee"
+  },
+  "payment": {
+    "title": "Payment",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total"
+  },
+  "note": "Note"
+}

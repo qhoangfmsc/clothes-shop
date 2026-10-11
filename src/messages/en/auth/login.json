@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Sign In",
+    "description": "Sign in to your DOOVAN account to access exclusive collections and personalized styling."
+  },
+  "welcome": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to access your exclusive collection"
+  },
+  "backHome": "← Back to Home",
+  "google": {
+    "continue": "Continue with Google",
+    "signingIn": "Signing in...",
+    "failed": "Login failed. Please try again.",
+    "cancelled": "Google sign-in was cancelled or failed."
+  }
+}

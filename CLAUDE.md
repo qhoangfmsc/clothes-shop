@@ -1,5 +1,5 @@
 # Project rules
 
-- **English-only UI.** Every piece of user-facing text in this app — labels, buttons, headings, toasts, confirm/error dialogs, placeholders, `aria-label`/`title`/`alt` attributes, API error messages returned to the client — must be written in English. No Vietnamese (or any other language) in rendered strings, anywhere under `src/app/**`, including the admin area. This applies when writing new code and when touching existing code. Code comments are not shipped to the client and are exempt, but prefer English there too for consistency.
+- **Code in English, UI through i18n.** All source code (identifiers, comments, commit messages) is English. Every piece of user-facing text — labels, buttons, headings, toasts, confirm/error dialogs, placeholders, `aria-label`/`title`/`alt`, page metadata — must come from the message files in `src/messages/<locale>/**` (languages: `vi` default, `en`, `fr`) via `next-intl`; never hardcode a string in a component, constant or slice, and add every new key to **all** locales. Follow `.agent/skills/04-i18n.md` (also available as the `i18n` skill) for structure, navigation helpers (`@/src/i18n/navigation`) and the `yarn i18n:check` workflow.
 
 See `.agent/rules/coding.md` for the rest of this project's coding conventions (also followed by other AI tools used on this repo).

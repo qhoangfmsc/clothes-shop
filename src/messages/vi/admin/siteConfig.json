@@ -1,0 +1,72 @@
+{
+  "page": {
+    "title": "Cấu hình website",
+    "subtitle": "Banner và nội dung được cấu hình cho các trang công khai.",
+    "loading": "Đang tải..."
+  },
+  "keys": {
+    "SHOP_HERO_BANNERS": {
+      "label": "Cửa hàng — Banner chính",
+      "description": "Banner trang Cửa hàng."
+    },
+    "NEW_IN_HERO_BANNERS": {
+      "label": "Hàng mới về — Banner chính",
+      "description": "Banner trang Hàng mới về."
+    },
+    "COLLECTIONS_HERO_BANNERS": {
+      "label": "Bộ sưu tập — Banner chính",
+      "description": "Banner trang Bộ sưu tập."
+    },
+    "NAV_MENU_BANNERS": {
+      "label": "Menu — Banner nổi bật",
+      "description": "Banner trong menu."
+    }
+  },
+  "card": {
+    "configured": "Đã cấu hình — {count} banner",
+    "empty": "Trống",
+    "edit": "Sửa",
+    "delete": "Xóa"
+  },
+  "form": {
+    "banners": "Banner ({count})",
+    "addBanner": "Thêm banner",
+    "emptyHint": "Chưa có banner. Nhấn \"Thêm banner\" để bắt đầu — để trống thì trang sẽ dùng nội dung mặc định.",
+    "removeBanner": "Xóa banner",
+    "bannerN": "Banner {index}",
+    "images": {
+      "section": "Ảnh banner",
+      "desktop": "Máy tính",
+      "desktopInfo": "Laptop / PC, ≥ 1024px — cũng là ảnh dự phòng cho máy tính bảng và điện thoại",
+      "tablet": "Máy tính bảng",
+      "tabletInfo": "iPad / máy tính bảng, ≥ 640px — tùy chọn, mặc định dùng ảnh máy tính",
+      "mobile": "Điện thoại",
+      "mobileInfo": "Điện thoại, < 640px — tùy chọn, mặc định dùng ảnh máy tính bảng rồi máy tính"
+    },
+    "content": {
+      "section": "Nội dung",
+      "label": "Nhãn",
+      "labelInfo": "Nhãn nhỏ phía trên tiêu đề (tùy chọn)",
+      "title": "Tiêu đề",
+      "titleInfo": "Tiêu đề chính (tùy chọn)",
+      "subtitle": "Phụ đề",
+      "subtitleInfo": "Mô tả ngắn (tùy chọn)",
+      "ctaLabel": "Nhãn nút CTA",
+      "ctaLabelInfo": "VD: \"Mua ngay\"",
+      "ctaHref": "Liên kết nút CTA",
+      "ctaHrefInfo": "VD: /shop"
+    },
+    "save": "Lưu"
+  },
+  "toast": {
+    "desktopRequired": "Mỗi banner cần có ảnh cho máy tính",
+    "saved": "Đã lưu cấu hình",
+    "saveFailed": "Lưu thất bại",
+    "deleted": "Đã xóa cấu hình",
+    "deleteFailed": "Xóa thất bại"
+  },
+  "confirmDelete": {
+    "title": "Xóa cấu hình",
+    "message": "Xóa cấu hình này? Trang sẽ quay về nội dung mặc định."
+  }
+}

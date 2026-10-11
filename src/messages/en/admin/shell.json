@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Admin",
+    "description": "Admin dashboard for DOOVAN"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "groups": {
+      "catalog": "Catalog",
+      "management": "Management",
+      "system": "System"
+    },
+    "items": {
+      "products": "Products",
+      "categories": "Categories",
+      "collections": "Collections",
+      "orders": "Orders",
+      "users": "Users",
+      "siteConfig": "Site Config",
+      "media": "Media"
+    }
+  },
+  "badge": "ADMIN",
+  "logout": "Logout",
+  "menu": "Menu",
+  "denied": {
+    "backToStore": "Back to Store",
+    "adminRequired": {
+      "title": "Admin Access Required",
+      "message": "Your account does not have administrator privileges. Please contact an admin if you believe this is a mistake."
+    },
+    "route": {
+      "title": "Access Denied",
+      "message": "You do not have permission to view this page. Please contact an admin if you believe this is a mistake."
+    }
+  },
+  "breadcrumb": {
+    "admin": "Admin",
+    "products": "Products",
+    "categories": "Categories",
+    "collections": "Collections",
+    "orders": "Orders",
+    "users": "Users",
+    "site-config": "Site Config",
+    "media": "Media"
+  }
+}

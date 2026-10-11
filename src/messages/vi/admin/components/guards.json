@@ -1,0 +1,7 @@
+{
+  "checking": "Đang kiểm tra quyền truy cập...",
+  "denied": {
+    "title": "Từ chối truy cập",
+    "message": "Bạn không có quyền truy cập trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là nhầm lẫn."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "page": {
+    "title": "Người dùng",
+    "total": "Tổng {count} người dùng"
+  },
+  "table": {
+    "searchPlaceholder": "Tên hoặc email...",
+    "columns": {
+      "user": "Người dùng",
+      "email": "Email",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "joined": "Ngày tham gia",
+      "actions": "Thao tác"
+    },
+    "view": "Xem",
+    "filters": {
+      "role": "Vai trò",
+      "status": "Trạng thái"
+    }
+  },
+  "modal": {
+    "title": "Chi tiết người dùng",
+    "close": "Đóng",
+    "tabs": {
+      "orders": "Đơn hàng",
+      "role": "Vai trò"
+    }
+  },
+  "orders": {
+    "summary": "{count} đơn hàng của người dùng này",
+    "pageOf": "Trang {page} / {total}",
+    "loading": "Đang tải đơn hàng...",
+    "empty": "Chưa có đơn hàng",
+    "viewOrder": "Xem đơn hàng #{id}",
+    "itemCount": "{count} sản phẩm",
+    "pager": "{page} / {total}",
+    "previous": "Trang trước",
+    "next": "Trang sau"
+  },
+  "role": {
+    "section": "Quyền truy cập",
+    "label": "Vai trò",
+    "info": "Quản trị viên có toàn quyền quản trị. Người dùng là khách hàng thông thường.",
+    "saving": "Đang lưu...",
+    "save": "Lưu vai trò"
+  },
+  "toast": {
+    "roleUpdated": "Đã cập nhật vai trò",
+    "roleFailed": "Cập nhật vai trò thất bại"
+  }
+}

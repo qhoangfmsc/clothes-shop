@@ -1,0 +1,10 @@
+{
+  "edit": "Edit",
+  "delete": "Delete",
+  "deleted": "Deleted",
+  "failed": "Failed",
+  "sort": {
+    "newest": "Newest",
+    "oldest": "Oldest"
+  }
+}

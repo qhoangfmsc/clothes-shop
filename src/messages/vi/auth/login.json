@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Đăng nhập",
+    "description": "Đăng nhập tài khoản DOOVAN để truy cập các bộ sưu tập độc quyền và tư vấn phong cách cá nhân."
+  },
+  "welcome": {
+    "title": "Chào mừng trở lại",
+    "subtitle": "Đăng nhập để truy cập bộ sưu tập độc quyền của bạn"
+  },
+  "backHome": "← Về trang chủ",
+  "google": {
+    "continue": "Tiếp tục với Google",
+    "signingIn": "Đang đăng nhập...",
+    "failed": "Đăng nhập thất bại. Vui lòng thử lại.",
+    "cancelled": "Đăng nhập Google đã bị hủy hoặc thất bại."
+  }
+}

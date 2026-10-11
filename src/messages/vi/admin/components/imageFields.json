@@ -1,0 +1,18 @@
+{
+  "url": {
+    "placeholder": "https://... hoặc tải tệp lên",
+    "upload": "Tải lên"
+  },
+  "list": {
+    "main": "Ảnh chính",
+    "remove": "Xóa",
+    "uploadImage": "Tải ảnh lên",
+    "urlPlaceholder": "Dán URL ảnh và nhấn Enter",
+    "addUrl": "Thêm URL"
+  },
+  "toast": {
+    "imageUploaded": "Đã tải ảnh lên",
+    "imagesUploaded": "Đã tải lên {count} ảnh",
+    "uploadFailed": "Tải lên thất bại"
+  }
+}

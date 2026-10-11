@@ -1,0 +1,80 @@
+{
+  "components": {
+    "breadcrumb": {
+      "aria": "Breadcrumb"
+    },
+    "categoryGrid": {
+      "pieces": "{count, plural, one {# piece} other {# pieces}}"
+    },
+    "subcategoryChips": {
+      "all": "All"
+    },
+    "productGrid": {
+      "comingSoon": "Coming Soon",
+      "comingSoonDescription": "New pieces are being curated for this collection. Check back soon."
+    },
+    "productCard": {
+      "saved": "{name} saved — <link>View Wishlist</link>",
+      "removed": "{name} removed from wishlist",
+      "addToWishlist": "Add to wishlist",
+      "removeFromWishlist": "Remove from wishlist",
+      "addToBagAria": "Add to bag",
+      "addToBag": "Add to Bag"
+    },
+    "filters": {
+      "count": "{count, plural, one {# piece} other {# pieces}}",
+      "filter": "Filter",
+      "clearAll": "Clear all",
+      "priceRange": "Price Range",
+      "to": "to",
+      "size": "Size",
+      "color": "Color",
+      "sort": {
+        "newest": "Newest",
+        "price_asc": "Price: Low → High",
+        "price_desc": "Price: High → Low",
+        "name_asc": "Name: A → Z",
+        "name_desc": "Name: Z → A"
+      }
+    },
+    "productsClient": {
+      "loadMore": "Load More ({remaining} remaining)"
+    }
+  },
+  "pages": {
+    "index": {
+      "meta": {
+        "title": "Shop",
+        "description": "Explore the full DOOVAN collection. Luxury tops, skirts, bags, and jewelry — crafted with intention for the modern wardrobe."
+      },
+      "hero": {
+        "title": "Shop All",
+        "description": "Discover our curated selection of luxury essentials — each piece designed to elevate your everyday."
+      },
+      "browse": {
+        "label": "Browse by Category",
+        "title": "Find Your Piece",
+        "description": "{count, plural, one {# curated category} other {# curated categories}}, each telling its own story of elegance and intention."
+      },
+      "all": {
+        "label": "All Products",
+        "title": "The Full Edit",
+        "description": "Every piece in our collection, ready to be discovered."
+      }
+    },
+    "category": {
+      "meta": {
+        "title": "{category} — DOOVAN Shop",
+        "description": "{description} — DOOVAN luxury collection."
+      },
+      "heroLabel": "DOOVAN — {category}",
+      "collectionHeading": "{category} Collection"
+    },
+    "subcategory": {
+      "meta": {
+        "description": "{description}. Shop {subcategory} from the DOOVAN {category} collection."
+      },
+      "pieceCount": "{count, plural, one {# piece} other {# pieces}} in this collection"
+    }
+  }
+}

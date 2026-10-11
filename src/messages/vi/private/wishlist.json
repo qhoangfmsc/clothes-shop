@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "Danh sách yêu thích",
+    "description": "Xem và quản lý các sản phẩm bạn đã lưu tại DOOVAN."
+  },
+  "header": {
+    "back": "Tài khoản",
+    "title": "Danh sách yêu thích",
+    "itemCount": "{count} sản phẩm",
+    "clearAll": "Xóa tất cả"
+  },
+  "empty": {
+    "title": "Danh sách yêu thích của bạn đang trống",
+    "description": "Hãy khám phá các bộ sưu tập và nhấn biểu tượng trái tim để lưu những món đồ bạn thích",
+    "browse": "Xem cửa hàng",
+    "features": {
+      "save": "Lưu những món đồ bạn yêu thích",
+      "priceDrops": "Nhận thông báo khi giảm giá",
+      "quickAccess": "Truy cập nhanh các món yêu thích"
+    }
+  },
+  "card": {
+    "added": "Đã thêm {date}",
+    "remove": "Xóa {name} khỏi danh sách yêu thích",
+    "removed": "Đã xóa {name} khỏi danh sách yêu thích"
+  },
+  "continueShopping": "Tiếp tục mua sắm"
+}

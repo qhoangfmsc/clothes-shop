@@ -1,0 +1,40 @@
+{
+  "title": "Dashboard",
+  "kpi": {
+    "revenue": {
+      "label": "Total Revenue",
+      "sub": "from {count, plural, one {# completed order} other {# completed orders}}"
+    },
+    "processing": {
+      "label": "Needs Processing",
+      "sub": "pending orders"
+    },
+    "orders": {
+      "label": "Orders",
+      "sub": "{count} completed"
+    },
+    "products": {
+      "label": "Products",
+      "sub": "{active} active · {inactive} inactive"
+    },
+    "users": {
+      "label": "Users",
+      "sub": "registered accounts"
+    }
+  },
+  "recentOrders": {
+    "title": "Recent Orders",
+    "empty": "No orders yet.",
+    "columns": {
+      "order": "Order",
+      "status": "Status",
+      "items": "Items",
+      "total": "Total",
+      "date": "Date"
+    }
+  },
+  "orderStatus": {
+    "title": "Order Status",
+    "loading": "Loading..."
+  }
+}

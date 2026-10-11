@@ -13,14 +13,14 @@
    ═══════════════════════════════════════════════════════════ */
 
 import { configureStore } from "@reduxjs/toolkit";
-import { productsReducer } from "@/src/app/(admin)/admin/products/_common/moduleSlice";
-import { categoriesReducer } from "@/src/app/(admin)/admin/categories/_common/moduleSlice";
-import { collectionsReducer } from "@/src/app/(admin)/admin/collections/_common/moduleSlice";
-import { usersReducer } from "@/src/app/(admin)/admin/users/_common/moduleSlice";
-import { ordersReducer } from "@/src/app/(admin)/admin/orders/_common/moduleSlice";
-import { siteConfigReducer } from "@/src/app/(admin)/admin/site-config/_common/moduleSlice";
-import { cartReducer } from "@/src/app/(private)/cart/_common/moduleSlice";
-import { wishlistReducer } from "@/src/app/(private)/wishlist/_common/moduleSlice";
+import { productsReducer } from "@/src/app/[locale]/(admin)/admin/products/_common/moduleSlice";
+import { categoriesReducer } from "@/src/app/[locale]/(admin)/admin/categories/_common/moduleSlice";
+import { collectionsReducer } from "@/src/app/[locale]/(admin)/admin/collections/_common/moduleSlice";
+import { usersReducer } from "@/src/app/[locale]/(admin)/admin/users/_common/moduleSlice";
+import { ordersReducer } from "@/src/app/[locale]/(admin)/admin/orders/_common/moduleSlice";
+import { siteConfigReducer } from "@/src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice";
+import { cartReducer } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
+import { wishlistReducer } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 
 export const store = configureStore({
   reducer: {

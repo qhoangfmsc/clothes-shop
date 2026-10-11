@@ -1,0 +1,32 @@
+{
+  "page": {
+    "title": "Orders",
+    "total": "{count, plural, one {# order} other {# orders}} total"
+  },
+  "table": {
+    "searchPlaceholder": "Order ID or Customer name or phone...",
+    "columns": {
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "items": "Items",
+      "total": "Total",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "view": "View",
+    "filters": {
+      "status": "Status"
+    }
+  },
+  "detail": {
+    "notFoundTitle": "Order Not Found",
+    "notFoundMessage": "Order #{id} not found",
+    "close": "Close"
+  },
+  "toast": {
+    "statusChanged": "Order #{id} → {status}",
+    "failed": "Failed"
+  }
+}

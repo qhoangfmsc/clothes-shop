@@ -1,0 +1,40 @@
+{
+  "title": "Tổng quan",
+  "kpi": {
+    "revenue": {
+      "label": "Tổng doanh thu",
+      "sub": "từ {count} đơn hàng hoàn tất"
+    },
+    "processing": {
+      "label": "Cần xử lý",
+      "sub": "đơn hàng đang chờ"
+    },
+    "orders": {
+      "label": "Đơn hàng",
+      "sub": "{count} hoàn tất"
+    },
+    "products": {
+      "label": "Sản phẩm",
+      "sub": "{active} đang bán · {inactive} ngừng bán"
+    },
+    "users": {
+      "label": "Người dùng",
+      "sub": "tài khoản đã đăng ký"
+    }
+  },
+  "recentOrders": {
+    "title": "Đơn hàng gần đây",
+    "empty": "Chưa có đơn hàng.",
+    "columns": {
+      "order": "Đơn hàng",
+      "status": "Trạng thái",
+      "items": "Sản phẩm",
+      "total": "Tổng",
+      "date": "Ngày"
+    }
+  },
+  "orderStatus": {
+    "title": "Trạng thái đơn hàng",
+    "loading": "Đang tải..."
+  }
+}

@@ -1,0 +1,108 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+
+import ShopHero from "../_components/ShopHero";
+import BreadcrumbNav from "../_components/BreadcrumbNav";
+import SubcategoryChips from "../_components/SubcategoryChips";
+import ShopProductsClient from "../_components/ShopProductsClient";
+
+import { getCategoryBySlug, getProducts, getCategories } from "../_lib/server-fetchers";
+import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import type { AppLocale } from "@/src/i18n/routing";
+
+interface CategoryPageProps {
+  params: Promise<{ locale: AppLocale; category: string }>;
+}
+
+/* ── Static params for all valid categories ── */
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  return categories.map((cat) => ({
+    category: cat.slug,
+  }));
+}
+
+/* ── Dynamic metadata ── */
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { locale, category: slug } = await params;
+  const category = await getCategoryBySlug(slug);
+  const tCommon = await getTranslations({ locale, namespace: "common" });
+  if (!category) return { title: withBrand(tCommon("notFound")) };
+
+  const t = await getTranslations({ locale, namespace: "public.shop.pages.category.meta" });
+  return {
+    title: t("title", { category: category.title }),
+    description: t("description", { description: category.description }),
+    alternates: buildAlternates(locale, `/shop/${slug}`),
+  };
+}
+
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { locale, category: slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("public.shop.pages.category");
+  const tNav = await getTranslations("shared.header.nav");
+  const category = await getCategoryBySlug(slug);
+
+  if (!category) {
+    notFound();
+  }
+
+  const products = await getProducts(slug);
+
+  /* Hero image comes from this category's first product — no placeholder
+     banner. An empty category (no products yet) just shows a plain hero. */
+  const firstProductImage = products[0]?.images[0];
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "var(--bg-primary)",
+      }}
+    >
+      {/* Hero — unique per category */}
+      <ShopHero
+        label={t("heroLabel", { category: category.title })}
+        title={category.title}
+        description={category.description}
+        banners={firstProductImage ? [{ image: firstProductImage }] : []}
+      />
+
+      {/* Breadcrumb */}
+      <BreadcrumbNav
+        crumbs={[
+          { label: tNav("home"), href: "/" },
+          { label: tNav("shop"), href: "/shop" },
+          { label: category.title },
+        ]}
+      />
+
+      {/* Subcategory filter chips */}
+      <SubcategoryChips categorySlug={slug} subcategories={[...category.subcategories]} />
+
+      {/* Products with Filter + Sort + Load More */}
+      <div
+        style={{
+          background: "var(--bg-primary)",
+          paddingTop: 1,
+        }}
+      >
+        <ShopProductsClient
+          products={products}
+          heading={
+            <div className="flex flex-col gap-2 px-4 sm:px-6 lg:px-8 pt-4">
+              <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium">
+                {category.description}
+              </span>
+              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none">
+                {t("collectionHeading", { category: category.title })}
+              </h2>
+            </div>
+          }
+        />
+      </div>
+    </main>
+  );
+}

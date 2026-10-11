@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Bộ sưu tập",
+    "description": "Khám phá các bộ sưu tập của DOOVAN. Những tuyển chọn theo mùa và phong cách đặc trưng — mỗi bộ sưu tập là một chương trong câu chuyện của DOOVAN."
+  },
+  "detailMeta": {
+    "title": "{name} — Bộ sưu tập — DOOVAN"
+  },
+  "list": {
+    "heroSeason": "Phiên bản giới hạn",
+    "heroTitleLine1": "Các",
+    "heroTitleLine2": "Bộ sưu tập",
+    "heroSubtitle": "Những câu chuyện được kể qua chất liệu, hình khối và chủ đích. Mỗi bộ sưu tập là một chương trong câu chuyện của DOOVAN.",
+    "heroAlt": "Bộ sưu tập",
+    "scroll": "Cuộn xuống",
+    "marquee": "DOOVAN ◆ Bộ sưu tập ◆ Chế tác có chủ đích ◆ Phiên bản giới hạn ◆",
+    "exploreLabel": "Khám phá",
+    "allCollections": "Tất cả bộ sưu tập",
+    "exploreCollection": "Khám phá bộ sưu tập"
+  },
+  "detail": {
+    "scroll": "Cuộn xuống",
+    "lookbook": "Lookbook",
+    "curatedPieces": "Tuyển chọn sản phẩm",
+    "viewDetails": "Xem chi tiết",
+    "quoteBy": "— DOOVAN, {season}",
+    "shopCollection": "Mua bộ sưu tập",
+    "pieces": "{count} sản phẩm",
+    "saved": "Đã lưu {name} — <link>Xem danh sách yêu thích</link>",
+    "removed": "Đã xóa {name} khỏi danh sách yêu thích",
+    "addToWishlist": "Thêm vào yêu thích",
+    "removeFromWishlist": "Xóa khỏi yêu thích",
+    "addToBagAria": "Thêm vào giỏ",
+    "addToBag": "Thêm vào giỏ",
+    "allCollections": "Tất cả bộ sưu tập",
+    "discoverMore": "Khám phá thêm",
+    "exploreAll": "Khám phá tất cả bộ sưu tập",
+    "viewCollections": "Xem bộ sưu tập"
+  }
+}

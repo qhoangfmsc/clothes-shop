@@ -1,0 +1,7 @@
+{
+  "checking": "Checking permissions...",
+  "denied": {
+    "title": "Access Denied",
+    "message": "You do not have permission to access this page. Please contact an administrator if you believe this is a mistake."
+  }
+}

@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"app/**/*.{ts,tsx,css}\""
+    "format": "prettier --write \"app/**/*.{ts,tsx,css}\"",
+    "predev": "node scripts/i18n.mjs sync",
+    "prebuild": "node scripts/i18n.mjs sync && node scripts/i18n.mjs check",
+    "i18n:sync": "node scripts/i18n.mjs sync",
+    "i18n:check": "node scripts/i18n.mjs check"
   },
   "dependencies": {
     "@gsap/react": "^2.1.0",
@@ -17,6 +21,7 @@
     "gsap": "^3.13.0",
     "lucide-react": "^1.23.0",
     "next": "^15.3.0",
+    "next-intl": "^4.14.9",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.3.0",

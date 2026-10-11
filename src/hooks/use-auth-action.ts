@@ -1,17 +1,8 @@
 "use client";
 
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import { useAuth } from "@/src/contexts/auth-context";
-
-/**
- * Context for triggering the login prompt modal.
- * Set by LoginPromptProvider in the component tree.
- */
-interface LoginPromptContextValue {
-  openLoginPrompt: (actionDescription?: string) => void;
-}
-
-const LoginPromptContextKey = "loginPrompt";
+import type { LoginPromptAction } from "@/src/app/[locale]/_components/LoginPromptModal";
 
 /**
  * Hook providing auth-gated action helpers.
@@ -21,25 +12,25 @@ const LoginPromptContextKey = "loginPrompt";
  *   const handleClick = () => {
  *     requireAuth(() => {
  *       // do the authenticated action
- *     }, "save to wishlist");
+ *     }, "saveToWishlist");
  *   };
+ *
+ * When the visitor is signed out, LoginPromptProvider opens the sign-in modal
+ * (listening for the `login-prompt:open` event) and runs `action` after sign-in.
  */
 export function useAuthAction() {
   const { isAuthenticated } = useAuth();
 
   const requireAuth = useCallback(
-    (action: () => void, _actionDescription?: string) => {
+    (action: () => void, loginAction: LoginPromptAction = "continue") => {
       if (isAuthenticated) {
         action();
-      } else {
-        /* Dispatch custom event — LoginPromptModal listens for this */
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(
-            new CustomEvent("login-prompt:open", {
-              detail: { actionDescription: _actionDescription },
-            })
-          );
-        }
+      } else if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent("login-prompt:open", {
+            detail: { onSuccess: action, action: loginAction },
+          })
+        );
       }
     },
     [isAuthenticated]

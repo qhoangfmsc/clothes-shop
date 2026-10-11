@@ -1,0 +1,32 @@
+{
+  "page": {
+    "title": "Đơn hàng",
+    "total": "Tổng {count} đơn hàng"
+  },
+  "table": {
+    "searchPlaceholder": "Mã đơn hàng, tên khách hàng hoặc số điện thoại...",
+    "columns": {
+      "orderId": "Mã đơn hàng",
+      "customer": "Khách hàng",
+      "items": "Sản phẩm",
+      "total": "Tổng",
+      "status": "Trạng thái",
+      "date": "Ngày",
+      "actions": "Thao tác"
+    },
+    "itemCount": "{count} sản phẩm",
+    "view": "Xem",
+    "filters": {
+      "status": "Trạng thái"
+    }
+  },
+  "detail": {
+    "notFoundTitle": "Không tìm thấy đơn hàng",
+    "notFoundMessage": "Không tìm thấy đơn hàng #{id}",
+    "close": "Đóng"
+  },
+  "toast": {
+    "statusChanged": "Đơn hàng #{id} → {status}",
+    "failed": "Thất bại"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "actions": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "continue": "Continue",
+    "close": "Close"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "orderStatus": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "shipping": "Shipping",
+    "delivered": "Delivered",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "shipped": "Shipped"
+  },
+  "addressField": {
+    "fullName": "Full name",
+    "phone": "Phone",
+    "addressLine1": "Address",
+    "addressLine2": "Address line 2",
+    "city": "City",
+    "province": "Province",
+    "postalCode": "Postal code",
+    "country": "Country"
+  },
+  "role": {
+    "admin": "Administrator",
+    "user": "Customer"
+  },
+  "productBadge": {
+    "new": "New",
+    "sale": "Sale",
+    "bestseller": "Best Seller"
+  },
+  "notFound": "Not Found",
+  "status": {
+    "active": "Active",
+    "disabled": "Disabled"
+  }
+}

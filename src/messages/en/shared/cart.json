@@ -1,0 +1,21 @@
+{
+  "fab": {
+    "viewBag": "View bag ({count, plural, one {# item} other {# items}})"
+  },
+  "quickAdd": {
+    "close": "Close",
+    "size": "Size",
+    "sizeGuide": "Size Guide",
+    "color": "Color",
+    "selectColor": "Select color: {name}",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "hintBoth": "Select size & color",
+    "hintSize": "Select a size",
+    "hintColor": "Select a color",
+    "added": "Added",
+    "addToBag": "Add to Bag — {price}",
+    "toastAdded": "{name} ({details}) added — <link>View Bag</link>"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "Shopping Bag",
+    "description": "Review your shopping bag and proceed to checkout."
+  },
+  "quantity": {
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "item": {
+    "size": "Size: {size}",
+    "remove": "Remove {name}"
+  },
+  "header": {
+    "continueShopping": "Continue Shopping",
+    "title": "Shopping Bag",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "clearAll": "Clear All"
+  },
+  "empty": {
+    "title": "Your bag is empty",
+    "description": "Browse our collections and add your favorite pieces to get started",
+    "browse": "Browse Shop"
+  },
+  "summary": {
+    "title": "Order Summary",
+    "unlocked": "🎉 You've unlocked free shipping!",
+    "remaining": "Spend {amount} more for free shipping",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "atCheckout": "Calculated at checkout",
+    "total": "Total",
+    "checkout": "Proceed to Checkout",
+    "freeNote": "Free standard shipping on orders over {amount}."
+  }
+}

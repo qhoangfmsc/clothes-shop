@@ -1,0 +1,22 @@
+{
+  "title": "Đơn hàng #{id}",
+  "close": "Đóng",
+  "status": "Trạng thái",
+  "date": "Ngày",
+  "items": "Sản phẩm ({count})",
+  "size": "Kích cỡ: {size}",
+  "color": "Màu: {color}",
+  "quantity": "SL: {quantity}",
+  "shipping": {
+    "title": "Vận chuyển",
+    "method": "Phương thức",
+    "fee": "Phí"
+  },
+  "payment": {
+    "title": "Thanh toán",
+    "subtotal": "Tạm tính",
+    "shipping": "Phí vận chuyển",
+    "total": "Tổng cộng"
+  },
+  "note": "Ghi chú"
+}

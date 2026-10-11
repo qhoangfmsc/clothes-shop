@@ -5,7 +5,9 @@
 html,
 body {
   overflow-x: hidden;
-  font-family: var(--font-display), "Inter Tight", sans-serif;
+  font-family: var(--font-primary);
+  /* The typeface has one weight: never fake bold/italic from font-medium / font-semibold */
+  font-synthesis: none;
   font-weight: var(--font-weight-display);
   color: var(--text-primary);
   background: var(--bg-primary);
@@ -223,58 +225,6 @@ html.custom-cursor-active * {
   .mega-menu-category-title {
     transition: none !important;
   }
-}
-
-/* ─── Site Footer (global, simple) ─── */
-.site-footer {
-  border-top: 1px solid var(--border-subtle);
-  color: #ffffff81;
-  background: #000000dc;
-}
-
-.site-footer__inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-}
-
-@media (min-width: 640px) {
-  .site-footer__inner {
-    justify-content: space-between;
-    padding: var(--space-1);
-  }
-}
-
-@media (min-width: 1024px) {
-  .site-footer__inner {
-    padding: var(--space-1);
-  }
-}
-
-.site-footer__brand {
-  font-family: var(--font-display), serif;
-  font-size: var(--text-xs);
-  letter-spacing: -0.04em;
-}
-
-.site-footer__copy {
-  font-family: var(--font-primary);
-  font-size: var(--text-xs);
-  letter-spacing: 0.04em;
-}
-
-.site-footer__link {
-  font-family: var(--font-primary);
-  font-size: var(--text-xs);
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-default);
-}
-
-.site-footer__link:hover {
-  color: var(--accent-primary);
 }
 
 /* ═══════════════════════════════════════════════════════════

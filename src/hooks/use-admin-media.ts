@@ -44,7 +44,7 @@ async function mediaFetch<T>(path: string): Promise<T> {
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new MediaApiError(body.message || `Request failed: ${res.status}`, body.errorCode);
+    throw new MediaApiError(body.message ?? "", body.errorCode);
   }
   return res.json();
 }
@@ -70,7 +70,7 @@ export async function deleteMediaFile(id: string): Promise<void> {
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new MediaApiError(body.message || "Delete failed", body.errorCode);
+    throw new MediaApiError(body.message ?? "", body.errorCode);
   }
 }
 

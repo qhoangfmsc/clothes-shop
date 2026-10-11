@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "My Wishlist",
+    "description": "View and manage your saved items from DOOVAN."
+  },
+  "header": {
+    "back": "Account",
+    "title": "My Wishlist",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "clearAll": "Clear All"
+  },
+  "empty": {
+    "title": "Your wishlist is empty",
+    "description": "Browse our collections and tap the heart icon to save your favorite pieces",
+    "browse": "Browse Shop",
+    "features": {
+      "save": "Save items you love",
+      "priceDrops": "Get notified on price drops",
+      "quickAccess": "Quick access to favorites"
+    }
+  },
+  "card": {
+    "added": "Added {date}",
+    "remove": "Remove {name} from wishlist",
+    "removed": "{name} removed from wishlist"
+  },
+  "continueShopping": "Continue Shopping"
+}

@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Quản trị",
+    "description": "Trang quản trị của DOOVAN"
+  },
+  "nav": {
+    "dashboard": "Tổng quan",
+    "groups": {
+      "catalog": "Danh mục sản phẩm",
+      "management": "Quản lý",
+      "system": "Hệ thống"
+    },
+    "items": {
+      "products": "Sản phẩm",
+      "categories": "Danh mục",
+      "collections": "Bộ sưu tập",
+      "orders": "Đơn hàng",
+      "users": "Người dùng",
+      "siteConfig": "Cấu hình website",
+      "media": "Thư viện media"
+    }
+  },
+  "badge": "QUẢN TRỊ",
+  "logout": "Đăng xuất",
+  "menu": "Menu",
+  "denied": {
+    "backToStore": "Về cửa hàng",
+    "adminRequired": {
+      "title": "Cần quyền quản trị",
+      "message": "Tài khoản của bạn không có quyền quản trị. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là nhầm lẫn."
+    },
+    "route": {
+      "title": "Từ chối truy cập",
+      "message": "Bạn không có quyền xem trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là nhầm lẫn."
+    }
+  },
+  "breadcrumb": {
+    "admin": "Quản trị",
+    "products": "Sản phẩm",
+    "categories": "Danh mục",
+    "collections": "Bộ sưu tập",
+    "orders": "Đơn hàng",
+    "users": "Người dùng",
+    "site-config": "Cấu hình website",
+    "media": "Thư viện media"
+  }
+}

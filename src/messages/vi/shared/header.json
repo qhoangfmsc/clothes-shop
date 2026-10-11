@@ -1,0 +1,42 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "shop": "Cửa hàng",
+    "newIn": "Hàng mới về",
+    "collections": "Bộ sưu tập",
+    "about": "Giới thiệu"
+  },
+  "navDescription": {
+    "home": "Chào mừng đến với cửa hàng",
+    "newIn": "Sản phẩm mới nhất",
+    "collections": "Tuyển chọn theo mùa",
+    "about": "Câu chuyện & tầm nhìn của chúng tôi"
+  },
+  "account": {
+    "myAccount": "Tài khoản của tôi",
+    "wishlist": "Yêu thích",
+    "orders": "Đơn hàng",
+    "signIn": "Đăng nhập",
+    "signOut": "Đăng xuất",
+    "userMenu": "Menu người dùng",
+    "userFallback": "Người dùng"
+  },
+  "search": {
+    "placeholder": "Tìm kiếm...",
+    "loading": "Đang tìm kiếm...",
+    "noResults": "Không có kết quả cho “{query}”",
+    "clear": "Xóa tìm kiếm"
+  },
+  "megaMenu": {
+    "viewAll": "Xem tất cả →",
+    "viewAllProducts": "Xem tất cả sản phẩm"
+  },
+  "drawer": {
+    "open": "Mở menu",
+    "close": "Đóng menu",
+    "featured": "Nổi bật",
+    "showFeatured": "Hiển thị nổi bật {index}",
+    "copyright": "© {year} DOOVAN",
+    "tagline": "Chế tác có chủ đích"
+  }
+}

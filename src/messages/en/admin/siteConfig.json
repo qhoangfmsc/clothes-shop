@@ -1,0 +1,72 @@
+{
+  "page": {
+    "title": "Site Config",
+    "subtitle": "Banners & content configured for the public pages.",
+    "loading": "Loading..."
+  },
+  "keys": {
+    "SHOP_HERO_BANNERS": {
+      "label": "Shop — Hero Banner",
+      "description": "Shop banners."
+    },
+    "NEW_IN_HERO_BANNERS": {
+      "label": "New In — Hero Banner",
+      "description": "New in banners."
+    },
+    "COLLECTIONS_HERO_BANNERS": {
+      "label": "Collections — Hero Banner",
+      "description": "Collections banners."
+    },
+    "NAV_MENU_BANNERS": {
+      "label": "Menu — Featured Banner",
+      "description": "Menu banners."
+    }
+  },
+  "card": {
+    "configured": "Configured — {count, plural, one {# banner} other {# banners}}",
+    "empty": "Empty",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "form": {
+    "banners": "Banners ({count})",
+    "addBanner": "Add banner",
+    "emptyHint": "No banners yet. Click \"Add banner\" to start — leave it empty and the page keeps its built-in default.",
+    "removeBanner": "Remove banner",
+    "bannerN": "Banner {index}",
+    "images": {
+      "section": "Banner images",
+      "desktop": "Desktop",
+      "desktopInfo": "Laptop / PC, ≥ 1024px — also the fallback for tablet & mobile",
+      "tablet": "Tablet",
+      "tabletInfo": "iPad / tablets, ≥ 640px — optional, falls back to Desktop",
+      "mobile": "Mobile",
+      "mobileInfo": "Phones, < 640px — optional, falls back to Tablet, then Desktop"
+    },
+    "content": {
+      "section": "Content",
+      "label": "Label",
+      "labelInfo": "Small label above the title (optional)",
+      "title": "Title",
+      "titleInfo": "Heading (optional)",
+      "subtitle": "Subtitle",
+      "subtitleInfo": "Short description (optional)",
+      "ctaLabel": "CTA Label",
+      "ctaLabelInfo": "e.g. \"Shop Now\"",
+      "ctaHref": "CTA Href",
+      "ctaHrefInfo": "e.g. /shop"
+    },
+    "save": "Save"
+  },
+  "toast": {
+    "desktopRequired": "Every banner needs a Desktop image",
+    "saved": "Config saved",
+    "saveFailed": "Failed to save",
+    "deleted": "Config deleted",
+    "deleteFailed": "Failed to delete"
+  },
+  "confirmDelete": {
+    "title": "Delete config",
+    "message": "Delete this config? The page will fall back to its default content."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "search": {
+    "label": "Tìm kiếm",
+    "placeholder": "Tìm kiếm...",
+    "clear": "Xóa tìm kiếm"
+  },
+  "filter": {
+    "all": "Tất cả",
+    "reset": "Đặt lại {filter}"
+  },
+  "sort": {
+    "label": "Sắp xếp",
+    "reset": "Đặt lại sắp xếp"
+  },
+  "loading": "Đang tải...",
+  "selection": {
+    "count": "Đã chọn {count}",
+    "clear": "Bỏ chọn",
+    "selectAll": "Chọn tất cả các dòng trong trang này",
+    "selectRow": "Chọn dòng"
+  },
+  "empty": {
+    "filtered": "Không có kết quả phù hợp với bộ lọc.",
+    "none": "Chưa có dữ liệu."
+  },
+  "pagination": {
+    "showing": "Hiển thị <b>{from}</b>–<b>{to}</b> trên <b>{total}</b>",
+    "previous": "Trang trước",
+    "next": "Trang sau"
+  }
+}

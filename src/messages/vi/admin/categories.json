@@ -1,0 +1,57 @@
+{
+  "page": {
+    "title": "Danh mục",
+    "count": "{count} danh mục",
+    "add": "Thêm danh mục"
+  },
+  "table": {
+    "searchPlaceholder": "Danh mục...",
+    "columns": {
+      "title": "Tiêu đề",
+      "subcategories": "Danh mục con",
+      "description": "Mô tả",
+      "actions": "Thao tác"
+    },
+    "sort": {
+      "titleAsc": "Tiêu đề A-Z",
+      "titleDesc": "Tiêu đề Z-A"
+    }
+  },
+  "form": {
+    "titleCreate": "Danh mục mới",
+    "titleEdit": "Sửa danh mục",
+    "tabs": {
+      "info": "Thông tin",
+      "subcategories": "Danh mục con"
+    },
+    "fields": {
+      "title": "Tiêu đề",
+      "description": "Mô tả",
+      "heroImage": "Ảnh bìa"
+    },
+    "heroImageInfo": "Hiển thị trong lưới danh mục ở trang Cửa hàng. Để trống để dùng nền trơn.",
+    "placeholders": {
+      "title": "VD: Áo",
+      "description": "Mô tả danh mục..."
+    },
+    "submitCreate": "Tạo danh mục",
+    "submitUpdate": "Cập nhật danh mục"
+  },
+  "subcategories": {
+    "heading": "Danh mục con ({count})",
+    "add": "Thêm",
+    "empty": "Chưa có danh mục con. Nhấn \"Thêm\" để tạo.",
+    "item": "Danh mục con {index}",
+    "remove": "Xóa danh mục con",
+    "label": "Tên",
+    "description": "Mô tả"
+  },
+  "toast": {
+    "updated": "Đã cập nhật danh mục",
+    "created": "Đã tạo danh mục"
+  },
+  "confirmDelete": {
+    "title": "Xóa danh mục",
+    "message": "Xóa \"{title}\"?"
+  }
+}

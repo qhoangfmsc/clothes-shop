@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "{name} — DOOVAN"
+  },
+  "detail": {
+    "carouselAria": "Product image carousel",
+    "imageAlt": "{name} — Image {index}",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "viewImage": "View image {index}",
+    "badge": {
+      "new": "New Arrival",
+      "sale": "On Sale",
+      "bestseller": "Bestseller"
+    },
+    "size": "Size",
+    "sizeGuide": "Size Guide",
+    "color": "Color",
+    "selectColor": "Select color: {name}",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "hintBoth": "Select size & color to add to bag",
+    "hintSize": "Select a size",
+    "hintColor": "Select a color",
+    "addedToBag": "Added to Bag",
+    "addToBag": "Add to Bag",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "share": "Share",
+    "shareText": "Check out {name} from DOOVAN",
+    "linkCopied": "Link copied to clipboard",
+    "material": "Material",
+    "care": "Care",
+    "category": "Category",
+    "toastAdded": "{name} ({details}) added — <link>View Bag</link>",
+    "toastSaved": "{name} saved — <link>View Wishlist</link>",
+    "toastRemoved": "{name} removed from wishlist",
+    "related": {
+      "label": "You may also like",
+      "title": "Complete the Look"
+    }
+  },
+  "reviews": {
+    "starsAria": "{rating} out of 5 stars",
+    "label": "Customer Reviews",
+    "title": "What Our Clients Say",
+    "basedOn": "Based on {count, plural, one {# review} other {# reviews}}",
+    "verified": "Verified",
+    "showLess": "Show Less",
+    "showAll": "Show All {count} Reviews"
+  },
+  "shipping": {
+    "title": "Shipping & Returns",
+    "freeOver": "Free shipping on orders over {amount}",
+    "free": "Free",
+    "returns": "Returns"
+  },
+  "sizeGuideModal": {
+    "title": "Size Guide",
+    "close": "Close size guide",
+    "loading": "Loading size guide…",
+    "fitTips": "Fit Tips",
+    "unavailable": "Size guide not available for this category."
+  },
+  "share": {
+    "label": "Share",
+    "copyLink": "Copy link",
+    "copied": "Link copied to clipboard",
+    "copyFailed": "Failed to copy link",
+    "shareOnX": "Share on X",
+    "shareOnPinterest": "Share on Pinterest",
+    "text": "Check out {name} from DOOVAN"
+  }
+}

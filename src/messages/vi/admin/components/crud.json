@@ -1,0 +1,10 @@
+{
+  "edit": "Sửa",
+  "delete": "Xóa",
+  "deleted": "Đã xóa",
+  "failed": "Thất bại",
+  "sort": {
+    "newest": "Mới nhất",
+    "oldest": "Cũ nhất"
+  }
+}

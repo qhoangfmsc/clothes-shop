@@ -16,7 +16,7 @@ import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
-import type { ProductListParams, ProductListResponse } from "@/src/app/(public)/shop/_lib/server-fetchers";
+import type { ProductListParams, ProductListResponse } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
 import { mapMediaUrls } from "@/src/lib/media-url";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";

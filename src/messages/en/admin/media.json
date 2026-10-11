@@ -1,0 +1,66 @@
+{
+  "page": {
+    "title": "Media",
+    "count": "{count, plural, one {# image} other {# images}} stored in Supabase Storage",
+    "pingTitle": "Checks that the Supabase service role key and bucket are reachable",
+    "ping": "Ping Supabase",
+    "refresh": "Refresh",
+    "upload": "Upload",
+    "uploading": "Uploading...",
+    "dropHint": "Drop images to upload"
+  },
+  "notConfigured": {
+    "title": "Supabase Storage is not configured yet",
+    "intro": "The bucket and service role key are missing. Open your <link>Supabase dashboard</link> and follow these steps:",
+    "step1": "Storage → Create a new bucket (e.g. <code>media</code>) and mark it <strong>public</strong>.",
+    "step2": "Project Settings → API → copy the Project URL and the <code>service_role</code> secret key.",
+    "step3": "Fill in <code>SUPABASE_URL</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code> and <code>SUPABASE_STORAGE_BUCKET</code> in the backend's <code>.env</code> (clothes-shop-api), then restart it.",
+    "retry": "Retry"
+  },
+  "table": {
+    "columns": {
+      "preview": "Preview",
+      "name": "Name",
+      "type": "Type",
+      "size": "Size",
+      "uploaded": "Uploaded",
+      "actions": "Actions"
+    },
+    "preview": "Preview",
+    "download": "Download",
+    "delete": "Delete",
+    "empty": "No images yet — upload your first one, or drag files anywhere on this page."
+  },
+  "units": {
+    "b": "B",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB"
+  },
+  "confirm": {
+    "deleteOne": {
+      "title": "Delete image",
+      "message": "Delete \"{name}\"? This cannot be undone."
+    },
+    "deleteMany": {
+      "title": "Delete images",
+      "message": "Delete {count, plural, one {# image} other {# images}}? This cannot be undone."
+    }
+  },
+  "toast": {
+    "onlyImages": "Only image files can be uploaded",
+    "uploaded": "{count, plural, one {# image uploaded} other {# images uploaded}}",
+    "uploadFailed": "Upload failed",
+    "uploadFailedMany": "{count} images failed to upload — {reason}",
+    "downloadFailed": "Failed to download image",
+    "deleted": "Image deleted",
+    "deleteFailed": "Failed to delete image",
+    "deletedMany": "{count, plural, one {# image deleted} other {# images deleted}}",
+    "deleteFailedMany": "{count, plural, one {# image failed to delete} other {# images failed to delete}}",
+    "pingOk": "Ping OK — Supabase Storage is reachable",
+    "pingFailed": "Ping failed — check Supabase config"
+  },
+  "errors": {
+    "loadFailed": "Failed to load images"
+  }
+}

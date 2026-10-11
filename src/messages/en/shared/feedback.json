@@ -1,0 +1,25 @@
+{
+  "toast": {
+    "dismiss": "Dismiss notification"
+  },
+  "loginPrompt": {
+    "title": "Sign in to continue",
+    "subtitle": {
+      "continue": "Sign in to continue. Your selections will be saved.",
+      "addToBag": "Sign in to add items to your bag. Your selections will be saved.",
+      "saveToWishlist": "Sign in to save items to your wishlist. Your selections will be saved."
+    },
+    "dismiss": "Continue Browsing"
+  },
+  "unauthenticated": {
+    "title": "Session Expired",
+    "subtitle": "Please sign in again to access your account, wishlist, and order history.",
+    "or": "or",
+    "home": "Go to Home"
+  },
+  "systemPassword": {
+    "title": "Enter password to continue",
+    "placeholder": "Password",
+    "error": "Incorrect password. Try again."
+  }
+}

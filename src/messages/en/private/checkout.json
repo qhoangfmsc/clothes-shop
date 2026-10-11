@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Checkout",
+    "description": "Complete your order from DOOVAN."
+  },
+  "empty": {
+    "title": "Nothing to checkout",
+    "description": "Add items to your bag first",
+    "browse": "Browse Shop"
+  },
+  "back": {
+    "editAddress": "Edit Address",
+    "toBag": "Back to Bag"
+  },
+  "steps": {
+    "address": "Address",
+    "review": "Review"
+  },
+  "address": {
+    "title": "Shipping Address",
+    "contactSection": "Contact Information",
+    "deliverySection": "Delivery Address",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "street": "Street Address",
+    "line2": "Apt / Suite / Floor",
+    "city": "City / District",
+    "province": "Province",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "notes": "Delivery Notes",
+    "placeholders": {
+      "fullName": "Enter your full name",
+      "phone": "0123 456 789",
+      "street": "House number, street name...",
+      "line2": "Apartment, suite, floor, building...",
+      "city": "City or district",
+      "province": "Province or state",
+      "postalCode": "Postal / ZIP code",
+      "country": "Country",
+      "notes": "Gate code, landmark, special instructions..."
+    },
+    "errors": {
+      "fullName": "Full name is required",
+      "phone": "Phone number is required",
+      "street": "Street address is required",
+      "city": "City is required"
+    },
+    "continue": "Continue to Review"
+  },
+  "review": {
+    "title": "Review Your Order",
+    "shippingTo": "Shipping To",
+    "note": "Note: {note}",
+    "items": "Items ({count})",
+    "itemMeta": "{size} · {color} · Qty {quantity}",
+    "total": "Total",
+    "paymentNote": "Payment will be arranged after order confirmation. Our team will contact you via phone or email with payment details.",
+    "placing": "Placing Order...",
+    "place": "Place Order"
+  },
+  "success": {
+    "title": "Order Placed!",
+    "description": "Thank you for your order. We'll contact you shortly to confirm payment and delivery details.",
+    "orderId": "Order ID: <strong>{id}</strong>",
+    "viewOrders": "View My Orders",
+    "continue": "Continue Shopping"
+  },
+  "toast": {
+    "placed": "Order placed successfully!",
+    "failed": "Failed to place order",
+    "addressFailed": "Failed to save address"
+  }
+}

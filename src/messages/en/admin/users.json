@@ -1,0 +1,52 @@
+{
+  "page": {
+    "title": "Users",
+    "total": "{count, plural, one {# user} other {# users}} total"
+  },
+  "table": {
+    "searchPlaceholder": "Name or email...",
+    "columns": {
+      "user": "User",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "view": "View",
+    "filters": {
+      "role": "Role",
+      "status": "Status"
+    }
+  },
+  "modal": {
+    "title": "User Details",
+    "close": "Close",
+    "tabs": {
+      "orders": "Orders",
+      "role": "Role"
+    }
+  },
+  "orders": {
+    "summary": "{count, plural, one {# order} other {# orders}} from this user",
+    "pageOf": "Page {page} of {total}",
+    "loading": "Loading orders...",
+    "empty": "No orders yet",
+    "viewOrder": "View order #{id}",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "pager": "{page} / {total}",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "role": {
+    "section": "Access",
+    "label": "Role",
+    "info": "Admin has full administrator access. User is a regular customer.",
+    "saving": "Saving...",
+    "save": "Save role"
+  },
+  "toast": {
+    "roleUpdated": "Role updated",
+    "roleFailed": "Failed to update role"
+  }
+}

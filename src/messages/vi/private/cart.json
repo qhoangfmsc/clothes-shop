@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "Giỏ hàng",
+    "description": "Xem lại giỏ hàng và tiến hành thanh toán."
+  },
+  "quantity": {
+    "decrease": "Giảm số lượng",
+    "increase": "Tăng số lượng"
+  },
+  "item": {
+    "size": "Kích cỡ: {size}",
+    "remove": "Xóa {name}"
+  },
+  "header": {
+    "continueShopping": "Tiếp tục mua sắm",
+    "title": "Giỏ hàng",
+    "itemCount": "{count} sản phẩm",
+    "clearAll": "Xóa tất cả"
+  },
+  "empty": {
+    "title": "Giỏ hàng của bạn đang trống",
+    "description": "Hãy khám phá các bộ sưu tập và thêm những món đồ bạn yêu thích",
+    "browse": "Xem cửa hàng"
+  },
+  "summary": {
+    "title": "Tóm tắt đơn hàng",
+    "unlocked": "🎉 Bạn đã được miễn phí vận chuyển!",
+    "remaining": "Mua thêm {amount} để được miễn phí vận chuyển",
+    "subtotal": "Tạm tính",
+    "shipping": "Vận chuyển",
+    "free": "Miễn phí",
+    "atCheckout": "Tính khi thanh toán",
+    "total": "Tổng cộng",
+    "checkout": "Tiến hành thanh toán",
+    "freeNote": "Miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên {amount}."
+  }
+}

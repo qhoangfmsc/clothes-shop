@@ -113,7 +113,7 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
       res = await doFetch(newToken);
     } else {
       clearTokens();
-      throw new ApiError("Authentication required", 401);
+      throw new ApiError("", 401);
     }
   }
 

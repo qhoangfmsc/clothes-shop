@@ -1,0 +1,66 @@
+{
+  "page": {
+    "title": "Thư viện media",
+    "count": "{count} ảnh được lưu trong Supabase Storage",
+    "pingTitle": "Kiểm tra khóa service role và bucket Supabase có truy cập được không",
+    "ping": "Kiểm tra Supabase",
+    "refresh": "Làm mới",
+    "upload": "Tải lên",
+    "uploading": "Đang tải lên...",
+    "dropHint": "Thả ảnh vào đây để tải lên"
+  },
+  "notConfigured": {
+    "title": "Supabase Storage chưa được cấu hình",
+    "intro": "Thiếu bucket và khóa service role. Mở <link>Supabase dashboard</link> và làm theo các bước sau:",
+    "step1": "Storage → Tạo bucket mới (VD: <code>media</code>) và đặt ở chế độ <strong>public</strong>.",
+    "step2": "Project Settings → API → sao chép Project URL và khóa bí mật <code>service_role</code>.",
+    "step3": "Điền <code>SUPABASE_URL</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code> và <code>SUPABASE_STORAGE_BUCKET</code> vào <code>.env</code> của backend (clothes-shop-api), rồi khởi động lại.",
+    "retry": "Thử lại"
+  },
+  "table": {
+    "columns": {
+      "preview": "Xem trước",
+      "name": "Tên",
+      "type": "Loại",
+      "size": "Dung lượng",
+      "uploaded": "Tải lên lúc",
+      "actions": "Thao tác"
+    },
+    "preview": "Xem trước",
+    "download": "Tải xuống",
+    "delete": "Xóa",
+    "empty": "Chưa có ảnh — hãy tải ảnh đầu tiên lên, hoặc kéo thả tệp vào bất kỳ đâu trên trang này."
+  },
+  "units": {
+    "b": "B",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB"
+  },
+  "confirm": {
+    "deleteOne": {
+      "title": "Xóa ảnh",
+      "message": "Xóa \"{name}\"? Hành động này không thể hoàn tác."
+    },
+    "deleteMany": {
+      "title": "Xóa ảnh",
+      "message": "Xóa {count} ảnh? Hành động này không thể hoàn tác."
+    }
+  },
+  "toast": {
+    "onlyImages": "Chỉ có thể tải lên tệp ảnh",
+    "uploaded": "Đã tải lên {count} ảnh",
+    "uploadFailed": "Tải lên thất bại",
+    "uploadFailedMany": "{count} ảnh tải lên thất bại — {reason}",
+    "downloadFailed": "Không thể tải ảnh xuống",
+    "deleted": "Đã xóa ảnh",
+    "deleteFailed": "Xóa ảnh thất bại",
+    "deletedMany": "Đã xóa {count} ảnh",
+    "deleteFailedMany": "{count} ảnh xóa thất bại",
+    "pingOk": "Kết nối OK — Supabase Storage truy cập được",
+    "pingFailed": "Kết nối thất bại — kiểm tra cấu hình Supabase"
+  },
+  "errors": {
+    "loadFailed": "Không thể tải danh sách ảnh"
+  }
+}

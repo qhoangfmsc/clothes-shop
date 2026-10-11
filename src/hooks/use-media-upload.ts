@@ -27,7 +27,7 @@ export async function uploadMediaFile(file: File): Promise<UploadedMedia> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.message || "Upload failed");
+    throw new Error(body.message ?? "");
   }
 
   const body = await res.json();

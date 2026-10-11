@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "Hàng mới về",
+    "description": "Khám phá những sản phẩm mới nhất tại DOOVAN. Các mẫu mới, phom dáng mới và những thiết kế dành cho người đi đầu xu hướng."
+  },
+  "hero": {
+    "live": "Đang diễn ra",
+    "titleLine1": "Hàng",
+    "titleLine2": "Mới về",
+    "subtitle": "Hãy là người đầu tiên khám phá điều tiếp theo. Mẫu mới, phom dáng mới và những thiết kế dành cho người đi đầu xu hướng.",
+    "cta": "Khám phá mẫu mới",
+    "watermark": "N",
+    "alt": "Hàng mới về"
+  },
+  "spotlight": {
+    "editorsPick": "Biên tập viên chọn",
+    "mostWanted": "Được săn đón nhất",
+    "featured": "Nổi bật",
+    "shopNow": "Mua ngay"
+  },
+  "ticker": {
+    "newDrop": "Mẫu mới",
+    "limited": "Phiên bản giới hạn",
+    "handcrafted": "Thủ công"
+  },
+  "grid": {
+    "label": "Vừa ra mắt",
+    "title": "Tất cả sản phẩm mới"
+  },
+  "newsletter": {
+    "title": "Đừng bỏ lỡ mẫu mới",
+    "description": "Hãy là người đầu tiên biết khi có sản phẩm mới. Tham gia nhóm thân thiết của chúng tôi để truy cập sớm và xem trước độc quyền.",
+    "placeholder": "email@cua-ban.com",
+    "emailAria": "Địa chỉ email",
+    "join": "Đăng ký"
+  }
+}

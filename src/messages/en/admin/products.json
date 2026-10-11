@@ -1,0 +1,109 @@
+{
+  "page": {
+    "title": "Products",
+    "count": "{count, plural, one {# product} other {# products}}",
+    "add": "Add Product"
+  },
+  "table": {
+    "searchPlaceholder": "Name product...",
+    "columns": {
+      "product": "Product",
+      "category": "Category",
+      "price": "Price",
+      "status": "Status",
+      "badge": "Badge",
+      "actions": "Actions"
+    },
+    "filters": {
+      "category": "Category",
+      "status": "Status",
+      "badge": "Badge"
+    },
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "priceDown": "Price ↓",
+      "priceUp": "Price ↑",
+      "nameAsc": "Name A-Z",
+      "nameDesc": "Name Z-A"
+    }
+  },
+  "form": {
+    "titleCreate": "New Product",
+    "titleEdit": "Edit Product",
+    "tabs": {
+      "general": "General",
+      "variants": "Variants & Tags",
+      "images": "Images"
+    },
+    "sections": {
+      "basic": "Basic Info",
+      "pricing": "Pricing",
+      "classification": "Classification"
+    },
+    "fields": {
+      "name": "Product Name",
+      "description": "Description",
+      "price": "Price ($)",
+      "originalPrice": "Original Price ($)",
+      "category": "Category",
+      "subcategory": "SubCategory",
+      "status": "Status",
+      "badge": "Badge",
+      "sizes": "Sizes",
+      "colors": "Colors",
+      "material": "Material",
+      "care": "Care Instructions",
+      "tags": "Tags",
+      "images": "Images"
+    },
+    "info": {
+      "originalPrice": "Leave empty if there's no discount.",
+      "status": "Disabled products are hidden from the storefront.",
+      "images": "Upload files or paste URLs. The first image is used as the main thumbnail."
+    },
+    "placeholders": {
+      "name": "e.g. Classic White T-Shirt",
+      "description": "Product description...",
+      "colorName": "Color name, e.g. \"Midnight Blue\"",
+      "customSize": "Type custom size and press Enter",
+      "material": "e.g. 100% Cotton",
+      "care": "e.g. Machine wash cold",
+      "tag": "Type tag and press Enter..."
+    },
+    "options": {
+      "selectCategory": "— Select a category —",
+      "noneDash": "— None —",
+      "none": "None"
+    },
+    "sizes": {
+      "clearAll": "Clear all ({count})",
+      "groups": {
+        "letter": "Letter",
+        "number": "Number",
+        "special": "Special"
+      }
+    },
+    "colors": {
+      "empty": "No colors added yet.",
+      "add": "Add color",
+      "remove": "Remove {name}"
+    },
+    "tagsRemove": "Remove tag {tag}",
+    "submitCreate": "Create Product",
+    "submitUpdate": "Update Product"
+  },
+  "toast": {
+    "colorExists": "Color name already exists",
+    "subcategoryRequired": "Please select a subcategory (this category requires one)",
+    "updated": "Product updated",
+    "created": "Product created",
+    "saveFailed": "Failed to save",
+    "deleted": "Product deleted",
+    "deleteFailed": "Failed to delete"
+  },
+  "confirmDelete": {
+    "title": "Delete product",
+    "message": "Delete \"{name}\"?"
+  }
+}

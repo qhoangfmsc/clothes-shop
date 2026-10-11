@@ -1,0 +1,21 @@
+{
+  "fab": {
+    "viewBag": "Xem giỏ hàng ({count} sản phẩm)"
+  },
+  "quickAdd": {
+    "close": "Đóng",
+    "size": "Kích cỡ",
+    "sizeGuide": "Bảng size",
+    "color": "Màu sắc",
+    "selectColor": "Chọn màu: {name}",
+    "quantity": "Số lượng",
+    "decrease": "Giảm số lượng",
+    "increase": "Tăng số lượng",
+    "hintBoth": "Chọn kích cỡ và màu sắc",
+    "hintSize": "Chọn kích cỡ",
+    "hintColor": "Chọn màu sắc",
+    "added": "Đã thêm",
+    "addToBag": "Thêm vào giỏ — {price}",
+    "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "actions": {
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "continue": "Tiếp tục",
+    "close": "Đóng"
+  },
+  "language": {
+    "label": "Ngôn ngữ"
+  },
+  "orderStatus": {
+    "pending": "Đang chờ xử lý",
+    "confirmed": "Đã xác nhận",
+    "shipping": "Đang giao hàng",
+    "delivered": "Đã giao hàng",
+    "completed": "Hoàn tất",
+    "cancelled": "Đã hủy",
+    "shipped": "Đã gửi hàng"
+  },
+  "addressField": {
+    "fullName": "Họ và tên",
+    "phone": "Số điện thoại",
+    "addressLine1": "Địa chỉ",
+    "addressLine2": "Địa chỉ bổ sung",
+    "city": "Thành phố",
+    "province": "Tỉnh / Thành",
+    "postalCode": "Mã bưu chính",
+    "country": "Quốc gia"
+  },
+  "role": {
+    "admin": "Quản trị viên",
+    "user": "Khách hàng"
+  },
+  "productBadge": {
+    "new": "Mới",
+    "sale": "Giảm giá",
+    "bestseller": "Bán chạy"
+  },
+  "notFound": "Không tìm thấy",
+  "status": {
+    "active": "Hoạt động",
+    "disabled": "Đã vô hiệu hóa"
+  }
+}
