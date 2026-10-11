@@ -1,6 +1,7 @@
 import type { AppLocale } from "@/src/i18n/routing";
 import type { Product } from "@/src/types/product";
 import { SITE_URL } from "./site-url";
+import { SOCIALS } from "./socials";
 
 /** Schema.org needs absolute URLs; API images arrive as site-relative `/media/...` paths. */
 export function absoluteUrl(url: string): string {
@@ -61,16 +62,28 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
   };
 }
 
+/** Names the brand is actually known by. Search is case-insensitive, so one casing is enough;
+ *  only list domains we own. */
+const BRAND_ALTERNATE_NAMES = ["Doovan", "doovan.vn"];
+
 /** `WebSite` + `Organization` for the home page (the brand name is never translated). */
 export function siteJsonLd() {
   return [
-    { "@context": "https://schema.org", "@type": "WebSite", name: "DOOVAN", url: SITE_URL },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "DOOVAN",
+      alternateName: BRAND_ALTERNATE_NAMES,
+      url: SITE_URL,
+    },
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "DOOVAN",
+      alternateName: BRAND_ALTERNATE_NAMES,
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
+      sameAs: SOCIALS.map((social) => social.href),
     },
   ];
 }
