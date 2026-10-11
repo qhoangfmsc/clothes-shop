@@ -5,6 +5,7 @@
    AESTHETIC: Luxury boutique — warm champagne canvas with
    a DIVERSE, rich palette inspired by the product range:
    sage, dusty rose, lavender, dusty blue, chocolate, gold.
+   Brand color #a49078 (logo + name) is the identity anchor.
    Noir used as contrast accent, not as the default.
    
    RULES:
@@ -27,6 +28,12 @@
   --color-warm-linen: #ede5d4; /* Card surfaces, panels */
   --color-soft-beige: #e5dbca; /* Elevated surfaces, hover bg */
   --color-sand: #ddd1bc; /* Input wells, deeper surfaces */
+
+  /* ─── Brand Family — Logo & Wordmark Origin Color ─── */
+  --color-brand: #a49078; /* THE brand color: DOOVAN logo + name. Use as-is for logo, wordmark, brand marks */
+  --color-brand-mist: #c8bcae; /* Light brand: dividers, tag bg, hover tint */
+  --color-brand-cream: #ede9e4; /* Softest brand: section bg, card tint */
+  --color-brand-deep: #6e6151; /* Deep brand: brand-colored TEXT on light bg (AA 5.7:1) */
 
   /* ─── Gold Family — Primary Accent ─── */
   --color-champagne-gold: #c9a96e; /* Primary accent: buttons, links, highlights */
@@ -113,6 +120,7 @@
   --text-muted: var(--color-slate);
   --text-disabled: var(--color-ash);
   --text-accent: var(--color-champagne-gold);
+  --text-brand: var(--color-brand-deep);
   --text-on-dark: var(--color-pearl-cream);
   --text-on-gold: var(--color-noir);
 
@@ -124,6 +132,7 @@
   --border-default: rgba(201, 169, 110, 0.3);
   --border-gold: rgba(201, 169, 110, 0.5);
   --border-strong: var(--color-antique-gold);
+  --border-brand: var(--color-brand-mist);
   --border-dark: rgba(10, 10, 8, 0.1);
 
   /* ─────────────────────────────────────────────────────────
@@ -131,6 +140,10 @@
      Gold is primary, but other colors are available for
      variety and to match product categories.
      ───────────────────────────────────────────────────────── */
+  --brand-primary: var(--color-brand);
+  --brand-hover: var(--color-brand-mist);
+  --brand-subtle: var(--color-brand-cream);
+  --brand-pressed: var(--color-brand-deep);
   --accent-primary: var(--color-champagne-gold);
   --accent-hover: var(--color-pale-gold);
   --accent-subtle: var(--color-soft-gold);

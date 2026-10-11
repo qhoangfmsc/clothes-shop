@@ -75,6 +75,18 @@ As a Vietnamese-born label with global ambitions, DOOVAN subtly weaves **Asian d
 
 > All color tokens are defined in `src/styles/design-system.css`. See `DESIGN.md` for full palette documentation.
 
+### Brand Color — "DOOVAN Taupe"
+The logo and the DOOVAN name originate from one color. It anchors the whole identity; accent families below add variety around it.
+
+| Color | Hex | Token | Usage |
+|---|---|---|---|
+| **Brand** | `#A49078` | `--color-brand` | Logo, wordmark, brand marks — exact value, never altered |
+| **Brand Mist** | `#C8BCAE` | `--color-brand-mist` | Dividers, tag bg, hover tint |
+| **Brand Cream** | `#EDE9E4` | `--color-brand-cream` | Section bg, card tint |
+| **Brand Deep** | `#6E6151` | `--color-brand-deep` | Brand-colored text on light bg (AA 5.7:1) |
+
+`#A49078` has 2.9:1 contrast on pearl cream — use it for logo/large display only, and `--text-brand` for small text.
+
 ### Canvas Palette — "Champagne Boutique"
 | Color | Hex | Usage |
 |---|---|---|

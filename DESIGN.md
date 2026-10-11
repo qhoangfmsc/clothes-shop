@@ -14,6 +14,11 @@ DOOVAN's palette is a **diverse, warm luxury palette** — champagne canvas with
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
+│  BRAND (Logo & Name — identity anchor)                       │
+│  ██ Brand          #A49078  ← origin color of logo + wordmark│
+│  ██ Brand Mist     #C8BCAE   ██ Brand Cream  #EDE9E4        │
+│  ██ Brand Deep     #6E6151                                   │
+├──────────────────────────────────────────────────────────────┤
 │  CHAMPAGNE (Canvas)                 GOLD (Primary Accent)    │
 │  ██ Pearl Cream    #FBF8F1          ██ Champagne Gold #C9A96E│
 │  ██ Champagne Cream#F5EFE0          ██ Pale Gold     #D4B978│
@@ -45,10 +50,27 @@ DOOVAN's palette is a **diverse, warm luxury palette** — champagne canvas with
 └──────────────────────────────────────────────────────────────┘
 ```
 
+### 1.1.1 Brand Color — `#A49078`
+
+`#A49078` is the **origin color of the DOOVAN logo and name**. It is the identity anchor of the brand; the gold family stays the UI/CTA accent.
+
+| Token | Hex | Use |
+|---|---|---|
+| `--color-brand` | `#A49078` | Logo, wordmark, brand marks — always use the exact value |
+| `--color-brand-mist` | `#C8BCAE` | Dividers, tag bg, hover tint (`--brand-hover`, `--border-brand`) |
+| `--color-brand-cream` | `#EDE9E4` | Section bg, card tint (`--brand-subtle`) |
+| `--color-brand-deep` | `#6E6151` | Brand-colored text on light bg (`--text-brand`, `--brand-pressed`) |
+
+Semantic aliases: `--brand-primary`, `--brand-hover`, `--brand-subtle`, `--brand-pressed`, `--text-brand`, `--border-brand`.
+
+Contrast (WCAG): `#A49078` on pearl cream is **2.9:1** and on noir **6.5:1** — fine for logo and large display text, but **not** for body/small text on light backgrounds; use `--text-brand` (`#6E6151`, 5.7:1) there. Never recolor or tint the logo/wordmark; on dark sections keep it `#A49078`.
+
 ### 1.2 Color Usage Rules
 
 | Context | Token(s) to Use | Notes |
 |---|---|---|
+| Logo & brand name | `--color-brand` / `--brand-primary` | Exact `#A49078`, never altered |
+| Brand-colored text | `--text-brand` | AA-safe on cream backgrounds |
 | Page background | `--bg-primary` (pearl cream) | Warm, inviting canvas |
 | Section alternation | Rotate through `--bg-section-1` to `--bg-section-8` | Each has a different color tint for variety |
 | Card backgrounds | `--bg-elevated` (warm linen) or color-tinted cream | Match product category to color family |
@@ -167,6 +189,7 @@ See `src/styles/design-system.css` for full token definitions:
 ║  DOOVAN DESIGN — CHEAT SHEET                           ║
 ╠══════════════════════════════════════════════════════════╣
 ║                                                          ║
+║  BRAND:     #A49078  #C8BCAE  #EDE9E4  #6E6151  (logo+name)║
 ║  CANVAS:    #FBF8F1  #F5EFE0  #EDE5D4  #E5DBCA  #DDD1BC║
 ║  GOLD:      #C9A96E  #D4B978  #E8D5A3  #8B7335  #A6894A║
 ║  ROSE:      #D4A5A5  #E8C4C0  #F5E0DC  #B07878         ║

@@ -20,6 +20,12 @@ Before writing any UI code, read these files:
 
 ### Color Palette (Champagne Canvas + Diverse Accents)
 
+**Brand family** (logo + name origin color):
+- `--color-brand: #A49078` → logo, wordmark, brand marks (exact, never altered)
+- `--color-brand-mist: #C8BCAE` → dividers, tag bg, hover tint
+- `--color-brand-cream: #EDE9E4` → section bg, card tint
+- `--color-brand-deep: #6E6151` → brand-colored text on light bg (`--text-brand`)
+
 **Champagne family** (core canvas):
 - `--color-pearl-cream: #FBF8F1` → primary page bg
 - `--color-champagne-cream: #F5EFE0` → secondary bg

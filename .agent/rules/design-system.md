@@ -16,15 +16,16 @@ trigger: always_on
 
 1. **NEVER hardcode hex colors** in components. Always use CSS custom properties from `design-system.css`.
 2. **NEVER use Tailwind default colors** (e.g., `text-white`, `bg-black`, `text-gray-500`). Map to design tokens instead.
-3. **The brand palette is DIVERSE and warm** — Champagne canvas (#FBF8F1, #F5EFE0, #EDE5D4), Gold accent (#C9A96E), Dusty Rose (#D4A5A5), Sage (#A3B18A), Lavender (#B8A5C8), Dusty Blue (#8FA3B4), Chocolate (#5C4033), Soft Yellow (#F0E4A6), Noir for contrast (#0A0A08). Each color family has light/cream/deep tones.
-4. **Backgrounds are champagne/cream by default.** Page bg: `var(--bg-primary)` (#FBF8F1 pearl cream). Light, warm, boutique-like.
-5. **Noir/black is ONLY for contrast sections** — gallery panel, drawer menu, hero overlays. Use `--bg-dark` or `.dark-context` class for these.
-6. **Never use pure white (#FFFFFF) as full-page background.** Use `var(--bg-primary)` (pearl cream) or `var(--bg-secondary)` (champagne cream).
-7. **Never use pure black (#000000) for body text.** Use `var(--text-primary)` (#1A1917 obsidian) or `var(--text-heading)` (#0A0A08 noir).
-8. **Section backgrounds should be DIVERSE** — rotate through tinted creams: `--bg-section-1` (pearl cream) → `--bg-section-2` (rose milk) → `--bg-section-3` (champagne) → `--bg-section-4` (sage cream) → `--bg-section-5` (vanilla) → `--bg-section-6` (lavender cream) → `--bg-section-7` (cloud blue). Never use the same background for consecutive sections.
-9. **Match product categories to color families** — Tops→Rose, Skirts→Sage, Bags→Blue, Jewelry→Gold, Evening→Lavender, Leather→Chocolate, Summer→Yellow.
-9. **Shadows must use warm brown rgba** — `rgba(58, 49, 42, opacity)` for depth, `rgba(201, 169, 110, opacity)` for gold glow. Never `rgba(0, 0, 0, opacity)`.
-10. **Hero/landing overlays** may use `#FFF` text with `mix-blend-mode: exclusion`.
+3. **The brand color is `#A49078`** — the origin color of the DOOVAN logo and name. Use `var(--color-brand)` / `var(--brand-primary)` for logo, wordmark and brand marks; never alter it. Tints: `--color-brand-mist` (#C8BCAE), `--color-brand-cream` (#EDE9E4); for brand-colored text on light bg use `--text-brand` / `--color-brand-deep` (#6E6151) because `#A49078` on cream is only 2.9:1.
+4. **The brand palette is DIVERSE and warm** — Champagne canvas (#FBF8F1, #F5EFE0, #EDE5D4), Gold accent (#C9A96E), Dusty Rose (#D4A5A5), Sage (#A3B18A), Lavender (#B8A5C8), Dusty Blue (#8FA3B4), Chocolate (#5C4033), Soft Yellow (#F0E4A6), Noir for contrast (#0A0A08). Each color family has light/cream/deep tones.
+5. **Backgrounds are champagne/cream by default.** Page bg: `var(--bg-primary)` (#FBF8F1 pearl cream). Light, warm, boutique-like.
+6. **Noir/black is ONLY for contrast sections** — gallery panel, drawer menu, hero overlays. Use `--bg-dark` or `.dark-context` class for these.
+7. **Never use pure white (#FFFFFF) as full-page background.** Use `var(--bg-primary)` (pearl cream) or `var(--bg-secondary)` (champagne cream).
+8. **Never use pure black (#000000) for body text.** Use `var(--text-primary)` (#1A1917 obsidian) or `var(--text-heading)` (#0A0A08 noir).
+9. **Section backgrounds should be DIVERSE** — rotate through tinted creams: `--bg-section-1` (pearl cream) → `--bg-section-2` (rose milk) → `--bg-section-3` (champagne) → `--bg-section-4` (sage cream) → `--bg-section-5` (vanilla) → `--bg-section-6` (lavender cream) → `--bg-section-7` (cloud blue). Never use the same background for consecutive sections.
+10. **Match product categories to color families** — Tops→Rose, Skirts→Sage, Bags→Blue, Jewelry→Gold, Evening→Lavender, Leather→Chocolate, Summer→Yellow.
+11. **Shadows must use warm brown rgba** — `rgba(58, 49, 42, opacity)` for depth, `rgba(201, 169, 110, opacity)` for gold glow. Never `rgba(0, 0, 0, opacity)`.
+12. **Hero/landing overlays** may use `#FFF` text with `mix-blend-mode: exclusion`.
 
 ## Typography Rules
 
