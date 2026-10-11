@@ -16,6 +16,7 @@
       "collections": "Collections",
       "orders": "Orders",
       "users": "Users",
+      "analytics": "Analytics",
       "siteConfig": "Site Config",
       "media": "Media"
     }
@@ -41,6 +42,7 @@
     "collections": "Collections",
     "orders": "Orders",
     "users": "Users",
+    "analytics": "Analytics",
     "site-config": "Site Config",
     "media": "Media"
   }

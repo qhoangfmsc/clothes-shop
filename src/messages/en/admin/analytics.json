@@ -1,0 +1,126 @@
+{
+  "title": "Analytics",
+  "subtitle": "Storefront traffic from Vercel Web Analytics. Admin pages are not counted.",
+  "range": {
+    "label": "Time range",
+    "24h": "24 hours",
+    "7d": "7 days",
+    "30d": "30 days",
+    "90d": "90 days"
+  },
+  "actions": {
+    "refresh": "Refresh",
+    "openVercel": "Open in Vercel"
+  },
+  "updatedAt": "Updated {time}. Numbers are cached for up to 5 minutes; days are counted in UTC.",
+  "kpi": {
+    "visitors": {
+      "label": "Visitors",
+      "hint": "Unique people"
+    },
+    "pageviews": {
+      "label": "Page views",
+      "hint": "Pages opened"
+    },
+    "viewsPerVisitor": {
+      "label": "Views per visitor",
+      "hint": "Average pages per person"
+    },
+    "vsPrevious": "vs previous period",
+    "increase": "Up {value} compared with the previous period",
+    "decrease": "Down {value} compared with the previous period"
+  },
+  "chart": {
+    "title": "Traffic",
+    "series": {
+      "visitors": "Visitors",
+      "pageviews": "Page views"
+    },
+    "viewTable": "View as table",
+    "viewChart": "View as chart",
+    "empty": "No traffic recorded in this period yet.",
+    "ariaLabel": "Line chart of visitors and page views over time",
+    "table": {
+      "time": "Time"
+    }
+  },
+  "funnel": {
+    "title": "Shopping funnel",
+    "overall": "{rate} of product views end in a purchase",
+    "empty": "No shopping events recorded in this period yet.",
+    "fromPrevious": "{rate} of previous step",
+    "steps": {
+      "view_product": "Viewed a product",
+      "add_to_cart": "Added to bag",
+      "begin_checkout": "Started checkout",
+      "purchase": "Placed an order"
+    }
+  },
+  "cards": {
+    "pages": "Pages",
+    "sources": "Traffic sources",
+    "locations": "Countries",
+    "devices": "Devices"
+  },
+  "tabs": {
+    "pages": "Pages",
+    "routes": "Routes",
+    "referrers": "Referrers",
+    "utmSources": "UTM source",
+    "utmMediums": "UTM medium",
+    "utmCampaigns": "UTM campaign",
+    "countries": "Countries",
+    "devices": "Devices",
+    "browsers": "Browsers",
+    "systems": "Systems"
+  },
+  "breakdown": {
+    "direct": "Direct / none",
+    "unknown": "Unknown",
+    "empty": "No data in this period.",
+    "unavailable": "This breakdown is unavailable right now.",
+    "visitors": "Visitors",
+    "pageviews": "Views",
+    "deviceTypes": {
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "tablet": "Tablet"
+    }
+  },
+  "status": {
+    "retry": "Try again",
+    "notConfigured": {
+      "title": "Connect Vercel Web Analytics",
+      "description": "Tracking is already running on the storefront. To read the numbers here, give the server read access to your Vercel project.",
+      "steps": {
+        "token": "Create a Vercel <link>access token</link> and save it as <code>{token}</code>.",
+        "project": "Set <code>{projectId}</code> to the project ID (Project, Settings, General). For a team project also set <code>{teamId}</code>.",
+        "plan": "Optionally set <code>{plan}</code> to hobby, pro, pro-plus or enterprise so this page only asks for data your plan includes. Default: hobby.",
+        "redeploy": "Redeploy, then reload this page."
+      },
+      "missing": "Still missing: <code>{names}</code>"
+    },
+    "error": {
+      "auth": {
+        "title": "Vercel refused the request",
+        "message": "The access token is invalid, expired, or has no access to this project. Check the token and project ID, then try again."
+      },
+      "plan": {
+        "title": "Analytics not available",
+        "message": "Vercel says Web Analytics is not enabled for this project or your plan does not include it. Enable it in the Vercel dashboard (Analytics tab)."
+      },
+      "unavailable": {
+        "title": "Analytics is unavailable",
+        "message": "Vercel could not return the numbers right now. Please try again in a moment."
+      },
+      "forbidden": {
+        "title": "Admins only",
+        "message": "Your account is not allowed to view analytics."
+      },
+      "network": {
+        "title": "Could not load analytics",
+        "message": "The request failed. Check your connection and try again."
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ import { QuickAddProvider } from "./_components/QuickAddDrawer";
 import { LoginPromptProvider } from "./_components/LoginPromptModal";
 import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
+import VercelTelemetry from "./_components/VercelTelemetry";
 import Providers from "./_components/Providers";
 import { CustomCursor } from "./_components/cursor";
 import { LOCALE_LABELS, routing, type AppLocale } from "@/src/i18n/routing";
@@ -93,6 +94,7 @@ export default async function RootLayout({
                       <RouteTransition />
                       <CartFAB />
                       {children}
+                      <VercelTelemetry />
                     </QuickAddProvider>
                   </LoginPromptProvider>
                 </SystemPasswordPromptProvider>

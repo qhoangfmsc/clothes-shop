@@ -17,6 +17,7 @@ import {
   selectIsWishlisted,
 } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import { useAuthAction } from "@/src/hooks/use-auth-action";
+import { trackEvent } from "@/src/lib/analytics";
 import SizeGuideModal from "./SizeGuideModal";
 import ReviewsSection from "./ReviewsSection";
 import ShippingAccordion from "./ShippingAccordion";
@@ -118,6 +119,11 @@ export default function ProductDetailClient({
     touchDeltaX.current = 0;
   }, [handlePrev, handleNext]);
 
+  /* Funnel: one view per product page opened */
+  useEffect(() => {
+    trackEvent("view_product", { productId: product.id, price: product.price });
+  }, [product.id, product.price]);
+
   /* Keyboard navigation */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -157,6 +163,7 @@ export default function ProductDetailClient({
           quantity,
         })
       );
+      trackEvent("add_to_cart", { productId: product.id, value: product.price * quantity });
       setAddedToCart(true);
       toast.success(
         t.rich("toastAdded", {

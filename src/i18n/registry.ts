@@ -8,6 +8,7 @@ const load =
     import(`../messages/${locale}/${file}.json`) as Promise<{ default: T }>;
 
 export const MESSAGE_FILES = {
+  "admin/analytics": load<typeof import("../messages/en/admin/analytics.json")>("admin/analytics"),
   "admin/categories": load<typeof import("../messages/en/admin/categories.json")>("admin/categories"),
   "admin/collections": load<typeof import("../messages/en/admin/collections.json")>("admin/collections"),
   "admin/components/crud": load<typeof import("../messages/en/admin/components/crud.json")>("admin/components/crud"),

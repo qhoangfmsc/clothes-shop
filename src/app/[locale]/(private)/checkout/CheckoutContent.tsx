@@ -28,6 +28,7 @@ import { useApiAuth } from "@/src/hooks/use-api-auth";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { errorMessage } from "@/src/i18n/error-message";
+import { trackEvent } from "@/src/lib/analytics";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -93,8 +94,9 @@ export default function CheckoutContent() {
   /* Step 1 → 2 */
   const handleContinueToReview = useCallback(() => {
     if (!validateAddress()) return;
+    trackEvent("begin_checkout", { items: totalItems, value: totalPrice });
     setStep("review");
-  }, [validateAddress]);
+  }, [validateAddress, totalItems, totalPrice]);
 
   /* Step 2 → Place order */
   const handlePlaceOrder = useCallback(async () => {
@@ -145,6 +147,7 @@ export default function CheckoutContent() {
       });
 
       setOrderId(orderRes.data?.id ?? null);
+      if (orderRes.data?.id) trackEvent("purchase", { orderId: orderRes.data.id, value: totalPrice });
       dispatch(removeItems(items.map(cartItemKey)));
       setStep("success");
       toast.success(t("toast.placed"));
@@ -153,7 +156,7 @@ export default function CheckoutContent() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [isSubmitting, items, apiFetch, address, dispatch, toast, t]);
+  }, [isSubmitting, items, totalPrice, apiFetch, address, dispatch, toast, t]);
 
   const updateField = useCallback(
     (field: keyof AddressForm, value: string) => {

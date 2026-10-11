@@ -1,0 +1,126 @@
+{
+  "title": "Phân tích truy cập",
+  "subtitle": "Lượng truy cập cửa hàng từ Vercel Web Analytics. Các trang admin không được tính.",
+  "range": {
+    "label": "Khoảng thời gian",
+    "24h": "24 giờ",
+    "7d": "7 ngày",
+    "30d": "30 ngày",
+    "90d": "90 ngày"
+  },
+  "actions": {
+    "refresh": "Làm mới",
+    "openVercel": "Mở trên Vercel"
+  },
+  "updatedAt": "Cập nhật {time}. Số liệu được lưu đệm tối đa 5 phút; ngày được tính theo UTC.",
+  "kpi": {
+    "visitors": {
+      "label": "Khách truy cập",
+      "hint": "Số người khác nhau"
+    },
+    "pageviews": {
+      "label": "Lượt xem trang",
+      "hint": "Số trang được mở"
+    },
+    "viewsPerVisitor": {
+      "label": "Lượt xem mỗi khách",
+      "hint": "Số trang trung bình mỗi người"
+    },
+    "vsPrevious": "so với kỳ trước",
+    "increase": "Tăng {value} so với kỳ trước",
+    "decrease": "Giảm {value} so với kỳ trước"
+  },
+  "chart": {
+    "title": "Lưu lượng truy cập",
+    "series": {
+      "visitors": "Khách truy cập",
+      "pageviews": "Lượt xem trang"
+    },
+    "viewTable": "Xem dạng bảng",
+    "viewChart": "Xem dạng biểu đồ",
+    "empty": "Chưa ghi nhận lượt truy cập nào trong khoảng thời gian này.",
+    "ariaLabel": "Biểu đồ đường thể hiện khách truy cập và lượt xem trang theo thời gian",
+    "table": {
+      "time": "Thời gian"
+    }
+  },
+  "funnel": {
+    "title": "Phễu mua hàng",
+    "overall": "{rate} lượt xem sản phẩm dẫn đến mua hàng",
+    "empty": "Chưa ghi nhận sự kiện mua sắm nào trong khoảng thời gian này.",
+    "fromPrevious": "{rate} so với bước trước",
+    "steps": {
+      "view_product": "Xem sản phẩm",
+      "add_to_cart": "Thêm vào giỏ",
+      "begin_checkout": "Bắt đầu thanh toán",
+      "purchase": "Đặt hàng"
+    }
+  },
+  "cards": {
+    "pages": "Trang",
+    "sources": "Nguồn truy cập",
+    "locations": "Quốc gia",
+    "devices": "Thiết bị"
+  },
+  "tabs": {
+    "pages": "Trang",
+    "routes": "Route",
+    "referrers": "Nguồn giới thiệu",
+    "utmSources": "UTM source",
+    "utmMediums": "UTM medium",
+    "utmCampaigns": "UTM campaign",
+    "countries": "Quốc gia",
+    "devices": "Thiết bị",
+    "browsers": "Trình duyệt",
+    "systems": "Hệ điều hành"
+  },
+  "breakdown": {
+    "direct": "Truy cập trực tiếp",
+    "unknown": "Không rõ",
+    "empty": "Không có dữ liệu trong khoảng thời gian này.",
+    "unavailable": "Hiện chưa tải được mục này.",
+    "visitors": "Khách",
+    "pageviews": "Lượt xem",
+    "deviceTypes": {
+      "desktop": "Máy tính",
+      "mobile": "Điện thoại",
+      "tablet": "Máy tính bảng"
+    }
+  },
+  "status": {
+    "retry": "Thử lại",
+    "notConfigured": {
+      "title": "Kết nối Vercel Web Analytics",
+      "description": "Việc thu thập số liệu đã chạy trên cửa hàng. Để xem số liệu tại đây, hãy cấp cho server quyền đọc dự án Vercel của bạn.",
+      "steps": {
+        "token": "Tạo <link>access token</link> trên Vercel và lưu vào biến <code>{token}</code>.",
+        "project": "Đặt <code>{projectId}</code> là ID của dự án (Project, Settings, General). Với dự án thuộc team, đặt thêm <code>{teamId}</code>.",
+        "plan": "Có thể đặt <code>{plan}</code> là hobby, pro, pro-plus hoặc enterprise để trang chỉ hỏi những dữ liệu mà gói của bạn có. Mặc định: hobby.",
+        "redeploy": "Deploy lại, sau đó tải lại trang này."
+      },
+      "missing": "Còn thiếu: <code>{names}</code>"
+    },
+    "error": {
+      "auth": {
+        "title": "Vercel từ chối yêu cầu",
+        "message": "Access token không hợp lệ, đã hết hạn hoặc không có quyền với dự án này. Hãy kiểm tra token và ID dự án rồi thử lại."
+      },
+      "plan": {
+        "title": "Chưa dùng được Analytics",
+        "message": "Vercel cho biết Web Analytics chưa được bật cho dự án này hoặc gói hiện tại không bao gồm. Hãy bật trong dashboard Vercel (tab Analytics)."
+      },
+      "unavailable": {
+        "title": "Analytics tạm thời không khả dụng",
+        "message": "Vercel chưa trả được số liệu lúc này. Vui lòng thử lại sau ít phút."
+      },
+      "forbidden": {
+        "title": "Chỉ dành cho quản trị viên",
+        "message": "Tài khoản của bạn không có quyền xem số liệu truy cập."
+      },
+      "network": {
+        "title": "Không tải được số liệu",
+        "message": "Yêu cầu thất bại. Hãy kiểm tra kết nối rồi thử lại."
+      }
+    }
+  }
+}

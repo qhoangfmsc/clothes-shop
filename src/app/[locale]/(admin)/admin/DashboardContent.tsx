@@ -19,6 +19,7 @@ import { useAdminProducts, type AdminOrder } from "@/src/hooks/use-admin-api";
 import { useAdminOrders } from "@/src/hooks/use-admin-api";
 import { useAdminUsers } from "@/src/hooks/use-admin-api";
 import { useOrderStatusLabel } from "@/src/i18n/use-labels";
+import AnalyticsSummary from "./_components/AnalyticsSummary";
 
 /* ── Status style map ── */
 const STATUS_STYLE: Record<string, string> = {
@@ -255,6 +256,9 @@ export default function DashboardContent() {
           {...KPI_ACCENTS.lavender}
         />
       </div>
+
+      {/* ══════ Storefront traffic (Vercel Web Analytics) ══════ */}
+      <AnalyticsSummary orders={orders} ordersLoading={loadingOrders} />
 
       {/* ══════ Bottom Grid ══════ */}
       <div className="grid grid-cols-[2fr_1fr] gap-[var(--space-6)]">

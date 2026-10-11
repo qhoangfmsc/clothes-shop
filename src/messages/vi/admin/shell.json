@@ -16,6 +16,7 @@
       "collections": "Bộ sưu tập",
       "orders": "Đơn hàng",
       "users": "Người dùng",
+      "analytics": "Phân tích truy cập",
       "siteConfig": "Cấu hình website",
       "media": "Thư viện media"
     }
@@ -41,6 +42,7 @@
     "collections": "Bộ sưu tập",
     "orders": "Đơn hàng",
     "users": "Người dùng",
+    "analytics": "Phân tích",
     "site-config": "Cấu hình website",
     "media": "Thư viện media"
   }

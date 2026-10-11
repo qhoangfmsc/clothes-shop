@@ -36,5 +36,18 @@
   "orderStatus": {
     "title": "Trạng thái đơn hàng",
     "loading": "Đang tải..."
+  },
+  "analytics": {
+    "title": "Lượng truy cập cửa hàng",
+    "viewDetails": "Xem phân tích",
+    "visitors": "Khách truy cập",
+    "pageviews": "Lượt xem trang",
+    "conversion": "Tỉ lệ chuyển đổi",
+    "conversionHint": "{count, plural, other {# đơn hàng}} ÷ khách truy cập, 7 ngày qua",
+    "last7Days": "7 ngày qua",
+    "vsPrevious": "{value} so với 7 ngày trước",
+    "sparkline": "Khách truy cập mỗi ngày trong 7 ngày qua",
+    "notConfigured": "Kết nối Vercel Web Analytics để xem lượng truy cập cửa hàng tại đây.",
+    "unavailable": "Hiện chưa tải được số liệu truy cập."
   }
 }

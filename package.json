@@ -17,6 +17,8 @@
     "@gsap/react": "^2.1.0",
     "@react-oauth/google": "^0.13.5",
     "@reduxjs/toolkit": "^2.12.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "^12.15.0",
     "gsap": "^3.13.0",
     "lucide-react": "^1.23.0",
@@ -25,6 +27,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.3.0",
+    "recharts": "^3.10.1",
     "swr": "^2.4.2"
   },
   "devDependencies": {

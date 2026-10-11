@@ -16,6 +16,7 @@ import {
   LogOut,
   ChevronRight,
   Menu,
+  BarChart3,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -27,7 +28,15 @@ import { useRoleLabel } from "@/src/i18n/use-labels";
 /* ── Sidebar nav grouped by domain ── */
 interface NavItem {
   href: string;
-  key: "products" | "categories" | "collections" | "orders" | "users" | "siteConfig" | "media";
+  key:
+    | "products"
+    | "categories"
+    | "collections"
+    | "orders"
+    | "users"
+    | "analytics"
+    | "siteConfig"
+    | "media";
   icon: LucideIcon;
   permission?: Permission;
 }
@@ -75,6 +84,11 @@ const NAV_GROUPS: NavGroup[] = [
         key: "users",
         icon: Users,
         permission: PERMISSIONS.USER_ADMIN_VIEW,
+      },
+      {
+        href: "/admin/analytics",
+        key: "analytics",
+        icon: BarChart3,
       },
     ],
   },

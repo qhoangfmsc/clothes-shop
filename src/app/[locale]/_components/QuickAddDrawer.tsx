@@ -20,6 +20,7 @@ import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useSizeGuide } from "@/src/hooks/use-api";
 import { useAppDispatch } from "@/src/store/hooks";
+import { trackEvent } from "@/src/lib/analytics";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 
 /* ═══════════════════════════════════════════════════════════
@@ -126,6 +127,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
     dispatch(
       syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity })
     );
+    trackEvent("add_to_cart", { productId: product.id, value: product.price * quantity });
     setAddedToCart(true);
     toast.success(
       t.rich("toastAdded", {
