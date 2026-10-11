@@ -16,7 +16,8 @@
     "marquee": "DOOVAN ◆ Bộ sưu tập ◆ Chế tác có chủ đích ◆ Phiên bản giới hạn ◆",
     "exploreLabel": "Khám phá",
     "allCollections": "Tất cả bộ sưu tập",
-    "exploreCollection": "Khám phá bộ sưu tập"
+    "exploreCollection": "Khám phá bộ sưu tập",
+    "carouselDot": "Đến bộ sưu tập {number} trên {total}"
   },
   "detail": {
     "scroll": "Cuộn xuống",

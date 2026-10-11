@@ -16,7 +16,8 @@
     "marquee": "DOOVAN ◆ Collections ◆ Crafted with Intention ◆ Limited Editions ◆",
     "exploreLabel": "Explore",
     "allCollections": "All Collections",
-    "exploreCollection": "Explore Collection"
+    "exploreCollection": "Explore Collection",
+    "carouselDot": "Go to collection {number} of {total}"
   },
   "detail": {
     "scroll": "Scroll",

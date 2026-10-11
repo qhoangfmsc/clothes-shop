@@ -1,6 +1,6 @@
 # 🛍️ Client App — Báo cáo Tiến độ Dự án (BE + FE)
 
-> **Ngày cập nhật:** 2026-07-23
+> **Ngày cập nhật:** 2026-10-11
 > **Người báo cáo:** BA/PO Team
 > **Phạm vi:** Backend (NestJS) + Frontend (Next.js) Client Application
 
@@ -27,6 +27,10 @@ Client App đã hoàn thành **93%** các chức năng theo phạm vi Phase 1. H
 - Cart + Checkout flow hoạt động end-to-end: add item → sync BE → checkout (save address → create order → clear cart)
 - Auth system: Google OAuth → JWT access/refresh token → session restore → auto-refresh
 - PDP đầy đủ: carousel (touch/mouse/keyboard), size/color/qty, size guide, reviews, wishlist, share
+- **Đa ngôn ngữ (vi mặc định · en):** mọi route nằm dưới `/[locale]` (`/vi`, `/en`), text trong `src/messages/<locale>/` — xem `docs/I18N.md`
+- **SEO nền tảng:** `sitemap.xml` động (mỗi URL × mỗi ngôn ngữ, kèm hreflang), `robots.txt`, canonical/hreflang từng trang, Open Graph mặc định, JSON-LD `WebSite`/`Organization` ở trang chủ; trang private/admin `noindex`
+- **Hạ tầng media & cron:** ảnh lưu Supabase Storage, phục vụ qua proxy cùng origin `/media/<key>` (ẩn project id/bucket); Vercel Cron gọi `/api/cron/ping` mỗi ngày để Supabase free không bị pause
+- **Mobile (2026-10-11):** sửa hamburger menu không cuộn được (không thấy nút Đăng nhập); carousel "Tất cả bộ sưu tập" ở màn hình nhỏ/cảm ứng chuyển sang cuộn ngang native + snap, có chấm chỉ vị trí bấm được và tự chạy (dừng khi người dùng tương tác)
 
 ### Rủi ro / Lưu ý chính
 - 🟡 **FE Filter/Sort là client-side** — Lọc từ SSR data đã fetch. Hoạt động tốt với <200 sản phẩm. Khi catalog lớn hơn cần migrate sang server-side filter với URL params.
@@ -393,7 +397,7 @@ Data Fetching Layers:
 
 | # | Vấn đề | Priority | Đề xuất |
 | --- | --- | --- | --- |
-| 7 | **SEO** | 🟡 Medium | JSON-LD Product schema, dynamic sitemap.xml, robots.txt |
+| 7 | **SEO** | 🟡 Medium | ✅ Đã có: dynamic sitemap.xml, robots.txt, hreflang/canonical, OG mặc định, JSON-LD WebSite/Organization. 🔲 Còn thiếu: JSON-LD `Product` + `BreadcrumbList`, ảnh OG theo từng sản phẩm/bộ sưu tập |
 | 8 | **Error Boundary** | 🟡 Medium | React Error Boundary cho PDP, Cart, Checkout |
 | 9 | **Loading Skeleton** | 🟡 Medium | Shimmer skeleton cho ProductGrid, Cart items (đang có 1 phần) |
 | 10 | **Page Transition** | 🟢 Low | RouteTransition component có nhưng chưa áp dụng rộng |
@@ -432,6 +436,11 @@ BE: clothes-shop-api/src/modules/
 
 FE: clothes-shop/src/
 ├── app/
+│   ├── sitemap.ts, robots.ts                    → /sitemap.xml (mọi URL × ngôn ngữ, ISR 1h), /robots.txt
+│   ├── api/cron/ping/route.ts                   → Vercel Cron hằng ngày (giữ Supabase không bị pause)
+│   ├── media/[...path]/route.ts                 → Proxy ảnh Supabase Storage → /media/<key>
+│   ├── [locale]/                                → Mọi trang theo ngôn ngữ (/vi, /en): layout gốc + NextIntlClientProvider;
+│   │                                              các nhóm route bên dưới nằm trong thư mục này
 │   ├── (public)/
 │   │   ├── landing-page/                        → GSAP scroll animations (no API)
 │   │   ├── shop/
@@ -462,6 +471,9 @@ FE: clothes-shop/src/
 │       ├── QuickAddDrawer.tsx                   → Bottom sheet / Side panel add-to-cart
 │       ├── LoginPromptModal.tsx, UnauthenticatedState.tsx, UserMenu.tsx
 │       └── Providers.tsx, Toast.tsx, RouteTransition.tsx
+├── i18n/                                        → routing.ts (danh sách ngôn ngữ), metadata.ts (hreflang/canonical), ScopedMessages.tsx, navigation.ts
+├── messages/{vi,en}/                            → Toàn bộ text hiển thị theo ngôn ngữ (common, shared, auth, public, private, admin)
+├── lib/                                         → api.ts, auth-api.ts, media-url.ts, site-url.ts, permissions.ts…
 ├── contexts/auth-context.tsx                    → AuthProvider: Google OAuth + JWT token management
 ├── hooks/
 │   ├── use-api.ts                               → SWR public hooks (useProducts, useReviews, useSizeGuide, useShipping...)

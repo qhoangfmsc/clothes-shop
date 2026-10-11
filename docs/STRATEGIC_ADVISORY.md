@@ -99,7 +99,7 @@ Sắp xếp theo priority thực tế cho một fashion boutique store.
 | --- | --- | --- | --- |
 | 4 | **Address Book** | ~~FE Account~~ | ~~Trang quản lý địa chỉ...~~ → **ĐÃ QUYẾT ĐỊNH BỎ** — xem phân tích pháp lý bên dưới |
 | 5 | **Cancel Order** | FE Orders | Nút "Cancel Order" trong Order Detail (chỉ hiện khi status=pending) |
-| 6 | **SEO Package** | FE | Dynamic `sitemap.xml` (products, categories, collections), `robots.ts`, JSON-LD `Product` schema, Open Graph meta tags |
+| 6 | **SEO Package** | FE | Dynamic `sitemap.xml` (products, categories, collections), `robots.ts`, JSON-LD `Product` schema, Open Graph meta tags — **Cập nhật 2026-10-11:** sitemap (đa ngôn ngữ + hreflang), robots, OG mặc định, JSON-LD WebSite/Organization đã xong; còn thiếu JSON-LD `Product` và OG theo từng sản phẩm |
 | 7 | **Error Boundaries** | FE | React Error Boundary cho PDP, Cart, Checkout — tránh crash toàn trang |
 
 > **Về Address Book & Pháp lý — ĐÃ QUYẾT ĐỊNH BỎ:**
@@ -435,7 +435,7 @@ Week 2:
 
 ```
 Week 3:
-├── SEO: sitemap.xml, robots.txt, JSON-LD Product schema
+├── SEO: sitemap.xml ✅, robots.txt ✅, JSON-LD Product schema (còn lại)
 ├── BE: Email service (NestJS Mailer) cho order confirmation
 └── FE: Error Boundaries cho PDP, Cart, Checkout
 

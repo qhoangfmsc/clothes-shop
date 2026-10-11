@@ -20,7 +20,7 @@ MODULE (app/.../tên/) ← Mọi thứ riêng của module nằm TRONG module
 
 ## Cây thư mục chuẩn
 
-> **i18n:** tất cả route nằm dưới `src/app/[locale]/` (`/vi`, `/en`, `/fr`); `src/app/api` và `src/app/media` nằm ngoài. Text hiển thị nằm trong `src/messages/<locale>/` — xem `04-i18n.md`.
+> **i18n:** tất cả route nằm dưới `src/app/[locale]/` (`/vi`, `/en`); `src/app/api` và `src/app/media` nằm ngoài. Text hiển thị nằm trong `src/messages/<locale>/` — xem `04-i18n.md`.
 
 ```
 src/

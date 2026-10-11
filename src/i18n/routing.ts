@@ -6,7 +6,7 @@ import { defineRouting } from "next-intl/routing";
 export const routing = defineRouting({
   locales: ["vi", "en"],
   defaultLocale: "vi",
-  /* Always `/vi/...`, `/en/...`, `/fr/...` — same model as international brand sites */
+  /* Always `/vi/...`, `/en/...` — same model as international brand sites */
   localePrefix: "always",
   /* Accept-Language is ignored: an un-prefixed URL always goes to `/vi` (see middleware.ts). */
   localeDetection: false,

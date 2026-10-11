@@ -16,7 +16,7 @@ const MESSAGES_DIR = join(ROOT, "src/messages");
 const REGISTRY_FILE = join(ROOT, "src/i18n/registry.ts");
 const SOURCE_LOCALE = "en";
 
-/** `["vi","en","fr"]` read from routing.ts so there is one list of languages. */
+/** `["vi","en"]` read from routing.ts so there is one list of languages. */
 function readLocales() {
   const routing = readFileSync(join(ROOT, "src/i18n/routing.ts"), "utf8");
   const match = routing.match(/locales:\s*\[([^\]]+)\]/);

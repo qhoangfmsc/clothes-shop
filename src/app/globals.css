@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "../styles/design-system.css";
 
+/* Phones and touch devices — the exact complement of the desktop (min-width: 768px) and (pointer: fine) query */
+@custom-variant carousel {
+  @media (max-width: 767.98px) {
+    @slot;
+  }
+  @media not all and (pointer: fine) {
+    @slot;
+  }
+}
+
 /* ─── Global Reset ─── */
 html,
 body {
