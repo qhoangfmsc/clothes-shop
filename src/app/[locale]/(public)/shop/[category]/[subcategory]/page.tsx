@@ -8,7 +8,9 @@ import SubcategoryChips from "../../_components/SubcategoryChips";
 import ProductGrid from "../../_components/ProductGrid";
 
 import { getSubcategory, getProducts, getCategories } from "../../_lib/server-fetchers";
-import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
+import JsonLd from "@/src/app/[locale]/_components/JsonLd";
+import { breadcrumbJsonLd } from "@/src/lib/structured-data";
 import type { AppLocale } from "@/src/i18n/routing";
 
 interface SubcategoryPageProps {
@@ -36,14 +38,25 @@ export async function generateMetadata({ params }: SubcategoryPageProps): Promis
   const { category, subcategory } = result;
   const t = await getTranslations({ locale, namespace: "public.shop.pages.subcategory.meta" });
 
+  const title = withBrand(`${subcategory.label} — ${category.title}`);
+  const description = t("description", {
+    description: subcategory.description,
+    subcategory: subcategory.label,
+    category: category.title,
+  });
+  const products = await getProducts(catSlug, subSlug);
   return {
-    title: withBrand(`${subcategory.label} — ${category.title}`),
-    description: t("description", {
-      description: subcategory.description,
-      subcategory: subcategory.label,
-      category: category.title,
-    }),
+    title,
+    description,
     alternates: buildAlternates(locale, `/shop/${catSlug}/${subSlug}`),
+    ...buildSocialMetadata({
+      locale,
+      path: `/shop/${catSlug}/${subSlug}`,
+      title,
+      description,
+      image: products[0]?.images[0],
+      imageAlt: subcategory.label,
+    }),
   };
 }
 
@@ -117,6 +130,14 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         </div>
         <ProductGrid products={products} />
       </div>
+    <JsonLd
+        data={breadcrumbJsonLd(locale, [
+          { name: tNav("home"), path: "" },
+          { name: tNav("shop"), path: "/shop" },
+          { name: category.title, path: `/shop/${catSlug}` },
+          { name: subcategory.label, path: `/shop/${catSlug}/${subSlug}` },
+        ])}
+      />
     </main>
   );
 }

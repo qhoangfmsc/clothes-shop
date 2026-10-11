@@ -7,7 +7,9 @@ import BreadcrumbNav from "./_components/BreadcrumbNav";
 import ShopProductsClient from "./_components/ShopProductsClient";
 import { getCategories, getAllProducts, getBannerConfig } from "./_lib/server-fetchers";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
-import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
+import JsonLd from "@/src/app/[locale]/_components/JsonLd";
+import { breadcrumbJsonLd } from "@/src/lib/structured-data";
 import type { AppLocale } from "@/src/i18n/routing";
 
 type ShopPageProps = { params: Promise<{ locale: AppLocale }> };
@@ -15,10 +17,12 @@ type ShopPageProps = { params: Promise<{ locale: AppLocale }> };
 export async function generateMetadata({ params }: ShopPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "public.shop.pages.index.meta" });
+  const title = withBrand(t("title"));
   return {
-    title: withBrand(t("title")),
+    title,
     description: t("description"),
     alternates: buildAlternates(locale, "/shop"),
+    ...buildSocialMetadata({ locale, path: "/shop", title, description: t("description") }),
   };
 }
 
@@ -90,6 +94,12 @@ export default async function ShopPage({ params }: ShopPageProps) {
           }
         />
       </div>
+    <JsonLd
+        data={breadcrumbJsonLd(locale, [
+          { name: tNav("home"), path: "" },
+          { name: tNav("shop"), path: "/shop" },
+        ])}
+      />
     </main>
   );
 }

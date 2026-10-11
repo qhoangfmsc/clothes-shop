@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import InvitationHero from "./_components/InvitationHero";
 import BrandStory from "./_components/BrandStory";
 import ServicesSection from "./_components/ServicesSection";
-import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import type { AppLocale } from "@/src/i18n/routing";
 
 type AboutPageProps = { params: Promise<{ locale: AppLocale }> };
@@ -12,10 +12,12 @@ type AboutPageProps = { params: Promise<{ locale: AppLocale }> };
 export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "public.about.meta" });
+  const title = withBrand(t("title"));
   return {
-    title: withBrand(t("title")),
+    title,
     description: t("description"),
     alternates: buildAlternates(locale, "/about"),
+    ...buildSocialMetadata({ locale, path: "/about", title, description: t("description") }),
   };
 }
 

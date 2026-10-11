@@ -8,7 +8,9 @@ import {
   getCollectionBySlug,
   getCollectionProducts,
 } from "../../shop/_lib/server-fetchers";
-import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
+import JsonLd from "@/src/app/[locale]/_components/JsonLd";
+import { breadcrumbJsonLd } from "@/src/lib/structured-data";
 import type { AppLocale } from "@/src/i18n/routing";
 
 interface CollectionDetailPageProps {
@@ -31,10 +33,19 @@ export async function generateMetadata({ params }: CollectionDetailPageProps): P
   if (!collection) return { title: withBrand(tCommon("notFound")) };
 
   const t = await getTranslations({ locale, namespace: "public.collections.detailMeta" });
+  const title = t("title", { name: collection.name });
   return {
-    title: t("title", { name: collection.name }),
+    title,
     description: collection.description,
     alternates: buildAlternates(locale, `/collections/${slug}`),
+    ...buildSocialMetadata({
+      locale,
+      path: `/collections/${slug}`,
+      title,
+      description: collection.description,
+      image: collection.image,
+      imageAlt: collection.name,
+    }),
   };
 }
 
@@ -47,11 +58,20 @@ export default async function CollectionDetailPage({ params }: CollectionDetailP
     notFound();
   }
 
+  const tNav = await getTranslations("shared.header.nav");
+
   const products = await getCollectionProducts(slug);
 
   return (
     <main style={{ minHeight: "100vh" }}>
       <CollectionDetailClient collection={collection} products={products} />
+    <JsonLd
+        data={breadcrumbJsonLd(locale, [
+          { name: tNav("home"), path: "" },
+          { name: tNav("collections"), path: "/collections" },
+          { name: collection.name, path: `/collections/${slug}` },
+        ])}
+      />
     </main>
   );
 }

@@ -12,7 +12,7 @@ import CartFAB from "./_components/CartFAB";
 import RouteTransition from "./_components/RouteTransition";
 import Providers from "./_components/Providers";
 import { CustomCursor } from "./_components/cursor";
-import { routing, type AppLocale } from "@/src/i18n/routing";
+import { LOCALE_LABELS, routing, type AppLocale } from "@/src/i18n/routing";
 import { pickMessages } from "@/src/i18n/messages";
 import { buildAlternates } from "@/src/i18n/metadata";
 import { SITE_URL } from "@/src/lib/site-url";
@@ -48,7 +48,9 @@ export async function generateMetadata({
     description: t("description"),
     alternates: buildAlternates(locale),
     openGraph: {
-      locale,
+      type: "website",
+      siteName: "DOOVAN",
+      locale: LOCALE_LABELS[locale].ogLocale,
       images: [{ url: "/brand/brand_og.png", width: 1200, height: 630, alt: t("ogAlt") }],
     },
     twitter: {

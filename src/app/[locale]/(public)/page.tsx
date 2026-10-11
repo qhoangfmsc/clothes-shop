@@ -1,24 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import type { AppLocale } from "@/src/i18n/routing";
-import { SITE_URL } from "@/src/lib/site-url";
+import JsonLd from "@/src/app/[locale]/_components/JsonLd";
+import { siteJsonLd } from "@/src/lib/structured-data";
 import LandingPage from "./landing-page/page";
-
-/* Tells Google the site's name and logo (brand name is never translated). */
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "DOOVAN",
-    url: SITE_URL,
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "DOOVAN",
-    url: SITE_URL,
-    logo: `${SITE_URL}/icon.png`,
-  },
-];
 
 export default async function Home({ params }: { params: Promise<{ locale: AppLocale }> }) {
   const { locale } = await params;
@@ -26,10 +10,7 @@ export default async function Home({ params }: { params: Promise<{ locale: AppLo
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <JsonLd data={siteJsonLd()} />
       <LandingPage />
     </>
   );

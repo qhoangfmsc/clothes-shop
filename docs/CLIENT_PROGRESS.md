@@ -28,7 +28,7 @@ Client App đã hoàn thành **93%** các chức năng theo phạm vi Phase 1. H
 - Auth system: Google OAuth → JWT access/refresh token → session restore → auto-refresh
 - PDP đầy đủ: carousel (touch/mouse/keyboard), size/color/qty, size guide, reviews, wishlist, share
 - **Đa ngôn ngữ (vi mặc định · en):** mọi route nằm dưới `/[locale]` (`/vi`, `/en`), text trong `src/messages/<locale>/` — xem `docs/I18N.md`
-- **SEO nền tảng:** `sitemap.xml` động (mỗi URL × mỗi ngôn ngữ, kèm hreflang), `robots.txt`, canonical/hreflang từng trang, Open Graph mặc định, JSON-LD `WebSite`/`Organization` ở trang chủ; trang private/admin `noindex`
+- **SEO nền tảng:** `sitemap.xml` động (mỗi URL × mỗi ngôn ngữ, kèm hreflang), `robots.txt`, canonical/hreflang từng trang, Open Graph theo từng trang (ảnh sản phẩm / bộ sưu tập / danh mục), JSON-LD `WebSite`/`Organization` (trang chủ), `BreadcrumbList` (shop, danh mục, sản phẩm, bộ sưu tập) và `Product` + `Offer` (chi tiết sản phẩm); trang private/admin `noindex`
 - **Hạ tầng media & cron:** ảnh lưu Supabase Storage, phục vụ qua proxy cùng origin `/media/<key>` (ẩn project id/bucket); Vercel Cron gọi `/api/cron/ping` mỗi ngày để Supabase free không bị pause
 - **Mobile (2026-10-11):** sửa hamburger menu không cuộn được (không thấy nút Đăng nhập); carousel "Tất cả bộ sưu tập" ở màn hình nhỏ/cảm ứng chuyển sang cuộn ngang native + snap, có chấm chỉ vị trí bấm được và tự chạy (dừng khi người dùng tương tác)
 
@@ -397,7 +397,7 @@ Data Fetching Layers:
 
 | # | Vấn đề | Priority | Đề xuất |
 | --- | --- | --- | --- |
-| 7 | **SEO** | 🟡 Medium | ✅ Đã có: dynamic sitemap.xml, robots.txt, hreflang/canonical, OG mặc định, JSON-LD WebSite/Organization. 🔲 Còn thiếu: JSON-LD `Product` + `BreadcrumbList`, ảnh OG theo từng sản phẩm/bộ sưu tập |
+| 7 | **SEO** | 🟡 Medium | ✅ Đã xong: dynamic sitemap.xml, robots.txt, hreflang/canonical, OG/Twitter theo từng trang, JSON-LD WebSite/Organization/BreadcrumbList/Product. 🔲 Còn lại: `aggregateRating`/`Review` (cần BE), `ItemList` cho trang danh sách |
 | 8 | **Error Boundary** | 🟡 Medium | React Error Boundary cho PDP, Cart, Checkout |
 | 9 | **Loading Skeleton** | 🟡 Medium | Shimmer skeleton cho ProductGrid, Cart items (đang có 1 phần) |
 | 10 | **Page Transition** | 🟢 Low | RouteTransition component có nhưng chưa áp dụng rộng |
@@ -473,7 +473,7 @@ FE: clothes-shop/src/
 │       └── Providers.tsx, Toast.tsx, RouteTransition.tsx
 ├── i18n/                                        → routing.ts (danh sách ngôn ngữ), metadata.ts (hreflang/canonical), ScopedMessages.tsx, navigation.ts
 ├── messages/{vi,en}/                            → Toàn bộ text hiển thị theo ngôn ngữ (common, shared, auth, public, private, admin)
-├── lib/                                         → api.ts, auth-api.ts, media-url.ts, site-url.ts, permissions.ts…
+├── lib/                                         → api.ts, auth-api.ts, media-url.ts, site-url.ts, structured-data.ts (JSON-LD), permissions.ts…
 ├── contexts/auth-context.tsx                    → AuthProvider: Google OAuth + JWT token management
 ├── hooks/
 │   ├── use-api.ts                               → SWR public hooks (useProducts, useReviews, useSizeGuide, useShipping...)

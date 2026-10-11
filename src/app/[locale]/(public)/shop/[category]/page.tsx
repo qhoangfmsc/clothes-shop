@@ -8,7 +8,9 @@ import SubcategoryChips from "../_components/SubcategoryChips";
 import ShopProductsClient from "../_components/ShopProductsClient";
 
 import { getCategoryBySlug, getProducts, getCategories } from "../_lib/server-fetchers";
-import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
+import JsonLd from "@/src/app/[locale]/_components/JsonLd";
+import { breadcrumbJsonLd } from "@/src/lib/structured-data";
 import type { AppLocale } from "@/src/i18n/routing";
 
 interface CategoryPageProps {
@@ -31,10 +33,21 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   if (!category) return { title: withBrand(tCommon("notFound")) };
 
   const t = await getTranslations({ locale, namespace: "public.shop.pages.category.meta" });
+  const title = t("title", { category: category.title });
+  const description = t("description", { description: category.description });
+  const products = await getProducts(slug);
   return {
-    title: t("title", { category: category.title }),
-    description: t("description", { description: category.description }),
+    title,
+    description,
     alternates: buildAlternates(locale, `/shop/${slug}`),
+    ...buildSocialMetadata({
+      locale,
+      path: `/shop/${slug}`,
+      title,
+      description,
+      image: products[0]?.images[0],
+      imageAlt: category.title,
+    }),
   };
 }
 
@@ -103,6 +116,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           }
         />
       </div>
+    <JsonLd
+        data={breadcrumbJsonLd(locale, [
+          { name: tNav("home"), path: "" },
+          { name: tNav("shop"), path: "/shop" },
+          { name: category.title, path: `/shop/${slug}` },
+        ])}
+      />
     </main>
   );
 }

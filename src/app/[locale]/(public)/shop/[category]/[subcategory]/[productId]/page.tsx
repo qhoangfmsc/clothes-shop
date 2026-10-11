@@ -8,7 +8,9 @@ import {
   getSubcategory,
   getAllProducts,
 } from "../../../_lib/server-fetchers";
-import { buildAlternates } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata } from "@/src/i18n/metadata";
+import JsonLd from "@/src/app/[locale]/_components/JsonLd";
+import { breadcrumbJsonLd, productJsonLd } from "@/src/lib/structured-data";
 import type { AppLocale } from "@/src/i18n/routing";
 
 interface ProductPageProps {
@@ -33,10 +35,20 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   if (!result) return { title: `${tCommon("notFound")} — DOOVAN` };
 
   const t = await getTranslations({ locale, namespace: "public.product.meta" });
+  const path = `/shop/${category}/${subcategory}/${productId}`;
+  const title = t("title", { name: result.product.name });
   return {
-    title: t("title", { name: result.product.name }),
+    title,
     description: result.product.description,
-    alternates: buildAlternates(locale, `/shop/${category}/${subcategory}/${productId}`),
+    alternates: buildAlternates(locale, path),
+    ...buildSocialMetadata({
+      locale,
+      path,
+      title,
+      description: result.product.description,
+      image: result.product.images[0],
+      imageAlt: result.product.name,
+    }),
   };
 }
 
@@ -44,6 +56,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { locale, category: catSlug, subcategory: subSlug, productId } = await params;
   setRequestLocale(locale);
 
+  const tNav = await getTranslations("shared.header.nav");
   const productResult = await getProductWithRelated(productId);
   const catResult = await getSubcategory(catSlug, subSlug);
 
@@ -53,6 +66,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
   const { product, related } = productResult;
   const { category, subcategory } = catResult;
+  const productPath = `/shop/${catSlug}/${subSlug}/${productId}`;
 
   return (
     <main
@@ -69,6 +83,18 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         categoryTitle={category.title}
         subcategoryLabel={subcategory.label}
         relatedProducts={related}
+      />
+    <JsonLd
+        data={[
+          productJsonLd(locale, product, productPath),
+          breadcrumbJsonLd(locale, [
+            { name: tNav("home"), path: "" },
+            { name: tNav("shop"), path: "/shop" },
+            { name: category.title, path: `/shop/${catSlug}` },
+            { name: subcategory.label, path: `/shop/${catSlug}/${subSlug}` },
+            { name: product.name, path: productPath },
+          ]),
+        ]}
       />
     </main>
   );

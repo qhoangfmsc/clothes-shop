@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import NewInClient from "./_components/NewInClient";
 import { getNewInProducts, getBannerConfig } from "../shop/_lib/server-fetchers";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
-import { buildAlternates, withBrand } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import type { AppLocale } from "@/src/i18n/routing";
 
 type NewInPageProps = { params: Promise<{ locale: AppLocale }> };
@@ -12,10 +12,12 @@ type NewInPageProps = { params: Promise<{ locale: AppLocale }> };
 export async function generateMetadata({ params }: NewInPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "public.newIn.meta" });
+  const title = withBrand(t("title"));
   return {
-    title: withBrand(t("title")),
+    title,
     description: t("description"),
     alternates: buildAlternates(locale, "/new-in"),
+    ...buildSocialMetadata({ locale, path: "/new-in", title, description: t("description") }),
   };
 }
 
