@@ -1,16 +1,19 @@
+import { notFound } from "next/navigation";
+import { hasLocale } from "next-intl";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ScopedMessages from "@/src/i18n/ScopedMessages";
-import type { AppLocale } from "@/src/i18n/routing";
+import { routing } from "@/src/i18n/routing";
 import { withBrand } from "@/src/i18n/metadata";
 import AdminLayoutClient from "./AdminLayoutClient";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: AppLocale }>;
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
   const t = await getTranslations({ locale, namespace: "admin.shell.meta" });
   return {
     title: withBrand(t("title")),
@@ -24,9 +27,10 @@ export default async function AdminLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ locale: AppLocale }>;
+  params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
   return (
