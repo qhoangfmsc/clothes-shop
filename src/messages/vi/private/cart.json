@@ -9,13 +9,18 @@
   },
   "item": {
     "size": "Kích cỡ: {size}",
-    "remove": "Xóa {name}"
+    "remove": "Xóa {name}",
+    "addToWishlist": "Thêm vào yêu thích",
+    "removeFromWishlist": "Bỏ khỏi yêu thích",
+    "wishlistAdded": "Đã lưu {name} vào danh sách yêu thích",
+    "wishlistRemoved": "Đã bỏ {name} khỏi danh sách yêu thích",
+    "confirmRemove": "Bỏ {name} khỏi giỏ hàng?",
+    "select": "Chọn {name}"
   },
   "header": {
     "continueShopping": "Tiếp tục mua sắm",
     "title": "Giỏ hàng",
-    "itemCount": "{count} sản phẩm",
-    "clearAll": "Xóa tất cả"
+    "itemCount": "{count} sản phẩm"
   },
   "empty": {
     "title": "Giỏ hàng của bạn đang trống",
@@ -24,6 +29,7 @@
   },
   "summary": {
     "title": "Tóm tắt đơn hàng",
+    "selected": "Đã chọn {count} sản phẩm",
     "unlocked": "🎉 Bạn đã được miễn phí vận chuyển!",
     "remaining": "Mua thêm {amount} để được miễn phí vận chuyển",
     "subtotal": "Tạm tính",
@@ -32,6 +38,23 @@
     "atCheckout": "Tính khi thanh toán",
     "total": "Tổng cộng",
     "checkout": "Tiến hành thanh toán",
-    "freeNote": "Miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên {amount}."
+    "freeNote": "Miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên {amount}.",
+    "selectToCheckout": "Hãy chọn ít nhất một sản phẩm để thanh toán."
+  },
+  "bulk": {
+    "selectAll": "Chọn tất cả",
+    "selectedCount": "Đã chọn {selected}/{total}",
+    "addToWishlist": "Thêm vào yêu thích",
+    "remove": "Bỏ khỏi giỏ hàng",
+    "confirmRemove": {
+      "title": "Bỏ khỏi giỏ hàng",
+      "message": "Bỏ {count} sản phẩm đã chọn khỏi giỏ hàng?",
+      "confirm": "Bỏ khỏi giỏ"
+    }
+  },
+  "toast": {
+    "removed": "Đã bỏ {count} sản phẩm khỏi giỏ hàng",
+    "addedToWishlist": "Đã thêm {count} sản phẩm vào danh sách yêu thích",
+    "alreadyInWishlist": "Các sản phẩm này đã có trong danh sách yêu thích"
   }
 }

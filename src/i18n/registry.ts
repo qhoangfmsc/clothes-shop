@@ -33,6 +33,7 @@ export const MESSAGE_FILES = {
   "public/about": load<typeof import("../messages/en/public/about.json")>("public/about"),
   "public/collections": load<typeof import("../messages/en/public/collections.json")>("public/collections"),
   "public/landing": load<typeof import("../messages/en/public/landing.json")>("public/landing"),
+  "public/legal": load<typeof import("../messages/en/public/legal.json")>("public/legal"),
   "public/newIn": load<typeof import("../messages/en/public/newIn.json")>("public/newIn"),
   "public/product": load<typeof import("../messages/en/public/product.json")>("public/product"),
   "public/shop": load<typeof import("../messages/en/public/shop.json")>("public/shop"),
@@ -41,5 +42,6 @@ export const MESSAGE_FILES = {
   "shared/feedback": load<typeof import("../messages/en/shared/feedback.json")>("shared/feedback"),
   "shared/footer": load<typeof import("../messages/en/shared/footer.json")>("shared/footer"),
   "shared/header": load<typeof import("../messages/en/shared/header.json")>("shared/header"),
+  "shared/legal": load<typeof import("../messages/en/shared/legal.json")>("shared/legal"),
   "shared/site": load<typeof import("../messages/en/shared/site.json")>("shared/site"),
 } as const;

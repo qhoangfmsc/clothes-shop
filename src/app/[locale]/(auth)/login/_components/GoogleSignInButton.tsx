@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "@/src/i18n/navigation";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { errorMessage } from "@/src/i18n/error-message";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "@/src/contexts/auth-context";
+import Checkbox from "@/src/app/[locale]/_components/Checkbox";
+
+const CONSENT_LINK_CLASS =
+  "text-[var(--text-heading)] underline underline-offset-2 transition-colors duration-150 hover:text-[var(--accent-primary)] motion-reduce:transition-none";
 
 const GoogleLogo = () => {
   return (
@@ -33,10 +37,14 @@ const GoogleLogo = () => {
 
 export default function GoogleSignInButton() {
   const t = useTranslations("auth.login.google");
+  const tConsent = useTranslations("auth.login.consent");
   const router = useRouter();
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /* Not remembered: every sign-in starts unticked, so consent is given each time */
+  const [accepted, setAccepted] = useState(false);
+  const canSignIn = accepted && !isLoading;
 
   /**
    * Use authorization_code flow:
@@ -73,9 +81,9 @@ export default function GoogleSignInButton() {
           setError(null);
           googleLogin();
         }}
-        disabled={isLoading}
-        whileHover={isLoading ? {} : { scale: 1.02, opacity: 0.9 }}
-        whileTap={isLoading ? {} : { scale: 0.98 }}
+        disabled={!canSignIn}
+        whileHover={canSignIn ? { scale: 1.02, opacity: 0.9 } : {}}
+        whileTap={canSignIn ? { scale: 0.98 } : {}}
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -90,12 +98,12 @@ export default function GoogleSignInButton() {
           fontFamily: "var(--font-primary)",
           fontWeight: 500,
           letterSpacing: "-0.02em",
-          cursor: isLoading ? "wait" : "pointer",
+          cursor: isLoading ? "wait" : accepted ? "pointer" : "not-allowed",
           boxShadow: "var(--shadow-sm)",
           transition: `opacity var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default), border-color var(--duration-fast) var(--ease-default)`,
           width: "100%",
           maxWidth: 320,
-          opacity: isLoading ? 0.7 : 1,
+          opacity: canSignIn ? 1 : isLoading ? 0.7 : 0.5,
         }}
       >
         {isLoading ? (
@@ -115,6 +123,44 @@ export default function GoogleSignInButton() {
         )}
         <span>{isLoading ? t("signingIn") : t("continue")}</span>
       </motion.button>
+
+      {/* Terms & privacy consent — the Google button above stays disabled until it is ticked.
+          Links open in a new tab so the sign-in state is not lost while reading. */}
+      <label className="mt-2 flex w-full max-w-[320px] cursor-pointer items-start gap-3 text-left font-primary text-sm leading-[140%] tracking-[-0.02em] text-[var(--text-secondary)]">
+        <Checkbox
+          className="mt-0.5"
+          checked={accepted}
+          onCheckedChange={setAccepted}
+          disabled={isLoading}
+        />
+        <span>
+          {tConsent.rich("label", {
+            terms: (chunks) => (
+              <Link href="/terms" target="_blank" rel="noopener noreferrer" className={CONSENT_LINK_CLASS}>
+                {chunks}
+              </Link>
+            ),
+            privacy: (chunks) => (
+              <Link href="/privacy" target="_blank" rel="noopener noreferrer" className={CONSENT_LINK_CLASS}>
+                {chunks}
+              </Link>
+            ),
+          })}
+        </span>
+      </label>
+
+      {!accepted && (
+        <p
+          style={{
+            color: "var(--text-muted)",
+            fontSize: "var(--text-xs)",
+            fontFamily: "var(--font-primary)",
+            textAlign: "center",
+          }}
+        >
+          {tConsent("hint")}
+        </p>
+      )}
 
       {error && (
         <motion.p

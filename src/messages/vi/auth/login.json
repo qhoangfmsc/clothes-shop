@@ -13,5 +13,9 @@
     "signingIn": "Đang đăng nhập...",
     "failed": "Đăng nhập thất bại. Vui lòng thử lại.",
     "cancelled": "Đăng nhập Google đã bị hủy hoặc thất bại."
+  },
+  "consent": {
+    "label": "Tôi đã đọc và đồng ý với <terms>Điều khoản sử dụng</terms> và <privacy>Chính sách bảo mật</privacy>.",
+    "hint": "Hãy đánh dấu ô phía trên để tiếp tục với Google."
   }
 }

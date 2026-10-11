@@ -1,0 +1,191 @@
+{
+  "common": {
+    "lastUpdated": "Last updated: {date}",
+    "contents": "Contents",
+    "otherPolicies": "Other policies"
+  },
+  "hub": {
+    "meta": {
+      "title": "Legal & Policies",
+      "description": "Our Terms of Service, Privacy Policy and Shipping & Returns policy in one place."
+    },
+    "title": "Legal & Policies",
+    "subtitle": "Everything you should know about using DOOVAN: our terms, how we handle your data, and how shipping and returns work."
+  },
+  "terms": {
+    "meta": {
+      "description": "The terms that apply when you browse, sign in and order from DOOVAN."
+    },
+    "intro": "Please read these terms carefully. They explain the rules for using DOOVAN and placing orders with us.",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of these terms",
+        "p1": "These Terms of Service (the \"Terms\") govern your access to and use of the DOOVAN website and the products and services offered through it, operated by {company} (\"DOOVAN\", \"we\", \"us\").",
+        "p2": "By creating an account, signing in with Google or placing an order, you confirm that you have read, understood and agree to be bound by these Terms, our Privacy Policy and our Shipping & Returns policy. If you do not agree, please do not use the site."
+      },
+      "accounts": {
+        "title": "Your account",
+        "p1": "You sign in to DOOVAN with your Google account. You are responsible for keeping your Google account secure and for all activity carried out through your DOOVAN account.",
+        "p2": "The information you give us, including your name, phone number and delivery address, must be accurate and up to date. You must be at least 16 years old, or have the consent of a parent or guardian, to create an account.",
+        "p3": "We may suspend or close an account that is used in breach of these Terms or for fraudulent activity."
+      },
+      "orders": {
+        "title": "Orders and confirmation",
+        "p1": "Product pages are an invitation to order, not a binding offer. An order is only accepted once our team has confirmed it to you by phone or email.",
+        "p2": "After confirmation, we will contact you with payment details and arrange delivery. We may decline or cancel an order if an item is out of stock, a price or description contains an obvious error, or we cannot verify your details."
+      },
+      "pricing": {
+        "title": "Prices and availability",
+        "p1": "Prices are shown in the currency displayed on the site. Shipping costs, if any, are shown in your bag and confirmed when we contact you about your order.",
+        "p2": "We may change prices and product availability at any time. A price change never affects an order we have already confirmed."
+      },
+      "intellectualProperty": {
+        "title": "Intellectual property",
+        "p1": "All content on the site, including the DOOVAN name and logo, photographs, videos, designs, text and layout, belongs to {company} or its licensors and is protected by intellectual property law.",
+        "p2": "You may view the site and share product links for personal, non-commercial use. You may not copy, reproduce, modify or distribute our content without our prior written permission."
+      },
+      "conduct": {
+        "title": "Acceptable use",
+        "p1": "You agree not to:",
+        "l1": "use the site in any unlawful way or to commit fraud;",
+        "l2": "interfere with the security or operation of the site, or try to access accounts or data that are not yours;",
+        "l3": "use bots, scrapers or other automated means to collect content or place orders;",
+        "l4": "submit false, misleading or abusive content, including in product reviews."
+      },
+      "liability": {
+        "title": "Limitation of liability",
+        "p1": "We take care to describe our products accurately, but colours may look slightly different on different screens. The site is provided \"as is\" and we do not guarantee that it will always be available or free of errors.",
+        "p2": "To the extent permitted by law, we are not liable for indirect or consequential losses arising from your use of the site. Nothing in these Terms limits your rights as a consumer under the law."
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "p1": "We may update these Terms from time to time. The date at the top of this page shows when they were last changed. Continuing to use the site after an update means you accept the revised Terms."
+      },
+      "governingLaw": {
+        "title": "Governing law",
+        "p1": "These Terms are governed by the laws of Vietnam. Any dispute will first be settled through good-faith discussion; if that fails, it will be brought before the competent court in Vietnam."
+      },
+      "contact": {
+        "title": "Contact us",
+        "p1": "Questions about these Terms? Contact {company} at {email}, by phone at {phone}, or by post at {address}."
+      }
+    }
+  },
+  "privacy": {
+    "meta": {
+      "description": "What personal data DOOVAN collects, why we collect it, and the choices you have."
+    },
+    "intro": "This Privacy Policy explains what personal data {company} (\"DOOVAN\") collects when you use our website, why we collect it, and the choices you have.",
+    "sections": {
+      "dataWeCollect": {
+        "title": "Data we collect",
+        "p1": "We collect the following data:",
+        "l1": "Account data: your name, email address and profile picture, provided by Google when you sign in. We never receive your Google password.",
+        "l2": "Order data: your delivery name, phone number, address, delivery notes and the items you order.",
+        "l3": "Activity data: the items in your bag and wishlist, and your order history.",
+        "l4": "Technical data: browser type, device and basic usage information needed to keep the site secure and working."
+      },
+      "howWeUse": {
+        "title": "How we use your data",
+        "p1": "We use your data to:",
+        "l1": "create and manage your account and sign you in;",
+        "l2": "process, confirm and deliver your orders and contact you about them;",
+        "l3": "provide customer support and handle returns;",
+        "l4": "keep the site secure, prevent fraud and improve our service;",
+        "l5": "meet our legal obligations.",
+        "p2": "We do not sell your personal data."
+      },
+      "sharing": {
+        "title": "Who we share it with",
+        "p1": "We share personal data only when needed to run our service: with delivery partners (your name, phone number and address), with our hosting and infrastructure providers, with Google for sign-in, and with authorities when the law requires it.",
+        "p2": "These providers may only use your data to perform services for us."
+      },
+      "browserStorage": {
+        "title": "Cookies and browser storage",
+        "p1": "To work properly, the site stores some information in your browser, such as your bag, wishlist, preferred language and sign-in session. This data stays on your device. You can clear it at any time in your browser settings, but doing so may sign you out and empty your local bag."
+      },
+      "retention": {
+        "title": "How long we keep it",
+        "p1": "We keep personal data for as long as your account is active or as needed to provide the service, handle returns and meet accounting and legal obligations. After that, we delete or anonymise it."
+      },
+      "security": {
+        "title": "Security",
+        "p1": "We protect your data with technical and organisational measures, including encrypted connections (HTTPS) and restricted access. No system is completely secure, so we cannot guarantee absolute security."
+      },
+      "rights": {
+        "title": "Your rights",
+        "p1": "In line with Vietnam's personal data protection law (Decree 13/2023/ND-CP), you may ask us to:",
+        "l1": "give you access to the personal data we hold about you;",
+        "l2": "correct inaccurate data;",
+        "l3": "delete your data or close your account;",
+        "l4": "restrict or object to certain processing, or withdraw your consent.",
+        "p2": "To exercise these rights, contact us using the details below. We will reply within a reasonable time."
+      },
+      "children": {
+        "title": "Children",
+        "p1": "Our site is not directed at children under 16 and we do not knowingly collect their data. If you believe a child has given us personal data, contact us and we will delete it."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "p1": "We may update this policy from time to time. The date at the top of this page shows when it was last changed. If a change is significant, we will tell you on the site."
+      },
+      "contact": {
+        "title": "Contact us",
+        "p1": "Questions or requests about your data? Contact {company} at {email}, by phone at {phone}, or by post at {address}."
+      }
+    }
+  },
+  "shippingReturns": {
+    "meta": {
+      "description": "How DOOVAN ships your order, and how returns, exchanges and refunds work."
+    },
+    "intro": "This policy explains how {company} ships your order and how returns, exchanges and refunds work.",
+    "sections": {
+      "shippingMethods": {
+        "title": "Shipping options",
+        "p1": "The delivery options available for your order are shown at checkout. Store pickup is offered where available."
+      },
+      "shippingFees": {
+        "title": "Shipping fees",
+        "p1": "Orders above the free-shipping threshold shown in your bag ship free with standard delivery. For other orders, the shipping fee is confirmed by our team when we contact you about your order, before you pay."
+      },
+      "deliveryTime": {
+        "title": "Delivery time",
+        "p1": "Orders are prepared after we confirm them with you. Delivery usually takes 2–5 business days in major cities and 4–8 business days elsewhere in Vietnam, counted from the day your order is handed to the carrier.",
+        "p2": "Delays can happen during holidays, bad weather or peak periods. We will let you know if your order is significantly delayed."
+      },
+      "receiving": {
+        "title": "Receiving your order",
+        "p1": "Please check the package when it arrives. If it is visibly damaged or open, note this with the carrier and contact us within 48 hours."
+      },
+      "returns": {
+        "title": "Returns",
+        "p1": "You may return an item within 7 days of receiving it if it:",
+        "l1": "is unworn, unwashed and undamaged;",
+        "l2": "still has all its original tags, labels and packaging;",
+        "l3": "is not a final-sale or made-to-order item.",
+        "p2": "For hygiene reasons, items worn close to the body, such as underwear and swimwear, cannot be returned unless they are faulty."
+      },
+      "howToReturn": {
+        "title": "How to return an item",
+        "p1": "Contact us at {email} or {phone} with your order number and the item you wish to return. We will send you the return instructions. Return shipping is paid by you, unless the item is faulty or we sent the wrong one."
+      },
+      "refunds": {
+        "title": "Refunds",
+        "p1": "Once we receive and inspect the returned item, we will confirm your refund. Refunds are made through the payment method you used, within 7–14 business days."
+      },
+      "exchanges": {
+        "title": "Exchanges",
+        "p1": "To exchange an item for another size or colour, follow the return steps and tell us what you would like instead. Exchanges depend on stock; if the item is unavailable, we will refund you."
+      },
+      "faulty": {
+        "title": "Faulty or incorrect items",
+        "p1": "If an item arrives faulty, damaged or not as ordered, contact us within 7 days of delivery with photos. We will repair, replace or refund it at no extra cost to you, including return shipping."
+      },
+      "contact": {
+        "title": "Contact us",
+        "p1": "Need help with a delivery or a return? Contact {company} at {email}, by phone at {phone}, or by post at {address}."
+      }
+    }
+  }
+}

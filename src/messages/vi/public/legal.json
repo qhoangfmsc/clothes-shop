@@ -1,0 +1,191 @@
+{
+  "common": {
+    "lastUpdated": "Cập nhật lần cuối: {date}",
+    "contents": "Mục lục",
+    "otherPolicies": "Chính sách khác"
+  },
+  "hub": {
+    "meta": {
+      "title": "Pháp lý & chính sách",
+      "description": "Điều khoản sử dụng, Chính sách bảo mật và Chính sách giao hàng & đổi trả của DOOVAN trong một trang."
+    },
+    "title": "Pháp lý & chính sách",
+    "subtitle": "Mọi điều bạn cần biết khi sử dụng DOOVAN: điều khoản, cách chúng tôi xử lý dữ liệu của bạn, và quy định giao hàng, đổi trả."
+  },
+  "terms": {
+    "meta": {
+      "description": "Các điều khoản áp dụng khi bạn truy cập, đăng nhập và đặt hàng tại DOOVAN."
+    },
+    "intro": "Vui lòng đọc kỹ các điều khoản này. Đây là quy định khi sử dụng DOOVAN và đặt hàng với chúng tôi.",
+    "sections": {
+      "acceptance": {
+        "title": "Chấp nhận điều khoản",
+        "p1": "Điều khoản sử dụng này (\"Điều khoản\") điều chỉnh việc bạn truy cập và sử dụng website DOOVAN cùng các sản phẩm, dịch vụ được cung cấp qua website, do {company} (\"DOOVAN\", \"chúng tôi\") vận hành.",
+        "p2": "Khi tạo tài khoản, đăng nhập bằng Google hoặc đặt hàng, bạn xác nhận đã đọc, hiểu và đồng ý bị ràng buộc bởi Điều khoản này, Chính sách bảo mật và Chính sách giao hàng & đổi trả của chúng tôi. Nếu không đồng ý, vui lòng không sử dụng website."
+      },
+      "accounts": {
+        "title": "Tài khoản của bạn",
+        "p1": "Bạn đăng nhập vào DOOVAN bằng tài khoản Google. Bạn chịu trách nhiệm bảo mật tài khoản Google của mình và mọi hoạt động được thực hiện qua tài khoản DOOVAN của bạn.",
+        "p2": "Thông tin bạn cung cấp, bao gồm họ tên, số điện thoại và địa chỉ giao hàng, phải chính xác và được cập nhật. Bạn phải từ đủ 16 tuổi, hoặc có sự đồng ý của cha mẹ hoặc người giám hộ, để tạo tài khoản.",
+        "p3": "Chúng tôi có thể tạm khoá hoặc đóng tài khoản vi phạm Điều khoản này hoặc có dấu hiệu gian lận."
+      },
+      "orders": {
+        "title": "Đặt hàng và xác nhận",
+        "p1": "Trang sản phẩm chỉ là lời mời đặt hàng, không phải đề nghị có tính ràng buộc. Đơn hàng chỉ được chấp nhận khi đội ngũ của chúng tôi xác nhận với bạn qua điện thoại hoặc email.",
+        "p2": "Sau khi xác nhận, chúng tôi sẽ liên hệ với bạn về thông tin thanh toán và sắp xếp giao hàng. Chúng tôi có thể từ chối hoặc huỷ đơn nếu sản phẩm hết hàng, giá hoặc mô tả có sai sót rõ ràng, hoặc không xác minh được thông tin của bạn."
+      },
+      "pricing": {
+        "title": "Giá và tình trạng hàng",
+        "p1": "Giá được hiển thị bằng đơn vị tiền tệ trên website. Phí vận chuyển (nếu có) được hiển thị trong giỏ hàng và xác nhận khi chúng tôi liên hệ về đơn hàng của bạn.",
+        "p2": "Chúng tôi có thể thay đổi giá và tình trạng sản phẩm bất cứ lúc nào. Việc thay đổi giá không ảnh hưởng đến đơn hàng đã được xác nhận."
+      },
+      "intellectualProperty": {
+        "title": "Quyền sở hữu trí tuệ",
+        "p1": "Toàn bộ nội dung trên website, gồm tên và logo DOOVAN, hình ảnh, video, thiết kế, văn bản và bố cục, thuộc về {company} hoặc các bên cấp phép và được pháp luật về sở hữu trí tuệ bảo vệ.",
+        "p2": "Bạn có thể xem website và chia sẻ liên kết sản phẩm cho mục đích cá nhân, phi thương mại. Bạn không được sao chép, tái sản xuất, chỉnh sửa hoặc phân phối nội dung của chúng tôi khi chưa có sự đồng ý bằng văn bản."
+      },
+      "conduct": {
+        "title": "Sử dụng hợp lệ",
+        "p1": "Bạn đồng ý không:",
+        "l1": "sử dụng website vào mục đích trái pháp luật hoặc để gian lận;",
+        "l2": "gây ảnh hưởng đến an ninh hoặc hoạt động của website, hoặc cố truy cập tài khoản, dữ liệu không thuộc về bạn;",
+        "l3": "dùng bot, công cụ thu thập dữ liệu hoặc phương tiện tự động khác để lấy nội dung hay đặt hàng;",
+        "l4": "đăng nội dung sai sự thật, gây hiểu lầm hoặc xúc phạm, bao gồm cả trong đánh giá sản phẩm."
+      },
+      "liability": {
+        "title": "Giới hạn trách nhiệm",
+        "p1": "Chúng tôi cố gắng mô tả sản phẩm chính xác, tuy nhiên màu sắc có thể hiển thị hơi khác nhau trên các màn hình. Website được cung cấp \"nguyên trạng\" và chúng tôi không đảm bảo website luôn hoạt động liên tục hoặc không có lỗi.",
+        "p2": "Trong phạm vi pháp luật cho phép, chúng tôi không chịu trách nhiệm đối với các thiệt hại gián tiếp hoặc hệ quả phát sinh từ việc bạn sử dụng website. Không điều khoản nào ở đây giới hạn quyền của bạn với tư cách người tiêu dùng theo quy định của pháp luật."
+      },
+      "changes": {
+        "title": "Thay đổi điều khoản",
+        "p1": "Chúng tôi có thể cập nhật Điều khoản này theo thời gian. Ngày ở đầu trang cho biết lần thay đổi gần nhất. Việc tiếp tục sử dụng website sau khi cập nhật nghĩa là bạn chấp nhận Điều khoản đã sửa đổi."
+      },
+      "governingLaw": {
+        "title": "Luật áp dụng",
+        "p1": "Điều khoản này được điều chỉnh bởi pháp luật Việt Nam. Mọi tranh chấp trước hết được giải quyết thông qua thương lượng thiện chí; nếu không thành, sẽ được đưa ra Toà án có thẩm quyền tại Việt Nam."
+      },
+      "contact": {
+        "title": "Liên hệ",
+        "p1": "Bạn có câu hỏi về Điều khoản này? Hãy liên hệ {company} qua email {email}, điện thoại {phone}, hoặc gửi thư đến {address}."
+      }
+    }
+  },
+  "privacy": {
+    "meta": {
+      "description": "DOOVAN thu thập dữ liệu cá nhân nào, vì sao thu thập và bạn có những quyền lựa chọn gì."
+    },
+    "intro": "Chính sách bảo mật này giải thích {company} (\"DOOVAN\") thu thập dữ liệu cá nhân nào khi bạn sử dụng website, vì sao chúng tôi thu thập, và bạn có những quyền lựa chọn gì.",
+    "sections": {
+      "dataWeCollect": {
+        "title": "Dữ liệu chúng tôi thu thập",
+        "p1": "Chúng tôi thu thập các dữ liệu sau:",
+        "l1": "Dữ liệu tài khoản: tên, địa chỉ email và ảnh đại diện do Google cung cấp khi bạn đăng nhập. Chúng tôi không bao giờ nhận mật khẩu Google của bạn.",
+        "l2": "Dữ liệu đơn hàng: tên người nhận, số điện thoại, địa chỉ, ghi chú giao hàng và các sản phẩm bạn đặt.",
+        "l3": "Dữ liệu hoạt động: các sản phẩm trong giỏ hàng, danh sách yêu thích và lịch sử đơn hàng.",
+        "l4": "Dữ liệu kỹ thuật: loại trình duyệt, thiết bị và thông tin sử dụng cơ bản cần thiết để website an toàn và hoạt động ổn định."
+      },
+      "howWeUse": {
+        "title": "Cách chúng tôi sử dụng dữ liệu",
+        "p1": "Chúng tôi sử dụng dữ liệu của bạn để:",
+        "l1": "tạo, quản lý tài khoản và đăng nhập cho bạn;",
+        "l2": "xử lý, xác nhận và giao đơn hàng, cũng như liên hệ với bạn về đơn hàng;",
+        "l3": "hỗ trợ khách hàng và xử lý đổi trả;",
+        "l4": "bảo đảm an toàn cho website, ngăn chặn gian lận và cải thiện dịch vụ;",
+        "l5": "thực hiện các nghĩa vụ pháp lý.",
+        "p2": "Chúng tôi không bán dữ liệu cá nhân của bạn."
+      },
+      "sharing": {
+        "title": "Chúng tôi chia sẻ với ai",
+        "p1": "Chúng tôi chỉ chia sẻ dữ liệu cá nhân khi cần thiết để vận hành dịch vụ: với đối tác vận chuyển (tên, số điện thoại và địa chỉ của bạn), với nhà cung cấp hạ tầng và lưu trữ, với Google để đăng nhập, và với cơ quan có thẩm quyền khi pháp luật yêu cầu.",
+        "p2": "Các bên này chỉ được dùng dữ liệu của bạn để thực hiện dịch vụ cho chúng tôi."
+      },
+      "browserStorage": {
+        "title": "Cookie và bộ nhớ trình duyệt",
+        "p1": "Để hoạt động đúng, website lưu một số thông tin trong trình duyệt của bạn, như giỏ hàng, danh sách yêu thích, ngôn ngữ ưa thích và phiên đăng nhập. Dữ liệu này nằm trên thiết bị của bạn. Bạn có thể xoá bất cứ lúc nào trong cài đặt trình duyệt, nhưng việc này có thể khiến bạn bị đăng xuất và giỏ hàng cục bộ bị xoá."
+      },
+      "retention": {
+        "title": "Thời gian lưu trữ",
+        "p1": "Chúng tôi lưu giữ dữ liệu cá nhân trong thời gian tài khoản của bạn còn hoạt động hoặc khi cần thiết để cung cấp dịch vụ, xử lý đổi trả và đáp ứng nghĩa vụ kế toán, pháp lý. Sau đó, chúng tôi sẽ xoá hoặc ẩn danh dữ liệu."
+      },
+      "security": {
+        "title": "Bảo mật",
+        "p1": "Chúng tôi bảo vệ dữ liệu của bạn bằng các biện pháp kỹ thuật và tổ chức, bao gồm kết nối mã hoá (HTTPS) và kiểm soát quyền truy cập. Không hệ thống nào an toàn tuyệt đối nên chúng tôi không thể cam kết bảo mật tuyệt đối."
+      },
+      "rights": {
+        "title": "Quyền của bạn",
+        "p1": "Theo quy định về bảo vệ dữ liệu cá nhân của Việt Nam (Nghị định 13/2023/NĐ-CP), bạn có thể yêu cầu chúng tôi:",
+        "l1": "cho bạn truy cập dữ liệu cá nhân chúng tôi đang lưu giữ về bạn;",
+        "l2": "chỉnh sửa dữ liệu không chính xác;",
+        "l3": "xoá dữ liệu hoặc đóng tài khoản của bạn;",
+        "l4": "hạn chế hoặc phản đối một số hoạt động xử lý, hoặc rút lại sự đồng ý.",
+        "p2": "Để thực hiện các quyền này, vui lòng liên hệ chúng tôi theo thông tin bên dưới. Chúng tôi sẽ phản hồi trong thời gian hợp lý."
+      },
+      "children": {
+        "title": "Trẻ em",
+        "p1": "Website không dành cho trẻ em dưới 16 tuổi và chúng tôi không chủ ý thu thập dữ liệu của các em. Nếu bạn cho rằng một trẻ em đã cung cấp dữ liệu cá nhân cho chúng tôi, vui lòng liên hệ để chúng tôi xoá."
+      },
+      "changes": {
+        "title": "Thay đổi chính sách",
+        "p1": "Chúng tôi có thể cập nhật chính sách này theo thời gian. Ngày ở đầu trang cho biết lần thay đổi gần nhất. Nếu có thay đổi quan trọng, chúng tôi sẽ thông báo trên website."
+      },
+      "contact": {
+        "title": "Liên hệ",
+        "p1": "Bạn có câu hỏi hoặc yêu cầu về dữ liệu của mình? Hãy liên hệ {company} qua email {email}, điện thoại {phone}, hoặc gửi thư đến {address}."
+      }
+    }
+  },
+  "shippingReturns": {
+    "meta": {
+      "description": "DOOVAN giao hàng như thế nào, cùng quy định về đổi trả và hoàn tiền."
+    },
+    "intro": "Chính sách này giải thích cách {company} giao đơn hàng của bạn và cách thức đổi trả, hoàn tiền.",
+    "sections": {
+      "shippingMethods": {
+        "title": "Hình thức giao hàng",
+        "p1": "Các hình thức giao hàng áp dụng cho đơn của bạn được hiển thị khi thanh toán. Hình thức nhận tại cửa hàng được cung cấp ở nơi có hỗ trợ."
+      },
+      "shippingFees": {
+        "title": "Phí vận chuyển",
+        "p1": "Đơn hàng đạt mức miễn phí vận chuyển hiển thị trong giỏ hàng sẽ được giao tiêu chuẩn miễn phí. Với các đơn khác, phí vận chuyển được đội ngũ của chúng tôi xác nhận khi liên hệ về đơn hàng, trước khi bạn thanh toán."
+      },
+      "deliveryTime": {
+        "title": "Thời gian giao hàng",
+        "p1": "Đơn hàng được chuẩn bị sau khi chúng tôi xác nhận với bạn. Thời gian giao thường là 2–5 ngày làm việc tại các thành phố lớn và 4–8 ngày làm việc ở các khu vực khác tại Việt Nam, tính từ ngày đơn hàng được bàn giao cho đơn vị vận chuyển.",
+        "p2": "Việc giao hàng có thể chậm trong dịp lễ, thời tiết xấu hoặc cao điểm. Chúng tôi sẽ thông báo nếu đơn hàng của bạn bị chậm đáng kể."
+      },
+      "receiving": {
+        "title": "Nhận hàng",
+        "p1": "Vui lòng kiểm tra kiện hàng khi nhận. Nếu kiện hàng bị hư hỏng hoặc mở niêm phong, hãy ghi nhận với đơn vị vận chuyển và liên hệ chúng tôi trong vòng 48 giờ."
+      },
+      "returns": {
+        "title": "Đổi trả",
+        "p1": "Bạn có thể trả sản phẩm trong vòng 7 ngày kể từ khi nhận hàng nếu sản phẩm:",
+        "l1": "chưa qua sử dụng, chưa giặt và không bị hư hỏng;",
+        "l2": "còn đầy đủ tem, nhãn mác và bao bì gốc;",
+        "l3": "không thuộc diện giảm giá cuối mùa hoặc may đo theo yêu cầu.",
+        "p2": "Vì lý do vệ sinh, các sản phẩm mặc sát người như đồ lót và đồ bơi không được đổi trả, trừ khi bị lỗi."
+      },
+      "howToReturn": {
+        "title": "Cách trả sản phẩm",
+        "p1": "Hãy liên hệ chúng tôi qua email {email} hoặc điện thoại {phone} kèm mã đơn hàng và sản phẩm muốn trả. Chúng tôi sẽ gửi hướng dẫn đổi trả cho bạn. Phí vận chuyển trả hàng do bạn chịu, trừ khi sản phẩm bị lỗi hoặc chúng tôi giao sai."
+      },
+      "refunds": {
+        "title": "Hoàn tiền",
+        "p1": "Sau khi nhận và kiểm tra sản phẩm trả lại, chúng tôi sẽ xác nhận hoàn tiền. Tiền được hoàn theo phương thức thanh toán bạn đã dùng, trong vòng 7–14 ngày làm việc."
+      },
+      "exchanges": {
+        "title": "Đổi hàng",
+        "p1": "Để đổi sang kích cỡ hoặc màu khác, hãy làm theo các bước đổi trả và cho chúng tôi biết sản phẩm bạn muốn đổi. Việc đổi hàng phụ thuộc vào tồn kho; nếu sản phẩm không còn, chúng tôi sẽ hoàn tiền cho bạn."
+      },
+      "faulty": {
+        "title": "Sản phẩm lỗi hoặc giao sai",
+        "p1": "Nếu sản phẩm bị lỗi, hư hỏng hoặc không đúng đơn đặt, hãy liên hệ chúng tôi trong vòng 7 ngày kể từ khi nhận hàng, kèm hình ảnh. Chúng tôi sẽ sửa, đổi hoặc hoàn tiền mà bạn không phải trả thêm chi phí nào, kể cả phí vận chuyển trả hàng."
+      },
+      "contact": {
+        "title": "Liên hệ",
+        "p1": "Cần hỗ trợ về giao hàng hoặc đổi trả? Hãy liên hệ {company} qua email {email}, điện thoại {phone}, hoặc gửi thư đến {address}."
+      }
+    }
+  }
+}

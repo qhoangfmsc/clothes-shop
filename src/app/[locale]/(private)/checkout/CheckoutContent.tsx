@@ -17,10 +17,12 @@ import {
 import { useAuth } from "@/src/contexts/auth-context";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
-  selectCartItems,
-  selectTotalPrice,
-  selectTotalItems,
-  clearCart,
+  cartItemKey,
+  fetchCart,
+  selectSelectedCartItems,
+  selectSelectedTotalPrice,
+  selectSelectedTotalItems,
+  removeItems,
 } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
@@ -60,9 +62,10 @@ export default function CheckoutContent() {
   const format = useFormatter();
   const { isAuthenticated, isLoading, user } = useAuth();
   const dispatch = useAppDispatch();
-  const items = useAppSelector(selectCartItems);
-  const totalPrice = useAppSelector(selectTotalPrice);
-  const totalItems = useAppSelector(selectTotalItems);
+  /* Only the items ticked in the bag are ordered; the rest stay in the bag */
+  const items = useAppSelector(selectSelectedCartItems);
+  const totalPrice = useAppSelector(selectSelectedTotalPrice);
+  const totalItems = useAppSelector(selectSelectedTotalItems);
   const { apiFetch } = useApiAuth();
   const { toast } = useToast();
   const router = useRouter();
@@ -99,6 +102,19 @@ export default function CheckoutContent() {
     setIsSubmitting(true);
 
     try {
+      /* The server cart decides what can be ordered: ids kept locally can be stale (item already
+         ordered or removed elsewhere, another account), so read the current ones first and order
+         exactly the lines the shopper reviewed. */
+      const serverCart = await dispatch(fetchCart()).unwrap();
+      const reviewedKeys = new Set(items.map(cartItemKey));
+      const cartItemIds = serverCart
+        .filter((line) => reviewedKeys.has(cartItemKey(line)))
+        .flatMap((line) => (line.serverItemId ? [line.serverItemId] : []));
+      if (cartItemIds.length !== items.length) {
+        toast.error(t("toast.itemsNotSynced"));
+        return;
+      }
+
       /* 1) Save address → get addressId */
       const addrRes = await apiFetch<{ data: { id: string } }>("/api/addresses", {
         method: "POST",
@@ -124,11 +140,12 @@ export default function CheckoutContent() {
           addressId,
           shippingMethod: "standard",
           note: address.notes || undefined,
+          cartItemIds,
         },
       });
 
       setOrderId(orderRes.data?.id ?? null);
-      dispatch(clearCart());
+      dispatch(removeItems(items.map(cartItemKey)));
       setStep("success");
       toast.success(t("toast.placed"));
     } catch (err: unknown) {
@@ -136,7 +153,7 @@ export default function CheckoutContent() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [isSubmitting, apiFetch, address, dispatch, toast, t]);
+  }, [isSubmitting, items, apiFetch, address, dispatch, toast, t]);
 
   const updateField = useCallback(
     (field: keyof AddressForm, value: string) => {
@@ -478,7 +495,7 @@ export default function CheckoutContent() {
               <div className="flex flex-col gap-3">
                 {items.map((item) => (
                   <div
-                    key={`${item.productId}-${item.size}-${item.color}`}
+                    key={cartItemKey(item)}
                     className="flex items-center gap-3"
                   >
                     <div className="relative w-12 h-16 rounded-sm overflow-hidden bg-[var(--color-champagne-cream)] shrink-0">
@@ -524,6 +541,27 @@ export default function CheckoutContent() {
             >
               {isSubmitting ? t("review.placing") : t("review.place")}
             </button>
+
+            {/* Links open in a new tab so the address form is not lost */}
+            <p className="m-0 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em] leading-[150%] text-center">
+              {t.rich("review.legalNote", {
+                terms: (chunks) => (
+                  <Link href="/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[var(--text-primary)]">
+                    {chunks}
+                  </Link>
+                ),
+                privacy: (chunks) => (
+                  <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[var(--text-primary)]">
+                    {chunks}
+                  </Link>
+                ),
+                shipping: (chunks) => (
+                  <Link href="/shipping-returns" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[var(--text-primary)]">
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
           </motion.div>
         )}
 

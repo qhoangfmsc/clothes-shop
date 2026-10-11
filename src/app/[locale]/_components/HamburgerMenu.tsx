@@ -9,6 +9,7 @@ import { X, ArrowRight, User, Heart, Package, LogOut } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useCategories, useBannerConfig } from "@/src/hooks/use-api";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
+import { LEGAL_DOCS } from "@/src/lib/legal";
 import { UserAvatar } from "./UserMenu";
 import ResponsiveBannerImage from "./ResponsiveBannerImage";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -258,6 +259,7 @@ function AuthDrawerSection({ close }: { close: () => void }) {
 
 export default function HamburgerMenu() {
   const t = useTranslations("shared.header");
+  const tLegal = useTranslations("shared.legal");
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [shopExpanded, setShopExpanded] = useState(false);
@@ -968,6 +970,21 @@ export default function HamburgerMenu() {
                   linkClassName="drawer-social-link flex items-center text-[var(--color-ash)] transition-colors duration-150 hover:text-[var(--text-on-dark)]"
                 />
               </div>
+              <nav
+                aria-label={tLegal("title")}
+                className="flex flex-wrap gap-x-4 gap-y-1.5 py-1.5"
+              >
+                {LEGAL_DOCS.map((doc) => (
+                  <Link
+                    key={doc.key}
+                    href={doc.path}
+                    onClick={close}
+                    className="text-inherit no-underline transition-colors duration-150 hover:text-[var(--text-on-dark)]"
+                  >
+                    {tLegal(doc.key)}
+                  </Link>
+                ))}
+              </nav>
               <div className="py-1.5 normal-case">
                 <LanguageSwitcher variant="drawer" onChange={close} />
               </div>

@@ -9,13 +9,18 @@
   },
   "item": {
     "size": "Size: {size}",
-    "remove": "Remove {name}"
+    "remove": "Remove {name}",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "wishlistAdded": "{name} saved to your wishlist",
+    "wishlistRemoved": "{name} removed from your wishlist",
+    "confirmRemove": "Remove {name} from your bag?",
+    "select": "Select {name}"
   },
   "header": {
     "continueShopping": "Continue Shopping",
     "title": "Shopping Bag",
-    "itemCount": "{count, plural, one {# item} other {# items}}",
-    "clearAll": "Clear All"
+    "itemCount": "{count, plural, one {# item} other {# items}}"
   },
   "empty": {
     "title": "Your bag is empty",
@@ -24,6 +29,7 @@
   },
   "summary": {
     "title": "Order Summary",
+    "selected": "{count, plural, one {# item selected} other {# items selected}}",
     "unlocked": "🎉 You've unlocked free shipping!",
     "remaining": "Spend {amount} more for free shipping",
     "subtotal": "Subtotal",
@@ -32,6 +38,23 @@
     "atCheckout": "Calculated at checkout",
     "total": "Total",
     "checkout": "Proceed to Checkout",
-    "freeNote": "Free standard shipping on orders over {amount}."
+    "freeNote": "Free standard shipping on orders over {amount}.",
+    "selectToCheckout": "Select at least one item to check out."
+  },
+  "bulk": {
+    "selectAll": "Select all",
+    "selectedCount": "{selected} of {total} selected",
+    "addToWishlist": "Add to wishlist",
+    "remove": "Remove from bag",
+    "confirmRemove": {
+      "title": "Remove from bag",
+      "message": "{count, plural, one {Remove # selected item from your bag?} other {Remove # selected items from your bag?}}",
+      "confirm": "Remove"
+    }
+  },
+  "toast": {
+    "removed": "{count, plural, one {# item removed from your bag} other {# items removed from your bag}}",
+    "addedToWishlist": "{count, plural, one {# item added to your wishlist} other {# items added to your wishlist}}",
+    "alreadyInWishlist": "Already in your wishlist"
   }
 }

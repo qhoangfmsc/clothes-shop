@@ -5,7 +5,7 @@
   },
   "empty": {
     "title": "Nothing to checkout",
-    "description": "Add items to your bag first",
+    "description": "Add items to your bag and select the ones you want to order",
     "browse": "Browse Shop"
   },
   "back": {
@@ -57,7 +57,8 @@
     "total": "Total",
     "paymentNote": "Payment will be arranged after order confirmation. Our team will contact you via phone or email with payment details.",
     "placing": "Placing Order...",
-    "place": "Place Order"
+    "place": "Place Order",
+    "legalNote": "By placing your order, you agree to our <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy> and <shipping>Shipping & Returns</shipping> policy."
   },
   "success": {
     "title": "Order Placed!",
@@ -69,6 +70,7 @@
   "toast": {
     "placed": "Order placed successfully!",
     "failed": "Failed to place order",
-    "addressFailed": "Failed to save address"
+    "addressFailed": "Failed to save address",
+    "itemsNotSynced": "Your bag is still syncing. Please wait a moment and try again."
   }
 }

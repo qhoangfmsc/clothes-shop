@@ -5,7 +5,7 @@
   },
   "empty": {
     "title": "Chưa có gì để thanh toán",
-    "description": "Hãy thêm sản phẩm vào giỏ trước",
+    "description": "Hãy thêm sản phẩm vào giỏ hàng và chọn những sản phẩm bạn muốn đặt",
     "browse": "Xem cửa hàng"
   },
   "back": {
@@ -57,7 +57,8 @@
     "total": "Tổng cộng",
     "paymentNote": "Thanh toán sẽ được sắp xếp sau khi xác nhận đơn hàng. Đội ngũ của chúng tôi sẽ liên hệ qua điện thoại hoặc email với thông tin thanh toán.",
     "placing": "Đang đặt hàng...",
-    "place": "Đặt hàng"
+    "place": "Đặt hàng",
+    "legalNote": "Khi đặt hàng, bạn đồng ý với <terms>Điều khoản sử dụng</terms>, <privacy>Chính sách bảo mật</privacy> và chính sách <shipping>Giao hàng & đổi trả</shipping> của chúng tôi."
   },
   "success": {
     "title": "Đặt hàng thành công!",
@@ -69,6 +70,7 @@
   "toast": {
     "placed": "Đặt hàng thành công!",
     "failed": "Đặt hàng thất bại",
-    "addressFailed": "Không thể lưu địa chỉ"
+    "addressFailed": "Không thể lưu địa chỉ",
+    "itemsNotSynced": "Giỏ hàng đang được đồng bộ. Vui lòng đợi một chút rồi thử lại."
   }
 }

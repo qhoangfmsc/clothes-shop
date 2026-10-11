@@ -40,9 +40,11 @@ export const store = configureStore({
 /* ── localStorage persistence ── */
 
 const CART_STORAGE_KEY = "doovan-cart";
+const CART_SELECTION_STORAGE_KEY = "doovan-cart-selection";
 const WISHLIST_STORAGE_KEY = "doovan-wishlist";
 
 let prevCartItems = store.getState().cart.items;
+let prevDeselectedKeys = store.getState().cart.deselectedKeys;
 let prevWishlistItems = store.getState().wishlist.items;
 
 store.subscribe(() => {
@@ -55,6 +57,16 @@ store.subscribe(() => {
       localStorage.setItem(
         CART_STORAGE_KEY,
         JSON.stringify({ state: { items: prevCartItems }, version: 0 })
+      );
+    } catch { /* quota exceeded — silently ignore */ }
+  }
+
+  if (state.cart.deselectedKeys !== prevDeselectedKeys) {
+    prevDeselectedKeys = state.cart.deselectedKeys;
+    try {
+      localStorage.setItem(
+        CART_SELECTION_STORAGE_KEY,
+        JSON.stringify({ deselectedKeys: prevDeselectedKeys })
       );
     } catch { /* quota exceeded — silently ignore */ }
   }

@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
+import { LEGAL_DOCS } from "@/src/lib/legal";
 import LanguageSwitcher from "./LanguageSwitcher";
 import SocialIcons from "./SocialIcons";
 
@@ -29,6 +30,7 @@ export default function SiteFooter() {
   const t = useTranslations("shared.footer");
   const tNav = useTranslations("shared.header.nav");
   const tAccount = useTranslations("shared.header.account");
+  const tLegal = useTranslations("shared.legal");
 
   return (
     <footer className="relative overflow-hidden border-t border-[var(--ft-line)] bg-[var(--bg-dark)] text-[var(--text-on-dark)] [--ft-line:color-mix(in_srgb,var(--text-on-dark)_14%,transparent)] [--ft-muted:color-mix(in_srgb,var(--text-on-dark)_60%,transparent)]">
@@ -101,9 +103,20 @@ export default function SiteFooter() {
           <span className="font-primary text-xs tracking-[0.02em] text-[var(--ft-muted)]">
             {t("copyright", { year: new Date().getFullYear() })}
           </span>
-          <Link href="/about" className={`${FOOTER_LINK} !text-xs !tracking-[0.02em]`}>
-            {t("privacy")}
-          </Link>
+          <nav
+            aria-label={tLegal("title")}
+            className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+          >
+            {LEGAL_DOCS.map((doc) => (
+              <Link
+                key={doc.key}
+                href={doc.path}
+                className={`${FOOTER_LINK} !text-xs !tracking-[0.02em]`}
+              >
+                {tLegal(doc.key)}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

@@ -7,13 +7,22 @@ import {
   getProductsWithParams,
 } from "./[locale]/(public)/shop/_lib/server-fetchers";
 import { absoluteUrl } from "@/src/lib/structured-data";
+import { LEGAL_DOCS } from "@/src/lib/legal";
 import type { Product } from "@/src/types/product";
 
 /* Rebuilt at most once an hour so new products show up without a redeploy. */
 export const revalidate = 3600;
 
 /* `about` is hand-written content, so it has no data-driven lastModified. */
-const STATIC_PATHS = ["", "/shop", "/collections", "/new-in", "/about"];
+const STATIC_PATHS = [
+  "",
+  "/shop",
+  "/collections",
+  "/new-in",
+  "/about",
+  /* The /legal overview is left out on purpose — it repeats these three pages and is noindex */
+  ...LEGAL_DOCS.map((doc) => doc.path),
+];
 const PAGE_SIZE = 100; // API maximum
 const MAX_PAGES = 100; // API maximum
 

@@ -13,5 +13,9 @@
     "signingIn": "Signing in...",
     "failed": "Login failed. Please try again.",
     "cancelled": "Google sign-in was cancelled or failed."
+  },
+  "consent": {
+    "label": "I have read and agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "hint": "Tick the box above to continue with Google."
   }
 }
