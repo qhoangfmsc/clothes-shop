@@ -41,6 +41,16 @@ export function clearTokens() {
   localStorage.removeItem(REFRESH_KEY);
 }
 
+/** Fired on `window` when a refresh failed and the tokens were dropped, so `AuthProvider`
+ *  can clear its `user` and the UI falls back to the signed-out state. */
+export const SESSION_EXPIRED_EVENT = "auth:session-expired";
+
+/** Drop the stored tokens after a failed refresh and tell the auth context. */
+export function expireSession() {
+  clearTokens();
+  window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+}
+
 /* ── Deduped refresh ── */
 
 let refreshPromise: Promise<string | null> | null = null;
@@ -112,7 +122,7 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
     if (newToken) {
       res = await doFetch(newToken);
     } else {
-      clearTokens();
+      expireSession();
       throw new ApiError("", 401);
     }
   }

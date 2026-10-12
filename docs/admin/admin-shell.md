@@ -44,9 +44,9 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 
 | Nhóm (`nav.groups.*`) | Mục | Route | Permission cần |
 |---|---|---|---|
-| `catalog` | Products | `/admin/products` | `PRODUCT_CREATE` |
-| | Categories | `/admin/categories` | `CATEGORY_CREATE` |
-| | Collections | `/admin/collections` | `COLLECTION_CREATE` |
+| `catalog` | Products | `/admin/products` | `PRODUCT_VIEW` |
+| | Categories | `/admin/categories` | `CATEGORY_VIEW` |
+| | Collections | `/admin/collections` | `COLLECTION_VIEW` |
 | `management` | Orders | `/admin/orders` | `ORDER_ADMIN_VIEW` |
 | | Users | `/admin/users` | `USER_ADMIN_VIEW` |
 | | Analytics | `/admin/analytics` | không yêu cầu |
@@ -62,7 +62,7 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 
 ### 4.4 Ghi chú hiện trạng
 
-- Quyền cho mục Products/Categories/Collections của sidebar là quyền **tạo** (`*_CREATE`), vì đây là permission đại diện cho cả module.
+- Quyền cho mục Products/Categories/Collections của sidebar là quyền **xem** (`*_VIEW`); nút Thêm/Sửa/Xóa trong từng trang vẫn bọc `RoleGuard` theo `*_CREATE/UPDATE/DELETE`. Nhân viên không phải admin cần được cấp `*_VIEW` (qua `PATCH /api/admin/users/:id`) mới thấy mục và vào được route.
 - Analytics và Media không gắn permission riêng ở sidebar; bảo vệ nằm ở phía BE/route handler (Analytics tự kiểm tra role admin ở `/api/analytics`).
 - Trang `admin/page.tsx` render `DashboardContent` — xem [dashboard](./dashboard.md).
 

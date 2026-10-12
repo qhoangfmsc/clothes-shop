@@ -31,6 +31,9 @@
     "1603": "Only image files can be uploaded.",
     "1605": "The media storage could not save the file. Please try again.",
     "1606": "The file is too large. Please choose a smaller image.",
-    "1303": "This product is sold out or made to order, so it can’t be added to the bag or checked out. Please contact us to order."
+    "1303": "This product is sold out or made to order, so it can’t be added to the bag or checked out. Please contact us to order.",
+    "1001": "Product not found. It may have been removed.",
+    "1201": "Collection not found. The list may be out of date.",
+    "1401": "User not found. The list may be out of date."
   }
 }

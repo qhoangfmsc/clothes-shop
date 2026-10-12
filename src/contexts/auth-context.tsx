@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { ApiError } from "@/src/lib/api";
+import { SESSION_EXPIRED_EVENT } from "@/src/lib/auth-api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -116,6 +117,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout();
     }
   }, [tryRefresh, logout]);
+
+  /** A refresh failed elsewhere (authApi / useApiAuth) and dropped the tokens — sign out here too */
+  useEffect(() => {
+    const onExpired = () => setUser(null);
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
+  }, []);
 
   /** On mount: check existing session */
   useEffect(() => {

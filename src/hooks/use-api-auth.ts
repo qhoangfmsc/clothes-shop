@@ -13,6 +13,7 @@
 import { useCallback, useRef } from "react";
 import { mapMediaUrls } from "@/src/lib/media-url";
 import { ApiError } from "@/src/lib/api";
+import { expireSession } from "@/src/lib/auth-api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 const TOKEN_KEY = "clothes_shop_access_token";
@@ -124,6 +125,7 @@ export function useApiAuth() {
         if (newToken) {
           res = await doFetch(newToken);
         } else {
+          expireSession();
           throw new ApiError("", 401);
         }
       }

@@ -46,13 +46,15 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 - Khóa `localStorage`: `clothes_shop_access_token`, `clothes_shop_refresh_token`.
 - Khi mount, `AuthProvider`: nếu có access token → `GET /api/auth/me` (`data.user`). Thất bại → thử `POST /api/auth/refresh` với refresh token (nhận `accessToken` + `user`). Vẫn thất bại → xóa cả hai token. Trong lúc đó `isLoading = true`.
 - `logout()` chỉ xóa token + `user` phía FE (không gọi BE). Admin layout gọi `logout()` rồi `router.replace("/login")`.
+- Refresh thất bại giữa phiên (ở `authApi` hoặc `useApiAuth`, kể cả khi không còn refresh token): `expireSession()` xóa token và phát `window` event `auth:session-expired` (`SESSION_EXPIRED_EVENT`); `AuthProvider` lắng nghe và `setUser(null)`, nên UI quay về trạng thái chưa đăng nhập. `apiFetchStandalone` không refresh nên không phát event này.
+- Token do BE cấp có claim `type` (access/refresh). FE gửi access token ở header `Authorization` và chỉ gửi refresh token tới `/api/auth/refresh`; dùng lẫn loại sẽ nhận 401. Token cũ (không có `type`) bị từ chối cả hai loại, nên phiên cũ rơi vào nhánh refresh thất bại → xóa token → chưa đăng nhập.
 - `AuthUser`: `id, email, name, image, provider, providerId, role, status, permissions?: string[], createdAt, updatedAt`.
 
 ### 4.3 Ba cách gọi API có token
 
 | Client | Dùng ở | Refresh 401 | Ghi chú |
 |---|---|---|---|
-| `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, dedupe bằng một promise dùng chung ở module-level; refresh thất bại → `clearTokens()` + ném `ApiError("", 401)` | Không map URL media |
+| `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, dedupe bằng một promise dùng chung ở module-level; refresh trả `null` → `expireSession()` (xóa token + phát event) + ném `ApiError("", 401)` | Không map URL media |
 | `useApiAuth().apiFetch(path, { method, body, headers, public })` | Account, Checkout, Orders, Order detail | Có, dedupe theo từng instance hook; `public: true` bỏ qua header Authorization | Kết quả đi qua `mapMediaUrls` |
 | `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token thẳng từ `localStorage`; kết quả đi qua `mapMediaUrls` |
 
@@ -61,8 +63,8 @@ Cả ba ném `ApiError(message, status, errorCode)` khi `!res.ok` (xem [data-lay
 ### 4.4 Phân quyền
 
 - `ROLES`: `admin`, `user`.
-- 16 permission dạng chuỗi, mỗi cái có mã số khớp BE: `PRODUCT_CREATE/UPDATE/DELETE` (6000–6002), `CATEGORY_*` (7000–7002), `COLLECTION_*` (8000–8002), `ORDER_ADMIN_VIEW` (9000), `ORDER_ADMIN_UPDATE_STATUS` (9001), `USER_ADMIN_VIEW` (10000), `USER_ADMIN_UPDATE` (10001), `SITE_CONFIG_VIEW/UPSERT/DELETE` (11000–11002).
-- `ROLE_PERMISSIONS`: `admin` có đủ 16; `user` không có quyền nào.
+- 19 permission dạng chuỗi, mỗi cái có mã số khớp BE: `PRODUCT_CREATE/UPDATE/DELETE` (6000–6002) và `PRODUCT_VIEW` (6003), `CATEGORY_*` (7000–7002) và `CATEGORY_VIEW` (7003), `COLLECTION_*` (8000–8002) và `COLLECTION_VIEW` (8003), `ORDER_ADMIN_VIEW` (9000), `ORDER_ADMIN_UPDATE_STATUS` (9001), `USER_ADMIN_VIEW` (10000), `USER_ADMIN_UPDATE` (10001), `SITE_CONFIG_VIEW/UPSERT/DELETE` (11000–11002).
+- `ROLE_PERMISSIONS`: `admin` có đủ 19; `user` không có quyền nào.
 - `hasPermission(user, p)`: nếu `user.permissions` có phần tử thì **chỉ** xét danh sách đó (ghi đè role); ngược lại xét theo role.
 - `canAccessAdmin(user)`: role `admin` **hoặc** có ít nhất một permission.
 - Helper khác: `hasRole`, `hasAllPermissions`, `hasAnyPermission`, `getUserPermissions`, `permissionsToCodes`, `codesToPermissions`, `PERMISSION_LABELS`, `PERMISSION_GROUPS`, `getRoleLabel`.
