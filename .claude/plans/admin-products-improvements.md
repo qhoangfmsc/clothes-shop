@@ -63,26 +63,9 @@ Change `TAG_SUGGESTIONS` from 12 items to 5-6:
 
 ---
 
-## 6. Document Design Pattern
-
-Write `/docs/admin-products.md` documenting:
-- Page architecture (filters + pagination + table + modal CRUD)
-- Data flow (BE-driven search/filter/pagination via SWR)
-- Reusable patterns (Section/Field components, chip-based multi-select)
-- Styling conventions
-
----
-
 ## Files to Modify
 
 | File | Changes |
 |------|---------|
 | `src/hooks/use-admin-api.ts` | Add `page`, `search` to `ProductFilters`; pass params; return `page`/`limit` |
-| `src/app/(admin)/admin/products/ProductsContent.tsx` | All 6 changes above |
-| `docs/admin-products.md` | New file — design documentation |
-
-## Files to Create
-
-| File | Purpose |
-|------|---------|
-| `docs/admin-products.md` | Page design reference doc |
+| `src/app/(admin)/admin/products/ProductsContent.tsx` | All changes above |

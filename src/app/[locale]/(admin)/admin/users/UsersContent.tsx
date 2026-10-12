@@ -30,7 +30,8 @@ import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useOrderStatusLabel, useRoleLabel } from "@/src/i18n/use-labels";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { fetchUserList, updateUser } from "./_common/moduleSlice";
-import { ROLE_OPTIONS, STATUS_OPTIONS, USER_SORT_OPTIONS } from "./_common/constants";
+import { USER_SORT_OPTIONS } from "./_common/constants";
+import { USER_ROLES, USER_STATUSES, type UserRole, type UserStatus } from "@/src/types/enums";
 import type { UserListResult } from "./_common/types";
 import { authApi } from "@/src/lib/auth-api";
 
@@ -65,8 +66,8 @@ export default function UsersContent() {
     return dispatch(
       fetchUserList({
         search: params.search || undefined,
-        role: params.filters.role || undefined,
-        status: params.filters.status || undefined,
+        role: (params.filters.role || undefined) as UserRole | undefined,
+        status: (params.filters.status || undefined) as UserStatus | undefined,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -169,7 +170,7 @@ export default function UsersContent() {
   /* ── Edit modal state ── */
   const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
   const [activeTab, setActiveTab] = useState<string>("orders");
-  const [selectedRole, setSelectedRole] = useState<string>("user");
+  const [selectedRole, setSelectedRole] = useState<UserRole>("user");
   const closeEdit = () => setEditingUser(null);
 
   /* ── "View" re-confirms the system password (15-minute TTL, shared with the admin gate) ── */
@@ -281,12 +282,12 @@ export default function UsersContent() {
           {
             key: "role",
             label: t("table.filters.role"),
-            options: ROLE_OPTIONS.map((r) => ({ value: r, label: roleLabel(r) })),
+            options: USER_ROLES.map((r) => ({ value: r, label: roleLabel(r) })),
           },
           {
             key: "status",
             label: t("table.filters.status"),
-            options: STATUS_OPTIONS.map((s) => ({ value: s, label: tStatus(s) })),
+            options: USER_STATUSES.map((s) => ({ value: s, label: tStatus(s) })),
           },
         ]}
         sortOptions={sortOptions}
@@ -428,9 +429,9 @@ export default function UsersContent() {
                     <select
                       className={inputClass}
                       value={selectedRole}
-                      onChange={(e) => setSelectedRole(e.target.value)}
+                      onChange={(e) => setSelectedRole(e.target.value as UserRole)}
                     >
-                      {ROLE_OPTIONS.map((r) => (
+                      {USER_ROLES.map((r) => (
                         <option key={r} value={r}>
                           {roleLabel(r)}
                         </option>

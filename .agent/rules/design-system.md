@@ -82,3 +82,4 @@ Ask yourself:
 - [ ] Are accents champagne gold, not other colors?
 - [ ] Do animations respect prefers-reduced-motion?
 - [ ] Is the spacing on a 4px grid?
+- [ ] Did I read the module's doc first and update it (`yarn docs:check --changed` passes)? Tokens → `docs/platform/design-system.md`.

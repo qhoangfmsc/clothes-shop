@@ -21,6 +21,7 @@ const STATIC_PATHS = [
   "/collections",
   "/new-in",
   "/about",
+  "/contact",
   /* The /legal overview is left out on purpose — it repeats these three pages and is noindex */
   ...LEGAL_DOCS.map((doc) => doc.path),
 ];

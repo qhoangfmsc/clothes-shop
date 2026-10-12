@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Link } from "@/src/i18n/navigation";
 import Image from "next/image";
 import { Heart, Trash2, ChevronRight, ArrowLeft, ShoppingBag } from "lucide-react";
@@ -22,6 +23,7 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 
 export default function WishlistContent() {
   const t = useTranslations("private.wishlist");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const { isAuthenticated, isLoading } = useAuth();
   const dispatch = useAppDispatch();
@@ -178,7 +180,7 @@ export default function WishlistContent() {
                     {item.name}
                   </Link>
                   <span className="wishlist-card__price">
-                    {format.number(item.price, "price")}
+                    {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
                   </span>
                   <span className="wishlist-card__date">
                     {t("card.added", { date: format.dateTime(new Date(item.addedAt), "short") })}

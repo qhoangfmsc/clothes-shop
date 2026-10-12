@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "title": "Đặt thiết kế",
+    "description": "Liên hệ DOOVAN để đặt thiết kế riêng — hãy chia sẻ ý tưởng, chúng tôi sẽ cùng bạn hoàn thiện."
+  },
+  "hero": {
+    "label": "Đặt thiết kế",
+    "heading": "Cùng tạo nên món đồ của riêng bạn",
+    "description": "Một số sản phẩm được làm theo đơn đặt hàng. Hãy liên hệ qua Instagram, Facebook hoặc email, xưởng sẽ trao đổi với bạn về thiết kế, chất liệu, kích cỡ và thời gian hoàn thành."
+  },
+  "product": {
+    "discount": "−{percent}%",
+    "material": "Chất liệu thiết kế gốc",
+    "gallery": "Hình ảnh sản phẩm",
+    "showImage": "Xem ảnh {index}",
+    "materialHint": "Đây là chất liệu của thiết kế gốc. Bạn có thể ghi chú nếu muốn dùng chất liệu khác."
+  },
+  "steps": {
+    "title": "Quy trình",
+    "items": {
+      "tell": {
+        "title": "Chia sẻ ý tưởng",
+        "text": "Mô tả thiết kế bạn muốn và chia sẻ số đo của bạn trong form bên dưới. Chúng tôi soạn sẵn thành một email để bạn gửi đi."
+      },
+      "design": {
+        "title": "Cùng hoàn thiện thiết kế",
+        "text": "Chúng tôi xác nhận thiết kế, chất liệu, giá và thời gian thực hiện."
+      },
+      "confirm": {
+        "title": "Xác nhận và bắt đầu may",
+        "text": "Sau khi thống nhất chi tiết, chúng tôi bắt đầu thực hiện và sắp xếp giao hàng."
+      }
+    }
+  },
+  "channels": {
+    "title": "Liên hệ với chúng tôi",
+    "note": "Chọn Instagram, Facebook hoặc email — chúng tôi thường phản hồi trong vòng một ngày làm việc."
+  },
+  "form": {
+    "title": "Cho chúng tôi biết về đơn hàng của bạn",
+    "design": {
+      "title": "Thiết kế riêng của bạn",
+      "label": "Yêu cầu thiết kế",
+      "placeholder": "Mô tả ý tưởng của bạn: dáng và form, chất liệu hoặc màu sắc mong muốn, chi tiết cần thêm hoặc điều chỉnh, và dịp sử dụng.",
+      "counter": "{count}/{max}"
+    },
+    "details": {
+      "title": "Thông tin cá nhân"
+    },
+    "measurements": {
+      "title": "Số đo của bạn",
+      "height": "Chiều cao",
+      "bust": "Vòng ngực",
+      "waist": "Vòng eo",
+      "hips": "Vòng mông",
+      "unit": "cm"
+    },
+    "quantity": {
+      "label": "Số lượng",
+      "decrease": "Giảm số lượng",
+      "increase": "Tăng số lượng"
+    },
+    "neededBy": {
+      "label": "Cần nhận trước ngày"
+    },
+    "contact": {
+      "title": "Thông tin của bạn",
+      "name": "Họ và tên",
+      "namePlaceholder": "Tên của bạn",
+      "phone": "Số điện thoại",
+      "phonePlaceholder": "VD: 0123 456 789"
+    },
+    "errors": {
+      "note": "Vui lòng mô tả thiết kế bạn mong muốn",
+      "name": "Vui lòng nhập tên của bạn",
+      "phone": "Vui lòng nhập số điện thoại hợp lệ"
+    },
+    "actions": {
+      "sendEmail": "Gửi bằng email"
+    }
+  },
+  "message": {
+    "subject": "[DOOVAN] Yêu cầu đặt thiết kế — {product}",
+    "subjectGeneric": "[DOOVAN] Yêu cầu đặt thiết kế",
+    "greeting": "Xin chào đội ngũ DOOVAN,",
+    "intro": "Tôi muốn đặt thiết kế riêng. Dưới đây là thông tin của tôi.",
+    "sections": {
+      "product": "SẢN PHẨM",
+      "design": "YÊU CẦU THIẾT KẾ RIÊNG",
+      "order": "CHI TIẾT ĐƠN HÀNG",
+      "contact": "LIÊN HỆ"
+    },
+    "labels": {
+      "product": "Sản phẩm",
+      "reference": "Mã sản phẩm",
+      "link": "Liên kết",
+      "measurements": "Số đo (cm)",
+      "quantity": "Số lượng",
+      "neededBy": "Cần nhận trước",
+      "name": "Họ tên",
+      "phone": "Điện thoại"
+    },
+    "measurements": {
+      "height": "Cao",
+      "bust": "Ngực",
+      "waist": "Eo",
+      "hips": "Mông"
+    },
+    "closing": "Trân trọng,"
+  },
+  "back": "Tiếp tục mua sắm"
+}

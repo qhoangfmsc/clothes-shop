@@ -4,8 +4,10 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "@/src/i18n/navigation";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
+import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Search, X } from "lucide-react";
 import { useAutocomplete, getProductUrl, type AutocompleteItem } from "@/src/hooks/use-api";
+import { useBreakpoint } from "@/src/hooks/useMediaQuery";
 
 export default function SearchBar() {
   const t = useTranslations("shared.header.search");
@@ -16,7 +18,11 @@ export default function SearchBar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { results, isLoading, search, clear: clearAutocomplete } = useAutocomplete();
+  /* More suggestions where there is room: 5 on phones, 8 on tablets, 10 on desktop */
+  const { isMobile, isTablet } = useBreakpoint();
+  const { results, isLoading, search, clear: clearAutocomplete } = useAutocomplete(
+    isMobile ? 5 : isTablet ? 8 : 10
+  );
 
   /* Focus input after expand transition starts */
   useEffect(() => {
@@ -268,6 +274,7 @@ function SearchDropdown({
   onHover: (idx: number) => void;
 }) {
   const t = useTranslations("shared.header.search");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
   const [mounted, setMounted] = useState(false);
@@ -321,7 +328,7 @@ function SearchDropdown({
       }}
     >
       {/* Results list */}
-      <div style={{ maxHeight: 400, overflowY: "auto" }} role="listbox">
+      <div style={{ maxHeight: "min(60vh, 560px)", overflowY: "auto" }} role="listbox">
         {showLoading && (
           <div
             style={{
@@ -412,7 +419,7 @@ function SearchDropdown({
                   letterSpacing: "-0.02em",
                 }}
               >
-                {format.number(item.price, "price")}
+                {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
               </span>
             </div>
           </button>

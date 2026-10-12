@@ -21,7 +21,12 @@ import {
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { fetchOrderList, updateOrderStatus, fetchOrderDetail } from "./_common/moduleSlice";
-import { ORDER_STATUSES, ORDER_SORT_OPTIONS } from "./_common/constants";
+import { ORDER_SORT_OPTIONS } from "./_common/constants";
+import {
+  ORDER_STATUSES,
+  getSelectableOrderStatuses,
+  type OrderStatus,
+} from "@/src/types/enums";
 import type { OrderListResult } from "./_common/types";
 
 /* ═══════════════════════════════ Helpers ═══════════════════════════════ */
@@ -112,7 +117,7 @@ export default function OrdersContent() {
     return dispatch(
       fetchOrderList({
         search: params.search || undefined,
-        status: params.filters.status || undefined,
+        status: (params.filters.status || undefined) as OrderStatus | undefined,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -175,9 +180,9 @@ export default function OrdersContent() {
               className={`py-1 px-2 rounded-full text-xs font-semibold font-primary border-0 cursor-pointer outline-none ${statusStyle(o.status)}`}
               value={o.status}
               disabled={isUpdating}
-              onChange={(e) => handleStatusChange(o.id, e.target.value)}
+              onChange={(e) => handleStatusChange(o.id, e.target.value as OrderStatus)}
             >
-              {ORDER_STATUSES.map((s) => (
+              {getSelectableOrderStatuses(o.status).map((s) => (
                 <option key={s} value={s}>
                   {statusLabel(s)}
                 </option>
@@ -215,7 +220,7 @@ export default function OrdersContent() {
 
   /* ── Handlers ── */
 
-  const handleStatusChange = async (orderId: string, newStatus: string) => {
+  const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
     try {
       await dispatch(updateOrderStatus({ id: orderId, status: newStatus })).unwrap();
       toast.success(t("toast.statusChanged", { id: orderId, status: statusLabel(newStatus) }));

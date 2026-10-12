@@ -13,6 +13,8 @@ import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/src/store";
 import { apiFetchStandalone } from "@/src/hooks/use-api-auth";
+import { isPurchasable } from "@/src/lib/product-purchase";
+import type { ProductBadge } from "@/src/types/enums";
 import type { CartItem } from "./types";
 
 /* ── State ── */
@@ -44,6 +46,7 @@ interface ServerCart {
       product?: {
         price: number;
         name: string;
+        badge?: ProductBadge | null;
         images?: string[];
         category?: { slug?: string } | string;
         subcategory?: { slug?: string } | string;
@@ -74,6 +77,7 @@ function mapServerCart(res: ServerCart): CartItem[] {
       quantity: si.quantity,
       category: slugOf(si.product?.category),
       subcategory: slugOf(si.product?.subcategory),
+      badge: si.product?.badge ?? null,
     };
   });
 }
@@ -365,8 +369,13 @@ export const selectTotalPrice = (state: RootState) =>
 export const selectDeselectedKeys = (state: RootState) =>
   state.cart.deselectedKeys;
 
+/** Lines that can be checked out — sold-out and custom-order products never can. */
+export const selectPurchasableCartItems = createSelector([selectCartItems], (items) =>
+  items.filter((i) => isPurchasable(i.badge))
+);
+
 export const selectSelectedCartItems = createSelector(
-  [selectCartItems, selectDeselectedKeys],
+  [selectPurchasableCartItems, selectDeselectedKeys],
   (items, deselectedKeys) =>
     items.filter((i) => !deselectedKeys.includes(cartItemKey(i)))
 );

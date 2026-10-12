@@ -9,8 +9,11 @@ import type { Collection } from "@/src/types/collection";
 import type { Product } from "@/src/types/product";
 import { useQuickAdd } from "@/src/app/[locale]/_components/QuickAddDrawer";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
-import { Heart, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
+import { Heart, ArrowRight, ArrowLeft } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
+import { hasPublicPrice } from "@/src/lib/product-purchase";
+import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
+import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,18 +22,13 @@ interface CollectionDetailClientProps {
   products: Product[];
 }
 
-const badgeStyles: Record<string, string> = {
-  new: "bg-[rgba(201,169,110,0.9)] text-[var(--text-on-gold)]",
-  sale: "bg-[rgba(212,165,165,0.9)] text-[var(--color-pearl-cream)]",
-  bestseller: "bg-[rgba(10,10,8,0.85)] text-[var(--color-pearl-cream)]",
-};
-
 export default function CollectionDetailClient({
   collection,
   products,
 }: CollectionDetailClientProps) {
   const t = useTranslations("public.collections.detail");
   const tBadge = useTranslations("common.productBadge");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const heroRef = useRef<HTMLElement>(null);
   const editorialRef = useRef<HTMLDivElement>(null);
@@ -299,12 +297,10 @@ export default function CollectionDetailClient({
                   {product.badge && (
                     <span
                       className={`absolute top-4 left-4 z-2 py-1 px-3 rounded-full [font-family:var(--font-primary)] text-[11px] tracking-[0.06em] uppercase ${
-                        badgeStyles[product.badge] ?? ""
+                        PRODUCT_CARD_BADGE_STYLES[product.badge] ?? ""
                       }`}
                     >
-                      {product.badge === "new" && tBadge("new")}
-                      {product.badge === "sale" && tBadge("sale")}
-                      {product.badge === "bestseller" && tBadge("bestseller")}
+                      {tBadge(product.badge)}
                     </span>
                   )}
                 </div>
@@ -329,8 +325,8 @@ export default function CollectionDetailClient({
                     {product.description}
                   </p>
                   <span className="cd-editorial__price [font-family:var(--font-primary)] text-[20px] text-[var(--text-heading)] tracking-[-0.02em] flex items-baseline gap-2">
-                    {format.number(product.price, "price")}
-                    {product.originalPrice && (
+                    {hasPublicPrice(product.badge) ? format.number(product.price, "price") : tCommon("priceOnRequest")}
+                    {hasPublicPrice(product.badge) && product.originalPrice && (
                       <span className="text-[12px] text-[var(--text-disabled)] line-through">
                         {format.number(product.originalPrice, "price")}
                       </span>
@@ -398,12 +394,10 @@ export default function CollectionDetailClient({
                   {product.badge && (
                     <span
                       className={`absolute top-3 left-3 py-1 px-3 rounded-full font-primary text-xs font-medium tracking-[0.08em] uppercase z-2 backdrop-blur-lg ${
-                        badgeStyles[product.badge] ?? ""
+                        PRODUCT_CARD_BADGE_STYLES[product.badge] ?? ""
                       }`}
                     >
-                      {product.badge === "new" && tBadge("new")}
-                      {product.badge === "sale" && tBadge("sale")}
-                      {product.badge === "bestseller" && tBadge("bestseller")}
+                      {tBadge(product.badge)}
                     </span>
                   )}
                   {/* ── Top-right icons: Wishlist + Bag (stacked) ── */}
@@ -418,25 +412,24 @@ export default function CollectionDetailClient({
                     >
                       <Heart size={18} fill={likedMap[product.id] ? "currentColor" : "none"} />
                     </button>
-                    <button
-                      type="button"
-                      className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)]"
-                      onClick={(e) => handleQuickAdd(product, e)}
-                      aria-label={t("addToBagAria")}
-                    >
-                      <ShoppingBag size={16} />
-                    </button>
+                    <ProductBagButton
+                      product={product}
+                      variant="icon"
+                      onAddToBag={(e) => handleQuickAdd(product, e)}
+                      className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90"
+                      enabledClassName="hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)]"
+                    />
                   </div>
                   {/* Desktop hover overlay */}
                   <div className="hidden sm:flex absolute inset-x-0 bottom-0 justify-center p-3 pt-10 z-2 bg-[linear-gradient(to_top,rgba(10,10,8,0.4)_0%,transparent_100%)] rounded-b-[var(--radius-lg)] sm:opacity-0 sm:translate-y-2 sm:transition-all sm:duration-[var(--duration-base)] sm:[transition-timing-function:var(--ease-default)] sm:group-hover:opacity-100 sm:group-hover:translate-y-0">
-                    <button
-                      className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150 hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
-                      type="button"
-                      onClick={(e) => handleQuickAdd(product, e)}
-                    >
-                      <ShoppingBag size={13} />
-                      {t("addToBag")}
-                    </button>
+                    <ProductBagButton
+                      product={product}
+                      variant="text"
+                      iconSize={13}
+                      onAddToBag={(e) => handleQuickAdd(product, e)}
+                      className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150"
+                      enabledClassName="hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1 pt-3 px-1">
@@ -444,7 +437,7 @@ export default function CollectionDetailClient({
                     {product.name}
                   </span>
                   <span className="text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[12px] tracking-[-0.02em]">
-                    {format.number(product.price, "price")}
+                    {hasPublicPrice(product.badge) ? format.number(product.price, "price") : tCommon("priceOnRequest")}
                   </span>
                 </div>
               </Link>

@@ -17,5 +17,13 @@
     "added": "Added",
     "addToBag": "Add to Bag — {price}",
     "toastAdded": "{name} ({details}) added — <link>View Bag</link>"
+  },
+  "productAction": {
+    "addToBag": "Add to Bag",
+    "addToBagAria": "Add to bag",
+    "soldOut": "Sold Out",
+    "soldOutAria": "Sold out",
+    "customOrder": "Place Order",
+    "customOrderAria": "Place a custom order"
   }
 }

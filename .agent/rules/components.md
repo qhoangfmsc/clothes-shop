@@ -63,3 +63,7 @@ Every admin list uses `DataTable` — columns, `fetchData` (server mode) or `row
 ## Enforcement
 
 `yarn conventions:check` (`scripts/check-conventions.mjs`, also run by `yarn build`) fails on: bare `errorMessage` in components, native `alert/confirm/prompt`, old sort syntax (`price_asc`, `sorts`), hand-built list queries, limits above 200, hand-rolled scroll-snap carousels or `setInterval` loops, string-literal toasts, and server `DataTable`s without search or sort. When a rule is genuinely wrong for a line, add `// conventions-ignore: <rule-id> <reason>` — and say why. When you add a new shared building block, add its rule to the script in the same change.
+
+## Docs
+
+Shared components are documented in `docs/platform/ui-kit.md` (and `site-chrome.md` for header/footer/menus). Read it before building UI that might already exist; when you add, change or remove a shared component, update that doc in the same change and run `yarn docs:check --changed`.

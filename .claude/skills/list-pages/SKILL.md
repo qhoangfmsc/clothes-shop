@@ -15,3 +15,5 @@ Quick checklist:
 4. `pageSize` only when the screen must show everything (max 200).
 5. Types extend `ListParams`; slice initial `limit` is `LIST_DEFAULT_LIMIT`.
 6. Run `npx tsc --noEmit`, `yarn i18n:check`, `yarn conventions:check`.
+
+Docs loop (mandatory): before editing run `yarn docs:who <path>` and read the module's doc + code; after editing update that doc and run `yarn docs:check --changed` (skill `module-docs`).

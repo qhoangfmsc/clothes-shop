@@ -15,7 +15,12 @@
     "wishlistAdded": "{name} saved to your wishlist",
     "wishlistRemoved": "{name} removed from your wishlist",
     "confirmRemove": "Remove {name} from your bag?",
-    "select": "Select {name}"
+    "select": "Select {name}",
+    "unavailable": {
+      "soldOut": "Sold out — it can’t be checked out. Remove it or save it to your wishlist.",
+      "customOrder": "Custom order — it can’t be checked out in the bag.",
+      "orderCta": "Place your order"
+    }
   },
   "header": {
     "continueShopping": "Continue Shopping",

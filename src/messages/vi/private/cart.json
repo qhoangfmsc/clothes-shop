@@ -15,7 +15,12 @@
     "wishlistAdded": "Đã lưu {name} vào danh sách yêu thích",
     "wishlistRemoved": "Đã bỏ {name} khỏi danh sách yêu thích",
     "confirmRemove": "Bỏ {name} khỏi giỏ hàng?",
-    "select": "Chọn {name}"
+    "select": "Chọn {name}",
+    "unavailable": {
+      "soldOut": "Hết hàng — không thể thanh toán. Hãy xóa khỏi giỏ hoặc lưu vào danh sách yêu thích.",
+      "customOrder": "Sản phẩm đặt thiết kế — không thể thanh toán trong giỏ hàng.",
+      "orderCta": "Đặt hàng"
+    }
   },
   "header": {
     "continueShopping": "Tiếp tục mua sắm",

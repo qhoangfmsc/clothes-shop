@@ -14,8 +14,7 @@
     "shipping": "Đang giao hàng",
     "delivered": "Đã giao hàng",
     "completed": "Hoàn tất",
-    "cancelled": "Đã hủy",
-    "shipped": "Đã gửi hàng"
+    "cancelled": "Đã hủy"
   },
   "addressField": {
     "fullName": "Họ và tên",
@@ -34,11 +33,15 @@
   "productBadge": {
     "new": "Mới",
     "sale": "Giảm giá",
-    "bestseller": "Bán chạy"
+    "bestseller": "Bán chạy",
+    "sold_out": "Hết hàng",
+    "limited": "Limited",
+    "custom_order": "Đặt thiết kế"
   },
   "notFound": "Không tìm thấy",
   "status": {
     "active": "Hoạt động",
     "disabled": "Đã vô hiệu hóa"
-  }
+  },
+  "priceOnRequest": "Liên hệ để báo giá"
 }

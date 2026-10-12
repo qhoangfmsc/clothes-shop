@@ -13,6 +13,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/src/store";
 import { apiFetchStandalone } from "@/src/hooks/use-api-auth";
+import type { ProductBadge } from "@/src/types/enums";
 import type { WishlistItem } from "./types";
 
 /* ── State ── */
@@ -52,6 +53,7 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
           id: string;
           name: string;
           price: number;
+          badge?: ProductBadge | null;
           images: string[];
           category: string;
           subcategory: string;
@@ -65,6 +67,7 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
       name: si.product?.name ?? "",
       price: Number(si.product?.price ?? 0),
       image: si.product?.images?.[0] ?? "",
+      badge: si.product?.badge ?? null,
       category:
         (si.product as any)?.category?.slug ??
         (si.product as any)?.category ??

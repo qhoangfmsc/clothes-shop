@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Link } from "@/src/i18n/navigation";
 import Image from "next/image";
 import { Heart, Package, LogOut, ChevronRight, ShoppingBag, Sparkles } from "lucide-react";
@@ -76,6 +77,7 @@ function ProfileHeader({
    ═══════════════════════════════════════════════ */
 function WishlistSection() {
   const t = useTranslations("private.account.wishlist");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const items = useAppSelector(selectWishlistItems);
   const latestItems = items.slice(-4).reverse();
@@ -166,7 +168,7 @@ function WishlistSection() {
                     {item.name}
                   </span>
                   <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
-                    {format.number(item.price, "price")}
+                    {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
                   </span>
                 </div>
               </Link>
@@ -211,7 +213,6 @@ function OrdersSection() {
     pending: "var(--accent-primary)",
     confirmed: "var(--accent-blue)",
     shipping: "var(--accent-sage)",
-    shipped: "var(--accent-sage)",
     delivered: "var(--accent-sage)",
     completed: "var(--accent-sage)",
     cancelled: "var(--color-deep-rose)",

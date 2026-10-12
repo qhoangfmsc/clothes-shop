@@ -11,6 +11,13 @@ import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
+import type {
+  OrderStatus,
+  ProductBadge,
+  ProductStatus,
+  UserRole,
+  UserStatus,
+} from "@/src/types/enums";
 
 const defaultConfig = {
   revalidateOnFocus: false,
@@ -27,9 +34,9 @@ type SingleResponse<T> = { data: T };
 
 export interface ProductFilters {
   category?: string;
-  badge?: string;
-  status?: string;
-  sort?: string; // field = ascending, -field = descending: createdAt | price | name
+  badge?: ProductBadge;
+  status?: ProductStatus;
+  sort?: string; // field = ascending, -field = descending: price | name | createdAt
   search?: string;
   page?: number;
   limit?: number;
@@ -44,8 +51,8 @@ export interface ProductFormData {
   images: string[];
   categoryId: string;
   subcategoryId: string | null;
-  badge: string | null;
-  status: string;
+  badge: ProductBadge | null;
+  status: ProductStatus;
   description: string;
   material: string;
   care: string;
@@ -214,7 +221,7 @@ export interface AdminOrderItem {
 export interface AdminOrder {
   id: string;
   userId: string;
-  status: string;
+  status: OrderStatus;
   subtotal: number;
   shippingFee: number;
   total: number;
@@ -227,9 +234,9 @@ export interface AdminOrder {
 }
 
 export interface OrderFilters {
-  status?: string;
+  status?: OrderStatus;
   search?: string;
-  sort?: string; // field = ascending, -field = descending: createdAt
+  sort?: string; // field = ascending, -field = descending: createdAt | total
   page?: number;
   limit?: number;
 }
@@ -247,7 +254,7 @@ export function useAdminOrders(filters: OrderFilters = {}) {
     const res = await authApi.get<SingleResponse<AdminOrder>>(`/api/admin/orders/${orderId}`);
     return res.data;
   };
-  const updateOrderStatus = async (orderId: string, status: string) => {
+  const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     const res = await authApi.patch<SingleResponse<AdminOrder>>(
       `/api/admin/orders/${orderId}/status`,
       { status }
@@ -280,22 +287,24 @@ export interface AdminUser {
   name: string | null;
   image: string | null;
   provider: string | null;
-  role: string;
-  status: string;
+  role: UserRole;
+  status: UserStatus;
   permissions?: number[];
   createdAt: string;
   updatedAt: string;
 }
 
 export interface AdminUserUpdate {
-  role?: string;
-  status?: string;
+  role?: UserRole;
+  status?: UserStatus;
   permissions?: number[];
 }
 
 export interface UserFilters {
-  role?: string;
-  status?: string;
+  role?: UserRole;
+  status?: UserStatus;
+  search?: string;
+  sort?: string; // field = ascending, -field = descending: name | email | createdAt
   page?: number;
   limit?: number;
 }

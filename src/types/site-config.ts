@@ -2,7 +2,8 @@
    `value` is always a JSON.stringify'd string; BE does not interpret its
    shape. FE parses it according to `type`. */
 
-export type SiteConfigType = "BANNER" | "TEXT";
+export const SITE_CONFIG_TYPES = ["BANNER", "TEXT"] as const;
+export type SiteConfigType = (typeof SITE_CONFIG_TYPES)[number];
 
 /** Known config keys — mirrors BE's SiteConfigKey enum. */
 export const SITE_CONFIG_KEYS = {
@@ -11,6 +12,16 @@ export const SITE_CONFIG_KEYS = {
   COLLECTIONS_HERO_BANNERS: "COLLECTIONS_HERO_BANNERS",
   NAV_MENU_BANNERS: "NAV_MENU_BANNERS",
 } as const;
+
+export type SiteConfigKey = (typeof SITE_CONFIG_KEYS)[keyof typeof SITE_CONFIG_KEYS];
+
+/** Each key is bound to exactly one type — the BE derives `type` from the key. */
+export const SITE_CONFIG_KEY_TYPE: Record<SiteConfigKey, SiteConfigType> = {
+  SHOP_HERO_BANNERS: "BANNER",
+  NEW_IN_HERO_BANNERS: "BANNER",
+  COLLECTIONS_HERO_BANNERS: "BANNER",
+  NAV_MENU_BANNERS: "BANNER",
+};
 
 export interface SiteConfig {
   id: string;

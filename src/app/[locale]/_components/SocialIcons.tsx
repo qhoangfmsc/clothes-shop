@@ -1,4 +1,4 @@
-import { SOCIALS } from "@/src/lib/socials";
+import { CONTACT_LINKS } from "@/src/lib/socials";
 
 interface SocialIconsProps {
   /** Classes for each icon link — each surface (footer, burger menu) styles its own */
@@ -7,7 +7,7 @@ interface SocialIconsProps {
   className?: string;
 }
 
-/** Icon-only social links, driven by `src/lib/socials.tsx`. */
+/** Icon-only contact links (email + social profiles), driven by `CONTACT_LINKS` in `src/lib/socials.tsx`. */
 export default function SocialIcons({
   linkClassName,
   iconSize = 18,
@@ -15,12 +15,11 @@ export default function SocialIcons({
 }: SocialIconsProps) {
   return (
     <ul className={`m-0 flex list-none items-center p-0 ${className}`}>
-      {SOCIALS.map(({ label, href, Icon }) => (
+      {CONTACT_LINKS.map(({ label, href, Icon, external = true }) => (
         <li key={label}>
           <a
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             aria-label={label}
             title={label}
             className={linkClassName}

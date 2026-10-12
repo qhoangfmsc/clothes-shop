@@ -9,6 +9,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { Product } from "@/src/types/product";
+import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
@@ -39,7 +40,7 @@ export interface ProductListParams {
   search?: string;
   category?: string;
   subcategory?: string;
-  badge?: string;
+  badge?: ProductBadge;
   /** `field` = ascending, `-field` = descending (BE whitelist). */
   sort?: "price" | "-price" | "name" | "-name" | "createdAt" | "-createdAt";
   minPrice?: number;

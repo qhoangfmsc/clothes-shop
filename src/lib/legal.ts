@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/src/lib/contact";
+
 /** Legal documents shared by the storefront: the reading pages, footer, menu, login and checkout links. */
 export const LEGAL_DOCS = [
   { key: "terms", path: "/terms" },
@@ -14,10 +16,10 @@ export const LEGAL_HUB_PATH = "/legal";
 export const LEGAL_LAST_UPDATED = "2026-10-11";
 
 /** Business details injected into the legal texts as `{company}`, `{email}`, `{phone}`, `{address}`.
- *  TODO: replace the placeholders with the real details before going live. */
+ *  TODO: replace the phone / address placeholders with the real details before going live. */
 export const LEGAL_CONTACT = {
   company: "DOOVAN",
-  email: "[contact email]",
+  email: CONTACT_EMAIL,
   phone: "[hotline]",
   address: "[business address]",
 } as const;

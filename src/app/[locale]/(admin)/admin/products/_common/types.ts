@@ -6,12 +6,13 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { Product } from "@/src/types/product";
+import type { ProductBadge, ProductStatus } from "@/src/types/enums";
 
 import type { ListParams } from "@/src/lib/list-query";
 export interface ProductListParams extends ListParams {
   category?: string;
-  badge?: string;
-  status?: string;
+  badge?: ProductBadge;
+  status?: ProductStatus;
 }
 
 export interface ProductFormData {
@@ -22,8 +23,8 @@ export interface ProductFormData {
   images: string[];
   categoryId: string;
   subcategoryId: string | null;
-  badge: string | null;
-  status: string;
+  badge: ProductBadge | null;
+  status: ProductStatus;
   description: string;
   material: string;
   care: string;

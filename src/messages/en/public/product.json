@@ -9,7 +9,10 @@
     "badge": {
       "new": "New Arrival",
       "sale": "On Sale",
-      "bestseller": "Bestseller"
+      "bestseller": "Bestseller",
+      "sold_out": "Sold Out",
+      "limited": "Limited",
+      "custom_order": "Custom Order"
     },
     "size": "Size",
     "sizeGuide": "Size Guide",
@@ -37,7 +40,11 @@
     "related": {
       "label": "You may also like",
       "title": "Complete the Look"
-    }
+    },
+    "soldOut": "Sold Out",
+    "customOrder": "Place Order",
+    "soldOutHint": "This piece is currently sold out.",
+    "customOrderHint": "Made to order — contact us to place your order."
   },
   "reviews": {
     "starsAria": "{rating} out of 5 stars",

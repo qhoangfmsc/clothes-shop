@@ -9,7 +9,10 @@
     "badge": {
       "new": "Hàng mới về",
       "sale": "Đang giảm giá",
-      "bestseller": "Bán chạy"
+      "bestseller": "Bán chạy",
+      "sold_out": "Hết hàng",
+      "limited": "Limited",
+      "custom_order": "Đặt thiết kế"
     },
     "size": "Kích cỡ",
     "sizeGuide": "Bảng size",
@@ -37,7 +40,11 @@
     "related": {
       "label": "Có thể bạn cũng thích",
       "title": "Hoàn thiện set đồ"
-    }
+    },
+    "soldOut": "Hết hàng",
+    "customOrder": "Đặt hàng",
+    "soldOutHint": "Sản phẩm này hiện đã hết hàng.",
+    "customOrderHint": "Sản phẩm đặt thiết kế — vui lòng liên hệ để đặt hàng."
   },
   "reviews": {
     "starsAria": "{rating} trên 5 sao",

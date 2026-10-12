@@ -18,9 +18,7 @@
       "saved": "Đã lưu {name} — <link>Xem danh sách yêu thích</link>",
       "removed": "Đã xóa {name} khỏi danh sách yêu thích",
       "addToWishlist": "Thêm vào yêu thích",
-      "removeFromWishlist": "Xóa khỏi yêu thích",
-      "addToBagAria": "Thêm vào giỏ",
-      "addToBag": "Thêm vào giỏ"
+      "removeFromWishlist": "Xóa khỏi yêu thích"
     },
     "filters": {
       "count": "{count} sản phẩm",

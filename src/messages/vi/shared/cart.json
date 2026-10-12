@@ -17,5 +17,13 @@
     "added": "Đã thêm",
     "addToBag": "Thêm vào giỏ — {price}",
     "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>"
+  },
+  "productAction": {
+    "addToBag": "Thêm vào giỏ",
+    "addToBagAria": "Thêm vào giỏ hàng",
+    "soldOut": "Hết hàng",
+    "soldOutAria": "Hết hàng",
+    "customOrder": "Đặt hàng",
+    "customOrderAria": "Đặt hàng thiết kế riêng"
   }
 }

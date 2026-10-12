@@ -1,0 +1,73 @@
+# Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
+
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`
+
+## 1. Tóm tắt module
+
+Khung điều hướng của storefront: header cố định (logo, mega menu danh mục, tìm kiếm gợi ý, link chính, burger menu), footer tối, nút giỏ hàng nổi và bộ chọn ngôn ngữ. Danh mục trong menu và banner "nổi bật" trong burger menu lấy từ BE.
+
+## 2. Phục vụ gì / việc cần làm
+
+- Đưa khách tới Shop, New In, Collections, About và khu tài khoản từ mọi trang công khai.
+- Tìm sản phẩm nhanh bằng ô tìm kiếm có gợi ý.
+- Hiển thị danh mục/danh mục con thật từ API, có lối tắt "xem tất cả".
+- Cho thấy số lượng trong giỏ và dẫn tới giỏ từ bất cứ đâu.
+- Đổi ngôn ngữ giữ nguyên trang.
+
+## 3. Submodule & chức năng hiện có
+
+| Submodule | Chức năng | File |
+|---|---|---|
+| Header | Cố định, ẩn khi cuộn xuống/hiện khi cuộn lên, nền kính mờ sau khi cuộn | `SiteHeader.tsx` |
+| Logo | Wordmark SVG `DOOVAN` màu thương hiệu, link về `/` | `Logo.tsx` |
+| Thanh điều hướng | Link Shop/New In/Collections/About (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
+| Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, điều hướng bằng phím | `SearchBar.tsx` |
+| Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật, đổi ngôn ngữ, mạng xã hội, link pháp lý | `HamburgerMenu.tsx` |
+| Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
+| Footer | Thương hiệu + mạng xã hội, Explore, Account, Language, copyright, link pháp lý | `SiteFooter.tsx` |
+| Ngôn ngữ | `LanguageSwitcher` (xem [i18n](./i18n.md)) | `LanguageSwitcher.tsx` |
+| Giỏ nổi | `CartFAB` | `CartFAB.tsx` |
+
+## 4. Chi tiết
+
+### 4.1 `SiteHeader`
+
+`position: fixed`, `z-index 100`, `pointer-events: none` (con tự bật). Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 80 px (<1024) / 90 px (≥1024). Chứa `Logo` và `HeaderNav`.
+
+### 4.2 `HeaderNav`
+
+- `NAV_LINKS`: Shop (có mega menu), New In, Collections, About; chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
+- Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Panel trượt từ trên, render qua portal vào `body`.
+- Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
+- `<UserMenu />` đang được comment trong `HeaderNav` (không hiển thị); phần tài khoản nằm trong burger menu.
+
+### 4.3 `SearchBar`
+
+Ô tìm kiếm thu gọn → mở rộng khi bấm; focus sau 200 ms. Dùng `useAutocomplete(limit)` (debounce 300 ms, ≥ 2 ký tự); `limit` theo màn hình qua `useBreakpoint`: mobile 5, tablet 8, desktop 10 (BE nhận 1–10). Dropdown gợi ý hiện khi query ≥ 2 ký tự (id `search-autocomplete-dropdown`): ảnh, tên, giá. Phím: ↑/↓ chuyển mục (vòng tròn), Enter mở mục đang chọn, Esc đóng và xóa. Bấm ra ngoài chỉ đóng khi query rỗng và không có kết quả. Chọn gợi ý → `getProductUrl(id)` tra URL đầy đủ rồi `router.push`, thất bại → `/shop`. Chuỗi: `shared.header.search`.
+
+### 4.4 `HamburgerMenu`
+
+- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: Home, Shop (accordion), New In, Collections, About, đánh số `01…`.
+- Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
+- `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → avatar + tên + email, link My account / Wishlist / Orders, nút đăng xuất (`logout()`).
+- Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`).
+- Chân drawer: `LanguageSwitcher variant="drawer"`, `SocialIcons` (icon Email + Instagram + Facebook từ `CONTACT_LINKS`), link pháp lý (`LEGAL_DOCS`).
+
+### 4.5 `UserMenu`
+
+Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; khách → nút đăng nhập). Hiện **không** được render trong header. File vẫn được dùng vì xuất `UserAvatar` (avatar tròn: ảnh Google hoặc chữ cái đầu) cho burger menu và trang Account.
+
+### 4.6 `SiteFooter`
+
+Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, `SocialIcons`), Explore (Shop, New In, Collections, About), Account (My account, Wishlist, Orders), Language (`LanguageSwitcher variant="footer"`). Thanh dưới: `copyright` (năm hiện tại) + link pháp lý. Nhãn link lấy từ `shared.header.nav|account` để khớp header; chuỗi footer ở `shared.footer`.
+
+### 4.7 `CartFAB`
+
+Nút tròn vàng góc dưới phải (`z-20`), chỉ hiện sau khi client mount và khi `totalItems > 0` (`selectTotalItems` của slice cart); badge số lượng, nảy 600 ms mỗi lần số đổi; link `/cart`; `aria-label` `shared.cart.fab.viewBag`. Mount ở root layout nên có mặt ở mọi trang kể cả `/admin`.
+
+### 4.8 Nguồn dữ liệu
+
+`useCategories` (`GET /api/categories?sort=priority&limit=200`), `useBannerConfig("NAV_MENU_BANNERS")`, `useAutocomplete` (`GET /api/products/autocomplete?q=&limit=`). Chi tiết: [data-layer](./data-layer.md). Banner `NAV_MENU_BANNERS` cấu hình ở [site-config](../admin/site-config.md).
+
+- `AutocompleteItem` = `{ id, name, slug, price, image, badge }`; dropdown tìm kiếm ẩn giá sản phẩm `custom_order` theo `badge`. BE khớp tên/slug theo "chứa" (tên bắt đầu bằng từ khóa xếp trước), chỉ sản phẩm `active`. Danh sách cuộn khi cao quá `min(60vh, 560px)`.

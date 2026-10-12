@@ -4,6 +4,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { ProductColor } from "@/src/types/product";
+import type { ProductBadge, ProductStatus } from "@/src/types/enums";
 
 /* ── Sort Options ── */
 
@@ -48,8 +49,8 @@ export const EMPTY_FORM = {
   images: [] as string[],
   categoryId: "",
   subcategoryId: "",
-  badge: null as string | null,
-  status: "active",
+  badge: null as ProductBadge | null,
+  status: "active" as ProductStatus,
   description: "",
   material: "",
   care: "",

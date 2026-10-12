@@ -21,6 +21,7 @@ import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useSizeGuide } from "@/src/hooks/use-api";
 import { useAppDispatch } from "@/src/store/hooks";
 import { trackEvent } from "@/src/lib/analytics";
+import { isPurchasable } from "@/src/lib/product-purchase";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 
 /* ═══════════════════════════════════════════════════════════
@@ -119,6 +120,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
           colorHex: selectedColor!,
           category: product.category?.slug ?? "",
           subcategory: product.subcategory?.slug ?? "",
+          badge: product.badge,
         },
         quantity
       )
@@ -443,6 +445,8 @@ export function QuickAddProvider({ children }: QuickAddProviderProps) {
   }, []);
 
   const openQuickAdd = useCallback((p: Product) => {
+    /* Sold-out / custom-order products can never go into the bag */
+    if (!isPurchasable(p.badge)) return;
     setProduct(p);
   }, []);
 

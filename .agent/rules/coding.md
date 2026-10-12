@@ -6,7 +6,7 @@ trigger: always_on
 2. Writing code based on Google, Facebook structure, focus on perfomance and optimization.
 3. When fixing bugs, or having problems, research first and find issue, then write the roadmap and explain for me why it occurred, then find the solutions and fix it.
 4. Asking at least 10 questions before starting to code.
-5. Always check lint error after creating code without yarn build (Not break the session).
+5. Always check lint error after creating code without yarn build (Not break the session), and finish with `yarn docs:check --changed` (rule 15).
 6. Always ensure a responsive design, prioritizing the interface layout in the order of Phone - Desktop - iPad.
 7. Never use the index.ts file to import all the files.
 8. **Module-first architecture.** Code dùng riêng cho 1 module phải nằm trong module đó (`_common/`, `_components/`). Không để slice, types form, constants của module ra ngoài root dir (`src/store/`, `src/types/`, `src/constants/`). Root dir CHỈ chứa code dùng chung ≥2 modules. Reference `.agent/skills/01-project-structure.md` và `.agent/skills/02-api-slice-pattern.md`.
@@ -16,3 +16,4 @@ trigger: always_on
 12. **Locale-aware navigation.** Import `Link`, `useRouter`, `usePathname`, `redirect` from `@/src/i18n/navigation` (never `next/link` / `next/navigation` for those). Write paths without the locale prefix.
 13. **Reuse shared components.** Carousels/sliders use `Carousel`, admin tables use `DataTable`, etc. — see `.agent/rules/components.md` before building any UI that might already exist.
 14. **One way to do list pages, errors and toasts.** Follow `.agent/skills/05-list-pages.md` (tables, search, sort, filters, pagination, limits) and `.agent/skills/06-errors-and-toasts.md` (ApiError, `useErrorMessage`, toast keys, dialogs). Run `yarn conventions:check` with the lint check; it must pass.
+15. **Docs → feature → docs (closed loop).** Before touching a module run `yarn docs:who <path>` and read its doc and code; after changing it update its doc in the same change and run `yarn docs:check --changed`. A task is not done while that gate fails. Follow `.agent/rules/module-docs.md` and `.agent/skills/07-module-docs.md`.

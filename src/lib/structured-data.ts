@@ -1,6 +1,7 @@
 import type { AppLocale } from "@/src/i18n/routing";
 import type { Product } from "@/src/types/product";
 import { SITE_URL } from "./site-url";
+import { hasPublicPrice } from "./product-purchase";
 import { SOCIALS } from "./socials";
 
 /** Schema.org needs absolute URLs; API images arrive as site-relative `/media/...` paths. */
@@ -33,7 +34,7 @@ export function breadcrumbJsonLd(locale: AppLocale, crumbs: BreadcrumbEntry[]) {
   };
 }
 
-/** `Product` with one `Offer`. Prices are always USD (the shop never converts currencies).
+/** `Product` with one `Offer` (none for custom-order products). Prices are always USD (the shop never converts currencies).
  *  The public API only returns `active` products and has no stock levels, so every listed
  *  product is advertised as in stock. No `aggregateRating`: it must reflect real reviews. */
 export function productJsonLd(locale: AppLocale, product: Product, path: string) {
@@ -51,14 +52,17 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
     ...(product.category && { category: product.category.title }),
     ...(product.material && { material: product.material }),
     ...(product.colors.length > 0 && { color: product.colors.map((c) => c.name).join(", ") }),
-    offers: {
-      "@type": "Offer",
-      url,
-      priceCurrency: "USD",
-      price: Number(product.price).toFixed(2), // the API sends decimals as strings
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
-    },
+    /* Custom-order products have no public price, so they are not advertised as an Offer */
+    ...(hasPublicPrice(product.badge) && {
+      offers: {
+        "@type": "Offer",
+        url,
+        priceCurrency: "USD",
+        price: Number(product.price).toFixed(2), // the API sends decimals as strings
+        availability: "https://schema.org/InStock",
+        itemCondition: "https://schema.org/NewCondition",
+      },
+    }),
   };
 }
 

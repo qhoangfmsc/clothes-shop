@@ -18,9 +18,7 @@
       "saved": "{name} saved — <link>View Wishlist</link>",
       "removed": "{name} removed from wishlist",
       "addToWishlist": "Add to wishlist",
-      "removeFromWishlist": "Remove from wishlist",
-      "addToBagAria": "Add to bag",
-      "addToBag": "Add to Bag"
+      "removeFromWishlist": "Remove from wishlist"
     },
     "filters": {
       "count": "{count, plural, one {# piece} other {# pieces}}",

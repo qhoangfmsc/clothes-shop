@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { buildMailto } from "@/src/lib/contact";
 
 /* ═══════════════════════════════════════════════════════════
    SOCIAL LINKS — the one place to edit the brand's profiles
@@ -37,14 +38,31 @@ export function FacebookIcon(props: IconProps) {
   );
 }
 
+export function EmailIcon(props: IconProps) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M2 5.5A2.5 2.5 0 014.5 3h15A2.5 2.5 0 0122 5.5v13a2.5 2.5 0 01-2.5 2.5h-15A2.5 2.5 0 012 18.5v-13zm2.2-.1l7.8 6.1 7.8-6.1a.5.5 0 00-.3-.1h-15a.5.5 0 00-.3.1zM20 7.7l-7.4 5.8a1 1 0 01-1.2 0L4 7.7v10.8a.5.5 0 00.5.5h15a.5.5 0 00.5-.5V7.7z" />
+    </SvgIcon>
+  );
+}
+
 export interface SocialLink {
   /** Brand name — used as the accessible label */
   label: string;
   href: string;
   Icon: (props: IconProps) => ReactNode;
+  /** Opens in a new tab (default). `false` for `mailto:` links. */
+  external?: boolean;
 }
 
 export const SOCIALS: SocialLink[] = [
   { label: "Instagram", href: "https://www.instagram.com/doo_doofairies", Icon: InstagramIcon },
   { label: "Facebook", href: "https://www.facebook.com/doovan.vn", Icon: FacebookIcon },
+];
+
+/** Icon row of the footer and burger menu: the company email first, then the social profiles.
+ *  Kept apart from `SOCIALS` because `mailto:` is not a profile URL (`SOCIALS` feeds JSON-LD `sameAs`). */
+export const CONTACT_LINKS: SocialLink[] = [
+  { label: "Email", href: buildMailto(), Icon: EmailIcon, external: false },
+  ...SOCIALS,
 ];

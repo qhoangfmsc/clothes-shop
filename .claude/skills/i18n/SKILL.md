@@ -16,3 +16,5 @@ Quick checklist before finishing any UI change:
 5. Money/dates via `useFormatter` (`"price"`, `"priceFixed"`, `"short"`, `"dateTime"`); plurals via ICU; no sentence fragments.
 6. Server pages/layouts call `setRequestLocale(locale)`; metadata via `generateMetadata` + `buildAlternates` + `withBrand`.
 7. Run `yarn i18n:sync && yarn i18n:check` and `npx tsc --noEmit`. Never run `yarn build` in the session.
+
+Docs loop (mandatory): before editing run `yarn docs:who <path>` and read the module's doc + code; after editing update that doc and run `yarn docs:check --changed` (skill `module-docs`).

@@ -1,5 +1,7 @@
 /* ── Product Types — Matches BE schema exactly ── */
 
+import type { ProductBadge, ProductStatus } from "@/src/types/enums";
+
 export interface ProductColor {
   name: string;
   hex: string;
@@ -34,8 +36,8 @@ export interface Product {
   category: ProductCategory | null;
   /** BE returns relation object (joined), NOT a plain string */
   subcategory: ProductSubCategory | null;
-  badge: string | null;
-  status: string;
+  badge: ProductBadge | null;
+  status: ProductStatus;
   description: string;
   material: string;
   care: string;

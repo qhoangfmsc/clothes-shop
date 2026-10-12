@@ -1,5 +1,6 @@
 "use client";
 
+import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { useState, useMemo, useCallback } from "react";
 import { ChevronDown, X, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -71,7 +72,8 @@ export default function ShopFilters({
 
   /* Price range from products */
   const priceRange = useMemo(() => {
-    const prices = products.map((p) => p.price);
+    /* Custom-order products show no price, so they do not stretch the range */
+    const prices = products.filter((p) => hasPublicPrice(p.badge)).map((p) => p.price);
     return { min: Math.floor(Math.min(...prices, 0)), max: Math.ceil(Math.max(...prices, 200)) };
   }, [products]);
 

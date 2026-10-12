@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Link } from "@/src/i18n/navigation";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { Check, ShoppingBag, Heart, Share2 } from "lucide-react";
+import { Check, ShoppingBag, Heart, Share2, MessageCircle } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import Carousel, { type CarouselHandle } from "@/src/app/[locale]/_components/Carousel";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
@@ -22,6 +22,8 @@ import { trackEvent } from "@/src/lib/analytics";
 import SizeGuideModal from "./SizeGuideModal";
 import ReviewsSection from "./ReviewsSection";
 import ShippingAccordion from "./ShippingAccordion";
+import { PRODUCT_DETAIL_BADGE_STYLES } from "@/src/lib/product-badge";
+import { buildOrderInquiryHref, getPurchaseMode, hasPublicPrice } from "@/src/lib/product-purchase";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -40,6 +42,7 @@ export default function ProductDetailClient({
 }: ProductDetailClientProps) {
   const t = useTranslations("public.product.detail");
   const tNav = useTranslations("shared.header.nav");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const locale = useLocale();
   const [activeImage, setActiveImage] = useState(0);
@@ -56,6 +59,9 @@ export default function ProductDetailClient({
   const { requireAuth } = useAuthAction();
 
   const isSelectionComplete = selectedSize !== null && selectedColor !== null;
+  const router = useRouter();
+  const purchaseMode = getPurchaseMode(product.badge);
+  const showPrice = hasPublicPrice(product.badge);
 
   const images = product.images;
 
@@ -82,7 +88,7 @@ export default function ProductDetailClient({
   }, []);
 
   const handleAddToCart = useCallback(() => {
-    if (addedToCart || !isSelectionComplete) return;
+    if (purchaseMode !== "cart" || addedToCart || !isSelectionComplete) return;
     requireAuth(() => {
       const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
       dispatch(
@@ -97,6 +103,7 @@ export default function ProductDetailClient({
             colorHex: selectedColor!,
             category: product.category?.slug ?? "",
             subcategory: product.subcategory?.slug ?? "",
+            badge: product.badge,
           },
           quantity
         )
@@ -122,6 +129,7 @@ export default function ProductDetailClient({
       setTimeout(() => setAddedToCart(false), 2200);
     }, "addToBag");
   }, [
+    purchaseMode,
     addedToCart,
     isSelectionComplete,
     requireAuth,
@@ -144,6 +152,7 @@ export default function ProductDetailClient({
           image: product.images[0],
           category: product.category?.slug ?? "",
           subcategory: product.subcategory?.slug ?? "",
+          badge: product.badge,
         })
       );
       // Check current state after toggling — if it was just added, sync add
@@ -240,16 +249,10 @@ export default function ProductDetailClient({
             {product.badge && (
               <span
                 className={`inline-block px-3 py-1 rounded-full font-primary text-xs font-medium tracking-[0.08em] uppercase mb-3 ${
-                  product.badge === "new"
-                    ? "bg-[rgba(201,169,110,0.15)] text-[var(--color-deep-gold)]"
-                    : product.badge === "sale"
-                      ? "bg-[rgba(212,165,165,0.15)] text-[var(--color-deep-rose)]"
-                      : "bg-[rgba(10,10,8,0.08)] text-[var(--text-secondary)]"
+                  PRODUCT_DETAIL_BADGE_STYLES[product.badge] ?? ""
                 }`}
               >
-                {product.badge === "new" && t("badge.new")}
-                {product.badge === "sale" && t("badge.sale")}
-                {product.badge === "bestseller" && t("badge.bestseller")}
+                {t(`badge.${product.badge}`)}
               </span>
             )}
             <h1 className="font-display text-[clamp(28px,4vw,40px)] font-normal text-[var(--text-heading)] tracking-[-0.04em] leading-[105%]">
@@ -265,9 +268,9 @@ export default function ProductDetailClient({
             transition={{ duration: 0.5, ease: [...ease], delay: 0.2 }}
           >
             <span className="font-primary text-xl font-medium text-[var(--text-heading)] tracking-[-0.04em]">
-              {format.number(product.price, "price")}
+              {showPrice ? format.number(product.price, "price") : tCommon("priceOnRequest")}
             </span>
-            {product.originalPrice && (
+            {showPrice && product.originalPrice && (
               <span className="font-primary text-[15px] font-medium text-[var(--text-disabled)] line-through tracking-[-0.04em]">
                 {format.number(product.originalPrice, "price")}
               </span>
@@ -411,7 +414,7 @@ export default function ProductDetailClient({
             transition={{ duration: 0.5, ease: [...ease], delay: 0.45 }}
           >
             {/* Validation hint */}
-            {!isSelectionComplete && (
+            {purchaseMode === "cart" && !isSelectionComplete && (
               <p className="font-primary text-xs text-[var(--text-muted)] tracking-[0.04em] text-center m-0">
                 {!selectedSize && !selectedColor
                   ? t("hintBoth")
@@ -420,20 +423,43 @@ export default function ProductDetailClient({
                     : t("hintColor")}
               </p>
             )}
+            {purchaseMode !== "cart" && (
+              <p className="font-primary text-xs text-[var(--text-muted)] tracking-[0.04em] text-center m-0">
+                {purchaseMode === "soldOut" ? t("soldOutHint") : t("customOrderHint")}
+              </p>
+            )}
             <div className="flex gap-3 items-stretch">
               <button
                 type="button"
                 className={`flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-none font-primary text-[15px] font-medium tracking-[0.04em] uppercase cursor-pointer transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:-translate-y-px ${
-                  addedToCart
+                  purchaseMode === "soldOut"
+                    ? "!opacity-45 !cursor-not-allowed hover:transform-none bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)]"
+                    : purchaseMode === "customOrder"
+                      ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)] shadow-[var(--shadow-gold-sm)] hover:opacity-90"
+                      : addedToCart
                     ? "!bg-[var(--accent-primary)] !text-[var(--text-on-gold)] pointer-events-none"
                     : !isSelectionComplete
                       ? "opacity-45 cursor-not-allowed hover:transform-none hover:shadow-none bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)]"
                       : "bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)] hover:bg-[var(--color-charcoal)] hover:shadow-[var(--shadow-lg)]"
                 }`}
-                onClick={handleAddToCart}
-                disabled={!isSelectionComplete}
+                onClick={
+                  purchaseMode === "customOrder"
+                    ? () => router.push(buildOrderInquiryHref(product.id))
+                    : handleAddToCart
+                }
+                disabled={purchaseMode === "soldOut" || (purchaseMode === "cart" && !isSelectionComplete)}
               >
-                {addedToCart ? (
+                {purchaseMode === "soldOut" ? (
+                  <>
+                    <ShoppingBag size={16} />
+                    {t("soldOut")}
+                  </>
+                ) : purchaseMode === "customOrder" ? (
+                  <>
+                    <MessageCircle size={16} />
+                    {t("customOrder")}
+                  </>
+                ) : addedToCart ? (
                   <>
                     <Check size={16} />
                     {t("addedToBag")}
@@ -565,7 +591,7 @@ export default function ProductDetailClient({
                   {rp.name}
                 </span>
                 <span className="font-primary text-sm font-medium text-[var(--text-muted)] tracking-[-0.02em]">
-                  {format.number(rp.price, "price")}
+                  {hasPublicPrice(rp.badge) ? format.number(rp.price, "price") : tCommon("priceOnRequest")}
                 </span>
               </Link>
             ))}

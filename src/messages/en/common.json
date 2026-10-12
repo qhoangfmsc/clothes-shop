@@ -14,8 +14,7 @@
     "shipping": "Shipping",
     "delivered": "Delivered",
     "completed": "Completed",
-    "cancelled": "Cancelled",
-    "shipped": "Shipped"
+    "cancelled": "Cancelled"
   },
   "addressField": {
     "fullName": "Full name",
@@ -34,11 +33,15 @@
   "productBadge": {
     "new": "New",
     "sale": "Sale",
-    "bestseller": "Best Seller"
+    "bestseller": "Best Seller",
+    "sold_out": "Sold Out",
+    "limited": "Limited",
+    "custom_order": "Custom Order"
   },
   "notFound": "Not Found",
   "status": {
     "active": "Active",
     "disabled": "Disabled"
-  }
+  },
+  "priceOnRequest": "Price on request"
 }

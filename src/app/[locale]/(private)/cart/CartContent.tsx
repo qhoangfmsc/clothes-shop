@@ -14,6 +14,7 @@ import {
   selectCartItems,
   selectDeselectedKeys,
   selectSelectedCartItems,
+  selectPurchasableCartItems,
   selectSelectedTotalPrice,
   selectTotalItems,
   selectSelectedTotalItems,
@@ -32,6 +33,7 @@ import {
   syncAddToWishlist,
   syncRemoveFromWishlist,
 } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
+import { buildOrderInquiryHref, getPurchaseMode } from "@/src/lib/product-purchase";
 import Checkbox from "@/src/app/[locale]/_components/Checkbox";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
@@ -147,6 +149,7 @@ function CartItemRow({
   onToggleSelected: (item: CartItem) => void;
 }) {
   const t = useTranslations("private.cart.item");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const tBulk = useTranslations("private.cart.bulk.confirmRemove");
   const dispatch = useAppDispatch();
@@ -163,6 +166,7 @@ function CartItemRow({
         image: item.image,
         category: item.category,
         subcategory: item.subcategory,
+        badge: item.badge,
       })
     );
     /* The state before the dispatch decides which way it went */
@@ -190,6 +194,8 @@ function CartItemRow({
   }, [item, dispatch, confirm, t, tBulk]);
 
   const productUrl = `/shop/${item.category}/${item.subcategory}/${item.productId}`;
+  const purchaseMode = getPurchaseMode(item.badge);
+  const purchasable = purchaseMode === "cart";
 
   return (
     <motion.div
@@ -201,7 +207,8 @@ function CartItemRow({
       {/* Select for checkout / bulk actions */}
       <Checkbox
         className="self-center"
-        checked={selected}
+        checked={selected && purchasable}
+        disabled={!purchasable}
         onCheckedChange={() => onToggleSelected(item)}
         aria-label={t("select", { name: item.name })}
       />
@@ -235,8 +242,23 @@ function CartItemRow({
           </span>
         </div>
         <span className="font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em]">
-          {format.number(item.price, "price")}
+          {purchaseMode === "customOrder" ? tCommon("priceOnRequest") : format.number(item.price, "price")}
         </span>
+
+        {/* Sold-out / custom-order lines stay in the bag but cannot be checked out */}
+        {!purchasable && (
+          <p className="m-0 font-primary text-xs text-[var(--color-deep-rose)] tracking-[-0.02em] leading-[140%]">
+            {purchaseMode === "soldOut" ? t("unavailable.soldOut") : t("unavailable.customOrder")}{" "}
+            {purchaseMode === "customOrder" && (
+              <Link
+                href={buildOrderInquiryHref(item.productId)}
+                className="font-medium text-[var(--accent-primary)] underline underline-offset-2"
+              >
+                {t("unavailable.orderCta")}
+              </Link>
+            )}
+          </p>
+        )}
 
         {/* Quantity + Remove */}
         <div className="flex items-center gap-3 mt-2">
@@ -268,7 +290,7 @@ function CartItemRow({
 
       {/* Line total */}
       <span className="absolute top-4 right-4 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-        {format.number(item.price * item.quantity, "price")}
+        {purchaseMode === "customOrder" ? "" : format.number(item.price * item.quantity, "price")}
       </span>
     </motion.div>
   );
@@ -285,6 +307,7 @@ export default function CartContent() {
   const items = useAppSelector(selectCartItems);
   const deselectedKeys = useAppSelector(selectDeselectedKeys);
   const selectedItems = useAppSelector(selectSelectedCartItems);
+  const purchasableCount = useAppSelector(selectPurchasableCartItems).length;
   const wishlistItems = useAppSelector(selectWishlistItems);
   /* Totals follow the ticked items only — they are what checkout will order */
   const totalPrice = useAppSelector(selectSelectedTotalPrice);
@@ -292,7 +315,8 @@ export default function CartContent() {
   const totalItems = useAppSelector(selectTotalItems);
 
   const selectedCount = selectedItems.length;
-  const allSelected = items.length > 0 && selectedCount === items.length;
+  /* Only purchasable lines can be ticked, so "all" means all of those */
+  const allSelected = purchasableCount > 0 && selectedCount === purchasableCount;
   const someSelected = selectedCount > 0 && !allSelected;
 
   const handleToggleSelected = useCallback(
@@ -342,6 +366,7 @@ export default function CartContent() {
           image: line.image,
           category: line.category,
           subcategory: line.subcategory,
+          badge: line.badge,
         })
       );
       dispatch(syncAddToWishlist(line.productId));
@@ -429,11 +454,12 @@ export default function CartContent() {
                   <Checkbox
                     checked={allSelected}
                     indeterminate={someSelected}
+                    disabled={purchasableCount === 0}
                     onCheckedChange={(checked) => dispatch(setAllSelected(checked))}
                   />
                   {t("bulk.selectAll")}
                   <span className="font-normal text-[var(--text-muted)]">
-                    {t("bulk.selectedCount", { selected: selectedCount, total: items.length })}
+                    {t("bulk.selectedCount", { selected: selectedCount, total: purchasableCount })}
                   </span>
                 </label>
 

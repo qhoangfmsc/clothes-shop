@@ -4,15 +4,16 @@
 
 import type { AdminUser } from "@/src/hooks/use-admin-api";
 import type { ListParams } from "@/src/lib/list-query";
+import type { UserRole, UserStatus } from "@/src/types/enums";
 
 export interface UserListParams extends ListParams {
-  role?: string;
-  status?: string;
+  role?: UserRole;
+  status?: UserStatus;
 }
 
 export interface UserUpdateData {
-  role?: string;
-  status?: string;
+  role?: UserRole;
+  status?: UserStatus;
   permissions?: number[];
 }
 

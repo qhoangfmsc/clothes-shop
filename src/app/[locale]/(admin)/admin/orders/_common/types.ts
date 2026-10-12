@@ -3,10 +3,11 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
+import type { OrderStatus } from "@/src/types/enums";
 
 import type { ListParams } from "@/src/lib/list-query";
 export interface OrderListParams extends ListParams {
-  status?: string;
+  status?: OrderStatus;
 }
 
 export interface OrderListResult {

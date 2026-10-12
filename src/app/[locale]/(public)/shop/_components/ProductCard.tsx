@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useQuickAdd } from "@/src/app/[locale]/_components/QuickAddDrawer";
@@ -18,6 +18,9 @@ import {
 } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import { useAuthAction } from "@/src/hooks/use-auth-action";
 import { useBreakpoint } from "@/src/hooks/useMediaQuery";
+import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
+import { hasPublicPrice } from "@/src/lib/product-purchase";
+import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -25,15 +28,11 @@ interface ProductCardProps {
   product: Product;
 }
 
-const badgeStyles: Record<string, string> = {
-  new: "bg-[rgba(201,169,110,0.9)] text-[var(--text-on-gold)]",
-  sale: "bg-[rgba(212,165,165,0.9)] text-[var(--color-pearl-cream)]",
-  bestseller: "bg-[rgba(10,10,8,0.85)] text-[var(--color-pearl-cream)]",
-};
-
 export default function ProductCard({ product }: ProductCardProps) {
   const t = useTranslations("public.shop.components.productCard");
   const tBadge = useTranslations("common.productBadge");
+  const tCommon = useTranslations("common");
+  const showPrice = hasPublicPrice(product.badge);
   const format = useFormatter();
   const { toast } = useToast();
   const { openQuickAdd } = useQuickAdd();
@@ -63,6 +62,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             image: product.images[0],
             category: product.category?.slug ?? "",
             subcategory: product.subcategory?.slug ?? "",
+            badge: product.badge,
           })
         );
         // isWishlisted is still the old value before the dispatch re-render
@@ -122,12 +122,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.badge && (
             <span
               className={`absolute top-3 left-3 py-1 px-3 rounded-full font-primary text-xs font-medium tracking-[0.08em] uppercase z-2 backdrop-blur-lg ${
-                badgeStyles[product.badge] ?? ""
+                PRODUCT_CARD_BADGE_STYLES[product.badge] ?? ""
               }`}
             >
-              {product.badge === "new" && tBadge("new")}
-              {product.badge === "sale" && tBadge("sale")}
-              {product.badge === "bestseller" && tBadge("bestseller")}
+              {tBadge(product.badge)}
             </span>
           )}
 
@@ -149,27 +147,26 @@ export default function ProductCard({ product }: ProductCardProps) {
               </motion.div>
             </button>
             {!isDesktop && (
-              <button
-                type="button"
-                className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)] sm:hidden"
-                onClick={handleAddToCart}
-                aria-label={t("addToBagAria")}
-              >
-                <ShoppingBag size={16} />
-              </button>
+              <ProductBagButton
+                product={product}
+                variant="icon"
+                onAddToBag={handleAddToCart}
+                className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 sm:hidden"
+                enabledClassName="hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)]"
+              />
             )}
           </div>
 
           {/* ── Desktop hover overlay: text button ── */}
           <div className="absolute bottom-0 left-0 right-0 px-3 pb-3 pt-10 z-2 hidden sm:flex justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 rounded-b-lg bg-gradient-to-t from-[rgba(10,10,8,0.4)] to-transparent">
-            <button
-              className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150 hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
-              type="button"
-              onClick={handleAddToCart}
-            >
-              <ShoppingBag size={13} />
-              {t("addToBag")}
-            </button>
+            <ProductBagButton
+              product={product}
+              variant="text"
+              iconSize={13}
+              onAddToBag={handleAddToCart}
+              className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150"
+              enabledClassName="hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
+            />
           </div>
         </div>
 
@@ -180,9 +177,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
           <div className="flex items-baseline gap-2">
             <span className="text-[var(--text-secondary)] font-primary text-xs font-medium tracking-[-0.02em]">
-              {format.number(product.price, "price")}
+              {showPrice ? format.number(product.price, "price") : tCommon("priceOnRequest")}
             </span>
-            {product.originalPrice && (
+            {showPrice && product.originalPrice && (
               <span className="text-[var(--text-disabled)] line-through text-[11px]">
                 {format.number(product.originalPrice, "price")}
               </span>

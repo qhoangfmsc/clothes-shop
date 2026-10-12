@@ -33,6 +33,7 @@ export const MESSAGE_FILES = {
   "private/wishlist": load<typeof import("../messages/en/private/wishlist.json")>("private/wishlist"),
   "public/about": load<typeof import("../messages/en/public/about.json")>("public/about"),
   "public/collections": load<typeof import("../messages/en/public/collections.json")>("public/collections"),
+  "public/contact": load<typeof import("../messages/en/public/contact.json")>("public/contact"),
   "public/landing": load<typeof import("../messages/en/public/landing.json")>("public/landing"),
   "public/legal": load<typeof import("../messages/en/public/legal.json")>("public/legal"),
   "public/newIn": load<typeof import("../messages/en/public/newIn.json")>("public/newIn"),

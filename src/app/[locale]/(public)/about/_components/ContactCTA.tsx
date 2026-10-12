@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { buildMailto } from "@/src/lib/contact";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -33,7 +34,7 @@ export default function ContactCTA() {
 
       {/* CTA button */}
       <motion.a
-        href="mailto:hello@doovan.com"
+        href={buildMailto()}
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}

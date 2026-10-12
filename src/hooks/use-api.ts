@@ -10,6 +10,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useSWR from "swr";
 import type { Product } from "@/src/types/product";
+import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import { buildListQuery } from "@/src/lib/list-query";
@@ -260,6 +261,8 @@ export interface AutocompleteItem {
   slug: string;
   price: number;
   image: string;
+  /** `custom_order` products show no price in the search dropdown. */
+  badge: ProductBadge | null;
 }
 
 export interface AutocompleteResponse {
@@ -269,12 +272,16 @@ export interface AutocompleteResponse {
 const MIN_QUERY_LENGTH = 2;
 const DEBOUNCE_MS = 300;
 
-export function useAutocomplete() {
+/** Suggestions the BE returns per search (`limit`, 1–10; it answers 400 above 10). */
+export function useAutocomplete(limit: number) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<AutocompleteItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  /* Read inside the debounced callback, which is created once */
+  const limitRef = useRef(limit);
+  limitRef.current = limit;
 
   const search = useCallback((q: string) => {
     setQuery(q);
@@ -303,7 +310,8 @@ export function useAutocomplete() {
       const controller = new AbortController();
       abortRef.current = controller;
 
-      fetch(`${API_URL}/api/products/autocomplete?q=${encodeURIComponent(q.trim())}`, {
+      const params = new URLSearchParams({ q: q.trim(), limit: String(limitRef.current) });
+      fetch(`${API_URL}/api/products/autocomplete?${params}`, {
         signal: controller.signal,
       })
         .then((res) => {

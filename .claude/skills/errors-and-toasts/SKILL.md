@@ -16,3 +16,5 @@ Quick checklist:
 5. Confirmations use `useConfirm()`; no `window.confirm` / `alert`.
 6. New BE error code → `shared.errors.byCode.<code>` in en + vi.
 7. Run `yarn i18n:check`, `yarn conventions:check`, `npx tsc --noEmit`.
+
+Docs loop (mandatory): before editing run `yarn docs:who <path>` and read the module's doc + code; after editing update that doc and run `yarn docs:check --changed` (skill `module-docs`).

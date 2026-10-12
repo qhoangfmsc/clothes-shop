@@ -100,3 +100,13 @@
 | Dynamic value (state) | `style={{ opacity: loading ? 0.4 : 1 }}` |
 | Animation (`@keyframes`) | `globals.css` → class |
 | Shadow | `className="shadow-md"` |
+
+---
+
+## Docs (mandatory)
+
+This work changes a module, so it is part of the docs loop (`.agent/rules/module-docs.md`, `.agent/skills/07-module-docs.md`):
+
+1. **Before editing** — `yarn docs:who <file|folder|module>`, read the owning doc(s) and the module's code; if they disagree, fix the doc first.
+2. **After editing** — update the module doc in the same change (affected sections, `Cập nhật` date) and run `yarn docs:check --changed`. Not done until it passes.
+

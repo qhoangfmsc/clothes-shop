@@ -39,6 +39,13 @@ import {
 import { PRODUCT_SORT_OPTIONS, SIZE_GROUPS, TAG_SUGGESTIONS, EMPTY_FORM } from "./_common/constants";
 import type { ProductListResult } from "./_common/types";
 import type { Product, ProductColor } from "@/src/types/product";
+import {
+  PRODUCT_BADGES,
+  PRODUCT_STATUSES,
+  type ProductBadge,
+  type ProductStatus,
+} from "@/src/types/enums";
+import { ADMIN_BADGE_STYLES } from "@/src/lib/product-badge";
 import type { Category, SubCategory } from "@/src/types/category";
 import { toMediaUrl } from "@/src/lib/media-url";
 
@@ -59,15 +66,6 @@ function statusStyle(s: string): string {
   return s === "active"
     ? "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]"
     : "bg-[rgba(107,101,96,0.1)] text-[var(--color-ash)]";
-}
-
-function badgeColor(b: string): string {
-  const m: Record<string, string> = {
-    new: "bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]",
-    sale: "bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]",
-    bestseller: "bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]",
-  };
-  return m[b] ?? "bg-[rgba(107,101,96,0.05)] text-[var(--text-muted)]";
 }
 
 /* ═══════════════════════════════ Main Component ═══════════════════════ */
@@ -102,8 +100,8 @@ export default function ProductsContent() {
       fetchProductList({
         search: params.search || undefined,
         category: params.filters.category || undefined,
-        badge: params.filters.badge || undefined,
-        status: params.filters.status || undefined,
+        badge: (params.filters.badge || undefined) as ProductBadge | undefined,
+        status: (params.filters.status || undefined) as ProductStatus | undefined,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -186,9 +184,9 @@ export default function ProductsContent() {
         render: (p) =>
           p.badge ? (
             <span
-              className={`inline-block py-0.5 px-2 rounded-full text-xs font-semibold font-primary ${badgeColor(p.badge)}`}
+              className={`inline-block py-0.5 px-2 rounded-full text-xs font-semibold font-primary ${ADMIN_BADGE_STYLES[p.badge] ?? ""}`}
             >
-              {tBadge.has(p.badge as never) ? tBadge(p.badge as never) : p.badge}
+              {tBadge(p.badge)}
             </span>
           ) : (
             <span className="text-[var(--text-disabled)]">—</span>
@@ -414,19 +412,12 @@ export default function ProductsContent() {
           {
             key: "status",
             label: t("table.filters.status"),
-            options: [
-              { value: "active", label: tStatus("active") },
-              { value: "disabled", label: tStatus("disabled") },
-            ],
+            options: PRODUCT_STATUSES.map((s) => ({ value: s, label: tStatus(s) })),
           },
           {
             key: "badge",
             label: t("table.filters.badge"),
-            options: [
-              { value: "new", label: tBadge("new") },
-              { value: "sale", label: tBadge("sale") },
-              { value: "bestseller", label: tBadge("bestseller") },
-            ],
+            options: PRODUCT_BADGES.map((b) => ({ value: b, label: tBadge(b) })),
           },
         ]}
         sortOptions={sortOptions}
@@ -534,22 +525,29 @@ export default function ProductsContent() {
                       <select
                         className={inputClass}
                         value={form.status}
-                        onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
+                        onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as ProductStatus }))}
                       >
-                        <option value="active">{tStatus("active")}</option>
-                        <option value="disabled">{tStatus("disabled")}</option>
+                        {PRODUCT_STATUSES.map((s) => (
+                          <option key={s} value={s}>
+                            {tStatus(s)}
+                          </option>
+                        ))}
                       </select>
                     </FormField>
                     <FormField label={t("form.fields.badge")}>
                       <select
                         className={inputClass}
                         value={form.badge ?? ""}
-                        onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value || null }))}
+                        onChange={(e) =>
+                          setForm((p) => ({ ...p, badge: (e.target.value || null) as ProductBadge | null }))
+                        }
                       >
                         <option value="">{t("form.options.none")}</option>
-                        <option value="new">{tBadge("new")}</option>
-                        <option value="sale">{tBadge("sale")}</option>
-                        <option value="bestseller">{tBadge("bestseller")}</option>
+                        {PRODUCT_BADGES.map((b) => (
+                          <option key={b} value={b}>
+                            {tBadge(b)}
+                          </option>
+                        ))}
                       </select>
                     </FormField>
                   </FormSection>

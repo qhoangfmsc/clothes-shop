@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "title": "Custom Orders",
+    "description": "Contact DOOVAN to place a custom-made order — tell us your idea and we will design it with you."
+  },
+  "hero": {
+    "label": "Custom order",
+    "heading": "Let’s make it yours",
+    "description": "Some pieces are made to order. Contact us on Instagram, Facebook or by email and our atelier will talk through design, fabric, sizing and timing with you."
+  },
+  "product": {
+    "discount": "−{percent}%",
+    "material": "Original design material",
+    "gallery": "Product images",
+    "showImage": "Show image {index}",
+    "materialHint": "This is the material of the original design. Tell us in your design notes if you’d like a different one."
+  },
+  "steps": {
+    "title": "How it works",
+    "items": {
+      "tell": {
+        "title": "Tell us your idea",
+        "text": "Describe the design you want and share your measurements in the form below. We turn it into a ready-to-send email."
+      },
+      "design": {
+        "title": "We design it with you",
+        "text": "We confirm the design, materials, price and the time it takes to make."
+      },
+      "confirm": {
+        "title": "Confirm and we make it",
+        "text": "Once you agree on the details, we start making your piece and arrange delivery."
+      }
+    }
+  },
+  "channels": {
+    "title": "Contact us",
+    "note": "Choose Instagram, Facebook or email — we usually reply within one business day."
+  },
+  "form": {
+    "title": "Tell us about your order",
+    "design": {
+      "title": "Your personalised design",
+      "label": "Design brief",
+      "placeholder": "Describe your vision: silhouette and fit, preferred fabric or colour, details to add or adjust, and the occasion.",
+      "counter": "{count}/{max}"
+    },
+    "details": {
+      "title": "Personal information"
+    },
+    "measurements": {
+      "title": "Your measurements",
+      "height": "Height",
+      "bust": "Bust",
+      "waist": "Waist",
+      "hips": "Hips",
+      "unit": "cm"
+    },
+    "quantity": {
+      "label": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity"
+    },
+    "neededBy": {
+      "label": "Needed by"
+    },
+    "contact": {
+      "title": "Your details",
+      "name": "Full name",
+      "namePlaceholder": "Your name",
+      "phone": "Phone number",
+      "phonePlaceholder": "e.g. 0123 456 789"
+    },
+    "errors": {
+      "note": "Please describe the design you would like",
+      "name": "Please enter your name",
+      "phone": "Please enter a valid phone number"
+    },
+    "actions": {
+      "sendEmail": "Send by email"
+    }
+  },
+  "message": {
+    "subject": "[DOOVAN] Custom order request — {product}",
+    "subjectGeneric": "[DOOVAN] Custom order request",
+    "greeting": "Hello DOOVAN team,",
+    "intro": "I would like to request a custom order. Here are my details.",
+    "sections": {
+      "product": "PRODUCT",
+      "design": "PERSONALISED DESIGN REQUEST",
+      "order": "ORDER DETAILS",
+      "contact": "CONTACT"
+    },
+    "labels": {
+      "product": "Product",
+      "reference": "Reference",
+      "link": "Link",
+      "measurements": "Measurements (cm)",
+      "quantity": "Quantity",
+      "neededBy": "Needed by",
+      "name": "Name",
+      "phone": "Phone"
+    },
+    "measurements": {
+      "height": "Height",
+      "bust": "Bust",
+      "waist": "Waist",
+      "hips": "Hips"
+    },
+    "closing": "Kind regards,"
+  },
+  "back": "Continue shopping"
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
@@ -23,13 +24,13 @@ function buildSpotlights(
   products: Product[],
   labels: string[],
   fallbackLabel: string,
-  formatPrice: (price: number) => string
+  formatPrice: (product: Product) => string
 ) {
   return products.slice(0, 2).map((p, idx) => ({
     tag: labels[idx] ?? fallbackLabel,
     name: p.name,
     desc: p.description,
-    price: formatPrice(p.price),
+    price: formatPrice(p),
     image: p.images[0],
     href: `/shop/${p.category?.slug ?? ""}/${p.subcategory?.slug ?? ""}/${p.id}`,
     bgColor: SPOTLIGHT_BGS[idx] ?? "var(--bg-section-2)",
@@ -44,13 +45,14 @@ interface NewInClientProps {
 
 export default function NewInClient({ products, heroBanners }: NewInClientProps) {
   const t = useTranslations("public.newIn");
+  const tCommon = useTranslations("common");
   const format = useFormatter();
   const TICKER_ITEMS = [t("ticker.newDrop"), t("ticker.limited"), t("ticker.handcrafted")];
   const SPOTLIGHTS = buildSpotlights(
     products,
     [t("spotlight.editorsPick"), t("spotlight.mostWanted")],
     t("spotlight.featured"),
-    (price) => format.number(price, "price")
+    (p) => (hasPublicPrice(p.badge) ? format.number(p.price, "price") : tCommon("priceOnRequest"))
   );
   const spotlightRefs = useRef<(HTMLElement | null)[]>([]);
   /* Auto-rotates the hero background when there is more than one banner */

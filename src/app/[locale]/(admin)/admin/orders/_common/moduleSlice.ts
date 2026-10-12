@@ -7,6 +7,7 @@ import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/sr
 import { authApi } from "@/src/lib/auth-api";
 import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
+import type { OrderStatus } from "@/src/types/enums";
 import type { OrderListParams } from "./types";
 
 /* ── State ── */
@@ -42,7 +43,7 @@ export const fetchOrderList = createAsyncThunk(
 
 export const updateOrderStatus = createAsyncThunk(
   "orders/updateStatus",
-  async ({ id, status }: { id: string; status: string }) => {
+  async ({ id, status }: { id: string; status: OrderStatus }) => {
     const res = await authApi.patch<{ data: AdminOrder }>(
       `/api/admin/orders/${id}/status`,
       { status }
