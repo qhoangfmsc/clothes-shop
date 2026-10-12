@@ -1,5 +1,6 @@
 "use client";
 
+import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import { useMemo } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import {
@@ -157,13 +158,13 @@ export default function DashboardContent() {
     products,
     total: totalProducts,
     isLoading: loadingProducts,
-  } = useAdminProducts({ limit: 200 });
-  const { orders, total: totalOrders, isLoading: loadingOrders } = useAdminOrders({ limit: 200 });
+  } = useAdminProducts({ limit: LIST_MAX_LIMIT });
+  const { orders, total: totalOrders, isLoading: loadingOrders } = useAdminOrders({ limit: LIST_MAX_LIMIT });
   const {
     users: _users,
     total: totalUsers,
     isLoading: loadingUsers,
-  } = useAdminUsers({ limit: 200 });
+  } = useAdminUsers({ limit: LIST_MAX_LIMIT });
 
   /* ── Computed stats ── */
   const stats = useMemo(() => {

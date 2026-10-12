@@ -18,6 +18,7 @@
     "retry": "Thử lại"
   },
   "table": {
+    "searchPlaceholder": "Ảnh...",
     "columns": {
       "preview": "Xem trước",
       "name": "Tên",
@@ -29,7 +30,8 @@
     "preview": "Xem trước",
     "download": "Tải xuống",
     "delete": "Xóa",
-    "empty": "Chưa có ảnh — hãy tải ảnh đầu tiên lên, hoặc kéo thả tệp vào bất kỳ đâu trên trang này."
+    "empty": "Chưa có ảnh — hãy tải ảnh đầu tiên lên, hoặc kéo thả tệp vào bất kỳ đâu trên trang này.",
+    "emptyFiltered": "Không có ảnh nào khớp với tìm kiếm."
   },
   "units": {
     "b": "B",

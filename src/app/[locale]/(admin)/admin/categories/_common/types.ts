@@ -5,12 +5,8 @@
 
 import type { Category } from "@/src/types/category";
 
-export interface CategoryListParams {
-  search?: string;
-  sort?: string;
-  page?: number;
-  limit?: number;
-}
+import type { ListParams } from "@/src/lib/list-query";
+export type CategoryListParams = ListParams;
 
 export interface CategoryFormData {
   slug: string;

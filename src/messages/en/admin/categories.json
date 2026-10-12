@@ -12,11 +12,6 @@
       "subcategories": "Subcategories",
       "description": "Description",
       "actions": "Actions"
-    },
-    "sort": {
-      "priority": "Priority",
-      "titleAsc": "Title A-Z",
-      "titleDesc": "Title Z-A"
     }
   },
   "form": {
@@ -53,7 +48,11 @@
   "toast": {
     "updated": "Category updated",
     "created": "Category created",
-    "reordered": "Category order updated"
+    "reordered": "Category order updated",
+    "deleted": "Category deleted",
+    "saveFailed": "Failed to save",
+    "deleteFailed": "Failed to delete",
+    "reorderFailed": "Failed to reorder"
   },
   "confirmDelete": {
     "title": "Delete category",

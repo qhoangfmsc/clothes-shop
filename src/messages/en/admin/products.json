@@ -18,14 +18,6 @@
       "category": "Category",
       "status": "Status",
       "badge": "Badge"
-    },
-    "sort": {
-      "newest": "Newest",
-      "oldest": "Oldest",
-      "priceDown": "Price ↓",
-      "priceUp": "Price ↑",
-      "nameAsc": "Name A-Z",
-      "nameDesc": "Name Z-A"
     }
   },
   "form": {

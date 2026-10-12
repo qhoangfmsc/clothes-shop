@@ -1,10 +1,21 @@
 {
   "edit": "Edit",
   "delete": "Delete",
-  "deleted": "Deleted",
-  "failed": "Failed",
   "sort": {
     "newest": "Newest",
-    "oldest": "Oldest"
+    "oldest": "Oldest",
+    "priority": "Priority",
+    "nameAsc": "Name A-Z",
+    "nameDesc": "Name Z-A",
+    "titleAsc": "Title A-Z",
+    "titleDesc": "Title Z-A",
+    "emailAsc": "Email A-Z",
+    "emailDesc": "Email Z-A",
+    "priceAsc": "Price ↑",
+    "priceDesc": "Price ↓",
+    "totalAsc": "Total ↑",
+    "totalDesc": "Total ↓",
+    "sizeAsc": "Smallest first",
+    "sizeDesc": "Largest first"
   }
 }

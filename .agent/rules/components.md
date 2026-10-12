@@ -12,7 +12,10 @@ Before building UI, check this list. If a shared component covers the need, **us
 | Crossfading banner background (hero) | `BannerFade` + `useBannerRotation` (`src/hooks`) + `CarouselDots` | Auto-rotates, dots included. |
 | Position dots / prev-next buttons outside `Carousel` | `CarouselDots`, `CarouselArrow` (`CarouselControls`) | Same look + i18n labels as `Carousel`. |
 | Any auto-advancing element | `useAutoAdvance` (`src/hooks`) | Pauses off-screen / hover / focus / touch / hidden tab / reduced motion. Don't write `setInterval` loops. |
-| Admin list table | `DataTable` | Rule below. |
+| Admin list table | `DataTable` | Rule below + `.agent/skills/05-list-pages.md`. |
+| List URL (admin, storefront, SWR hooks) | `buildListQuery`, `LIST_DEFAULT_LIMIT` (25), `LIST_MAX_LIMIT` (200) from `src/lib/list-query.ts` | Sort = `field` / `-field`, param `sort`. Never `.set("limit")` by hand. |
+| Sort dropdown of a table | `<MODULE>_SORT_OPTIONS` constants + `useSortOptions` | Labels live once in `admin.components.crud.sort`. |
+| Turn a caught error into text | `useErrorMessage()` | Never the bare `errorMessage` in `src/app`. See `.agent/skills/06-errors-and-toasts.md`. |
 | Admin modal form | `AdminFormKit` (`ModalShell`, `FormTabs`, `FormSection`, `FormField`, `FormActions`, `inputClass`) | |
 | Confirm / destructive action | `useConfirm` (`ConfirmDialog`) | Never `window.confirm`. |
 | Toast feedback | `useToast` (`Toast`) | |
@@ -52,7 +55,11 @@ Before building UI, check this list. If a shared component covers the need, **us
 
 Every admin list uses `DataTable` — columns, `fetchData` (server mode) or `rows` (static), search, filters, sort, pagination, selection.
 
-- **Records per page**: `pageSize` (default `DEFAULT_PAGE_SIZE` = 25, so tables are untouched unless they opt in). A page that must show everything at once passes a larger value (max = the BE limit, 200); pagination appears only when `total > pageSize`.
+- **Records per page**: `pageSize` (default `LIST_DEFAULT_LIMIT` = 25 from `src/lib/list-query.ts`, so tables are untouched unless they opt in; values above `LIST_MAX_LIMIT` = 200 are clamped). A page that must show everything at once passes a larger value (max = the BE limit, 200); pagination appears only when `total > pageSize`.
 - **Drag-and-drop ordering**: pass `reorder={{ sortValue, onReorder }}`. Enabled only when sorted by `sortValue`, unfiltered, and all rows fit on one page (so combine with `pageSize`). `onReorder` receives the full list in its new order; throw to roll the table back.
 - Sort values follow the BE: `field` = ascending, `-field` = descending.
 - Don't add table-specific behaviour inside `DataTable`; add a generic optional prop instead.
+
+## Enforcement
+
+`yarn conventions:check` (`scripts/check-conventions.mjs`, also run by `yarn build`) fails on: bare `errorMessage` in components, native `alert/confirm/prompt`, old sort syntax (`price_asc`, `sorts`), hand-built list queries, limits above 200, hand-rolled scroll-snap carousels or `setInterval` loops, string-literal toasts, and server `DataTable`s without search or sort. When a rule is genuinely wrong for a line, add `// conventions-ignore: <rule-id> <reason>` — and say why. When you add a new shared building block, add its rule to the script in the same change.

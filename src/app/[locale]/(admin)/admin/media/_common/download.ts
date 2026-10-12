@@ -1,5 +1,5 @@
 import { toMediaUrl } from "@/src/lib/media-url";
-import type { MediaFile } from "@/src/hooks/use-admin-media";
+import type { MediaFile } from "./types";
 
 /** Saves a media file under its original name. Goes through a blob so the
  *  `download` attribute is honoured even when the URL is cross-origin. */

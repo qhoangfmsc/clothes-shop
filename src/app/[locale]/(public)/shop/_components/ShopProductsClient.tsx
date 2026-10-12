@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import ProductGrid from "./ProductGrid";
-import ShopFilters, { type ActiveFilters } from "./ShopFilters";
+import ShopFilters, { DEFAULT_SORT, type ActiveFilters } from "./ShopFilters";
 import type { Product } from "@/src/types/product";
 
 const ITEMS_PER_PAGE = 24;
@@ -18,7 +18,7 @@ export default function ShopProductsClient({ products, heading }: ShopProductsCl
   const t = useTranslations("public.shop.components.productsClient");
   const locale = useLocale();
   const [filters, setFilters] = useState<ActiveFilters>({
-    sort: "newest",
+    sort: DEFAULT_SORT,
     minPrice: null,
     maxPrice: null,
     sizes: [],
@@ -54,19 +54,19 @@ export default function ShopProductsClient({ products, heading }: ShopProductsCl
 
     // Sort
     switch (filters.sort) {
-      case "price_asc":
+      case "price":
         result.sort((a, b) => a.price - b.price);
         break;
-      case "price_desc":
+      case "-price":
         result.sort((a, b) => b.price - a.price);
         break;
-      case "name_asc":
+      case "name":
         result.sort((a, b) => a.name.localeCompare(b.name, locale));
         break;
-      case "name_desc":
+      case "-name":
         result.sort((a, b) => b.name.localeCompare(a.name, locale));
         break;
-      case "newest":
+      case "-createdAt":
       default:
         // Products are already in newest-first order from the server
         break;

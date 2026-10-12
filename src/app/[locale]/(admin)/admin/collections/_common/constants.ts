@@ -15,3 +15,11 @@ export const EMPTY_COLLECTION_FORM: CollectionFormData = {
   productIds: [],
   season: "",
 };
+
+/** `sort=field` ascending, `-field` descending. `key` = label in admin.components.crud.sort.* */
+export const COLLECTION_SORT_OPTIONS = [
+  { value: "-createdAt", key: "newest" },
+  { value: "createdAt", key: "oldest" },
+  { value: "name", key: "nameAsc" },
+  { value: "-name", key: "nameDesc" },
+] as const;

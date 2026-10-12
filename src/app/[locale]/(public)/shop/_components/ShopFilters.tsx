@@ -8,7 +8,8 @@ import type { Product } from "@/src/types/product";
 
 /* ── Types ── */
 
-export type SortValue = "newest" | "price_asc" | "price_desc" | "name_asc" | "name_desc";
+/** Same syntax as the BE `sort` param: `field` ascending, `-field` descending. */
+export type SortValue = "-createdAt" | "price" | "-price" | "name" | "-name";
 
 export interface ActiveFilters {
   sort: SortValue;
@@ -27,7 +28,16 @@ interface ShopFiltersProps {
 
 /* ── Constants ── */
 
-const SORT_VALUES: SortValue[] = ["newest", "price_asc", "price_desc", "name_asc", "name_desc"];
+export const DEFAULT_SORT: SortValue = "-createdAt";
+
+/** `key` is a label in public.shop.components.filters.sort.<key> */
+const SORT_OPTIONS: { value: SortValue; key: "newest" | "priceAsc" | "priceDesc" | "nameAsc" | "nameDesc" }[] = [
+  { value: "-createdAt", key: "newest" },
+  { value: "price", key: "priceAsc" },
+  { value: "-price", key: "priceDesc" },
+  { value: "name", key: "nameAsc" },
+  { value: "-name", key: "nameDesc" },
+];
 
 /* ═══════════════════════════════ ShopFilters ═══════════════════════════════ */
 
@@ -91,7 +101,7 @@ export default function ShopFilters({
   );
 
   const hasActiveFilters =
-    activeFilters.sort !== "newest" ||
+    activeFilters.sort !== DEFAULT_SORT ||
     activeFilters.minPrice != null ||
     activeFilters.maxPrice != null ||
     activeFilters.sizes.length > 0 ||
@@ -99,7 +109,7 @@ export default function ShopFilters({
 
   const clearFilters = () =>
     onFiltersChange({
-      sort: "newest",
+      sort: DEFAULT_SORT,
       minPrice: null,
       maxPrice: null,
       sizes: [],
@@ -125,9 +135,9 @@ export default function ShopFilters({
             onChange={(e) => setSort(e.target.value as SortValue)}
             className="py-1.5 pl-3 pr-7 border border-[var(--border-subtle)]! rounded-full text-xs font-medium font-primary bg-[var(--bg-primary)]! text-[var(--text-primary)]! outline-none cursor-pointer appearance-none"
           >
-            {SORT_VALUES.map((value) => (
+            {SORT_OPTIONS.map(({ value, key }) => (
               <option key={value} value={value}>
-                {t(`sort.${value}`)}
+                {t(`sort.${key}`)}
               </option>
             ))}
           </select>

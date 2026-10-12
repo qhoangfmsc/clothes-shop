@@ -8,7 +8,7 @@ import { uploadMediaFile } from "@/src/hooks/use-media-upload";
 import { toMediaUrl } from "@/src/lib/media-url";
 import { inputClass } from "./AdminFormKit";
 import { ImagePreviewLightbox } from "./ImagePreviewLightbox";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 
 /** A grid of image URLs with an upload tile (same "+" affordance as the
  *  Media library) plus a manual "paste a URL" fallback. Used by Products'
@@ -22,6 +22,7 @@ export function ImageListField({
 }) {
   const t = useTranslations("admin.components.imageFields");
   const { toast } = useToast();
+  const toErrorMessage = useErrorMessage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [urlInput, setUrlInput] = useState("");
@@ -34,7 +35,7 @@ export function ImageListField({
       onChange([...value, ...uploaded.map((u) => u.url)]);
       toast.success(t("toast.imagesUploaded", { count: uploaded.length }));
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.uploadFailed")));
+      toast.error(toErrorMessage(err, t("toast.uploadFailed")));
     } finally {
       setIsUploading(false);
     }

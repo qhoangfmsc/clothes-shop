@@ -32,10 +32,10 @@
       "color": "Color",
       "sort": {
         "newest": "Newest",
-        "price_asc": "Price: Low → High",
-        "price_desc": "Price: High → Low",
-        "name_asc": "Name: A → Z",
-        "name_desc": "Name: Z → A"
+        "priceAsc": "Price: Low → High",
+        "priceDesc": "Price: High → Low",
+        "nameAsc": "Name: A → Z",
+        "nameDesc": "Name: Z → A"
       }
     },
     "productsClient": {

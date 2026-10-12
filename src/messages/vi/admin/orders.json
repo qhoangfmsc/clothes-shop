@@ -27,6 +27,6 @@
   },
   "toast": {
     "statusChanged": "Đơn hàng #{id} → {status}",
-    "failed": "Thất bại"
+    "statusFailed": "Cập nhật trạng thái thất bại"
   }
 }

@@ -27,7 +27,7 @@ import {
 import { useApiAuth } from "@/src/hooks/use-api-auth";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { trackEvent } from "@/src/lib/analytics";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -60,6 +60,7 @@ type CheckoutStep = "address" | "review" | "success";
 
 export default function CheckoutContent() {
   const t = useTranslations("private.checkout");
+  const toErrorMessage = useErrorMessage();
   const format = useFormatter();
   const { isAuthenticated, isLoading, user } = useAuth();
   const dispatch = useAppDispatch();
@@ -152,11 +153,11 @@ export default function CheckoutContent() {
       setStep("success");
       toast.success(t("toast.placed"));
     } catch (err: unknown) {
-      toast.error(errorMessage(err, t("toast.failed")));
+      toast.error(toErrorMessage(err, t("toast.failed")));
     } finally {
       setIsSubmitting(false);
     }
-  }, [isSubmitting, items, totalPrice, apiFetch, address, dispatch, toast, t]);
+  }, [isSubmitting, items, totalPrice, apiFetch, address, dispatch, toast, t, toErrorMessage]);
 
   const updateField = useCallback(
     (field: keyof AddressForm, value: string) => {

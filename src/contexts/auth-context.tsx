@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { ApiError } from "@/src/lib/api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -92,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (!res.ok) {
       const error = await res.json().catch(() => ({}));
-      throw new Error(error.message ?? "");
+      throw new ApiError(error.message ?? "", res.status, error.errorCode);
     }
 
     const data = await res.json();

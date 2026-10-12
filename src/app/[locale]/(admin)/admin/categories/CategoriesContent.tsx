@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, type FormEvent } from "react";
 import { Plus, Pencil, Trash2, X, FolderTree } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import {
@@ -24,7 +25,7 @@ import {
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { ImageUrlField } from "@/src/app/[locale]/_components/ImageUrlField";
 import { PERMISSIONS } from "@/src/lib/permissions";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
   fetchCategoryList,
@@ -59,16 +60,13 @@ function slugify(text: string): string {
 export default function CategoriesContent() {
   const t = useTranslations("admin.categories");
   const tCrud = useTranslations("admin.components.crud");
+  const toErrorMessage = useErrorMessage();
   const locale = useLocale();
   const CATEGORY_TABS: FormTab[] = [
     { id: "info", label: t("form.tabs.info") },
     { id: "subcategories", label: t("form.tabs.subcategories") },
   ];
-  const sortOptions = CATEGORY_SORT_OPTIONS.map((o) => ({
-    value: o.value,
-    label:
-      o.key === "newest" || o.key === "oldest" ? tCrud(`sort.${o.key}`) : t(`table.sort.${o.key}`),
-  }));
+  const sortOptions = useSortOptions(CATEGORY_SORT_OPTIONS);
   const { toast } = useToast();
   const confirm = useConfirm();
   const tableRef = useRef<DataTableRef>(null);
@@ -262,7 +260,7 @@ export default function CategoriesContent() {
       tableRef.current?.refresh();
       closeModal();
     } catch (err) {
-      toast.error(errorMessage(err, tCrud("failed")));
+      toast.error(toErrorMessage(err, t("toast.saveFailed")));
     }
   };
 
@@ -273,7 +271,7 @@ export default function CategoriesContent() {
       toast.success(t("toast.reordered"));
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, tCrud("failed")));
+      toast.error(toErrorMessage(err, t("toast.reorderFailed")));
       tableRef.current?.refresh();
       throw err;
     }
@@ -289,10 +287,10 @@ export default function CategoriesContent() {
     if (!ok) return;
     try {
       await dispatch(deleteCategory(id)).unwrap();
-      toast.success(tCrud("deleted"));
+      toast.success(t("toast.deleted"));
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, tCrud("failed")));
+      toast.error(toErrorMessage(err, t("toast.deleteFailed")));
     }
   };
 

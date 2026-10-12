@@ -18,6 +18,7 @@
     "retry": "Retry"
   },
   "table": {
+    "searchPlaceholder": "Images...",
     "columns": {
       "preview": "Preview",
       "name": "Name",
@@ -29,7 +30,8 @@
     "preview": "Preview",
     "download": "Download",
     "delete": "Delete",
-    "empty": "No images yet — upload your first one, or drag files anywhere on this page."
+    "empty": "No images yet — upload your first one, or drag files anywhere on this page.",
+    "emptyFiltered": "No images match your search."
   },
   "units": {
     "b": "B",

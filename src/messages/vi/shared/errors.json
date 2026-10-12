@@ -22,5 +22,14 @@
     "role": "Vai trò của bạn:",
     "back": "Về cửa hàng",
     "signIn": "Đăng nhập"
+  },
+  "byCode": {
+    "1101": "Không tìm thấy danh mục. Danh sách có thể đã cũ.",
+    "1106": "Một danh mục xuất hiện hai lần trong thứ tự mới.",
+    "1107": "Danh sách danh mục đã thay đổi kể từ lúc bạn mở trang. Đã tải lại, hãy thử lại.",
+    "1108": "Độ ưu tiên nằm ngoài khoảng hợp lệ.",
+    "1603": "Chỉ có thể tải lên tệp hình ảnh.",
+    "1605": "Kho lưu trữ không thể lưu tệp. Vui lòng thử lại.",
+    "1606": "Tệp quá lớn. Vui lòng chọn ảnh nhỏ hơn."
   }
 }

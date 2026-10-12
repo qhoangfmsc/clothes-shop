@@ -9,6 +9,8 @@ import Image from "next/image";
 import { ArrowLeft, Package, MapPin } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
+import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import OrderStatusBadge from "../_components/OrderStatusBadge";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
 
@@ -40,6 +42,8 @@ interface OrderDetail {
 
 export default function OrderDetailContent() {
   const t = useTranslations("private.orders.detail");
+  const { toast } = useToast();
+  const toErrorMessage = useErrorMessage();
   const format = useFormatter();
   const params = useParams<{ orderId: string }>();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -54,15 +58,15 @@ export default function OrderDetailContent() {
       try {
         const res = await apiFetch<{ data: OrderDetail }>(`/api/orders/${params.orderId}`);
         setOrder(res.data ?? null);
-      } catch {
-        console.warn("[Orders] Failed to fetch order detail");
+      } catch (err) {
+        toast.error(toErrorMessage(err, t("toast.loadFailed")));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchOrder();
-  }, [isAuthenticated, params.orderId, apiFetch]);
+  }, [isAuthenticated, params.orderId, apiFetch, t, toast, toErrorMessage]);
 
   if (authLoading || isLoading) {
     return (

@@ -1,6 +1,7 @@
 # Project rules
 
 - **Code in English, UI through i18n.** All source code (identifiers, comments, commit messages) is English. Every piece of user-facing text — labels, buttons, headings, toasts, confirm/error dialogs, placeholders, `aria-label`/`title`/`alt`, page metadata — must come from the message files in `src/messages/<locale>/**` (languages: `vi` default, `en`) via `next-intl`; never hardcode a string in a component, constant or slice, and add every new key to **all** locales. Follow `.agent/skills/04-i18n.md` (also available as the `i18n` skill) for structure, navigation helpers (`@/src/i18n/navigation`) and the `yarn i18n:check` workflow.
+- **Lists, errors and toasts are standardized.** List pages follow `.agent/skills/05-list-pages.md` (`buildListQuery`, `DataTable` with search + sort, limit 25 default / 200 max, sort `field` / `-field`); errors and toasts follow `.agent/skills/06-errors-and-toasts.md` (`useErrorMessage`, `toast.created/updated/deleted/saveFailed/deleteFailed`, `useConfirm`). Run `yarn conventions:check` — it also runs before `yarn build`.
 - **Reuse the shared components.** Any carousel/slider must use `Carousel` (never hand-rolled scroll-snap, touch handlers or dots), admin tables use `DataTable`, and so on — see `.agent/rules/components.md` for the full list and usage rules.
 
 See `.agent/rules/coding.md` for the rest of this project's coding conventions (also followed by other AI tools used on this repo).

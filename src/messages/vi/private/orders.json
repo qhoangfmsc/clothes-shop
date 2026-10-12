@@ -21,6 +21,9 @@
       "more": "+{count} sản phẩm khác",
       "orderNumber": "Đơn hàng #{id}",
       "viewDetails": "Xem chi tiết"
+    },
+    "toast": {
+      "loadFailed": "Không tải được đơn hàng của bạn. Vui lòng thử lại."
     }
   },
   "detail": {
@@ -37,6 +40,9 @@
     },
     "free": "Miễn phí",
     "total": "Tổng cộng",
-    "itemMeta": "{size} · {color} · SL {quantity}"
+    "itemMeta": "{size} · {color} · SL {quantity}",
+    "toast": {
+      "loadFailed": "Không tải được đơn hàng này. Vui lòng thử lại."
+    }
   }
 }

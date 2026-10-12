@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Plus, X, ImageIcon, ChevronDown, ChevronUp, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
@@ -32,6 +32,7 @@ import type { BannerItem, BannerResponsiveImages } from "@/src/types/site-config
 
 export default function SiteConfigContent() {
   const t = useTranslations("admin.siteConfig");
+  const toErrorMessage = useErrorMessage();
   /* Config keys come from the API; an unknown key shows its raw name */
   const keyLabel = (key: string) =>
     t.has(`keys.${key}.label` as never) ? t(`keys.${key}.label` as never) : key;
@@ -160,7 +161,7 @@ export default function SiteConfigContent() {
       toast.success(t("toast.saved"));
       closeModal();
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.saveFailed")));
+      toast.error(toErrorMessage(err, t("toast.saveFailed")));
     }
   };
 
@@ -176,7 +177,7 @@ export default function SiteConfigContent() {
       await dispatch(deleteSiteConfig(key)).unwrap();
       toast.success(t("toast.deleted"));
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.deleteFailed")));
+      toast.error(toErrorMessage(err, t("toast.deleteFailed")));
     }
   };
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "@/src/contexts/auth-context";
 import Checkbox from "@/src/app/[locale]/_components/Checkbox";
@@ -37,6 +37,7 @@ const GoogleLogo = () => {
 
 export default function GoogleSignInButton() {
   const t = useTranslations("auth.login.google");
+  const toErrorMessage = useErrorMessage();
   const tConsent = useTranslations("auth.login.consent");
   const router = useRouter();
   const { login } = useAuth();
@@ -64,7 +65,7 @@ export default function GoogleSignInButton() {
         await login(codeResponse.code);
         router.push("/");
       } catch (err) {
-        setError(errorMessage(err, t("failed")));
+        setError(toErrorMessage(err, t("failed")));
       } finally {
         setIsLoading(false);
       }

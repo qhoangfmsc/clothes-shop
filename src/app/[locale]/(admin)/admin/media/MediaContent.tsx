@@ -3,8 +3,10 @@
 import { useMemo, useRef, useState } from "react";
 import { Trash2, Eye, Download, Upload, Loader2, RefreshCw, Wifi } from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { errorMessage } from "@/src/i18n/error-message";
+import { errorCodeOf } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import {
   DataTable,
@@ -13,23 +15,19 @@ import {
   type DataTableFetchResult,
   type DataTableRef,
 } from "@/src/app/[locale]/_components/DataTable";
+import { uploadMediaFile } from "@/src/hooks/use-media-upload";
+import { toMediaUrl } from "@/src/lib/media-url";
+import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
+import { ImagePreviewLightbox } from "@/src/app/[locale]/_components/ImagePreviewLightbox";
+import { downloadMediaFile } from "./_common/download";
 import {
   fetchMediaList,
   deleteMediaFile,
   deleteMediaFiles,
-  MEDIA_NOT_CONFIGURED_CODE,
-  MediaApiError,
-  type MediaFile,
-} from "@/src/hooks/use-admin-media";
-import { uploadMediaFile } from "@/src/hooks/use-media-upload";
-import { getAccessToken } from "@/src/lib/auth-api";
-import { toMediaUrl } from "@/src/lib/media-url";
-import { ImagePreviewLightbox } from "@/src/app/[locale]/_components/ImagePreviewLightbox";
-import { downloadMediaFile } from "./_common/download";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
-
-const PAGE_SIZE = 20;
+  pingMedia,
+} from "./_common/moduleSlice";
+import { MEDIA_NOT_CONFIGURED_CODE, MEDIA_SORT_OPTIONS } from "./_common/constants";
+import type { MediaError, MediaFile } from "./_common/types";
 
 /** "image/svg+xml" → "SVG", "image/webp" → "WEBP" */
 function formatType(mimeType: string): string {
@@ -43,6 +41,7 @@ const actionButtonClass =
 
 export default function MediaContent() {
   const t = useTranslations("admin.media");
+  const toErrorMessage = useErrorMessage();
   const locale = useLocale();
   const format = useFormatter();
   const richTags = {
@@ -63,15 +62,17 @@ export default function MediaContent() {
   };
   const formatDate = (iso: string): string => format.dateTime(new Date(iso), "dateTime");
 
+  const sortOptions = useSortOptions(MEDIA_SORT_OPTIONS);
+
   const confirm = useConfirm();
+  const dispatch = useAppDispatch();
+  const { total, isPinging } = useAppSelector((s) => s.media);
   const tableRef = useRef<DataTableRef>(null);
   const uploadInputRef = useRef<HTMLInputElement>(null);
   const dragDepthRef = useRef(0);
 
-  const [total, setTotal] = useState(0);
-  const [loadError, setLoadError] = useState<MediaApiError | null>(null);
+  const [loadError, setLoadError] = useState<MediaError | null>(null);
   const [preview, setPreview] = useState<MediaFile | null>(null);
-  const [isPinging, setIsPinging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
@@ -82,9 +83,15 @@ export default function MediaContent() {
   const fetchMedia = async (
     params: DataTableFetchParams
   ): Promise<DataTableFetchResult<MediaFile>> => {
-    const res = await fetchMediaList({ page: params.page, limit: params.limit });
+    const res = await dispatch(
+      fetchMediaList({
+        search: params.search || undefined,
+        sort: params.sort,
+        page: params.page,
+        limit: params.limit,
+      })
+    ).unwrap();
     setLoadError(null);
-    setTotal(res.total);
     return { data: res.data, total: res.total };
   };
 
@@ -102,7 +109,7 @@ export default function MediaContent() {
       if (succeeded > 0) toast.success(t("toast.uploaded", { count: succeeded }));
       if (firstError) {
         const failed = images.length - succeeded;
-        const reason = errorMessage(firstError.reason, t("toast.uploadFailed"));
+        const reason = toErrorMessage(firstError.reason, t("toast.uploadFailed"));
         toast.error(failed > 1 ? t("toast.uploadFailedMany", { count: failed, reason }) : reason);
       }
       if (succeeded > 0) {
@@ -120,7 +127,7 @@ export default function MediaContent() {
     try {
       await downloadMediaFile(file);
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.downloadFailed")));
+      toast.error(toErrorMessage(err, t("toast.downloadFailed")));
     } finally {
       setDownloadingId(null);
     }
@@ -135,12 +142,12 @@ export default function MediaContent() {
     });
     if (!ok) return;
     try {
-      await deleteMediaFile(file.id);
+      await dispatch(deleteMediaFile(file.id)).unwrap();
       toast.success(t("toast.deleted"));
       setPreview((current) => (current?.id === file.id ? null : current));
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.deleteFailed")));
+      toast.error(toErrorMessage(err, t("toast.deleteFailed")));
     }
   };
 
@@ -152,7 +159,7 @@ export default function MediaContent() {
       danger: true,
     });
     if (!ok) return;
-    const { succeeded, failed } = await deleteMediaFiles(ids);
+    const { succeeded, failed } = await dispatch(deleteMediaFiles(ids)).unwrap();
     if (succeeded > 0) toast.success(t("toast.deletedMany", { count: succeeded }));
     if (failed > 0) toast.error(t("toast.deleteFailedMany", { count: failed }));
     clearSelection();
@@ -160,19 +167,11 @@ export default function MediaContent() {
   };
 
   const handlePing = async () => {
-    setIsPinging(true);
     try {
-      const token = getAccessToken();
-      const res = await fetch(`${API_URL}/api/admin/media/ping`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      const body = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(body.message ?? "");
+      await dispatch(pingMedia()).unwrap();
       toast.success(t("toast.pingOk"));
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.pingFailed")));
-    } finally {
-      setIsPinging(false);
+      toast.error(toErrorMessage(err, t("toast.pingFailed")));
     }
   };
 
@@ -403,7 +402,7 @@ export default function MediaContent() {
       {loadError && !notConfigured && (
         <div className="flex flex-col items-start gap-3 p-4 border border-[var(--accent-rose)] rounded-lg max-w-[640px]">
           <p className="text-sm text-[var(--accent-rose)] font-primary">
-            {errorMessage(loadError, t("errors.loadFailed"))}
+            {toErrorMessage(loadError, t("errors.loadFailed"))}
           </p>
           <button className={secondaryButtonClass} onClick={() => setLoadError(null)}>
             <RefreshCw size={14} /> {t("notConfigured.retry")}
@@ -417,11 +416,11 @@ export default function MediaContent() {
           tableRef={tableRef}
           columns={columns}
           fetchData={fetchMedia}
-          pageSize={PAGE_SIZE}
-          searchable={false}
+          searchPlaceholder={t("table.searchPlaceholder")}
+          sortOptions={sortOptions}
           selectable
           onError={(err) =>
-            setLoadError(err instanceof MediaApiError ? err : new MediaApiError(""))
+            setLoadError({ message: toErrorMessage(err, ""), errorCode: errorCodeOf(err) })
           }
           renderBulkActions={({ keys, clear }) => (
             <button
@@ -431,7 +430,9 @@ export default function MediaContent() {
               <Trash2 size={13} /> {t("table.delete")}
             </button>
           )}
-          emptyMessage={t("table.empty")}
+          emptyMessage={(hasActiveFilters) =>
+            hasActiveFilters ? t("table.emptyFiltered") : t("table.empty")
+          }
         />
       )}
 

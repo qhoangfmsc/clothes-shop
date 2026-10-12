@@ -12,11 +12,6 @@
       "subcategories": "Danh mục con",
       "description": "Mô tả",
       "actions": "Thao tác"
-    },
-    "sort": {
-      "priority": "Độ ưu tiên",
-      "titleAsc": "Tiêu đề A-Z",
-      "titleDesc": "Tiêu đề Z-A"
     }
   },
   "form": {
@@ -53,7 +48,11 @@
   "toast": {
     "updated": "Đã cập nhật danh mục",
     "created": "Đã tạo danh mục",
-    "reordered": "Đã cập nhật thứ tự danh mục"
+    "reordered": "Đã cập nhật thứ tự danh mục",
+    "deleted": "Đã xóa danh mục",
+    "saveFailed": "Lưu thất bại",
+    "deleteFailed": "Xóa thất bại",
+    "reorderFailed": "Sắp xếp thất bại"
   },
   "confirmDelete": {
     "title": "Xóa danh mục",

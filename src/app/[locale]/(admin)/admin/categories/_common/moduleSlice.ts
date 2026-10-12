@@ -5,6 +5,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";
+import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { Category } from "@/src/types/category";
 import type { CategoryListParams } from "./types";
 
@@ -23,7 +24,7 @@ const initialState: CategoriesState = {
   items: [],
   total: 0,
   page: 1,
-  limit: 200,
+  limit: LIST_DEFAULT_LIMIT,
   isListLoading: false,
 };
 
@@ -32,13 +33,9 @@ const initialState: CategoriesState = {
 export const fetchCategoryList = createAsyncThunk(
   "categories/fetchList",
   async (params: CategoryListParams) => {
-    const qs = new URLSearchParams();
-    if (params.search) qs.set("search", params.search);
-    if (params.sort) qs.set("sort", params.sort);
-    if (params.page && params.page > 1) qs.set("page", String(params.page));
-    if (params.limit) qs.set("limit", String(params.limit));
+    const qs = buildListQuery(params);
     return authApi.get<{ data: Category[]; total: number; page: number; limit: number }>(
-      `/api/admin/categories?${qs.toString()}`
+      `/api/admin/categories?${qs}`
     );
   }
 );

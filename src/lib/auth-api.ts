@@ -119,7 +119,7 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
 
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({}));
-    throw new ApiError(errBody.message || `API error: ${res.status}`, res.status);
+    throw new ApiError(errBody.message || `API error: ${res.status}`, res.status, errBody.errorCode);
   }
 
   return res.json();

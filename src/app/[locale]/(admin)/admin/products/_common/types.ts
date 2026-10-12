@@ -7,14 +7,11 @@
 
 import type { Product } from "@/src/types/product";
 
-export interface ProductListParams {
-  search?: string;
+import type { ListParams } from "@/src/lib/list-query";
+export interface ProductListParams extends ListParams {
   category?: string;
   badge?: string;
   status?: string;
-  sort?: string;
-  page?: number;
-  limit?: number;
 }
 
 export interface ProductFormData {

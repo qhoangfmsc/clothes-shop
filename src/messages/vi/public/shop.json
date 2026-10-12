@@ -32,10 +32,10 @@
       "color": "Màu sắc",
       "sort": {
         "newest": "Mới nhất",
-        "price_asc": "Giá: Thấp → Cao",
-        "price_desc": "Giá: Cao → Thấp",
-        "name_asc": "Tên: A → Z",
-        "name_desc": "Tên: Z → A"
+        "priceAsc": "Giá: Thấp → Cao",
+        "priceDesc": "Giá: Cao → Thấp",
+        "nameAsc": "Tên: A → Z",
+        "nameDesc": "Tên: Z → A"
       }
     },
     "productsClient": {

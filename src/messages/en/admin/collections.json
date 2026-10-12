@@ -52,7 +52,10 @@
   },
   "toast": {
     "updated": "Collection updated",
-    "created": "Collection created"
+    "created": "Collection created",
+    "deleted": "Collection deleted",
+    "saveFailed": "Failed to save",
+    "deleteFailed": "Failed to delete"
   },
   "confirmDelete": {
     "title": "Delete collection",

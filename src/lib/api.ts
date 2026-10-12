@@ -30,7 +30,7 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
 
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({}));
-    throw new ApiError(errBody.message || `API error: ${res.status}`, res.status);
+    throw new ApiError(errBody.message || `API error: ${res.status}`, res.status, errBody.errorCode);
   }
 
   return res.json();
@@ -38,9 +38,15 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
 
 export class ApiError extends Error {
   status: number;
-  constructor(message: string, status: number) {
+  /** Machine-readable code the BE sends with an error (e.g. 1601 = media storage not configured). */
+  errorCode?: number;
+  /** `errorCode` as a string: Redux's error serializer keeps `code`, so thunk rejections still carry it. */
+  code?: string;
+  constructor(message: string, status: number, errorCode?: number) {
     super(message);
     this.status = status;
+    this.errorCode = errorCode;
+    this.code = errorCode !== undefined ? String(errorCode) : undefined;
     this.name = "ApiError";
   }
 }

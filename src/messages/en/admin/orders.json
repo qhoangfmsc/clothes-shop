@@ -27,6 +27,6 @@
   },
   "toast": {
     "statusChanged": "Order #{id} → {status}",
-    "failed": "Failed"
+    "statusFailed": "Failed to update status"
   }
 }

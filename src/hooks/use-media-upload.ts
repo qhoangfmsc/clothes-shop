@@ -1,4 +1,5 @@
 import { getAccessToken } from "@/src/lib/auth-api";
+import { ApiError } from "@/src/lib/api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -27,7 +28,7 @@ export async function uploadMediaFile(file: File): Promise<UploadedMedia> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.message ?? "");
+    throw new ApiError(body.message ?? "", res.status, body.errorCode);
   }
 
   const body = await res.json();

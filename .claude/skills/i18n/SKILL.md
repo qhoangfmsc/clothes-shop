@@ -10,7 +10,7 @@ The full convention lives in **`.agent/skills/04-i18n.md`** — read it first an
 Quick checklist before finishing any UI change:
 
 1. No hardcoded user-facing string — use `useTranslations` / `getTranslations` with keys from `src/messages/<locale>/<role>/<module>.json`.
-2. Every new key exists in **en, vi and fr** with identical `{placeholders}` (`yarn i18n:check`).
+2. Every new key exists in **en and vi** with identical `{placeholders}` (`yarn i18n:check`).
 3. Messages are placed by branch: role → module/page → section (table / form / modal / toast), shared admin components in `admin/components/`.
 4. `Link`, `useRouter`, `usePathname`, `redirect` come from `@/src/i18n/navigation`; paths have no locale prefix.
 5. Money/dates via `useFormatter` (`"price"`, `"priceFixed"`, `"short"`, `"dateTime"`); plurals via ICU; no sentence fragments.

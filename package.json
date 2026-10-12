@@ -9,9 +9,10 @@
     "lint": "next lint",
     "format": "prettier --write \"app/**/*.{ts,tsx,css}\"",
     "predev": "node scripts/i18n.mjs sync",
-    "prebuild": "node scripts/i18n.mjs sync && node scripts/i18n.mjs check",
+    "prebuild": "node scripts/i18n.mjs sync && node scripts/i18n.mjs check && node scripts/check-conventions.mjs",
     "i18n:sync": "node scripts/i18n.mjs sync",
-    "i18n:check": "node scripts/i18n.mjs check"
+    "i18n:check": "node scripts/i18n.mjs check",
+    "conventions:check": "node scripts/check-conventions.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

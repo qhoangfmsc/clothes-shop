@@ -1,3 +1,4 @@
+import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import type { MetadataRoute } from "next";
 import { routing } from "@/src/i18n/routing";
 import { SITE_URL } from "@/src/lib/site-url";
@@ -23,7 +24,7 @@ const STATIC_PATHS = [
   /* The /legal overview is left out on purpose — it repeats these three pages and is noindex */
   ...LEGAL_DOCS.map((doc) => doc.path),
 ];
-const PAGE_SIZE = 100; // API maximum
+const PAGE_SIZE = LIST_MAX_LIMIT;
 const MAX_PAGES = 100; // API maximum
 
 /** One sitemap entry per language; every entry lists all language versions (hreflang). */

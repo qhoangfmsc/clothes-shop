@@ -30,6 +30,7 @@ import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifi
 import { CSS } from "@dnd-kit/utilities";
 import { useLocale, useTranslations } from "next-intl";
 import { useDebounce } from "@/src/hooks/use-debounce";
+import { LIST_DEFAULT_LIMIT, clampLimit } from "@/src/lib/list-query";
 
 /* ═══════════════════════════════════ Types ═══════════════════════════════════ */
 
@@ -114,7 +115,7 @@ export interface DataTableProps<T> {
   defaultSort?: string;
 
   /* ── Pagination ── */
-  /** Records per page (default 25). A table that must show everything at once passes a larger value. */
+  /** Records per page: `LIST_DEFAULT_LIMIT` (25) unless set, capped at `LIST_MAX_LIMIT` (200). */
   pageSize?: number;
 
   /* ── Drag & drop ordering ── */
@@ -141,7 +142,6 @@ export interface DataTableProps<T> {
 
 /* ═══════════════════════════════ Defaults ═══════════════════════════════════ */
 
-export const DEFAULT_PAGE_SIZE = 25;
 const DEBOUNCE_MS = 350;
 
 function defaultKeyExtractor<T extends { id?: string | number }>(row: T): string {
@@ -242,7 +242,7 @@ function DataTableInner<T extends { id?: string | number }>(
     filters = [],
     sortOptions = [],
     defaultSort = "-createdAt",
-    pageSize = DEFAULT_PAGE_SIZE,
+    pageSize: requestedPageSize = LIST_DEFAULT_LIMIT,
     reorder,
     keyExtractor = defaultKeyExtractor,
     emptyMessage,
@@ -252,6 +252,8 @@ function DataTableInner<T extends { id?: string | number }>(
     onError,
   } = props;
 
+  /* Never ask the BE for more than its list maximum (it answers 400) */
+  const pageSize = clampLimit(requestedPageSize);
   const t = useTranslations("admin.components.dataTable");
   const locale = useLocale();
 
@@ -286,6 +288,8 @@ function DataTableInner<T extends { id?: string | number }>(
   const fetchingRef = useRef(false);
   const pendingRef = useRef(false);
   const activeParamsRef = useRef("");
+  /* Always the `load` of the latest render, so a retry never runs with stale params */
+  const loadRef = useRef<(() => Promise<void>) | null>(null);
 
   const buildParamsKey = useCallback(
     (overrides?: Partial<DataTableFetchParams>) =>
@@ -340,12 +344,26 @@ function DataTableInner<T extends { id?: string | number }>(
         /* If params changed while this request was in-flight, re-fetch with latest params */
         if (pendingRef.current) {
           pendingRef.current = false;
-          load();
+          loadRef.current?.();
         }
       }
     },
-    [buildParamsKey, fetchData]
+    [
+      buildParamsKey,
+      fetchData,
+      debouncedSearch,
+      activeFilters,
+      sort,
+      page,
+      pageSize,
+      keyExtractor,
+      onError,
+    ]
   );
+
+  useEffect(() => {
+    loadRef.current = () => load();
+  }, [load]);
 
   /* ── Selection ── */
   const allSelected = data.length > 0 && data.every((row) => selectedKeys.has(keyExtractor(row)));

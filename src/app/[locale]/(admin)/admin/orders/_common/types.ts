@@ -4,12 +4,9 @@
 
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
 
-export interface OrderListParams {
+import type { ListParams } from "@/src/lib/list-query";
+export interface OrderListParams extends ListParams {
   status?: string;
-  search?: string;
-  sort?: string;
-  page?: number;
-  limit?: number;
 }
 
 export interface OrderListResult {

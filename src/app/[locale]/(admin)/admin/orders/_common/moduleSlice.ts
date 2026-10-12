@@ -5,6 +5,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";
+import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
 import type { OrderListParams } from "./types";
 
@@ -23,7 +24,7 @@ const initialState: OrdersState = {
   items: [],
   total: 0,
   page: 1,
-  limit: 20,
+  limit: LIST_DEFAULT_LIMIT,
   isListLoading: false,
 };
 
@@ -32,14 +33,9 @@ const initialState: OrdersState = {
 export const fetchOrderList = createAsyncThunk(
   "orders/fetchList",
   async (params: OrderListParams) => {
-    const qs = new URLSearchParams();
-    if (params.status) qs.set("status", params.status);
-    if (params.search) qs.set("search", params.search);
-    if (params.sort) qs.set("sort", params.sort);
-    if (params.page && params.page > 1) qs.set("page", String(params.page));
-    if (params.limit) qs.set("limit", String(params.limit));
+    const qs = buildListQuery(params, { status: params.status });
     return authApi.get<{ data: AdminOrder[]; total: number; page: number; limit: number }>(
-      `/api/admin/orders?${qs.toString()}`
+      `/api/admin/orders?${qs}`
     );
   }
 );

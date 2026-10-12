@@ -5,6 +5,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";
+import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { Collection } from "@/src/types/collection";
 import type { CollectionListParams } from "./types";
 
@@ -23,7 +24,7 @@ const initialState: CollectionsState = {
   items: [],
   total: 0,
   page: 1,
-  limit: 25,
+  limit: LIST_DEFAULT_LIMIT,
   isListLoading: false,
 };
 
@@ -32,18 +33,13 @@ const initialState: CollectionsState = {
 export const fetchCollectionList = createAsyncThunk(
   "collections/fetchList",
   async (params: CollectionListParams) => {
-    const qs = new URLSearchParams();
-    if (params.search) qs.set("search", params.search);
-    if (params.season) qs.set("season", params.season);
-    if (params.sort) qs.set("sort", params.sort);
-    if (params.page && params.page > 1) qs.set("page", String(params.page));
-    if (params.limit) qs.set("limit", String(params.limit));
+    const qs = buildListQuery(params, { season: params.season });
     const res = await authApi.get<{
       data: (Omit<Collection, "productIds"> & { products?: { id: string }[] })[];
       total: number;
       page: number;
       limit: number;
-    }>(`/api/admin/collections?${qs.toString()}`);
+    }>(`/api/admin/collections?${qs}`);
     return {
       ...res,
       data: res.data.map((item) => ({

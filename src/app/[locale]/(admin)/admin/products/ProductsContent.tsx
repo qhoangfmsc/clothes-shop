@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, X, ImageIcon } from "lucide-react";
 import { useAdminCategories } from "@/src/hooks/use-admin-api";
+import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import { ImageListField } from "@/src/app/[locale]/_components/ImageListField";
@@ -26,7 +28,7 @@ import {
   type FormTab,
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
   fetchProductList,
@@ -34,7 +36,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "./_common/moduleSlice";
-import { SORT_OPTIONS, SIZE_GROUPS, TAG_SUGGESTIONS, EMPTY_FORM } from "./_common/constants";
+import { PRODUCT_SORT_OPTIONS, SIZE_GROUPS, TAG_SUGGESTIONS, EMPTY_FORM } from "./_common/constants";
 import type { ProductListResult } from "./_common/types";
 import type { Product, ProductColor } from "@/src/types/product";
 import type { Category, SubCategory } from "@/src/types/category";
@@ -72,6 +74,7 @@ function badgeColor(b: string): string {
 
 export default function ProductsContent() {
   const t = useTranslations("admin.products");
+  const toErrorMessage = useErrorMessage();
   const tStatus = useTranslations("common.status");
   const tBadge = useTranslations("common.productBadge");
   const tCrud = useTranslations("admin.components.crud");
@@ -82,10 +85,7 @@ export default function ProductsContent() {
     { id: "variants", label: t("form.tabs.variants") },
     { id: "images", label: t("form.tabs.images") },
   ];
-  const sortOptions = SORT_OPTIONS.map((o) => ({
-    value: o.value,
-    label: t(`table.sort.${o.key}`),
-  }));
+  const sortOptions = useSortOptions(PRODUCT_SORT_OPTIONS);
   const { toast } = useToast();
   const confirm = useConfirm();
   const tableRef = useRef<DataTableRef>(null);
@@ -94,7 +94,7 @@ export default function ProductsContent() {
   const { isCreating, isUpdating, total } = useAppSelector((s) => s.products);
   const isSaving = isCreating || isUpdating;
 
-  const { categories: catList } = useAdminCategories({ limit: 200 });
+  const { categories: catList } = useAdminCategories({ limit: LIST_MAX_LIMIT });
 
   /* ── fetchData for DataTable (Redux thunk) ── */
   const fetchProducts = async (params: DataTableFetchParams): Promise<ProductListResult> => {
@@ -361,7 +361,7 @@ export default function ProductsContent() {
       tableRef.current?.refresh();
       closeModal();
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.saveFailed")));
+      toast.error(toErrorMessage(err, t("toast.saveFailed")));
     }
   };
 
@@ -378,7 +378,7 @@ export default function ProductsContent() {
       toast.success(t("toast.deleted"));
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.deleteFailed")));
+      toast.error(toErrorMessage(err, t("toast.deleteFailed")));
     }
   };
 

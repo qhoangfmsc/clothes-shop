@@ -1,10 +1,21 @@
 {
   "edit": "Sửa",
   "delete": "Xóa",
-  "deleted": "Đã xóa",
-  "failed": "Thất bại",
   "sort": {
     "newest": "Mới nhất",
-    "oldest": "Cũ nhất"
+    "oldest": "Cũ nhất",
+    "priority": "Độ ưu tiên",
+    "nameAsc": "Tên A-Z",
+    "nameDesc": "Tên Z-A",
+    "titleAsc": "Tiêu đề A-Z",
+    "titleDesc": "Tiêu đề Z-A",
+    "emailAsc": "Email A-Z",
+    "emailDesc": "Email Z-A",
+    "priceAsc": "Giá ↑",
+    "priceDesc": "Giá ↓",
+    "totalAsc": "Tổng tiền ↑",
+    "totalDesc": "Tổng tiền ↓",
+    "sizeAsc": "Nhỏ nhất trước",
+    "sizeDesc": "Lớn nhất trước"
   }
 }

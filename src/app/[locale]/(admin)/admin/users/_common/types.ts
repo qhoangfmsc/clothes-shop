@@ -3,13 +3,11 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { AdminUser } from "@/src/hooks/use-admin-api";
+import type { ListParams } from "@/src/lib/list-query";
 
-export interface UserListParams {
-  search?: string;
+export interface UserListParams extends ListParams {
   role?: string;
   status?: string;
-  page?: number;
-  limit?: number;
 }
 
 export interface UserUpdateData {

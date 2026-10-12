@@ -22,5 +22,14 @@
     "role": "Your role:",
     "back": "Back to Store",
     "signIn": "Sign In"
+  },
+  "byCode": {
+    "1101": "Category not found. The list may be out of date.",
+    "1106": "The same category appears twice in the new order.",
+    "1107": "The category list has changed since you opened it. It has been reloaded — please try again.",
+    "1108": "That priority is outside the valid range.",
+    "1603": "Only image files can be uploaded.",
+    "1605": "The media storage could not save the file. Please try again.",
+    "1606": "The file is too large. Please choose a smaller image."
   }
 }

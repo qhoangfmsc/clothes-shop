@@ -2,3 +2,7 @@
 /node_modules
 .env
 .env.local
+
+# macOS / build artifacts
+.DS_Store
+*.tsbuildinfo

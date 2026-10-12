@@ -52,7 +52,10 @@
   },
   "toast": {
     "updated": "Đã cập nhật bộ sưu tập",
-    "created": "Đã tạo bộ sưu tập"
+    "created": "Đã tạo bộ sưu tập",
+    "deleted": "Đã xóa bộ sưu tập",
+    "saveFailed": "Lưu thất bại",
+    "deleteFailed": "Xóa thất bại"
   },
   "confirmDelete": {
     "title": "Xóa bộ sưu tập",

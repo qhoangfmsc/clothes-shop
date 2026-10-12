@@ -5,11 +5,12 @@ import { useLocale, useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { X, AlertTriangle } from "lucide-react";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useOrderStatusLabel } from "@/src/i18n/use-labels";
 import OrderDetailPanel from "@/src/app/[locale]/_components/OrderDetailPanel";
 import { type AdminOrder } from "@/src/hooks/use-admin-api";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import {
   DataTable,
@@ -20,7 +21,7 @@ import {
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { fetchOrderList, updateOrderStatus, fetchOrderDetail } from "./_common/moduleSlice";
-import { ORDER_STATUSES } from "./_common/constants";
+import { ORDER_STATUSES, ORDER_SORT_OPTIONS } from "./_common/constants";
 import type { OrderListResult } from "./_common/types";
 
 /* ═══════════════════════════════ Helpers ═══════════════════════════════ */
@@ -41,6 +42,8 @@ function statusStyle(s: string): string {
 
 export default function OrdersContent() {
   const t = useTranslations("admin.orders");
+  const toErrorMessage = useErrorMessage();
+  const sortOptions = useSortOptions(ORDER_SORT_OPTIONS);
   const locale = useLocale();
   const format = useFormatter();
   const statusLabel = useOrderStatusLabel();
@@ -221,7 +224,7 @@ export default function OrdersContent() {
       }
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.failed")));
+      toast.error(toErrorMessage(err, t("toast.statusFailed")));
     }
   };
 
@@ -247,6 +250,7 @@ export default function OrdersContent() {
             options: ORDER_STATUSES.map((s) => ({ value: s, label: statusLabel(s) })),
           },
         ]}
+        sortOptions={sortOptions}
       />
 
       {/* ═══════════════ DETAIL / ERROR PANEL ═══════════════ */}

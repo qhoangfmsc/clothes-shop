@@ -7,7 +7,9 @@ import { Eye, X, Package, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-
 import { useAdminUsers, type AdminUser, type AdminOrder } from "@/src/hooks/use-admin-api";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import OrderDetailPanel from "@/src/app/[locale]/_components/OrderDetailPanel";
+import { buildListQuery } from "@/src/lib/list-query";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { useSystemPasswordPrompt } from "@/src/app/[locale]/_components/SystemPasswordPrompt";
 import {
   DataTable,
@@ -24,11 +26,11 @@ import {
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { PERMISSIONS, hasPermission } from "@/src/lib/permissions";
 import { useAuth } from "@/src/contexts/auth-context";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useOrderStatusLabel, useRoleLabel } from "@/src/i18n/use-labels";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { fetchUserList, updateUser } from "./_common/moduleSlice";
-import { ROLE_OPTIONS, STATUS_OPTIONS } from "./_common/constants";
+import { ROLE_OPTIONS, STATUS_OPTIONS, USER_SORT_OPTIONS } from "./_common/constants";
 import type { UserListResult } from "./_common/types";
 import { authApi } from "@/src/lib/auth-api";
 
@@ -36,6 +38,8 @@ import { authApi } from "@/src/lib/auth-api";
 
 export default function UsersContent() {
   const t = useTranslations("admin.users");
+  const toErrorMessage = useErrorMessage();
+  const sortOptions = useSortOptions(USER_SORT_OPTIONS);
   const tStatus = useTranslations("common.status");
   const locale = useLocale();
   const format = useFormatter();
@@ -63,6 +67,7 @@ export default function UsersContent() {
         search: params.search || undefined,
         role: params.filters.role || undefined,
         status: params.filters.status || undefined,
+        sort: params.sort,
         page: params.page,
         limit: params.limit,
       })
@@ -184,7 +189,7 @@ export default function UsersContent() {
       setEditingUser((u) => (u ? { ...u, role: selectedRole } : u));
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.roleFailed")));
+      toast.error(toErrorMessage(err, t("toast.roleFailed")));
     }
   };
 
@@ -198,12 +203,9 @@ export default function UsersContent() {
   const fetchUserOrders = async (userId: string, page: number) => {
     setOrdersLoading(true);
     try {
-      const qs = new URLSearchParams();
-      qs.set("userId", userId);
-      qs.set("limit", String(ORDERS_PAGE_SIZE));
-      if (page > 1) qs.set("page", String(page));
+      const qs = buildListQuery({ page, limit: ORDERS_PAGE_SIZE }, { userId });
       const res = await authApi.get<{ data: AdminOrder[]; total: number }>(
-        `/api/admin/orders?${qs.toString()}`
+        `/api/admin/orders?${qs}`
       );
       setUserOrders(res.data);
       setOrdersTotal(res.total);
@@ -287,6 +289,7 @@ export default function UsersContent() {
             options: STATUS_OPTIONS.map((s) => ({ value: s, label: tStatus(s) })),
           },
         ]}
+        sortOptions={sortOptions}
       />
 
       {/* ═══════════════ EDIT MODAL ═══════════════ */}

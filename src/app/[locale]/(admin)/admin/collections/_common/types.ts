@@ -4,12 +4,9 @@
 
 import type { Collection } from "@/src/types/collection";
 
-export interface CollectionListParams {
-  search?: string;
+import type { ListParams } from "@/src/lib/list-query";
+export interface CollectionListParams extends ListParams {
   season?: string;
-  sort?: string;
-  page?: number;
-  limit?: number;
 }
 
 export interface CollectionFormData {

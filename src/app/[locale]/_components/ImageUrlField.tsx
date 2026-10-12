@@ -8,7 +8,7 @@ import { uploadMediaFile } from "@/src/hooks/use-media-upload";
 import { toMediaUrl } from "@/src/lib/media-url";
 import { inputClass } from "./AdminFormKit";
 import { ImagePreviewLightbox } from "./ImagePreviewLightbox";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 
 /** A single image-URL input that also accepts a direct upload — the
  *  upload goes to the Supabase Storage bucket and fills the field with
@@ -25,6 +25,7 @@ export function ImageUrlField({
 }) {
   const t = useTranslations("admin.components.imageFields");
   const { toast } = useToast();
+  const toErrorMessage = useErrorMessage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [previewFailed, setPreviewFailed] = useState(false);
@@ -38,7 +39,7 @@ export function ImageUrlField({
       setPreviewFailed(false);
       toast.success(t("toast.imageUploaded"));
     } catch (err) {
-      toast.error(errorMessage(err, t("toast.uploadFailed")));
+      toast.error(toErrorMessage(err, t("toast.uploadFailed")));
     } finally {
       setIsUploading(false);
     }

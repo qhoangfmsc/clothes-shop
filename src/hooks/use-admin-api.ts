@@ -7,6 +7,7 @@
 
 import useSWR from "swr";
 import { authApi } from "@/src/lib/auth-api";
+import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
@@ -54,15 +55,7 @@ export interface ProductFormData {
 }
 
 export function useAdminProducts(filters: ProductFilters = {}) {
-  const params = new URLSearchParams();
-  if (filters.category) params.set("category", filters.category);
-  if (filters.badge) params.set("badge", filters.badge);
-  if (filters.status) params.set("status", filters.status);
-  if (filters.sort) params.set("sort", filters.sort);
-  if (filters.search) params.set("search", filters.search);
-  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
-  if (filters.limit) params.set("limit", String(filters.limit));
-  const qs = params.toString();
+  const qs = buildListQuery(filters, { category: filters.category, badge: filters.badge, status: filters.status });
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<Product>>(
     `/api/admin/products?${qs}`,
@@ -89,7 +82,7 @@ export function useAdminProducts(filters: ProductFilters = {}) {
     products: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 25,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isValidating,
     isError: !!error,
@@ -112,12 +105,7 @@ export interface CategoryFilters {
 }
 
 export function useAdminCategories(filters: CategoryFilters = {}) {
-  const params = new URLSearchParams();
-  if (filters.search) params.set("search", filters.search);
-  if (filters.sort) params.set("sort", filters.sort);
-  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
-  if (filters.limit) params.set("limit", String(filters.limit));
-  const qs = params.toString();
+  const qs = buildListQuery(filters);
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<Category>>(
     `/api/admin/categories?${qs}`,
@@ -144,7 +132,7 @@ export function useAdminCategories(filters: CategoryFilters = {}) {
     categories: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 25,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isValidating,
     isError: !!error,
@@ -168,13 +156,7 @@ export interface CollectionFilters {
 }
 
 export function useAdminCollections(filters: CollectionFilters = {}) {
-  const params = new URLSearchParams();
-  if (filters.search) params.set("search", filters.search);
-  if (filters.season) params.set("season", filters.season);
-  if (filters.sort) params.set("sort", filters.sort);
-  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
-  if (filters.limit) params.set("limit", String(filters.limit));
-  const qs = params.toString();
+  const qs = buildListQuery(filters, { season: filters.season });
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<Collection>>(
     `/api/admin/collections?${qs}`,
@@ -204,7 +186,7 @@ export function useAdminCollections(filters: CollectionFilters = {}) {
     collections: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 25,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isValidating,
     isError: !!error,
@@ -253,13 +235,7 @@ export interface OrderFilters {
 }
 
 export function useAdminOrders(filters: OrderFilters = {}) {
-  const params = new URLSearchParams();
-  if (filters.status) params.set("status", filters.status);
-  if (filters.search) params.set("search", filters.search);
-  if (filters.sort) params.set("sort", filters.sort);
-  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
-  if (filters.limit) params.set("limit", String(filters.limit));
-  const qs = params.toString();
+  const qs = buildListQuery(filters, { status: filters.status });
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<AdminOrder>>(
     `/api/admin/orders?${qs}`,
@@ -284,7 +260,7 @@ export function useAdminOrders(filters: OrderFilters = {}) {
     orders: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 25,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isValidating,
     isError: !!error,
@@ -325,12 +301,7 @@ export interface UserFilters {
 }
 
 export function useAdminUsers(filters: UserFilters = {}) {
-  const params = new URLSearchParams();
-  if (filters.role) params.set("role", filters.role);
-  if (filters.status) params.set("status", filters.status);
-  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
-  if (filters.limit) params.set("limit", String(filters.limit));
-  const qs = params.toString();
+  const qs = buildListQuery(filters, { role: filters.role, status: filters.status });
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<ListResponse<AdminUser>>(
     `/api/admin/users?${qs}`,
@@ -352,7 +323,7 @@ export function useAdminUsers(filters: UserFilters = {}) {
     users: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 25,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isValidating,
     isError: !!error,

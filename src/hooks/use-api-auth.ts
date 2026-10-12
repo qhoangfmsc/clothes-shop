@@ -12,6 +12,7 @@
 
 import { useCallback, useRef } from "react";
 import { mapMediaUrls } from "@/src/lib/media-url";
+import { ApiError } from "@/src/lib/api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 const TOKEN_KEY = "clothes_shop_access_token";
@@ -42,16 +43,6 @@ interface ApiFetchOptions {
   headers?: Record<string, string>;
   /** Skip auth header (for public endpoints) */
   public?: boolean;
-}
-
-interface ApiError extends Error {
-  status: number;
-}
-
-function createApiError(message: string, status: number): ApiError {
-  const err = new Error(message) as ApiError;
-  err.status = status;
-  return err;
 }
 
 /**
@@ -133,15 +124,16 @@ export function useApiAuth() {
         if (newToken) {
           res = await doFetch(newToken);
         } else {
-          throw createApiError("", 401);
+          throw new ApiError("", 401);
         }
       }
 
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}));
-        throw createApiError(
+        throw new ApiError(
           errBody.message || `API error: ${res.status}`,
-          res.status
+          res.status,
+          errBody.errorCode
         );
       }
 
@@ -177,9 +169,10 @@ export async function apiFetchStandalone<T = unknown>(
 
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({}));
-    throw createApiError(
+    throw new ApiError(
       errBody.message || `API error: ${res.status}`,
-      res.status
+      res.status,
+      errBody.errorCode
     );
   }
 

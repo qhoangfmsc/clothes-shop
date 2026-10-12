@@ -5,6 +5,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";
+import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import type { AdminUser } from "@/src/hooks/use-admin-api";
 import type { UserListParams, UserUpdateData } from "./types";
 
@@ -23,7 +24,7 @@ const initialState: UsersState = {
   items: [],
   total: 0,
   page: 1,
-  limit: 20,
+  limit: LIST_DEFAULT_LIMIT,
   isListLoading: false,
 };
 
@@ -32,14 +33,9 @@ const initialState: UsersState = {
 export const fetchUserList = createAsyncThunk(
   "users/fetchList",
   async (params: UserListParams) => {
-    const qs = new URLSearchParams();
-    if (params.search) qs.set("search", params.search);
-    if (params.role) qs.set("role", params.role);
-    if (params.status) qs.set("status", params.status);
-    if (params.page && params.page > 1) qs.set("page", String(params.page));
-    if (params.limit) qs.set("limit", String(params.limit));
+    const qs = buildListQuery(params, { role: params.role, status: params.status });
     return authApi.get<{ data: AdminUser[]; total: number; page: number; limit: number }>(
-      `/api/admin/users?${qs.toString()}`
+      `/api/admin/users?${qs}`
     );
   }
 );

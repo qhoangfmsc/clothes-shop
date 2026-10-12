@@ -21,6 +21,9 @@
       "more": "+{count, plural, one {# more item} other {# more items}}",
       "orderNumber": "Order #{id}",
       "viewDetails": "View Details"
+    },
+    "toast": {
+      "loadFailed": "Couldn't load your orders. Please try again."
     }
   },
   "detail": {
@@ -37,6 +40,9 @@
     },
     "free": "Free",
     "total": "Total",
-    "itemMeta": "{size} · {color} · Qty {quantity}"
+    "itemMeta": "{size} · {color} · Qty {quantity}",
+    "toast": {
+      "loadFailed": "Couldn't load this order. Please try again."
+    }
   }
 }

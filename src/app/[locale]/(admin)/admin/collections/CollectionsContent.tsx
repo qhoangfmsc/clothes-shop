@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useMemo, useRef, type FormEvent } from "react";
+import { useState, useEffect, useMemo, useRef, type FormEvent } from "react";
 import Image from "next/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, X, ImageIcon, Search } from "lucide-react";
 import { useAdminProducts } from "@/src/hooks/use-admin-api";
+import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import { ImageUrlField } from "@/src/app/[locale]/_components/ImageUrlField";
@@ -26,7 +28,7 @@ import {
   type FormTab,
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
-import { errorMessage } from "@/src/i18n/error-message";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
   fetchCollectionList,
@@ -34,7 +36,7 @@ import {
   updateCollection,
   deleteCollection,
 } from "./_common/moduleSlice";
-import { SEASONS, EMPTY_COLLECTION_FORM } from "./_common/constants";
+import { SEASONS, EMPTY_COLLECTION_FORM, COLLECTION_SORT_OPTIONS } from "./_common/constants";
 import type { CollectionListResult } from "./_common/types";
 import type { Collection } from "@/src/types/collection";
 import { toMediaUrl } from "@/src/lib/media-url";
@@ -54,7 +56,9 @@ function slugify(text: string): string {
 
 export default function CollectionsContent() {
   const t = useTranslations("admin.collections");
+  const toErrorMessage = useErrorMessage();
   const tCrud = useTranslations("admin.components.crud");
+  const sortOptions = useSortOptions(COLLECTION_SORT_OPTIONS);
   const locale = useLocale();
   const format = useFormatter();
   const COLLECTION_TABS: FormTab[] = [
@@ -69,14 +73,21 @@ export default function CollectionsContent() {
   const { isCreating, isUpdating, total, items } = useAppSelector((s) => s.collections);
   const isSaving = isCreating || isUpdating;
 
-  /* Derive unique seasons from loaded items for filter */
-  const seasonOptions = useMemo(() => {
-    const uniqueSeasons = [...new Set(items.map((item) => item.season).filter(Boolean))];
-    return uniqueSeasons.map((s) => ({ value: s, label: s }));
+  /* Season filter options: the known seasons plus every one seen in a loaded page. They only ever
+     grow — building them from the current (filtered) page alone would collapse the list to the
+     selected season and make it impossible to switch to another one. */
+  const [seasons, setSeasons] = useState<string[]>([...SEASONS]);
+  useEffect(() => {
+    setSeasons((prev) => {
+      const next = new Set(prev);
+      for (const item of items) if (item.season) next.add(item.season);
+      return next.size === prev.length ? prev : [...next];
+    });
   }, [items]);
+  const seasonOptions = useMemo(() => seasons.map((s) => ({ value: s, label: s })), [seasons]);
 
   /* Products for multi-select (read-only SWR reference data) */
-  const { products: allProducts } = useAdminProducts({ limit: 200 });
+  const { products: allProducts } = useAdminProducts({ limit: LIST_MAX_LIMIT });
 
   /* ── fetchData for DataTable ── */
   const fetchCollections = async (params: DataTableFetchParams): Promise<CollectionListResult> => {
@@ -236,7 +247,7 @@ export default function CollectionsContent() {
       tableRef.current?.refresh();
       closeModal();
     } catch (err) {
-      toast.error(errorMessage(err, tCrud("failed")));
+      toast.error(toErrorMessage(err, t("toast.saveFailed")));
     }
   };
 
@@ -250,10 +261,10 @@ export default function CollectionsContent() {
     if (!ok) return;
     try {
       await dispatch(deleteCollection(id)).unwrap();
-      toast.success(tCrud("deleted"));
+      toast.success(t("toast.deleted"));
       tableRef.current?.refresh();
     } catch (err) {
-      toast.error(errorMessage(err, tCrud("failed")));
+      toast.error(toErrorMessage(err, t("toast.deleteFailed")));
     }
   };
 
@@ -291,6 +302,7 @@ export default function CollectionsContent() {
             options: seasonOptions,
           },
         ]}
+        sortOptions={sortOptions}
       />
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}

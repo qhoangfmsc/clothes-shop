@@ -12,6 +12,7 @@ import useSWR from "swr";
 import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
+import { buildListQuery } from "@/src/lib/list-query";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
@@ -38,19 +39,15 @@ const defaultConfig = {
 /* ═══ Products ═══ */
 
 function buildProductQS(params: ProductListParams): string {
-  const qs = new URLSearchParams();
-  if (params.search) qs.set("search", params.search);
-  if (params.category) qs.set("category", params.category);
-  if (params.subcategory) qs.set("subcategory", params.subcategory);
-  if (params.badge) qs.set("badge", params.badge);
-  if (params.sort) qs.set("sort", params.sort);
-  if (params.minPrice != null) qs.set("minPrice", String(params.minPrice));
-  if (params.maxPrice != null) qs.set("maxPrice", String(params.maxPrice));
-  if (params.sizes) qs.set("sizes", params.sizes);
-  if (params.colors) qs.set("colors", params.colors);
-  if (params.page && params.page > 1) qs.set("page", String(params.page));
-  if (params.limit) qs.set("limit", String(params.limit));
-  return qs.toString();
+  return buildListQuery(params, {
+    category: params.category,
+    subcategory: params.subcategory,
+    badge: params.badge,
+    minPrice: params.minPrice,
+    maxPrice: params.maxPrice,
+    sizes: params.sizes,
+    colors: params.colors,
+  });
 }
 
 export function useProducts(params: ProductListParams = {}) {
@@ -175,10 +172,7 @@ export function useCollection(slug: string | null) {
 
 /* ═══ Reviews ═══ */
 export function useReviews(productId: string | null, page = 1, limit = 24) {
-  const qs = new URLSearchParams();
-  if (page > 1) qs.set("page", String(page));
-  if (limit !== 24) qs.set("limit", String(limit));
-  const q = qs.toString();
+  const q = buildListQuery({ page, limit: limit !== 24 ? limit : undefined });
 
   const { data, isLoading, error } = useSWR<{
     data: Review[];

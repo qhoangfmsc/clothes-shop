@@ -7,12 +7,12 @@ import type { ProductColor } from "@/src/types/product";
 
 /* ── Sort Options ── */
 
-/** `key` is a label in messages: admin.products.table.sort.<key> */
-export const SORT_OPTIONS = [
+/** `sort=field` ascending, `-field` descending. `key` = label in admin.components.crud.sort.* */
+export const PRODUCT_SORT_OPTIONS = [
   { value: "-createdAt", key: "newest" },
   { value: "createdAt", key: "oldest" },
-  { value: "-price", key: "priceDown" },
-  { value: "price", key: "priceUp" },
+  { value: "-price", key: "priceDesc" },
+  { value: "price", key: "priceAsc" },
   { value: "name", key: "nameAsc" },
   { value: "-name", key: "nameDesc" },
 ] as const;

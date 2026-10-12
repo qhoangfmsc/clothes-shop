@@ -15,6 +15,7 @@ import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import { mapMediaUrls } from "@/src/lib/media-url";
+import { buildListQuery } from "@/src/lib/list-query";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -82,19 +83,15 @@ export interface ReviewListResponse {
    ═══════════════════════════════════════════════════════════ */
 
 function buildProductQS(params: ProductListParams): string {
-  const qs = new URLSearchParams();
-  if (params.search) qs.set("search", params.search);
-  if (params.category) qs.set("category", params.category);
-  if (params.subcategory) qs.set("subcategory", params.subcategory);
-  if (params.badge) qs.set("badge", params.badge);
-  if (params.sort) qs.set("sort", params.sort);
-  if (params.minPrice != null) qs.set("minPrice", String(params.minPrice));
-  if (params.maxPrice != null) qs.set("maxPrice", String(params.maxPrice));
-  if (params.sizes) qs.set("sizes", params.sizes);
-  if (params.colors) qs.set("colors", params.colors);
-  if (params.page && params.page > 1) qs.set("page", String(params.page));
-  if (params.limit) qs.set("limit", String(params.limit));
-  return qs.toString();
+  return buildListQuery(params, {
+    category: params.category,
+    subcategory: params.subcategory,
+    badge: params.badge,
+    minPrice: params.minPrice,
+    maxPrice: params.maxPrice,
+    sizes: params.sizes,
+    colors: params.colors,
+  });
 }
 
 export async function getProducts(category?: string, subcategory?: string): Promise<Product[]> {
@@ -226,9 +223,6 @@ export async function getReviews(
   page = 1,
   limit = 24
 ): Promise<ReviewListResponse> {
-  const qs = new URLSearchParams();
-  if (page > 1) qs.set("page", String(page));
-  if (limit !== 24) qs.set("limit", String(limit));
-  const q = qs.toString();
+  const q = buildListQuery({ page, limit: limit !== 24 ? limit : undefined });
   return apiFetch<ReviewListResponse>(`/api/reviews/${productId}${q ? `?${q}` : ""}`);
 }
