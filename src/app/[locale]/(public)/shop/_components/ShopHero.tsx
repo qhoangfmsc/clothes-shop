@@ -1,15 +1,14 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ResponsiveBannerImage from "@/src/app/[locale]/_components/ResponsiveBannerImage";
+import BannerFade from "@/src/app/[locale]/_components/BannerFade";
+import { CarouselDots } from "@/src/app/[locale]/_components/CarouselControls";
+import { useBannerRotation } from "@/src/hooks/use-banner-rotation";
 import type { BannerItem } from "@/src/types/site-config";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const ROTATE_MS = 5000;
 
 interface ShopHeroProps {
   label: string;
@@ -20,20 +19,8 @@ interface ShopHeroProps {
 }
 
 export default function ShopHero({ label, title, description, banners }: ShopHeroProps) {
-  const heroRef = useRef<HTMLElement>(null);
-  const [idx, setIdx] = useState(0);
-
-  /* Reset to the first slide whenever the banner list itself changes */
-  useEffect(() => {
-    setIdx(0);
-  }, [banners]);
-
-  /* Auto-rotate when there's more than one banner */
-  useEffect(() => {
-    if (banners.length <= 1) return;
-    const timer = setInterval(() => setIdx((p) => (p + 1) % banners.length), ROTATE_MS);
-    return () => clearInterval(timer);
-  }, [banners]);
+  /* Auto-rotates when there is more than one banner; the hook owns the index + pausing */
+  const { ref: heroRef, index: idx, goTo } = useBannerRotation<HTMLElement>(banners);
 
   useEffect(() => {
     const el = heroRef.current;
@@ -84,7 +71,7 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
     }, el);
 
     return () => ctx.revert();
-  }, []);
+  }, [heroRef]);
 
   return (
     <section ref={heroRef} className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[560px] flex flex-col justify-end overflow-hidden py-16 px-4 sm:py-16 sm:px-6 lg:py-20 lg:px-8">
@@ -97,27 +84,7 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
         className="absolute inset-0 pointer-events-none z-0"
         style={{ background: "var(--bg-section-3)" }}
       >
-        {banners.length > 0 && (
-          <AnimatePresence>
-            <motion.div
-              key={idx}
-              initial={{ opacity: banners.length > 1 ? 0 : 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              <ResponsiveBannerImage
-                banner={banners[idx]}
-                alt=""
-                fill
-                priority
-                sizes="100vw"
-                style={{ objectFit: "cover", opacity: 0.85 }}
-              />
-            </motion.div>
-          </AnimatePresence>
-        )}
+        <BannerFade banners={banners} index={idx} sizes="100vw" />
       </div>
 
       {/* Gradient overlay */}
@@ -127,6 +94,13 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
           background:
             "linear-gradient(to top, rgba(10, 10, 8, 0.85) 0%, rgba(10, 10, 8, 0.4) 50%, rgba(10, 10, 8, 0.2) 100%)",
         }}
+      />
+
+      <CarouselDots
+        count={banners.length}
+        index={idx}
+        onSelect={goTo}
+        className="absolute bottom-5 inset-x-0 z-3"
       />
 
       {/* Content */}

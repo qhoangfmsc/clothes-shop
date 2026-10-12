@@ -27,5 +27,9 @@
     "showing": "Showing <b>{from}</b>–<b>{to}</b> of <b>{total}</b>",
     "previous": "Previous page",
     "next": "Next page"
+  },
+  "reorder": {
+    "handle": "Drag to reorder",
+    "disabled": "Reordering is only available when sorted by priority with no search applied"
   }
 }

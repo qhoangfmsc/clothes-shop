@@ -4,7 +4,8 @@
       "aria": "Breadcrumb"
     },
     "categoryGrid": {
-      "pieces": "{count, plural, one {# piece} other {# pieces}}"
+      "pieces": "{count, plural, one {# piece} other {# pieces}}",
+      "carouselAria": "Shop categories"
     },
     "subcategoryChips": {
       "all": "All"

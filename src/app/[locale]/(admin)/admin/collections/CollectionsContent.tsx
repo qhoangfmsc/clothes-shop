@@ -76,7 +76,7 @@ export default function CollectionsContent() {
   }, [items]);
 
   /* Products for multi-select (read-only SWR reference data) */
-  const { products: allProducts } = useAdminProducts({ limit: 500 });
+  const { products: allProducts } = useAdminProducts({ limit: 200 });
 
   /* ── fetchData for DataTable ── */
   const fetchCollections = async (params: DataTableFetchParams): Promise<CollectionListResult> => {

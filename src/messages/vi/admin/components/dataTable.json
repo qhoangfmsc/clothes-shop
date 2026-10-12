@@ -27,5 +27,9 @@
     "showing": "Hiển thị <b>{from}</b>–<b>{to}</b> trên <b>{total}</b>",
     "previous": "Trang trước",
     "next": "Trang sau"
+  },
+  "reorder": {
+    "handle": "Kéo để sắp xếp",
+    "disabled": "Chỉ sắp xếp được khi sắp theo độ ưu tiên và không tìm kiếm"
   }
 }

@@ -1,21 +1,20 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Product } from "@/src/types/product";
 import { ArrowDown, ArrowRight, Mail } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import ShopProductsClient from "../../shop/_components/ShopProductsClient";
-import ResponsiveBannerImage from "@/src/app/[locale]/_components/ResponsiveBannerImage";
+import BannerFade from "@/src/app/[locale]/_components/BannerFade";
+import { CarouselDots } from "@/src/app/[locale]/_components/CarouselControls";
+import { useBannerRotation } from "@/src/hooks/use-banner-rotation";
 import type { BannerItem } from "@/src/types/site-config";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const HERO_ROTATE_MS = 5000;
 
 /* ── Build spotlight data from real products ── */
 const SPOTLIGHT_BGS = ["var(--bg-section-2)", "var(--bg-section-5)"];
@@ -53,9 +52,9 @@ export default function NewInClient({ products, heroBanners }: NewInClientProps)
     t("spotlight.featured"),
     (price) => format.number(price, "price")
   );
-  const heroRef = useRef<HTMLElement>(null);
   const spotlightRefs = useRef<(HTMLElement | null)[]>([]);
-  const [heroIdx, setHeroIdx] = useState(0);
+  /* Auto-rotates the hero background when there is more than one banner */
+  const { ref: heroRef, index: heroIdx, goTo: goToHero } = useBannerRotation<HTMLElement>(heroBanners);
 
   /* Smooth-scroll to the product grid, accounting for the fixed header
      (target has scroll-margin-top set to match --header-bg-height). */
@@ -65,14 +64,6 @@ export default function NewInClient({ products, heroBanners }: NewInClientProps)
     e.preventDefault();
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
-
-  /* Auto-rotate hero background when there's more than one banner */
-  useEffect(() => {
-    setHeroIdx(0);
-    if (heroBanners.length <= 1) return;
-    const timer = setInterval(() => setHeroIdx((p) => (p + 1) % heroBanners.length), HERO_ROTATE_MS);
-    return () => clearInterval(timer);
-  }, [heroBanners]);
 
   /* ── Hero animation ── */
   useEffect(() => {
@@ -146,7 +137,7 @@ export default function NewInClient({ products, heroBanners }: NewInClientProps)
     }, hero);
 
     return () => ctx.revert();
-  }, []);
+  }, [heroRef]);
 
   /* ── Spotlight section reveals ── */
   useEffect(() => {
@@ -261,27 +252,18 @@ export default function NewInClient({ products, heroBanners }: NewInClientProps)
           data-ni-hero-image
           style={{ background: "var(--bg-section-3)" }}
         >
-          {heroBanners.length > 0 && (
-            <AnimatePresence>
-              <motion.div
-                key={heroIdx}
-                initial={{ opacity: heroBanners.length > 1 ? 0 : 1 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="absolute inset-0"
-              >
-                <ResponsiveBannerImage
-                  banner={heroBanners[heroIdx]}
-                  alt={t("hero.alt")}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  style={{ objectFit: "cover", opacity: 0.85 }}
-                />
-              </motion.div>
-            </AnimatePresence>
-          )}
+          <BannerFade
+            banners={heroBanners}
+            index={heroIdx}
+            alt={t("hero.alt")}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+          <CarouselDots
+            count={heroBanners.length}
+            index={heroIdx}
+            onSelect={goToHero}
+            className="absolute bottom-5 inset-x-0 z-[3]"
+          />
         </div>
       </section>
 

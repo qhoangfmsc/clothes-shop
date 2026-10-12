@@ -158,7 +158,7 @@ export default function DashboardContent() {
     total: totalProducts,
     isLoading: loadingProducts,
   } = useAdminProducts({ limit: 200 });
-  const { orders, total: totalOrders, isLoading: loadingOrders } = useAdminOrders({ limit: 500 });
+  const { orders, total: totalOrders, isLoading: loadingOrders } = useAdminOrders({ limit: 200 });
   const {
     users: _users,
     total: totalUsers,

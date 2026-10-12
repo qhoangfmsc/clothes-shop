@@ -1,0 +1,6 @@
+{
+  "prev": "Trước",
+  "next": "Sau",
+  "slide": "{number} trên {total}",
+  "dot": "Đến mục {number} trên {total}"
+}

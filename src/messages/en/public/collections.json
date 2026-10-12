@@ -17,7 +17,7 @@
     "exploreLabel": "Explore",
     "allCollections": "All Collections",
     "exploreCollection": "Explore Collection",
-    "carouselDot": "Go to collection {number} of {total}"
+    "carouselAria": "Collections carousel"
   },
   "detail": {
     "scroll": "Scroll",

@@ -12,6 +12,8 @@ import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
 import { LEGAL_DOCS } from "@/src/lib/legal";
 import { UserAvatar } from "./UserMenu";
 import ResponsiveBannerImage from "./ResponsiveBannerImage";
+import { CarouselDots } from "./CarouselControls";
+import { useAutoAdvance } from "@/src/hooks/use-auto-advance";
 import LanguageSwitcher from "./LanguageSwitcher";
 import SocialIcons from "./SocialIcons";
 
@@ -378,13 +380,12 @@ export default function HamburgerMenu() {
   }, [featuredBanners.length]);
 
   /* Cycle featured banner image */
-  useEffect(() => {
-    if (!isOpen || featuredBanners.length <= 1) return;
-    const interval = setInterval(() => {
-      setFeaturedIdx((prev) => (prev + 1) % featuredBanners.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [isOpen, featuredBanners.length]);
+  const featuredPanelRef = useRef<HTMLDivElement>(null);
+  const pauseFeatured = useAutoAdvance(featuredPanelRef, {
+    enabled: isOpen && featuredBanners.length > 1,
+    intervalMs: 4000,
+    onAdvance: () => setFeaturedIdx((prev) => (prev + 1) % featuredBanners.length),
+  });
 
   /* ── Drawer content (portaled to body to escape mix-blend-mode) ── */
   const drawerContent = (
@@ -794,6 +795,7 @@ export default function HamburgerMenu() {
                   Doesn't render at all when no NAV_MENU_BANNERS are configured. */}
               {featuredBanners.length > 0 && (
                 <div
+                  ref={featuredPanelRef}
                   className="drawer-featured-panel"
                   style={{
                     display: "none",
@@ -898,38 +900,16 @@ export default function HamburgerMenu() {
                           <ArrowRight size={12} />
                         </Link>
 
-                        {/* Image carousel dots — only when there's more than one banner */}
-                        {featuredBanners.length > 1 && (
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: 6,
-                              marginTop: 12,
-                            }}
-                          >
-                            {featuredBanners.map((_, dotIdx) => (
-                              <button
-                                key={dotIdx}
-                                onClick={() => setFeaturedIdx(dotIdx)}
-                                aria-label={t("drawer.showFeatured", { index: dotIdx + 1 })}
-                                style={{
-                                  width: dotIdx === featuredIdx ? 20 : 6,
-                                  height: 6,
-                                  borderRadius: 3,
-                                  background:
-                                    dotIdx === featuredIdx
-                                      ? "var(--color-champagne-gold)"
-                                      : "rgba(255, 255, 255, 0.3)",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  padding: 0,
-                                  transition:
-                                    "width 300ms cubic-bezier(0.25, 0.1, 0.25, 1), background 300ms cubic-bezier(0.25, 0.1, 0.25, 1)",
-                                }}
-                              />
-                            ))}
-                          </div>
-                        )}
+                        {/* Position dots — only when there's more than one banner */}
+                        <CarouselDots
+                          count={featuredBanners.length}
+                          index={featuredIdx}
+                          onSelect={(i) => {
+                            setFeaturedIdx(i);
+                            pauseFeatured();
+                          }}
+                          className="mt-2 !justify-start"
+                        />
                       </div>
                     </motion.div>
                   </AnimatePresence>

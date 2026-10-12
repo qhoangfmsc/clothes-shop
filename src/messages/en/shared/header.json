@@ -28,14 +28,14 @@
     "clear": "Clear search"
   },
   "megaMenu": {
-    "viewAll": "View All →",
-    "viewAllProducts": "View All Products"
+    "viewAll": "View More →",
+    "viewAllProducts": "View All Products",
+    "viewMore": "View all categories →"
   },
   "drawer": {
     "open": "Open menu",
     "close": "Close menu",
     "featured": "Featured",
-    "showFeatured": "Show featured {index}",
     "copyright": "© {year} DOOVAN",
     "tagline": "Crafted with intention"
   }

@@ -7,12 +7,14 @@
   "table": {
     "searchPlaceholder": "Danh mục...",
     "columns": {
+      "priority": "Ưu tiên",
       "title": "Tiêu đề",
       "subcategories": "Danh mục con",
       "description": "Mô tả",
       "actions": "Thao tác"
     },
     "sort": {
+      "priority": "Độ ưu tiên",
       "titleAsc": "Tiêu đề A-Z",
       "titleDesc": "Tiêu đề Z-A"
     }
@@ -27,7 +29,8 @@
     "fields": {
       "title": "Tiêu đề",
       "description": "Mô tả",
-      "heroImage": "Ảnh bìa"
+      "heroImage": "Ảnh bìa",
+      "priority": "Độ ưu tiên"
     },
     "heroImageInfo": "Hiển thị trong lưới danh mục ở trang Cửa hàng. Để trống để dùng nền trơn.",
     "placeholders": {
@@ -35,7 +38,8 @@
       "description": "Mô tả danh mục..."
     },
     "submitCreate": "Tạo danh mục",
-    "submitUpdate": "Cập nhật danh mục"
+    "submitUpdate": "Cập nhật danh mục",
+    "priorityInfo": "Tự động gán theo thứ tự tiếp theo. Kéo thả các dòng trong bảng để đổi thứ tự."
   },
   "subcategories": {
     "heading": "Danh mục con ({count})",
@@ -48,7 +52,8 @@
   },
   "toast": {
     "updated": "Đã cập nhật danh mục",
-    "created": "Đã tạo danh mục"
+    "created": "Đã tạo danh mục",
+    "reordered": "Đã cập nhật thứ tự danh mục"
   },
   "confirmDelete": {
     "title": "Xóa danh mục",

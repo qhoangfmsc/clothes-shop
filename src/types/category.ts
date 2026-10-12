@@ -15,6 +15,8 @@ export interface Category {
   description: string;
   /** Hero banner image for CategoryGrid; null until an admin sets one. */
   heroImage: string | null;
+  /** Unique display rank: 1 = shown first. */
+  priority: number;
   subcategories: SubCategory[];
   createdAt: string;
   updatedAt: string;

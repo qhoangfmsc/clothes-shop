@@ -28,7 +28,7 @@ export interface ProductFilters {
   category?: string;
   badge?: string;
   status?: string;
-  sort?: string; // createdAt | -createdAt | price | -price | name | -name
+  sort?: string; // field = ascending, -field = descending: createdAt | price | name
   search?: string;
   page?: number;
   limit?: number;
@@ -106,7 +106,7 @@ export function useAdminProducts(filters: ProductFilters = {}) {
 
 export interface CategoryFilters {
   search?: string;
-  sort?: string; // title | -title | createdAt | -createdAt
+  sort?: string; // field = ascending, -field = descending: priority | title | createdAt
   page?: number;
   limit?: number;
 }
@@ -162,7 +162,7 @@ export function useAdminCategories(filters: CategoryFilters = {}) {
 export interface CollectionFilters {
   search?: string;
   season?: string;
-  sort?: string; // name | -name | createdAt | -createdAt
+  sort?: string; // field = ascending, -field = descending: name | createdAt
   page?: number;
   limit?: number;
 }
@@ -247,7 +247,7 @@ export interface AdminOrder {
 export interface OrderFilters {
   status?: string;
   search?: string;
-  sort?: string; // createdAt | -createdAt
+  sort?: string; // field = ascending, -field = descending: createdAt
   page?: number;
   limit?: number;
 }

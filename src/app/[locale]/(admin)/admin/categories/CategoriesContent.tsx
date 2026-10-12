@@ -31,8 +31,15 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
+  fetchNextCategoryPriority,
+  reorderCategories,
 } from "./_common/moduleSlice";
-import { EMPTY_CATEGORY_FORM, CATEGORY_SORT_OPTIONS } from "./_common/constants";
+import {
+  EMPTY_CATEGORY_FORM,
+  CATEGORY_SORT_OPTIONS,
+  CATEGORY_PRIORITY_SORT,
+  CATEGORY_PAGE_SIZE,
+} from "./_common/constants";
 import type { CategoryListResult } from "./_common/types";
 import type { Category } from "@/src/types/category";
 
@@ -59,7 +66,8 @@ export default function CategoriesContent() {
   ];
   const sortOptions = CATEGORY_SORT_OPTIONS.map((o) => ({
     value: o.value,
-    label: o.key === "titleAsc" || o.key === "titleDesc" ? t(`table.sort.${o.key}`) : tCrud(`sort.${o.key}`),
+    label:
+      o.key === "newest" || o.key === "oldest" ? tCrud(`sort.${o.key}`) : t(`table.sort.${o.key}`),
   }));
   const { toast } = useToast();
   const confirm = useConfirm();
@@ -84,6 +92,12 @@ export default function CategoriesContent() {
   /* ── Columns ── */
   const columns: DataTableColumn<Category>[] = useMemo(
     () => [
+      {
+        key: "priority",
+        header: t("table.columns.priority"),
+        width: "90px",
+        render: (c) => <span className="text-[var(--text-muted)] tabular-nums">{c.priority}</span>,
+      },
       {
         key: "title",
         header: t("table.columns.title"),
@@ -159,6 +173,7 @@ export default function CategoriesContent() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>(CATEGORY_TABS[0].id);
   const [form, setForm] = useState(EMPTY_CATEGORY_FORM);
+  const [nextPriority, setNextPriority] = useState<number | null>(null);
 
   /* ── Subcategory helpers ── */
   const addSub = () =>
@@ -188,6 +203,12 @@ export default function CategoriesContent() {
     resetForm();
     setActiveTab(CATEGORY_TABS[0].id);
     setShowModal(true);
+    /* Display only — the BE assigns the real rank (next in line) on create. */
+    setNextPriority(null);
+    dispatch(fetchNextCategoryPriority())
+      .unwrap()
+      .then(setNextPriority)
+      .catch(() => {});
   };
 
   const openEdit = (c: Category) => {
@@ -197,6 +218,7 @@ export default function CategoriesContent() {
       title: c.title,
       description: c.description,
       heroImage: c.heroImage ?? "",
+      priority: c.priority,
       subcategories: c.subcategories?.map((s) => ({ ...s })) ?? [],
     });
     setActiveTab(CATEGORY_TABS[0].id);
@@ -241,6 +263,19 @@ export default function CategoriesContent() {
       closeModal();
     } catch (err) {
       toast.error(errorMessage(err, tCrud("failed")));
+    }
+  };
+
+  /* DataTable already moved the row optimistically; throwing makes it roll back. */
+  const handleReorder = async (rows: Category[]) => {
+    try {
+      await dispatch(reorderCategories(rows.map((r) => r.id))).unwrap();
+      toast.success(t("toast.reordered"));
+      tableRef.current?.refresh();
+    } catch (err) {
+      toast.error(errorMessage(err, tCrud("failed")));
+      tableRef.current?.refresh();
+      throw err;
     }
   };
 
@@ -289,7 +324,9 @@ export default function CategoriesContent() {
         fetchData={fetchCategories}
         searchPlaceholder={t("table.searchPlaceholder")}
         sortOptions={sortOptions}
-        defaultSort="createdAt"
+        defaultSort={CATEGORY_PRIORITY_SORT}
+        pageSize={CATEGORY_PAGE_SIZE}
+        reorder={{ sortValue: CATEGORY_PRIORITY_SORT, onReorder: handleReorder }}
       />
 
       {/* ═══════════════ MODAL FORM ═══════════════ */}
@@ -311,6 +348,14 @@ export default function CategoriesContent() {
                       }}
                       placeholder={t("form.placeholders.title")}
                       required
+                    />
+                  </FormField>
+                  <FormField label={t("form.fields.priority")} info={t("form.priorityInfo")}>
+                    <input
+                      className={`${inputClass} opacity-60 cursor-not-allowed`}
+                      value={(editingId ? form.priority : nextPriority) ?? ""}
+                      readOnly
+                      disabled
                     />
                   </FormField>
                   <FormField label={t("form.fields.description")}>

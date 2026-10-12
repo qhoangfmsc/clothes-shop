@@ -17,7 +17,7 @@
     "exploreLabel": "Khám phá",
     "allCollections": "Tất cả bộ sưu tập",
     "exploreCollection": "Khám phá bộ sưu tập",
-    "carouselDot": "Đến bộ sưu tập {number} trên {total}"
+    "carouselAria": "Danh sách bộ sưu tập"
   },
   "detail": {
     "scroll": "Cuộn xuống",

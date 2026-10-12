@@ -11,6 +11,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useSWR from "swr";
 import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
+import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
@@ -111,7 +112,7 @@ export function useCategories() {
     data: Category[];
     total: number;
   }>(
-    `${API_URL}/api/categories`,
+    `${API_URL}/api/categories?${PUBLIC_CATEGORIES_QUERY}`,
     fetcher,
     defaultConfig
   );

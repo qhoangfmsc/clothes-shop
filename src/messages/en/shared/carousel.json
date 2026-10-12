@@ -1,0 +1,6 @@
+{
+  "prev": "Previous",
+  "next": "Next",
+  "slide": "{number} of {total}",
+  "dot": "Go to slide {number} of {total}"
+}

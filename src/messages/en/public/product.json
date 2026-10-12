@@ -5,8 +5,6 @@
   "detail": {
     "carouselAria": "Product image carousel",
     "imageAlt": "{name} — Image {index}",
-    "previousImage": "Previous image",
-    "nextImage": "Next image",
     "viewImage": "View image {index}",
     "badge": {
       "new": "New Arrival",

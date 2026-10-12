@@ -9,6 +9,7 @@ import HamburgerMenu from "./HamburgerMenu";
 import UserMenu from "./UserMenu";
 import SearchBar from "./SearchBar";
 import { useCategories } from "@/src/hooks/use-api";
+import { MAX_INLINE_CATEGORIES } from "@/src/lib/category-display";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -205,7 +206,7 @@ export default function HeaderNav({
                 gap: 32,
               }}
             >
-              {shopCategories.map((cat) => (
+              {shopCategories.slice(0, MAX_INLINE_CATEGORIES).map((cat) => (
                 <div key={cat.title}>
                   <Link
                     href={cat.href}
@@ -281,6 +282,27 @@ export default function HeaderNav({
                 </div>
               ))}
             </div>
+
+            {shopCategories.length > MAX_INLINE_CATEGORIES && (
+              <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 36px 40px", marginTop: -20 }}>
+                <Link
+                  href="/shop"
+                  onClick={closeNow}
+                  className="mega-menu-item-link"
+                  style={{
+                    color: "var(--color-champagne-gold)",
+                    fontSize: "var(--text-xs)",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    textDecoration: "none",
+                    fontFamily: "var(--font-primary)",
+                    fontWeight: 500,
+                  }}
+                >
+                  {t("megaMenu.viewMore")}
+                </Link>
+              </div>
+            )}
           </motion.div>
         </>
       )}

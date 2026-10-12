@@ -17,6 +17,8 @@ export interface CategoryFormData {
   title: string;
   description: string;
   heroImage: string;
+  /** Read-only: the BE assigns it on create (next in line) and changes it via reorder. */
+  priority: number | null;
   subcategories: {
     id?: number;
     slug: string;

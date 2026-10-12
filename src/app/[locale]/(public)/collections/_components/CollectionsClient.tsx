@@ -1,46 +1,28 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Collection } from "@/src/types/collection";
 import type { BannerItem } from "@/src/types/site-config";
-import ResponsiveBannerImage from "@/src/app/[locale]/_components/ResponsiveBannerImage";
+import BannerFade from "@/src/app/[locale]/_components/BannerFade";
+import Carousel from "@/src/app/[locale]/_components/Carousel";
+import { CarouselDots } from "@/src/app/[locale]/_components/CarouselControls";
+import { useBannerRotation } from "@/src/hooks/use-banner-rotation";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HERO_ROTATE_MS = 5000;
-const CAROUSEL_ADVANCE_MS = 2500;
-/** How long auto-advance stays paused after the visitor touches / scrolls the carousel. */
-const CAROUSEL_RESUME_MS = 3000;
-/** Must match the `carousel:` variant in globals.css. */
-const CAROUSEL_MEDIA_QUERY = "(max-width: 767.98px), not all and (pointer: fine)";
+/** Touch carousel auto-advance interval. */
+const AUTOPLAY_MS = 2500;
 
 interface CollectionsClientProps {
   collections: Collection[];
   /** Hero background banner(s). 1 = static, 2+ = auto-rotating crossfade. */
   heroBanners: BannerItem[];
-}
-
-/** Scroll offsets (scrollLeft) at which each carousel card sits snapped to the start edge. */
-function getCardOffsets(scroller: HTMLElement, track: HTMLElement): number[] {
-  const scrollerLeft = scroller.getBoundingClientRect().left;
-  const snapInset = parseFloat(getComputedStyle(scroller).scrollPaddingLeft) || 0;
-  const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-  return Array.from(track.querySelectorAll<HTMLElement>("[data-carousel-card]")).map((card) =>
-    Math.min(
-      Math.max(
-        card.getBoundingClientRect().left - scrollerLeft + scroller.scrollLeft - snapInset,
-        0
-      ),
-      maxScroll
-    )
-  );
 }
 
 /* ── Map collection data for horizontal scroll cards ── */
@@ -72,30 +54,78 @@ function buildEditorialSections(collections: Collection[], ctaLabel: string) {
   }));
 }
 
+type HorizontalCard = ReturnType<typeof buildHorizontalCards>[number];
+
+function SectionLabel({
+  exploreLabel,
+  allCollections,
+  className = "",
+}: {
+  exploreLabel: string;
+  allCollections: string;
+  className?: string;
+}) {
+  return (
+    <div className={`flex flex-col gap-2 ${className}`}>
+      <span className="text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.15em] uppercase">
+        {exploreLabel}
+      </span>
+      <span className="text-[var(--color-pearl-cream)] font-display font-normal text-2xl tracking-[-0.04em]">
+        {allCollections}
+      </span>
+    </div>
+  );
+}
+
+function CollectionCard({
+  card,
+  index,
+  className = "",
+}: {
+  card: HorizontalCard;
+  index: number;
+  className?: string;
+}) {
+  return (
+    <Link
+      href={card.href}
+      className={`group shrink-0 flex flex-col no-underline text-inherit cursor-pointer ${className}`}
+    >
+      <div className="relative aspect-3/4 rounded-md overflow-hidden bg-[var(--color-obsidian)]">
+        <Image
+          src={card.image}
+          alt={card.title}
+          fill
+          sizes="420px"
+          style={{ objectFit: "cover" }}
+          className="transition-transform duration-[var(--duration-slow)] [transition-timing-function:var(--ease-luxury)] group-hover:scale-[1.06] motion-reduce:transition-none"
+        />
+        <span className="absolute top-4 left-4 font-display font-normal text-3xl text-[var(--color-noir)]/70 tracking-[-0.04em] leading-none pointer-events-none">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+      <div className="py-4 px-1 flex flex-col gap-1">
+        <span className="text-[var(--color-pearl-cream)] font-display font-normal text-lg tracking-[-0.04em]">
+          {card.title}
+        </span>
+        <span className="text-[var(--color-pearl-cream)]/40 font-primary text-sm font-medium tracking-[-0.02em]">
+          {card.subtitle}
+        </span>
+      </div>
+    </Link>
+  );
+}
+
 export default function CollectionsClient({ collections, heroBanners }: CollectionsClientProps) {
   const t = useTranslations("public.collections.list");
   const MARQUEE_TEXT = t("marquee");
   const HORIZONTAL_CARDS = buildHorizontalCards(collections);
   const EDITORIAL_SECTIONS = buildEditorialSections(collections, t("exploreCollection"));
-  const heroRef = useRef<HTMLElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const carouselPausedUntilRef = useRef(0);
-  const [carouselIdx, setCarouselIdx] = useState(0);
   const spreadRefs = useRef<(HTMLElement | null)[]>([]);
-  const [heroIdx, setHeroIdx] = useState(0);
-
-  /* Auto-rotate hero background when there's more than one banner */
-  useEffect(() => {
-    setHeroIdx(0);
-    if (heroBanners.length <= 1) return;
-    const timer = setInterval(
-      () => setHeroIdx((p) => (p + 1) % heroBanners.length),
-      HERO_ROTATE_MS
-    );
-    return () => clearInterval(timer);
-  }, [heroBanners]);
+  /* Auto-rotates the hero background when there is more than one banner */
+  const { ref: heroRef, index: heroIdx, goTo: goToHero } = useBannerRotation<HTMLElement>(heroBanners);
 
   /* ── Hero reveal animation ── */
   useEffect(() => {
@@ -158,7 +188,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
     }, hero);
 
     return () => ctx.revert();
-  }, []);
+  }, [heroRef]);
 
   /* ── Horizontal scroll ──
      Desktop (wide + fine pointer): vertical scroll drives the track (pinned + scrubbed).
@@ -190,131 +220,6 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
 
     return () => mm.revert();
   }, []);
-
-  const pauseCarousel = useCallback(() => {
-    carouselPausedUntilRef.current = Date.now() + CAROUSEL_RESUME_MS;
-  }, []);
-
-  const goToCard = useCallback(
-    (idx: number) => {
-      const scroller = carouselRef.current;
-      const track = trackRef.current;
-      if (!scroller || !track) return;
-      pauseCarousel();
-      const left = getCardOffsets(scroller, track)[idx];
-      if (left !== undefined) scroller.scrollTo({ left, behavior: "smooth" });
-    },
-    [pauseCarousel]
-  );
-
-  /* ── Carousel position — drives the dot indicator (phones / touch only) ── */
-  useEffect(() => {
-    const scroller = carouselRef.current;
-    const track = trackRef.current;
-    if (!scroller || !track) return;
-
-    let frame = 0;
-    const sync = () => {
-      frame = 0;
-      const offsets = getCardOffsets(scroller, track);
-      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-      if (offsets.length === 0) return;
-
-      // Pinned to the end → last card, even when its snap offset can't be reached
-      if (maxScroll > 0 && scroller.scrollLeft >= maxScroll - 2) {
-        setCarouselIdx(offsets.length - 1);
-        return;
-      }
-      let nearest = 0;
-      offsets.forEach((offset, i) => {
-        if (
-          Math.abs(offset - scroller.scrollLeft) < Math.abs(offsets[nearest] - scroller.scrollLeft)
-        ) {
-          nearest = i;
-        }
-      });
-      setCarouselIdx(nearest);
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(sync);
-    };
-
-    sync();
-    scroller.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      scroller.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [collections.length]);
-
-  /* ── Carousel auto-advance (phones / touch only) ──
-     Steps to the next card every few seconds and loops back to the first. Pauses while
-     the visitor touches, hovers, scrolls or taps a dot (resumes after a short idle), while
-     the section is off-screen or the tab is hidden, and never runs with reduced motion. */
-  useEffect(() => {
-    const scroller = carouselRef.current;
-    const track = trackRef.current;
-    if (!scroller || !track) return;
-
-    const carouselMq = window.matchMedia(CAROUSEL_MEDIA_QUERY);
-    const reducedMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    let hovering = false;
-    let inView = false;
-
-    const advance = () => {
-      if (!carouselMq.matches || reducedMotionMq.matches) return;
-      if (!inView || hovering || document.hidden) return;
-      if (Date.now() < carouselPausedUntilRef.current) return;
-
-      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-      if (scroller.scrollLeft >= maxScroll - 2) {
-        scroller.scrollTo({ left: 0, behavior: "smooth" });
-        return;
-      }
-
-      const next = getCardOffsets(scroller, track).find(
-        (offset) => offset > scroller.scrollLeft + 8
-      );
-      if (next !== undefined) scroller.scrollTo({ left: next, behavior: "smooth" });
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        inView = entry.isIntersecting;
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(scroller);
-
-    const onEnter = () => {
-      hovering = true;
-    };
-    const onLeave = () => {
-      hovering = false;
-      pauseCarousel();
-    };
-
-    scroller.addEventListener("pointerdown", pauseCarousel, { passive: true });
-    scroller.addEventListener("touchstart", pauseCarousel, { passive: true });
-    scroller.addEventListener("wheel", pauseCarousel, { passive: true });
-    scroller.addEventListener("pointerenter", onEnter);
-    scroller.addEventListener("pointerleave", onLeave);
-
-    const timer = setInterval(advance, CAROUSEL_ADVANCE_MS);
-
-    return () => {
-      clearInterval(timer);
-      observer.disconnect();
-      scroller.removeEventListener("pointerdown", pauseCarousel);
-      scroller.removeEventListener("touchstart", pauseCarousel);
-      scroller.removeEventListener("wheel", pauseCarousel);
-      scroller.removeEventListener("pointerenter", onEnter);
-      scroller.removeEventListener("pointerleave", onLeave);
-    };
-  }, [pauseCarousel]);
 
   /* ── Editorial spreads — scroll-triggered reveals ── */
   useEffect(() => {
@@ -385,30 +290,21 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           className="absolute inset-0 z-0"
           style={{ background: "var(--bg-section-3)" }}
         >
-          {heroBanners.length > 0 && (
-            <AnimatePresence>
-              <motion.div
-                key={heroIdx}
-                initial={{ opacity: heroBanners.length > 1 ? 0 : 1 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="absolute inset-0"
-              >
-                <ResponsiveBannerImage
-                  banner={heroBanners[heroIdx]}
-                  alt={t("heroAlt")}
-                  fill
-                  priority
-                  sizes="100vw"
-                  style={{ objectFit: "cover", opacity: 0.85 }}
-                  className="will-change-transform motion-reduce:will-change-auto"
-                />
-              </motion.div>
-            </AnimatePresence>
-          )}
+          <BannerFade
+            banners={heroBanners}
+            index={heroIdx}
+            alt={t("heroAlt")}
+            sizes="100vw"
+            imageClassName="will-change-transform motion-reduce:will-change-auto"
+          />
         </div>
         <div className="absolute inset-0 z-1 pointer-events-none bg-[linear-gradient(to_top,rgba(10,10,8,0.7)_0%,transparent_50%),linear-gradient(to_right,rgba(10,10,8,0.4)_0%,transparent_60%)]" />
+        <CarouselDots
+          count={heroBanners.length}
+          index={heroIdx}
+          onSelect={goToHero}
+          className="absolute bottom-3 inset-x-0 z-[3]"
+        />
 
         <div className="relative z-2 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
           <span
@@ -460,90 +356,40 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
         </div>
       </div>
 
-      {/* ═══ 3. HORIZONTAL SCROLL — Collection cards ═══ */}
+      {/* ═══ 3. COLLECTION CARDS ═══
+          Desktop (wide + fine pointer): vertical scroll drives a pinned horizontal track (GSAP).
+          Phones / touch devices: a swipeable, auto-advancing Carousel (no pin / scrub). */}
       <div ref={horizontalRef} className="relative overflow-hidden bg-[var(--color-noir)]">
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center carousel:static carousel:h-auto carousel:flex-col carousel:items-stretch carousel:gap-6 carousel:py-12">
-          {/* Section label */}
-          <div className="absolute top-8 left-8 z-2 flex flex-col gap-2 carousel:static carousel:px-4 sm:carousel:px-8">
-            <span className="text-[var(--color-champagne-gold)] font-primary text-xs font-medium tracking-[0.15em] uppercase">
-              {t("exploreLabel")}
-            </span>
-            <span className="text-[var(--color-pearl-cream)] font-display font-normal text-2xl tracking-[-0.04em]">
-              {t("allCollections")}
-            </span>
+        <div className="sticky top-0 h-screen overflow-hidden flex items-center carousel:hidden">
+          <SectionLabel
+            exploreLabel={t("exploreLabel")}
+            allCollections={t("allCollections")}
+            className="absolute top-8 left-8 z-2"
+          />
+          <div ref={trackRef} className="flex gap-6 px-8 w-max will-change-transform motion-reduce:will-change-auto">
+            {/* Spacer for the label */}
+            <div className="w-75 shrink-0" />
+            {HORIZONTAL_CARDS.map((col, idx) => (
+              <CollectionCard key={col.title} card={col} index={idx} className="w-95 lg:w-105" />
+            ))}
+            {/* End spacer */}
+            <div className="w-25 shrink-0" />
           </div>
+        </div>
 
-          {/* Scrolling track — scroll-snap scroller on touch devices */}
-          <div
-            ref={carouselRef}
-            className="w-full carousel:overflow-x-auto carousel:overscroll-x-contain carousel:snap-x carousel:snap-mandatory carousel:scroll-px-4 sm:carousel:scroll-px-8 carousel:[scrollbar-width:none] carousel:[&::-webkit-scrollbar]:hidden"
+        <div className="hidden carousel:flex flex-col gap-6 py-12 px-4 sm:px-8">
+          <SectionLabel exploreLabel={t("exploreLabel")} allCollections={t("allCollections")} />
+          <Carousel
+            ariaLabel={t("carouselAria")}
+            slidesPerView={{ base: 1.25, sm: 2.5, lg: 3 }}
+            gap={{ base: 4, sm: 6 }}
+            autoplay={AUTOPLAY_MS}
+            dotsTone="onImage"
           >
-            <div
-              ref={trackRef}
-              className="flex gap-6 px-8 w-max will-change-transform motion-reduce:will-change-auto carousel:will-change-auto carousel:px-4 sm:carousel:px-8"
-            >
-              {/* Spacer for label (desktop only — the label is inline on touch) */}
-              <div className="w-75 shrink-0 carousel:hidden" />
-
-              {HORIZONTAL_CARDS.map((col, idx) => (
-                <Link
-                  key={col.title}
-                  href={col.href}
-                  data-carousel-card
-                  className="group shrink-0 snap-start w-[78vw] max-w-85 sm:w-95 sm:max-w-none lg:w-105 flex flex-col no-underline text-inherit cursor-pointer"
-                >
-                  <div className="relative aspect-3/4 rounded-md overflow-hidden bg-[var(--color-obsidian)]">
-                    <Image
-                      src={col.image}
-                      alt={col.title}
-                      fill
-                      sizes="420px"
-                      style={{ objectFit: "cover" }}
-                      className="transition-transform duration-[var(--duration-slow)] [transition-timing-function:var(--ease-luxury)] group-hover:scale-[1.06] motion-reduce:transition-none"
-                    />
-                    <span className="absolute top-4 left-4 font-display font-normal text-3xl text-black/70 tracking-[-0.04em] leading-none pointer-events-none">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div className="py-4 px-1 flex flex-col gap-1">
-                    <span className="text-[var(--color-pearl-cream)] font-display font-normal text-lg tracking-[-0.04em]">
-                      {col.title}
-                    </span>
-                    <span className="text-white/40 font-primary text-sm font-medium tracking-[-0.02em]">
-                      {col.subtitle}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-
-              {/* End spacer */}
-              <div className="w-25 shrink-0 carousel:w-1" />
-            </div>
-          </div>
-
-          {/* Position dots — touch / small screens only; tap one to jump to that card */}
-          {HORIZONTAL_CARDS.length > 1 && (
-            <div className="hidden carousel:flex justify-center items-center">
-              {HORIZONTAL_CARDS.map((col, idx) => (
-                <button
-                  key={col.title}
-                  type="button"
-                  onClick={() => goToCard(idx)}
-                  aria-label={t("carouselDot", { number: idx + 1, total: HORIZONTAL_CARDS.length })}
-                  aria-current={idx === carouselIdx}
-                  className="group flex items-center justify-center h-8 px-1 cursor-pointer"
-                >
-                  <span
-                    className={`block h-1.5 rounded-full transition-all duration-300 motion-reduce:transition-none ${
-                      idx === carouselIdx
-                        ? "w-6 bg-[var(--color-champagne-gold)]"
-                        : "w-1.5 bg-white/25 group-hover:bg-white/50"
-                    }`}
-                  />
-                </button>
-              ))}
-            </div>
-          )}
+            {HORIZONTAL_CARDS.map((col, idx) => (
+              <CollectionCard key={col.title} card={col} index={idx} />
+            ))}
+          </Carousel>
         </div>
       </div>
 

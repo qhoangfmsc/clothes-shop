@@ -9,10 +9,10 @@ import type { ProductColor } from "@/src/types/product";
 
 /** `key` is a label in messages: admin.products.table.sort.<key> */
 export const SORT_OPTIONS = [
-  { value: "createdAt", key: "newest" },
-  { value: "-createdAt", key: "oldest" },
-  { value: "price", key: "priceDown" },
-  { value: "-price", key: "priceUp" },
+  { value: "-createdAt", key: "newest" },
+  { value: "createdAt", key: "oldest" },
+  { value: "-price", key: "priceDown" },
+  { value: "price", key: "priceUp" },
   { value: "name", key: "nameAsc" },
   { value: "-name", key: "nameDesc" },
 ] as const;

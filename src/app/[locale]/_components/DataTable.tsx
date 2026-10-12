@@ -9,7 +9,25 @@ import {
   forwardRef,
   type ReactNode,
 } from "react";
-import { Search, X, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, RotateCcw, GripVertical } from "lucide-react";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { CSS } from "@dnd-kit/utilities";
 import { useLocale, useTranslations } from "next-intl";
 import { useDebounce } from "@/src/hooks/use-debounce";
 
@@ -62,6 +80,15 @@ export interface DataTableRef {
   reset: () => void;
 }
 
+/** Opt-in drag-and-drop row ordering. Rows can only be dragged while the table is
+ *  sorted by `sortValue`, unfiltered, and fits on a single page (the whole list is on screen). */
+export interface DataTableReorder<T> {
+  /** The `sort` value under which the on-screen order is the persisted order. */
+  sortValue: string;
+  /** Receives the full list in its new order. Throw to roll the table back. */
+  onReorder: (rows: T[]) => Promise<void> | void;
+}
+
 export interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   /** Server-driven mode: called on mount and whenever search/filter/sort/page change. */
@@ -87,7 +114,11 @@ export interface DataTableProps<T> {
   defaultSort?: string;
 
   /* ── Pagination ── */
+  /** Records per page (default 25). A table that must show everything at once passes a larger value. */
   pageSize?: number;
+
+  /* ── Drag & drop ordering ── */
+  reorder?: DataTableReorder<T>;
 
   /* ── Data ── */
   keyExtractor?: (row: T) => string;
@@ -110,7 +141,7 @@ export interface DataTableProps<T> {
 
 /* ═══════════════════════════════ Defaults ═══════════════════════════════════ */
 
-const DEFAULT_PAGE_SIZE = 25;
+export const DEFAULT_PAGE_SIZE = 25;
 const DEBOUNCE_MS = 350;
 
 function defaultKeyExtractor<T extends { id?: string | number }>(row: T): string {
@@ -144,6 +175,57 @@ const inputClass =
 const selectClass =
   "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[130px] h-9";
 
+/* ═══════════════════════════════ Sortable row ═══════════════════════════════ */
+
+interface SortableRowProps {
+  id: string;
+  className: string;
+  disabled: boolean;
+  handleLabel: string;
+  children: ReactNode;
+}
+
+function SortableRow({ id, className, disabled, handleLabel, children }: SortableRowProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id, disabled });
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Translate.toString(transform),
+        transition,
+        position: isDragging ? "relative" : undefined,
+        zIndex: isDragging ? 2 : undefined,
+      }}
+      className={`${className} ${isDragging ? "bg-[var(--bg-secondary)] shadow-lg" : ""}`}
+    >
+      <td className="w-10 py-3 pl-4 pr-0 align-middle">
+        <button
+          type="button"
+          ref={setActivatorNodeRef}
+          disabled={disabled}
+          aria-label={handleLabel}
+          title={handleLabel}
+          className="flex items-center justify-center w-7 h-7 border-0 rounded-sm bg-transparent text-[var(--text-muted)] touch-none cursor-grab active:cursor-grabbing disabled:cursor-not-allowed disabled:opacity-30"
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical size={16} />
+        </button>
+      </td>
+      {children}
+    </tr>
+  );
+}
+
 /* ═══════════════════════════════ Component ══════════════════════════════════ */
 
 function DataTableInner<T extends { id?: string | number }>(
@@ -161,6 +243,7 @@ function DataTableInner<T extends { id?: string | number }>(
     sortOptions = [],
     defaultSort = "-createdAt",
     pageSize = DEFAULT_PAGE_SIZE,
+    reorder,
     keyExtractor = defaultKeyExtractor,
     emptyMessage,
     tableRef,
@@ -283,6 +366,35 @@ function DataTableInner<T extends { id?: string | number }>(
 
   const clearSelection = () => setSelectedKeys(new Set());
 
+  /* ── Drag & drop ordering ── */
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+  const reorderEnabled =
+    !!reorder &&
+    !isStatic &&
+    sort === reorder.sortValue &&
+    !hasActiveFilters &&
+    totalPages === 1 &&
+    !loading;
+  const rowIds = data.map(keyExtractor);
+
+  const handleDragEnd = async ({ active, over }: DragEndEvent) => {
+    if (!reorder || !over || active.id === over.id) return;
+    const from = rowIds.indexOf(String(active.id));
+    const to = rowIds.indexOf(String(over.id));
+    if (from < 0 || to < 0) return;
+    const previous = data;
+    const next = arrayMove(previous, from, to);
+    setData(next);
+    try {
+      await reorder.onReorder(next);
+    } catch {
+      setData(previous);
+    }
+  };
+
   /* ── Ref API ── */
   useImperativeHandle(tableRef ?? ref, () => ({
     refresh: () => load(),
@@ -316,6 +428,111 @@ function DataTableInner<T extends { id?: string | number }>(
   };
 
   /* ── Render ── */
+  const tableEl = (
+    <table
+      className="w-full border-collapse"
+      style={{
+        opacity: loading ? 0.4 : 1,
+        transition: "opacity var(--duration-fast)",
+      }}
+    >
+      <thead>
+        <tr>
+          {reorder && (
+            <th className="sticky top-0 z-[1] bg-[var(--bg-secondary)] w-10 py-3 pl-4 pr-0 border-b border-[var(--border-subtle)]" />
+          )}
+          {selectable && (
+            <th className="sticky top-0 z-[1] bg-[var(--bg-secondary)] w-12 py-3 px-4 border-b border-[var(--border-subtle)]">
+              <input
+                type="checkbox"
+                className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
+                checked={allSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = someSelected;
+                }}
+                onChange={toggleAll}
+                disabled={data.length === 0}
+                aria-label={t("selection.selectAll")}
+              />
+            </th>
+          )}
+          {columns.map((col) => (
+            <th
+              key={col.key}
+              className={`sticky top-0 z-[1] bg-[var(--bg-secondary)] text-left text-xs font-semibold text-[var(--text-muted)] py-3 px-4 border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em] ${
+                col.align === "right" ? "text-right" : ""
+              } ${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : ""}`}
+              style={col.width ? { width: col.width } : undefined}
+            >
+              {col.header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.length === 0 && (
+          <tr>
+            <td
+              colSpan={columns.length + (selectable ? 1 : 0) + (reorder ? 1 : 0)}
+              className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
+            >
+              {typeof emptyMessage === "function"
+                ? emptyMessage(hasActiveFilters)
+                : (emptyMessage ?? t(hasActiveFilters ? "empty.filtered" : "empty.none"))}
+            </td>
+          </tr>
+        )}
+        {data.map((row) => {
+          const rowKey = keyExtractor(row);
+          const isSelected = selectedKeys.has(rowKey);
+          const rowClass = `border-b border-[var(--border-subtle)] transition-opacity hover:opacity-45 ${
+            isSelected ? "bg-[rgba(201,169,110,0.08)]" : ""
+          }`;
+          const cells = (
+            <>
+              {selectable && (
+                <td className="py-3 px-4 align-middle">
+                  <input
+                    type="checkbox"
+                    className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
+                    checked={isSelected}
+                    onChange={() => toggleRow(rowKey)}
+                    aria-label={t("selection.selectRow")}
+                  />
+                </td>
+              )}
+              {columns.map((col) => (
+                <td
+                  key={col.key}
+                  className={`py-3 px-4 text-sm text-[var(--text-primary)] font-primary align-middle ${
+                    col.align === "right" ? "text-right" : ""
+                  } ${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : ""}`}
+                >
+                  {col.render(row)}
+                </td>
+              ))}
+            </>
+          );
+          return reorder ? (
+            <SortableRow
+              key={rowKey}
+              id={rowKey}
+              className={rowClass}
+              disabled={!reorderEnabled}
+              handleLabel={t(reorderEnabled ? "reorder.handle" : "reorder.disabled")}
+            >
+              {cells}
+            </SortableRow>
+          ) : (
+            <tr key={rowKey} className={rowClass}>
+              {cells}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+
   return (
     <div className="flex flex-col gap-6 flex-1 min-h-0">
       {/* ── Toolbar ── */}
@@ -454,92 +671,20 @@ function DataTableInner<T extends { id?: string | number }>(
           </div>
         )}
         <div className="flex-1 min-h-0 overflow-auto">
-          <table
-            className="w-full border-collapse"
-            style={{
-              opacity: loading ? 0.4 : 1,
-              transition: "opacity var(--duration-fast)",
-            }}
-          >
-            <thead>
-              <tr>
-                {selectable && (
-                  <th className="sticky top-0 z-[1] bg-[var(--bg-secondary)] w-12 py-3 px-4 border-b border-[var(--border-subtle)]">
-                    <input
-                      type="checkbox"
-                      className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
-                      checked={allSelected}
-                      ref={(el) => {
-                        if (el) el.indeterminate = someSelected;
-                      }}
-                      onChange={toggleAll}
-                      disabled={data.length === 0}
-                      aria-label={t("selection.selectAll")}
-                    />
-                  </th>
-                )}
-                {columns.map((col) => (
-                  <th
-                    key={col.key}
-                    className={`sticky top-0 z-[1] bg-[var(--bg-secondary)] text-left text-xs font-semibold text-[var(--text-muted)] py-3 px-4 border-b border-[var(--border-subtle)] font-primary uppercase tracking-[0.05em] ${
-                      col.align === "right" ? "text-right" : ""
-                    } ${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : ""}`}
-                    style={col.width ? { width: col.width } : undefined}
-                  >
-                    {col.header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={columns.length + (selectable ? 1 : 0)}
-                    className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
-                  >
-                    {typeof emptyMessage === "function"
-                      ? emptyMessage(hasActiveFilters)
-                      : (emptyMessage ?? t(hasActiveFilters ? "empty.filtered" : "empty.none"))}
-                  </td>
-                </tr>
-              )}
-              {data.map((row) => {
-                const rowKey = keyExtractor(row);
-                const isSelected = selectedKeys.has(rowKey);
-                return (
-                  <tr
-                    key={rowKey}
-                    className={`border-b border-[var(--border-subtle)] transition-opacity hover:opacity-45 ${
-                      isSelected ? "bg-[rgba(201,169,110,0.08)]" : ""
-                    }`}
-                  >
-                    {selectable && (
-                      <td className="py-3 px-4 align-middle">
-                        <input
-                          type="checkbox"
-                          className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
-                          checked={isSelected}
-                          onChange={() => toggleRow(rowKey)}
-                          aria-label={t("selection.selectRow")}
-                        />
-                      </td>
-                    )}
-                    {columns.map((col) => (
-                      <td
-                        key={col.key}
-                        className={`py-3 px-4 text-sm text-[var(--text-primary)] font-primary align-middle ${
-                          col.align === "right" ? "text-right" : ""
-                        } ${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : ""}`}
-                      >
-                        {col.render(row)}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          {reorder ? (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
+                {tableEl}
+              </SortableContext>
+            </DndContext>
+          ) : (
+            tableEl
+          )}
         </div>
       </div>
 

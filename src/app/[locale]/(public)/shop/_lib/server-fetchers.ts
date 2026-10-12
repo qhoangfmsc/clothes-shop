@@ -10,6 +10,7 @@
 
 import type { Product } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
+import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
@@ -38,7 +39,8 @@ export interface ProductListParams {
   category?: string;
   subcategory?: string;
   badge?: string;
-  sort?: "price_asc" | "price_desc" | "newest" | "name_asc" | "name_desc";
+  /** `field` = ascending, `-field` = descending (BE whitelist). */
+  sort?: "price" | "-price" | "name" | "-name" | "createdAt" | "-createdAt";
   minPrice?: number;
   maxPrice?: number;
   sizes?: string;   // "S,M,L"
@@ -145,7 +147,7 @@ export async function getProductWithRelated(id: string): Promise<{
    ═══════════════════════════════════════════════════════════ */
 
 export async function getCategories(): Promise<Category[]> {
-  const { data } = await apiFetch<CategoryListResponse>("/api/categories");
+  const { data } = await apiFetch<CategoryListResponse>(`/api/categories?${PUBLIC_CATEGORIES_QUERY}`);
   return data;
 }
 

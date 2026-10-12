@@ -3,10 +3,11 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { ChevronLeft, ChevronRight, Check, ShoppingBag, Heart, Share2 } from "lucide-react";
+import { Check, ShoppingBag, Heart, Share2 } from "lucide-react";
 import type { Product } from "@/src/types/product";
+import Carousel, { type CarouselHandle } from "@/src/app/[locale]/_components/Carousel";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
@@ -58,66 +59,12 @@ export default function ProductDetailClient({
 
   const images = product.images;
 
-  /* ── Carousel: swipe / drag support ── */
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef(0);
-  const touchDeltaX = useRef(0);
-  const isDragging = useRef(false);
-
-  const goToImage = useCallback(
-    (index: number) => {
-      const clamped = Math.max(0, Math.min(index, images.length - 1));
-      setActiveImage(clamped);
-    },
-    [images.length]
-  );
-
-  const handleNext = useCallback(() => goToImage(activeImage + 1), [activeImage, goToImage]);
-  const handlePrev = useCallback(() => goToImage(activeImage - 1), [activeImage, goToImage]);
-
-  /* Touch handlers */
-  const onTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    isDragging.current = true;
+  /* ── Gallery carousel: swipe / drag / arrows / dots live in <Carousel>; thumbnails drive it via the ref ── */
+  const galleryRef = useRef<CarouselHandle>(null);
+  const selectImage = useCallback((index: number) => {
+    setActiveImage(index);
+    galleryRef.current?.scrollToPage(index);
   }, []);
-
-  const onTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging.current) return;
-    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
-  }, []);
-
-  const onTouchEnd = useCallback(() => {
-    isDragging.current = false;
-    const threshold = 50;
-    if (touchDeltaX.current > threshold) {
-      handlePrev();
-    } else if (touchDeltaX.current < -threshold) {
-      handleNext();
-    }
-    touchDeltaX.current = 0;
-  }, [handlePrev, handleNext]);
-
-  /* Mouse drag handlers */
-  const onMouseDown = useCallback((e: React.MouseEvent) => {
-    touchStartX.current = e.clientX;
-    isDragging.current = true;
-  }, []);
-
-  const onMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    touchDeltaX.current = e.clientX - touchStartX.current;
-  }, []);
-
-  const onMouseUp = useCallback(() => {
-    isDragging.current = false;
-    const threshold = 50;
-    if (touchDeltaX.current > threshold) {
-      handlePrev();
-    } else if (touchDeltaX.current < -threshold) {
-      handleNext();
-    }
-    touchDeltaX.current = 0;
-  }, [handlePrev, handleNext]);
 
   /* Funnel: one view per product page opened */
   useEffect(() => {
@@ -127,12 +74,12 @@ export default function ProductDetailClient({
   /* Keyboard navigation */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") handlePrev();
-      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") galleryRef.current?.prev();
+      if (e.key === "ArrowRight") galleryRef.current?.next();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handlePrev, handleNext]);
+  }, []);
 
   const handleAddToCart = useCallback(() => {
     if (addedToCart || !isSelectionComplete) return;
@@ -223,86 +170,30 @@ export default function ProductDetailClient({
         {/* LEFT: Image Gallery with Carousel */}
         <div className="relative flex flex-col gap-3 p-4 sm:p-6 lg:flex-1 lg:max-w-[55%] lg:py-6 lg:pr-4 lg:pl-8 lg:sticky lg:top-20 lg:h-[calc(100vh-80px)]">
           {/* Main image — carousel */}
-          <div
-            ref={carouselRef}
-            className="group relative flex-1 rounded-lg overflow-hidden bg-[var(--bg-elevated)] min-h-[400px] lg:min-h-0 cursor-grab active:cursor-grabbing select-none"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseUp}
-            role="region"
-            aria-label={t("carouselAria")}
-            aria-roledescription="carousel"
+          <Carousel
+            fill
+            ariaLabel={t("carouselAria")}
+            gap={0}
+            arrows="hover"
+            dots="overlay"
+            keyboard={false}
+            carouselRef={galleryRef}
+            onPageChange={setActiveImage}
+            className="flex-1 rounded-lg overflow-hidden bg-[var(--bg-elevated)]"
+            slideClassName="relative min-h-[400px] lg:min-h-0 select-none"
           >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={activeImage}
-                className="absolute inset-0"
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35, ease: [...ease] }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.1}
-                onDragEnd={(_e, info) => {
-                  if (info.offset.x > 60) handlePrev();
-                  else if (info.offset.x < -60) handleNext();
-                }}
-              >
-                <Image
-                  src={images[activeImage]}
-                  alt={t("imageAlt", { name: product.name, index: activeImage + 1 })}
-                  fill
-                  priority={activeImage === 0}
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  style={{ objectFit: "cover", pointerEvents: "none" }}
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Carousel navigation arrows */}
-            {activeImage > 0 && (
-              <button
-                type="button"
-                className="absolute top-1/2 -translate-y-1/2 z-[3] w-10 h-10 rounded-full border border-white/20 bg-black/50 backdrop-blur-lg text-[var(--color-pearl-cream)] flex items-center justify-center cursor-pointer left-3 opacity-0 group-hover:opacity-100 transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-black/75 hover:border-[rgba(201,169,110,0.3)] [@media(hover:none)]:opacity-80 [@media(hover:none)]:w-9 [@media(hover:none)]:h-9"
-                onClick={handlePrev}
-                aria-label={t("previousImage")}
-              >
-                <ChevronLeft size={20} />
-              </button>
-            )}
-            {activeImage < images.length - 1 && (
-              <button
-                type="button"
-                className="absolute top-1/2 -translate-y-1/2 z-[3] w-10 h-10 rounded-full border border-white/20 bg-black/50 backdrop-blur-lg text-[var(--color-pearl-cream)] flex items-center justify-center cursor-pointer right-3 opacity-0 group-hover:opacity-100 transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-black/75 hover:border-[rgba(201,169,110,0.3)] [@media(hover:none)]:opacity-80 [@media(hover:none)]:w-9 [@media(hover:none)]:h-9"
-                onClick={handleNext}
-                aria-label={t("nextImage")}
-              >
-                <ChevronRight size={20} />
-              </button>
-            )}
-
-            {/* Dot indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[3] flex gap-2">
-              {images.map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className={`w-2 h-2 rounded-full border-none p-0 cursor-pointer transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-                    activeImage === idx
-                      ? "bg-[var(--color-champagne-gold)] scale-125"
-                      : "bg-white/35 hover:bg-white/60"
-                  }`}
-                  onClick={() => setActiveImage(idx)}
-                  aria-label={t("viewImage", { index: idx + 1 })}
-                />
-              ))}
-            </div>
-          </div>
+            {images.map((img, idx) => (
+              <Image
+                key={img}
+                src={img}
+                alt={t("imageAlt", { name: product.name, index: idx + 1 })}
+                fill
+                priority={idx === 0}
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                style={{ objectFit: "cover", pointerEvents: "none" }}
+              />
+            ))}
+          </Carousel>
 
           {/* Thumbnails — desktop only */}
           <div className="hidden sm:flex gap-2">
@@ -313,7 +204,7 @@ export default function ProductDetailClient({
                 className={`relative w-16 h-20 rounded-md overflow-hidden border-2 p-0 cursor-pointer bg-[var(--bg-elevated)] transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:opacity-85 ${
                   activeImage === idx ? "border-[var(--accent-primary)]" : "border-transparent"
                 }`}
-                onClick={() => setActiveImage(idx)}
+                onClick={() => selectImage(idx)}
                 aria-label={t("viewImage", { index: idx + 1 })}
               >
                 <Image src={img} alt="" fill sizes="80px" style={{ objectFit: "cover" }} />

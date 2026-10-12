@@ -4,7 +4,8 @@
       "aria": "Đường dẫn"
     },
     "categoryGrid": {
-      "pieces": "{count} sản phẩm"
+      "pieces": "{count} sản phẩm",
+      "carouselAria": "Danh mục cửa hàng"
     },
     "subcategoryChips": {
       "all": "Tất cả"

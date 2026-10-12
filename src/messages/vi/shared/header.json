@@ -28,14 +28,14 @@
     "clear": "Xóa tìm kiếm"
   },
   "megaMenu": {
-    "viewAll": "Xem tất cả →",
-    "viewAllProducts": "Xem tất cả sản phẩm"
+    "viewAll": "Xem thêm →",
+    "viewAllProducts": "Xem tất cả sản phẩm",
+    "viewMore": "Xem tất cả danh mục →"
   },
   "drawer": {
     "open": "Mở menu",
     "close": "Đóng menu",
     "featured": "Nổi bật",
-    "showFeatured": "Hiển thị nổi bật {index}",
     "copyright": "© {year} DOOVAN",
     "tagline": "Chế tác có chủ đích"
   }

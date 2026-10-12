@@ -5,8 +5,6 @@
   "detail": {
     "carouselAria": "Thư viện ảnh sản phẩm",
     "imageAlt": "{name} — Ảnh {index}",
-    "previousImage": "Ảnh trước",
-    "nextImage": "Ảnh sau",
     "viewImage": "Xem ảnh {index}",
     "badge": {
       "new": "Hàng mới về",

@@ -43,6 +43,19 @@ export const fetchCategoryList = createAsyncThunk(
   }
 );
 
+/** Rank a new category will get: BE appends it after the current last one. */
+export const fetchNextCategoryPriority = createAsyncThunk("categories/fetchNextPriority", async () => {
+  const res = await authApi.get<{ data: Pick<Category, "priority">[] }>(
+    "/api/admin/categories?sort=-priority&limit=1"
+  );
+  return (res.data[0]?.priority ?? 0) + 1;
+});
+
+/** `ids` is every category id in the new order; BE sets priority = position (1 = highest). */
+export const reorderCategories = createAsyncThunk("categories/reorder", async (ids: string[]) => {
+  await authApi.patch("/api/admin/categories/reorder", { ids });
+});
+
 export const createCategory = createAsyncThunk(
   "categories/create",
   async (body: Record<string, unknown>) => {
@@ -94,6 +107,20 @@ export const categoriesSlice = createSlice({
       .addCase(fetchCategoryList.rejected, (state, action) => {
         state.isListLoading = false;
         state.error = action.error.message ?? "Failed to fetch";
+      });
+
+    /* ── Reorder ── */
+    builder
+      .addCase(reorderCategories.pending, (state) => {
+        state.isUpdating = true;
+        state.error = null;
+      })
+      .addCase(reorderCategories.fulfilled, (state) => {
+        state.isUpdating = false;
+      })
+      .addCase(reorderCategories.rejected, (state, action) => {
+        state.isUpdating = false;
+        state.error = action.error.message ?? "Failed to reorder";
       });
 
     /* ── Create ── */

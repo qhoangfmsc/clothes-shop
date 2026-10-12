@@ -430,7 +430,7 @@ export default function ProductsContent() {
           },
         ]}
         sortOptions={sortOptions}
-        defaultSort="createdAt"
+        defaultSort="-createdAt"
       />
 
       {/* ═══════════════════════════ MODAL FORM ═══════════════════════════ */}

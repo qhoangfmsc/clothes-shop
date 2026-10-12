@@ -38,6 +38,7 @@ export const MESSAGE_FILES = {
   "public/newIn": load<typeof import("../messages/en/public/newIn.json")>("public/newIn"),
   "public/product": load<typeof import("../messages/en/public/product.json")>("public/product"),
   "public/shop": load<typeof import("../messages/en/public/shop.json")>("public/shop"),
+  "shared/carousel": load<typeof import("../messages/en/shared/carousel.json")>("shared/carousel"),
   "shared/cart": load<typeof import("../messages/en/shared/cart.json")>("shared/cart"),
   "shared/errors": load<typeof import("../messages/en/shared/errors.json")>("shared/errors"),
   "shared/feedback": load<typeof import("../messages/en/shared/feedback.json")>("shared/feedback"),
