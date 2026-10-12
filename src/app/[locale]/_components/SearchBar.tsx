@@ -1,18 +1,24 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { Fragment, useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useRouter } from "@/src/i18n/navigation";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
-import { Search, X } from "lucide-react";
+import { History, Search, X } from "lucide-react";
 import { useAutocomplete, getProductUrl, type AutocompleteItem } from "@/src/hooks/use-api";
 import { useBreakpoint } from "@/src/hooks/useMediaQuery";
+import { useSearchHistory } from "./useSearchHistory";
+
+/* Matches the max-width transition of the search container below */
+const EXPAND_MS = 300;
 
 export default function SearchBar() {
   const t = useTranslations("shared.header.search");
   const router = useRouter();
   const [expanded, setExpanded] = useState(false);
+  /* True once the expand animation is done, so the dropdown measures the final input position */
+  const [settled, setSettled] = useState(false);
   const [query, setQuery] = useState("");
   const [highlightIdx, setHighlightIdx] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +29,24 @@ export default function SearchBar() {
   const { results, isLoading, search, clear: clearAutocomplete } = useAutocomplete(
     isMobile ? 5 : isTablet ? 8 : 10
   );
+  const { history, add: addToHistory, remove: removeFromHistory } = useSearchHistory();
+
+  /* Google-style list: matching history first, then suggestions not already shown as history */
+  const { items, historyCount } = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    const historyMatches = needle ? history.filter((h) => h.name.toLowerCase().includes(needle)) : history;
+    const suggestions = results.filter((r) => !historyMatches.some((h) => h.id === r.id));
+    return { items: [...historyMatches, ...suggestions], historyCount: historyMatches.length };
+  }, [history, results, query]);
+
+  useEffect(() => {
+    if (!expanded) {
+      setSettled(false);
+      return;
+    }
+    const timer = setTimeout(() => setSettled(true), EXPAND_MS);
+    return () => clearTimeout(timer);
+  }, [expanded]);
 
   /* Focus input after expand transition starts */
   useEffect(() => {
@@ -67,10 +91,10 @@ export default function SearchBar() {
     return () => document.removeEventListener("mousedown", onMouseDown);
   }, [expanded, query, results.length]);
 
-  /* Reset highlight when results change */
+  /* Reset highlight when the list changes */
   useEffect(() => {
     setHighlightIdx(-1);
-  }, [results]);
+  }, [items]);
 
   const handleChange = useCallback(
     (value: string) => {
@@ -82,6 +106,7 @@ export default function SearchBar() {
 
   const navigateToProduct = useCallback(
     async (item: AutocompleteItem) => {
+      addToHistory(item);
       setExpanded(false);
       setQuery("");
       setHighlightIdx(-1);
@@ -89,28 +114,28 @@ export default function SearchBar() {
       const url = await getProductUrl(item.id);
       router.push(url ?? "/shop");
     },
-    [router, clearAutocomplete]
+    [router, clearAutocomplete, addToHistory]
   );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (results.length === 0) return;
+      if (items.length === 0) return;
 
       switch (e.key) {
         case "ArrowDown": {
           e.preventDefault();
-          setHighlightIdx((prev) => (prev < results.length - 1 ? prev + 1 : 0));
+          setHighlightIdx((prev) => (prev < items.length - 1 ? prev + 1 : 0));
           break;
         }
         case "ArrowUp": {
           e.preventDefault();
-          setHighlightIdx((prev) => (prev > 0 ? prev - 1 : results.length - 1));
+          setHighlightIdx((prev) => (prev > 0 ? prev - 1 : items.length - 1));
           break;
         }
         case "Enter": {
-          if (highlightIdx >= 0 && highlightIdx < results.length) {
+          if (highlightIdx >= 0 && highlightIdx < items.length) {
             e.preventDefault();
-            navigateToProduct(results[highlightIdx]);
+            navigateToProduct(items[highlightIdx]);
           }
           break;
         }
@@ -121,7 +146,7 @@ export default function SearchBar() {
         }
       }
     },
-    [results, highlightIdx, navigateToProduct]
+    [items, highlightIdx, navigateToProduct]
   );
 
   const handleItemHover = useCallback((idx: number) => {
@@ -135,7 +160,7 @@ export default function SearchBar() {
     inputRef.current?.focus();
   }, [clearAutocomplete]);
 
-  const showDropdown = expanded && query.trim().length >= 2;
+  const showDropdown = expanded && settled && (query.trim().length >= 2 || items.length > 0);
 
   return (
     <div
@@ -163,7 +188,7 @@ export default function SearchBar() {
           overflow: "hidden",
           cursor: expanded ? "text" : "pointer",
           transition:
-            "max-width 300ms cubic-bezier(0.25, 0.1, 0.25, 1), background 200ms, border-color 200ms, padding 200ms",
+            `max-width ${EXPAND_MS}ms cubic-bezier(0.25, 0.1, 0.25, 1), background 200ms, border-color 200ms, padding 200ms`,
         }}
         onClick={() => {
           if (!expanded) setExpanded(true);
@@ -243,12 +268,14 @@ export default function SearchBar() {
       {showDropdown && (
         <SearchDropdown
           anchorRef={containerRef}
-          results={results}
+          items={items}
+          historyCount={historyCount}
           isLoading={isLoading}
           highlightIdx={highlightIdx}
           query={query}
           onSelect={navigateToProduct}
           onHover={handleItemHover}
+          onRemoveHistory={removeFromHistory}
         />
       )}
     </div>
@@ -258,20 +285,24 @@ export default function SearchBar() {
 /* ── Dropdown: portaled to body ── */
 function SearchDropdown({
   anchorRef,
-  results,
+  items,
+  historyCount,
   isLoading,
   highlightIdx,
   query,
   onSelect,
   onHover,
+  onRemoveHistory,
 }: {
   anchorRef: React.RefObject<HTMLDivElement | null>;
-  results: AutocompleteItem[];
+  items: AutocompleteItem[];
+  historyCount: number;
   isLoading: boolean;
   highlightIdx: number;
   query: string;
   onSelect: (item: AutocompleteItem) => void;
   onHover: (idx: number) => void;
+  onRemoveHistory: (id: string) => void;
 }) {
   const t = useTranslations("shared.header.search");
   const tCommon = useTranslations("common");
@@ -305,8 +336,8 @@ function SearchDropdown({
 
   if (!mounted) return null;
 
-  const showLoading = isLoading && results.length === 0;
-  const showNoResults = !isLoading && query.length >= 2 && results.length === 0;
+  const showLoading = isLoading && items.length === 0;
+  const showNoResults = !isLoading && query.trim().length >= 2 && items.length === 0;
 
   return (
     <div
@@ -357,73 +388,132 @@ function SearchDropdown({
           </div>
         )}
 
-        {results.map((item, idx) => (
-          <button
-            key={item.id}
-            id={`search-result-${idx}`}
-            type="button"
-            role="option"
-            aria-selected={highlightIdx === idx}
-            onClick={() => onSelect(item)}
-            onMouseEnter={() => onHover(idx)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              width: "100%",
-              border: "none",
-              background: highlightIdx === idx ? "var(--bg-elevated)" : "transparent",
-              padding: "10px 14px",
-              cursor: "pointer",
-              textAlign: "left",
-              fontFamily: "var(--font-primary)",
-              transition: "background 100ms",
-            }}
-          >
-            {/* Thumbnail */}
-            <div
-              style={{
-                width: 42,
-                height: 56,
-                borderRadius: 4,
-                overflow: "hidden",
-                flexShrink: 0,
-                background: "var(--bg-elevated)",
-                position: "relative",
-              }}
-            >
-              <Image src={item.image} alt="" fill sizes="42px" style={{ objectFit: "cover" }} />
-            </div>
+        {items.map((item, idx) => {
+          const isHistory = idx < historyCount;
+          return (
+            <Fragment key={item.id}>
+              {isHistory && idx === 0 && !query.trim() && (
+                <div
+                  role="presentation"
+                  style={{
+                    padding: "10px 14px 4px",
+                    fontFamily: "var(--font-primary)",
+                    fontSize: 11,
+                    fontWeight: 500,
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  {t("recent")}
+                </div>
+              )}
+              <div
+                onMouseEnter={() => onHover(idx)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  background: highlightIdx === idx ? "var(--bg-elevated)" : "transparent",
+                  transition: "background 100ms",
+                }}
+              >
+                <button
+                  id={`search-result-${idx}`}
+                  type="button"
+                  role="option"
+                  aria-selected={highlightIdx === idx}
+                  onClick={() => onSelect(item)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    flex: 1,
+                    minWidth: 0,
+                    border: "none",
+                    background: "transparent",
+                    padding: isHistory ? "10px 4px 10px 14px" : "10px 14px",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    fontFamily: "var(--font-primary)",
+                  }}
+                >
+                  {/* Same size and colour on both kinds of row so the thumbnails stay aligned */}
+                  {isHistory ? (
+                    <History size={14} aria-hidden style={{ color: "var(--text-disabled)", flexShrink: 0 }} />
+                  ) : (
+                    <Search size={14} aria-hidden style={{ color: "var(--text-disabled)", flexShrink: 0 }} />
+                  )}
 
-            {/* Name + price */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: 1, minWidth: 0 }}>
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: "var(--text-primary)",
-                  letterSpacing: "-0.02em",
-                  lineHeight: "135%",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {item.name}
-              </span>
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: "var(--text-muted)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
-              </span>
-            </div>
-          </button>
-        ))}
+                  {/* Thumbnail */}
+                  <div
+                    style={{
+                      width: 42,
+                      height: 56,
+                      borderRadius: 4,
+                      overflow: "hidden",
+                      flexShrink: 0,
+                      background: "var(--bg-elevated)",
+                      position: "relative",
+                    }}
+                  >
+                    <Image src={item.image} alt="" fill sizes="42px" style={{ objectFit: "cover" }} />
+                  </div>
+
+                  {/* Name + price */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: 1, minWidth: 0 }}>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 500,
+                        color: "var(--text-primary)",
+                        letterSpacing: "-0.02em",
+                        lineHeight: "135%",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {item.name}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 500,
+                        color: "var(--text-muted)",
+                        letterSpacing: "-0.02em",
+                      }}
+                    >
+                      {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
+                    </span>
+                  </div>
+                </button>
+
+                {/* Remove from history */}
+                {isHistory && (
+                  <button
+                    type="button"
+                    aria-label={t("removeRecent", { name: item.name })}
+                    title={t("removeRecent", { name: item.name })}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onRemoveHistory(item.id)}
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      cursor: "pointer",
+                      padding: "10px 14px",
+                      color: "var(--text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+            </Fragment>
+          );
+        })}
       </div>
     </div>
   );

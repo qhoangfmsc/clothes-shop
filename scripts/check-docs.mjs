@@ -39,7 +39,7 @@ const MODULES = [
   { doc: "platform/site-chrome", paths: [
     `${COMP}SiteHeader.tsx`, `${COMP}HeaderNav.tsx`, `${COMP}HamburgerMenu.tsx`, `${COMP}SearchBar.tsx`,
     `${COMP}UserMenu.tsx`, `${COMP}Logo.tsx`, `${COMP}SiteFooter.tsx`, `${COMP}LanguageSwitcher.tsx`,
-    `${COMP}SocialIcons.tsx`, `${COMP}CartFAB.tsx`, "src/lib/socials.tsx",
+    `${COMP}SocialIcons.tsx`, `${COMP}CartFAB.tsx`, `${COMP}useSearchHistory.ts`, "src/lib/socials.tsx",
   ] },
   { doc: "platform/auth", paths: [
     `${L}(auth)/`, "src/contexts/", "src/lib/auth-api.ts", "src/lib/permissions.ts",
@@ -278,7 +278,10 @@ if (args.includes("--changed")) {
     const tracked = (() => { try { execFileSync("git", ["ls-files", "--error-unmatch", docPath], { cwd: ROOT, stdio: "ignore" }); return true; } catch { return false; } })();
     if (!tracked) continue; // brand-new doc
     const diff = git("diff", "-U0", base, "--", docPath);
-    if (!/^\+> \*\*Nhóm:\*\*.*\*\*Cập nhật:\*\*/m.test(diff)) {
+    /* A second edit on the same day cannot change the date, so a date that is already today (or later) also passes */
+    const docDate = /\*\*Cập nhật:\*\*\s*(\d{4}-\d{2}-\d{2})/.exec(readFileSync(join(ROOT, docPath), "utf8"))?.[1] ?? "";
+    const today = new Date().toLocaleDateString("sv-SE");
+    if (!/^\+> \*\*Nhóm:\*\*.*\*\*Cập nhật:\*\*/m.test(diff) && docDate < today) {
       fail(`${docPath} was edited but its "Cập nhật" date was not bumped`);
     }
   }

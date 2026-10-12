@@ -1,7 +1,7 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
 > **Nhóm:** Platform · **Cập nhật:** 2026-10-12
-> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`
+> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
 
@@ -10,7 +10,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 ## 2. Phục vụ gì / việc cần làm
 
 - Đưa khách tới Shop, New In, Collections, About và khu tài khoản từ mọi trang công khai.
-- Tìm sản phẩm nhanh bằng ô tìm kiếm có gợi ý.
+- Tìm sản phẩm nhanh bằng ô tìm kiếm có gợi ý và lịch sử sản phẩm đã mở gần đây.
 - Hiển thị danh mục/danh mục con thật từ API, có lối tắt "xem tất cả".
 - Cho thấy số lượng trong giỏ và dẫn tới giỏ từ bất cứ đâu.
 - Đổi ngôn ngữ giữ nguyên trang.
@@ -22,7 +22,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 | Header | Cố định, ẩn khi cuộn xuống/hiện khi cuộn lên, nền kính mờ sau khi cuộn | `SiteHeader.tsx` |
 | Logo | Wordmark SVG `DOOVAN` màu thương hiệu, link về `/` | `Logo.tsx` |
 | Thanh điều hướng | Link Shop/New In/Collections/About (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
-| Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, điều hướng bằng phím | `SearchBar.tsx` |
+| Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, lịch sử gần đây, điều hướng bằng phím | `SearchBar.tsx`, `useSearchHistory.ts` |
 | Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật, đổi ngôn ngữ, mạng xã hội, link pháp lý | `HamburgerMenu.tsx` |
 | Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
 | Footer | Thương hiệu + mạng xã hội, Explore, Account, Language, copyright, link pháp lý | `SiteFooter.tsx` |
@@ -44,7 +44,9 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.3 `SearchBar`
 
-Ô tìm kiếm thu gọn → mở rộng khi bấm; focus sau 200 ms. Dùng `useAutocomplete(limit)` (debounce 300 ms, ≥ 2 ký tự); `limit` theo màn hình qua `useBreakpoint`: mobile 5, tablet 8, desktop 10 (BE nhận 1–10). Dropdown gợi ý hiện khi query ≥ 2 ký tự (id `search-autocomplete-dropdown`): ảnh, tên, giá. Phím: ↑/↓ chuyển mục (vòng tròn), Enter mở mục đang chọn, Esc đóng và xóa. Bấm ra ngoài chỉ đóng khi query rỗng và không có kết quả. Chọn gợi ý → `getProductUrl(id)` tra URL đầy đủ rồi `router.push`, thất bại → `/shop`. Chuỗi: `shared.header.search`.
+Ô tìm kiếm thu gọn → mở rộng khi bấm; focus sau 200 ms. Dùng `useAutocomplete(limit)` (debounce 300 ms, ≥ 2 ký tự); `limit` theo màn hình qua `useBreakpoint`: mobile 5, tablet 8, desktop 10 (BE nhận 1–10). Dropdown (id `search-autocomplete-dropdown`) chỉ hiện sau khi animation mở rộng xong (`EXPAND_MS` = 300 ms, trạng thái `settled`) để đo vị trí theo ô input ở kích thước cuối, và hiện khi query ≥ 2 ký tự **hoặc** có lịch sử; mỗi dòng gồm ảnh, tên, giá. Danh sách = lịch sử khớp trước, rồi gợi ý từ BE không trùng `id` với lịch sử (theo kiểu Google). Query rỗng: chỉ hiện lịch sử dưới tiêu đề `recent`; đang gõ: lịch sử lọc theo tên chứa từ khóa (không phân biệt hoa thường) và không có tiêu đề. Dòng lịch sử có icon lịch sử (`History`) trước ảnh, còn dòng gợi ý có icon kính lúp (`Search`) cùng cỡ 14 px và màu `--text-disabled` để ảnh thẳng hàng và nút ✕ (`removeRecent`) xóa riêng mục đó. Phím: ↑/↓ chuyển mục trên cả danh sách gộp (vòng tròn), Enter mở mục đang chọn, Esc đóng và xóa. Bấm ra ngoài chỉ đóng khi query rỗng và không có kết quả. Chọn một dòng (gợi ý hay lịch sử) → thêm vào lịch sử, rồi `getProductUrl(id)` tra URL đầy đủ và `router.push`, thất bại → `/shop`. Từ khóa gõ không được lưu, chỉ lưu sản phẩm đã chọn. Chuỗi: `shared.header.search` (`placeholder`, `loading`, `noResults`, `clear`, `recent`, `removeRecent`).
+
+**Lịch sử (`useSearchHistory`)**: mảng `AutocompleteItem` mới nhất trước, lưu ở `localStorage` khóa `doovan-search-history` (JSON thuần), tối đa `SEARCH_HISTORY_MAX = 5`. Thêm một mục sẽ bỏ bản trùng `id` và đưa lên đầu. Đọc sau khi mount (server luôn render rỗng) và đồng bộ giữa các tab qua sự kiện `storage`; mỗi lần ghi đọc lại từ storage trước để hai tab không đè nhau. Lỗi quota/storage bị chặn thì bỏ qua. Giá, ảnh, `badge` là bản chụp lúc lưu, không tự làm mới. Không đi qua Redux store.
 
 ### 4.4 `HamburgerMenu`
 

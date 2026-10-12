@@ -6,6 +6,18 @@
     "carouselAria": "Product image carousel",
     "imageAlt": "{name} — Image {index}",
     "viewImage": "View image {index}",
+    "viewer": {
+      "close": "Close",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "resetZoom": "Fit to screen",
+      "lightbox": "Enlarged photo viewer",
+      "gallery": "Product photo gallery",
+      "slide": "Photo",
+      "slideOf": "Photo {index} of {total}"
+    },
     "badge": {
       "new": "New Arrival",
       "sale": "On Sale",
@@ -32,6 +44,7 @@
     "shareText": "Check out {name} from DOOVAN",
     "linkCopied": "Link copied to clipboard",
     "material": "Material",
+    "materialCustomOrder": "Original design material",
     "care": "Care",
     "category": "Category",
     "toastAdded": "{name} ({details}) added — <link>View Bag</link>",

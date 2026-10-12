@@ -36,7 +36,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Spacing** (lưới 4 px): `--space-1 … --space-20`; **radius** `sm 4, md 8, lg 16, xl 24, pill`.
 - **Motion**: `--ease-default/out-cubic/in-out/luxury`, `--duration-fast 150 / base 300 / slow 600 / slower 1000 / cinematic 1200`.
 - **z-index**: `base 0, panel 10, overlay 12, fixed 20, cursor 50, modal 100, toast 200`.
-- Breakpoint tham chiếu: `sm 640`, `lg 1024`, `xl 1440`.
+- Breakpoint: mặc định của Tailwind v4 (không ghi đè): `sm 640`, `md 768`, `lg 1024`, `xl 1280`, `2xl 1536` — xem 4.4.
 
 ### 4.2 Font
 
@@ -51,7 +51,18 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - Class riêng cho drawer menu (`.drawer-*`), mega menu (`.mega-menu-item-link`), user menu (`.user-avatar-btn`, `.user-menu-item`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
 - Khối `prefers-reduced-motion: reduce` tắt chuyển động cho các thành phần trên.
 
-### 4.4 Ghi chú hiện trạng
+### 4.4 Responsive (hiện trạng)
+
+- **Breakpoint**: không có `--breakpoint-*` hay `@theme` ghi đè trong `src/`, nên `sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536` đều là giá trị mặc định của Tailwind 4.3. Trong `src/app` đang dùng `sm:` (nhiều nhất), `lg:`, `md:`, `max-sm:`, một `min-[480px]:`; chưa có `xl:` / `2xl:` nào.
+- **Custom variant `carousel`** (`globals.css`): áp dụng khi `max-width: 767.98px` **hoặc** con trỏ chính không phải `fine` — tức điện thoại và mọi thiết bị cảm ứng (iPad kể cả khi ngang).
+- **Hook `useBreakpoint()`** (`src/hooks/useMediaQuery.ts`): theo `window.innerWidth`, `isMobile < 640`, `isTablet 640–1023`, `isDesktop ≥ 1024`; giá trị khởi tạo 1024 trước khi mount; không có mức `wide`.
+- **Truy vấn theo thiết bị nhập**: `(pointer: fine)` ở con trỏ tùy biến (`use-cursor-tracker.ts`), kéo chuột của `Carousel`, con trỏ `zoom-in` của `ZoomableImage`; `(hover: none)` ở mũi tên `Carousel` (luôn hiện trên cảm ứng) và `CollectionShowcase`; GSAP ở `CollectionsClient` chỉ chạy khi `(min-width: 768px) and (pointer: fine)`.
+- **Phân loại theo thiết bị** nằm ở quy tắc `.agent/rules/responsive.md` (phone, tablet, iPad ngang, desktop, wide); `ResponsiveBannerImage` chọn ảnh theo `max-width` 639/1023 (mobile/tablet/desktop).
+- **Khu admin**: sidebar cố định 240 px từ `lg`, drawer off-canvas dưới `lg` (xem [admin-shell](../admin/admin-shell.md)); form/modal/bảng dùng chung có kích thước riêng cho cảm ứng qua `pointer-coarse:` (xem [ui-kit](./ui-kit.md)).
+- `html, body` có `overflow-x: hidden` (4.3).
+- `QuickAddDrawer` chừa `env(safe-area-inset-bottom)` ở chân drawer; chưa nơi nào khác dùng `safe-area`. `100vh` còn dùng ở bố cục sticky (vd. gallery trang chi tiết `lg:h-[calc(100vh-80px)]`), chưa dùng `dvh`.
+
+### 4.5 Ghi chú hiện trạng
 
 - Quy tắc cũ ghi font "Quiche Display / Inter Tight", nhưng code hiện tại dùng một font duy nhất (`--font-site` = Doovan Display) cho cả `--font-primary` và `--font-display`.
 - Tailwind chỉ dùng cho layout/khoảng cách; màu lấy qua `bg-[var(--token)]`, `text-[var(--token)]`.

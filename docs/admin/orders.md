@@ -51,3 +51,4 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 
 - Đơn do khách tạo ở [checkout](../storefront/checkout.md); khách xem lại ở [customer-orders](../storefront/customer-orders.md).
 - `OrderDetailPanel` cũng được dùng trong [users](./users.md).
+- Khung modal chi tiết đơn tự dựng (không dùng `ModalShell`): overlay `p-3` → `sm:p-6`, chiều cao tối đa `calc(100dvh - 1.5rem)` (từ `sm`: `85dvh`), cuộn trong khung.

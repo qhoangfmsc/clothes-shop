@@ -68,17 +68,23 @@ export function useCursorTracker() {
     const handleDown = () => setState((prev) => ({ ...prev, isPressed: true }));
     const handleUp = () => setState((prev) => ({ ...prev, isPressed: false }));
 
-    window.addEventListener("pointermove", handleMove, { passive: true });
+    // Capture phase on purpose: widgets that handle the pointer themselves (the photo viewer's
+    // pan, drag libraries) call stopPropagation(), which would otherwise hide every move / press
+    // from a bubble-phase listener and freeze the cursor in place.
+    const capture = { capture: true } as const;
+    window.addEventListener("pointermove", handleMove, { passive: true, capture: true });
     document.addEventListener("mouseleave", handleLeave);
-    window.addEventListener("pointerdown", handleDown);
-    window.addEventListener("pointerup", handleUp);
+    window.addEventListener("pointerdown", handleDown, capture);
+    window.addEventListener("pointerup", handleUp, capture);
+    window.addEventListener("pointercancel", handleUp, capture);
     window.addEventListener("blur", handleUp);
 
     return () => {
-      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointermove", handleMove, capture);
       document.removeEventListener("mouseleave", handleLeave);
-      window.removeEventListener("pointerdown", handleDown);
-      window.removeEventListener("pointerup", handleUp);
+      window.removeEventListener("pointerdown", handleDown, capture);
+      window.removeEventListener("pointerup", handleUp, capture);
+      window.removeEventListener("pointercancel", handleUp, capture);
       window.removeEventListener("blur", handleUp);
     };
   }, [x, y]);

@@ -24,6 +24,7 @@
   "badge": "QUẢN TRỊ",
   "logout": "Đăng xuất",
   "menu": "Menu",
+  "closeMenu": "Đóng menu",
   "denied": {
     "backToStore": "Về cửa hàng",
     "adminRequired": {

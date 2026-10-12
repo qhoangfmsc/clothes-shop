@@ -251,10 +251,11 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   RESPONSIVE BREAKPOINTS (for reference — use in @media)
+   RESPONSIVE BREAKPOINTS (for reference — Tailwind v4 defaults, not overridden)
    
-   Mobile:     < 640px
-   Tablet:     ≥ 640px  (sm)
-   Desktop:    ≥ 1024px (lg)
-   Wide:       ≥ 1440px (xl)
+   Phone:      < 640px
+   Tablet:     ≥ 640px  (sm), ≥ 768px (md)
+   iPad land.: ≥ 1024px (lg)
+   Desktop:    ≥ 1280px (xl)
+   Wide:       ≥ 1536px (2xl)
    ───────────────────────────────────────────────────────── */

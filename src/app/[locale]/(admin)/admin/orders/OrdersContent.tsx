@@ -261,11 +261,11 @@ export default function OrdersContent() {
       {/* ═══════════════ DETAIL / ERROR PANEL ═══════════════ */}
       {(detailOrder || detailError) && (
         <div
-          className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-6"
+          className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-3 sm:p-6"
           onClick={closeDetail}
         >
           <div
-            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-150 max-h-[85vh] overflow-auto shadow-xl"
+            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-150 max-h-[calc(100dvh-1.5rem)] sm:max-h-[85dvh] overflow-auto shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* ── Error state ── */}

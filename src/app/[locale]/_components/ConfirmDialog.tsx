@@ -90,7 +90,7 @@ function ConfirmPortal({
     <AnimatePresence>
       {pending && (
         <motion.div
-          className="fixed inset-0 bg-[rgba(10,10,8,0.55)] flex items-center justify-center z-200 p-6"
+          className="fixed inset-0 bg-[rgba(10,10,8,0.55)] flex items-center justify-center z-200 p-4 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -131,7 +131,7 @@ function ConfirmPortal({
             <div className="flex justify-end gap-3">
               <button
                 type="button"
-                className="py-2 px-4 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
+                className="py-2 px-4 pointer-coarse:min-h-11 bg-[var(--bg-elevated)] border-0 rounded-sm text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
                 onClick={() => onSettle(false)}
               >
                 {pending.cancelLabel ?? t("cancel")}
@@ -139,7 +139,7 @@ function ConfirmPortal({
               <button
                 type="button"
                 autoFocus
-                className={`py-2 px-5 border-0 rounded-sm text-sm font-semibold font-primary cursor-pointer ${
+                className={`py-2 px-5 pointer-coarse:min-h-11 border-0 rounded-sm text-sm font-semibold font-primary cursor-pointer ${
                   pending.danger
                     ? "bg-[var(--accent-rose)] text-[var(--color-noir)]"
                     : "bg-[var(--accent-primary)] text-[var(--text-on-gold)]"

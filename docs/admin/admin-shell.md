@@ -22,7 +22,7 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 | `AdminGuard` | Chặn người không có quyền vào admin |
 | Kiểm tra quyền theo route | So khớp `pathname` với mục sidebar → yêu cầu permission tương ứng |
 | `AdminPasswordGate` | Nhập mật khẩu hệ thống, TTL 15 phút |
-| Sidebar | Logo, Dashboard, ba nhóm điều hướng, thông tin người dùng, đăng xuất |
+| Sidebar | Logo, Dashboard, ba nhóm điều hướng, thông tin người dùng, đăng xuất; cột cố định từ `lg`, drawer trượt ra dưới `lg` |
 | Breadcrumb | Dựng từ các segment của URL |
 | Màn từ chối | `AccessDeniedScreen` (thiếu quyền admin hoặc thiếu quyền route) |
 
@@ -36,7 +36,9 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 
 `AccessDeniedScreen` có nút "Quay lại cửa hàng" (`/`).
 
-### 4.2 Sidebar (240 px, cố định, cuộn riêng, nền `--color-obsidian`)
+### 4.2 Sidebar (nền `--color-obsidian`, cuộn riêng)
+
+- **Từ `lg` (≥ 1024)**: cột cố định rộng 240 px (`z-20`). **Dưới `lg`**: drawer off-canvas rộng `min(280px, 85vw)` (`z-40`), trượt từ trái 300 ms (`translate-x`, bỏ chuyển động khi `prefers-reduced-motion`); khi đóng có `invisible` nên không focus được bằng bàn phím. Mở bằng nút `menu` ở thanh trên; đóng bằng nút X trong drawer (`closeMenu`), bấm nền tối (`z-30`), phím Esc, hoặc khi chuyển trang. Trạng thái mở lưu dạng `menuPath` (pathname lúc mở) nên đổi `pathname` tự đóng, không cần effect. Mở thì focus vào nút X; đóng bằng nút/Esc trả focus về nút `menu`. Chiều cao `h-dvh`, chân drawer chừa `env(safe-area-inset-bottom)`; link và nút đăng xuất cao tối thiểu 44 px trên thiết bị cảm ứng (`pointer-coarse:min-h-11`).
 
 - Đầu: link `/` với logo "✦ DOOVAN" và nhãn `ADMIN` (`badge`).
 - **Dashboard** (`/admin`) luôn hiện.
@@ -58,7 +60,7 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 
 ### 4.3 Vùng chính
 
-`ml-[240px]`, `h-screen`, không cuộn ở ngoài; thanh breadcrumb cố định ở trên (mỗi segment URL, ưu tiên nhãn `admin.shell.breadcrumb.<segment>`, không có thì hiện nguyên segment); nội dung cuộn trong `p-[var(--space-8)]`. Có nút menu (`menu`) ẩn (`hidden`) — chưa có sidebar responsive: bố cục admin dành cho màn hình lớn.
+`lg:ml-[240px]` (dưới `lg` nội dung chiếm toàn chiều rộng), `h-dvh`, không cuộn ở ngoài; thanh breadcrumb cố định ở trên (mỗi segment URL, ưu tiên nhãn `admin.shell.breadcrumb.<segment>`, không có thì hiện nguyên segment; không xuống dòng, cuộn ngang trong thanh khi dài) với nút `menu` (`lg:hidden`, 44 × 44 px, `aria-expanded`, `aria-controls="admin-sidebar"`); nội dung cuộn trong khung đệm `p-4` → `sm:p-6` → `lg:p-[var(--space-8)]`. Thanh trên đệm `px-4` → `sm:px-6` → `lg:px-[var(--space-8)]`. `AccessDeniedScreen` dùng `min-h-dvh` và đệm nhỏ hơn dưới `sm`.
 
 ### 4.4 Ghi chú hiện trạng
 
@@ -68,4 +70,4 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 
 ### 4.5 i18n
 
-`admin.shell` (`meta`, `nav`, `badge`, `logout`, `menu`, `denied`, `breadcrumb`), `admin.components.guards`, `common.role`.
+`admin.shell` (`meta`, `nav`, `badge`, `logout`, `menu`, `closeMenu`, `denied`, `breadcrumb`), `admin.components.guards`, `common.role`.

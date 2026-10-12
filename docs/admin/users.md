@@ -53,3 +53,4 @@ Select `USER_ROLES`; nút "Lưu" chỉ bật khi role đã đổi và không đa
 
 - UI hiện chỉ đổi **role**. Kiểu `UserUpdateData` đã có `status` và `permissions` (mã số) nhưng chưa có điều khiển trên màn hình.
 - Danh sách đơn của user lấy trực tiếp bằng `authApi` trong component (không qua slice).
+- Hai khung modal (sửa user `z-100`, chi tiết đơn `z-110`) tự dựng, không dùng `ModalShell`: overlay `p-3` → `sm:p-6`, chiều cao tối đa `calc(100dvh - 1.5rem)` (từ `sm`: `85dvh`).

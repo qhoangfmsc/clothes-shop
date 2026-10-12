@@ -41,21 +41,21 @@ Hai chế độ:
 
 Props: `columns` (`key, header, width, align, hideBelow: sm|md|lg, render`), `searchable` (mặc định true), `searchPlaceholder`, `filters` (`key, label, options, defaultValue`), `sortOptions` (`value, label`), `defaultSort` (mặc định `-createdAt`), `pageSize` (mặc định 25, kẹp tối đa 200), `reorder`, `keyExtractor` (mặc định `row.id`), `selectable` + `renderBulkActions({ keys, rows, clear })`, `onError`, `emptyMessage` (chuỗi hoặc hàm theo `hasActiveFilters`), `tableRef` (`refresh()`, `reset()`).
 
-Hành vi: ô tìm kiếm debounce 350 ms; phân trang có dấu "…" (giữ trang đầu, cuối và ±1) và chỉ hiện khi `total > pageSize`; chọn nhiều có checkbox tổng ba trạng thái và giữ lại chỉ các dòng còn hiện sau khi đổi trang/lọc/xóa; kéo thả (`@dnd-kit`) chỉ bật khi đang sắp xếp theo `reorder.sortValue`, không lọc/tìm, và toàn bộ danh sách nằm trên một trang — hàm `onReorder(rows)` nhận danh sách đầy đủ theo thứ tự mới và **ném lỗi để bảng khôi phục**. Cột có thể ẩn theo breakpoint. Chuỗi nằm ở `admin.components.dataTable`.
+Hành vi: ô tìm kiếm debounce 350 ms; phân trang có dấu "…" (giữ trang đầu, cuối và ±1) và chỉ hiện khi `total > pageSize`; chọn nhiều có checkbox tổng ba trạng thái và giữ lại chỉ các dòng còn hiện sau khi đổi trang/lọc/xóa; kéo thả (`@dnd-kit`) chỉ bật khi đang sắp xếp theo `reorder.sortValue`, không lọc/tìm, và toàn bộ danh sách nằm trên một trang — hàm `onReorder(rows)` nhận danh sách đầy đủ theo thứ tự mới và **ném lỗi để bảng khôi phục**. Cột có thể ẩn theo breakpoint. Trên thiết bị cảm ứng (`pointer-coarse:`) các điều khiển lớn lên cho vừa ngón tay: ô tìm kiếm, ô lọc/sắp xếp cao 44 px và chữ 16 px (iOS không tự phóng khi focus), nút phân trang 44 × 44 px, nút xóa tìm/lọc 36 px, checkbox 20 px; ô tìm kiếm rộng tối thiểu `min(100%, 14rem)` nên chiếm cả hàng trên điện thoại; thanh phân trang tự xuống dòng. Bảng cuộn trong khung của nó. Chuỗi nằm ở `admin.components.dataTable`.
 
 Quy ước: sort theo BE (`field` / `-field`); không thêm hành vi riêng của một bảng vào `DataTable` — thêm prop tùy chọn tổng quát.
 
 ### 4.2 `AdminFormKit`
 
-- `ModalShell({ title, onClose, maxWidthClass = "max-w-160" })`: overlay (`z-100`), click nền để đóng, header + nút đóng cố định, phần dưới là cột flex có chiều cao giới hạn (`max-h-[85vh]`) — chỉ `ModalBody` cuộn nên tab ở trên và footer ở dưới luôn hiện.
-- `ModalBody`, `FormTabs({ tabs, active, onChange })`, `FormSection({ title? })` (fieldset), `FormField({ label, info?, required? })` (dấu `*` đỏ, `InfoHint` hiện tooltip khi hover/focus), `FormActions({ onCancel, isSaving, submitLabel, savingLabel? })` (nút Hủy + submit, khóa khi đang lưu), `inputClass` (chuỗi class input chuẩn).
+- `ModalShell({ title, onClose, maxWidthClass = "max-w-160" })`: overlay (`z-100`, đệm `p-3` → `sm:p-6`), click nền để đóng, header + nút đóng cố định (44 px trên cảm ứng), phần dưới là cột flex có chiều cao giới hạn (`max-h-[calc(100dvh-1.5rem)]`, từ `sm`: `max-h-[85dvh]`) — chỉ `ModalBody` cuộn (`overscroll-contain`, đệm `p-4` → `sm:p-6`) nên tab ở trên và footer ở dưới luôn hiện. `FormTabs` cuộn ngang khi dài; `FormActions` chừa `env(safe-area-inset-bottom)`; nút Hủy/Lưu và `inputClass` cao tối thiểu 44 px trên cảm ứng, `inputClass` dùng chữ 16 px trên cảm ứng.
+- `ModalBody`, `FormTabs({ tabs, active, onChange })`, `FormSection({ title? })` (fieldset), `FormField({ label, info?, required? })` (dấu `*` đỏ, `InfoHint` hiện bong bóng: chuột = hover, bàn phím = focus, cảm ứng = chạm để mở và chạm ra ngoài để đóng; bong bóng căn giữa icon rồi được dịch (`translate`) để luôn nằm trong màn hình, cách mép 8 px; vùng chạm icon 24 px trên cảm ứng), `FormActions({ onCancel, isSaving, submitLabel, savingLabel? })` (nút Hủy + submit, khóa khi đang lưu), `inputClass` (chuỗi class input chuẩn).
 - Chuỗi: `admin.components.formKit` (`close`, `cancel`, `saving`).
 - Mẫu dùng: `<ModalShell><FormTabs/><form><ModalBody>…</ModalBody><FormActions/></form></ModalShell>`.
 
 ### 4.3 Toast, Confirm
 
 - `useToast().toast` → `success | error | info | warning (message, duration=3000)`, `dismiss(id)`, `dismissAll()`. Provider gắn ở root với `position="bottom-center"`, `maxToasts = 5` (vượt thì bỏ cái cũ nhất). `message` là `ReactNode` nên dùng được `t.rich(...)`. Text phải đến từ i18n (luật `toast-i18n`).
-- `useConfirm()` → `confirm({ title?, message, confirmLabel?, cancelLabel?, danger? }) => Promise<boolean>`; thay cho `window.confirm`. Layer `z-200`. Cách dùng toast/confirm/lỗi chuẩn: `.agent/skills/06-errors-and-toasts.md`.
+- `useConfirm()` → `confirm({ title?, message, confirmLabel?, cancelLabel?, danger? }) => Promise<boolean>`; thay cho `window.confirm`. Layer `z-200`, đệm `p-4` → `sm:p-6`, hai nút cao tối thiểu 44 px trên cảm ứng. Cách dùng toast/confirm/lỗi chuẩn: `.agent/skills/06-errors-and-toasts.md`.
 
 ### 4.4 Ảnh
 

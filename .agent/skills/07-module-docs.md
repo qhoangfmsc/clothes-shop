@@ -69,7 +69,7 @@ Sub-sections `4.1 …` as needed (see the checklists). Facts only.
 
 **Admin CRUD module**: table columns · filters · sort options (constant name + values) · page size / reorder · form tabs and fields (required, defaults, derived values like slugs) · validation and error toasts · every API call (method + path + params) and the thunk/hook that makes it · slice state · types (entity + form + list params) · permissions gating each action · confirm dialogs · i18n namespaces · modules it feeds or reads.
 
-**Storefront page**: routes and dynamic params · server fetches (function, endpoint, revalidate) · `generateStaticParams` / metadata / JSON-LD · client state and derived data · every user action and what it dispatches or calls · auth gating (`requireAuth`, `UnauthenticatedState`) · responsive behaviour that changes structure · analytics events · i18n namespaces · what the page does **not** do when that is easy to assume.
+**Storefront page**: routes and dynamic params · server fetches (function, endpoint, revalidate) · `generateStaticParams` / metadata / JSON-LD · client state and derived data · every user action and what it dispatches or calls · auth gating (`requireAuth`, `UnauthenticatedState`) · responsive behaviour that changes structure, per device class (phone / tablet / iPad landscape / desktop / wide) and per input (touch / mouse) · analytics events · i18n namespaces · what the page does **not** do when that is easy to assume.
 
 **Platform module**: public API (exports, props, hooks) · behaviour rules and defaults · storage keys, env vars, endpoints · who depends on it · constants other modules must match (codes, enums).
 

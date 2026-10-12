@@ -173,7 +173,7 @@ function getPageRange(current: number, total: number): (number | "...")[] {
 const inputClass =
   "py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none";
 const selectClass =
-  "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[130px] h-9";
+  "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[130px] h-9 pointer-coarse:h-11 pointer-coarse:text-base";
 
 /* ═══════════════════════════════ Sortable row ═══════════════════════════════ */
 
@@ -463,7 +463,7 @@ function DataTableInner<T extends { id?: string | number }>(
             <th className="sticky top-0 z-[1] bg-[var(--bg-secondary)] w-12 py-3 px-4 border-b border-[var(--border-subtle)]">
               <input
                 type="checkbox"
-                className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
+                className="w-3.5 h-3.5 pointer-coarse:w-5 pointer-coarse:h-5 accent-[var(--accent-primary)] cursor-pointer align-middle"
                 checked={allSelected}
                 ref={(el) => {
                   if (el) el.indeterminate = someSelected;
@@ -512,7 +512,7 @@ function DataTableInner<T extends { id?: string | number }>(
                 <td className="py-3 px-4 align-middle">
                   <input
                     type="checkbox"
-                    className="w-3.5 h-3.5 accent-[var(--accent-primary)] cursor-pointer align-middle"
+                    className="w-3.5 h-3.5 pointer-coarse:w-5 pointer-coarse:h-5 accent-[var(--accent-primary)] cursor-pointer align-middle"
                     checked={isSelected}
                     onChange={() => toggleRow(rowKey)}
                     aria-label={t("selection.selectRow")}
@@ -558,22 +558,22 @@ function DataTableInner<T extends { id?: string | number }>(
         <div className="shrink-0 flex gap-3 items-end flex-wrap">
           {/* Search */}
           {searchable && (
-            <label className="flex flex-col gap-0.75 flex-1">
+            <label className="flex flex-col gap-0.75 flex-1 min-w-[min(100%,14rem)]">
               <span className="text-xs font-semibold text-[var(--text-muted)] font-primary">
                 {t("search.label")}
               </span>
-              <div className="flex items-center gap-2 bg-[var(--bg-secondary)] rounded-lg px-4 h-9">
+              <div className="flex items-center gap-2 bg-[var(--bg-secondary)] rounded-lg px-4 h-9 pointer-coarse:h-11">
                 <Search size={14} className="text-[var(--text-muted)] shrink-0" />
                 <input
                   placeholder={searchPlaceholder ?? t("search.placeholder")}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="flex-1 border-0 bg-transparent p-0 text-sm font-primary text-[var(--text-primary)] outline-none"
+                  className="flex-1 min-w-0 border-0 bg-transparent p-0 text-sm pointer-coarse:text-base font-primary text-[var(--text-primary)] outline-none"
                 />
                 {search && (
                   <button
                     type="button"
-                    className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
+                    className="flex items-center justify-center w-6 h-6 pointer-coarse:w-9 pointer-coarse:h-9 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
                     onClick={clearSearch}
                     title={t("search.clear")}
                   >
@@ -609,7 +609,7 @@ function DataTableInner<T extends { id?: string | number }>(
                   {isActive && (
                     <button
                       type="button"
-                      className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
+                      className="flex items-center justify-center w-6 h-6 pointer-coarse:w-9 pointer-coarse:h-9 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
                       onClick={() => resetFilter(fil.key, fil.defaultValue ?? "")}
                       title={t("filter.reset", { filter: fil.label.toLocaleLowerCase(locale) })}
                     >
@@ -645,7 +645,7 @@ function DataTableInner<T extends { id?: string | number }>(
                 {sort !== defaultSort && (
                   <button
                     type="button"
-                    className="flex items-center justify-center w-6 h-6 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
+                    className="flex items-center justify-center w-6 h-6 pointer-coarse:w-9 pointer-coarse:h-9 border-0 rounded-sm bg-[var(--bg-elevated)] cursor-pointer text-[var(--text-muted)] shrink-0"
                     onClick={() => {
                       setSort(defaultSort);
                       setPage(1);
@@ -720,9 +720,9 @@ function DataTableInner<T extends { id?: string | number }>(
             })}
           </span>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 flex-wrap">
             <button
-              className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
+              className="flex items-center justify-center w-8 h-8 pointer-coarse:w-11 pointer-coarse:h-11 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               title={t("pagination.previous")}
@@ -734,14 +734,14 @@ function DataTableInner<T extends { id?: string | number }>(
               p === "..." ? (
                 <span
                   key={`ellipsis-${i}`}
-                  className="flex items-center justify-center w-8 h-8 text-xs text-[var(--text-disabled)] font-primary"
+                  className="flex items-center justify-center w-8 h-8 pointer-coarse:w-6 text-xs text-[var(--text-disabled)] font-primary"
                 >
                   …
                 </span>
               ) : (
                 <button
                   key={p}
-                  className={`flex items-center justify-center w-8 h-8 border-0 rounded-sm cursor-pointer text-sm font-primary font-semibold transition-colors ${
+                  className={`flex items-center justify-center w-8 h-8 pointer-coarse:w-11 pointer-coarse:h-11 border-0 rounded-sm cursor-pointer text-sm font-primary font-semibold transition-colors ${
                     p === page
                       ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)]"
                       : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)]"
@@ -754,7 +754,7 @@ function DataTableInner<T extends { id?: string | number }>(
             )}
 
             <button
-              className="flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
+              className="flex items-center justify-center w-8 h-8 pointer-coarse:w-11 pointer-coarse:h-11 border-0 rounded-sm bg-[var(--bg-secondary)] cursor-pointer text-[var(--text-secondary)] disabled:opacity-40"
               disabled={page >= totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               title={t("pagination.next")}

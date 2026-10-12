@@ -40,7 +40,7 @@ trigger: always_on
 
 1. **4px base grid** — all spacing values must be multiples of 4.
 2. **Page edge padding**: 16px (mobile) → 24px (tablet) → 32px (desktop).
-3. **Responsive breakpoints**: `sm: 640px`, `lg: 1024px`, `xl: 1440px`. Mobile-first approach.
+3. **Responsive breakpoints**: Tailwind defaults — `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`, `2xl: 1536px`. Mobile-first; device classes and rules in `.agent/rules/responsive.md`.
 4. **Grid columns**: 2 (mobile) → 3 (tablet) → 4 (desktop).
 5. **Image aspect ratio**: `2:3` for product/editorial images.
 

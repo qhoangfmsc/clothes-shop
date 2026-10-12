@@ -25,7 +25,9 @@
     "placeholder": "Search...",
     "loading": "Searching...",
     "noResults": "No results for “{query}”",
-    "clear": "Clear search"
+    "clear": "Clear search",
+    "recent": "Recent searches",
+    "removeRecent": "Remove “{name}” from history"
   },
   "megaMenu": {
     "viewAll": "View More →",

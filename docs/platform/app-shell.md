@@ -64,6 +64,7 @@ Lắng nghe `click` (capture) trên document; nếu là link nội bộ khác tr
 - Chỉ bật khi có con trỏ chính xác (`(pointer: fine)`), thiết bị cảm ứng bỏ qua hoàn toàn. Thêm class `custom-cursor-active` vào `<html>` để ẩn con trỏ hệ thống.
 - Ba biến thể ảnh trong `public/cursor/`: `default`, `pointer` (khi trỏ vào `a`, `button`, `label`, `select`, `summary`, role button/link/tab/checkbox/radio, input button/checkbox/radio, `[data-cursor="pointer"]`, `[onclick]`), `text` (input/textarea/`contenteditable`/`[data-cursor="text"]`). `[data-cursor="native"]` trả lại con trỏ hệ điều hành.
 - Vị trí đi qua `useMotionValue` (không render lại mỗi lần di chuột, không làm mượt). Mỗi lần nhấn chuột bung 6 "cánh hoa" (vàng/hồng/xanh) tồn tại 500 ms. Cấu hình ở `cursor-config.ts`.
+- Các listener `pointermove`, `pointerdown`, `pointerup`, `pointercancel` gắn ở `window` theo **pha capture** (`use-cursor-tracker.ts`, và `pointerdown` của hiệu ứng cánh hoa trong `CustomCursor.tsx`) để vẫn nhận sự kiện khi một widget gọi `stopPropagation()` — ví dụ viewer ảnh sản phẩm khi đang zoom (> 1×) chặn `pointerdown`/`pointermove` để tự kéo ảnh. Nghe ở pha bubble thì con trỏ đứng yên trong lúc zoom.
 
 ### 4.6 Đo lường
 

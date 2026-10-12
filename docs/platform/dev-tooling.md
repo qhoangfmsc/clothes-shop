@@ -64,7 +64,7 @@ Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường d�
 | Chế độ | Việc | Khi chạy |
 |---|---|---|
 | mặc định | Mỗi file code (`src/`, `scripts/`, `next.config.ts`, `vercel.json`) có module sở hữu; mỗi module có doc và hàng trong `docs/README.md`; `docs/` không chứa file lạ; doc có tiêu đề, dòng `Nhóm … Cập nhật YYYY-MM-DD`, dòng `Code`, đủ bốn mục đúng thứ tự, không có ngôn ngữ lộ trình hay việc tồn đọng (danh sách từ khóa nằm trong script, hằng `BANNED`); link `.md` và tên file trong dấu backtick đều tồn tại | trong `prebuild` |
-| `--changed [--base=<ref>]` | Như trên, và với mọi module có file code đổi so với `HEAD` (hoặc `<ref>`, gồm cả file chưa theo dõi): doc của module phải được sửa và dòng `Cập nhật` phải đổi (doc mới hoàn toàn thì bỏ qua kiểm tra ngày) | trước khi kết thúc một task |
+| `--changed [--base=<ref>]` | Như trên, và với mọi module có file code đổi so với `HEAD` (hoặc `<ref>`, gồm cả file chưa theo dõi): doc của module phải được sửa và dòng `Cập nhật` phải đổi, hoặc đã mang ngày hôm nay (hay muộn hơn) từ lần sửa trước trong ngày (doc mới hoàn toàn thì bỏ qua kiểm tra ngày) | trước khi kết thúc một task |
 | `--who <đường dẫn\|tên module>` | In doc sở hữu và toàn bộ đường dẫn module đó sở hữu | trước khi sửa |
 
 Thêm module mới = thêm entry vào `MODULES`, tạo doc, thêm hàng README. Quy trình đầy đủ: `.agent/rules/module-docs.md`.

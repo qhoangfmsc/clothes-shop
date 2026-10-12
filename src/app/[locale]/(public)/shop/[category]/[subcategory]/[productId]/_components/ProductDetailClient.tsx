@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
@@ -22,6 +23,9 @@ import { trackEvent } from "@/src/lib/analytics";
 import SizeGuideModal from "./SizeGuideModal";
 import ReviewsSection from "./ReviewsSection";
 import ShippingAccordion from "./ShippingAccordion";
+import ZoomableImage from "./ZoomableImage";
+const loadImageViewer = () => import("./ImageViewer");
+const ImageViewer = dynamic(loadImageViewer, { ssr: false });
 import { PRODUCT_DETAIL_BADGE_STYLES } from "@/src/lib/product-badge";
 import { buildOrderInquiryHref, getPurchaseMode, hasPublicPrice } from "@/src/lib/product-purchase";
 
@@ -46,6 +50,9 @@ export default function ProductDetailClient({
   const format = useFormatter();
   const locale = useLocale();
   const [activeImage, setActiveImage] = useState(0);
+  /* Full-screen viewer: null until the first open (keeps its chunk unloaded); the gallery stops auto-advancing while it is open */
+  const [viewer, setViewer] = useState<{ open: boolean; index: number } | null>(null);
+  const viewerIndexRef = useRef(0);
   const [addedToCart, setAddedToCart] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -62,6 +69,8 @@ export default function ProductDetailClient({
   const router = useRouter();
   const purchaseMode = getPurchaseMode(product.badge);
   const showPrice = hasPublicPrice(product.badge);
+  /* Custom-order products are inquired about, not configured: no size / color / quantity pickers */
+  const showVariantPickers = purchaseMode !== "customOrder";
 
   const images = product.images;
 
@@ -70,6 +79,16 @@ export default function ProductDetailClient({
   const selectImage = useCallback((index: number) => {
     setActiveImage(index);
     galleryRef.current?.scrollToPage(index);
+  }, []);
+
+  /* Fetch the viewer chunk while the browser is idle, so the first tap on a photo opens it without a wait */
+  useEffect(() => {
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(() => void loadImageViewer());
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = setTimeout(() => void loadImageViewer(), 2000);
+    return () => clearTimeout(id);
   }, []);
 
   /* Funnel: one view per product page opened */
@@ -187,19 +206,21 @@ export default function ProductDetailClient({
             dots="overlay"
             keyboard={false}
             carouselRef={galleryRef}
+            autoplay={viewer?.open ? false : undefined}
             onPageChange={setActiveImage}
             className="flex-1 rounded-lg overflow-hidden bg-[var(--bg-elevated)]"
             slideClassName="relative min-h-[400px] lg:min-h-0 select-none"
           >
             {images.map((img, idx) => (
-              <Image
+              <ZoomableImage
                 key={img}
                 src={img}
                 alt={t("imageAlt", { name: product.name, index: idx + 1 })}
-                fill
                 priority={idx === 0}
-                sizes="(max-width: 1024px) 100vw, 55vw"
-                style={{ objectFit: "cover", pointerEvents: "none" }}
+                onOpen={() => {
+                  viewerIndexRef.current = idx;
+                  setViewer({ open: true, index: idx });
+                }}
               />
             ))}
           </Carousel>
@@ -296,43 +317,45 @@ export default function ProductDetailClient({
           </motion.p>
 
           {/* Size selector */}
-          <motion.div
-            className="flex flex-col gap-3"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [...ease], delay: 0.35 }}
-          >
-            <span className="flex items-center gap-2 font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.08em] uppercase">
-              {t("size")}{" "}
-              {selectedSize && <span className="text-[var(--text-heading)]">— {selectedSize}</span>}
-              <button
-                type="button"
-                className="ml-auto border-none bg-transparent p-0 font-primary text-xs text-[var(--accent-primary)] underline underline-offset-2 decoration-[rgba(201,169,110,0.4)] cursor-pointer tracking-[0.04em] transition hover:decoration-[var(--accent-primary)]"
-                onClick={() => setShowSizeGuide(true)}
-              >
-                {t("sizeGuide")}
-              </button>
-            </span>
-            <div className="flex gap-2">
-              {product.sizes.map((size) => (
+          {showVariantPickers && (
+            <motion.div
+              className="flex flex-col gap-3"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [...ease], delay: 0.35 }}
+            >
+              <span className="flex items-center gap-2 font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.08em] uppercase">
+                {t("size")}{" "}
+                {selectedSize && <span className="text-[var(--text-heading)]">— {selectedSize}</span>}
                 <button
-                  key={size}
                   type="button"
-                  className={`w-12 h-12 rounded-md border font-primary text-sm font-medium tracking-[0.04em] cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-                    selectedSize === size
-                      ? "border-[var(--accent-primary)] bg-[var(--accent-primary)] text-[var(--text-on-gold)] shadow-[var(--shadow-gold-sm)]"
-                      : "border-[var(--border-light)] bg-transparent text-[var(--text-secondary)] hover:border-[var(--accent-primary)]"
-                  }`}
-                  onClick={() => setSelectedSize(size)}
+                  className="ml-auto border-none bg-transparent p-0 font-primary text-xs text-[var(--accent-primary)] underline underline-offset-2 decoration-[rgba(201,169,110,0.4)] cursor-pointer tracking-[0.04em] transition hover:decoration-[var(--accent-primary)]"
+                  onClick={() => setShowSizeGuide(true)}
                 >
-                  {size}
+                  {t("sizeGuide")}
                 </button>
-              ))}
-            </div>
-          </motion.div>
+              </span>
+              <div className="flex gap-2">
+                {product.sizes.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`w-12 h-12 rounded-md border font-primary text-sm font-medium tracking-[0.04em] cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+                      selectedSize === size
+                        ? "border-[var(--accent-primary)] bg-[var(--accent-primary)] text-[var(--text-on-gold)] shadow-[var(--shadow-gold-sm)]"
+                        : "border-[var(--border-light)] bg-transparent text-[var(--text-secondary)] hover:border-[var(--accent-primary)]"
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {/* Color selector */}
-          {product.colors.length > 0 && (
+          {showVariantPickers && product.colors.length > 0 && (
             <motion.div
               className="flex flex-col gap-3"
               initial={{ opacity: 0, y: 12 }}
@@ -372,39 +395,41 @@ export default function ProductDetailClient({
           )}
 
           {/* Quantity selector */}
-          <motion.div
-            className="flex items-center justify-between gap-4"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [...ease], delay: 0.42 }}
-          >
-            <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.08em] uppercase">
-              {t("quantity")}
-            </span>
-            <div className="flex items-center gap-0 border border-[var(--border-light)] rounded-full overflow-hidden">
-              <button
-                type="button"
-                className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                disabled={quantity <= 1}
-                aria-label={t("decrease")}
-              >
-                −
-              </button>
-              <span className="w-10 text-center font-primary text-[15px] font-medium text-[var(--text-heading)] tracking-[0.02em]">
-                {quantity}
+          {showVariantPickers && (
+            <motion.div
+              className="flex items-center justify-between gap-4"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [...ease], delay: 0.42 }}
+            >
+              <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.08em] uppercase">
+                {t("quantity")}
               </span>
-              <button
-                type="button"
-                className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
-                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                disabled={quantity >= 10}
-                aria-label={t("increase")}
-              >
-                +
-              </button>
-            </div>
-          </motion.div>
+              <div className="flex items-center gap-0 border border-[var(--border-light)] rounded-full overflow-hidden">
+                <button
+                  type="button"
+                  className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  disabled={quantity <= 1}
+                  aria-label={t("decrease")}
+                >
+                  −
+                </button>
+                <span className="w-10 text-center font-primary text-[15px] font-medium text-[var(--text-heading)] tracking-[0.02em]">
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
+                  onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                  disabled={quantity >= 10}
+                  aria-label={t("increase")}
+                >
+                  +
+                </button>
+              </div>
+            </motion.div>
+          )}
 
           {/* Actions: Add to Bag + Wishlist */}
           <motion.div
@@ -529,20 +554,22 @@ export default function ProductDetailClient({
           >
             <div className="flex justify-between items-baseline py-3 border-t border-[var(--border-subtle)]">
               <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.06em] uppercase">
-                {t("material")}
+                {showVariantPickers ? t("material") : t("materialCustomOrder")}
               </span>
               <span className="font-primary text-sm font-medium text-[var(--text-primary)] tracking-[-0.02em] text-right">
                 {product.material}
               </span>
             </div>
-            <div className="flex justify-between items-baseline py-3 border-t border-[var(--border-subtle)]">
-              <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.06em] uppercase">
-                {t("care")}
-              </span>
-              <span className="font-primary text-sm font-medium text-[var(--text-primary)] tracking-[-0.02em] text-right">
-                {product.care}
-              </span>
-            </div>
+            {showVariantPickers && (
+              <div className="flex justify-between items-baseline py-3 border-t border-[var(--border-subtle)]">
+                <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.06em] uppercase">
+                  {t("care")}
+                </span>
+                <span className="font-primary text-sm font-medium text-[var(--text-primary)] tracking-[-0.02em] text-right">
+                  {product.care}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between items-baseline py-3 border-t border-[var(--border-subtle)]">
               <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.06em] uppercase">
                 {t("category")}
@@ -604,6 +631,23 @@ export default function ProductDetailClient({
         isOpen={showSizeGuide}
         onClose={() => setShowSizeGuide(false)}
       />
+      {/* Full-screen photo viewer (pinch / pan / zoom bar) */}
+      {viewer && (
+        <ImageViewer
+          images={images}
+          productName={product.name}
+          index={viewer.index}
+          open={viewer.open}
+          onView={(i) => {
+            viewerIndexRef.current = i;
+          }}
+          onClose={() => {
+            /* Land the gallery on the photo the visitor ended on */
+            selectImage(viewerIndexRef.current);
+            setViewer((v) => v && { ...v, open: false });
+          }}
+        />
+      )}
     </>
   );
 }

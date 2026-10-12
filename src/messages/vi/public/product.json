@@ -6,6 +6,18 @@
     "carouselAria": "Thư viện ảnh sản phẩm",
     "imageAlt": "{name} — Ảnh {index}",
     "viewImage": "Xem ảnh {index}",
+    "viewer": {
+      "close": "Đóng",
+      "previous": "Ảnh trước",
+      "next": "Ảnh sau",
+      "zoomIn": "Phóng to",
+      "zoomOut": "Thu nhỏ",
+      "resetZoom": "Về vừa khung hình",
+      "lightbox": "Xem ảnh phóng to",
+      "gallery": "Thư viện ảnh sản phẩm",
+      "slide": "Ảnh",
+      "slideOf": "Ảnh {index} / {total}"
+    },
     "badge": {
       "new": "Hàng mới về",
       "sale": "Đang giảm giá",
@@ -32,6 +44,7 @@
     "shareText": "Xem {name} từ DOOVAN",
     "linkCopied": "Đã sao chép liên kết",
     "material": "Chất liệu",
+    "materialCustomOrder": "Chất liệu thiết kế gốc",
     "care": "Bảo quản",
     "category": "Danh mục",
     "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>",

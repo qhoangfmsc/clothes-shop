@@ -155,7 +155,7 @@ Gallery panel, drawer, hero overlays use `.dark-context` class:
 
 See `src/styles/design-system.css` for full token definitions:
 - **Spacing**: 4px grid (`--space-1` through `--space-20`)
-- **Breakpoints**: `sm: 640px`, `lg: 1024px`, `xl: 1440px` (mobile-first)
+- **Breakpoints**: Tailwind defaults `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`, `2xl: 1536px` (mobile-first)
 - **Easing**: `--ease-default`, `--ease-luxury` (cinematic reveals)
 - **Duration**: `--duration-fast` (150ms) through `--duration-cinematic` (1200ms)
 - **Radius**: `--radius-sm` (4px) through `--radius-pill` (9999px)

@@ -25,7 +25,9 @@
     "placeholder": "Tìm kiếm...",
     "loading": "Đang tìm kiếm...",
     "noResults": "Không có kết quả cho “{query}”",
-    "clear": "Xóa tìm kiếm"
+    "clear": "Xóa tìm kiếm",
+    "recent": "Tìm kiếm gần đây",
+    "removeRecent": "Xóa “{name}” khỏi lịch sử"
   },
   "megaMenu": {
     "viewAll": "Xem thêm →",

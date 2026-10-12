@@ -63,11 +63,12 @@ export default function CustomCursor() {
         setBursts((prev) => prev.filter((b) => b.id !== burst.id));
       }, BURST_LIFETIME_MS);
     };
-    window.addEventListener("pointerdown", handleDown);
+    // Capture phase: a widget that stops propagation (e.g. the zoomed photo viewer) must not swallow the click effect
+    window.addEventListener("pointerdown", handleDown, { capture: true });
 
     return () => {
       document.documentElement.classList.remove("custom-cursor-active");
-      window.removeEventListener("pointerdown", handleDown);
+      window.removeEventListener("pointerdown", handleDown, { capture: true });
     };
   }, [isSupported]);
 

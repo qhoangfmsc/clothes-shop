@@ -24,6 +24,7 @@
   "badge": "ADMIN",
   "logout": "Logout",
   "menu": "Menu",
+  "closeMenu": "Close menu",
   "denied": {
     "backToStore": "Back to Store",
     "adminRequired": {
