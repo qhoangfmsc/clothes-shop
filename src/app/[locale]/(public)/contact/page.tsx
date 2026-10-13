@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Mail } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Link } from "@/src/i18n/navigation";
 import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import type { AppLocale } from "@/src/i18n/routing";
-import { buildMailto, CONTACT_EMAIL } from "@/src/lib/contact";
+import {
+  buildMailto,
+  CONTACT_ADDRESS,
+  CONTACT_EMAIL,
+  CONTACT_MAPS_URL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_E164,
+} from "@/src/lib/contact";
 import { SOCIALS } from "@/src/lib/socials";
 import { pageUrl } from "@/src/lib/structured-data";
 import { getProductById } from "../shop/_lib/server-fetchers";
@@ -136,6 +143,10 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
               <Mail size={18} aria-hidden="true" />
               {CONTACT_EMAIL}
             </a>
+            <a href={`tel:${CONTACT_PHONE_E164}`} className={channelClass}>
+              <Phone size={18} aria-hidden="true" />
+              {CONTACT_PHONE}
+            </a>
             {SOCIALS.map(({ label, href, Icon }) => (
               <a
                 key={label}
@@ -149,6 +160,15 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
               </a>
             ))}
           </div>
+          <a
+            href={CONTACT_MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-start gap-2 self-start font-primary text-sm leading-[160%] tracking-[-0.02em] text-[var(--text-primary)] no-underline hover:underline"
+          >
+            <MapPin size={18} aria-hidden="true" className="mt-[3px] shrink-0" />
+            <address className="not-italic">{CONTACT_ADDRESS}</address>
+          </a>
           <p className="m-0 font-primary text-sm leading-[160%] tracking-[-0.02em] text-[var(--text-muted)]">
             {t("channels.note")}
           </p>

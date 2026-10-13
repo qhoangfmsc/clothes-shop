@@ -21,6 +21,7 @@
   "form": {
     "title": "Thông tin giao hàng",
     "pickupTitle": "Người nhận tại cửa hàng",
+    "pickupAt": "Nhận hàng tại:",
     "errors": {
       "fullName": "Vui lòng nhập họ và tên",
       "phone": "Vui lòng nhập số điện thoại",

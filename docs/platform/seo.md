@@ -24,7 +24,7 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 | Robots | Chặn khu riêng tư; chặn toàn bộ ở môi trường không phải production | `src/app/robots.ts` |
 | JSON-LD | `siteJsonLd`, `productJsonLd`, `breadcrumbJsonLd`, `absoluteUrl`, `pageUrl` | `src/lib/structured-data.ts` |
 | Origin | `SITE_URL` | `src/lib/site-url.ts` |
-| Thương hiệu | `BRAND_NAME` (`DOOVAN`), `BRAND_ALTERNATE_NAME` (`Doovan`), `BRAND_DOMAIN` (`doovan.vn`) | `src/lib/brand.ts` |
+| Thương hiệu | `BRAND_NAME` (`DOOVAN`), `BRAND_ALTERNATE_NAME` (`Doovan`), `BRAND_DOMAIN` (`doovan.vn`), `BRAND_FOUNDING_YEAR` (`2026`) | `src/lib/brand.ts` |
 
 ## 4. Chi tiết
 
@@ -52,7 +52,7 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.4 JSON-LD
 
-- Trang chủ: `siteJsonLd(locale, description)` = `WebSite` (`name` `DOOVAN`, `alternateName` `Doovan`/`doovan.vn`, `description`, `inLanguage`) + `Organization` (cùng tên, `description`, `email`, `telephone` (`CONTACT_PHONE_E164`), `address` (`PostalAddress` từ `CONTACT_ADDRESS_PARTS`) và `contactPoint` `customer service` (email + telephone), `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`). `description` là `shared.site.meta.description` của ngôn ngữ hiện tại.
+- Trang chủ: `siteJsonLd(locale, description, identity)` = `WebSite` (`name` `DOOVAN`, `alternateName` `Doovan`/`doovan.vn`, `description`, `inLanguage`, `publisher` trỏ `@id` của Organization) + `Organization` (`@id` = `${SITE_URL}/#organization`, cùng tên, `description`, `disambiguatingDescription` = `shared.site.identity` — một câu nói rõ đây là thương hiệu thời trang Việt Nam ở TP. Hồ Chí Minh —, `foundingDate` = `BRAND_FOUNDING_YEAR` (`2026`), `email`, `telephone` (`CONTACT_PHONE_E164`), `address` (`PostalAddress` từ `CONTACT_ADDRESS_PARTS`) và `contactPoint` `customer service` (email + telephone), `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`). `description` là `shared.site.meta.description` của ngôn ngữ hiện tại.
 - Sản phẩm: `productJsonLd(locale, product, path)` — `Product` + `Offer` (`priceCurrency` USD vì giá trên trang hiển thị bằng USD, giá `toFixed(2)`, `InStock`, `NewCondition`), không có `aggregateRating`.
 - `breadcrumbJsonLd(locale, crumbs)` cho `BreadcrumbList`.
 - `JsonLd` nhúng script; URL ảnh `/media/...` được đổi thành tuyệt đối bằng `absoluteUrl`.

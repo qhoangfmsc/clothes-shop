@@ -21,6 +21,7 @@
   "form": {
     "title": "Shipping information",
     "pickupTitle": "Who collects the order",
+    "pickupAt": "Pick up at:",
     "errors": {
       "fullName": "Full name is required",
       "phone": "Phone number is required",

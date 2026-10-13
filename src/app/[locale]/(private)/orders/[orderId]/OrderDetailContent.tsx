@@ -15,6 +15,7 @@ import { useShippingMethodName } from "@/src/hooks/use-api";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
 import type { OrderStatus } from "@/src/types/enums";
 import { SHIPPING_METHOD_IDS, type ShippingMethodId } from "@/src/types/shipping";
+import { CONTACT_ADDRESS, CONTACT_MAPS_URL } from "@/src/lib/contact";
 import { STATUS_CONFIG } from "../_common/constants";
 import type { Order } from "../_common/types";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
@@ -266,6 +267,13 @@ export default function OrderDetailContent() {
                     {address.phone && <span className="text-[var(--text-secondary)]"> · {address.phone}</span>}
                   </p>
                   {isPickup && <p className="m-0 text-[var(--text-muted)]">{t("pickupAtStore")}</p>}
+                  {isPickup && (
+                    <p className="m-0">
+                      <a href={CONTACT_MAPS_URL} target="_blank" rel="noopener noreferrer" className="text-[var(--text-primary)] hover:underline">
+                        {CONTACT_ADDRESS}
+                      </a>
+                    </p>
+                  )}
                   {address.addressLine1 && <p className="m-0">{address.addressLine1}</p>}
                   {address.addressLine2 && <p className="m-0">{address.addressLine2}</p>}
                   {address.city && (

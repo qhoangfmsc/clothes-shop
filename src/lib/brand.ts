@@ -5,5 +5,8 @@ export const BRAND_NAME = "DOOVAN";
 /** Alternate spelling people type and write; only ever exposed to search engines (structured data). */
 export const BRAND_ALTERNATE_NAME = "Doovan";
 
+/** Year the brand was founded (also stated on the About page). */
+export const BRAND_FOUNDING_YEAR = "2026";
+
 /** Domain owned by the brand. */
 export const BRAND_DOMAIN = "doovan.vn";

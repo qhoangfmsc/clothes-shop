@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
+import { CONTACT_ADDRESS, CONTACT_MAPS_URL, CONTACT_PHONE, CONTACT_PHONE_E164 } from "@/src/lib/contact";
 import { LEGAL_DOCS } from "@/src/lib/legal";
 import LanguageSwitcher from "./LanguageSwitcher";
 import SocialIcons from "./SocialIcons";
@@ -26,6 +27,9 @@ const LIST = "m-0 flex list-none flex-col gap-3.5 p-0 pt-2";
 const FOOTER_LINK =
   "font-primary text-sm leading-none tracking-[-0.02em] text-[var(--ft-muted)] no-underline transition-colors duration-[var(--duration-fast)] hover:text-[var(--text-on-dark)] motion-reduce:transition-none";
 
+const CONTACT_LINK =
+  "text-[var(--ft-muted)] no-underline transition-colors duration-[var(--duration-fast)] hover:text-[var(--text-on-dark)] motion-reduce:transition-none";
+
 export default function SiteFooter() {
   const t = useTranslations("shared.footer");
   const tNav = useTranslations("shared.header.nav");
@@ -50,6 +54,21 @@ export default function SiteFooter() {
             <p className="m-0 mt-2 max-w-[300px] font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--ft-muted)]">
               {t("tagline")}
             </p>
+            {/* Name · address · phone on every page, the same text as the structured data */}
+            <address className="mt-4 flex max-w-[300px] flex-col gap-2 font-primary text-sm not-italic leading-[150%] tracking-[-0.02em]">
+              <p className="m-0">
+                <span className="text-[var(--text-on-dark)]">{t("address")}:</span>{" "}
+                <a href={CONTACT_MAPS_URL} target="_blank" rel="noopener noreferrer" className={CONTACT_LINK}>
+                  {CONTACT_ADDRESS}
+                </a>
+              </p>
+              <p className="m-0">
+                <span className="text-[var(--text-on-dark)]">{t("hotline")}:</span>{" "}
+                <a href={`tel:${CONTACT_PHONE_E164}`} className={CONTACT_LINK}>
+                  {CONTACT_PHONE}
+                </a>
+              </p>
+            </address>
             <SocialIcons
               className="mt-5 gap-2"
               iconSize={16}

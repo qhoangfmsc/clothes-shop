@@ -1,6 +1,6 @@
 # About (giới thiệu thương hiệu)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/about` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/about` · **Cập nhật:** 2026-10-13
 > **Code:** `(public)/about/` — `page.tsx`, `_common/constants.ts`, `_components/{InvitationHero,BrandStory,ServicesSection,ContactCTA}.tsx`
 > **i18n:** `public.about`
 
@@ -17,7 +17,7 @@ Kể câu chuyện DOOVAN và các dịch vụ (tuyển chọn, may đo, tư v�
 | Section | Nội dung |
 |---|---|
 | `InvitationHero` | Ảnh nền `public/images/mood-bg/wall_sticker_pink_floral.webp`, nhãn, tiêu đề, phụ đề, dòng "established" (`hero.*`) |
-| `BrandStory` | Subtitle, tiêu đề, 3 đoạn (`STORY_PARAGRAPH_KEYS`: `first`, `second`, `third`), câu trích, ảnh `wall_sticker_soft_cream_roses.webp` (có `imageAlt`) |
+| `BrandStory` | Subtitle, tiêu đề, 4 đoạn (`STORY_PARAGRAPH_KEYS`: `first`, `second`, `third`, `identity` — câu nêu rõ DOOVAN là thương hiệu thời trang Việt Nam, trụ sở TP. Hồ Chí Minh, bán thiết kế có sẵn và nhận đặt thiết kế), câu trích, ảnh `wall_sticker_soft_cream_roses.webp` (có `imageAlt`) |
 | `ServicesSection` | Nền tối; 3 thẻ dịch vụ `curated ✦`, `custom ◈`, `styling ❋` (`SERVICES`); nút CTA |
 | `ContactCTA` | Khối kêu gọi + copyright; hiện **không** được render trong `page.tsx` |
 

@@ -62,7 +62,7 @@ Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; kh�
 
 ### 4.6 `SiteFooter`
 
-Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, `SocialIcons`), Explore (Shop, New In, Collections, About), Account (My account, Wishlist, Orders), Language (`LanguageSwitcher variant="footer"`). Thanh dưới: `copyright` (năm hiện tại) + link pháp lý. Nhãn link lấy từ `shared.header.nav|account` để khớp header; chuỗi footer ở `shared.footer`.
+Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, About), Account (My account, Wishlist, Orders), Language (`LanguageSwitcher variant="footer"`). Thanh dưới: `copyright` (năm hiện tại) + link pháp lý. Nhãn link lấy từ `shared.header.nav|account` để khớp header; chuỗi footer ở `shared.footer`.
 
 ### 4.7 `CartFAB`
 

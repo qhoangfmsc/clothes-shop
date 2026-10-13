@@ -1,6 +1,6 @@
 import type { AppLocale } from "@/src/i18n/routing";
 import type { Product } from "@/src/types/product";
-import { BRAND_ALTERNATE_NAME, BRAND_DOMAIN, BRAND_NAME } from "./brand";
+import { BRAND_ALTERNATE_NAME, BRAND_DOMAIN, BRAND_FOUNDING_YEAR, BRAND_NAME } from "./brand";
 import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164 } from "./contact";
 import { SITE_URL } from "./site-url";
 import { hasPublicPrice } from "./product-purchase";
@@ -72,9 +72,13 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
  *  only list domains we own. */
 const BRAND_ALTERNATE_NAMES = [BRAND_ALTERNATE_NAME, BRAND_DOMAIN];
 
+/** Stable id of the brand entity, so the WebSite and any other page can point at the same Organization. */
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
 /** `WebSite` + `Organization` for the home page (the brand name is never translated).
- *  `description` is the localized site description, so the entity says what the brand is. */
-export function siteJsonLd(locale: AppLocale, description: string) {
+ *  `description` is the localized site description; `identity` is one line that tells this DOOVAN
+ *  apart from other businesses with a similar name (what it is, where it is). */
+export function siteJsonLd(locale: AppLocale, description: string, identity: string) {
   return [
     {
       "@context": "https://schema.org",
@@ -84,15 +88,19 @@ export function siteJsonLd(locale: AppLocale, description: string) {
       url: SITE_URL,
       description,
       inLanguage: locale,
+      publisher: { "@id": ORGANIZATION_ID },
     },
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": ORGANIZATION_ID,
       name: BRAND_NAME,
       alternateName: BRAND_ALTERNATE_NAMES,
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
       description,
+      disambiguatingDescription: identity,
+      foundingDate: BRAND_FOUNDING_YEAR,
       email: CONTACT_EMAIL,
       telephone: CONTACT_PHONE_E164,
       address: { "@type": "PostalAddress", ...CONTACT_ADDRESS_PARTS },

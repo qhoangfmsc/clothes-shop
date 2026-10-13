@@ -32,7 +32,7 @@ Ba thẻ riêng xếp dọc ở cột trái theo thứ tự khách điền: ngư
 
 `AddressForm` (`_common/checkout.ts`): `fullName*` (điền sẵn `user.name` khi ô còn trống, kể cả khi phiên xong sau lần render đầu), `phone*`, `addressLine1*`, `addressLine2`, `city*`, `province`, `postalCode`, `country` (mặc định `"Vietnam"`), `notes`. Dấu `*` là bắt buộc phía FE (`REQUIRED_FIELDS`, chỉ gồm các trường BE yêu cầu). Nhãn lấy từ `common.addressField`, lỗi `form.errors.*`. Mỗi trường có `autoComplete` tương ứng, `aria-invalid`, lưới 1 cột, 2 cột từ 480 px (địa chỉ chiếm cả hàng). Lỗi của trường biến mất khi sửa trường đó.
 
-Khi chọn nhận tại cửa hàng (`store-pickup`) form chỉ hiện `fullName` và `phone` (`PICKUP_FIELDS`, cùng bắt buộc); các giá trị địa chỉ đã nhập vẫn được giữ trong state nếu khách đổi lại phương thức khác.
+Khi chọn nhận tại cửa hàng (`store-pickup`) form chỉ hiện `fullName` và `phone` (`PICKUP_FIELDS`, cùng bắt buộc); các giá trị địa chỉ đã nhập vẫn được giữ trong state nếu khách đổi lại phương thức khác. Thẻ còn hiện dòng "Nhận hàng tại: `CONTACT_ADDRESS`" (`form.pickupAt`) là link `CONTACT_MAPS_URL` mở Google Maps.
 
 ### 4.2 Phương thức vận chuyển & thanh toán
 

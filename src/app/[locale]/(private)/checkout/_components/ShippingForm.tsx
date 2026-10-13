@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { AlertCircle, ChevronDown } from "lucide-react";
+import { AlertCircle, ChevronDown, MapPin } from "lucide-react";
+import { CONTACT_ADDRESS, CONTACT_MAPS_URL } from "@/src/lib/contact";
 import {
   EXTRA_FIELDS,
   GROUP_TITLE_CLASS,
@@ -99,6 +100,19 @@ export default function ShippingForm({ address, errors, pickup, onChange }: Ship
   return (
     <section className={SECTION_CARD_CLASS}>
       <h2 className={GROUP_TITLE_CLASS}>{pickup ? t("pickupTitle") : t("title")}</h2>
+      {pickup && (
+        <a
+          href={CONTACT_MAPS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-start gap-2 self-start font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--text-primary)] no-underline hover:underline"
+        >
+          <MapPin size={16} aria-hidden="true" className="mt-[3px] shrink-0" />
+          <span>
+            <span className="text-[var(--text-muted)]">{t("pickupAt")}</span> {CONTACT_ADDRESS}
+          </span>
+        </a>
+      )}
       <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-2.5">{core.map(renderField)}</div>
 
       <button

@@ -14,6 +14,9 @@ export const CONTACT_ADDRESS_PARTS = {
   addressCountry: "VN",
 } as const;
 
+/** Google Maps link to the business address (opens the Maps app on phones). */
+export const CONTACT_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT_ADDRESS)}`;
+
 /** `mailto:` link with an optional subject and body. */
 export function buildMailto(subject?: string, body?: string): string {
   const params = new URLSearchParams();

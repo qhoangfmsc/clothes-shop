@@ -16,9 +16,9 @@ Gây ấn tượng thương hiệu ngay màn hình đầu và dẫn khách tới
 
 | Thành phần | Chức năng |
 |---|---|
-| `(public)/page.tsx` | Server component: `setRequestLocale`, nhúng `siteJsonLd(locale, description)`, thẻ `<h1 className="sr-only">` (`public.landing.heading`, trang chủ không có tiêu đề chữ nào khác), render `LandingPage` |
+| `(public)/page.tsx` | Server component: `setRequestLocale`, nhúng `siteJsonLd(locale, description, identity)`, thẻ `<h1 className="sr-only">` (`public.landing.heading`, trang chủ không có tiêu đề chữ nào khác), render `LandingPage` |
 | `VideoContainer` | Hai video `model_turn_left.mp4` / `model_turn_right.mp4` crossfade khi video kia kết thúc |
-| `Caption`, `ProductInfo` | Chữ giới thiệu (`caption`, `productInfo.line1` = `THỜI TRANG`/`FASHION` + `"DOOVAN"`), vòng tròn có ký hiệu đổi ngẫu nhiên |
+| `Caption`, `ProductInfo` | Chữ giới thiệu (`caption`, `productInfo.line1` = `HAUTE COUTURE` (chữ trang trí, cả hai ngôn ngữ) + `"DOOVAN"`), vòng tròn có ký hiệu đổi ngẫu nhiên |
 | `CollectionShowcase` | Lưới ảnh bộ sưu tập (API) rải so le theo số cột 2/3/4, link tới `/collections/<slug>` |
 | `OutroSection` | Lớp phủ kết thúc: tiêu đề hai dòng + phụ đề |
 | `ViewButton` | Nút "View" → `router.push("/shop")` |
