@@ -54,7 +54,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 - Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
 - `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → avatar + tên + email, link My account / Wishlist / Orders, nút đăng xuất (`logout()`).
 - Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`).
-- Chân drawer: `LanguageSwitcher variant="drawer"`, `SocialIcons` (icon Email + Instagram + Facebook từ `CONTACT_LINKS`), link pháp lý (`LEGAL_DOCS`).
+- Chân drawer: `LanguageSwitcher variant="drawer"`, `SocialIcons` (icon Email + Instagram `instagram.com/doovan.vn` + Facebook `facebook.com/doovan.vn` từ `CONTACT_LINKS` trong `src/lib/socials.tsx`), link pháp lý (`LEGAL_DOCS`).
 
 ### 4.5 `UserMenu`
 

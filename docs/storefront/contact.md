@@ -1,6 +1,6 @@
 # Contact / Custom order (liên hệ đặt may)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-13
 > **Code:** `(public)/contact/` — `page.tsx`, `_common/{types,constants,build-order-request}.ts`, `_components/{OrderRequestForm,ProductSummaryCard}.tsx` · `src/lib/product-purchase.ts` (`CONTACT_PATH`, `buildOrderInquiryHref`) · `src/lib/contact.ts` (`CONTACT_EMAIL`, `buildMailto`) · `src/lib/socials.tsx`
 > **i18n:** `public.contact`
 
@@ -30,8 +30,8 @@ Sản phẩm gắn badge `custom_order` không vào giỏ được; nút "Đặt
 - `buildOrderRequest(t, { product, values, formatDate })` (`_common/build-order-request.ts`) dựng `{ subject, body }` dạng văn bản thuần (`mailto:` không mang được HTML): lời chào, câu mở đầu, các khối `PRODUCT` / `PERSONALISED DESIGN REQUEST` / `ORDER DETAILS` (số đo, số lượng, ngày cần) / `CONTACT` (tiêu đề in hoa, dòng `  nhãn: giá trị`), lời kết kèm tên. Khối hoặc dòng không có dữ liệu bị bỏ. Chuỗi nằm ở `public.contact.message.*`; ngày hiển thị bằng `format.dateTime(…, "long")`.
 - Kiểm tra khi bấm gửi (`validate`): `note` (yêu cầu thiết kế) và `fullName` không rỗng; số điện thoại có từ `MIN_PHONE_DIGITS` (8) đến `MAX_PHONE_DIGITS` (15) chữ số. Lỗi hiện dưới ô (`form.errors.*`). Chưa hợp lệ thì không mở `mailto:`.
 - Gửi email: `window.location.href = buildMailto(subject, body)`. Không có request nào đến BE.
-- Email liên hệ `contact@doovan.vn` khai báo một chỗ ở `src/lib/contact.ts` (`CONTACT_EMAIL`); `buildMailto(subject?, body?)` dựng link `mailto:` (mã hóa `%20`, xuống dòng `%0A`).
+- Email liên hệ `contact@doovan.vn` khai báo một chỗ ở `src/lib/contact.ts` (`CONTACT_EMAIL`); Số hotline (`CONTACT_PHONE` hiển thị, `CONTACT_PHONE_E164` dạng quốc tế) và địa chỉ (`CONTACT_ADDRESS` một dòng, `CONTACT_ADDRESS_PARTS` tách phần cho dữ liệu có cấu trúc) cũng khai báo ở đó. `buildMailto(subject?, body?)` dựng link `mailto:` (mã hóa `%20`, xuống dòng `%0A`).
 - Metadata: `public.contact.meta` + `buildAlternates(locale, "/contact")` + `buildSocialMetadata`. Có trong sitemap (`/contact`, 0.8). Trang phụ thuộc `searchParams` nên được render theo yêu cầu.
-- Hồ sơ mạng xã hội cấu hình ở `src/lib/socials.tsx` (Instagram `doo_doofairies`, Facebook `doovan.vn`).
+- Hồ sơ mạng xã hội cấu hình ở `src/lib/socials.tsx` (Instagram `doovan.vn`, Facebook `doovan.vn`).
 - Hiện trạng: yêu cầu không được lưu hay gửi từ server; khách dùng app mail của mình để gửi và đính kèm ảnh tham khảo.
 - Thẻ sản phẩm không hiện giá khi sản phẩm có badge `custom_order` (hiện `common.priceOnRequest`, `hasPublicPrice`).

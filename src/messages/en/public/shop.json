@@ -43,8 +43,8 @@
   "pages": {
     "index": {
       "meta": {
-        "title": "Shop",
-        "description": "Explore the full DOOVAN collection. Luxury tops, skirts, bags, and jewelry — crafted with intention for the modern wardrobe."
+        "title": "Fashion Shop",
+        "description": "Shop DOOVAN fashion: designed tops, skirts, bags and jewelry, crafted with intention for the modern wardrobe. Want something of your own? DOOVAN takes custom design orders."
       },
       "hero": {
         "title": "Shop All",
@@ -64,7 +64,7 @@
     "category": {
       "meta": {
         "title": "{category} — DOOVAN Shop",
-        "description": "{description} — DOOVAN luxury collection."
+        "description": "{description} — DOOVAN designer fashion."
       },
       "heroLabel": "DOOVAN — {category}",
       "collectionHeading": "{category} Collection"

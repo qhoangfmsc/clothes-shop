@@ -1,6 +1,19 @@
 /** Company inbox shown to customers (About page CTA, legal texts, custom-order contact page). */
 export const CONTACT_EMAIL = "contact@doovan.vn";
 
+/** Hotline as customers read it, and the same number in international form (structured data, `tel:` links). */
+export const CONTACT_PHONE = "0946 841 344";
+export const CONTACT_PHONE_E164 = "+84946841344";
+
+/** Business address: the one-line form shown in the legal texts, and its parts for structured data. */
+export const CONTACT_ADDRESS = "313 Nguyễn Duy, Phường Chánh Hưng, TP. Hồ Chí Minh, Việt Nam";
+export const CONTACT_ADDRESS_PARTS = {
+  streetAddress: "313 Nguyễn Duy",
+  addressLocality: "Phường Chánh Hưng",
+  addressRegion: "TP. Hồ Chí Minh",
+  addressCountry: "VN",
+} as const;
+
 /** `mailto:` link with an optional subject and body. */
 export function buildMailto(subject?: string, body?: string): string {
   const params = new URLSearchParams();

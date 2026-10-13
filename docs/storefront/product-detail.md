@@ -33,7 +33,7 @@ Giúp khách quyết định mua: xem rõ sản phẩm, chọn đúng biến th�
 
 - `getProductWithRelated(id)` (→ `GET /api/products/:id` trả `data` + `related`) và `getSubcategory(cat, sub)`; thiếu một trong hai → `notFound()`. Chừa 80 px phía trên cho header cố định.
 - `generateStaticParams` từ `getAllProducts()` (số sản phẩm theo mặc định của BE).
-- Metadata: title `public.product.meta.title` (tên sản phẩm), description = `product.description`, ảnh chia sẻ = `images[0]`.
+- Metadata: title `public.product.meta.title` (tên sản phẩm), description = `product.description`, ảnh chia sẻ = `images[0]`. Không tìm thấy sản phẩm → title `withBrand(common.notFound)`.
 - JSON-LD: `productJsonLd` + `breadcrumbJsonLd` (Home › Shop › Category › Subcategory › Product).
 
 ### 4.2 Hành vi mua (`ProductDetailClient`)

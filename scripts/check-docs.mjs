@@ -65,7 +65,7 @@ const MODULES = [
   ] },
   { doc: "platform/design-system", paths: ["src/styles/", "src/app/globals.css", "src/assets/"] },
   { doc: "platform/seo", paths: [
-    "src/app/robots.ts", "src/app/sitemap.ts", "src/lib/structured-data.ts", "src/lib/site-url.ts",
+    "src/app/robots.ts", "src/app/sitemap.ts", "src/lib/structured-data.ts", "src/lib/site-url.ts", "src/lib/brand.ts",
   ] },
   { doc: "platform/dev-tooling", paths: [
     "scripts/check-conventions.mjs", "scripts/check-docs.mjs", "next.config.ts", "vercel.json", "src/app/api/cron/",

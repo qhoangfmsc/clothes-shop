@@ -8,7 +8,7 @@ import {
   getSubcategory,
   getAllProducts,
 } from "../../../_lib/server-fetchers";
-import { buildAlternates, buildSocialMetadata } from "@/src/i18n/metadata";
+import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import JsonLd from "@/src/app/[locale]/_components/JsonLd";
 import { breadcrumbJsonLd, productJsonLd } from "@/src/lib/structured-data";
 import type { AppLocale } from "@/src/i18n/routing";
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const { locale, category, subcategory, productId } = await params;
   const result = await getProductWithRelated(productId);
   const tCommon = await getTranslations({ locale, namespace: "common" });
-  if (!result) return { title: `${tCommon("notFound")} — DOOVAN` };
+  if (!result) return { title: withBrand(tCommon("notFound")) };
 
   const t = await getTranslations({ locale, namespace: "public.product.meta" });
   const path = `/shop/${category}/${subcategory}/${productId}`;

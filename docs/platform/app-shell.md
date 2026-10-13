@@ -1,6 +1,6 @@
 # App shell (layout gốc, provider, route group, trang lỗi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
 > **Code:** `src/app/[locale]/layout.tsx` · `src/app/[locale]/_components/Providers.tsx` · `src/middleware.ts` · `src/app/[locale]/(public|private|admin|auth)/layout.tsx` · `not-found.tsx` · `[...rest]/page.tsx` · `(public)/error.tsx` · `unauthorized/` · `RouteTransition.tsx` · `cursor/` · `VercelTelemetry.tsx`
 
 ## 1. Tóm tắt module
@@ -36,7 +36,7 @@ Khung bao quanh mọi trang: layout gốc theo locale, chuỗi provider (Redux, 
 - Message gửi client: `common`, `shared`, `auth` (các nhóm role thêm ở layout con — xem [i18n](./i18n.md)).
 - Thứ tự bọc, từ ngoài vào trong: `NextIntlClientProvider` → `CustomCursor` (anh em) / `Providers` (Redux → Google OAuth → Auth → `CartSync`) → `ToastProvider (bottom-center)` → `ConfirmProvider` → `SystemPasswordPromptProvider` → `LoginPromptProvider` → `QuickAddProvider` → `RouteTransition`, `CartFAB`, `{children}`, `VercelTelemetry`.
 - `CartSync` (mount ngay trong `AuthProvider`) đồng bộ giỏ hàng khi phiên thay đổi — xem [cart](../storefront/cart.md).
-- Metadata gốc: xem [seo](./seo.md).
+- Metadata gốc (gồm `applicationName`, `verification.google`, `siteName` lấy từ `BRAND_NAME`): xem [seo](./seo.md).
 
 ### 4.2 Route group
 

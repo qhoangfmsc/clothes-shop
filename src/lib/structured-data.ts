@@ -1,5 +1,7 @@
 import type { AppLocale } from "@/src/i18n/routing";
 import type { Product } from "@/src/types/product";
+import { BRAND_ALTERNATE_NAME, BRAND_DOMAIN, BRAND_NAME } from "./brand";
+import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164 } from "./contact";
 import { SITE_URL } from "./site-url";
 import { hasPublicPrice } from "./product-purchase";
 import { SOCIALS } from "./socials";
@@ -48,7 +50,7 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
     sku: product.sku,
     image: product.images.map(absoluteUrl),
     url,
-    brand: { "@type": "Brand", name: "DOOVAN" },
+    brand: { "@type": "Brand", name: BRAND_NAME },
     ...(product.category && { category: product.category.title }),
     ...(product.material && { material: product.material }),
     ...(product.colors.length > 0 && { color: product.colors.map((c) => c.name).join(", ") }),
@@ -68,25 +70,39 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
 
 /** Names the brand is actually known by. Search is case-insensitive, so one casing is enough;
  *  only list domains we own. */
-const BRAND_ALTERNATE_NAMES = ["Doovan", "doovan.vn"];
+const BRAND_ALTERNATE_NAMES = [BRAND_ALTERNATE_NAME, BRAND_DOMAIN];
 
-/** `WebSite` + `Organization` for the home page (the brand name is never translated). */
-export function siteJsonLd() {
+/** `WebSite` + `Organization` for the home page (the brand name is never translated).
+ *  `description` is the localized site description, so the entity says what the brand is. */
+export function siteJsonLd(locale: AppLocale, description: string) {
   return [
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "DOOVAN",
+      name: BRAND_NAME,
       alternateName: BRAND_ALTERNATE_NAMES,
       url: SITE_URL,
+      description,
+      inLanguage: locale,
     },
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "DOOVAN",
+      name: BRAND_NAME,
       alternateName: BRAND_ALTERNATE_NAMES,
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
+      description,
+      email: CONTACT_EMAIL,
+      telephone: CONTACT_PHONE_E164,
+      address: { "@type": "PostalAddress", ...CONTACT_ADDRESS_PARTS },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        email: CONTACT_EMAIL,
+        telephone: CONTACT_PHONE_E164,
+        availableLanguage: ["vi", "en"],
+      },
       sameAs: SOCIALS.map((social) => social.href),
     },
   ];

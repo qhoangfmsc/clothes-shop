@@ -1,7 +1,7 @@
 # SEO (metadata, sitemap, robots, dữ liệu có cấu trúc)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
-> **Code:** `src/app/robots.ts` · `src/app/sitemap.ts` · `src/lib/structured-data.ts` · `src/lib/site-url.ts` · `src/lib/legal.ts` · `src/i18n/metadata.ts` · `src/app/[locale]/_components/JsonLd.tsx` · `src/app/[locale]/layout.tsx`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
+> **Code:** `src/app/robots.ts` · `src/app/sitemap.ts` · `src/lib/structured-data.ts` · `src/lib/site-url.ts` · `src/lib/brand.ts` · `src/lib/legal.ts` · `src/i18n/metadata.ts` · `src/app/[locale]/_components/JsonLd.tsx` · `src/app/[locale]/layout.tsx`
 
 ## 1. Tóm tắt module
 
@@ -24,12 +24,15 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 | Robots | Chặn khu riêng tư; chặn toàn bộ ở môi trường không phải production | `src/app/robots.ts` |
 | JSON-LD | `siteJsonLd`, `productJsonLd`, `breadcrumbJsonLd`, `absoluteUrl`, `pageUrl` | `src/lib/structured-data.ts` |
 | Origin | `SITE_URL` | `src/lib/site-url.ts` |
+| Thương hiệu | `BRAND_NAME` (`DOOVAN`), `BRAND_ALTERNATE_NAME` (`Doovan`), `BRAND_DOMAIN` (`doovan.vn`) | `src/lib/brand.ts` |
 
 ## 4. Chi tiết
 
 ### 4.1 Metadata
 
-- Root layout đặt `metadataBase = SITE_URL`, title/description từ `shared.site.meta`, `alternates` qua `buildAlternates(locale)`, Open Graph (`siteName: DOOVAN`, `ogLocale`, ảnh `/brand/brand_og.png` 1200×630) và Twitter `summary_large_image`.
+- Root layout đặt `metadataBase = SITE_URL`, title/description từ `shared.site.meta`, `applicationName = BRAND_NAME`, `alternates` qua `buildAlternates(locale)`, `verification.google` lấy từ `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (không đặt biến → bỏ thẻ), Open Graph (`siteName = BRAND_NAME`, `ogLocale`, ảnh `/brand/brand_og.png` 1200×630) và Twitter `summary_large_image`.
+- Tên thương hiệu viết một kiểu duy nhất trong code là `DOOVAN` (`BRAND_NAME`), dùng ở `withBrand`, `siteName`, JSON-LD; `Doovan` và `doovan.vn` chỉ xuất hiện ở `alternateName` của JSON-LD và trong câu mô tả trang chủ (`doovan.vn`).
+- Title/description trang chủ (`shared.site.meta`): vi `DOOVAN — Thương hiệu thời trang & nơi đặt thiết kế riêng`, en `DOOVAN — Fashion Brand & Custom Design Orders`; description mở đầu bằng `DOOVAN (doovan.vn) là thương hiệu thời trang Việt Nam …` / `… is a Vietnamese fashion brand …`. Title các trang con mang từ khóa nội dung: `Cửa hàng thời trang`, `Bộ sưu tập thời trang`, `Thời trang mới về`, `Giới thiệu thương hiệu thời trang`, `Đặt thiết kế riêng, may đo theo yêu cầu` (en: `Fashion Shop`, `Fashion Collections`, `New Fashion Arrivals`, `About our fashion brand`, `Custom Design & Made-to-Measure Orders`), cộng hậu tố `— DOOVAN` từ `withBrand`.
 - Mỗi trang `generateMetadata` lấy chuỗi từ `<role>.<module>.meta`, dùng `withBrand(title)`, `buildAlternates(locale, path)`; trang có hình riêng dùng `buildSocialMetadata`.
 - Trang `noindex`: `/login`, `/unauthorized`, layout `(private)`, layout `(admin)`, trang `/legal` (hub).
 
@@ -49,17 +52,17 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.4 JSON-LD
 
-- Trang chủ: `siteJsonLd()` = `WebSite` + `Organization` (tên `DOOVAN`, `alternateName` `Doovan`/`doovan.vn`, `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`).
-- Sản phẩm: `productJsonLd(locale, product, path)` — `Product` + `Offer` (USD, giá `toFixed(2)`, `InStock`, `NewCondition`), không có `aggregateRating`.
+- Trang chủ: `siteJsonLd(locale, description)` = `WebSite` (`name` `DOOVAN`, `alternateName` `Doovan`/`doovan.vn`, `description`, `inLanguage`) + `Organization` (cùng tên, `description`, `email`, `telephone` (`CONTACT_PHONE_E164`), `address` (`PostalAddress` từ `CONTACT_ADDRESS_PARTS`) và `contactPoint` `customer service` (email + telephone), `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`). `description` là `shared.site.meta.description` của ngôn ngữ hiện tại.
+- Sản phẩm: `productJsonLd(locale, product, path)` — `Product` + `Offer` (`priceCurrency` USD vì giá trên trang hiển thị bằng USD, giá `toFixed(2)`, `InStock`, `NewCondition`), không có `aggregateRating`.
 - `breadcrumbJsonLd(locale, crumbs)` cho `BreadcrumbList`.
 - `JsonLd` nhúng script; URL ảnh `/media/...` được đổi thành tuyệt đối bằng `absoluteUrl`.
 
 ### 4.5 Pháp lý (`src/lib/legal.ts`)
 
-`LEGAL_DOCS` (`terms`, `privacy`, `shippingReturns` → `/terms`, `/privacy`, `/shipping-returns`), `LEGAL_HUB_PATH = "/legal"`, `LEGAL_LAST_UPDATED = "2026-10-11"`, `LEGAL_CONTACT` (`email` = `CONTACT_EMAIL` `contact@doovan.vn`; `phone`, `address` đang là placeholder `[hotline]`, `[business address]`). Xem [legal](../storefront/legal.md).
+`LEGAL_DOCS` (`terms`, `privacy`, `shippingReturns` → `/terms`, `/privacy`, `/shipping-returns`), `LEGAL_HUB_PATH = "/legal"`, `LEGAL_LAST_UPDATED = "2026-10-11"`, `LEGAL_CONTACT` (`email` = `CONTACT_EMAIL` `contact@doovan.vn`; `phone` = `CONTACT_PHONE`, `address` = `CONTACT_ADDRESS`, đều ở `src/lib/contact.ts`). Xem [legal](../storefront/legal.md).
 
 ### 4.6 Biến môi trường
 
-`NEXT_PUBLIC_SITE_URL` (không có dấu `/` cuối), `VERCEL_ENV`.
+`NEXT_PUBLIC_SITE_URL` (không có dấu `/` cuối), `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (mã xác minh Search Console, tùy chọn), `VERCEL_ENV`.
 
 - `productJsonLd` bỏ `offers` khi sản phẩm có badge `custom_order` (`hasPublicPrice`).

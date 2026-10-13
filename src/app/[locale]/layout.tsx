@@ -16,6 +16,7 @@ import { CustomCursor } from "./_components/cursor";
 import { LOCALE_LABELS, routing, type AppLocale } from "@/src/i18n/routing";
 import { pickMessages } from "@/src/i18n/messages";
 import { buildAlternates } from "@/src/i18n/metadata";
+import { BRAND_NAME } from "@/src/lib/brand";
 import { SITE_URL } from "@/src/lib/site-url";
 import "../globals.css";
 
@@ -47,10 +48,13 @@ export async function generateMetadata({
     metadataBase: new URL(SITE_URL),
     title: t("title"),
     description: t("description"),
+    applicationName: BRAND_NAME,
     alternates: buildAlternates(locale),
+    /* Search Console ownership check; set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in production (omitted when unset) */
+    verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
     openGraph: {
       type: "website",
-      siteName: "DOOVAN",
+      siteName: BRAND_NAME,
       locale: LOCALE_LABELS[locale].ogLocale,
       images: [{ url: "/brand/brand_og.png", width: 1200, height: 630, alt: t("ogAlt") }],
     },

@@ -11,13 +11,14 @@ export default function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   /* Un-prefixed URL (old link, typed address) always lands on the default language
-     (`/vi`). Never guessed from the browser's language or a cookie. */
+     (`/vi`). Never guessed from the browser's language or a cookie. Permanent (308), so
+     search engines move every signal of the bare domain onto the `/vi` URLs. */
   if (!hasLocalePrefix(pathname)) {
     const target = new URL(
       `/${routing.defaultLocale}${pathname === "/" ? "" : pathname}${search}`,
       request.url
     );
-    return NextResponse.redirect(target);
+    return NextResponse.redirect(target, 308);
   }
 
   return intlMiddleware(request);

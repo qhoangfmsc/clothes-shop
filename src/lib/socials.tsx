@@ -56,7 +56,7 @@ export interface SocialLink {
 }
 
 export const SOCIALS: SocialLink[] = [
-  { label: "Instagram", href: "https://www.instagram.com/doo_doofairies", Icon: InstagramIcon },
+  { label: "Instagram", href: "https://www.instagram.com/doovan.vn", Icon: InstagramIcon },
   { label: "Facebook", href: "https://www.facebook.com/doovan.vn", Icon: FacebookIcon },
 ];
 

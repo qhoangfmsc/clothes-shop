@@ -43,8 +43,8 @@
   "pages": {
     "index": {
       "meta": {
-        "title": "Cửa hàng",
-        "description": "Khám phá toàn bộ bộ sưu tập DOOVAN. Áo, váy, túi xách và trang sức cao cấp — được chế tác có chủ đích cho tủ đồ hiện đại."
+        "title": "Cửa hàng thời trang",
+        "description": "Mua thời trang DOOVAN: áo, váy, túi xách và trang sức thiết kế, chế tác có chủ đích cho tủ đồ hiện đại. Cần mẫu riêng? DOOVAN nhận đặt thiết kế."
       },
       "hero": {
         "title": "Tất cả sản phẩm",
@@ -64,7 +64,7 @@
     "category": {
       "meta": {
         "title": "{category} — Cửa hàng DOOVAN",
-        "description": "{description} — Bộ sưu tập cao cấp DOOVAN."
+        "description": "{description} — Thời trang thiết kế DOOVAN."
       },
       "heroLabel": "DOOVAN — {category}",
       "collectionHeading": "Bộ sưu tập {category}"

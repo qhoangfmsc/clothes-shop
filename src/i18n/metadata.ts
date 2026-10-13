@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BRAND_NAME } from "@/src/lib/brand";
 import { LOCALE_LABELS, routing, type AppLocale } from "./routing";
 
 /** Canonical + hreflang links for a page, so search engines serve each language to the right audience.
@@ -14,7 +15,7 @@ export function buildAlternates(locale: AppLocale, path = ""): Metadata["alterna
 }
 
 /** Page titles end with the brand — "Shop — DOOVAN". The brand is never translated. */
-export const withBrand = (title: string) => `${title} — DOOVAN`;
+export const withBrand = (title: string) => `${title} — ${BRAND_NAME}`;
 
 /** Share-card image used when a page has no image of its own (also set site-wide in the root layout). */
 const DEFAULT_SHARE_IMAGE = { url: "/brand/brand_og.png", width: 1200, height: 630 };
@@ -49,7 +50,7 @@ export function buildSocialMetadata({
   return {
     openGraph: {
       type: "website",
-      siteName: "DOOVAN",
+      siteName: BRAND_NAME,
       locale: LOCALE_LABELS[locale].ogLocale,
       alternateLocale: routing.locales
         .filter((l) => l !== locale)

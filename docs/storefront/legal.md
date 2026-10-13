@@ -27,7 +27,7 @@ Cung cấp các điều khoản mà khách phải đồng ý khi đăng nhập (
 
 - `LEGAL_DOCS` = `[{ key: "terms", path: "/terms" }, { key: "privacy", path: "/privacy" }, { key: "shippingReturns", path: "/shipping-returns" }]`; `LEGAL_HUB_PATH = "/legal"`.
 - `LEGAL_LAST_UPDATED = "2026-10-13"` — phải đổi cùng lúc với nội dung message. Hiển thị dạng `long` ở mỗi trang (neo 12:00 UTC để ngày không lệch múi giờ).
-- `LEGAL_CONTACT` `{ company: "DOOVAN", email, phone, address }` được chèn vào văn bản qua các placeholder `{company} {email} {phone} {address}`; `email` lấy từ `CONTACT_EMAIL` (`contact@doovan.vn`, `src/lib/contact.ts`); `phone` và `address` vẫn là chỗ trống (`[hotline]`, `[business address]`).
+- `LEGAL_CONTACT` `{ company: "DOOVAN", email, phone, address }` được chèn vào văn bản qua các placeholder `{company} {email} {phone} {address}`; `email` lấy từ `CONTACT_EMAIL` (`contact@doovan.vn`, `src/lib/contact.ts`); `phone` = `CONTACT_PHONE` (`0946 841 344`) và `address` = `CONTACT_ADDRESS` (`313 Nguyễn Duy, Phường Chánh Hưng, TP. Hồ Chí Minh, Việt Nam`), cùng khai báo ở `src/lib/contact.ts`.
 
 ### 4.2 Cấu trúc message (`public.legal.<doc>`)
 

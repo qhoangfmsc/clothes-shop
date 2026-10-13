@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL } from "@/src/lib/contact";
+import { CONTACT_ADDRESS, CONTACT_EMAIL, CONTACT_PHONE } from "@/src/lib/contact";
 
 /** Legal documents shared by the storefront: the reading pages, footer, menu, login and checkout links. */
 export const LEGAL_DOCS = [
@@ -15,11 +15,10 @@ export const LEGAL_HUB_PATH = "/legal";
 /** Bump together with the message text whenever a document changes (ISO date). */
 export const LEGAL_LAST_UPDATED = "2026-10-13";
 
-/** Business details injected into the legal texts as `{company}`, `{email}`, `{phone}`, `{address}`.
- *  TODO: replace the phone / address placeholders with the real details before going live. */
+/** Business details injected into the legal texts as `{company}`, `{email}`, `{phone}`, `{address}`. */
 export const LEGAL_CONTACT = {
   company: "DOOVAN",
   email: CONTACT_EMAIL,
-  phone: "[hotline]",
-  address: "[business address]",
+  phone: CONTACT_PHONE,
+  address: CONTACT_ADDRESS,
 } as const;
