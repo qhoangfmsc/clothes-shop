@@ -1,7 +1,7 @@
 import type { AppLocale } from "@/src/i18n/routing";
 import type { Product } from "@/src/types/product";
 import { BRAND_ALTERNATE_NAME, BRAND_DOMAIN, BRAND_FOUNDING_YEAR, BRAND_NAME } from "./brand";
-import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164 } from "./contact";
+import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164, GOOGLE_BUSINESS_URL } from "./contact";
 import { SITE_URL } from "./site-url";
 import { hasPublicPrice } from "./product-purchase";
 import { SOCIALS } from "./socials";
@@ -75,7 +75,7 @@ const BRAND_ALTERNATE_NAMES = [BRAND_ALTERNATE_NAME, BRAND_DOMAIN];
 /** Stable id of the brand entity, so the WebSite and any other page can point at the same Organization. */
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 
-/** `WebSite` + `Organization` for the home page (the brand name is never translated).
+/** `WebSite` + `ClothingStore` (the brand entity) for the home page (the brand name is never translated).
  *  `description` is the localized site description; `identity` is one line that tells this DOOVAN
  *  apart from other businesses with a similar name (what it is, where it is). */
 export function siteJsonLd(locale: AppLocale, description: string, identity: string) {
@@ -92,7 +92,8 @@ export function siteJsonLd(locale: AppLocale, description: string, identity: str
     },
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
+      /* ClothingStore is a LocalBusiness (and so an Organization): it matches the Google Business Profile of the shop */
+      "@type": "ClothingStore",
       "@id": ORGANIZATION_ID,
       name: BRAND_NAME,
       alternateName: BRAND_ALTERNATE_NAMES,
@@ -111,7 +112,8 @@ export function siteJsonLd(locale: AppLocale, description: string, identity: str
         telephone: CONTACT_PHONE_E164,
         availableLanguage: ["vi", "en"],
       },
-      sameAs: SOCIALS.map((social) => social.href),
+      hasMap: GOOGLE_BUSINESS_URL,
+      sameAs: [...SOCIALS.map((social) => social.href), GOOGLE_BUSINESS_URL],
     },
   ];
 }

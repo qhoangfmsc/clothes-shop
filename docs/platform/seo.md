@@ -52,7 +52,7 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.4 JSON-LD
 
-- Trang chủ: `siteJsonLd(locale, description, identity)` = `WebSite` (`name` `DOOVAN`, `alternateName` `Doovan`/`doovan.vn`, `description`, `inLanguage`, `publisher` trỏ `@id` của Organization) + `Organization` (`@id` = `${SITE_URL}/#organization`, cùng tên, `description`, `disambiguatingDescription` = `shared.site.identity` — một câu nói rõ đây là thương hiệu thời trang Việt Nam ở TP. Hồ Chí Minh —, `foundingDate` = `BRAND_FOUNDING_YEAR` (`2026`), `email`, `telephone` (`CONTACT_PHONE_E164`), `address` (`PostalAddress` từ `CONTACT_ADDRESS_PARTS`) và `contactPoint` `customer service` (email + telephone), `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`). `description` là `shared.site.meta.description` của ngôn ngữ hiện tại.
+- Trang chủ: `siteJsonLd(locale, description, identity)` = `WebSite` (`name` `DOOVAN`, `alternateName` `Doovan`/`doovan.vn`, `description`, `inLanguage`, `publisher` trỏ `@id` của Organization) + `ClothingStore` (loại con của `LocalBusiness` và `Organization`; `@id` = `${SITE_URL}/#organization`, cùng tên, `description`, `disambiguatingDescription` = `shared.site.identity` — một câu nói rõ đây là thương hiệu thời trang Việt Nam ở TP. Hồ Chí Minh —, `foundingDate` = `BRAND_FOUNDING_YEAR` (`2026`), `email`, `telephone` (`CONTACT_PHONE_E164`), `address` (`PostalAddress` từ `CONTACT_ADDRESS_PARTS`) và `contactPoint` `customer service` (email + telephone), `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`; `hasMap` và phần tử cuối của `sameAs` là `GOOGLE_BUSINESS_URL`). Chưa khai giờ mở cửa. `description` là `shared.site.meta.description` của ngôn ngữ hiện tại.
 - Sản phẩm: `productJsonLd(locale, product, path)` — `Product` + `Offer` (`priceCurrency` USD vì giá trên trang hiển thị bằng USD, giá `toFixed(2)`, `InStock`, `NewCondition`), không có `aggregateRating`.
 - `breadcrumbJsonLd(locale, crumbs)` cho `BreadcrumbList`.
 - `JsonLd` nhúng script; URL ảnh `/media/...` được đổi thành tuyệt đối bằng `absoluteUrl`.
@@ -63,6 +63,6 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.6 Biến môi trường
 
-`NEXT_PUBLIC_SITE_URL` (không có dấu `/` cuối), `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (mã xác minh Search Console, tùy chọn), `VERCEL_ENV`.
+`NEXT_PUBLIC_SITE_URL` (không có dấu `/` cuối), `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (mã xác minh Search Console, tùy chọn), `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` (ghi đè link chia sẻ Google Business Profile; mặc định `https://share.google/IW85rWWlr0HKopGIX` trong `src/lib/contact.ts`), `VERCEL_ENV`.
 
 - `productJsonLd` bỏ `offers` khi sản phẩm có badge `custom_order` (`hasPublicPrice`).

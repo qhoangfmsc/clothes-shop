@@ -14,8 +14,11 @@ export const CONTACT_ADDRESS_PARTS = {
   addressCountry: "VN",
 } as const;
 
-/** Google Maps link to the business address (opens the Maps app on phones). */
-export const CONTACT_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT_ADDRESS)}`;
+/** Public "Share" link of the DOOVAN Google Business Profile; `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` overrides it. */
+export const GOOGLE_BUSINESS_URL = "https://share.google/IW85rWWlr0HKopGIX";
+
+/** Where every "address" link goes (opens the Maps app on phones): the business profile. */
+export const CONTACT_MAPS_URL = GOOGLE_BUSINESS_URL;
 
 /** `mailto:` link with an optional subject and body. */
 export function buildMailto(subject?: string, body?: string): string {
