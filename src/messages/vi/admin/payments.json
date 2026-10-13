@@ -1,0 +1,133 @@
+{
+  "page": {
+    "title": "Thanh toán",
+    "total": "{count, plural, other {# giao dịch}}",
+    "manual": "Nhập giao dịch thủ công"
+  },
+  "table": {
+    "searchPlaceholder": "Nội dung chuyển khoản hoặc mã giao dịch...",
+    "columns": {
+      "receivedAt": "Thời gian",
+      "amount": "Số tiền",
+      "content": "Nội dung",
+      "status": "Kết quả đối soát",
+      "order": "Đơn hàng",
+      "actions": "Thao tác"
+    },
+    "filters": {
+      "status": "Kết quả đối soát"
+    },
+    "attach": "Gắn vào đơn"
+  },
+  "verification": {
+    "MATCHED": "Đã khớp",
+    "UNMATCHED": "Chưa khớp đơn",
+    "ACCOUNT_MISMATCH": "Sai tài khoản",
+    "AMOUNT_MISMATCH": "Sai số tiền",
+    "LATE": "Đến trễ",
+    "NOT_PAYABLE": "Đơn không còn thanh toán",
+    "DUPLICATE_PAYMENT": "Trả trùng",
+    "IGNORED": "Bỏ qua",
+    "MANUALLY_CONFIRMED": "Xác nhận thủ công"
+  },
+  "attempt": {
+    "PENDING": "Đang chờ",
+    "PAID": "Đã trả",
+    "EXPIRED": "Hết hạn",
+    "CANCELLED": "Đã hủy"
+  },
+  "picker": {
+    "title": "Đơn chưa thanh toán",
+    "searchPlaceholder": "Mã đơn, tên, SĐT hoặc nội dung chuyển khoản...",
+    "loading": "Đang tìm...",
+    "empty": "Không có đơn chưa thanh toán phù hợp.",
+    "loadFailed": "Không tải được danh sách đơn"
+  },
+  "confirm": {
+    "titleAttach": "Gắn giao dịch vào đơn",
+    "titleManual": "Nhập giao dịch thủ công",
+    "order": {
+      "section": "Đơn hàng",
+      "label": "Chọn đơn chưa thanh toán",
+      "info": "Chỉ hiện các đơn chưa thanh toán và chưa hủy."
+    },
+    "manual": {
+      "section": "Giao dịch",
+      "transferCode": "Nội dung chuyển khoản",
+      "transferCodeInfo": "Mã trên sao kê, ví dụ DHG29JR5A8 (không phân biệt hoa/thường). Hệ thống đánh dấu đúng phiên mang mã này là đã trả, kể cả khi đã hết hạn.",
+      "amount": "Số tiền (VND)",
+      "amountInfo": "Số tiền thực nhận, số nguyên VND. Khác số tiền của phiên thì cần xác nhận thêm.",
+      "more": "Thêm thông tin sao kê (không bắt buộc)",
+      "reference": "Mã giao dịch",
+      "referenceInfo": "Mã giao dịch SePay hoặc mã trên sao kê nếu biết. Bỏ trống thì dùng nội dung chuyển khoản làm mã.",
+      "provider": "Nguồn",
+      "providerInfo": "Mặc định: SePay khi có mã giao dịch, Thủ công khi chỉ có nội dung chuyển khoản.",
+      "providers": {
+        "auto": "Mặc định",
+        "sepay": "SePay",
+        "manual": "Thủ công"
+      },
+      "transferContent": "Nội dung trên sao kê",
+      "transferContentInfo": "Chỉ cần điền khi nội dung trên sao kê khác mã chuyển khoản."
+    },
+    "note": {
+      "label": "Lý do / bằng chứng",
+      "info": "Bắt buộc. Ghi lại vì sao xác nhận (ví dụ: đối chiếu sao kê ngày …)."
+    },
+    "errors": {
+      "order": "Vui lòng chọn một đơn",
+      "amount": "Nhập số nguyên VND lớn hơn 0",
+      "note": "Vui lòng nhập lý do hoặc bằng chứng",
+      "transferCode": "Vui lòng nhập nội dung chuyển khoản"
+    },
+    "mismatch": {
+      "title": "Số tiền không khớp",
+      "confirm": "Vẫn xác nhận"
+    },
+    "submit": "Xác nhận đã thanh toán",
+    "toast": {
+      "confirmed": "Đơn #{id} đã được xác nhận thanh toán",
+      "failed": "Không thể xác nhận thanh toán"
+    }
+  },
+  "orderTab": {
+    "loadFailed": "Không tải được thông tin thanh toán",
+    "paymentStatus": "Trạng thái",
+    "paidAt": "Thanh toán lúc",
+    "total": "Tổng đơn",
+    "customer": "Khách hàng",
+    "confirmPaid": "Xác nhận đã thanh toán",
+    "attempts": "Phiên thanh toán ({count})",
+    "noAttempts": "Đơn chưa từng tạo mã QR.",
+    "expiresAt": "Hết hạn: {date}",
+    "createdAt": "Tạo: {date}",
+    "paidAtShort": "Trả: {date}",
+    "transactions": "Giao dịch ({count})",
+    "noTransactions": "Chưa có giao dịch nào gắn với đơn này.",
+    "confirmNote": "Ghi chú: {note}",
+    "attachHere": "Gắn vào đơn này",
+    "transferCode": "Nội dung chuyển khoản",
+    "transactionId": "Mã giao dịch",
+    "confirmCode": "Xác nhận mã này"
+  },
+  "lookup": {
+    "tab": "Tra nội dung chuyển khoản",
+    "transactionsTab": "Giao dịch ngân hàng",
+    "total": "{count, plural, other {# mã}}",
+    "searchPlaceholder": "Nội dung chuyển khoản, mã đơn, SĐT hoặc tên khách...",
+    "status": "Trạng thái mã",
+    "columns": {
+      "code": "Nội dung chuyển khoản",
+      "amount": "Số tiền",
+      "status": "Trạng thái",
+      "order": "Đơn & khách",
+      "transactions": "Giao dịch ngân hàng",
+      "actions": "Thao tác"
+    },
+    "createdAt": "Tạo: {date}",
+    "expiresAt": "Hạn: {date}",
+    "paidAt": "Trả: {date}",
+    "noTransactions": "Chưa có tiền về mã này",
+    "confirmPaid": "Xác nhận đã thanh toán"
+  }
+}

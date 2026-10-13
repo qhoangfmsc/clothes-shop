@@ -5,44 +5,87 @@
   },
   "list": {
     "back": "Account",
-    "title": "Order History",
+    "title": "My Orders",
     "empty": {
       "title": "No orders yet",
-      "description": "When you place your first order, it will appear here with tracking details and delivery status.",
-      "cta": "Start Shopping",
-      "features": {
-        "tracking": "Real-time order tracking",
-        "updates": "Delivery status updates",
-        "returns": "Easy returns & exchanges"
-      }
+      "description": "When you place your first order, it will show up here with its delivery status.",
+      "cta": "Start shopping"
     },
     "card": {
-      "quantity": "Qty: {quantity}",
-      "more": "+{count, plural, one {# more item} other {# more items}}",
+      "quantity": "Qty {quantity}",
+      "more": "+{count} more items",
       "orderNumber": "Order #{id}",
-      "viewDetails": "View Details"
+      "total": "Total"
     },
     "toast": {
-      "loadFailed": "Couldn't load your orders. Please try again."
-    }
+      "loadFailed": "We couldn't load your orders. Please try again."
+    },
+    "loadMore": "Load more orders",
+    "loadingMore": "Loading..."
   },
   "detail": {
     "notFound": "Order not found.",
-    "back": "All Orders",
-    "title": "Order #{id}",
-    "shippingAddress": "Shipping Address",
-    "notes": "Notes:",
+    "back": "All orders",
+    "orderNumber": "Order #{id}",
+    "statusHint": {
+      "pending": "We've received your order and will confirm it shortly.",
+      "confirmed": "Your order is confirmed and being prepared.",
+      "shipping": "Your order is on its way to you.",
+      "delivered": "Your order has been delivered.",
+      "completed": "Your order is complete. Thank you for shopping with us!",
+      "cancelled": "This order was cancelled."
+    },
+    "payment": {
+      "title": "Payment",
+      "awaiting": "This order is waiting for payment.",
+      "paid": "Paid",
+      "pay": "Pay now",
+      "codes": "Transfer contents issued",
+      "code": "transfer content",
+      "codesHint": "If you already transferred money but the order isn't confirmed, contact the store with the transfer content you used.",
+      "attempt": {
+        "PENDING": "Pending",
+        "PAID": "Paid",
+        "EXPIRED": "Expired",
+        "CANCELLED": "Cancelled"
+      },
+      "paidAt": "Paid {date}",
+      "expiresAt": "Expires {date}",
+      "transactionRef": "Transaction ID: {ref}",
+      "transactionRefLabel": "transaction ID"
+    },
+    "shippingAddress": "Deliver to",
+    "notes": "Note:",
+    "items": "{count, plural, one {# item} other {# items}}",
+    "itemMeta": "{size} · {color}",
+    "quantity": "Qty {quantity}",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "shippingMethod": {
+      "standard": "Standard",
       "express": "Express",
-      "standard": "Standard"
+      "store-pickup": "Store pickup"
     },
     "free": "Free",
     "total": "Total",
-    "itemMeta": "{size} · {color} · Qty {quantity}",
+    "continue": "Continue shopping",
     "toast": {
-      "loadFailed": "Couldn't load this order. Please try again."
+      "loadFailed": "We couldn't load this order. Please try again."
+    },
+    "pickupContact": "Collected at the store by",
+    "pickupAtStore": "You will collect your order at the store.",
+    "cancel": {
+      "action": "Cancel order",
+      "cancelling": "Cancelling...",
+      "hint": "This order is unpaid, so you can cancel it right here.",
+      "paidHint": "This order is paid, so it can't be cancelled online. Please contact the store if you need to cancel or get a refund.",
+      "confirm": {
+        "title": "Cancel order",
+        "message": "Are you sure you want to cancel this order? Any waiting transfer content is cancelled too.",
+        "confirm": "Cancel order"
+      },
+      "done": "Order cancelled",
+      "failed": "Couldn't cancel the order"
     }
   }
 }

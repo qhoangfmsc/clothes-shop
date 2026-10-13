@@ -34,6 +34,11 @@
     "1303": "This product is sold out or made to order, so it can’t be added to the bag or checked out. Please contact us to order.",
     "1001": "Product not found. It may have been removed.",
     "1201": "Collection not found. The list may be out of date.",
-    "1401": "User not found. The list may be out of date."
+    "1401": "User not found. The list may be out of date.",
+    "1702": "This order is already paid or cancelled, so it can't be paid again.",
+    "1703": "This transfer content doesn't belong to the order, or the order never had a QR payment session.",
+    "1707": "Send exactly one of: an existing transaction, or a reference with an amount.",
+    "1708": "Transaction not found. The list may be out of date.",
+    "1307": "This order has been paid and can't be cancelled online. Please contact the store."
   }
 }

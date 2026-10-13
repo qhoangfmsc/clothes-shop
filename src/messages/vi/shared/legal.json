@@ -2,5 +2,7 @@
   "title": "Pháp lý",
   "terms": "Điều khoản sử dụng",
   "privacy": "Chính sách bảo mật",
-  "shippingReturns": "Giao hàng & đổi trả"
+  "shippingReturns": "Giao hàng & đổi trả",
+  "returnWindow": "{days, plural, other {# ngày}}",
+  "returnWindowUnknown": "thời hạn đổi trả ghi ở trang sản phẩm"
 }

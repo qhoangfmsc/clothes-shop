@@ -1,6 +1,6 @@
 # Account (tài khoản)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-13
 > **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserMenu.tsx`
 > **i18n:** `private.account`
 
@@ -18,7 +18,7 @@ Là điểm vào của khu "của tôi": từ đây khách nhảy sang Wishlist 
 |---|---|
 | `ProfileHeader` | Avatar (`UserAvatar` 80 px), tên (hoặc lời chào mặc định), email, "Thành viên từ <ngày dạng long>" |
 | `WishlistSection` | 4 sản phẩm yêu thích mới nhất (`items.slice(-4).reverse()`), link "Xem tất cả" → `/wishlist`; trống → gợi ý duyệt shop |
-| `OrdersSection` | 3 đơn đầu của `GET /api/orders` (card tóm tắt: mã, ngày, số món, tổng, badge trạng thái, link `/orders/<id>`); link "Xem tất cả" → `/orders`; trống → gợi ý mua sắm |
+| `OrdersSection` | 3 đơn đầu của `GET /api/orders` (card tóm tắt: mã, ngày, số món, tổng, nhãn trạng thái và nhãn thanh toán (nếu có `paymentStatus`), link `/orders/<id>`); link "Xem tất cả" → `/orders`; trống → gợi ý mua sắm |
 | `SignOutSection` | Nút Đăng xuất → `logout()` |
 | Trạng thái | `AccountSkeleton` khi tải phiên; chưa đăng nhập → `UnauthenticatedState` |
 

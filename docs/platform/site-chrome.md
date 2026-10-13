@@ -1,6 +1,6 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
 > **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
@@ -66,7 +66,7 @@ Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, `SocialIcons`), Explore (S
 
 ### 4.7 `CartFAB`
 
-Nút tròn vàng góc dưới phải (`z-20`), chỉ hiện sau khi client mount và khi `totalItems > 0` (`selectTotalItems` của slice cart); badge số lượng, nảy 600 ms mỗi lần số đổi; link `/cart`; `aria-label` `shared.cart.fab.viewBag`. Mount ở root layout nên có mặt ở mọi trang kể cả `/admin`.
+Nút tròn vàng góc dưới phải (`z-20`), chỉ hiện sau khi client mount và khi `totalItems > 0` (`selectTotalItems` của slice cart); badge số lượng, nảy 600 ms mỗi lần số đổi; link `/cart`; `aria-label` `shared.cart.fab.viewBag`. Ẩn khi đường dẫn là `/cart` hoặc bắt đầu bằng `/checkout` (các trang đó có nút thanh toán riêng, nút nổi chỉ che chúng). Mount ở root layout nên có mặt ở mọi trang kể cả `/admin`.
 
 ### 4.8 Nguồn dữ liệu
 

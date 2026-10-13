@@ -44,10 +44,12 @@ export default function ShippingAccordion() {
       {isOpen && (
         <div className="flex flex-col gap-4 pb-5">
           {/* Free shipping note */}
-          <div className="flex items-center gap-2 font-primary text-xs font-medium text-[var(--color-deep-gold)] tracking-[-0.02em] bg-[rgba(201,169,110,0.08)] rounded-md px-3 py-2.5">
-            <Check size={14} />
-            {t("freeOver", { amount: format.number(shipping.freeShippingThreshold, "price") })}
-          </div>
+          {shipping.freeShippingThreshold !== null && (
+            <div className="flex items-center gap-2 font-primary text-xs font-medium text-[var(--color-deep-gold)] tracking-[-0.02em] bg-[rgba(201,169,110,0.08)] rounded-md px-3 py-2.5">
+              <Check size={14} />
+              {t("freeOver", { amount: format.number(shipping.freeShippingThreshold, "price") })}
+            </div>
+          )}
 
           {/* Shipping methods */}
           <div className="flex flex-col gap-3">

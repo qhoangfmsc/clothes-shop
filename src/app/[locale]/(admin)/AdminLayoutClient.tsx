@@ -18,6 +18,7 @@ import {
   Menu,
   X,
   BarChart3,
+  Landmark,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -36,6 +37,7 @@ interface NavItem {
     | "orders"
     | "users"
     | "analytics"
+    | "payments"
     | "siteConfig"
     | "media";
   icon: LucideIcon;
@@ -79,6 +81,12 @@ const NAV_GROUPS: NavGroup[] = [
         key: "orders",
         icon: ShoppingBag,
         permission: PERMISSIONS.ORDER_ADMIN_VIEW,
+      },
+      {
+        href: "/admin/payments",
+        key: "payments",
+        icon: Landmark,
+        permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,
       },
       {
         href: "/admin/users",

@@ -1,6 +1,6 @@
 # Legal (Điều khoản, Chính sách bảo mật, Vận chuyển & đổi trả)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/terms`, `/privacy`, `/shipping-returns`, `/legal` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/terms`, `/privacy`, `/shipping-returns`, `/legal` · **Cập nhật:** 2026-10-13
 > **Code:** `(public)/legal/` — `page.tsx`, `_common/{content,metadata,types}.ts`, `_components/{LegalPage,LegalToc}.tsx` · `(public)/{terms,privacy,shipping-returns}/page.tsx` · `src/lib/legal.ts`
 > **i18n:** `public.legal`, `shared.legal`
 
@@ -26,12 +26,12 @@ Cung cấp các điều khoản mà khách phải đồng ý khi đăng nhập (
 ### 4.1 Cấu hình (`src/lib/legal.ts`)
 
 - `LEGAL_DOCS` = `[{ key: "terms", path: "/terms" }, { key: "privacy", path: "/privacy" }, { key: "shippingReturns", path: "/shipping-returns" }]`; `LEGAL_HUB_PATH = "/legal"`.
-- `LEGAL_LAST_UPDATED = "2026-10-11"` — phải đổi cùng lúc với nội dung message. Hiển thị dạng `long` ở mỗi trang (neo 12:00 UTC để ngày không lệch múi giờ).
+- `LEGAL_LAST_UPDATED = "2026-10-13"` — phải đổi cùng lúc với nội dung message. Hiển thị dạng `long` ở mỗi trang (neo 12:00 UTC để ngày không lệch múi giờ).
 - `LEGAL_CONTACT` `{ company: "DOOVAN", email, phone, address }` được chèn vào văn bản qua các placeholder `{company} {email} {phone} {address}`; `email` lấy từ `CONTACT_EMAIL` (`contact@doovan.vn`, `src/lib/contact.ts`); `phone` và `address` vẫn là chỗ trống (`[hotline]`, `[business address]`).
 
 ### 4.2 Cấu trúc message (`public.legal.<doc>`)
 
-`meta.description`, `intro`, `sections.<sectionKey>.{ title, p1…pN, l1…lN }`. `getLegalDocument(locale, doc)` đọc cây này bằng `t.raw`, giữ thứ tự trong file; khóa bắt đầu bằng `l` là mục danh sách (các mục liên tiếp gộp thành một `<ul>`), khóa khác `title` là đoạn văn. Mọi chuỗi được nội suy `LEGAL_CONTACT`. `public.legal.common` (`lastUpdated`, `otherPolicies`, `contents`) và `public.legal.hub` dùng chung; tên văn bản ở `shared.legal`.
+`meta.description`, `intro`, `sections.<sectionKey>.{ title, p1…pN, l1…lN }`. Thời hạn đổi trả **không nằm trong file dịch**: các câu dùng placeholder `{returnWindow}` (mục `returns` và `faulty` của `shippingReturns`), `getLegalDocument` lấy `returnPolicy.days` từ `getShippingInfo()` (`GET /api/shipping`, ISR 60 s, cấu hình ở Site Config → Vận chuyển & đổi trả) rồi đổi thành chữ bằng `shared.legal.returnWindow` ("{days} ngày"); API lỗi thì dùng `shared.legal.returnWindowUnknown` ("thời hạn đổi trả ghi ở trang sản phẩm"). `getLegalDocument(locale, doc)` đọc cây này bằng `t.raw`, giữ thứ tự trong file; khóa bắt đầu bằng `l` là mục danh sách (các mục liên tiếp gộp thành một `<ul>`), khóa khác `title` là đoạn văn. Mọi chuỗi được nội suy `LEGAL_CONTACT`. `public.legal.common` (`lastUpdated`, `otherPolicies`, `contents`) và `public.legal.hub` dùng chung; tên văn bản ở `shared.legal`.
 
 ### 4.3 Giao diện
 

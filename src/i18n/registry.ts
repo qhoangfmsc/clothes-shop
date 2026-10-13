@@ -20,6 +20,7 @@ export const MESSAGE_FILES = {
   "admin/dashboard": load<typeof import("../messages/en/admin/dashboard.json")>("admin/dashboard"),
   "admin/media": load<typeof import("../messages/en/admin/media.json")>("admin/media"),
   "admin/orders": load<typeof import("../messages/en/admin/orders.json")>("admin/orders"),
+  "admin/payments": load<typeof import("../messages/en/admin/payments.json")>("admin/payments"),
   "admin/products": load<typeof import("../messages/en/admin/products.json")>("admin/products"),
   "admin/shell": load<typeof import("../messages/en/admin/shell.json")>("admin/shell"),
   "admin/siteConfig": load<typeof import("../messages/en/admin/siteConfig.json")>("admin/siteConfig"),

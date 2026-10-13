@@ -34,7 +34,7 @@ const initialState: OrdersState = {
 export const fetchOrderList = createAsyncThunk(
   "orders/fetchList",
   async (params: OrderListParams) => {
-    const qs = buildListQuery(params, { status: params.status });
+    const qs = buildListQuery(params, { status: params.status, paymentStatus: params.paymentStatus });
     return authApi.get<{ data: AdminOrder[]; total: number; page: number; limit: number }>(
       `/api/admin/orders?${qs}`
     );

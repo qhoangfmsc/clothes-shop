@@ -20,13 +20,19 @@
     "NAV_MENU_BANNERS": {
       "label": "Menu — Banner nổi bật",
       "description": "Banner trong menu."
+    },
+    "SHIPPING_CONFIG": {
+      "label": "Vận chuyển — Phí ship",
+      "description": "Phí vận chuyển và ngưỡng miễn phí vận chuyển."
     }
   },
   "card": {
     "configured": "Đã cấu hình — {count} banner",
     "empty": "Trống",
     "edit": "Sửa",
-    "delete": "Xóa"
+    "delete": "Xóa",
+    "shippingConfigured": "Đã cấu hình",
+    "shippingDefault": "Đang dùng giá trị mặc định"
   },
   "form": {
     "banners": "Banner ({count})",
@@ -67,6 +73,68 @@
   },
   "confirmDelete": {
     "title": "Xóa cấu hình",
-    "message": "Xóa cấu hình này? Trang sẽ quay về nội dung mặc định."
+    "message": "Xóa cấu hình này? Trang sẽ quay về nội dung mặc định.",
+    "shippingMessage": "Xóa cấu hình này? Phí vận chuyển và ngưỡng miễn phí sẽ quay về giá trị mặc định của hệ thống."
+  },
+  "shipping": {
+    "loading": "Đang tải…",
+    "loadFailed": "Không tải được phí vận chuyển hiện tại. Vui lòng thử lại.",
+    "notice": "Thay đổi chỉ áp dụng cho đơn tạo sau khi lưu; đơn cũ giữ nguyên phí. Số tiền cùng đơn vị với giá sản phẩm.",
+    "free": {
+      "section": "Miễn phí vận chuyển",
+      "threshold": "Miễn phí từ",
+      "thresholdInfo": "Đơn có tạm tính từ mức này trở lên được miễn phí vận chuyển, áp dụng cho cả 3 phương thức. Để trống để tắt miễn phí vận chuyển.",
+      "placeholder": "Để trống = không miễn phí vận chuyển"
+    },
+    "methods": {
+      "standard": "Tiêu chuẩn",
+      "express": "Hỏa tốc",
+      "store-pickup": "Nhận tại cửa hàng"
+    },
+    "idReadonly": "Mã phương thức — không thể đổi",
+    "fields": {
+      "name": "Tên",
+      "description": "Mô tả",
+      "estimatedDays": "Thời gian giao",
+      "price": "Phí",
+      "priceInfo": "Từ 0 trở lên, tối đa 2 chữ số thập phân. 0 = miễn phí.",
+      "icon": "Biểu tượng"
+    },
+    "icons": {
+      "truck": "Xe tải",
+      "express": "Hỏa tốc",
+      "store": "Cửa hàng"
+    },
+    "errors": {
+      "required": "Vui lòng nhập trường này",
+      "tooLong": "Tối đa {max} ký tự",
+      "number": "Nhập số, tối đa 2 chữ số thập phân",
+      "positive": "Phải lớn hơn 0",
+      "tooBig": "Tối đa {max}",
+      "range": "Nhập số nguyên từ 1 đến {max}",
+      "tooMany": "Tối đa {max} dòng"
+    },
+    "toast": {
+      "invalid": "Vui lòng sửa các trường được đánh dấu"
+    },
+    "returns": {
+      "section": "Chính sách đổi trả",
+      "days": "Số ngày đổi trả",
+      "daysInfo": "Số nguyên 1–365: khách được đổi trả trong chừng này ngày. Hiện ở khối \"Vận chuyển & Đổi trả\" của trang sản phẩm.",
+      "description": "Mô tả ngắn",
+      "descriptionInfo": "Câu khách đọc ở trang sản phẩm. Nên khớp với trang Giao hàng & đổi trả.",
+      "conditions": "Điều kiện đổi trả",
+      "conditionsInfo": "Mỗi dòng một điều kiện, tối đa 10 dòng."
+    }
+  },
+  "types": {
+    "BANNER": {
+      "label": "Banner",
+      "description": "Hình và nội dung nổi bật ở các trang của cửa hàng."
+    },
+    "SHIPPING": {
+      "label": "Vận chuyển & đổi trả",
+      "description": "Phí vận chuyển, ngưỡng miễn phí và chính sách đổi trả hiển thị cho khách."
+    }
   }
 }

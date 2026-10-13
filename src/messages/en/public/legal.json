@@ -31,12 +31,12 @@
       },
       "orders": {
         "title": "Orders and confirmation",
-        "p1": "Product pages are an invitation to order, not a binding offer. An order is only accepted once our team has confirmed it to you by phone or email.",
-        "p2": "After confirmation, we will contact you with payment details and arrange delivery. We may decline or cancel an order if an item is out of stock, a price or description contains an obvious error, or we cannot verify your details."
+        "p1": "Product pages are an invitation to order, not a binding offer. An order is accepted once we confirm it: automatically as soon as your bank transfer succeeds, or by our team confirming it to you by phone or email.",
+        "p2": "You can pay by bank transfer with a VietQR code right after placing your order, or choose to pay later and we will contact you with payment details. We arrange delivery once the order is confirmed. We may decline or cancel an order if an item is out of stock, a price or description contains an obvious error, or we cannot verify your details."
       },
       "pricing": {
         "title": "Prices and availability",
-        "p1": "Prices are shown in the currency displayed on the site. Shipping costs, if any, are shown in your bag and confirmed when we contact you about your order.",
+        "p1": "Prices are shown in the currency displayed on the site. The shipping fee of each delivery option, if any, is shown in your order summary at checkout, before you place your order. When you pay by bank transfer, the amount to transfer is shown in VND on the VietQR code.",
         "p2": "We may change prices and product availability at any time. A price change never affects an order we have already confirmed."
       },
       "intellectualProperty": {
@@ -147,12 +147,11 @@
       },
       "shippingFees": {
         "title": "Shipping fees",
-        "p1": "Orders above the free-shipping threshold shown in your bag ship free with standard delivery. For other orders, the shipping fee is confirmed by our team when we contact you about your order, before you pay."
+        "p1": "Orders that reach the free-shipping threshold (when one is set) ship free with every delivery option. For other orders, the shipping fee of the option you choose is shown in your order summary at checkout, before you place your order."
       },
       "deliveryTime": {
         "title": "Delivery time",
-        "p1": "Orders are prepared after we confirm them with you. Delivery usually takes 2–5 business days in major cities and 4–8 business days elsewhere in Vietnam, counted from the day your order is handed to the carrier.",
-        "p2": "Delays can happen during holidays, bad weather or peak periods. We will let you know if your order is significantly delayed."
+        "p1": "Orders are prepared after we confirm them with you. The estimated delivery time of each delivery option is shown at checkout and can vary by area."
       },
       "receiving": {
         "title": "Receiving your order",
@@ -160,7 +159,7 @@
       },
       "returns": {
         "title": "Returns",
-        "p1": "You may return an item within 7 days of receiving it if it:",
+        "p1": "You may return an item within {returnWindow} of receiving it if it:",
         "l1": "is unworn, unwashed and undamaged;",
         "l2": "still has all its original tags, labels and packaging;",
         "l3": "is not a final-sale or made-to-order item.",
@@ -180,7 +179,7 @@
       },
       "faulty": {
         "title": "Faulty or incorrect items",
-        "p1": "If an item arrives faulty, damaged or not as ordered, contact us within 7 days of delivery with photos. We will repair, replace or refund it at no extra cost to you, including return shipping."
+        "p1": "If an item arrives faulty, damaged or not as ordered, contact us within {returnWindow} of delivery with photos. We will repair, replace or refund it at no extra cost to you, including return shipping."
       },
       "contact": {
         "title": "Contact us",

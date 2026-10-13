@@ -31,12 +31,12 @@
       },
       "orders": {
         "title": "Đặt hàng và xác nhận",
-        "p1": "Trang sản phẩm chỉ là lời mời đặt hàng, không phải đề nghị có tính ràng buộc. Đơn hàng chỉ được chấp nhận khi đội ngũ của chúng tôi xác nhận với bạn qua điện thoại hoặc email.",
-        "p2": "Sau khi xác nhận, chúng tôi sẽ liên hệ với bạn về thông tin thanh toán và sắp xếp giao hàng. Chúng tôi có thể từ chối hoặc huỷ đơn nếu sản phẩm hết hàng, giá hoặc mô tả có sai sót rõ ràng, hoặc không xác minh được thông tin của bạn."
+        "p1": "Trang sản phẩm chỉ là lời mời đặt hàng, không phải đề nghị có tính ràng buộc. Đơn hàng được chấp nhận khi chúng tôi xác nhận: tự động ngay khi thanh toán chuyển khoản thành công, hoặc do đội ngũ của chúng tôi xác nhận với bạn qua điện thoại hoặc email.",
+        "p2": "Bạn có thể thanh toán bằng chuyển khoản ngân hàng qua mã VietQR ngay sau khi đặt hàng, hoặc chọn thanh toán sau để chúng tôi liên hệ về thông tin thanh toán. Chúng tôi sắp xếp giao hàng sau khi xác nhận đơn. Chúng tôi có thể từ chối hoặc huỷ đơn nếu sản phẩm hết hàng, giá hoặc mô tả có sai sót rõ ràng, hoặc không xác minh được thông tin của bạn."
       },
       "pricing": {
         "title": "Giá và tình trạng hàng",
-        "p1": "Giá được hiển thị bằng đơn vị tiền tệ trên website. Phí vận chuyển (nếu có) được hiển thị trong giỏ hàng và xác nhận khi chúng tôi liên hệ về đơn hàng của bạn.",
+        "p1": "Giá được hiển thị bằng đơn vị tiền tệ trên website. Phí vận chuyển của từng hình thức giao hàng (nếu có) được hiển thị trong phần tóm tắt đơn hàng ở bước thanh toán, trước khi bạn đặt hàng. Khi chuyển khoản, số tiền cần chuyển được hiển thị bằng VND trên mã VietQR.",
         "p2": "Chúng tôi có thể thay đổi giá và tình trạng sản phẩm bất cứ lúc nào. Việc thay đổi giá không ảnh hưởng đến đơn hàng đã được xác nhận."
       },
       "intellectualProperty": {
@@ -147,12 +147,11 @@
       },
       "shippingFees": {
         "title": "Phí vận chuyển",
-        "p1": "Đơn hàng đạt mức miễn phí vận chuyển hiển thị trong giỏ hàng sẽ được giao tiêu chuẩn miễn phí. Với các đơn khác, phí vận chuyển được đội ngũ của chúng tôi xác nhận khi liên hệ về đơn hàng, trước khi bạn thanh toán."
+        "p1": "Đơn hàng đạt mức miễn phí vận chuyển (nếu có) được miễn phí vận chuyển với mọi hình thức giao hàng. Với các đơn khác, phí vận chuyển của hình thức bạn chọn được hiển thị trong phần tóm tắt đơn hàng ở bước thanh toán, trước khi bạn đặt hàng."
       },
       "deliveryTime": {
         "title": "Thời gian giao hàng",
-        "p1": "Đơn hàng được chuẩn bị sau khi chúng tôi xác nhận với bạn. Thời gian giao thường là 2–5 ngày làm việc tại các thành phố lớn và 4–8 ngày làm việc ở các khu vực khác tại Việt Nam, tính từ ngày đơn hàng được bàn giao cho đơn vị vận chuyển.",
-        "p2": "Việc giao hàng có thể chậm trong dịp lễ, thời tiết xấu hoặc cao điểm. Chúng tôi sẽ thông báo nếu đơn hàng của bạn bị chậm đáng kể."
+        "p1": "Đơn hàng được chuẩn bị sau khi chúng tôi xác nhận với bạn. Thời gian giao dự kiến của từng hình thức giao hàng được hiển thị ở bước thanh toán và có thể thay đổi theo khu vực."
       },
       "receiving": {
         "title": "Nhận hàng",
@@ -160,7 +159,7 @@
       },
       "returns": {
         "title": "Đổi trả",
-        "p1": "Bạn có thể trả sản phẩm trong vòng 7 ngày kể từ khi nhận hàng nếu sản phẩm:",
+        "p1": "Bạn có thể trả sản phẩm trong vòng {returnWindow} kể từ khi nhận hàng nếu sản phẩm:",
         "l1": "chưa qua sử dụng, chưa giặt và không bị hư hỏng;",
         "l2": "còn đầy đủ tem, nhãn mác và bao bì gốc;",
         "l3": "không thuộc diện giảm giá cuối mùa hoặc may đo theo yêu cầu.",
@@ -180,7 +179,7 @@
       },
       "faulty": {
         "title": "Sản phẩm lỗi hoặc giao sai",
-        "p1": "Nếu sản phẩm bị lỗi, hư hỏng hoặc không đúng đơn đặt, hãy liên hệ chúng tôi trong vòng 7 ngày kể từ khi nhận hàng, kèm hình ảnh. Chúng tôi sẽ sửa, đổi hoặc hoàn tiền mà bạn không phải trả thêm chi phí nào, kể cả phí vận chuyển trả hàng."
+        "p1": "Nếu sản phẩm bị lỗi, hư hỏng hoặc không đúng đơn đặt, hãy liên hệ chúng tôi trong vòng {returnWindow} kể từ khi nhận hàng, kèm hình ảnh. Chúng tôi sẽ sửa, đổi hoặc hoàn tiền mà bạn không phải trả thêm chi phí nào, kể cả phí vận chuyển trả hàng."
       },
       "contact": {
         "title": "Liên hệ",

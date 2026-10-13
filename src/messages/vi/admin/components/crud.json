@@ -16,6 +16,10 @@
     "totalAsc": "Tổng tiền ↑",
     "totalDesc": "Tổng tiền ↓",
     "sizeAsc": "Nhỏ nhất trước",
-    "sizeDesc": "Lớn nhất trước"
+    "sizeDesc": "Lớn nhất trước",
+    "amountDesc": "Số tiền ↓",
+    "amountAsc": "Số tiền ↑",
+    "expiryDesc": "Hết hạn (muộn nhất)",
+    "expiryAsc": "Hết hạn (sớm nhất)"
   }
 }

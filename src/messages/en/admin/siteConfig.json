@@ -20,13 +20,19 @@
     "NAV_MENU_BANNERS": {
       "label": "Menu — Featured Banner",
       "description": "Menu banners."
+    },
+    "SHIPPING_CONFIG": {
+      "label": "Shipping — Fees",
+      "description": "Shipping fees and the free-shipping threshold."
     }
   },
   "card": {
     "configured": "Configured — {count, plural, one {# banner} other {# banners}}",
     "empty": "Empty",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "shippingConfigured": "Configured",
+    "shippingDefault": "Using default values"
   },
   "form": {
     "banners": "Banners ({count})",
@@ -67,6 +73,68 @@
   },
   "confirmDelete": {
     "title": "Delete config",
-    "message": "Delete this config? The page will fall back to its default content."
+    "message": "Delete this config? The page will fall back to its default content.",
+    "shippingMessage": "Delete this config? Shipping fees and the free-shipping threshold go back to the system defaults."
+  },
+  "shipping": {
+    "loading": "Loading…",
+    "loadFailed": "Couldn't load the current shipping fees. Please try again.",
+    "notice": "Changes apply to orders created after saving. Existing orders keep their fee. Amounts use the same currency as product prices.",
+    "free": {
+      "section": "Free shipping",
+      "threshold": "Free shipping from",
+      "thresholdInfo": "Orders with a subtotal at or above this amount ship free, for every method. Leave empty to turn free shipping off.",
+      "placeholder": "Empty = no free shipping"
+    },
+    "methods": {
+      "standard": "Standard",
+      "express": "Express",
+      "store-pickup": "Store pickup"
+    },
+    "idReadonly": "Method ID — cannot be changed",
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "estimatedDays": "Delivery time",
+      "price": "Fee",
+      "priceInfo": "0 or more, up to 2 decimals. 0 = free.",
+      "icon": "Icon"
+    },
+    "icons": {
+      "truck": "Truck",
+      "express": "Express",
+      "store": "Store"
+    },
+    "errors": {
+      "required": "This field is required",
+      "tooLong": "At most {max} characters",
+      "number": "Enter a number with up to 2 decimals",
+      "positive": "Must be greater than 0",
+      "tooBig": "Must be at most {max}",
+      "range": "Enter a whole number from 1 to {max}",
+      "tooMany": "At most {max} lines"
+    },
+    "toast": {
+      "invalid": "Please fix the highlighted fields"
+    },
+    "returns": {
+      "section": "Return policy",
+      "days": "Return window (days)",
+      "daysInfo": "A whole number from 1 to 365: customers can return within this many days. Shown in the \"Shipping & Returns\" block of the product page.",
+      "description": "Short description",
+      "descriptionInfo": "The sentence customers read on the product page. Keep it in line with the Shipping & Returns page.",
+      "conditions": "Return conditions",
+      "conditionsInfo": "One condition per line, up to 10 lines."
+    }
+  },
+  "types": {
+    "BANNER": {
+      "label": "Banners",
+      "description": "Featured images and copy on the storefront pages."
+    },
+    "SHIPPING": {
+      "label": "Shipping & returns",
+      "description": "Shipping fees, the free-shipping threshold and the return policy shown to customers."
+    }
   }
 }

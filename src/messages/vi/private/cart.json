@@ -32,20 +32,6 @@
     "description": "Hãy khám phá các bộ sưu tập và thêm những món đồ bạn yêu thích",
     "browse": "Xem cửa hàng"
   },
-  "summary": {
-    "title": "Tóm tắt đơn hàng",
-    "selected": "Đã chọn {count} sản phẩm",
-    "unlocked": "🎉 Bạn đã được miễn phí vận chuyển!",
-    "remaining": "Mua thêm {amount} để được miễn phí vận chuyển",
-    "subtotal": "Tạm tính",
-    "shipping": "Vận chuyển",
-    "free": "Miễn phí",
-    "atCheckout": "Tính khi thanh toán",
-    "total": "Tổng cộng",
-    "checkout": "Tiến hành thanh toán",
-    "freeNote": "Miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên {amount}.",
-    "selectToCheckout": "Hãy chọn ít nhất một sản phẩm để thanh toán."
-  },
   "bulk": {
     "selectAll": "Chọn tất cả",
     "selectedCount": "Đã chọn {selected}/{total}",
@@ -61,5 +47,10 @@
     "removed": "Đã bỏ {count} sản phẩm khỏi giỏ hàng",
     "addedToWishlist": "Đã thêm {count} sản phẩm vào danh sách yêu thích",
     "alreadyInWishlist": "Các sản phẩm này đã có trong danh sách yêu thích"
+  },
+  "checkout": {
+    "subtotal": "Tạm tính ({count} sản phẩm)",
+    "action": "Tiến hành thanh toán",
+    "selectToCheckout": "Hãy chọn ít nhất một sản phẩm để thanh toán."
   }
 }

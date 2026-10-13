@@ -21,5 +21,10 @@
     "title": "Nhập mật khẩu để tiếp tục",
     "placeholder": "Mật khẩu",
     "error": "Mật khẩu không đúng. Vui lòng thử lại."
+  },
+  "copy": {
+    "aria": "Sao chép {field}",
+    "copied": "Đã sao chép",
+    "failed": "Không thể sao chép. Vui lòng sao chép thủ công."
   }
 }

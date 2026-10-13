@@ -8,64 +8,117 @@
     "description": "Add items to your bag and select the ones you want to order",
     "browse": "Browse Shop"
   },
-  "back": {
-    "editAddress": "Edit Address",
-    "toBag": "Back to Bag"
+  "page": {
+    "title": "Checkout",
+    "back": "Back to bag"
   },
-  "steps": {
-    "address": "Address",
-    "review": "Review"
+  "delivery": {
+    "title": "Shipping method",
+    "free": "Free",
+    "loading": "Loading shipping methods…",
+    "loadFailed": "Couldn't load the shipping methods. Please reload the page."
   },
-  "address": {
-    "title": "Shipping Address",
-    "contactSection": "Contact Information",
-    "deliverySection": "Delivery Address",
-    "fullName": "Full Name",
-    "phone": "Phone Number",
-    "street": "Street Address",
-    "line2": "Apt / Suite / Floor",
-    "city": "City / District",
-    "province": "Province",
-    "postalCode": "Postal Code",
-    "country": "Country",
-    "notes": "Delivery Notes",
-    "placeholders": {
-      "fullName": "Enter your full name",
-      "phone": "0123 456 789",
-      "street": "House number, street name...",
-      "line2": "Apartment, suite, floor, building...",
-      "city": "City or district",
-      "province": "Province or state",
-      "postalCode": "Postal / ZIP code",
-      "country": "Country",
-      "notes": "Gate code, landmark, special instructions..."
-    },
+  "form": {
+    "title": "Shipping information",
+    "pickupTitle": "Who collects the order",
     "errors": {
       "fullName": "Full name is required",
       "phone": "Phone number is required",
-      "street": "Street address is required",
+      "addressLine1": "Street address is required",
       "city": "City is required"
     },
-    "continue": "Continue to Review"
+    "moreDetails": "Add apartment, postal code, note",
+    "moreNote": "Add a note"
   },
-  "review": {
-    "title": "Review Your Order",
-    "shippingTo": "Shipping To",
-    "note": "Note: {note}",
-    "items": "Items ({count})",
-    "itemMeta": "{size} · {color} · Qty {quantity}",
+  "method": {
+    "title": "Payment method",
+    "options": {
+      "vietqr": {
+        "title": "Bank transfer (VietQR)"
+      },
+      "later": {
+        "title": "Arrange payment later"
+      }
+    }
+  },
+  "note": {
+    "title": "Order note",
+    "placeholder": "Gate code, landmark, special instructions..."
+  },
+  "summary": {
+    "title": "Your order",
+    "items": "{count, plural, one {# item} other {# items}}",
+    "itemMeta": "{size} · {color}",
+    "quantity": "Qty {quantity}",
+    "subtotal": "Subtotal",
+    "shipping": {
+      "label": "Shipping",
+      "free": "Free",
+      "unlocked": "🎉 You've unlocked free shipping!",
+      "remaining": "Spend {amount} more for free shipping",
+      "freeNote": "Free shipping on orders of {amount} or more.",
+      "unavailable": "Couldn't load the shipping fee"
+    },
     "total": "Total",
-    "paymentNote": "Payment will be arranged after order confirmation. Our team will contact you via phone or email with payment details.",
-    "placing": "Placing Order...",
     "place": "Place Order",
-    "legalNote": "By placing your order, you agree to our <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy> and <shipping>Shipping & Returns</shipping> policy."
+    "placeAndPay": "Place Order & Pay",
+    "placing": "Placing Order...",
+    "legalNote": "By placing your order, you agree to our <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy> and <shipping>Shipping & Returns</shipping> policy.",
+    "showItems": "Show items",
+    "transfer": {
+      "label": "Amount to transfer",
+      "rate": "Paid in VND at the rate {unit} = {rate}."
+    }
   },
-  "success": {
-    "title": "Order Placed!",
-    "description": "Thank you for your order. We'll contact you shortly to confirm payment and delivery details.",
+  "payment": {
+    "title": "Scan to pay",
+    "loading": "Loading payment",
     "orderId": "Order ID: <strong>{id}</strong>",
-    "viewOrders": "View My Orders",
-    "continue": "Continue Shopping"
+    "waiting": "Waiting for payment",
+    "qrAlt": "VietQR code to pay for your order",
+    "amount": "Amount to transfer",
+    "bank": "Bank",
+    "accountName": "Account holder",
+    "accountNumber": "Account number",
+    "transferContent": "Transfer content",
+    "guide": {
+      "step1": "Open your banking app and choose Scan QR.",
+      "step2": "Scan the code above, or enter the account number and transfer content exactly as shown.",
+      "step3": "Confirm the transfer. This page updates by itself once your payment is received.",
+      "mobileHint": "On a phone? Take a screenshot of the QR code and choose it from your banking app's gallery."
+    },
+    "countdown": {
+      "remaining": "Code valid for {time}",
+      "ended": "This code has run out of time. Checking your payment…"
+    },
+    "connectionLost": "Can't reach the server. Retrying…",
+    "viewOrder": "View order",
+    "continue": "Continue shopping",
+    "paid": {
+      "title": "Payment successful!",
+      "description": "We have received your payment. Thank you for your order.",
+      "viewOrder": "View order details"
+    },
+    "expired": {
+      "title": "Payment session expired",
+      "description": "This QR code is no longer valid. Don't transfer money to it. Create a new code to pay.",
+      "recreate": "Create a new QR code",
+      "recreating": "Creating…",
+      "oldCodeHint": "If you already transferred money with this content, please contact the store with the code above and we will help."
+    },
+    "cancelled": {
+      "title": "Payment cancelled",
+      "description": "This order can no longer be paid by QR code."
+    },
+    "error": {
+      "title": "Can't load your payment",
+      "description": "Something went wrong while loading your payment. Please try again.",
+      "retry": "Try again"
+    },
+    "toast": {
+      "recreateFailed": "Couldn't create a new QR code"
+    },
+    "previousCodes": "Earlier code, now expired: {codes}. If you already transferred money with it, please contact the store with the code and we will help."
   },
   "toast": {
     "placed": "Order placed successfully!",

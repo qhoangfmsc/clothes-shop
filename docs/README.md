@@ -36,6 +36,7 @@ Chỉ ghi những gì **đã có trong code**. Không viết kế hoạch, chu�
 | Categories | `/admin/categories` | [admin/categories.md](admin/categories.md) |
 | Collections | `/admin/collections` | [admin/collections.md](admin/collections.md) |
 | Orders | `/admin/orders` | [admin/orders.md](admin/orders.md) |
+| Payments | `/admin/payments` | [admin/payments.md](admin/payments.md) |
 | Users | `/admin/users` | [admin/users.md](admin/users.md) |
 | Media | `/admin/media` | [admin/media.md](admin/media.md) |
 | Site config | `/admin/site-config` | [admin/site-config.md](admin/site-config.md) |

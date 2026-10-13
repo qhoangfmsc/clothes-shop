@@ -16,6 +16,10 @@
     "completed": "Completed",
     "cancelled": "Cancelled"
   },
+  "orderPaymentStatus": {
+    "unpaid": "Unpaid",
+    "paid": "Paid"
+  },
   "addressField": {
     "fullName": "Full name",
     "phone": "Phone",

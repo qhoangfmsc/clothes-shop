@@ -8,64 +8,117 @@
     "description": "Hãy thêm sản phẩm vào giỏ hàng và chọn những sản phẩm bạn muốn đặt",
     "browse": "Xem cửa hàng"
   },
-  "back": {
-    "editAddress": "Sửa địa chỉ",
-    "toBag": "Quay lại giỏ hàng"
+  "page": {
+    "title": "Thanh toán",
+    "back": "Quay lại giỏ hàng"
   },
-  "steps": {
-    "address": "Địa chỉ",
-    "review": "Xem lại"
+  "delivery": {
+    "title": "Phương thức vận chuyển",
+    "free": "Miễn phí",
+    "loading": "Đang tải các phương thức vận chuyển…",
+    "loadFailed": "Không tải được các phương thức vận chuyển. Vui lòng tải lại trang."
   },
-  "address": {
-    "title": "Địa chỉ giao hàng",
-    "contactSection": "Thông tin liên hệ",
-    "deliverySection": "Địa chỉ nhận hàng",
-    "fullName": "Họ và tên",
-    "phone": "Số điện thoại",
-    "street": "Địa chỉ",
-    "line2": "Căn hộ / Phòng / Tầng",
-    "city": "Thành phố / Quận",
-    "province": "Tỉnh / Thành",
-    "postalCode": "Mã bưu chính",
-    "country": "Quốc gia",
-    "notes": "Ghi chú giao hàng",
-    "placeholders": {
-      "fullName": "Nhập họ và tên của bạn",
-      "phone": "0123 456 789",
-      "street": "Số nhà, tên đường...",
-      "line2": "Căn hộ, phòng, tầng, tòa nhà...",
-      "city": "Thành phố hoặc quận",
-      "province": "Tỉnh hoặc bang",
-      "postalCode": "Mã bưu chính / ZIP",
-      "country": "Quốc gia",
-      "notes": "Mã cổng, địa điểm nhận biết, hướng dẫn đặc biệt..."
-    },
+  "form": {
+    "title": "Thông tin giao hàng",
+    "pickupTitle": "Người nhận tại cửa hàng",
     "errors": {
       "fullName": "Vui lòng nhập họ và tên",
       "phone": "Vui lòng nhập số điện thoại",
-      "street": "Vui lòng nhập địa chỉ",
+      "addressLine1": "Vui lòng nhập địa chỉ",
       "city": "Vui lòng nhập thành phố"
     },
-    "continue": "Tiếp tục xem lại"
+    "moreDetails": "Thêm căn hộ, mã bưu chính, ghi chú",
+    "moreNote": "Thêm ghi chú"
   },
-  "review": {
-    "title": "Xem lại đơn hàng",
-    "shippingTo": "Giao đến",
-    "note": "Ghi chú: {note}",
-    "items": "Sản phẩm ({count})",
-    "itemMeta": "{size} · {color} · SL {quantity}",
-    "total": "Tổng cộng",
-    "paymentNote": "Thanh toán sẽ được sắp xếp sau khi xác nhận đơn hàng. Đội ngũ của chúng tôi sẽ liên hệ qua điện thoại hoặc email với thông tin thanh toán.",
-    "placing": "Đang đặt hàng...",
+  "method": {
+    "title": "Phương thức thanh toán",
+    "options": {
+      "vietqr": {
+        "title": "Chuyển khoản ngân hàng (VietQR)"
+      },
+      "later": {
+        "title": "Thanh toán sau"
+      }
+    }
+  },
+  "note": {
+    "title": "Ghi chú đơn hàng",
+    "placeholder": "Mã cổng, địa điểm nhận biết, hướng dẫn đặc biệt..."
+  },
+  "summary": {
+    "title": "Đơn hàng của bạn",
+    "items": "{count, plural, other {# sản phẩm}}",
+    "itemMeta": "{size} · {color}",
+    "quantity": "SL {quantity}",
+    "subtotal": "Tạm tính",
+    "shipping": {
+      "label": "Vận chuyển",
+      "free": "Miễn phí",
+      "unlocked": "🎉 Bạn đã được miễn phí vận chuyển!",
+      "remaining": "Mua thêm {amount} để được miễn phí vận chuyển",
+      "freeNote": "Miễn phí vận chuyển cho đơn hàng từ {amount} trở lên.",
+      "unavailable": "Không tải được phí vận chuyển"
+    },
+    "total": "Tổng thanh toán",
     "place": "Đặt hàng",
-    "legalNote": "Khi đặt hàng, bạn đồng ý với <terms>Điều khoản sử dụng</terms>, <privacy>Chính sách bảo mật</privacy> và chính sách <shipping>Giao hàng & đổi trả</shipping> của chúng tôi."
+    "placeAndPay": "Đặt hàng & thanh toán",
+    "placing": "Đang đặt hàng...",
+    "legalNote": "Khi đặt hàng, bạn đồng ý với <terms>Điều khoản sử dụng</terms>, <privacy>Chính sách bảo mật</privacy> và chính sách <shipping>Giao hàng & đổi trả</shipping> của chúng tôi.",
+    "showItems": "Xem sản phẩm",
+    "transfer": {
+      "label": "Số tiền chuyển khoản",
+      "rate": "Thanh toán bằng VND theo tỷ giá {unit} = {rate}."
+    }
   },
-  "success": {
-    "title": "Đặt hàng thành công!",
-    "description": "Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ sớm liên hệ để xác nhận thanh toán và thông tin giao hàng.",
+  "payment": {
+    "title": "Quét mã để thanh toán",
+    "loading": "Đang tải thông tin thanh toán",
     "orderId": "Mã đơn hàng: <strong>{id}</strong>",
-    "viewOrders": "Xem đơn hàng của tôi",
-    "continue": "Tiếp tục mua sắm"
+    "waiting": "Đang chờ thanh toán",
+    "qrAlt": "Mã VietQR thanh toán đơn hàng",
+    "amount": "Số tiền cần chuyển",
+    "bank": "Ngân hàng",
+    "accountName": "Chủ tài khoản",
+    "accountNumber": "Số tài khoản",
+    "transferContent": "Nội dung chuyển khoản",
+    "guide": {
+      "step1": "Mở ứng dụng ngân hàng và chọn Quét mã QR.",
+      "step2": "Quét mã bên trên, hoặc nhập số tài khoản và nội dung chuyển khoản đúng như hiển thị.",
+      "step3": "Xác nhận chuyển khoản. Trang này sẽ tự cập nhật ngay khi chúng tôi nhận được tiền.",
+      "mobileHint": "Đang dùng điện thoại? Hãy chụp màn hình mã QR rồi chọn ảnh đó từ thư viện trong ứng dụng ngân hàng."
+    },
+    "countdown": {
+      "remaining": "Mã còn hiệu lực {time}",
+      "ended": "Mã đã hết thời gian. Đang kiểm tra thanh toán của bạn…"
+    },
+    "connectionLost": "Không kết nối được máy chủ. Đang thử lại…",
+    "viewOrder": "Xem đơn hàng",
+    "continue": "Tiếp tục mua sắm",
+    "paid": {
+      "title": "Thanh toán thành công!",
+      "description": "Chúng tôi đã nhận được thanh toán của bạn. Cảm ơn bạn đã đặt hàng.",
+      "viewOrder": "Xem chi tiết đơn hàng"
+    },
+    "expired": {
+      "title": "Phiên thanh toán đã hết hạn",
+      "description": "Mã QR này không còn hiệu lực. Đừng chuyển tiền vào mã này. Hãy tạo mã mới để thanh toán.",
+      "recreate": "Tạo mã QR mới",
+      "recreating": "Đang tạo…",
+      "oldCodeHint": "Nếu bạn đã chuyển khoản với nội dung này, vui lòng liên hệ cửa hàng kèm mã trên để được hỗ trợ."
+    },
+    "cancelled": {
+      "title": "Thanh toán đã bị hủy",
+      "description": "Đơn hàng này không thể thanh toán bằng mã QR nữa."
+    },
+    "error": {
+      "title": "Không thể tải thông tin thanh toán",
+      "description": "Đã xảy ra lỗi khi tải thông tin thanh toán. Vui lòng thử lại.",
+      "retry": "Thử lại"
+    },
+    "toast": {
+      "recreateFailed": "Không thể tạo mã QR mới"
+    },
+    "previousCodes": "Mã trước đó đã hết hạn: {codes}. Nếu bạn đã chuyển khoản với mã này, vui lòng liên hệ cửa hàng kèm mã để được hỗ trợ."
   },
   "toast": {
     "placed": "Đặt hàng thành công!",

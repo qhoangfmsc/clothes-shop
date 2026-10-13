@@ -1,6 +1,6 @@
 # UI kit (component & hook dùng chung)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
 > **Code:** `src/app/[locale]/_components/` · `src/hooks/` · `src/lib/product-badge.ts` · `src/lib/product-purchase.ts`
 > **Quy tắc dùng:** `.agent/rules/components.md`
 
@@ -26,7 +26,7 @@ Bộ khối giao diện và hook được ≥ 2 module dùng chung: bảng dữ 
 | Ảnh | `ImageUrlField`, `ImageListField`, `ImagePreviewLightbox` | cùng tên `.tsx` |
 | Carousel | `Carousel`, `CarouselDots`, `CarouselArrow`, `useAutoAdvance` | `Carousel.tsx`, `CarouselControls.tsx`, `src/hooks/use-auto-advance.ts` |
 | Banner | `ResponsiveBannerImage`, `BannerFade`, `useBannerRotation` | cùng tên |
-| Khác | `Checkbox`, `JsonLd`, `SocialIcons`, `Logo`, `OrderDetailPanel`, `ProductBagButton` | cùng tên |
+| Khác | `Checkbox`, `JsonLd`, `SocialIcons`, `Logo`, `OrderDetailPanel`, `OrderPaymentBadge`, `CopyButton`, `ProductBagButton` | cùng tên |
 | Hook | `useSortOptions`, `useDebounce`, `useBreakpoint`, `useAutoAdvance`, `useBannerRotation`, `useAuthAction` | `src/hooks/` |
 | Helper sản phẩm | `getPurchaseMode`, `isPurchasable`, `buildOrderInquiryHref`, style badge | `src/lib/product-purchase.ts`, `product-badge.ts` |
 
@@ -81,7 +81,9 @@ Quy ước: sort theo BE (`field` / `-field`); không thêm hành vi riêng củ
 - `Checkbox({ checked, onCheckedChange, indeterminate? })`: input thật được phủ trong suốt lên ô vẽ; phải có `<label>` bọc hoặc `aria-label`.
 - `JsonLd({ data })`: nhúng `<script type="application/ld+json">`.
 - `SocialIcons({ linkClassName, iconSize, className })`: dựng từ `CONTACT_LINKS` (`src/lib/socials.tsx`): icon Email (`mailto:contact@doovan.vn`, mở cùng tab) rồi tới `SOCIALS` (Instagram `doo_doofairies`, Facebook `doovan.vn`, mở tab mới). `SOCIALS` giữ riêng vì còn dùng cho `sameAs` của JSON-LD.
-- `OrderDetailPanel({ order, loading, onClose })`: nội dung chi tiết đơn (trạng thái, ngày, sản phẩm, vận chuyển + địa chỉ, thanh toán, ghi chú). Dùng trong Orders và Users. Chuỗi: `admin.components.orderDetailPanel`.
+- `OrderDetailPanel({ order, loading, onClose, paymentTab? })`: nội dung chi tiết đơn (trạng thái, trạng thái thanh toán, ngày, sản phẩm, vận chuyển + địa chỉ, thanh toán, ghi chú). Khi truyền `paymentTab` (nội dung tab "Thanh toán") panel hiện thanh tab Chi tiết / Thanh toán (`FormTabs`); không truyền thì không có tab. Dùng trong Orders (có tab, khi user có `PAYMENT_ADMIN_VIEW`) và Users (không tab). Chuỗi: `admin.components.orderDetailPanel`.
+- `CopyButton({ value, label })`: icon sao chép nhỏ (ô 28 px, vùng bấm ≈ 44 px): ghi `value` vào clipboard, toast `shared.feedback.copy.copied` / `failed`, đổi sang dấu tick 1,5 s; `label` chỉ dùng cho `aria-label`/`title` ("Sao chép <label>"). Dùng ở checkout (`DetailRow`) và admin (mã chuyển khoản, mã giao dịch).
+- `OrderPaymentBadge({ status })`: pill "Chưa thanh toán" / "Đã thanh toán" của đơn (`unpaid` / `paid`), nhãn qua `useOrderPaymentStatusLabel` (`common.orderPaymentStatus`); dùng ở bảng đơn, panel đơn và bảng đối soát.
 - `ProductBagButton({ product, variant: icon|text, onAddToBag, className, enabledClassName, iconSize })`: nút giỏ trên thẻ sản phẩm theo badge — `sold_out` khóa; `custom_order` đổi thành nút liên hệ `/contact?product=<id>`; còn lại gọi `onAddToBag`. Chuỗi: `shared.cart.productAction`.
 - `useSortOptions(defs)`: đổi `{ value, key }` thành `{ value, label }` với nhãn ở `admin.components.crud.sort`.
 - `useBreakpoint()` (`isMobile < 640`, `isTablet 640–1023`, `isDesktop ≥ 1024`) trong `useMediaQuery.ts`.

@@ -1,43 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { ArrowLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
-import Image from "next/image";
-import { Package, ArrowLeft, ShoppingBag, ChevronRight } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
+import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
+import type { Order } from "./_common/types";
 import OrderStatusBadge from "./_components/OrderStatusBadge";
+import OrderThumb from "./_components/OrderThumb";
+import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-interface Order {
-  id: string;
-  status: string;
-  subtotal: number;
-  shippingFee: number;
-  total: number;
-  shippingMethod: string;
-  shippingAddress: Record<string, string>;
-  note: string;
-  createdAt: string;
-  updatedAt: string;
-  items: Array<{
-    id: string;
-    productId: string | null;
-    productName: string;
-    productImage: string;
-    quantity: number;
-    price: number;
-    size: string;
-    color: string;
-    createdAt: string;
-  }>;
-}
+/** Lines shown on a card; the rest collapse into "+n more" */
+const PREVIEW_ITEMS = 2;
+
+const SHELL_CLASS = "min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]";
+const WRAP_CLASS = "max-w-[720px] mx-auto px-4 sm:px-6";
+const SKELETON_CLASS =
+  "h-[180px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none";
 
 export default function OrdersContent() {
   const t = useTranslations("private.orders.list");
@@ -48,515 +35,176 @@ export default function OrdersContent() {
   const { apiFetch } = useApiAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
 
-  /* Fetch orders on mount */
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const fetchOrders = async () => {
+  /* The BE lists 25 orders per page: the first page loads on mount, "load more" appends the next one */
+  const loadPage = useCallback(
+    async (nextPage: number) => {
       try {
-        const res = await apiFetch<{ data: Order[] }>("/api/orders");
-        setOrders(res.data ?? []);
+        const qs = buildListQuery({ page: nextPage, limit: LIST_DEFAULT_LIMIT, sort: "-createdAt" });
+        const res = await apiFetch<{ data: Order[]; total: number }>(`/api/orders?${qs}`);
+        setOrders((prev) => (nextPage === 1 ? (res.data ?? []) : [...prev, ...(res.data ?? [])]));
+        setTotal(res.total ?? 0);
+        setPage(nextPage);
       } catch (err) {
         toast.error(toErrorMessage(err, t("toast.loadFailed")));
-      } finally {
-        setIsLoading(false);
       }
-    };
+    },
+    [apiFetch, t, toast, toErrorMessage]
+  );
 
-    fetchOrders();
-  }, [isAuthenticated, apiFetch, t, toast, toErrorMessage]);
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    loadPage(1).finally(() => setIsLoading(false));
+  }, [isAuthenticated, loadPage]);
 
-  /* Auth loading */
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    await loadPage(page + 1);
+    setIsLoadingMore(false);
+  };
+
   if (authLoading) {
     return (
-      <main className="orders-page">
-        <div className="orders-page__inner">
-          <div className="orders-skeleton__header" />
-          <div className="orders-skeleton__card" />
-          <div className="orders-skeleton__card" />
+      <main className={SHELL_CLASS}>
+        <div className={`${WRAP_CLASS} flex flex-col gap-4`}>
+          <div className={SKELETON_CLASS} />
+          <div className={SKELETON_CLASS} />
         </div>
       </main>
     );
   }
 
-  /* Not authenticated */
   if (!isAuthenticated) {
     return (
-      <main className="orders-page">
+      <main className={SHELL_CLASS}>
         <UnauthenticatedState />
       </main>
     );
   }
 
   return (
-    <main className="orders-page">
-      <div className="orders-page__inner">
-        {/* Page header */}
+    <main className={SHELL_CLASS}>
+      <div className={`${WRAP_CLASS} flex flex-col gap-6`}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [...ease] }}
-          className="orders-page__header"
+          transition={{ duration: 0.4, ease: [...ease] }}
+          className="flex flex-col gap-3"
         >
-          <Link href="/account" className="orders-page__back">
+          <Link
+            href="/account"
+            className="inline-flex items-center gap-2 min-h-11 self-start font-primary text-xs text-[var(--text-muted)] tracking-[0.08em] uppercase no-underline font-medium transition-colors duration-150 hover:text-[var(--text-primary)] motion-reduce:transition-none"
+          >
             <ArrowLeft size={16} />
             {t("back")}
           </Link>
-
-          <h1 className="orders-page__title">
-            <Package size={24} style={{ color: "var(--accent-blue)" }} />
+          <h1 className="m-0 font-display font-normal text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
             {t("title")}
           </h1>
         </motion.div>
 
-        {/* Loading */}
         {isLoading ? (
-          <div>
-            <div className="orders-skeleton__card" />
-            <div className="orders-skeleton__card" />
+          <div className="flex flex-col gap-4">
+            <div className={SKELETON_CLASS} />
+            <div className={SKELETON_CLASS} />
           </div>
         ) : orders.length === 0 ? (
-          /* Empty state */
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [...ease], delay: 0.1 }}
-            className="orders-empty"
-          >
-            <div className="orders-empty__icon-wrap">
-              <ShoppingBag size={40} style={{ color: "var(--text-disabled)" }} />
-            </div>
-            <h2 className="orders-empty__title">{t("empty.title")}</h2>
-            <p className="orders-empty__text">
+          <div className="flex flex-col items-center gap-4 py-16 px-6 text-center bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)]">
+            <ShoppingBag size={40} style={{ color: "var(--text-disabled)" }} />
+            <h2 className="m-0 font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em]">
+              {t("empty.title")}
+            </h2>
+            <p className="m-0 max-w-[380px] font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
               {t("empty.description")}
             </p>
-            <Link href="/shop" className="orders-empty__cta">
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 min-h-11 py-3 px-6 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase no-underline shadow-[var(--shadow-gold-sm)] hover:opacity-90"
+            >
               <ShoppingBag size={16} />
               {t("empty.cta")}
             </Link>
-
-            <div className="orders-empty__features">
-              <div className="orders-empty__feature">
-                <span
-                  className="orders-empty__feature-dot"
-                  style={{ background: "var(--accent-blue)" }}
-                />
-                {t("empty.features.tracking")}
-              </div>
-              <div className="orders-empty__feature">
-                <span
-                  className="orders-empty__feature-dot"
-                  style={{ background: "var(--accent-sage)" }}
-                />
-                {t("empty.features.updates")}
-              </div>
-              <div className="orders-empty__feature">
-                <span
-                  className="orders-empty__feature-dot"
-                  style={{ background: "var(--accent-rose)" }}
-                />
-                {t("empty.features.returns")}
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          /* Orders list */
-          <div className="orders-list">
-            {orders.map((order, idx) => (
-              <motion.div
-                key={order.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: [...ease], delay: Math.min(idx * 0.05, 0.3) }}
-                className="order-card"
-              >
-                {/* ── Top Row: Date · Status · Total ── */}
-                <div className="order-card__top">
-                  <div className="order-card__top-left">
-                    <span className="order-card__date">{format.dateTime(new Date(order.createdAt), "short")}</span>
-                    <OrderStatusBadge status={order.status} />
-                  </div>
-                  <span className="order-card__total">{format.number(Number(order.total), "price")}</span>
-                </div>
-
-                {/* ── Middle Row: Product Preview ── */}
-                {order.items?.length > 0 &&
-                  (() => {
-                    const first = order.items[0];
-                    return (
-                      <div className="order-card__product">
-                        <div className="order-card__product-img">
-                          {first.productImage ? (
-                            <Image
-                              src={first.productImage}
-                              alt={first.productName}
-                              fill
-                              sizes="56px"
-                              style={{ objectFit: "cover" }}
-                            />
-                          ) : (
-                            <Package size={20} style={{ color: "var(--text-disabled)" }} />
-                          )}
-                        </div>
-                        <div className="order-card__product-info">
-                          <span className="order-card__product-name">{first.productName}</span>
-                          <span className="order-card__product-meta">
-                            {[first.size, first.color].filter(Boolean).join(" · ")}
-                            {first.quantity > 1 && ` · ${t("card.quantity", { quantity: first.quantity })}`}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })()}
-
-                {/* ── Extra items indicator ── */}
-                {order.items?.length > 1 && (
-                  <span className="order-card__more">
-                    {t("card.more", { count: order.items.length - 1 })}
-                  </span>
-                )}
-
-                {/* ── Bottom Row: Order ID · Action ── */}
-                <div className="order-card__footer">
-                  <span className="order-card__id">{t("card.orderNumber", { id: order.id })}</span>
-                  <Link href={`/orders/${order.id}`} className="order-card__view">
-                    {t("card.viewDetails")} <ChevronRight size={14} />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
           </div>
+        ) : (
+          <ul className="m-0 p-0 list-none flex flex-col gap-4">
+            {orders.map((order, idx) => {
+              const lines = order.items ?? [];
+              const preview = lines.slice(0, PREVIEW_ITEMS);
+              const hidden = lines.length - preview.length;
+              return (
+                <motion.li
+                  key={order.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: [...ease], delay: Math.min(idx * 0.05, 0.3) }}
+                >
+                  <Link
+                    href={`/orders/${order.id}`}
+                    className="flex flex-col gap-4 p-4 sm:p-5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)] no-underline transition-colors duration-150 hover:border-[var(--border-light)] motion-reduce:transition-none"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="flex flex-wrap items-center gap-1.5">
+                        <OrderStatusBadge status={order.status} />
+                        <OrderPaymentBadge status={order.paymentStatus} />
+                      </span>
+                      <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
+                        {format.dateTime(new Date(order.createdAt), "short")}
+                      </span>
+                    </div>
+
+                    <ul className="m-0 p-0 list-none flex flex-col gap-3">
+                      {preview.map((item) => (
+                        <li key={item.id} className="flex items-center gap-3">
+                          <OrderThumb src={item.productImage} alt={item.productName} />
+                          <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                            <span className="font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em] line-clamp-2">
+                              {item.productName}
+                            </span>
+                            <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
+                              {[item.size, item.color].filter(Boolean).join(" · ")}
+                              {item.quantity > 1 && ` · ${t("card.quantity", { quantity: item.quantity })}`}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    {hidden > 0 && (
+                      <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
+                        {t("card.more", { count: hidden })}
+                      </span>
+                    )}
+
+                    <div className="flex items-end justify-between gap-3 pt-3 border-t border-[var(--border-subtle)]">
+                      <span className="font-primary text-[11px] text-[var(--text-disabled)] tracking-[0.02em] break-all">
+                        {t("card.orderNumber", { id: order.id })}
+                      </span>
+                      <span className="flex items-center gap-1 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
+                        <span className="text-xs text-[var(--text-muted)] font-normal">{t("card.total")}</span>
+                        {format.number(Number(order.total), "price")}
+                        <ChevronRight size={16} className="text-[var(--text-muted)]" />
+                      </span>
+                    </div>
+                  </Link>
+                </motion.li>
+              );
+            })}
+          </ul>
+        )}
+
+        {!isLoading && orders.length < total && (
+          <button
+            type="button"
+            onClick={handleLoadMore}
+            disabled={isLoadingMore}
+            className="self-center inline-flex items-center justify-center min-h-11 py-2.5 px-6 rounded-full border border-[var(--border-light)] bg-transparent font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase font-medium cursor-pointer hover:bg-[var(--color-champagne-cream)] disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isLoadingMore ? t("loadingMore") : t("loadMore")}
+          </button>
         )}
       </div>
-
-      <style>{`
-        .orders-page {
-          min-height: 100vh;
-          padding-top: 120px;
-          padding-bottom: var(--space-16);
-          background: var(--bg-primary);
-        }
-
-        .orders-page__inner {
-          max-width: 720px;
-          margin: 0 auto;
-          padding: 0 var(--space-4);
-        }
-
-        @media (min-width: 640px) {
-          .orders-page__inner { padding: 0 var(--space-6); }
-        }
-
-        .orders-page__header {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-4);
-          margin-bottom: var(--space-8);
-        }
-
-        .orders-page__back {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-2);
-          font-family: var(--font-primary);
-          font-size: var(--text-xs);
-          color: var(--text-muted);
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          text-decoration: none;
-          font-weight: 500;
-          transition: color var(--duration-fast) var(--ease-default);
-        }
-        .orders-page__back:hover { color: var(--text-primary); }
-
-        .orders-page__title {
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-          font-family: var(--font-display), serif;
-          font-weight: var(--font-weight-display);
-          font-size: var(--text-2xl);
-          color: var(--text-heading);
-          letter-spacing: -0.04em;
-          line-height: 100%;
-        }
-
-        @media (min-width: 640px) {
-          .orders-page__title { font-size: var(--text-3xl); }
-        }
-
-        /* ── Orders List ── */
-        .orders-list {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-4);
-        }
-
-        .order-card {
-          padding: var(--space-5) var(--space-6);
-          background: var(--bg-elevated);
-          border-radius: var(--radius-lg);
-          border: 1px solid var(--border-subtle);
-          box-shadow: var(--shadow-sm);
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-3);
-        }
-
-        /* ── Top Row ── */
-        .order-card__top {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .order-card__top-left {
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-        }
-
-        .order-card__date {
-          font-family: var(--font-primary);
-          font-size: var(--text-sm);
-          color: var(--text-primary);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-        }
-
-        .order-status-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 2px 10px;
-          border-radius: var(--radius-pill);
-          border: 1px solid;
-          font-family: var(--font-primary);
-          font-size: 11px;
-          font-weight: 500;
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
-        }
-
-        .order-card__total {
-          font-family: var(--font-primary);
-          font-size: var(--text-base);
-          color: var(--text-heading);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-        }
-
-        /* ── Product Row ── */
-        .order-card__product {
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-          padding: var(--space-1) 0;
-        }
-
-        .order-card__product-img {
-          position: relative;
-          width: 56px;
-          height: 72px;
-          border-radius: var(--radius-sm);
-          overflow: hidden;
-          background: var(--color-champagne-cream);
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .order-card__product-info {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          min-width: 0;
-        }
-
-        .order-card__product-name {
-          font-family: var(--font-primary);
-          font-size: var(--text-base);
-          color: var(--text-heading);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-          line-height: 130%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .order-card__product-meta {
-          font-family: var(--font-primary);
-          font-size: var(--text-xs);
-          color: var(--text-muted);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-        }
-
-        /* ── Extra items ── */
-        .order-card__more {
-          font-family: var(--font-primary);
-          font-size: var(--text-xs);
-          color: var(--text-muted);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-          padding-left: calc(56px + var(--space-3));
-        }
-
-        /* ── Footer Row ── */
-        .order-card__footer {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .order-card__id {
-          font-family: var(--font-primary);
-          font-size: var(--text-xs);
-          font-weight: 500;
-          color: var(--text-secondary);
-          letter-spacing: -0.02em;
-        }
-
-        .order-card__view {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          font-family: var(--font-primary);
-          font-size: var(--text-xs);
-          color: var(--text-accent);
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          text-decoration: none;
-          font-weight: 500;
-          transition: opacity var(--duration-fast) var(--ease-default);
-        }
-        .order-card__view:hover { opacity: 0.75; }
-
-        /* ── Empty State ── */
-        .orders-empty {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: var(--space-5);
-          padding: var(--space-12) var(--space-6);
-          background: var(--bg-elevated);
-          border-radius: var(--radius-lg);
-          border: 1px solid var(--border-subtle);
-          box-shadow: var(--shadow-sm);
-          text-align: center;
-        }
-
-        .orders-empty__icon-wrap {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          background: var(--color-champagne-cream);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid var(--border-subtle);
-        }
-
-        .orders-empty__title {
-          font-family: var(--font-display), serif;
-          font-weight: var(--font-weight-display);
-          font-size: var(--text-xl);
-          color: var(--text-heading);
-          letter-spacing: -0.04em;
-          line-height: 100%;
-        }
-
-        .orders-empty__text {
-          font-family: var(--font-primary);
-          font-size: var(--text-base);
-          color: var(--text-muted);
-          letter-spacing: -0.02em;
-          line-height: 140%;
-          max-width: 360px;
-        }
-
-        .orders-empty__cta {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-2);
-          padding: 12px 28px;
-          border-radius: var(--radius-pill);
-          background: var(--accent-primary);
-          color: var(--text-on-gold);
-          font-family: var(--font-primary);
-          font-size: var(--text-sm);
-          font-weight: 500;
-          letter-spacing: -0.02em;
-          text-transform: uppercase;
-          text-decoration: none;
-          box-shadow: var(--shadow-gold-sm);
-          transition: opacity var(--duration-fast) var(--ease-default),
-                      transform var(--duration-fast) var(--ease-default);
-        }
-        .orders-empty__cta:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        .orders-empty__features {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-3);
-          padding-top: var(--space-5);
-          border-top: 1px solid var(--border-subtle);
-          width: 100%;
-          max-width: 280px;
-        }
-
-        .orders-empty__feature {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: var(--space-2);
-          font-family: var(--font-primary);
-          font-size: var(--text-sm);
-          color: var(--text-muted);
-          letter-spacing: -0.02em;
-        }
-
-        .orders-empty__feature-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-
-        /* ── Skeleton ── */
-        .orders-skeleton__header {
-          height: 60px;
-          border-radius: var(--radius-md);
-          background: var(--color-champagne-cream);
-          margin-bottom: var(--space-8);
-          animation: orders-shimmer 1.5s ease infinite;
-        }
-        .orders-skeleton__card {
-          height: 120px;
-          border-radius: var(--radius-lg);
-          background: var(--color-champagne-cream);
-          margin-bottom: var(--space-4);
-          animation: orders-shimmer 1.5s ease infinite;
-        }
-        @keyframes orders-shimmer {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.3; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .orders-page__back,
-          .orders-empty__cta,
-          .order-card__view,
-          .orders-skeleton__header,
-          .orders-skeleton__card {
-            transition: none !important;
-            animation: none !important;
-          }
-        }
-      `}</style>
     </main>
   );
 }

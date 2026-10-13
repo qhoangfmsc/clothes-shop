@@ -1,13 +1,19 @@
 /* ── Shipping Types ── */
 
+/** The BE accepts exactly these methods (`POST /api/orders` → `shippingMethod`) */
+export const SHIPPING_METHOD_IDS = ["standard", "express", "store-pickup"] as const;
+export type ShippingMethodId = (typeof SHIPPING_METHOD_IDS)[number];
+
+export const SHIPPING_ICONS = ["truck", "express", "store"] as const;
+export type ShippingIcon = (typeof SHIPPING_ICONS)[number];
+
 export interface ShippingMethod {
-  id: string;
+  id: ShippingMethodId;
   name: string;
   description: string;
   estimatedDays: string;
   price: number;
-  freeAbove?: number;
-  icon: "truck" | "express" | "store";
+  icon: ShippingIcon;
 }
 
 export interface ReturnPolicy {
@@ -19,6 +25,6 @@ export interface ReturnPolicy {
 export interface ShippingInfo {
   methods: ShippingMethod[];
   returnPolicy: ReturnPolicy;
-  freeShippingThreshold: number;
-  notes: string[];
+  /** Subtotal from which every method ships free; `null` = no free shipping */
+  freeShippingThreshold: number | null;
 }

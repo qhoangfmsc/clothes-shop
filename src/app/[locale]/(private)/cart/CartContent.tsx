@@ -15,8 +15,8 @@ import {
   selectDeselectedKeys,
   selectSelectedCartItems,
   selectPurchasableCartItems,
-  selectSelectedTotalPrice,
   selectTotalItems,
+  selectSelectedTotalPrice,
   selectSelectedTotalItems,
   updateQuantity,
   removeItem,
@@ -41,9 +41,6 @@ import UnauthenticatedState from "@/src/app/[locale]/_components/Unauthenticated
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/** Orders at or above this subtotal (USD) ship free */
-const FREE_SHIPPING_THRESHOLD = 150;
-
 /* ── Quantity Stepper with debounced API sync ── */
 function QuantityControl({ item }: { item: CartItem }) {
   const t = useTranslations("private.cart.quantity");
@@ -54,13 +51,22 @@ function QuantityControl({ item }: { item: CartItem }) {
     (delta: number) => {
       const newQty = item.quantity + delta;
       if (newQty < 1 || newQty > 10) return;
-      dispatch(updateQuantity({ productId: item.productId, size: item.size, color: item.color, quantity: newQty }));
+      dispatch(
+        updateQuantity({
+          productId: item.productId,
+          size: item.size,
+          color: item.color,
+          quantity: newQty,
+        })
+      );
 
       /* Debounced API sync */
       if (debounceRef.current) clearTimeout(debounceRef.current);
       if (item.serverItemId) {
         debounceRef.current = setTimeout(() => {
-          dispatch(syncUpdateCartItemQuantity({ serverItemId: item.serverItemId!, quantity: newQty }));
+          dispatch(
+            syncUpdateCartItemQuantity({ serverItemId: item.serverItemId!, quantity: newQty })
+          );
         }, 500);
       }
     },
@@ -78,7 +84,9 @@ function QuantityControl({ item }: { item: CartItem }) {
       >
         <Minus size={14} />
       </button>
-      <span className="w-8 text-center font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em]">{item.quantity}</span>
+      <span className="w-8 text-center font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em]">
+        {item.quantity}
+      </span>
       <button
         type="button"
         className="w-8 h-8 flex items-center justify-center bg-transparent border-none cursor-pointer text-[var(--text-secondary)] hover:bg-[var(--color-champagne-cream)] hover:text-[var(--text-primary)] disabled:text-[var(--text-disabled)] disabled:cursor-default transition-all duration-150"
@@ -198,15 +206,15 @@ function CartItemRow({
   const purchasable = purchaseMode === "cart";
 
   return (
-    <motion.div
+    <motion.li
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [...ease], delay: Math.min(index * 0.05, 0.3) }}
-      className="flex gap-3 sm:gap-4 p-4 bg-[var(--bg-elevated)] rounded-md border border-[var(--border-subtle)] relative"
+      className="flex items-start gap-3 sm:gap-4 py-5 px-4 sm:px-6"
     >
       {/* Select for checkout / bulk actions */}
       <Checkbox
-        className="self-center"
+        className="mt-1"
         checked={selected && purchasable}
         disabled={!purchasable}
         onCheckedChange={() => onToggleSelected(item)}
@@ -214,36 +222,40 @@ function CartItemRow({
       />
 
       {/* Image */}
-      <div className="relative shrink-0">
-        <Link href={productUrl} className="block no-underline">
-          <div className="relative w-20 h-[106px] sm:w-[100px] sm:h-[133px] rounded-sm overflow-hidden bg-[var(--color-champagne-cream)]">
-            <Image
-              src={item.image}
-              alt={item.name}
-              fill
-              sizes="100px"
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-        </Link>
-      </div>
+      <Link href={productUrl} className="block shrink-0 no-underline">
+        <div
+          className={`relative w-20 h-[107px] sm:w-[104px] sm:h-[139px] rounded-md overflow-hidden bg-[var(--color-champagne-cream)] ${
+            purchasable ? "" : "opacity-60"
+          }`}
+        >
+          <Image src={item.image} alt={item.name} fill sizes="104px" style={{ objectFit: "cover" }} />
+        </div>
+      </Link>
 
       {/* Info */}
-      <div className="flex-1 min-w-0 flex flex-col gap-1">
-        <Link href={productUrl} className="pr-16 font-primary text-sm text-[var(--text-primary)] tracking-[-0.02em] leading-[140%] no-underline font-medium line-clamp-2 hover:text-[var(--accent-primary)]">
-          {item.name}
-        </Link>
-        <div className="flex items-center gap-1 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
-          <span>{t("size", { size: item.size })}</span>
-          <span className="text-[var(--border-default)]">·</span>
-          <span className="inline-flex items-center gap-1">
+      <div className="flex-1 min-w-0 flex flex-col gap-2 self-stretch">
+        <div className="flex items-start justify-between gap-3">
+          <Link
+            href={productUrl}
+            className="font-primary text-sm sm:text-base text-[var(--text-heading)] tracking-[-0.02em] leading-[130%] no-underline font-medium line-clamp-2 hover:text-[var(--accent-primary)]"
+          >
+            {item.name}
+          </Link>
+          <span className="shrink-0 font-primary text-sm sm:text-base text-[var(--text-heading)] font-medium tracking-[-0.02em]">
+            {purchaseMode === "customOrder" ? "" : format.number(item.price * item.quantity, "price")}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
+          <span className="py-0.5 px-2 rounded-full bg-[var(--color-champagne-cream)] text-[var(--text-secondary)]">
+            {t("size", { size: item.size })}
+          </span>
+          <span className="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-full bg-[var(--color-champagne-cream)] text-[var(--text-secondary)]">
             <span className="w-2.5 h-2.5 rounded-full border border-[var(--border-light)]" style={{ background: item.colorHex }} />
             {item.color}
           </span>
+          <span>{purchaseMode === "customOrder" ? tCommon("priceOnRequest") : format.number(item.price, "price")}</span>
         </div>
-        <span className="font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em]">
-          {purchaseMode === "customOrder" ? tCommon("priceOnRequest") : format.number(item.price, "price")}
-        </span>
 
         {/* Sold-out / custom-order lines stay in the bag but cannot be checked out */}
         {!purchasable && (
@@ -260,39 +272,36 @@ function CartItemRow({
           </p>
         )}
 
-        {/* Quantity + Remove */}
-        <div className="flex items-center gap-3 mt-2">
+        {/* Quantity + actions */}
+        <div className="flex items-center justify-between gap-3 mt-auto pt-1">
           <QuantityControl item={item} />
-          <IconButton
-            size="sm"
-            align="start"
-            label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
-            pressed={isWishlisted}
-            onClick={handleToggleWishlist}
-            className={
-              isWishlisted
-                ? "border-rose-300 bg-[var(--color-rose-milk)] text-rose-500 hover:border-rose-400"
-                : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--color-deep-rose)] hover:bg-[var(--color-rose-milk)]"
-            }
-          >
-            <Heart size={14} className={isWishlisted ? "fill-current" : ""} />
-          </IconButton>
-          <button
-            type="button"
-            className="w-8 h-8 rounded-full border border-[var(--border-subtle)] bg-transparent flex items-center justify-center cursor-pointer text-[var(--text-muted)] hover:text-[var(--color-deep-rose)] hover:bg-[var(--color-rose-milk)] transition-all duration-150"
-            onClick={handleRemove}
-            aria-label={t("remove", { name: item.name })}
-          >
-            <Trash2 size={14} />
-          </button>
+          <div className="flex items-center gap-1">
+            <IconButton
+              size="sm"
+              align="end"
+              label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
+              pressed={isWishlisted}
+              onClick={handleToggleWishlist}
+              className={
+                isWishlisted
+                  ? "border-rose-300 bg-[var(--color-rose-milk)] text-rose-500 hover:border-rose-400"
+                  : "border-transparent text-[var(--text-muted)] hover:text-[var(--color-deep-rose)] hover:bg-[var(--color-rose-milk)]"
+              }
+            >
+              <Heart size={15} className={isWishlisted ? "fill-current" : ""} />
+            </IconButton>
+            <button
+              type="button"
+              className="w-8 h-8 rounded-full border border-transparent bg-transparent flex items-center justify-center cursor-pointer text-[var(--text-muted)] hover:text-[var(--color-deep-rose)] hover:bg-[var(--color-rose-milk)] transition-all duration-150 motion-reduce:transition-none"
+              onClick={handleRemove}
+              aria-label={t("remove", { name: item.name })}
+            >
+              <Trash2 size={15} />
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Line total */}
-      <span className="absolute top-4 right-4 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-        {purchaseMode === "customOrder" ? "" : format.number(item.price * item.quantity, "price")}
-      </span>
-    </motion.div>
+    </motion.li>
   );
 }
 
@@ -309,10 +318,10 @@ export default function CartContent() {
   const selectedItems = useAppSelector(selectSelectedCartItems);
   const purchasableCount = useAppSelector(selectPurchasableCartItems).length;
   const wishlistItems = useAppSelector(selectWishlistItems);
-  /* Totals follow the ticked items only — they are what checkout will order */
-  const totalPrice = useAppSelector(selectSelectedTotalPrice);
-  const selectedQuantity = useAppSelector(selectSelectedTotalItems);
   const totalItems = useAppSelector(selectTotalItems);
+  /* Follows the ticked lines only — they are what checkout will order */
+  const selectedPrice = useAppSelector(selectSelectedTotalPrice);
+  const selectedQuantity = useAppSelector(selectSelectedTotalItems);
 
   const selectedCount = selectedItems.length;
   /* Only purchasable lines can be ticked, so "all" means all of those */
@@ -380,7 +389,7 @@ export default function CartContent() {
   if (isLoading) {
     return (
       <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
-        <div className="max-w-[960px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[820px] mx-auto px-4 sm:px-6">
           <div className="h-[60px] rounded-md bg-[var(--color-champagne-cream)] mb-8 animate-[cart-shimmer_1.5s_ease_infinite]" />
           <div className="h-[120px] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
           <div className="h-[120px] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
@@ -400,7 +409,7 @@ export default function CartContent() {
 
   return (
     <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
-      <div className="max-w-[960px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[820px] mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -408,7 +417,10 @@ export default function CartContent() {
           transition={{ duration: 0.6, ease: [...ease] }}
           className="flex flex-col gap-4 mb-8"
         >
-          <Link href="/shop" className="inline-flex items-center gap-2 font-primary text-xs text-[var(--text-muted)] tracking-[0.08em] uppercase no-underline font-medium hover:text-[var(--text-primary)] transition-colors duration-150">
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-2 font-primary text-xs text-[var(--text-muted)] tracking-[0.08em] uppercase no-underline font-medium hover:text-[var(--text-primary)] transition-colors duration-150"
+          >
             <ArrowLeft size={16} />
             {t("header.continueShopping")}
           </Link>
@@ -419,7 +431,9 @@ export default function CartContent() {
               {t("header.title")}
             </h1>
             {totalItems > 0 && (
-              <span className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em]">{t("header.itemCount", { count: totalItems })}</span>
+              <span className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em]">
+                {t("header.itemCount", { count: totalItems })}
+              </span>
             )}
           </div>
         </motion.div>
@@ -435,54 +449,62 @@ export default function CartContent() {
             <div className="w-20 h-20 rounded-full bg-[var(--color-champagne-cream)] flex items-center justify-center border border-[var(--border-subtle)]">
               <ShoppingBag size={40} style={{ color: "var(--text-disabled)" }} />
             </div>
-            <h2 className="font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">{t("empty.title")}</h2>
+            <h2 className="font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
+              {t("empty.title")}
+            </h2>
             <p className="font-primary text-base text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] max-w-80">
               {t("empty.description")}
             </p>
-            <Link href="/shop" className="inline-flex items-center gap-2 py-3 px-7 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase no-underline shadow-[var(--shadow-gold-sm)] hover:opacity-90 hover:-translate-y-px transition-all duration-150">
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 py-3 px-7 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase no-underline shadow-[var(--shadow-gold-sm)] hover:opacity-90 hover:-translate-y-px transition-all duration-150"
+            >
               <ShoppingBag size={16} />
               {t("empty.browse")}
             </Link>
           </motion.div>
         ) : (
-          <div className="flex flex-col gap-8 md:flex-row md:gap-8 md:items-start">
-            {/* Items list */}
-            <div className="flex flex-col gap-4 md:flex-1 md:min-w-0">
-              {/* Bulk actions */}
-              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 py-3 px-4 bg-[var(--bg-elevated)] rounded-md border border-[var(--border-subtle)]">
-                <label className="flex items-center gap-3 cursor-pointer font-primary text-sm text-[var(--text-primary)] tracking-[-0.02em] font-medium">
-                  <Checkbox
-                    checked={allSelected}
-                    indeterminate={someSelected}
-                    disabled={purchasableCount === 0}
-                    onCheckedChange={(checked) => dispatch(setAllSelected(checked))}
-                  />
-                  {t("bulk.selectAll")}
-                  <span className="font-normal text-[var(--text-muted)]">
-                    {t("bulk.selectedCount", { selected: selectedCount, total: purchasableCount })}
-                  </span>
-                </label>
+          <section
+            aria-label={t("header.title")}
+            className="rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]"
+          >
+            {/* Bulk actions */}
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3 px-4 sm:px-6 rounded-t-lg bg-[var(--color-champagne-cream)] border-b border-[var(--border-subtle)]">
+              <label className="flex items-center gap-3 cursor-pointer font-primary text-sm text-[var(--text-primary)] tracking-[-0.02em] font-medium">
+                <Checkbox
+                  checked={allSelected}
+                  indeterminate={someSelected}
+                  disabled={purchasableCount === 0}
+                  onCheckedChange={(checked) => dispatch(setAllSelected(checked))}
+                />
+                {t("bulk.selectAll")}
+                <span className="font-normal text-[var(--text-muted)]">
+                  {t("bulk.selectedCount", { selected: selectedCount, total: purchasableCount })}
+                </span>
+              </label>
 
-                <div className="flex items-center gap-2">
-                  <IconButton
-                    label={t("bulk.addToWishlist")}
-                    onClick={handleAddToWishlist}
-                    disabled={selectedCount === 0}
-                    className="enabled:hover:bg-[var(--color-rose-milk)] enabled:hover:text-[var(--color-deep-rose)]"
-                  >
-                    <Heart size={16} />
-                  </IconButton>
-                  <IconButton
-                    label={t("bulk.remove")}
-                    onClick={handleRemoveSelected}
-                    disabled={selectedCount === 0}
-                    className="enabled:hover:bg-[var(--color-champagne-cream)] enabled:hover:text-[var(--text-primary)]"
-                  >
-                    <Trash2 size={16} />
-                  </IconButton>
-                </div>
+              <div className="flex items-center gap-2">
+                <IconButton
+                  label={t("bulk.addToWishlist")}
+                  onClick={handleAddToWishlist}
+                  disabled={selectedCount === 0}
+                  className="bg-[var(--bg-elevated)] enabled:hover:bg-[var(--color-rose-milk)] enabled:hover:text-[var(--color-deep-rose)]"
+                >
+                  <Heart size={16} />
+                </IconButton>
+                <IconButton
+                  label={t("bulk.remove")}
+                  onClick={handleRemoveSelected}
+                  disabled={selectedCount === 0}
+                  className="bg-[var(--bg-elevated)] enabled:hover:text-[var(--color-deep-rose)]"
+                >
+                  <Trash2 size={16} />
+                </IconButton>
               </div>
+            </div>
 
+            {/* Items */}
+            <ul className="m-0 p-0 list-none divide-y divide-[var(--border-subtle)]">
               {items.map((item, idx) => (
                 <CartItemRow
                   key={cartItemKey(item)}
@@ -492,96 +514,43 @@ export default function CartContent() {
                   onToggleSelected={handleToggleSelected}
                 />
               ))}
-            </div>
+            </ul>
 
-            {/* Summary */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [...ease], delay: 0.2 }}
-              className="p-6 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)] shadow-[var(--shadow-sm)] flex flex-col gap-4 md:w-80 md:shrink-0 md:sticky md:top-[120px]"
-            >
-              <div className="flex items-baseline justify-between gap-3">
-                <h2 className="font-display font-normal text-lg text-[var(--text-heading)] tracking-[-0.04em] leading-none">{t("summary.title")}</h2>
-                <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
-                  {t("summary.selected", { count: selectedQuantity })}
-                </span>
+            {/* Checkout: pinned to the bottom of the screen while the list scrolls; shipping is shown on /checkout */}
+            <div className="sticky bottom-0 z-10 flex items-center justify-between gap-4 py-4 px-4 sm:px-6 rounded-b-lg bg-[var(--bg-elevated)]/95 backdrop-blur border-t border-[var(--border-light)] pb-[max(1rem,env(safe-area-inset-bottom))]">
+              <div className="min-w-0 flex flex-col gap-0.5">
+                {selectedCount > 0 ? (
+                  <>
+                    <span className="font-primary text-xs text-[var(--text-muted)] tracking-[0.04em] uppercase">
+                      {t("checkout.subtotal", { count: selectedQuantity })}
+                    </span>
+                    <span className="font-display text-xl sm:text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
+                      {format.number(selectedPrice, "price")}
+                    </span>
+                  </>
+                ) : (
+                  <span className="font-primary text-xs sm:text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%]">
+                    {t("checkout.selectToCheckout")}
+                  </span>
+                )}
               </div>
-
-              {/* Free Shipping Progress */}
-              {(() => {
-                const remaining = FREE_SHIPPING_THRESHOLD - totalPrice;
-                const progress = Math.min((totalPrice / FREE_SHIPPING_THRESHOLD) * 100, 100);
-                const qualified = totalPrice >= FREE_SHIPPING_THRESHOLD;
-                return (
-                  <div className={`py-3 px-4 rounded-md border transition-colors duration-150 ${
-                    qualified
-                      ? "bg-[var(--color-sage-cream)] border-[var(--accent-sage)]"
-                      : "bg-[var(--color-champagne-cream)] border-[var(--border-subtle)]"
-                  }`}>
-                    <p className={`font-primary text-xs tracking-[-0.02em] leading-[140%] m-0 mb-2 text-center ${
-                      qualified ? "text-[var(--accent-sage)] font-medium" : "text-[var(--text-secondary)]"
-                    }`}>
-                      {qualified
-                        ? t("summary.unlocked")
-                        : t("summary.remaining", { amount: format.number(Math.ceil(remaining), "price") })}
-                    </p>
-                    <div className="h-1 rounded-sm bg-[var(--border-light)] overflow-hidden">
-                      <div
-                        className={`h-full rounded-sm transition-[width] duration-400 ${
-                          qualified ? "bg-[var(--accent-sage)]" : "bg-[var(--accent-primary)]"
-                        }`}
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })()}
-
-              <div className="flex justify-between items-center font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em]">
-                <span>{t("summary.subtotal")}</span>
-                <span>{format.number(totalPrice, "price")}</span>
-              </div>
-              <div className="flex justify-between items-center font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em]">
-                <span>{t("summary.shipping")}</span>
-                <span className="text-xs text-[var(--text-muted)] italic">
-                  {totalPrice >= FREE_SHIPPING_THRESHOLD ? t("summary.free") : t("summary.atCheckout")}
-                </span>
-              </div>
-
-              <div className="h-px bg-[var(--border-subtle)]" />
-
-              <div className="flex justify-between items-center font-primary text-base text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-                <span>{t("summary.total")}</span>
-                <span>{format.number(totalPrice, "price")}</span>
-              </div>
-
               {selectedCount > 0 ? (
-                <Link href="/checkout" className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase no-underline shadow-[var(--shadow-gold-sm)] hover:opacity-90 hover:-translate-y-px transition-all duration-150">
-                  {t("summary.checkout")}
-                  <ChevronRight size={16} />
+                <Link href="/checkout" className="shrink-0 group flex items-center justify-center gap-2 min-h-12 py-3 px-6 sm:px-8 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase no-underline shadow-[var(--shadow-gold-sm)] hover:opacity-90 transition-opacity duration-150 motion-reduce:transition-none">
+                  {t("checkout.action")}
+                  <ChevronRight size={16} className="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </Link>
               ) : (
-                <>
-                  <button
-                    type="button"
-                    disabled
-                    className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase border-none opacity-50 cursor-not-allowed"
-                  >
-                    {t("summary.checkout")}
-                    <ChevronRight size={16} />
-                  </button>
-                  <p className="m-0 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] text-center">
-                    {t("summary.selectToCheckout")}
-                  </p>
-                </>
+                <button
+                  type="button"
+                  disabled
+                  className="shrink-0 flex items-center justify-center gap-2 min-h-12 py-3 px-6 sm:px-8 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase border-none opacity-50 cursor-not-allowed"
+                >
+                  {t("checkout.action")}
+                  <ChevronRight size={16} />
+                </button>
               )}
-
-              <p className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] text-center">
-                {t("summary.freeNote", { amount: format.number(FREE_SHIPPING_THRESHOLD, "price") })}
-              </p>
-            </motion.div>
-          </div>
+            </div>
+          </section>
         )}
       </div>
     </main>

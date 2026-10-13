@@ -18,5 +18,10 @@
     "shipping": "Phí vận chuyển",
     "total": "Tổng cộng"
   },
-  "note": "Ghi chú"
+  "note": "Ghi chú",
+  "tabs": {
+    "details": "Chi tiết",
+    "payment": "Thanh toán"
+  },
+  "paymentStatus": "Thanh toán"
 }

@@ -10,6 +10,4 @@ export interface SiteConfigRow {
   key: string;
   type: SiteConfigType;
   config: SiteConfig | null;
-  /** Parsed array length when config.value is a valid JSON array, else 0. */
-  bannerCount: number;
 }

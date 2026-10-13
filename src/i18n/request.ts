@@ -29,6 +29,13 @@ export default getRequestConfig(async ({ requestLocale }) => {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         },
+        /* Bank transfers (VietQR) are settled in VND: whole dong, no decimals */
+        vnd: {
+          style: "currency",
+          currency: "VND",
+          currencyDisplay: "narrowSymbol",
+          maximumFractionDigits: 0,
+        },
         decimal1: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
       },
       dateTime: {

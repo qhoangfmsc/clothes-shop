@@ -8,8 +8,12 @@ import { X, AlertTriangle } from "lucide-react";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useOrderStatusLabel } from "@/src/i18n/use-labels";
 import OrderDetailPanel from "@/src/app/[locale]/_components/OrderDetailPanel";
+import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
+import OrderPaymentTab from "@/src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab";
+import { useOrderPaymentStatusLabel } from "@/src/i18n/use-labels";
 import { type AdminOrder } from "@/src/hooks/use-admin-api";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import {
@@ -18,13 +22,16 @@ import {
   type DataTableFetchParams,
   type DataTableRef,
 } from "@/src/app/[locale]/_components/DataTable";
-import { PERMISSIONS } from "@/src/lib/permissions";
+import { PERMISSIONS, hasPermission } from "@/src/lib/permissions";
+import { useAuth } from "@/src/contexts/auth-context";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { fetchOrderList, updateOrderStatus, fetchOrderDetail } from "./_common/moduleSlice";
 import { ORDER_SORT_OPTIONS } from "./_common/constants";
 import {
+  ORDER_PAYMENT_STATUSES,
   ORDER_STATUSES,
   getSelectableOrderStatuses,
+  type OrderPaymentStatus,
   type OrderStatus,
 } from "@/src/types/enums";
 import type { OrderListResult } from "./_common/types";
@@ -52,13 +59,17 @@ export default function OrdersContent() {
   const locale = useLocale();
   const format = useFormatter();
   const statusLabel = useOrderStatusLabel();
+  const paymentStatusLabel = useOrderPaymentStatusLabel();
   const { toast } = useToast();
+  const confirm = useConfirm();
   const tableRef = useRef<DataTableRef>(null);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const { isUpdating, total } = useAppSelector((s) => s.orders);
+  const { user } = useAuth();
+  const canViewPayment = hasPermission(user, PERMISSIONS.PAYMENT_ADMIN_VIEW);
 
   /* ── Detail Panel State ── */
   const [detailOrder, setDetailOrder] = useState<AdminOrder | null>(null);
@@ -118,6 +129,7 @@ export default function OrdersContent() {
       fetchOrderList({
         search: params.search || undefined,
         status: (params.filters.status || undefined) as OrderStatus | undefined,
+        paymentStatus: (params.filters.paymentStatus || undefined) as OrderPaymentStatus | undefined,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -180,7 +192,7 @@ export default function OrdersContent() {
               className={`py-1 px-2 rounded-full text-xs font-semibold font-primary border-0 cursor-pointer outline-none ${statusStyle(o.status)}`}
               value={o.status}
               disabled={isUpdating}
-              onChange={(e) => handleStatusChange(o.id, e.target.value as OrderStatus)}
+              onChange={(e) => handleStatusChange(o.id, e.target.value as OrderStatus, o.paymentStatus)}
             >
               {getSelectableOrderStatuses(o.status).map((s) => (
                 <option key={s} value={s}>
@@ -190,6 +202,12 @@ export default function OrdersContent() {
             </select>
           </RoleGuard>
         ),
+      },
+      {
+        key: "payment",
+        header: t("table.columns.payment"),
+        hideBelow: "sm",
+        render: (o) => <OrderPaymentBadge status={o.paymentStatus} />,
       },
       {
         key: "date",
@@ -220,7 +238,17 @@ export default function OrdersContent() {
 
   /* ── Handlers ── */
 
-  const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
+  const handleStatusChange = async (orderId: string, newStatus: OrderStatus, paymentStatus: OrderPaymentStatus) => {
+    /* Cancelling a paid order keeps the money with the shop: there is no refund flow, so make the admin aware */
+    if (newStatus === "cancelled" && paymentStatus === "paid") {
+      const proceed = await confirm({
+        title: t("confirmCancelPaid.title"),
+        message: t("confirmCancelPaid.message", { id: orderId }),
+        confirmLabel: t("confirmCancelPaid.confirm"),
+        danger: true,
+      });
+      if (!proceed) return;
+    }
     try {
       await dispatch(updateOrderStatus({ id: orderId, status: newStatus })).unwrap();
       toast.success(t("toast.statusChanged", { id: orderId, status: statusLabel(newStatus) }));
@@ -231,6 +259,19 @@ export default function OrdersContent() {
     } catch (err) {
       toast.error(toErrorMessage(err, t("toast.statusFailed")));
     }
+  };
+
+  /* An admin confirmed the payment from the order's payment tab: reload the open order and the table */
+  const refreshAfterPayment = () => {
+    if (detailOrder) {
+      dispatch(fetchOrderDetail(detailOrder.id))
+        .unwrap()
+        .then((fresh) => setDetailOrder(fresh))
+        .catch(() => {
+          /* keep what is shown */
+        });
+    }
+    tableRef.current?.refresh();
   };
 
   return (
@@ -253,6 +294,11 @@ export default function OrdersContent() {
             key: "status",
             label: t("table.filters.status"),
             options: ORDER_STATUSES.map((s) => ({ value: s, label: statusLabel(s) })),
+          },
+          {
+            key: "paymentStatus",
+            label: t("table.filters.paymentStatus"),
+            options: ORDER_PAYMENT_STATUSES.map((s) => ({ value: s, label: paymentStatusLabel(s) })),
           },
         ]}
         sortOptions={sortOptions}
@@ -298,7 +344,16 @@ export default function OrdersContent() {
 
             {/* ── Detail state ── */}
             {detailOrder && (
-              <OrderDetailPanel order={detailOrder} loading={loadingDetail} onClose={closeDetail} />
+              <OrderDetailPanel
+                order={detailOrder}
+                loading={loadingDetail}
+                onClose={closeDetail}
+                paymentTab={
+                  canViewPayment ? (
+                    <OrderPaymentTab orderId={detailOrder.id} onChanged={refreshAfterPayment} />
+                  ) : undefined
+                }
+              />
             )}
           </div>
         </div>

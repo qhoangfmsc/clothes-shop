@@ -1,6 +1,6 @@
 # Product detail (trang chi tiết sản phẩm)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-10-13
 > **Code:** `(public)/shop/[category]/[subcategory]/[productId]/` — `page.tsx`, `_components/{ProductDetailClient,ZoomableImage,ImageViewer,ReviewsSection,ShippingAccordion,SizeGuideModal,ShareButtons}.tsx`
 > **i18n:** `public.product` (`meta`, `detail`, `reviews`, `shipping`, `sizeGuideModal`, `share`), `common.productBadge`
 
@@ -58,7 +58,7 @@ Hai cột ≥ `lg`: trái (tối đa 55%, `sticky`) là gallery, phải (45%) l�
 ### 4.4 Các khối phụ
 
 - **`SizeGuideModal`**: chỉ gọi API khi mở (`useSizeGuide(isOpen ? category : null)`), portal vào `body`, đóng bằng Esc/nút; bảng theo `columns` + `rows`, mẹo (`tips`) và trạng thái `loading/unavailable`.
-- **`ShippingAccordion`** (`useShipping`, cache 5 phút): tiêu đề, dòng "miễn phí vận chuyển từ <ngưỡng>", từng phương thức (tên, mô tả, thời gian, giá hoặc "Miễn phí"), phần chính sách đổi trả.
+- **`ShippingAccordion`** (`useShipping`, cache 5 phút): tiêu đề, dòng "miễn phí vận chuyển từ <ngưỡng>" (ẩn khi `freeShippingThreshold` là `null`), từng phương thức (tên, mô tả, thời gian, giá hoặc "Miễn phí"), phần chính sách đổi trả.
 - **`ReviewsSection`** (`useReviews(productId)`): trung bình sao (`decimal1`), tổng số đánh giá, từng đánh giá (avatar, tác giả, nhãn "đã xác minh", sao, ngày, tiêu đề, nội dung); nút "Hiện tất cả/Thu gọn". Chỉ đọc — không có form gửi đánh giá.
 - **`ShareButtons`** (sao chép link, chia sẻ native, X, Pinterest): đã có file nhưng hiện chưa được trang nào import.
 

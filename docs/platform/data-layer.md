@@ -1,6 +1,6 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
 > **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/list-query.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
@@ -50,7 +50,7 @@ Mọi endpoint danh sách của BE dùng chung:
 
 ### 4.3 Server fetchers (`shop/_lib/server-fetchers.ts`)
 
-Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getNewInProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getReviews`. Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`, `ReviewListResponse`.
+Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getNewInProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getShippingInfo()` (cấu hình vận chuyển & đổi trả, `null` khi API lỗi), `getReviews`. Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`, `ReviewListResponse`.
 
 `ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt), minPrice, maxPrice, sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
 
@@ -68,7 +68,9 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 | `useCollections()` / `useCollection(slug)` | `GET /api/collections[?slug=]` |
 | `useReviews(productId, page, limit)` | `GET /api/reviews/:productId` (trung bình sao tính ở client) |
 | `useSizeGuide(category)` | `GET /api/size-guides/:category` |
-| `useShipping()` | `GET /api/shipping` (dedupe 5 phút) |
+| `useShipping()` | `GET /api/shipping` (dedupe 5 phút): `methods[]` + `freeShippingThreshold` (`number \| null`, `null` = không có miễn phí vận chuyển) — cấu hình ở site config `SHIPPING_CONFIG` |
+| `useShippingMethodName()` | Trả hàm `(id) => tên phương thức do admin cấu hình` (`undefined` khi chưa tải hoặc id lạ); đơn chỉ lưu id nên mọi màn đặt tên phương thức đều đọc qua đây |
+| `useRefreshShipping()` | Trả hàm làm mới cache của `useShipping` (admin gọi sau khi lưu/xóa `SHIPPING_CONFIG`) |
 | `useBannerConfig(key)` | `GET /api/site-config?key=` — luôn không lỗi: thất bại/rỗng → `banners = []` |
 | `useAutocomplete(limit)` | `GET /api/products/autocomplete?q=&limit=` — `limit` 1–10 (BE trả 400 nếu ngoài khoảng), debounce 300 ms, tối thiểu 2 ký tự, hủy request cũ bằng `AbortController` |
 | `getProductUrl(id)` | Hàm thường: tra sản phẩm theo id để dựng `/shop/<cat>/<sub>/<id>` |
@@ -94,7 +96,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.8 Kiểu dữ liệu dùng chung (`src/types/`)
 
-`product.ts` (`Product`, `ProductColor`, `ProductCategory`, `ProductSubCategory`), `category.ts` (`Category`, `SubCategory`; `priority` duy nhất, 1 = hiển thị đầu), `collection.ts`, `review.ts`, `shipping.ts`, `size-guide.ts`, `site-config.ts` (khóa, loại, banner, `resolveBannerImage`), `enums.ts` (`PRODUCT_BADGES`, `PRODUCT_STATUSES`, `USER_ROLES`, `USER_STATUSES`, `ORDER_STATUSES`, `ORDER_STATUS_TRANSITIONS`, `getSelectableOrderStatuses`), `analytics.ts`. Giá trị enum khớp chính xác (phân biệt hoa thường) với BE.
+`product.ts` (`Product`, `ProductColor`, `ProductCategory`, `ProductSubCategory`), `category.ts` (`Category`, `SubCategory`; `priority` duy nhất, 1 = hiển thị đầu), `collection.ts`, `review.ts`, `shipping.ts` (`SHIPPING_METHOD_IDS` / `ShippingMethodId`, `SHIPPING_ICONS` / `ShippingIcon`, `ShippingMethod`, `ShippingInfo`), `size-guide.ts`, `site-config.ts` (khóa, loại, banner, `resolveBannerImage`), `enums.ts` (`PRODUCT_BADGES`, `PRODUCT_STATUSES`, `USER_ROLES`, `USER_STATUSES`, `ORDER_STATUSES`, `ORDER_STATUS_TRANSITIONS`, `getSelectableOrderStatuses`), `analytics.ts`. Giá trị enum khớp chính xác (phân biệt hoa thường) với BE.
 
 ### 4.9 Hook tiện ích liên quan
 

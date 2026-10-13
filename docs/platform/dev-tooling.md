@@ -59,7 +59,7 @@ Bỏ qua một dòng: `// conventions-ignore: <rule-id> <lý do>` ở dòng đó
 
 ### 4.3 `check-docs.mjs`
 
-Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường dẫn code cho đúng một doc trong `docs/`; đường dẫn dài nhất khớp thì thắng. `src/messages/**`, `src/i18n/registry.ts`, file nhị phân/sinh tự động không thuộc module nào.
+Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường dẫn code cho đúng một doc trong `docs/`; đường dẫn dài nhất khớp thì thắng. `src/messages/**`, `src/i18n/registry.ts`, file nhị phân/sinh tự động không thuộc module nào. Hiện có 33 module (mỗi module một doc), gồm cả `admin/payments`.
 
 | Chế độ | Việc | Khi chạy |
 |---|---|---|

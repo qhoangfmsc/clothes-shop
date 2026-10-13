@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "@/src/i18n/navigation";
+import { Link, usePathname } from "@/src/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { ShoppingBag } from "lucide-react";
@@ -13,6 +13,9 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 export default function CartFAB() {
   const t = useTranslations("shared.cart.fab");
   const totalItems = useAppSelector(selectTotalItems);
+  const pathname = usePathname();
+  /* The bag and checkout pages have their own checkout controls; the button would only cover them */
+  const hidden = pathname === "/cart" || pathname.startsWith("/checkout");
   const [mounted, setMounted] = useState(false);
   const [justUpdated, setJustUpdated] = useState(false);
 
@@ -29,7 +32,7 @@ export default function CartFAB() {
     }
   }, [totalItems]);
 
-  if (!mounted) return null;
+  if (!mounted || hidden) return null;
 
   return (
     <AnimatePresence>

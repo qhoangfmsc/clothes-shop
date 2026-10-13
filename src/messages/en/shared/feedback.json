@@ -21,5 +21,10 @@
     "title": "Enter password to continue",
     "placeholder": "Password",
     "error": "Incorrect password. Try again."
+  },
+  "copy": {
+    "aria": "Copy {field}",
+    "copied": "Copied",
+    "failed": "Couldn't copy. Please copy it manually."
   }
 }

@@ -15,6 +15,7 @@ import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
 import type { Review } from "@/src/types/review";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
+import type { ShippingInfo } from "@/src/types/shipping";
 import { mapMediaUrls } from "@/src/lib/media-url";
 import { buildListQuery } from "@/src/lib/list-query";
 
@@ -212,6 +213,16 @@ export async function getBannerConfig(key: string): Promise<BannerItem[]> {
     return Array.isArray(parsed) ? mapMediaUrls(parsed) : [];
   } catch {
     return [];
+  }
+}
+
+/** Shipping methods, free-shipping threshold and return policy as configured by the admin (`null` if the API is down) */
+export async function getShippingInfo(): Promise<ShippingInfo | null> {
+  try {
+    const { data } = await apiFetch<{ data: ShippingInfo }>("/api/shipping");
+    return data ?? null;
+  } catch {
+    return null;
   }
 }
 

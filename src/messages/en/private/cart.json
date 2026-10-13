@@ -32,20 +32,6 @@
     "description": "Browse our collections and add your favorite pieces to get started",
     "browse": "Browse Shop"
   },
-  "summary": {
-    "title": "Order Summary",
-    "selected": "{count, plural, one {# item selected} other {# items selected}}",
-    "unlocked": "🎉 You've unlocked free shipping!",
-    "remaining": "Spend {amount} more for free shipping",
-    "subtotal": "Subtotal",
-    "shipping": "Shipping",
-    "free": "Free",
-    "atCheckout": "Calculated at checkout",
-    "total": "Total",
-    "checkout": "Proceed to Checkout",
-    "freeNote": "Free standard shipping on orders over {amount}.",
-    "selectToCheckout": "Select at least one item to check out."
-  },
   "bulk": {
     "selectAll": "Select all",
     "selectedCount": "{selected} of {total} selected",
@@ -61,5 +47,10 @@
     "removed": "{count, plural, one {# item removed from your bag} other {# items removed from your bag}}",
     "addedToWishlist": "{count, plural, one {# item added to your wishlist} other {# items added to your wishlist}}",
     "alreadyInWishlist": "Already in your wishlist"
+  },
+  "checkout": {
+    "subtotal": "Subtotal ({count, plural, one {# item} other {# items}})",
+    "action": "Proceed to Checkout",
+    "selectToCheckout": "Select at least one item to check out."
   }
 }

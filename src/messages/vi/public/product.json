@@ -70,7 +70,7 @@
   },
   "shipping": {
     "title": "Vận chuyển & Đổi trả",
-    "freeOver": "Miễn phí vận chuyển cho đơn hàng trên {amount}",
+    "freeOver": "Miễn phí vận chuyển cho đơn hàng từ {amount} trở lên",
     "free": "Miễn phí",
     "returns": "Đổi trả"
   },

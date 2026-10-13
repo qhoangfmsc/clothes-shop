@@ -34,6 +34,11 @@
     "1303": "Sản phẩm này đã hết hàng hoặc là sản phẩm đặt thiết kế nên không thể thêm vào giỏ hay thanh toán. Vui lòng liên hệ để đặt hàng.",
     "1001": "Không tìm thấy sản phẩm. Sản phẩm có thể đã bị xóa.",
     "1201": "Không tìm thấy bộ sưu tập. Danh sách có thể đã cũ.",
-    "1401": "Không tìm thấy người dùng. Danh sách có thể đã cũ."
+    "1401": "Không tìm thấy người dùng. Danh sách có thể đã cũ.",
+    "1702": "Đơn hàng đã được thanh toán hoặc đã hủy nên không thể thanh toán thêm.",
+    "1703": "Mã chuyển khoản không thuộc đơn này, hoặc đơn chưa từng có phiên thanh toán QR.",
+    "1707": "Cần gửi đúng một trong hai: giao dịch có sẵn, hoặc mã giao dịch kèm số tiền.",
+    "1708": "Không tìm thấy giao dịch. Danh sách có thể đã cũ.",
+    "1307": "Đơn hàng đã thanh toán nên không thể hủy trực tuyến. Vui lòng liên hệ cửa hàng."
   }
 }

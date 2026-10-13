@@ -13,7 +13,7 @@ export type LegalDocKey = (typeof LEGAL_DOCS)[number]["key"];
 export const LEGAL_HUB_PATH = "/legal";
 
 /** Bump together with the message text whenever a document changes (ISO date). */
-export const LEGAL_LAST_UPDATED = "2026-10-11";
+export const LEGAL_LAST_UPDATED = "2026-10-13";
 
 /** Business details injected into the legal texts as `{company}`, `{email}`, `{phone}`, `{address}`.
  *  TODO: replace the phone / address placeholders with the real details before going live. */

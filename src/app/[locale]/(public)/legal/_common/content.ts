@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/src/i18n/routing";
 import { LEGAL_CONTACT, type LegalDocKey } from "@/src/lib/legal";
+import { getShippingInfo } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
 import type { LegalBlock, LegalDocumentContent } from "./types";
 
 /**
@@ -14,10 +15,19 @@ export async function getLegalDocument(
   locale: AppLocale,
   doc: LegalDocKey
 ): Promise<LegalDocumentContent> {
-  const [t, tTitles] = await Promise.all([
+  const [t, tTitles, shipping] = await Promise.all([
     getTranslations({ locale, namespace: "public.legal" }),
     getTranslations({ locale, namespace: "shared.legal" }),
+    getShippingInfo(),
   ]);
+
+  /* The return window is configured by the admin (Site Config → Shipping & returns): the texts say
+     `{returnWindow}`, never a number written in the message files */
+  const returnDays = shipping?.returnPolicy.days;
+  const values: Record<string, string> = {
+    ...LEGAL_CONTACT,
+    returnWindow: returnDays ? tTitles("returnWindow", { days: returnDays }) : tTitles("returnWindowUnknown"),
+  };
 
   /* The item keys only exist at runtime, so the compiler cannot check them; `yarn i18n:check`
      still guarantees every key exists in every language. */
@@ -29,7 +39,7 @@ export async function getLegalDocument(
     const blocks: LegalBlock[] = [];
     for (const itemKey of Object.keys(items)) {
       if (itemKey === "title") continue;
-      const value = text(`${doc}.sections.${sectionKey}.${itemKey}`, LEGAL_CONTACT);
+      const value = text(`${doc}.sections.${sectionKey}.${itemKey}`, values);
       const last = blocks.at(-1);
       if (!itemKey.startsWith("l")) {
         blocks.push({ type: "paragraph", text: value });

@@ -1,6 +1,6 @@
 # Auth (đăng nhập, phiên, phân quyền)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
 > **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
 
 ## 1. Tóm tắt module
@@ -63,8 +63,8 @@ Cả ba ném `ApiError(message, status, errorCode)` khi `!res.ok` (xem [data-lay
 ### 4.4 Phân quyền
 
 - `ROLES`: `admin`, `user`.
-- 19 permission dạng chuỗi, mỗi cái có mã số khớp BE: `PRODUCT_CREATE/UPDATE/DELETE` (6000–6002) và `PRODUCT_VIEW` (6003), `CATEGORY_*` (7000–7002) và `CATEGORY_VIEW` (7003), `COLLECTION_*` (8000–8002) và `COLLECTION_VIEW` (8003), `ORDER_ADMIN_VIEW` (9000), `ORDER_ADMIN_UPDATE_STATUS` (9001), `USER_ADMIN_VIEW` (10000), `USER_ADMIN_UPDATE` (10001), `SITE_CONFIG_VIEW/UPSERT/DELETE` (11000–11002).
-- `ROLE_PERMISSIONS`: `admin` có đủ 19; `user` không có quyền nào.
+- 21 permission dạng chuỗi, mỗi cái có mã số khớp BE: `PRODUCT_CREATE/UPDATE/DELETE` (6000–6002) và `PRODUCT_VIEW` (6003), `CATEGORY_*` (7000–7002) và `CATEGORY_VIEW` (7003), `COLLECTION_*` (8000–8002) và `COLLECTION_VIEW` (8003), `ORDER_ADMIN_VIEW` (9000), `ORDER_ADMIN_UPDATE_STATUS` (9001), `USER_ADMIN_VIEW` (10000), `USER_ADMIN_UPDATE` (10001), `SITE_CONFIG_VIEW/UPSERT/DELETE` (11000–11002), `PAYMENT_ADMIN_VIEW` (14000), `PAYMENT_ADMIN_CONFIRM` (14001).
+- `ROLE_PERMISSIONS`: `admin` có đủ 21; `user` không có quyền nào.
 - `hasPermission(user, p)`: nếu `user.permissions` có phần tử thì **chỉ** xét danh sách đó (ghi đè role); ngược lại xét theo role.
 - `canAccessAdmin(user)`: role `admin` **hoặc** có ít nhất một permission.
 - Helper khác: `hasRole`, `hasAllPermissions`, `hasAnyPermission`, `getUserPermissions`, `permissionsToCodes`, `codesToPermissions`, `PERMISSION_LABELS`, `PERMISSION_GROUPS`, `getRoleLabel`.

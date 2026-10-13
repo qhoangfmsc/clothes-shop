@@ -1,10 +1,14 @@
 "use client";
 
+import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
 import { X, Package, MapPin, CreditCard } from "lucide-react";
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
 import { useAddressFieldLabel, useOrderStatusLabel } from "@/src/i18n/use-labels";
+import { useShippingMethodName } from "@/src/hooks/use-api";
+import OrderPaymentBadge from "./OrderPaymentBadge";
+import { FormTabs } from "./AdminFormKit";
 
 /* ── Status style helper ── */
 function statusStyle(s: string): string {
@@ -24,15 +28,19 @@ interface OrderDetailPanelProps {
   order: AdminOrder;
   loading?: boolean;
   onClose: () => void;
+  /** Content of an extra "Payment" tab; the tab bar only appears when this is given */
+  paymentTab?: ReactNode;
 }
 
 /* ═══════════════════════════════ Component ═══════════════════════════════ */
 
-export default function OrderDetailPanel({ order, loading, onClose }: OrderDetailPanelProps) {
+export default function OrderDetailPanel({ order, loading, onClose, paymentTab }: OrderDetailPanelProps) {
   const t = useTranslations("admin.components.orderDetailPanel");
   const format = useFormatter();
   const statusLabel = useOrderStatusLabel();
   const addressFieldLabel = useAddressFieldLabel();
+  const shippingMethodName = useShippingMethodName();
+  const [tab, setTab] = useState<"details" | "payment">("details");
   return (
     <>
       {/* Header */}
@@ -49,8 +57,21 @@ export default function OrderDetailPanel({ order, loading, onClose }: OrderDetai
         </button>
       </div>
 
+      {paymentTab && (
+        <FormTabs
+          tabs={[
+            { id: "details", label: t("tabs.details") },
+            { id: "payment", label: t("tabs.payment") },
+          ]}
+          active={tab}
+          onChange={(id) => setTab(id as "details" | "payment")}
+        />
+      )}
+
       {/* Body */}
-      {loading ? (
+      {paymentTab && tab === "payment" ? (
+        paymentTab
+      ) : loading ? (
         <div className="flex items-center justify-center py-16">
           <div className="w-5 h-5 border-2 border-[var(--border-light)] border-t-[var(--accent-primary)] rounded-full animate-spin" />
         </div>
@@ -64,6 +85,12 @@ export default function OrderDetailPanel({ order, loading, onClose }: OrderDetai
             {statusLabel(order.status)}
           </span>
         </div>
+        {order.paymentStatus && (
+          <div className="flex justify-between items-center py-2">
+            <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("paymentStatus")}</span>
+            <OrderPaymentBadge status={order.paymentStatus} />
+          </div>
+        )}
         <div className="flex justify-between items-center py-2">
           <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("date")}</span>
           <span className="text-sm text-[var(--text-primary)] font-primary">
@@ -113,7 +140,7 @@ export default function OrderDetailPanel({ order, loading, onClose }: OrderDetai
         <div className="flex justify-between items-center py-2">
           <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("shipping.method")}</span>
           <span className="text-sm text-[var(--text-primary)] font-primary">
-            {order.shippingMethod || "—"}
+            {(order.shippingMethod && (shippingMethodName(order.shippingMethod) ?? order.shippingMethod)) || "—"}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">

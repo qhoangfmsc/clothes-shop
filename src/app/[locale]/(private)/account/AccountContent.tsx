@@ -13,11 +13,12 @@ import { useAppSelector } from "@/src/store/hooks";
 import { selectWishlistItems } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
 import { UserAvatar } from "@/src/app/[locale]/_components/UserMenu";
-import { useOrderStatusLabel } from "@/src/i18n/use-labels";
+import { useOrderPaymentStatusLabel, useOrderStatusLabel } from "@/src/i18n/use-labels";
 
 interface OrderPreview {
   id: string;
   status: string;
+  paymentStatus?: string;
   total: number;
   createdAt: string;
   items: Array<{
@@ -187,6 +188,7 @@ function OrdersSection() {
   const t = useTranslations("private.account.orders");
   const format = useFormatter();
   const statusLabel = useOrderStatusLabel();
+  const paymentLabel = useOrderPaymentStatusLabel();
   const { isAuthenticated } = useAuth();
   const { apiFetch } = useApiAuth();
   const [orders, setOrders] = useState<OrderPreview[]>([]);
@@ -338,6 +340,11 @@ function OrdersSection() {
                     >
                       {statusLabel(order.status)}
                     </span>
+                    {order.paymentStatus && (
+                      <span className="font-primary text-[11px] text-[var(--text-muted)] tracking-[0.02em]">
+                        {paymentLabel(order.paymentStatus)}
+                      </span>
+                    )}
                     <span className="font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
                       {format.number(Number(order.total), "price")}
                     </span>

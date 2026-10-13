@@ -8,7 +8,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import type { Product } from "@/src/types/product";
 import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
@@ -215,9 +215,17 @@ export function useSizeGuide(category: string | null) {
 }
 
 /* ═══ Shipping ═══ */
+const SHIPPING_URL = `${API_URL}/api/shipping`;
+
+/** Drops the cached shipping info (it is kept 5 min) so pages re-read it — call after the admin changes it */
+export function useRefreshShipping() {
+  const { mutate } = useSWRConfig();
+  return useCallback(() => mutate(SHIPPING_URL), [mutate]);
+}
+
 export function useShipping() {
   const { data, isLoading, error } = useSWR<{ data: ShippingInfo }>(
-    `${API_URL}/api/shipping`,
+    SHIPPING_URL,
     fetcher,
     { ...defaultConfig, revalidateOnFocus: false, dedupingInterval: 300_000 }
   );
@@ -227,6 +235,16 @@ export function useShipping() {
     isLoading,
     isError: !!error,
   };
+}
+
+/** Name of a shipping method as the admin configured it; `undefined` until the config is loaded or for an unknown id.
+ *  Orders only store the method id, so every screen that names a method reads it from here. */
+export function useShippingMethodName() {
+  const { shipping } = useShipping();
+  return useCallback(
+    (id: string): string | undefined => shipping?.methods.find((method) => method.id === id)?.name,
+    [shipping]
+  );
 }
 
 /* ═══ Site Config (banners) ═══

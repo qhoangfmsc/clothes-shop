@@ -4,20 +4,22 @@
     "total": "Tổng {count} đơn hàng"
   },
   "table": {
-    "searchPlaceholder": "Mã đơn hàng, tên khách hàng hoặc số điện thoại...",
+    "searchPlaceholder": "Mã đơn, SĐT, tên, nội dung chuyển khoản...",
     "columns": {
       "orderId": "Mã đơn hàng",
       "customer": "Khách hàng",
       "items": "Sản phẩm",
       "total": "Tổng",
       "status": "Trạng thái",
+      "payment": "Thanh toán",
       "date": "Ngày",
       "actions": "Thao tác"
     },
     "itemCount": "{count} sản phẩm",
     "view": "Xem",
     "filters": {
-      "status": "Trạng thái"
+      "status": "Trạng thái",
+      "paymentStatus": "Thanh toán"
     }
   },
   "detail": {
@@ -28,5 +30,10 @@
   "toast": {
     "statusChanged": "Đơn hàng #{id} → {status}",
     "statusFailed": "Cập nhật trạng thái thất bại"
+  },
+  "confirmCancelPaid": {
+    "title": "Hủy đơn đã thanh toán",
+    "message": "Đơn #{id} đã được thanh toán. Hủy đơn không hoàn tiền tự động: bạn cần hoàn tiền cho khách bên ngoài hệ thống. Vẫn hủy?",
+    "confirm": "Vẫn hủy đơn"
   }
 }

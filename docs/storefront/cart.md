@@ -1,13 +1,13 @@
 # Cart (giỏ hàng, thêm nhanh, giỏ nổi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-13
 > **Code:** `(private)/cart/` — `page.tsx`, `layout.tsx`, `CartContent.tsx`, `_common/{moduleSlice,types}.ts`, `_components/CartSync.tsx` · `_components/QuickAddDrawer.tsx`, `_components/CartFAB.tsx` (dùng chung) · `src/store/index.ts` (lưu `localStorage`)
 > **i18n:** `private.cart`, `shared.cart` (`fab`, `quickAdd`, `productAction`)
 > **Redux slice:** `state.cart`
 
 ## 1. Tóm tắt module
 
-Giỏ hàng nhiều dòng: dữ liệu giữ ở Redux (hiện ngay), lưu `localStorage`, và đồng bộ nền với giỏ trên BE theo tài khoản. Khách chọn các dòng muốn thanh toán (tick), xem tóm tắt kèm thanh tiến độ miễn phí vận chuyển rồi sang `/checkout`.
+Giỏ hàng nhiều dòng: dữ liệu giữ ở Redux (hiện ngay), lưu `localStorage`, và đồng bộ nền với giỏ trên BE theo tài khoản. Khách chọn các dòng muốn thanh toán (tick), thấy tạm tính của các dòng đã chọn rồi sang `/checkout` (tiền, vận chuyển và tiến độ miễn phí vận chuyển nằm ở trang đó).
 
 ## 2. Phục vụ gì / việc cần làm
 
@@ -19,9 +19,9 @@ Gom sản phẩm khách định mua (size, màu, số lượng), cho phép sửa
 |---|---|
 | Slice cart | State dòng hàng, danh sách dòng bị bỏ chọn, thunk đồng bộ BE, selector tổng |
 | `CartSync` | Đồng bộ giỏ khi đăng nhập/đổi tài khoản/đăng xuất |
-| `CartContent` | Trang giỏ: danh sách dòng, chọn tất cả, thao tác hàng loạt, tóm tắt, nút thanh toán |
+| `CartContent` | Trang giỏ: danh sách dòng, chọn tất cả, thao tác hàng loạt, nút thanh toán |
 | `QuickAddDrawer` | Ngăn kéo thêm nhanh từ thẻ sản phẩm / bộ sưu tập |
-| `CartFAB` | Nút giỏ nổi với số lượng (xem [site-chrome](../platform/site-chrome.md)) |
+| `CartFAB` | Nút giỏ nổi với số lượng, ẩn ở `/cart` và `/checkout*` (xem [site-chrome](../platform/site-chrome.md)) |
 
 ## 4. Chi tiết
 
@@ -58,8 +58,8 @@ Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăn
 - Chưa đăng nhập → `UnauthenticatedState`; đang tải phiên → skeleton.
 - Header: link "Tiếp tục mua sắm", tiêu đề, tổng số lượng (`selectTotalItems`). Giỏ trống: thông báo + nút tới `/shop`.
 - Thanh chọn: checkbox "Chọn tất cả" (3 trạng thái, chỉ tính dòng mua được), đếm đã chọn/tổng, hai nút icon: **thêm vào wishlist** (các dòng đã chọn; toast số lượng thêm hoặc "đã có") và **xóa** (xác nhận `danger`, toast `removed`, xóa local rồi `syncRemoveCartItem` từng dòng).
-- Mỗi dòng (`CartItemRow`): checkbox (khóa nếu không mua được), ảnh + tên (link sản phẩm), size · màu, đơn giá, `QuantityControl` (1–10), nút tim (wishlist + sync), nút xóa (xác nhận), thành tiền. Dòng `sold_out`/`custom_order` hiện cảnh báo; riêng `custom_order` có link "Đặt may" tới `/contact?product=…`.
-- Tóm tắt (tính theo dòng **đã chọn**): số món, thanh tiến độ tới `FREE_SHIPPING_THRESHOLD = 150` USD (hằng cứng trong component; hiện "còn thiếu …" hoặc "đã miễn phí"), tạm tính, vận chuyển ("Miễn phí" nếu ≥ 150, ngược lại "tính ở bước thanh toán"), tổng, nút **Checkout** → `/checkout` (hiện nút khóa kèm gợi ý "chọn sản phẩm để thanh toán" khi chưa chọn dòng nào).
+- Mỗi dòng (`CartItemRow`, `<li>`): checkbox (khóa nếu không mua được), ảnh 80×107 px (104×139 từ `sm`, mờ đi khi không mua được), tên (link sản phẩm) và thành tiền dòng cùng hàng, chip size + chip màu + đơn giá, hàng cuối: `QuantityControl` (1–10) bên trái, nút tim (wishlist + sync) và nút xóa (xác nhận) bên phải (viền chỉ hiện khi hover/được bật). Dòng `sold_out`/`custom_order` hiện cảnh báo; riêng `custom_order` có link "Đặt may" tới `/contact?product=…`.
+- Bố cục một cột `max-w-[820px]`: header, rồi **một thẻ duy nhất** gồm ba phần liền nhau: thanh chọn (nền champagne: "Chọn tất cả" + đếm, icon yêu thích / xóa hàng loạt), danh sách dòng (`<ul>` ngăn bằng đường kẻ mảnh, không có khung riêng cho từng dòng) và chân thẻ thanh toán (`sticky bottom-0`, luôn ghim cuối màn hình khi danh sách dài, chừa `safe-area-inset-bottom`). Chân thẻ hiện "Tạm tính (n sản phẩm)" + số tiền của các dòng **đã chọn** (`selectSelectedTotalPrice` / `selectSelectedTotalItems`) và nút **Tiến hành thanh toán** → `/checkout`; chưa chọn dòng nào thì thay số tiền bằng gợi ý `checkout.selectToCheckout` và khóa nút. Không có khối tóm tắt, vận chuyển hay thanh miễn phí vận chuyển: các thông tin đó nằm ở [checkout](./checkout.md) 4.4.
 - Metadata: `private.cart.meta`; layout có header + footer; `robots noindex` (từ layout `(private)`).
 
 ### 4.6 `QuickAddDrawer` (`QuickAddProvider` ở root, hook `useQuickAdd().openQuickAdd(product)`)

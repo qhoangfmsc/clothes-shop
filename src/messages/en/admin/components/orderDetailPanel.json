@@ -18,5 +18,10 @@
     "shipping": "Shipping",
     "total": "Total"
   },
-  "note": "Note"
+  "note": "Note",
+  "tabs": {
+    "details": "Details",
+    "payment": "Payment"
+  },
+  "paymentStatus": "Payment"
 }

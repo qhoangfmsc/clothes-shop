@@ -16,6 +16,10 @@
     "totalAsc": "Total ↑",
     "totalDesc": "Total ↓",
     "sizeAsc": "Smallest first",
-    "sizeDesc": "Largest first"
+    "sizeDesc": "Largest first",
+    "amountDesc": "Amount ↓",
+    "amountAsc": "Amount ↑",
+    "expiryDesc": "Expiry (latest)",
+    "expiryAsc": "Expiry (earliest)"
   }
 }

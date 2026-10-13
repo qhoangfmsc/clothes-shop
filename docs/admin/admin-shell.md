@@ -1,6 +1,6 @@
 # Admin shell (layout, sidebar, cổng vào)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-13
 > **Code:** `src/app/[locale]/(admin)/layout.tsx` · `(admin)/AdminLayoutClient.tsx` · `(admin)/admin/page.tsx`
 
 ## 1. Tóm tắt module
@@ -50,6 +50,7 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 | | Categories | `/admin/categories` | `CATEGORY_VIEW` |
 | | Collections | `/admin/collections` | `COLLECTION_VIEW` |
 | `management` | Orders | `/admin/orders` | `ORDER_ADMIN_VIEW` |
+| | Payments | `/admin/payments` | `PAYMENT_ADMIN_VIEW` |
 | | Users | `/admin/users` | `USER_ADMIN_VIEW` |
 | | Analytics | `/admin/analytics` | không yêu cầu |
 | `system` | Site config | `/admin/site-config` | `SITE_CONFIG_VIEW` |

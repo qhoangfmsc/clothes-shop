@@ -46,6 +46,10 @@ export const PERMISSIONS = {
   SITE_CONFIG_VIEW: "SITE_CONFIG_VIEW",
   SITE_CONFIG_UPSERT: "SITE_CONFIG_UPSERT",
   SITE_CONFIG_DELETE: "SITE_CONFIG_DELETE",
+
+  /* Payments (bank-transfer reconciliation) */
+  PAYMENT_ADMIN_VIEW: "PAYMENT_ADMIN_VIEW",
+  PAYMENT_ADMIN_CONFIRM: "PAYMENT_ADMIN_CONFIRM",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
@@ -72,6 +76,8 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     PERMISSIONS.SITE_CONFIG_VIEW,
     PERMISSIONS.SITE_CONFIG_UPSERT,
     PERMISSIONS.SITE_CONFIG_DELETE,
+    PERMISSIONS.PAYMENT_ADMIN_VIEW,
+    PERMISSIONS.PAYMENT_ADMIN_CONFIRM,
   ],
   user: [],
 };
@@ -97,6 +103,8 @@ export const PERMISSION_CODES: Record<Permission, number> = {
   [PERMISSIONS.SITE_CONFIG_VIEW]: 11000,
   [PERMISSIONS.SITE_CONFIG_UPSERT]: 11001,
   [PERMISSIONS.SITE_CONFIG_DELETE]: 11002,
+  [PERMISSIONS.PAYMENT_ADMIN_VIEW]: 14000,
+  [PERMISSIONS.PAYMENT_ADMIN_CONFIRM]: 14001,
 };
 
 /** Convert FE permission string names → BE numeric codes */
@@ -131,6 +139,8 @@ export const PERMISSION_LABELS: Record<Permission, string> = {
   [PERMISSIONS.SITE_CONFIG_VIEW]: "View Site Config",
   [PERMISSIONS.SITE_CONFIG_UPSERT]: "Update Site Config",
   [PERMISSIONS.SITE_CONFIG_DELETE]: "Delete Site Config",
+  [PERMISSIONS.PAYMENT_ADMIN_VIEW]: "View Payments",
+  [PERMISSIONS.PAYMENT_ADMIN_CONFIRM]: "Confirm Payments",
 };
 
 /* ── Permission groups (for display) ── */
@@ -177,6 +187,10 @@ export const PERMISSION_GROUPS: { label: string; permissions: Permission[] }[] =
       PERMISSIONS.SITE_CONFIG_UPSERT,
       PERMISSIONS.SITE_CONFIG_DELETE,
     ],
+  },
+  {
+    label: "Payments",
+    permissions: [PERMISSIONS.PAYMENT_ADMIN_VIEW, PERMISSIONS.PAYMENT_ADMIN_CONFIRM],
   },
 ];
 

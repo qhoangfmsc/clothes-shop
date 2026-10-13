@@ -5,44 +5,87 @@
   },
   "list": {
     "back": "Tài khoản",
-    "title": "Lịch sử đơn hàng",
+    "title": "Đơn hàng của tôi",
     "empty": {
       "title": "Chưa có đơn hàng",
-      "description": "Khi bạn đặt đơn hàng đầu tiên, đơn hàng sẽ xuất hiện ở đây cùng thông tin theo dõi và trạng thái giao hàng.",
-      "cta": "Bắt đầu mua sắm",
-      "features": {
-        "tracking": "Theo dõi đơn hàng theo thời gian thực",
-        "updates": "Cập nhật trạng thái giao hàng",
-        "returns": "Đổi trả dễ dàng"
-      }
+      "description": "Khi bạn đặt đơn hàng đầu tiên, đơn hàng sẽ xuất hiện ở đây cùng trạng thái giao hàng.",
+      "cta": "Bắt đầu mua sắm"
     },
     "card": {
-      "quantity": "SL: {quantity}",
+      "quantity": "SL {quantity}",
       "more": "+{count} sản phẩm khác",
-      "orderNumber": "Đơn hàng #{id}",
-      "viewDetails": "Xem chi tiết"
+      "orderNumber": "Mã đơn #{id}",
+      "total": "Tổng cộng"
     },
     "toast": {
       "loadFailed": "Không tải được đơn hàng của bạn. Vui lòng thử lại."
-    }
+    },
+    "loadMore": "Xem thêm đơn hàng",
+    "loadingMore": "Đang tải..."
   },
   "detail": {
     "notFound": "Không tìm thấy đơn hàng.",
     "back": "Tất cả đơn hàng",
-    "title": "Đơn hàng #{id}",
-    "shippingAddress": "Địa chỉ giao hàng",
+    "orderNumber": "Mã đơn #{id}",
+    "statusHint": {
+      "pending": "Chúng tôi đã nhận đơn và sẽ sớm xác nhận.",
+      "confirmed": "Đơn hàng đã được xác nhận và đang được chuẩn bị.",
+      "shipping": "Đơn hàng đang trên đường đến bạn.",
+      "delivered": "Đơn hàng đã được giao đến bạn.",
+      "completed": "Đơn hàng đã hoàn tất. Cảm ơn bạn đã mua sắm!",
+      "cancelled": "Đơn hàng này đã bị hủy."
+    },
+    "payment": {
+      "title": "Thanh toán",
+      "awaiting": "Đơn hàng đang chờ thanh toán.",
+      "paid": "Đã thanh toán",
+      "pay": "Thanh toán ngay",
+      "codes": "Nội dung chuyển khoản đã cấp",
+      "code": "nội dung chuyển khoản",
+      "codesHint": "Nếu bạn đã chuyển khoản mà đơn chưa được xác nhận, hãy liên hệ cửa hàng kèm nội dung chuyển khoản bạn đã dùng.",
+      "attempt": {
+        "PENDING": "Đang chờ",
+        "PAID": "Đã thanh toán",
+        "EXPIRED": "Đã hết hạn",
+        "CANCELLED": "Đã hủy"
+      },
+      "paidAt": "Thanh toán {date}",
+      "expiresAt": "Hạn {date}",
+      "transactionRef": "Mã giao dịch: {ref}",
+      "transactionRefLabel": "mã giao dịch"
+    },
+    "shippingAddress": "Giao đến",
     "notes": "Ghi chú:",
+    "items": "{count, plural, other {# sản phẩm}}",
+    "itemMeta": "{size} · {color}",
+    "quantity": "SL {quantity}",
     "subtotal": "Tạm tính",
     "shipping": "Vận chuyển",
     "shippingMethod": {
+      "standard": "Tiêu chuẩn",
       "express": "Hỏa tốc",
-      "standard": "Tiêu chuẩn"
+      "store-pickup": "Nhận tại cửa hàng"
     },
     "free": "Miễn phí",
     "total": "Tổng cộng",
-    "itemMeta": "{size} · {color} · SL {quantity}",
+    "continue": "Tiếp tục mua sắm",
     "toast": {
       "loadFailed": "Không tải được đơn hàng này. Vui lòng thử lại."
+    },
+    "pickupContact": "Người nhận tại cửa hàng",
+    "pickupAtStore": "Bạn sẽ nhận đơn hàng trực tiếp tại cửa hàng.",
+    "cancel": {
+      "action": "Hủy đơn",
+      "cancelling": "Đang hủy...",
+      "hint": "Đơn chưa thanh toán nên bạn có thể hủy ngay tại đây.",
+      "paidHint": "Đơn đã thanh toán nên không hủy trực tuyến được. Vui lòng liên hệ cửa hàng nếu bạn cần hủy hoặc hoàn tiền.",
+      "confirm": {
+        "title": "Hủy đơn hàng",
+        "message": "Bạn chắc chắn muốn hủy đơn hàng này? Mã chuyển khoản đang chờ cũng sẽ bị hủy.",
+        "confirm": "Hủy đơn"
+      },
+      "done": "Đã hủy đơn hàng",
+      "failed": "Không thể hủy đơn hàng"
     }
   }
 }

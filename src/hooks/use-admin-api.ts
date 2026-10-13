@@ -13,6 +13,7 @@ import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 import type {
   OrderStatus,
+  OrderPaymentStatus,
   ProductBadge,
   ProductStatus,
   UserRole,
@@ -222,6 +223,8 @@ export interface AdminOrder {
   id: string;
   userId: string;
   status: OrderStatus;
+  paymentStatus: OrderPaymentStatus;
+  paidAt: string | null;
   subtotal: number;
   shippingFee: number;
   total: number;

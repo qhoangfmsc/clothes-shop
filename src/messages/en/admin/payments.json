@@ -1,0 +1,133 @@
+{
+  "page": {
+    "title": "Payments",
+    "total": "{count, plural, one {# transaction} other {# transactions}}",
+    "manual": "Record a transaction"
+  },
+  "table": {
+    "searchPlaceholder": "Transfer content or transaction ID...",
+    "columns": {
+      "receivedAt": "Received",
+      "amount": "Amount",
+      "content": "Content",
+      "status": "Reconciliation",
+      "order": "Order",
+      "actions": "Actions"
+    },
+    "filters": {
+      "status": "Reconciliation"
+    },
+    "attach": "Attach to order"
+  },
+  "verification": {
+    "MATCHED": "Matched",
+    "UNMATCHED": "Unmatched",
+    "ACCOUNT_MISMATCH": "Wrong account",
+    "AMOUNT_MISMATCH": "Wrong amount",
+    "LATE": "Late",
+    "NOT_PAYABLE": "Order not payable",
+    "DUPLICATE_PAYMENT": "Duplicate",
+    "IGNORED": "Ignored",
+    "MANUALLY_CONFIRMED": "Manually confirmed"
+  },
+  "attempt": {
+    "PENDING": "Pending",
+    "PAID": "Paid",
+    "EXPIRED": "Expired",
+    "CANCELLED": "Cancelled"
+  },
+  "picker": {
+    "title": "Unpaid orders",
+    "searchPlaceholder": "Order ID, name, phone or transfer content...",
+    "loading": "Searching...",
+    "empty": "No matching unpaid orders.",
+    "loadFailed": "Couldn't load the orders"
+  },
+  "confirm": {
+    "titleAttach": "Attach transaction to an order",
+    "titleManual": "Record a transaction",
+    "order": {
+      "section": "Order",
+      "label": "Pick an unpaid order",
+      "info": "Only unpaid, non-cancelled orders are listed."
+    },
+    "manual": {
+      "section": "Transaction",
+      "transferCode": "Transfer content",
+      "transferCodeInfo": "The code on the statement, for example DHG29JR5A8 (not case-sensitive). The session that carries this code is marked as paid, even if it has expired.",
+      "amount": "Amount (VND)",
+      "amountInfo": "The amount actually received, whole VND. If it differs from the session amount you will be asked to confirm.",
+      "more": "Add statement details (optional)",
+      "reference": "Transaction reference",
+      "referenceInfo": "The SePay transaction ID or the statement reference, if known. Left empty, the transfer content is used as the reference.",
+      "provider": "Source",
+      "providerInfo": "Default: SePay when there is a reference, Manual when there is only the transfer content.",
+      "providers": {
+        "auto": "Default",
+        "sepay": "SePay",
+        "manual": "Manual"
+      },
+      "transferContent": "Content on the statement",
+      "transferContentInfo": "Only needed when the statement shows something other than the transfer code."
+    },
+    "note": {
+      "label": "Reason / evidence",
+      "info": "Required. Say why you are confirming (for example: checked against the statement of …)."
+    },
+    "errors": {
+      "order": "Please pick an order",
+      "amount": "Enter a whole VND amount above 0",
+      "note": "Please enter a reason or evidence",
+      "transferCode": "Please enter the transfer content"
+    },
+    "mismatch": {
+      "title": "Amount does not match",
+      "confirm": "Confirm anyway"
+    },
+    "submit": "Confirm as paid",
+    "toast": {
+      "confirmed": "Order #{id} marked as paid",
+      "failed": "Couldn't confirm the payment"
+    }
+  },
+  "orderTab": {
+    "loadFailed": "Couldn't load the payment info",
+    "paymentStatus": "Status",
+    "paidAt": "Paid at",
+    "total": "Order total",
+    "customer": "Customer",
+    "confirmPaid": "Confirm as paid",
+    "attempts": "Payment sessions ({count})",
+    "noAttempts": "No QR code was ever created for this order.",
+    "expiresAt": "Expires: {date}",
+    "createdAt": "Created: {date}",
+    "paidAtShort": "Paid: {date}",
+    "transactions": "Transactions ({count})",
+    "noTransactions": "No transaction is attached to this order yet.",
+    "confirmNote": "Note: {note}",
+    "attachHere": "Attach to this order",
+    "transferCode": "Transfer content",
+    "transactionId": "Transaction ID",
+    "confirmCode": "Confirm this code"
+  },
+  "lookup": {
+    "tab": "Transfer content lookup",
+    "transactionsTab": "Bank transactions",
+    "total": "{count, plural, one {# code} other {# codes}}",
+    "searchPlaceholder": "Transfer content, order ID, phone or customer name...",
+    "status": "Code status",
+    "columns": {
+      "code": "Transfer content",
+      "amount": "Amount",
+      "status": "Status",
+      "order": "Order & customer",
+      "transactions": "Bank transactions",
+      "actions": "Actions"
+    },
+    "createdAt": "Created: {date}",
+    "expiresAt": "Expires: {date}",
+    "paidAt": "Paid: {date}",
+    "noTransactions": "No money received for this code",
+    "confirmPaid": "Confirm as paid"
+  }
+}

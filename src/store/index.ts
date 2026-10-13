@@ -19,6 +19,7 @@ import { collectionsReducer } from "@/src/app/[locale]/(admin)/admin/collections
 import { usersReducer } from "@/src/app/[locale]/(admin)/admin/users/_common/moduleSlice";
 import { ordersReducer } from "@/src/app/[locale]/(admin)/admin/orders/_common/moduleSlice";
 import { mediaReducer } from "@/src/app/[locale]/(admin)/admin/media/_common/moduleSlice";
+import { paymentsReducer } from "@/src/app/[locale]/(admin)/admin/payments/_common/moduleSlice";
 import { siteConfigReducer } from "@/src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice";
 import { cartReducer } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import { wishlistReducer } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
@@ -33,6 +34,7 @@ export const store = configureStore({
     orders: ordersReducer,
     media: mediaReducer,
     siteConfig: siteConfigReducer,
+    payments: paymentsReducer,
     // CLIENT
     cart: cartReducer,
     wishlist: wishlistReducer,

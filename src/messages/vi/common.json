@@ -16,6 +16,10 @@
     "completed": "Hoàn tất",
     "cancelled": "Đã hủy"
   },
+  "orderPaymentStatus": {
+    "unpaid": "Chưa thanh toán",
+    "paid": "Đã thanh toán"
+  },
   "addressField": {
     "fullName": "Họ và tên",
     "phone": "Số điện thoại",

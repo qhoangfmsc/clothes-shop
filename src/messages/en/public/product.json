@@ -70,7 +70,7 @@
   },
   "shipping": {
     "title": "Shipping & Returns",
-    "freeOver": "Free shipping on orders over {amount}",
+    "freeOver": "Free shipping on orders of {amount} or more",
     "free": "Free",
     "returns": "Returns"
   },
