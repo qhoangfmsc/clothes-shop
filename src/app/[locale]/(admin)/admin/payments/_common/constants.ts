@@ -28,5 +28,8 @@ export const CONFIRM_NOTE_MAX = 500;
 export const CONFIRM_REFERENCE_MAX = 64;
 export const CONFIRM_TRANSFER_CONTENT_MAX = 500;
 
+/** How often an open admin QR asks the BE whether the order got paid */
+export const QR_POLL_INTERVAL_MS = 4000;
+
 /** Orders offered in the picker */
 export const ORDER_PICKER_LIMIT = 10;

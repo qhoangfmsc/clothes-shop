@@ -5,6 +5,7 @@ import { useOrderPaymentStatusLabel } from "@/src/i18n/use-labels";
 const STYLES: Record<string, string> = {
   paid: "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]",
   unpaid: "bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]",
+  refunded: "bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]",
 };
 
 /** Paid / unpaid pill of an order (admin tables and panels) */

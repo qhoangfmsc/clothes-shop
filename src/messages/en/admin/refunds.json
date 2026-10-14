@@ -1,0 +1,106 @@
+{
+  "page": {
+    "title": "Refunds",
+    "total": "{count, plural, one {# request} other {# requests}}",
+    "orderFilter": "Order #{id}",
+    "clearOrderFilter": "Clear order filter"
+  },
+  "tabs": {
+    "REQUESTED": "To refund ({count})",
+    "COMPLETED": "Refunded",
+    "REJECTED": "Rejected",
+    "all": "All"
+  },
+  "status": {
+    "REQUESTED": "To refund",
+    "COMPLETED": "Refunded",
+    "REJECTED": "Rejected"
+  },
+  "reason": {
+    "ADMIN_CANCELLED": "Cancelled by the shop",
+    "RETURN": "Return"
+  },
+  "table": {
+    "searchPlaceholder": "Order ID, refund reference, transfer content, customer phone or name...",
+    "columns": {
+      "createdAt": "Requested",
+      "amount": "Refund amount",
+      "order": "Order & customer",
+      "source": "Money received",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "processedAt": "Processed: {date}",
+    "bankReference": "refund reference",
+    "complete": "Transferred",
+    "reject": "Reject",
+    "empty": {
+      "REQUESTED": "Nothing is waiting to be refunded.",
+      "COMPLETED": "No refunds completed yet.",
+      "REJECTED": "No refunds rejected.",
+      "filtered": "No refund requests match.",
+      "all": "No refund requests yet."
+    }
+  },
+  "source": {
+    "transferCode": "transfer content",
+    "transactionRef": "transaction reference"
+  },
+  "complete": {
+    "title": "Confirm the refund transfer",
+    "warning": "Transfer the money to the customer with your banking app first, then confirm here. The system does not move money by itself.",
+    "refundSection": "Refund",
+    "amount": "Refund amount",
+    "order": "Order",
+    "customer": "Customer",
+    "sourceSection": "Money received (refund to this source)",
+    "reference": {
+      "label": "Bank transaction reference",
+      "info": "Reference of the refund transfer, up to 64 characters, not used by another refund."
+    },
+    "note": {
+      "label": "Note",
+      "info": "Required. For example: sent back to the original account at 14:05. The customer does not see this note."
+    },
+    "errors": {
+      "reference": "Enter the bank transaction reference",
+      "note": "Enter a note"
+    },
+    "submit": "Confirm transfer",
+    "toast": {
+      "done": "Refund recorded for order #{id}",
+      "failed": "Couldn't confirm the refund"
+    }
+  },
+  "reject": {
+    "title": "Reject refund",
+    "warning": "Order #{id} will not be refunded {amount}. The customer will see that the store does not refund and is asked to contact the store.",
+    "note": {
+      "label": "Reason",
+      "info": "Required, kept for later checks. The customer does not see this reason."
+    },
+    "errors": {
+      "note": "Enter the reason"
+    },
+    "submit": "Reject refund",
+    "toast": {
+      "done": "Refund rejected for order #{id}",
+      "failed": "Couldn't reject the refund"
+    }
+  },
+  "banner": {
+    "title": "Order cancelled but not refunded",
+    "waiting": "A refund request is waiting for the shop to transfer the money back to the customer.",
+    "missing": "This order has no refund request waiting.",
+    "open": "Open Refunds",
+    "create": "Create refund request",
+    "created": "Refund request created for order #{id}",
+    "createFailed": "Couldn't create the refund request"
+  },
+  "pending": {
+    "title": "{count, plural, one {# refund waiting for a transfer} other {# refunds waiting for a transfer}}",
+    "includes": "The system does not move money itself: each one is money to give back to the customer after an order was cancelled or items were returned.",
+    "how": "Transfer the money with your banking app, then click \"Transferred\" and enter the bank reference. If you will not refund, click \"Reject\" and give the reason.",
+    "view": "Show refunds waiting"
+  }
+}

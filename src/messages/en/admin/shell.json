@@ -6,9 +6,10 @@
   "nav": {
     "dashboard": "Dashboard",
     "groups": {
-      "catalog": "Catalog",
-      "management": "Management",
-      "system": "System"
+      "orders": "Order management",
+      "audience": "Customers & Insights",
+      "catalog": "Product catalog",
+      "system": "System settings"
     },
     "items": {
       "products": "Products",
@@ -19,7 +20,16 @@
       "users": "Users",
       "analytics": "Analytics",
       "siteConfig": "Site Config",
-      "media": "Media"
+      "media": "Media",
+      "refunds": "Refunds",
+      "returns": "Returns"
+    },
+    "pending": {
+      "orders": "{count, plural, one {# order needs action} other {# orders need action}}",
+      "payments": "{count, plural, one {# transaction to reconcile} other {# transactions to reconcile}}",
+      "refunds": "{count, plural, one {# refund waiting} other {# refunds waiting}}",
+      "returns": "{count, plural, one {# return request to review} other {# return requests to review}}",
+      "overflow": "99+"
     }
   },
   "badge": "ADMIN",
@@ -47,6 +57,9 @@
     "users": "Users",
     "analytics": "Analytics",
     "site-config": "Site Config",
-    "media": "Media"
-  }
+    "media": "Media",
+    "refunds": "Refunds",
+    "returns": "Returns"
+  },
+  "pendingDot": "Work is waiting"
 }

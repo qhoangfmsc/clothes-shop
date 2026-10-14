@@ -108,7 +108,45 @@
     "attachHere": "Gắn vào đơn này",
     "transferCode": "Nội dung chuyển khoản",
     "transactionId": "Mã giao dịch",
-    "confirmCode": "Xác nhận mã này"
+    "confirmCode": "Xác nhận mã này",
+    "qr": {
+      "create": "Tạo mã QR thanh toán",
+      "creating": "Đang tạo...",
+      "alt": "Mã QR thanh toán của đơn",
+      "bank": "Ngân hàng",
+      "accountName": "Chủ tài khoản",
+      "accountNumber": "Số tài khoản",
+      "transferContent": "Nội dung chuyển khoản",
+      "waiting": "Đang chờ khách chuyển khoản. Mã hết hạn lúc {date}.",
+      "waitingNoExpiry": "Đang chờ khách chuyển khoản.",
+      "expired": "Mã đã hết hạn. Tạo mã mới nếu khách chưa chuyển khoản.",
+      "paid": "Đã nhận tiền",
+      "superseded": "Mã cũ đã hết hạn: {codes}. Nếu khách đã chuyển khoản theo mã cũ thì cần xác nhận thủ công.",
+      "confirm": {
+        "title": "Tạo mã QR mới",
+        "message": "Mã hiện tại sẽ hết hạn ngay. Nếu khách đã chuyển khoản theo mã cũ thì cần xác nhận thủ công.",
+        "confirm": "Tạo mã mới"
+      },
+      "toast": {
+        "created": "Đã tạo mã QR thanh toán",
+        "failed": "Không thể tạo mã QR"
+      },
+      "present": {
+        "open": "Hiển thị cho khách",
+        "close": "Đóng",
+        "title": "Mã QR thanh toán",
+        "alt": "Mã QR thanh toán",
+        "scan": "Quét mã bằng app ngân hàng để thanh toán",
+        "amount": "Số tiền",
+        "bank": "Ngân hàng",
+        "accountName": "Chủ tài khoản",
+        "accountNumber": "Số tài khoản",
+        "transferContent": "Nội dung chuyển khoản",
+        "expires": "Mã hết hạn lúc {date}",
+        "paid": "Đã nhận tiền",
+        "thanks": "Cảm ơn bạn đã thanh toán!"
+      }
+    }
   },
   "lookup": {
     "tab": "Tra nội dung chuyển khoản",
@@ -122,12 +160,25 @@
       "status": "Trạng thái",
       "order": "Đơn & khách",
       "transactions": "Giao dịch ngân hàng",
-      "actions": "Thao tác"
+      "actions": "Thao tác",
+      "createdBy": "Người tạo"
     },
     "createdAt": "Tạo: {date}",
     "expiresAt": "Hạn: {date}",
     "paidAt": "Trả: {date}",
     "noTransactions": "Chưa có tiền về mã này",
-    "confirmPaid": "Xác nhận đã thanh toán"
+    "confirmPaid": "Xác nhận đã thanh toán",
+    "createdBy": {
+      "admin": "Admin",
+      "customer": "Khách"
+    }
+  },
+  "pending": {
+    "title": "{count, plural, other {# giao dịch cần đối soát}}",
+    "includes": "Tiền đã vào tài khoản nhưng hệ thống chưa tự gắn được vào đơn: không tìm thấy mã đơn, sai số tiền, tiền đến sau khi mã đã hết hạn, hoặc mã đã bị hủy.",
+    "excludes": "Giao dịch đã gắn vào đơn, đã khớp tự động, trả trùng hoặc tiền ra không nằm trong số này.",
+    "how": "Mở giao dịch, đối chiếu sao kê rồi gắn vào đúng đơn bằng \"Gắn vào đơn\". Nếu khách chuyển lệch tiền mà shop chấp nhận thì xác nhận chấp nhận lệch khi được hỏi.",
+    "note": "Tiền chuyển nhầm, không liên quan đơn nào, sẽ ở lại trong số này cho tới khi được gắn vào một đơn.",
+    "view": "Xem giao dịch cần đối soát"
   }
 }

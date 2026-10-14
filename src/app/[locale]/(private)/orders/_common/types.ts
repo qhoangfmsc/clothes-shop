@@ -24,13 +24,32 @@ export interface OrderPaymentAttempt {
   transactionRef: string | null;
 }
 
+/** Money the shop owes back after a paid order was cancelled. No admin note or name is ever sent to the shopper. */
+export interface OrderRefund {
+  /** VND */
+  amount: number;
+  /** `REQUESTED` = recorded, the shop has yet to transfer; `REJECTED` = the shop will not refund */
+  status: "REQUESTED" | "COMPLETED" | "REJECTED";
+  reason: string;
+  createdAt: string;
+  processedAt: string | null;
+  /** Bank reference of the refund transfer, once `COMPLETED` */
+  bankReference: string | null;
+  /** The return request this refund came from (`reason = RETURN`), else `null` */
+  returnId: string | null;
+}
+
 export interface Order {
   id: string;
   status: string;
   /** Delivery `status` is separate: this says whether the money arrived */
-  paymentStatus: "unpaid" | "paid";
+  paymentStatus: "unpaid" | "paid" | "refunded";
   paidAt: string | null;
+  /** When the order reached the customer; starts the return window. `null` before delivery. */
+  deliveredAt?: string | null;
   paymentAttempts?: OrderPaymentAttempt[];
+  /** Newest first, `[]` when none */
+  refunds?: OrderRefund[];
   subtotal: number;
   shippingFee: number;
   total: number;

@@ -72,6 +72,12 @@ export default function AttemptsTable() {
         render: (a) => <span className="font-semibold whitespace-nowrap">{format.number(a.amount, "vnd")}</span>,
       },
       {
+        key: "createdBy",
+        header: t("columns.createdBy"),
+        hideBelow: "md",
+        render: (a) => <span className="text-xs text-[var(--text-secondary)]">{a.createdBy ? t("createdBy.admin") : t("createdBy.customer")}</span>,
+      },
+      {
         key: "status",
         header: t("columns.status"),
         render: (a) => (

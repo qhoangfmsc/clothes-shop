@@ -6,9 +6,10 @@
   "nav": {
     "dashboard": "Tổng quan",
     "groups": {
+      "orders": "Quản lý đơn hàng",
+      "audience": "Khách hàng & Thống kê",
       "catalog": "Danh mục sản phẩm",
-      "management": "Quản lý",
-      "system": "Hệ thống"
+      "system": "Cấu hình hệ thống"
     },
     "items": {
       "products": "Sản phẩm",
@@ -19,7 +20,16 @@
       "users": "Người dùng",
       "analytics": "Phân tích truy cập",
       "siteConfig": "Cấu hình website",
-      "media": "Thư viện media"
+      "media": "Thư viện media",
+      "refunds": "Hoàn tiền",
+      "returns": "Trả hàng"
+    },
+    "pending": {
+      "orders": "{count, plural, other {# đơn cần xử lý}}",
+      "payments": "{count, plural, other {# giao dịch cần đối soát}}",
+      "refunds": "{count, plural, other {# khoản chờ hoàn}}",
+      "returns": "{count, plural, other {# yêu cầu chờ duyệt}}",
+      "overflow": "99+"
     }
   },
   "badge": "QUẢN TRỊ",
@@ -47,6 +57,9 @@
     "users": "Người dùng",
     "analytics": "Phân tích",
     "site-config": "Cấu hình website",
-    "media": "Thư viện media"
-  }
+    "media": "Thư viện media",
+    "refunds": "Hoàn tiền",
+    "returns": "Trả hàng"
+  },
+  "pendingDot": "Có việc cần xử lý"
 }

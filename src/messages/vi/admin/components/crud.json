@@ -20,6 +20,10 @@
     "amountDesc": "Số tiền ↓",
     "amountAsc": "Số tiền ↑",
     "expiryDesc": "Hết hạn (muộn nhất)",
-    "expiryAsc": "Hết hạn (sớm nhất)"
+    "expiryAsc": "Hết hạn (sớm nhất)",
+    "processedDesc": "Xử lý (mới nhất)",
+    "processedAsc": "Xử lý (cũ nhất)",
+    "updatedDesc": "Cập nhật (mới nhất)",
+    "updatedAsc": "Cập nhật (cũ nhất)"
   }
 }

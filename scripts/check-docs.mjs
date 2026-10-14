@@ -43,7 +43,7 @@ const MODULES = [
   ] },
   { doc: "platform/auth", paths: [
     `${L}(auth)/`, "src/contexts/", "src/lib/auth-api.ts", "src/lib/permissions.ts",
-    "src/lib/system-password.ts", "src/lib/system-password-session.ts",
+    "src/lib/system-password.ts", "src/lib/system-password-session.ts", "src/lib/admin-events.ts",
     "src/hooks/use-api-auth.ts", "src/hooks/use-auth-action.ts",
     `${COMP}RoleGuard.tsx`, `${COMP}LoginPromptModal.tsx`, `${COMP}UnauthenticatedState.tsx`,
     `${COMP}SystemPasswordPrompt.tsx`, `${COMP}AdminPasswordGate.tsx`,
@@ -59,7 +59,7 @@ const MODULES = [
     `${COMP}DataTable.tsx`, `${COMP}AdminFormKit.tsx`, `${COMP}Toast.tsx`, `${COMP}ConfirmDialog.tsx`,
     `${COMP}Carousel.tsx`, `${COMP}CarouselControls.tsx`, `${COMP}ImageUrlField.tsx`, `${COMP}ImageListField.tsx`,
     `${COMP}ImagePreviewLightbox.tsx`, `${COMP}ResponsiveBannerImage.tsx`, `${COMP}BannerFade.tsx`,
-    `${COMP}Checkbox.tsx`, `${COMP}CopyButton.tsx`, `${COMP}JsonLd.tsx`, `${COMP}OrderDetailPanel.tsx`, `${COMP}OrderPaymentBadge.tsx`, `${COMP}ProductBagButton.tsx`,
+    `${COMP}Checkbox.tsx`, `${COMP}CopyButton.tsx`, `${COMP}JsonLd.tsx`, `${COMP}PendingActionNotice.tsx`, `${COMP}OrderDetailPanel.tsx`, `${COMP}OrderPaymentBadge.tsx`, `${COMP}ProductBagButton.tsx`,
     "src/hooks/use-sort-options.ts", "src/hooks/use-auto-advance.ts", "src/hooks/use-banner-rotation.ts",
     "src/hooks/useMediaQuery.ts", "src/lib/product-badge.ts", "src/lib/product-purchase.ts",
   ] },
@@ -72,7 +72,7 @@ const MODULES = [
   ] },
 
   /* ── Admin ── */
-  { doc: "admin/admin-shell", paths: [`${L}(admin)/layout.tsx`, `${L}(admin)/AdminLayoutClient.tsx`] },
+  { doc: "admin/admin-shell", paths: [`${L}(admin)/layout.tsx`, `${L}(admin)/AdminLayoutClient.tsx`, `${COMP}PendingCountsProvider.tsx`] },
   { doc: "admin/dashboard", paths: [`${ADMIN}page.tsx`, `${ADMIN}DashboardContent.tsx`, `${ADMIN}_components/`] },
   { doc: "admin/analytics", paths: [
     `${ADMIN}analytics/`, "src/app/api/analytics/", "src/hooks/use-admin-analytics.ts",
@@ -83,6 +83,8 @@ const MODULES = [
   { doc: "admin/collections", paths: [`${ADMIN}collections/`] },
   { doc: "admin/orders", paths: [`${ADMIN}orders/`] },
   { doc: "admin/payments", paths: [`${ADMIN}payments/`] },
+  { doc: "admin/refunds", paths: [`${ADMIN}refunds/`] },
+  { doc: "admin/returns", paths: [`${ADMIN}returns/`] },
   { doc: "admin/users", paths: [`${ADMIN}users/`] },
   { doc: "admin/media", paths: [`${ADMIN}media/`] },
   { doc: "admin/site-config", paths: [`${ADMIN}site-config/`] },
@@ -102,6 +104,7 @@ const MODULES = [
   { doc: "storefront/wishlist", paths: [`${PRIVATE}wishlist/`] },
   { doc: "storefront/checkout", paths: [`${PRIVATE}checkout/`] },
   { doc: "storefront/customer-orders", paths: [`${PRIVATE}orders/`] },
+  { doc: "storefront/customer-returns", paths: [`${PRIVATE}returns/`] },
   { doc: "storefront/account", paths: [`${PRIVATE}account/`] },
 ];
 

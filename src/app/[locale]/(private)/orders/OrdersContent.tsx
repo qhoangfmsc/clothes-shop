@@ -101,9 +101,17 @@ export default function OrdersContent() {
             <ArrowLeft size={16} />
             {t("back")}
           </Link>
-          <h1 className="m-0 font-display font-normal text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
-            {t("title")}
-          </h1>
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+            <h1 className="m-0 font-display font-normal text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
+              {t("title")}
+            </h1>
+            <Link
+              href="/returns"
+              className="inline-flex items-center min-h-11 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium hover:underline"
+            >
+              {t("returnsLink")}
+            </Link>
+          </div>
         </motion.div>
 
         {isLoading ? (

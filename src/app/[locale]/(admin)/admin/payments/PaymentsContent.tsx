@@ -2,7 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { Link } from "@/src/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { Plus } from "lucide-react";
 import { FormTabs } from "@/src/app/[locale]/_components/AdminFormKit";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
@@ -12,6 +13,8 @@ import {
   type DataTableFetchParams,
   type DataTableRef,
 } from "@/src/app/[locale]/_components/DataTable";
+import PendingActionNotice from "@/src/app/[locale]/_components/PendingActionNotice";
+import { usePendingCounts } from "@/src/app/[locale]/_components/PendingCountsProvider";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
 import { useSortOptions } from "@/src/hooks/use-sort-options";
 import { PERMISSIONS } from "@/src/lib/permissions";
@@ -41,7 +44,17 @@ export default function PaymentsContent() {
   const tableRef = useRef<DataTableRef>(null);
   const total = useAppSelector((s) => s.payments.total);
   const attemptsTotal = useAppSelector((s) => s.payments.attemptsTotal);
-  const [view, setView] = useState<"codes" | "transactions">("codes");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { counts } = usePendingCounts();
+  /* `?needsReview=true` = only the transactions the menu badge counts; they live in the transactions tab */
+  const needsReview = searchParams.get("needsReview") === "true";
+  const [chosenView, setChosenView] = useState<"codes" | "transactions">("codes");
+  const view = needsReview ? "transactions" : chosenView;
+  const setNeedsReview = (on: boolean) => {
+    if (on) setChosenView("transactions");
+    router.replace(on ? "/admin/payments?needsReview=true" : "/admin/payments", { scroll: false });
+  };
 
   /* `{}` = record a transaction by hand; with `transaction` = attach that one to an order */
   const [confirming, setConfirming] = useState<{ transaction?: PaymentTransaction } | null>(null);
@@ -51,6 +64,7 @@ export default function PaymentsContent() {
       fetchPaymentTransactions({
         search: params.search || undefined,
         verificationStatus: (params.filters.verificationStatus || undefined) as PaymentVerificationStatus | undefined,
+        needsReview,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -156,19 +170,38 @@ export default function PaymentsContent() {
         </RoleGuard>
       </div>
 
+      <PendingActionNotice
+        count={counts.payments}
+        title={t("pending.title", { count: counts.payments ?? 0 })}
+        includes={t("pending.includes")}
+        excludes={t("pending.excludes")}
+        how={t("pending.how")}
+        note={t("pending.note")}
+        active={needsReview}
+        viewLabel={t("pending.view")}
+        keepWhenDone
+        onToggle={() => setNeedsReview(!needsReview)}
+      />
+
       <FormTabs
         tabs={[
           { id: "codes", label: t("lookup.tab") },
           { id: "transactions", label: t("lookup.transactionsTab") },
         ]}
         active={view}
-        onChange={(id) => setView(id as "codes" | "transactions")}
+        onChange={(id) => {
+          setChosenView(id as "codes" | "transactions");
+          /* Leaving the transactions tab drops the filter: it only applies there */
+          if (needsReview) router.replace("/admin/payments", { scroll: false });
+        }}
       />
 
       {view === "codes" ? (
         <AttemptsTable />
       ) : (
       <DataTable<PaymentTransaction>
+        /* Turning the filter on or off is another query: start the table fresh */
+        key={needsReview ? "needs-review" : "all"}
         tableRef={tableRef}
         columns={columns}
         fetchData={fetchTransactions}

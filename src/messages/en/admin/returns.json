@@ -1,0 +1,152 @@
+{
+  "page": {
+    "title": "Returns",
+    "total": "{count, plural, one {# request} other {# requests}}",
+    "orderFilter": "Order #{id}",
+    "clearOrderFilter": "Clear order filter"
+  },
+  "tabs": {
+    "REQUESTED": "To review ({count})",
+    "APPROVED": "Approved",
+    "RECEIVED": "Received",
+    "REFUNDED": "Refunded",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled",
+    "all": "All"
+  },
+  "status": {
+    "REQUESTED": "To review",
+    "APPROVED": "Approved",
+    "RECEIVED": "Received",
+    "REFUNDED": "Refunded",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled"
+  },
+  "reason": {
+    "WRONG_SIZE": "Wrong size",
+    "CHANGED_MIND": "Changed mind",
+    "DEFECTIVE": "Defective item",
+    "WRONG_ITEM": "Wrong item sent",
+    "OTHER": "Other"
+  },
+  "table": {
+    "searchPlaceholder": "Return ID, order ID, customer phone or name...",
+    "columns": {
+      "id": "Return ID",
+      "order": "Order & customer",
+      "reason": "Reason",
+      "status": "Status",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "view": "View",
+    "empty": {
+      "none": "No return requests yet.",
+      "filtered": "No return requests match."
+    }
+  },
+  "detail": {
+    "title": "Return request #{id}",
+    "refund": {
+      "expected": "Refund amount",
+      "reference": "Refund reference: {ref}",
+      "referenceLabel": "refund reference",
+      "withShipping": "Includes the shipping fee.",
+      "open": "Open Refunds to transfer the money"
+    },
+    "request": {
+      "section": "Request",
+      "status": "Status",
+      "createdAt": "Sent",
+      "reason": "Reason",
+      "note": "Customer's note",
+      "adminNote": "Reply to the customer",
+      "approvedAt": "Approved",
+      "receivedAt": "Received"
+    },
+    "order": {
+      "section": "Order",
+      "id": "Order",
+      "customer": "Customer",
+      "total": "Order total",
+      "shippingFee": "Shipping fee",
+      "deliveredAt": "Delivered",
+      "payment": "Payment"
+    },
+    "items": {
+      "section": "Items to return",
+      "asked": "Customer returns {quantity}",
+      "accepted": "Accepted {quantity}"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "receive": "Received"
+    }
+  },
+  "approve": {
+    "title": "Approve return request",
+    "warning": "The customer may now send the items back. The shipping instructions below are shown to the customer.",
+    "note": {
+      "label": "Shipping instructions",
+      "info": "Optional. For example the address, the recipient, how to pack. The customer sees this."
+    },
+    "submit": "Approve request",
+    "toast": {
+      "done": "Request #{id} approved",
+      "failed": "Couldn't approve the request"
+    }
+  },
+  "reject": {
+    "title": "Reject return request",
+    "warning": "The request is rejected before the items arrive. The customer sees the reason below.",
+    "note": {
+      "label": "Reason",
+      "info": "Required. The customer sees this reason."
+    },
+    "errors": {
+      "note": "Enter the reason"
+    },
+    "submit": "Reject request",
+    "toast": {
+      "done": "Request #{id} rejected",
+      "failed": "Couldn't reject the request"
+    }
+  },
+  "receive": {
+    "title": "Confirm the items arrived",
+    "warning": "Check the items, then enter how many of each line you accept. The refund amount is computed from this and a refund is created in Refunds.",
+    "items": {
+      "section": "Accepted quantities",
+      "asked": "customer returns {quantity}",
+      "accepted": "Accepted quantity of {name}"
+    },
+    "shipping": {
+      "label": "Also refund the shipping fee",
+      "info": "The shipping fee of an order can be refunded only once."
+    },
+    "note": {
+      "label": "Note for the customer",
+      "info": "Optional. Replaces the earlier reply if there is one. The customer sees this."
+    },
+    "errors": {
+      "invalid": "Quantities must be whole numbers from 0 up to what the customer asked to return",
+      "allZero": "Accept at least one item. If nothing is acceptable, use \"Reject\" instead."
+    },
+    "submit": "Confirm items received",
+    "toast": {
+      "done": "Items of request #{id} received",
+      "doneWithAmount": "Items of request #{id} received. Refund: {amount}",
+      "failed": "Couldn't confirm the items"
+    }
+  },
+  "pending": {
+    "title": "{count, plural, one {# return request to review} other {# return requests to review}}",
+    "includes": "Return requests customers just sent that are not yet approved or rejected.",
+    "excludes": "Approved requests waiting for the customer to ship the items are not counted. When the items arrive, open that request and click \"Received\".",
+    "how": "Read the customer's reason and note, then approve (with shipping instructions) or reject (with a reason).",
+    "view": "Show requests to review",
+    "approvedLine": "Approved requests waiting for the items",
+    "approvedView": "Show requests waiting for items"
+  }
+}

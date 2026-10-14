@@ -1,6 +1,6 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
 > **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/list-query.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
@@ -81,7 +81,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.6 Redux store (`src/store/`)
 
-- `store/index.ts` gộp reducer của từng module: admin (`products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`) và client (`cart`, `wishlist`). Slice nằm trong `_common/moduleSlice.ts` của từng module (quy tắc module-first).
+- `store/index.ts` gộp reducer của từng module: admin (`products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`) và client (`cart`, `wishlist`). Slice nằm trong `_common/moduleSlice.ts` của từng module (quy tắc module-first).
 - `baseSlice.ts`: `BaseCrudState` (`isCreating`, `isUpdating`, `isDeleting`, `error`) + `baseCrudReducers` (`create/update/deleteStart|Success|Error`, `clearError`). Slice admin spread vào, thêm `items/total/page/limit/isListLoading` và các `extraReducers` cho thunk.
 - Hooks có kiểu: `useAppDispatch`, `useAppSelector` (`store/hooks.ts`). `StoreProvider` bọc app trong `Providers`.
 - Persist: `store.subscribe` ghi `localStorage` mỗi khi đổi `cart.items` (`doovan-cart`, dạng `{state:{items},version:0}`), `cart.deselectedKeys` (`doovan-cart-selection`) và `wishlist.items` (`doovan-wishlist`). Lỗi quota bị nuốt.

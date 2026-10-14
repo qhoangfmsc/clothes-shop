@@ -20,6 +20,10 @@
     "amountDesc": "Amount ↓",
     "amountAsc": "Amount ↑",
     "expiryDesc": "Expiry (latest)",
-    "expiryAsc": "Expiry (earliest)"
+    "expiryAsc": "Expiry (earliest)",
+    "processedDesc": "Processed (latest)",
+    "processedAsc": "Processed (oldest)",
+    "updatedDesc": "Updated (latest)",
+    "updatedAsc": "Updated (oldest)"
   }
 }

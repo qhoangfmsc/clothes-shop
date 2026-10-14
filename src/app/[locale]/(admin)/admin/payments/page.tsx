@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import PaymentsContent from "./PaymentsContent";
 
 export default function AdminPaymentsPage() {
-  return <PaymentsContent />;
+  return (
+    <Suspense>
+      <PaymentsContent />
+    </Suspense>
+  );
 }

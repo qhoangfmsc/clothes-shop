@@ -19,12 +19,15 @@ import {
   X,
   BarChart3,
   Landmark,
+  Undo2,
+  PackageX,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { AdminGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import { AdminPasswordGate } from "@/src/app/[locale]/_components/AdminPasswordGate";
 import { hasPermission, PERMISSIONS, type Permission } from "@/src/lib/permissions";
+import { PendingCountsProvider, usePendingCounts, type PendingCountKey } from "@/src/app/[locale]/_components/PendingCountsProvider";
 import { useRoleLabel } from "@/src/i18n/use-labels";
 
 /* ── Sidebar nav grouped by domain ── */
@@ -38,18 +41,71 @@ interface NavItem {
     | "users"
     | "analytics"
     | "payments"
+    | "refunds"
+    | "returns"
     | "siteConfig"
     | "media";
   icon: LucideIcon;
   permission?: Permission;
+  /** Which "work waiting" count this item shows as a badge */
+  pending?: PendingCountKey;
 }
 
 interface NavGroup {
-  key: "catalog" | "management" | "system";
+  key: "orders" | "audience" | "catalog" | "system";
   items: NavItem[];
 }
 
 const NAV_GROUPS: NavGroup[] = [
+  {
+    key: "orders",
+    items: [
+      {
+        href: "/admin/orders",
+        key: "orders",
+        icon: ShoppingBag,
+        permission: PERMISSIONS.ORDER_ADMIN_VIEW,
+        pending: "orders",
+      },
+      {
+        href: "/admin/payments",
+        key: "payments",
+        icon: Landmark,
+        permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,
+        pending: "payments",
+      },
+      {
+        href: "/admin/returns",
+        key: "returns",
+        icon: PackageX,
+        permission: PERMISSIONS.RETURN_ADMIN_VIEW,
+        pending: "returns",
+      },
+      {
+        href: "/admin/refunds",
+        key: "refunds",
+        icon: Undo2,
+        permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,
+        pending: "refunds",
+      },
+    ],
+  },
+  {
+    key: "audience",
+    items: [
+      {
+        href: "/admin/users",
+        key: "users",
+        icon: Users,
+        permission: PERMISSIONS.USER_ADMIN_VIEW,
+      },
+      {
+        href: "/admin/analytics",
+        key: "analytics",
+        icon: BarChart3,
+      },
+    ],
+  },
   {
     key: "catalog",
     items: [
@@ -70,34 +126,6 @@ const NAV_GROUPS: NavGroup[] = [
         key: "collections",
         icon: Layers,
         permission: PERMISSIONS.COLLECTION_VIEW,
-      },
-    ],
-  },
-  {
-    key: "management",
-    items: [
-      {
-        href: "/admin/orders",
-        key: "orders",
-        icon: ShoppingBag,
-        permission: PERMISSIONS.ORDER_ADMIN_VIEW,
-      },
-      {
-        href: "/admin/payments",
-        key: "payments",
-        icon: Landmark,
-        permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,
-      },
-      {
-        href: "/admin/users",
-        key: "users",
-        icon: Users,
-        permission: PERMISSIONS.USER_ADMIN_VIEW,
-      },
-      {
-        href: "/admin/analytics",
-        key: "analytics",
-        icon: BarChart3,
       },
     ],
   },
@@ -180,6 +208,8 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
     >
       {routeAllowed ? (
         <AdminPasswordGate>
+          {/* Inside the gate: nothing is asked of the BE before the system password was given */}
+          <PendingCountsProvider>
           <div className="flex h-dvh overflow-hidden bg-[var(--bg-primary)]">
             {/* Backdrop behind the drawer (below lg only) */}
             <div
@@ -254,7 +284,8 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
                           }`}
                         >
                           <Icon size={16} className="opacity-70 shrink-0" />
-                          <span>{t(`nav.items.${item.key}`)}</span>
+                          <span className="flex-1 min-w-0">{t(`nav.items.${item.key}`)}</span>
+                          {item.pending && <PendingBadge pendingKey={item.pending} />}
                         </Link>
                       );
                     })}
@@ -299,13 +330,14 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
                 <button
                   ref={menuButtonRef}
                   type="button"
-                  className="lg:hidden flex items-center justify-center size-11 -ml-2 shrink-0 bg-transparent border-none text-[var(--text-primary)] cursor-pointer"
+                  className="relative lg:hidden flex items-center justify-center size-11 -ml-2 shrink-0 bg-transparent border-none text-[var(--text-primary)] cursor-pointer"
                   aria-label={t("menu")}
                   aria-expanded={menuOpen}
                   aria-controls="admin-sidebar"
                   onClick={() => setMenuPath(pathname)}
                 >
                   <Menu size={20} />
+                  <PendingMenuDot />
                 </button>
                 <div className="flex min-w-0 items-center gap-0 overflow-x-auto whitespace-nowrap [scrollbar-width:none] text-xs text-[var(--text-muted)] font-primary">
                   {pathname
@@ -337,11 +369,51 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
               <div className="p-4 sm:p-6 lg:p-[var(--space-8)] flex-1 min-h-0 overflow-y-auto">{children}</div>
             </main>
           </div>
+          </PendingCountsProvider>
         </AdminPasswordGate>
       ) : (
         <AccessDeniedScreen title={t("denied.route.title")} message={t("denied.route.message")} />
       )}
     </AdminGuard>
+  );
+}
+
+/** "3" at the end of a menu item: how much work waits there. Soft gold on purpose: a to-do, not an alarm. */
+function PendingBadge({ pendingKey }: { pendingKey: PendingCountKey }) {
+  const t = useTranslations("admin.shell.nav.pending");
+  const { counts } = usePendingCounts();
+  const count = counts[pendingKey];
+  if (!count) return null;
+  const text = t(pendingKey, { count });
+  return (
+    <>
+      {/* Visible label for sighted users (hover, long-press where the browser supports it); the hidden text is what a screen reader reads */}
+      <span
+        aria-hidden="true"
+        title={text}
+        className="shrink-0 min-w-5 h-5 px-1.5 rounded-full bg-[rgba(201,169,110,0.25)] text-[var(--accent-primary)] text-[11px] font-bold leading-5 text-center"
+      >
+        {count > 99 ? t("overflow") : count}
+      </span>
+      <span className="sr-only">{text}</span>
+    </>
+  );
+}
+
+/** A dot on the mobile menu button while any menu item has work waiting (the drawer hides the badges) */
+function PendingMenuDot() {
+  const t = useTranslations("admin.shell");
+  const { counts } = usePendingCounts();
+  const waiting = Object.values(counts).some((count) => count > 0);
+  if (!waiting) return null;
+  return (
+    <>
+      <span
+        aria-hidden="true"
+        className="absolute top-2 right-2 size-2.5 rounded-full bg-[var(--accent-primary)] border-2 border-[var(--bg-primary)]"
+      />
+      <span className="sr-only">{t("pendingDot")}</span>
+    </>
   );
 }
 

@@ -41,7 +41,7 @@ export const ORDER_STATUSES = [
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 /** Payment state of an order, separate from its delivery `status` */
-export const ORDER_PAYMENT_STATUSES = ["unpaid", "paid"] as const;
+export const ORDER_PAYMENT_STATUSES = ["unpaid", "paid", "refunded"] as const;
 export type OrderPaymentStatus = (typeof ORDER_PAYMENT_STATUSES)[number];
 
 /** Statuses an order can move to from each status. `completed` / `cancelled` are final. */

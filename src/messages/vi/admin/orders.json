@@ -33,7 +33,14 @@
   },
   "confirmCancelPaid": {
     "title": "Hủy đơn đã thanh toán",
-    "message": "Đơn #{id} đã được thanh toán. Hủy đơn không hoàn tiền tự động: bạn cần hoàn tiền cho khách bên ngoài hệ thống. Vẫn hủy?",
+    "message": "Đơn #{id} đã được thanh toán, hệ thống sẽ tạo yêu cầu hoàn tiền. Bạn sẽ chuyển khoản trả khách ở màn Hoàn tiền.",
     "confirm": "Vẫn hủy đơn"
+  },
+  "pending": {
+    "title": "{count, plural, other {# đơn cần xử lý}}",
+    "includes": "Gồm: đơn mới chờ xác nhận mà khách chưa có mã QR còn hạn (chưa chọn trả tiền, hoặc mã đã hết hạn), và đơn đã xác nhận hoặc đã thanh toán đang chờ chuyển sang giao hàng.",
+    "excludes": "Không gồm: đơn khách đang chuyển khoản (có mã QR còn hạn), đang giao, đã giao, hoàn tất, đã hủy. Vì vậy tổng số đơn đang chờ có thể lớn hơn số này.",
+    "how": "Mở đơn, xác nhận và chuyển sang \"Đang giao\". Đơn chưa trả để quá lâu thì liên hệ khách hoặc hủy đơn.",
+    "view": "Xem đơn cần xử lý"
   }
 }

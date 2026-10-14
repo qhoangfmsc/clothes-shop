@@ -33,7 +33,14 @@
   },
   "confirmCancelPaid": {
     "title": "Cancel a paid order",
-    "message": "Order #{id} has been paid. Cancelling does not refund automatically: you must refund the customer outside the system. Cancel anyway?",
+    "message": "Order #{id} is paid, so the system will create a refund request. You transfer the money back from the Refunds page.",
     "confirm": "Cancel anyway"
+  },
+  "pending": {
+    "title": "{count, plural, one {# order needs action} other {# orders need action}}",
+    "includes": "Includes: new orders waiting for confirmation whose customer has no live QR code (did not choose to pay, or the code expired), and confirmed or paid orders waiting to be shipped.",
+    "excludes": "Excludes: orders whose customer is transferring right now (live QR code), shipping, delivered, completed or cancelled. So the total of waiting orders can be larger than this number.",
+    "how": "Open the order, confirm it and move it to \"Shipping\". If an unpaid order sits too long, contact the customer or cancel it.",
+    "view": "Show orders needing action"
   }
 }

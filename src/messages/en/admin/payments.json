@@ -108,7 +108,45 @@
     "attachHere": "Attach to this order",
     "transferCode": "Transfer content",
     "transactionId": "Transaction ID",
-    "confirmCode": "Confirm this code"
+    "confirmCode": "Confirm this code",
+    "qr": {
+      "create": "Create payment QR",
+      "creating": "Creating...",
+      "alt": "Payment QR code of the order",
+      "bank": "Bank",
+      "accountName": "Account name",
+      "accountNumber": "Account number",
+      "transferContent": "Transfer content",
+      "waiting": "Waiting for the customer's transfer. The code expires {date}.",
+      "waitingNoExpiry": "Waiting for the customer's transfer.",
+      "expired": "This code has expired. Create a new one if the customer has not paid yet.",
+      "paid": "Payment received",
+      "superseded": "Earlier code expired: {codes}. If the customer already paid with an old code, confirm it manually.",
+      "confirm": {
+        "title": "Create a new QR",
+        "message": "The current code expires immediately. If the customer already transferred with the old code, confirm it manually.",
+        "confirm": "Create new code"
+      },
+      "toast": {
+        "created": "Payment QR created",
+        "failed": "Couldn't create the QR"
+      },
+      "present": {
+        "open": "Show to customer",
+        "close": "Close",
+        "title": "Payment QR code",
+        "alt": "Payment QR code",
+        "scan": "Scan with your banking app to pay",
+        "amount": "Amount",
+        "bank": "Bank",
+        "accountName": "Account name",
+        "accountNumber": "Account number",
+        "transferContent": "Transfer content",
+        "expires": "Code expires {date}",
+        "paid": "Payment received",
+        "thanks": "Thank you for your payment!"
+      }
+    }
   },
   "lookup": {
     "tab": "Transfer content lookup",
@@ -122,12 +160,25 @@
       "status": "Status",
       "order": "Order & customer",
       "transactions": "Bank transactions",
-      "actions": "Actions"
+      "actions": "Actions",
+      "createdBy": "Created by"
     },
     "createdAt": "Created: {date}",
     "expiresAt": "Expires: {date}",
     "paidAt": "Paid: {date}",
     "noTransactions": "No money received for this code",
-    "confirmPaid": "Confirm as paid"
+    "confirmPaid": "Confirm as paid",
+    "createdBy": {
+      "admin": "Admin",
+      "customer": "Customer"
+    }
+  },
+  "pending": {
+    "title": "{count, plural, one {# transaction to reconcile} other {# transactions to reconcile}}",
+    "includes": "Money arrived in the account but the system could not match it to an order: no order code found, wrong amount, paid after the code expired, or the code was cancelled.",
+    "excludes": "Transactions already attached to an order, matched automatically, duplicate payments and outgoing money are not counted.",
+    "how": "Open the transaction, check the bank statement, then attach it to the right order with \"Attach to order\". If the customer paid a different amount and the shop accepts it, confirm the mismatch when asked.",
+    "note": "Money sent by mistake, unrelated to any order, stays in this number until it is attached to an order.",
+    "view": "Show transactions to reconcile"
   }
 }

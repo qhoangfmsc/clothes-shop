@@ -52,6 +52,8 @@ export interface PaymentAttempt {
   expiresAt: string;
   paidAt: string | null;
   createdAt: string;
+  /** The admin who generated the code; `null` when the customer did */
+  createdBy: string | null;
   order?: PaymentOrderSummary;
 }
 
@@ -101,6 +103,8 @@ export interface PaymentAttemptRow {
   createdAt: string;
   expiresAt: string;
   paidAt: string | null;
+  /** The admin who generated the code; `null` when the customer did */
+  createdBy: string | null;
   order: PaymentOrderSummary & {
     customer: { fullName: string | null; phone: string | null } | null;
   };
@@ -127,6 +131,8 @@ export interface AttemptListResult {
 export interface PaymentListParams extends ListParams {
   verificationStatus?: PaymentVerificationStatus;
   orderId?: string;
+  /** Only the transactions an admin still has to match to an order (the rows the menu badge counts) */
+  needsReview?: boolean;
 }
 
 export interface PaymentListResult {
@@ -155,6 +161,23 @@ export type ConfirmPaymentInput = {
       transferContent?: string;
     }
 );
+
+/** `POST /api/admin/payments/orders/:orderId/qr`: the new session, in the same shape the customer's QR page gets */
+export interface AdminQrSession {
+  orderId: string;
+  paymentId: string;
+  qrUrl: string;
+  /** VND */
+  amount: number;
+  bankName: string;
+  accountNumber: string;
+  accountName: string;
+  transferContent: string;
+  status: string;
+  expiresAt: string | null;
+  /** Codes of the earlier pending sessions this one replaced (they expired at once) */
+  supersededTransferCodes: string[];
+}
 
 /** An unpaid order offered when attaching a transaction */
 export interface UnpaidOrderOption {

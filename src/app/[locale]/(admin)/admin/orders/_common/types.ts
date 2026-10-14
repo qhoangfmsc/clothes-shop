@@ -9,6 +9,8 @@ import type { ListParams } from "@/src/lib/list-query";
 export interface OrderListParams extends ListParams {
   status?: OrderStatus;
   paymentStatus?: OrderPaymentStatus;
+  /** Only the orders an admin still has to act on (the rows the menu badge counts) */
+  needsAction?: boolean;
 }
 
 export interface OrderListResult {

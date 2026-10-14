@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "Yêu cầu trả hàng",
+    "description": "Theo dõi các yêu cầu trả hàng của bạn."
+  },
+  "status": {
+    "REQUESTED": "Chờ duyệt",
+    "APPROVED": "Đã duyệt, gửi hàng về",
+    "RECEIVED": "Shop đã nhận hàng",
+    "REFUNDED": "Đã hoàn tiền",
+    "REJECTED": "Bị từ chối",
+    "CANCELLED": "Đã hủy",
+    "progress": "Tiến trình trả hàng"
+  },
+  "reason": {
+    "WRONG_SIZE": "Sai size",
+    "CHANGED_MIND": "Đổi ý",
+    "DEFECTIVE": "Hàng lỗi",
+    "WRONG_ITEM": "Giao sai hàng",
+    "OTHER": "Lý do khác"
+  },
+  "ineligible": {
+    "ORDER_NOT_PAID": "Đơn chưa thanh toán",
+    "ORDER_NOT_DELIVERED": "Đơn chưa giao",
+    "RETURN_WINDOW_EXPIRED": "Đã hết hạn đổi trả",
+    "NOTHING_TO_RETURN": "Đã gửi yêu cầu cho toàn bộ sản phẩm"
+  },
+  "orderCard": {
+    "title": "Trả hàng",
+    "eligible": "Còn hạn đến {date}",
+    "request": "Yêu cầu trả hàng"
+  },
+  "list": {
+    "title": "Yêu cầu trả hàng",
+    "back": "Đơn hàng của tôi",
+    "backToOrder": "Về đơn hàng",
+    "loadMore": "Xem thêm yêu cầu",
+    "loadingMore": "Đang tải...",
+    "empty": {
+      "title": "Chưa có yêu cầu trả hàng",
+      "description": "Khi bạn gửi yêu cầu trả hàng cho một đơn đã giao, nó sẽ hiện ở đây.",
+      "cta": "Xem đơn hàng"
+    },
+    "card": {
+      "orderNumber": "Đơn #{id}",
+      "quantity": "SL {quantity}",
+      "more": "+{count} sản phẩm khác"
+    },
+    "toast": {
+      "loadFailed": "Không tải được danh sách yêu cầu trả hàng. Vui lòng thử lại."
+    }
+  },
+  "detail": {
+    "back": "Tất cả yêu cầu",
+    "title": "Yêu cầu trả hàng",
+    "notFound": "Không tìm thấy yêu cầu trả hàng.",
+    "returnNumber": "Yêu cầu #{id}",
+    "orderNumber": "Đơn #{id}",
+    "hint": {
+      "REQUESTED": "Cửa hàng đã nhận yêu cầu và sẽ sớm duyệt.",
+      "APPROVED": "Yêu cầu đã được duyệt. Hãy gửi hàng về cửa hàng theo hướng dẫn bên dưới.",
+      "RECEIVED": "Cửa hàng đã nhận và kiểm hàng, đang chuyển khoản hoàn tiền cho bạn.",
+      "REFUNDED": "Cửa hàng đã hoàn tiền cho yêu cầu này.",
+      "REJECTED": "Cửa hàng không nhận yêu cầu trả hàng này.",
+      "CANCELLED": "Bạn đã hủy yêu cầu này."
+    },
+    "adminNote": {
+      "approved": "Hướng dẫn gửi hàng",
+      "rejected": "Lý do từ chối",
+      "other": "Phản hồi của cửa hàng"
+    },
+    "items": "Sản phẩm trả",
+    "quantity": "Trả {quantity}",
+    "accepted": "Nhận {quantity}",
+    "reason": "Lý do",
+    "note": "Ghi chú",
+    "refund": {
+      "title": "Hoàn tiền",
+      "REQUESTED": "Cửa hàng sẽ chuyển khoản lại {amount} cho bạn.",
+      "COMPLETED": "Đã hoàn {amount}",
+      "REJECTED": "Cửa hàng không hoàn tiền, vui lòng liên hệ cửa hàng.",
+      "reference": "Mã giao dịch: {ref}",
+      "referenceLabel": "mã giao dịch hoàn tiền",
+      "processedAt": "Xử lý lúc {date}"
+    },
+    "cancel": {
+      "hint": "Bạn có thể hủy yêu cầu này khi cửa hàng chưa nhận được hàng.",
+      "action": "Hủy yêu cầu",
+      "cancelling": "Đang hủy...",
+      "confirm": {
+        "title": "Hủy yêu cầu trả hàng",
+        "message": "Bạn chắc chắn muốn hủy yêu cầu trả hàng này?",
+        "confirm": "Hủy yêu cầu"
+      },
+      "done": "Đã hủy yêu cầu trả hàng",
+      "failed": "Không thể hủy yêu cầu"
+    },
+    "toast": {
+      "loadFailed": "Không tải được yêu cầu trả hàng này. Vui lòng thử lại."
+    }
+  },
+  "form": {
+    "back": "Về đơn hàng",
+    "title": "Yêu cầu trả hàng",
+    "submit": "Gửi yêu cầu",
+    "submitting": "Đang gửi...",
+    "items": {
+      "title": "Chọn sản phẩm muốn trả",
+      "max": "tối đa {max}/{total}",
+      "alreadyRequested": "đã gửi yêu cầu",
+      "decrease": "Giảm số lượng",
+      "increase": "Tăng số lượng"
+    },
+    "reason": {
+      "title": "Lý do trả hàng"
+    },
+    "note": {
+      "label": "Ghi chú cho cửa hàng (không bắt buộc)"
+    },
+    "policy": {
+      "title": "Chính sách đổi trả",
+      "deadline": "Còn hạn đến {date}",
+      "window": "Đổi trả trong {days, plural, other {# ngày}} kể từ khi nhận hàng."
+    },
+    "sizeHint": "Muốn đổi size? Hãy trả hàng rồi đặt đơn mới.",
+    "errors": {
+      "items": "Hãy chọn ít nhất một sản phẩm muốn trả",
+      "reason": "Hãy chọn lý do trả hàng"
+    },
+    "unavailable": {
+      "title": "Không thể trả hàng",
+      "description": "Không tải được thông tin trả hàng của đơn này."
+    },
+    "toast": {
+      "created": "Đã gửi yêu cầu trả hàng",
+      "failed": "Không thể gửi yêu cầu trả hàng",
+      "loadFailed": "Không tải được đơn hàng. Vui lòng thử lại."
+    }
+  }
+}

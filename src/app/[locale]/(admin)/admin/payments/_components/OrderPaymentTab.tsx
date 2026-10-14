@@ -1,19 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
+import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch } from "@/src/store/hooks";
-import { fetchOrderPayment } from "../_common/moduleSlice";
+import { createAdminQr, fetchOrderPayment } from "../_common/moduleSlice";
+import { QR_POLL_INTERVAL_MS } from "../_common/constants";
 import {
   CONFIRMABLE_VERIFICATION_STATUSES,
+  type AdminQrSession,
   type OrderPaymentOverview,
   type PaymentTransaction,
 } from "../_common/types";
+import AdminQrPanel from "./AdminQrPanel";
 import AttemptBadge from "./AttemptBadge";
 import ConfirmPaymentModal from "./ConfirmPaymentModal";
 import VerificationBadge from "./VerificationBadge";
@@ -27,7 +32,7 @@ interface OrderPaymentTabProps {
 const SECTION_TITLE =
   "text-sm font-semibold text-[var(--text-primary)] font-primary mt-6 mb-3 pt-4 border-t border-[var(--border-subtle)]";
 const ACTION_BUTTON =
-  "py-1.5 px-3 pointer-coarse:min-h-11 text-xs font-semibold font-primary rounded-sm border-0 cursor-pointer bg-[var(--accent-primary)] text-[var(--text-on-gold)] hover:opacity-90";
+  "py-1.5 px-3 pointer-coarse:min-h-11 text-xs font-semibold font-primary rounded-sm border-0 cursor-pointer bg-[var(--accent-primary)] text-[var(--text-on-gold)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed";
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -43,6 +48,8 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
   const t = useTranslations("admin.payments.orderTab");
   const format = useFormatter();
   const toErrorMessage = useErrorMessage();
+  const { toast } = useToast();
+  const confirm = useConfirm();
   const dispatch = useAppDispatch();
 
   const [overview, setOverview] = useState<OrderPaymentOverview | null>(null);
@@ -54,6 +61,48 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
     transaction?: PaymentTransaction;
     code?: { transferCode: string; amount: number };
   } | null>(null);
+
+  /* The QR the admin just generated, and whether that request is running */
+  const [qr, setQr] = useState<AdminQrSession | null>(null);
+  const [isCreatingQr, setIsCreatingQr] = useState(false);
+  /* Latest callback without restarting the polling timer on every parent render */
+  const onChangedRef = useRef(onChanged);
+  useEffect(() => {
+    onChangedRef.current = onChanged;
+  }, [onChanged]);
+
+  const orderPaid = overview?.order.paymentStatus === "paid";
+  const qrExpiresMs = qr?.expiresAt ? Date.parse(qr.expiresAt) : null;
+
+  /* While a QR is open, ask for the order again every few seconds: the moment it reads `paid` the QR gives way to "received" */
+  useEffect(() => {
+    if (!qr || orderPaid) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    /* One request at a time: the next poll is scheduled only after the previous answered */
+    const poll = async () => {
+      if (qrExpiresMs !== null && Date.now() > qrExpiresMs) return;
+      try {
+        const data = await dispatch(fetchOrderPayment(orderId)).unwrap();
+        if (cancelled) return;
+        setOverview(data);
+        if (data.order.paymentStatus === "paid") {
+          onChangedRef.current();
+          return;
+        }
+      } catch {
+        /* a missed poll is retried on the next round */
+      }
+      if (!cancelled) timer = setTimeout(poll, QR_POLL_INTERVAL_MS);
+    };
+
+    timer = setTimeout(poll, QR_POLL_INTERVAL_MS);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [qr, orderPaid, qrExpiresMs, orderId, dispatch]);
 
   useEffect(() => {
     let stale = false;
@@ -82,6 +131,31 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
     onChanged();
   }, [onChanged]);
 
+  const handleCreateQr = async () => {
+    /* A new code replaces the pending one at once: say so first, since the customer may have paid the old one */
+    if (overview?.attempts.some((attempt) => attempt.status === "PENDING")) {
+      const ok = await confirm({
+        title: t("qr.confirm.title"),
+        message: t("qr.confirm.message"),
+        confirmLabel: t("qr.confirm.confirm"),
+        danger: true,
+      });
+      if (!ok) return;
+    }
+    setIsCreatingQr(true);
+    try {
+      const created = await dispatch(createAdminQr(orderId)).unwrap();
+      setQr(created);
+      setReloadKey((key) => key + 1);
+      toast.success(t("qr.toast.created"));
+    } catch (err) {
+      /* 1702 (already paid or cancelled) has its own translation */
+      toast.error(toErrorMessage(err, t("qr.toast.failed")));
+    } finally {
+      setIsCreatingQr(false);
+    }
+  };
+
   if (isLoading && !overview) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -108,13 +182,27 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
       </Row>
 
       {order.paymentStatus === "unpaid" && (
-        <RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>
-          <div className="mt-3">
+        <div className="mt-3 flex flex-wrap gap-2">
+          {order.status !== "cancelled" && (
+            <RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CREATE_QR}>
+              <button type="button" className={ACTION_BUTTON} disabled={isCreatingQr} onClick={handleCreateQr}>
+                {isCreatingQr ? t("qr.creating") : t("qr.create")}
+              </button>
+            </RoleGuard>
+          )}
+          <RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>
             <button type="button" className={ACTION_BUTTON} onClick={() => setConfirming({})}>
               {t("confirmPaid")}
             </button>
-          </div>
-        </RoleGuard>
+          </RoleGuard>
+        </div>
+      )}
+      {qr && (
+        <AdminQrPanel
+          qr={qr}
+          paid={order.paymentStatus === "paid"}
+          expired={qrExpiresMs !== null && Date.now() > qrExpiresMs}
+        />
       )}
 
       <h3 className={SECTION_TITLE}>{t("attempts", { count: attempts.length })}</h3>

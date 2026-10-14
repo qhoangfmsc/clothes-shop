@@ -39,6 +39,11 @@
     "1703": "This transfer content doesn't belong to the order, or the order never had a QR payment session.",
     "1707": "Send exactly one of: an existing transaction, or a reference with an amount.",
     "1708": "Transaction not found. The list may be out of date.",
-    "1307": "This order has been paid and can't be cancelled online. Please contact the store."
+    "1711": "Refund request not found. The list may be out of date, please reload it.",
+    "1713": "This refund request has already been processed. Reload the list (another admin may have just handled it).",
+    "1714": "This bank reference is already used for another refund. Please check the reference.",
+    "1801": "Return request not found. Go back to the list.",
+    "1803": "The item or quantity to return is no longer valid. Choose again from what can still be returned.",
+    "1804": "This request just changed state, so that action isn't possible. Reload to see the new state."
   }
 }

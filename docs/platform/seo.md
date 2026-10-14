@@ -1,6 +1,6 @@
 # SEO (metadata, sitemap, robots, dữ liệu có cấu trúc)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
 > **Code:** `src/app/robots.ts` · `src/app/sitemap.ts` · `src/lib/structured-data.ts` · `src/lib/site-url.ts` · `src/lib/brand.ts` · `src/lib/legal.ts` · `src/i18n/metadata.ts` · `src/app/[locale]/_components/JsonLd.tsx` · `src/app/[locale]/layout.tsx`
 
 ## 1. Tóm tắt module
@@ -47,7 +47,7 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.3 Robots
 
-- Production: `allow /`, `disallow` `/api/` và các đường `/<locale>/{admin,login,cart,checkout,account,orders,wishlist,unauthorized}`; trỏ `sitemap` tới `${SITE_URL}/sitemap.xml`.
+- Production: `allow /`, `disallow` `/api/` và các đường `/<locale>/{admin,login,cart,checkout,account,orders,returns,wishlist,unauthorized}`; trỏ `sitemap` tới `${SITE_URL}/sitemap.xml`.
 - `VERCEL_ENV` có giá trị khác `production` → `disallow: /` toàn bộ.
 
 ### 4.4 JSON-LD

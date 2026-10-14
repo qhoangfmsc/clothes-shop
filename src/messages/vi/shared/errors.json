@@ -39,6 +39,11 @@
     "1703": "Mã chuyển khoản không thuộc đơn này, hoặc đơn chưa từng có phiên thanh toán QR.",
     "1707": "Cần gửi đúng một trong hai: giao dịch có sẵn, hoặc mã giao dịch kèm số tiền.",
     "1708": "Không tìm thấy giao dịch. Danh sách có thể đã cũ.",
-    "1307": "Đơn hàng đã thanh toán nên không thể hủy trực tuyến. Vui lòng liên hệ cửa hàng."
+    "1711": "Không tìm thấy yêu cầu hoàn tiền. Danh sách có thể đã cũ, hãy tải lại.",
+    "1713": "Yêu cầu hoàn tiền này đã được xử lý. Hãy tải lại danh sách (có thể quản trị viên khác vừa xử lý).",
+    "1714": "Mã giao dịch ngân hàng này đã dùng cho một khoản hoàn khác. Vui lòng kiểm tra lại mã.",
+    "1801": "Không tìm thấy yêu cầu trả hàng. Hãy quay về danh sách.",
+    "1803": "Sản phẩm hoặc số lượng trả không còn hợp lệ. Hãy chọn lại theo số lượng còn trả được.",
+    "1804": "Yêu cầu này vừa thay đổi trạng thái nên không thực hiện được thao tác. Hãy tải lại để xem trạng thái mới."
   }
 }

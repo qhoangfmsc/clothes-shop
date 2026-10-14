@@ -37,6 +37,8 @@ Chỉ ghi những gì **đã có trong code**. Không viết kế hoạch, chu�
 | Collections | `/admin/collections` | [admin/collections.md](admin/collections.md) |
 | Orders | `/admin/orders` | [admin/orders.md](admin/orders.md) |
 | Payments | `/admin/payments` | [admin/payments.md](admin/payments.md) |
+| Refunds | `/admin/refunds` | [admin/refunds.md](admin/refunds.md) |
+| Returns | `/admin/returns` | [admin/returns.md](admin/returns.md) |
 | Users | `/admin/users` | [admin/users.md](admin/users.md) |
 | Media | `/admin/media` | [admin/media.md](admin/media.md) |
 | Site config | `/admin/site-config` | [admin/site-config.md](admin/site-config.md) |
@@ -57,6 +59,7 @@ Chỉ ghi những gì **đã có trong code**. Không viết kế hoạch, chu�
 | Wishlist | `/wishlist` | [storefront/wishlist.md](storefront/wishlist.md) |
 | Checkout | `/checkout` | [storefront/checkout.md](storefront/checkout.md) |
 | Customer orders | `/orders`, `/orders/[orderId]` | [storefront/customer-orders.md](storefront/customer-orders.md) |
+| Customer returns | `/returns`, `/returns/[returnId]`, `/returns/new` | [storefront/customer-returns.md](storefront/customer-returns.md) |
 | Account | `/account` | [storefront/account.md](storefront/account.md) |
 
 Trang đăng nhập `/login` thuộc module [Auth](platform/auth.md).

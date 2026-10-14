@@ -1,0 +1,152 @@
+{
+  "page": {
+    "title": "Trả hàng",
+    "total": "{count, plural, other {# yêu cầu}}",
+    "orderFilter": "Đơn #{id}",
+    "clearOrderFilter": "Bỏ lọc theo đơn"
+  },
+  "tabs": {
+    "REQUESTED": "Chờ duyệt ({count})",
+    "APPROVED": "Đã duyệt",
+    "RECEIVED": "Đã nhận hàng",
+    "REFUNDED": "Đã hoàn tiền",
+    "REJECTED": "Từ chối",
+    "CANCELLED": "Khách hủy",
+    "all": "Tất cả"
+  },
+  "status": {
+    "REQUESTED": "Chờ duyệt",
+    "APPROVED": "Đã duyệt",
+    "RECEIVED": "Đã nhận hàng",
+    "REFUNDED": "Đã hoàn tiền",
+    "REJECTED": "Từ chối",
+    "CANCELLED": "Khách hủy"
+  },
+  "reason": {
+    "WRONG_SIZE": "Sai size",
+    "CHANGED_MIND": "Đổi ý",
+    "DEFECTIVE": "Hàng lỗi",
+    "WRONG_ITEM": "Giao sai hàng",
+    "OTHER": "Lý do khác"
+  },
+  "table": {
+    "searchPlaceholder": "Mã yêu cầu, mã đơn, SĐT hoặc tên khách...",
+    "columns": {
+      "id": "Mã yêu cầu",
+      "order": "Đơn & khách",
+      "reason": "Lý do",
+      "status": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "actions": "Thao tác"
+    },
+    "view": "Xem",
+    "empty": {
+      "none": "Chưa có yêu cầu trả hàng nào.",
+      "filtered": "Không có yêu cầu phù hợp."
+    }
+  },
+  "detail": {
+    "title": "Yêu cầu trả hàng #{id}",
+    "refund": {
+      "expected": "Số tiền hoàn",
+      "reference": "Mã giao dịch hoàn: {ref}",
+      "referenceLabel": "mã giao dịch hoàn",
+      "withShipping": "Đã gồm phí vận chuyển.",
+      "open": "Mở màn Hoàn tiền để chuyển khoản"
+    },
+    "request": {
+      "section": "Yêu cầu",
+      "status": "Trạng thái",
+      "createdAt": "Gửi lúc",
+      "reason": "Lý do",
+      "note": "Ghi chú của khách",
+      "adminNote": "Phản hồi cho khách",
+      "approvedAt": "Duyệt lúc",
+      "receivedAt": "Nhận hàng lúc"
+    },
+    "order": {
+      "section": "Đơn hàng",
+      "id": "Mã đơn",
+      "customer": "Khách",
+      "total": "Tổng đơn",
+      "shippingFee": "Phí vận chuyển",
+      "deliveredAt": "Giao lúc",
+      "payment": "Thanh toán"
+    },
+    "items": {
+      "section": "Sản phẩm trả",
+      "asked": "Khách trả {quantity}",
+      "accepted": "Nhận {quantity}"
+    },
+    "actions": {
+      "approve": "Duyệt",
+      "reject": "Từ chối",
+      "receive": "Đã nhận hàng"
+    }
+  },
+  "approve": {
+    "title": "Duyệt yêu cầu trả hàng",
+    "warning": "Khách sẽ được phép gửi hàng về. Hướng dẫn gửi hàng bên dưới hiện cho khách xem.",
+    "note": {
+      "label": "Hướng dẫn gửi hàng",
+      "info": "Không bắt buộc. Ví dụ: địa chỉ nhận hàng, người nhận, cách đóng gói. Khách thấy nội dung này."
+    },
+    "submit": "Duyệt yêu cầu",
+    "toast": {
+      "done": "Đã duyệt yêu cầu #{id}",
+      "failed": "Không thể duyệt yêu cầu"
+    }
+  },
+  "reject": {
+    "title": "Từ chối yêu cầu trả hàng",
+    "warning": "Yêu cầu sẽ bị từ chối khi chưa nhận hàng. Khách thấy lý do bên dưới.",
+    "note": {
+      "label": "Lý do từ chối",
+      "info": "Bắt buộc. Khách thấy lý do này."
+    },
+    "errors": {
+      "note": "Vui lòng nhập lý do từ chối"
+    },
+    "submit": "Từ chối yêu cầu",
+    "toast": {
+      "done": "Đã từ chối yêu cầu #{id}",
+      "failed": "Không thể từ chối yêu cầu"
+    }
+  },
+  "receive": {
+    "title": "Xác nhận đã nhận hàng",
+    "warning": "Kiểm hàng rồi nhập số lượng chấp nhận của từng dòng. Hệ thống tính số tiền hoàn từ đó và tạo khoản hoàn ở màn Hoàn tiền.",
+    "items": {
+      "section": "Số lượng chấp nhận",
+      "asked": "khách trả {quantity}",
+      "accepted": "Số lượng chấp nhận của {name}"
+    },
+    "shipping": {
+      "label": "Hoàn cả phí ship",
+      "info": "Mỗi đơn chỉ hoàn phí ship một lần."
+    },
+    "note": {
+      "label": "Ghi chú cho khách",
+      "info": "Không bắt buộc. Thay phản hồi trước đó nếu có. Khách thấy nội dung này."
+    },
+    "errors": {
+      "invalid": "Số lượng phải là số nguyên từ 0 đến số khách xin trả",
+      "allZero": "Cần chấp nhận ít nhất một sản phẩm. Nếu không nhận được gì, hãy dùng \"Từ chối\"."
+    },
+    "submit": "Xác nhận đã nhận hàng",
+    "toast": {
+      "done": "Đã nhận hàng của yêu cầu #{id}",
+      "doneWithAmount": "Đã nhận hàng của yêu cầu #{id}. Số tiền hoàn: {amount}",
+      "failed": "Không thể xác nhận nhận hàng"
+    }
+  },
+  "pending": {
+    "title": "{count, plural, other {# yêu cầu chờ duyệt}}",
+    "includes": "Yêu cầu trả hàng khách vừa gửi và chưa được duyệt hay từ chối.",
+    "excludes": "Không gồm yêu cầu đã duyệt đang chờ khách gửi hàng về. Khi hàng về, mở yêu cầu đó và bấm \"Đã nhận hàng\".",
+    "how": "Đọc lý do và ghi chú của khách, rồi duyệt (kèm hướng dẫn gửi hàng) hoặc từ chối (kèm lý do).",
+    "view": "Xem yêu cầu chờ duyệt",
+    "approvedLine": "Yêu cầu đã duyệt, chờ hàng về",
+    "approvedView": "Xem yêu cầu chờ hàng về"
+  }
+}

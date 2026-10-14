@@ -9,6 +9,9 @@ import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useOrderStatusLabel } from "@/src/i18n/use-labels";
 import OrderDetailPanel from "@/src/app/[locale]/_components/OrderDetailPanel";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
+import PendingActionNotice from "@/src/app/[locale]/_components/PendingActionNotice";
+import { usePendingCounts } from "@/src/app/[locale]/_components/PendingCountsProvider";
+import OrderRefundBanner from "@/src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner";
 import OrderPaymentTab from "@/src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab";
 import { useOrderPaymentStatusLabel } from "@/src/i18n/use-labels";
 import { type AdminOrder } from "@/src/hooks/use-admin-api";
@@ -68,6 +71,7 @@ export default function OrdersContent() {
   const searchParams = useSearchParams();
 
   const { isUpdating, total } = useAppSelector((s) => s.orders);
+  const { counts } = usePendingCounts();
   const { user } = useAuth();
   const canViewPayment = hasPermission(user, PERMISSIONS.PAYMENT_ADMIN_VIEW);
 
@@ -79,6 +83,19 @@ export default function OrdersContent() {
   /* ── URL-driven modal: auto-open when ?orderId= is present ── */
   const urlOrderId = searchParams.get("orderId");
   const hasAutoOpened = useRef(false);
+  /* `?needsAction=true` = only the orders the menu badge counts */
+  const needsAction = searchParams.get("needsAction") === "true";
+
+  /** The page URL with the given query changes applied (`null` removes a key), keeping the other filters */
+  const urlWith = (changes: Record<string, string | null>) => {
+    const qs = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(changes)) {
+      if (value === null) qs.delete(key);
+      else qs.set(key, value);
+    }
+    const text = qs.toString();
+    return text ? `/admin/orders?${text}` : "/admin/orders";
+  };
 
   useEffect(() => {
     if (urlOrderId && !hasAutoOpened.current) {
@@ -106,7 +123,7 @@ export default function OrdersContent() {
     setDetailOrder(order);
     setLoadingDetail(true);
     hasAutoOpened.current = true; // prevent useEffect from re-fetching & clearing modal
-    router.push(`/admin/orders?orderId=${order.id}`, { scroll: false });
+    router.push(urlWith({ orderId: order.id }), { scroll: false });
     try {
       const fresh = await dispatch(fetchOrderDetail(order.id)).unwrap();
       setDetailOrder(fresh);
@@ -120,7 +137,7 @@ export default function OrdersContent() {
   /* ── closeDetail: remove orderId from URL ── */
   const closeDetail = () => {
     hasAutoOpened.current = false;
-    router.push("/admin/orders", { scroll: false });
+    router.push(urlWith({ orderId: null }), { scroll: false });
   };
 
   /* ── fetchData for DataTable ── */
@@ -130,6 +147,7 @@ export default function OrdersContent() {
         search: params.search || undefined,
         status: (params.filters.status || undefined) as OrderStatus | undefined,
         paymentStatus: (params.filters.paymentStatus || undefined) as OrderPaymentStatus | undefined,
+        needsAction,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -239,7 +257,7 @@ export default function OrdersContent() {
   /* ── Handlers ── */
 
   const handleStatusChange = async (orderId: string, newStatus: OrderStatus, paymentStatus: OrderPaymentStatus) => {
-    /* Cancelling a paid order keeps the money with the shop: there is no refund flow, so make the admin aware */
+    /* Cancelling a paid order opens a refund request: make the admin aware */
     if (newStatus === "cancelled" && paymentStatus === "paid") {
       const proceed = await confirm({
         title: t("confirmCancelPaid.title"),
@@ -284,7 +302,21 @@ export default function OrdersContent() {
         </p>
       </div>
 
+      <PendingActionNotice
+        count={counts.orders}
+        title={t("pending.title", { count: counts.orders ?? 0 })}
+        includes={t("pending.includes")}
+        excludes={t("pending.excludes")}
+        how={t("pending.how")}
+        active={needsAction}
+        viewLabel={t("pending.view")}
+        keepWhenDone
+        onToggle={() => router.replace(urlWith({ needsAction: needsAction ? null : "true" }), { scroll: false })}
+      />
+
       <DataTable<AdminOrder>
+        /* Turning the filter on or off is another query: start the table fresh */
+        key={needsAction ? "needs-action" : "all"}
         tableRef={tableRef}
         columns={columns}
         fetchData={fetchOrders}
@@ -348,6 +380,11 @@ export default function OrdersContent() {
                 order={detailOrder}
                 loading={loadingDetail}
                 onClose={closeDetail}
+                notice={
+                  canViewPayment && detailOrder.status === "cancelled" && detailOrder.paymentStatus === "paid" ? (
+                    <OrderRefundBanner orderId={detailOrder.id} onCreated={() => tableRef.current?.refresh()} />
+                  ) : undefined
+                }
                 paymentTab={
                   canViewPayment ? (
                     <OrderPaymentTab orderId={detailOrder.id} onChanged={refreshAfterPayment} />

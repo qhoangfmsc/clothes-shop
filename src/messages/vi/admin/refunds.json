@@ -1,0 +1,106 @@
+{
+  "page": {
+    "title": "Hoàn tiền",
+    "total": "{count, plural, other {# yêu cầu}}",
+    "orderFilter": "Đơn #{id}",
+    "clearOrderFilter": "Bỏ lọc theo đơn"
+  },
+  "tabs": {
+    "REQUESTED": "Chờ hoàn ({count})",
+    "COMPLETED": "Đã hoàn",
+    "REJECTED": "Từ chối",
+    "all": "Tất cả"
+  },
+  "status": {
+    "REQUESTED": "Chờ hoàn",
+    "COMPLETED": "Đã hoàn",
+    "REJECTED": "Từ chối"
+  },
+  "reason": {
+    "ADMIN_CANCELLED": "Cửa hàng hủy đơn",
+    "RETURN": "Trả hàng"
+  },
+  "table": {
+    "searchPlaceholder": "Mã đơn, mã giao dịch hoàn, nội dung chuyển khoản, SĐT hoặc tên khách...",
+    "columns": {
+      "createdAt": "Yêu cầu lúc",
+      "amount": "Số tiền hoàn",
+      "order": "Đơn & khách",
+      "source": "Khoản đã nhận",
+      "status": "Trạng thái",
+      "actions": "Thao tác"
+    },
+    "processedAt": "Xử lý: {date}",
+    "bankReference": "mã giao dịch hoàn",
+    "complete": "Đã chuyển khoản",
+    "reject": "Từ chối",
+    "empty": {
+      "REQUESTED": "Không có khoản nào đang chờ hoàn.",
+      "COMPLETED": "Chưa có khoản nào đã hoàn.",
+      "REJECTED": "Chưa có khoản nào bị từ chối.",
+      "filtered": "Không có yêu cầu hoàn tiền phù hợp.",
+      "all": "Chưa có yêu cầu hoàn tiền nào."
+    }
+  },
+  "source": {
+    "transferCode": "nội dung chuyển khoản",
+    "transactionRef": "mã giao dịch"
+  },
+  "complete": {
+    "title": "Xác nhận đã chuyển khoản hoàn tiền",
+    "warning": "Hãy chuyển khoản cho khách bằng app ngân hàng trước, rồi mới bấm xác nhận ở đây. Hệ thống không tự chuyển tiền.",
+    "refundSection": "Khoản cần hoàn",
+    "amount": "Số tiền hoàn",
+    "order": "Đơn",
+    "customer": "Khách",
+    "sourceSection": "Khoản đã nhận (hoàn về nguồn này)",
+    "reference": {
+      "label": "Mã giao dịch ngân hàng",
+      "info": "Mã giao dịch của lần chuyển hoàn tiền, tối đa 64 ký tự, không trùng với khoản hoàn khác."
+    },
+    "note": {
+      "label": "Ghi chú",
+      "info": "Bắt buộc. Ví dụ: đã chuyển lại đúng tài khoản nguồn lúc 14:05. Khách không thấy ghi chú này."
+    },
+    "errors": {
+      "reference": "Vui lòng nhập mã giao dịch ngân hàng",
+      "note": "Vui lòng nhập ghi chú"
+    },
+    "submit": "Xác nhận đã chuyển khoản",
+    "toast": {
+      "done": "Đã ghi nhận hoàn tiền cho đơn #{id}",
+      "failed": "Không thể xác nhận hoàn tiền"
+    }
+  },
+  "reject": {
+    "title": "Từ chối hoàn tiền",
+    "warning": "Đơn #{id} sẽ không được hoàn {amount}. Khách sẽ thấy cửa hàng không hoàn tiền và được nhắc liên hệ cửa hàng.",
+    "note": {
+      "label": "Lý do từ chối",
+      "info": "Bắt buộc, lưu để kiểm tra sau. Khách không thấy lý do này."
+    },
+    "errors": {
+      "note": "Vui lòng nhập lý do từ chối"
+    },
+    "submit": "Từ chối hoàn tiền",
+    "toast": {
+      "done": "Đã từ chối hoàn tiền cho đơn #{id}",
+      "failed": "Không thể từ chối hoàn tiền"
+    }
+  },
+  "banner": {
+    "title": "Đơn đã hủy nhưng chưa hoàn tiền",
+    "waiting": "Đang có yêu cầu hoàn tiền chờ cửa hàng chuyển khoản lại cho khách.",
+    "missing": "Chưa có yêu cầu hoàn tiền nào đang chờ cho đơn này.",
+    "open": "Mở màn Hoàn tiền",
+    "create": "Tạo yêu cầu hoàn",
+    "created": "Đã tạo yêu cầu hoàn tiền cho đơn #{id}",
+    "createFailed": "Không thể tạo yêu cầu hoàn tiền"
+  },
+  "pending": {
+    "title": "{count, plural, other {# khoản chờ chuyển trả khách}}",
+    "includes": "Hệ thống không tự chuyển tiền: mỗi khoản là tiền cần trả lại khách sau khi đơn bị hủy hoặc khách trả hàng.",
+    "how": "Chuyển khoản cho khách bằng app ngân hàng, rồi bấm \"Đã chuyển khoản\" và nhập mã giao dịch. Nếu không hoàn thì bấm \"Từ chối\" và ghi lý do.",
+    "view": "Xem khoản chờ hoàn"
+  }
+}

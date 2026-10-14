@@ -21,7 +21,8 @@
       "loadFailed": "Không tải được đơn hàng của bạn. Vui lòng thử lại."
     },
     "loadMore": "Xem thêm đơn hàng",
-    "loadingMore": "Đang tải..."
+    "loadingMore": "Đang tải...",
+    "returnsLink": "Yêu cầu trả hàng"
   },
   "detail": {
     "notFound": "Không tìm thấy đơn hàng.",
@@ -78,14 +79,26 @@
       "action": "Hủy đơn",
       "cancelling": "Đang hủy...",
       "hint": "Đơn chưa thanh toán nên bạn có thể hủy ngay tại đây.",
-      "paidHint": "Đơn đã thanh toán nên không hủy trực tuyến được. Vui lòng liên hệ cửa hàng nếu bạn cần hủy hoặc hoàn tiền.",
       "confirm": {
         "title": "Hủy đơn hàng",
         "message": "Bạn chắc chắn muốn hủy đơn hàng này? Mã chuyển khoản đang chờ cũng sẽ bị hủy.",
         "confirm": "Hủy đơn"
       },
       "done": "Đã hủy đơn hàng",
-      "failed": "Không thể hủy đơn hàng"
+      "failed": "Không thể hủy đơn hàng",
+      "contactShop": "Liên hệ cửa hàng để hủy đơn."
+    },
+    "refund": {
+      "title": "Hoàn tiền",
+      "REQUESTED": "Đã ghi nhận yêu cầu hoàn tiền, cửa hàng sẽ kiểm duyệt yêu cầu của bạn.",
+      "COMPLETED": "Đã hoàn {amount}",
+      "REJECTED": "Cửa hàng không hoàn tiền, vui lòng liên hệ cửa hàng.",
+      "reference": "Mã giao dịch: {ref}",
+      "referenceLabel": "mã giao dịch hoàn tiền",
+      "requestedAt": "Yêu cầu lúc {date}",
+      "processedAt": "Xử lý lúc {date}",
+      "reasonReturn": "Hoàn tiền do trả hàng",
+      "reasonAdminCancelled": "Cửa hàng hủy đơn"
     }
   }
 }

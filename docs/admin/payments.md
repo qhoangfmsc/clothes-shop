@@ -1,13 +1,13 @@
 # Payments (đối soát thanh toán chuyển khoản)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/payments` · **Cập nhật:** 2026-10-13
-> **Code:** `(admin)/admin/payments/` — `page.tsx`, `PaymentsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{AttemptsTable,AttemptBadge,ConfirmPaymentModal,OrderPicker,OrderPaymentTab,VerificationBadge}.tsx` · `src/app/[locale]/_components/OrderPaymentBadge.tsx`
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/payments` · **Cập nhật:** 2026-10-14
+> **Code:** `(admin)/admin/payments/` — `page.tsx`, `PaymentsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{AdminQrPanel,AttemptsTable,AttemptBadge,ConfirmPaymentModal,OrderPicker,OrderPaymentTab,QrPresentation,VerificationBadge}.tsx` · `src/app/[locale]/_components/OrderPaymentBadge.tsx`
 > **i18n:** `admin.payments`, `common.orderPaymentStatus`, `shared.errors.byCode` (1702, 1703, 1707–1709)
 > **Redux slice:** `state.payments`
 
 ## 1. Tóm tắt module
 
-Trang đối soát các giao dịch ngân hàng SePay báo về, và các công cụ để admin xác nhận thủ công một đơn đã thanh toán khi hệ thống không tự khớp được. Cũng cung cấp tab "Thanh toán" trong panel chi tiết đơn ([orders](./orders.md)).
+Trang đối soát các giao dịch ngân hàng SePay báo về, và các công cụ để admin xác nhận thủ công một đơn đã thanh toán khi hệ thống không tự khớp được. Cũng cung cấp tab "Thanh toán" trong panel chi tiết đơn ([orders](./orders.md)). Tiền trả lại khách sau khi hủy đơn nằm ở [refunds](./refunds.md).
 
 ## 2. Phục vụ gì / việc cần làm
 
@@ -17,23 +17,26 @@ BE tự đánh dấu đơn `paid` khi webhook khớp đơn, đúng số tiền, 
 
 | Chức năng | Mô tả |
 |---|---|
-| Tra nội dung chuyển khoản (tab mặc định) | `AttemptsTable`: mọi mã chuyển khoản từng cấp (kể cả hết hạn), tìm theo nội dung chuyển khoản / mã đơn / SĐT / tên khách, lọc trạng thái mã, hiện đơn + khách, các giao dịch ngân hàng đã gắn; nút "Xác nhận đã thanh toán" ở từng dòng (chỉ khi đơn `unpaid` và chưa `cancelled`) |
+| Tra nội dung chuyển khoản (tab mặc định) | `AttemptsTable`: mọi mã chuyển khoản từng cấp (kể cả hết hạn), tìm theo nội dung chuyển khoản / mã đơn / SĐT / tên khách, lọc trạng thái mã, hiện đơn + khách, cột "Người tạo" (ẩn dưới `md`: "Admin" khi `createdBy` có giá trị, "Khách" khi `null`), các giao dịch ngân hàng đã gắn; nút "Xác nhận đã thanh toán" ở từng dòng (chỉ khi đơn `unpaid` và chưa `cancelled`) |
 | Bảng giao dịch (tab thứ hai) | Search (nội dung chuyển khoản, mã giao dịch), lọc theo kết quả đối soát (`verificationStatus`), sort, phân trang |
 | Gắn vào đơn | Nút ở dòng có kết quả `UNMATCHED`, `AMOUNT_MISMATCH`, `LATE` hoặc `NOT_PAYABLE` (và đơn của phiên khớp chưa `paid`): chọn đơn chưa trả, nhập lý do, xác nhận |
 | Nhập giao dịch thủ công | Nút ở đầu trang: `reference`, số tiền VND, nguồn (`sepay` / `manual`), đơn, lý do — cho trường hợp webhook không tới |
-| Tab thanh toán của đơn | `OrderPaymentTab`: trạng thái thanh toán, các phiên QR, các giao dịch của đơn; nút "Xác nhận đã thanh toán" và "Gắn vào đơn này" |
-| Quyền | Vào trang và xem cần `PAYMENT_ADMIN_VIEW`; mọi nút xác nhận cần `PAYMENT_ADMIN_CONFIRM` (`RoleGuard`) |
+| Tab thanh toán của đơn | `OrderPaymentTab`: trạng thái thanh toán, các phiên QR, các giao dịch của đơn; nút "Tạo mã QR thanh toán", "Xác nhận đã thanh toán" và "Gắn vào đơn này" |
+| Quyền | Vào trang và xem cần `PAYMENT_ADMIN_VIEW`; mọi nút xác nhận cần `PAYMENT_ADMIN_CONFIRM`, nút tạo mã QR cần `PAYMENT_ADMIN_CREATE_QR` (14003) (`RoleGuard`) |
 
 ## 4. Chi tiết
+
+**Việc cần đối soát** (`needsReview`): khung `PendingActionNotice` ở đầu trang với số `counts.payments`: tiền đã vào tài khoản nhưng hệ thống chưa tự gắn vào đơn (không thấy mã đơn, sai số tiền, đến sau khi mã hết hạn, mã đã hủy); không gồm giao dịch đã gắn/đã khớp tự động/trả trùng/tiền ra. Có ghi chú: tiền chuyển nhầm sẽ ở lại số này tới khi được gắn vào đơn. Nút "Xem giao dịch cần đối soát" bật `?needsReview=true`, chuyển sang tab "Giao dịch ngân hàng" và gửi `needsReview=true` tới `GET /api/admin/payments/transactions`; đổi sang tab mã chuyển khoản thì bỏ bộ lọc. `page.tsx` bọc nội dung trong `<Suspense>` vì dùng `useSearchParams`.
 
 ### 4.1 API (qua `authApi`, đều bọc `{ data }`)
 
 | Thunk | API | Ghi chú |
 |---|---|---|
 | `fetchPaymentTransactions` | `GET /api/admin/payments/transactions?search&verificationStatus&orderId&sort&page&limit` | Sort BE chỉ nhận `receivedAt`, `amount` (`PAYMENT_SORT_OPTIONS`: `-receivedAt` mặc định, truyền vào `DataTable` qua `defaultSort` vì mặc định chung của `DataTable` là `-createdAt` và BE trả 400 với giá trị đó; `receivedAt`, `-amount`, `amount`). Mỗi phần tử kèm `paymentAttempt` (`null` nếu không khớp phiên nào; có phiên thì kèm `order` tóm tắt `{ id, status, paymentStatus, total, userId }`) |
-| `fetchPaymentAttempts` | `GET /api/admin/payments/attempts?search&status&orderId&sort&page&limit` | `search` không phân biệt hoa/thường, khớp một phần. Sort BE: `createdAt`, `expiresAt`, `amount` (`ATTEMPT_SORT_OPTIONS`, mặc định `-createdAt`). Mỗi dòng: `{ id, transferCode, amount (VND), status (trạng thái thật), createdAt, expiresAt, paidAt, order { id, status, paymentStatus, total, userId, customer { fullName, phone } (mỗi trường có thể `null`) }, transactions[] }` |
+| `fetchPaymentAttempts` | `GET /api/admin/payments/attempts?search&status&orderId&sort&page&limit` | `search` không phân biệt hoa/thường, khớp một phần. Sort BE: `createdAt`, `expiresAt`, `amount` (`ATTEMPT_SORT_OPTIONS`, mặc định `-createdAt`). Mỗi dòng: `{ id, transferCode, amount (VND), status (trạng thái thật), createdAt, expiresAt, paidAt, createdBy (id admin tạo mã, `null` nếu khách tạo), order { id, status, paymentStatus, total, userId, customer { fullName, phone } (mỗi trường có thể `null`) }, transactions[] }` |
 | `fetchOrderPayment` | `GET /api/admin/payments/orders/:orderId` | `{ order, attempts, transactions }`, mới nhất trước |
 | `confirmOrderPayment` | `POST /api/admin/payments/orders/:orderId/confirm` (HTTP 201) | Body: đúng một trong `{ transactionId }` (gắn giao dịch có sẵn) hoặc `{ transferCode, amount }` (ghi giao dịch mới, kèm tùy chọn `reference`, `provider`, `transferContent`), cộng `note` (bắt buộc, ≤ 500) và `acceptAmountMismatch?` |
+| `createAdminQr` | `POST /api/admin/payments/orders/:orderId/qr` | Luôn tạo mã **mới**; mọi mã đang chờ của đơn hết hạn ngay (`supersededTransferCodes`). Trả cùng shape QR của khách: `{ orderId, paymentId, qrUrl, amount (VND), bankName, accountNumber, accountName, transferContent, status, expiresAt }`. Đơn đã trả/đã hủy → 1702 |
 | `searchUnpaidOrders` | `GET /api/admin/orders?paymentStatus=unpaid&search&sort=-createdAt&limit=10` | Cho `OrderPicker` |
 
 Số tiền của phiên và giao dịch là **VND** (hiện bằng định dạng `vnd`); tổng đơn là đơn vị cửa hàng (`priceFixed`).
@@ -51,7 +54,7 @@ Cột: **Thời gian** (`dateTime`), **Số tiền** (VND), **Nội dung** (nộ
 
 ### 4.4 Tab thanh toán của đơn (`OrderPaymentTab`)
 
-Tải `fetchOrderPayment(orderId)`. Hiển thị: trạng thái thanh toán (`OrderPaymentBadge`), thời điểm trả, tổng đơn, khách (tên · điện thoại từ snapshot địa chỉ; có thể `null`, hiện `—`); danh sách **phiên thanh toán** — mọi mã đã cấp, kể cả hết hạn (mã chuyển khoản kèm `CopyButton`, số tiền VND, `AttemptBadge` với trạng thái thật `PENDING | PAID | EXPIRED | CANCELLED`, hạn, ngày tạo, ngày trả; mã chưa trả có nút "Xác nhận mã này"); danh sách **giao dịch** (số tiền, `VerificationBadge`, nội dung, mã giao dịch kèm `CopyButton`, thời gian, ghi chú xác nhận nếu có). Khi đơn `unpaid` và user có `PAYMENT_ADMIN_CONFIRM`: nút "Xác nhận đã thanh toán" (nhập giao dịch thủ công cho đúng đơn) và, ở giao dịch có kết quả có thể gắn, nút "Gắn vào đơn này".
+Tải `fetchOrderPayment(orderId)`. Hiển thị: trạng thái thanh toán (`OrderPaymentBadge`), thời điểm trả, tổng đơn, khách (tên · điện thoại từ snapshot địa chỉ; có thể `null`, hiện `—`); danh sách **phiên thanh toán** — mọi mã đã cấp, kể cả hết hạn (mã chuyển khoản kèm `CopyButton`, số tiền VND, `AttemptBadge` với trạng thái thật `PENDING | PAID | EXPIRED | CANCELLED`, hạn, ngày tạo, ngày trả; mã chưa trả có nút "Xác nhận mã này"); danh sách **giao dịch** (số tiền, `VerificationBadge`, nội dung, mã giao dịch kèm `CopyButton`, thời gian, ghi chú xác nhận nếu có). Khi đơn `unpaid` và chưa `cancelled`, user có `PAYMENT_ADMIN_CREATE_QR` thấy nút **"Tạo mã QR thanh toán"**: nếu đơn đang có phiên `PENDING` thì hỏi xác nhận trước ("Mã hiện tại sẽ hết hạn ngay. Nếu khách đã chuyển khoản theo mã cũ thì cần xác nhận thủ công"), rồi gọi API và hiện `AdminQrPanel` ngay dưới (ảnh QR từ `qrUrl` — chỉ nhận https hoặc ảnh inline —, số tiền VND, ngân hàng, chủ tài khoản, số tài khoản và nội dung chuyển khoản có `CopyButton`, hạn mã, các mã cũ vừa bị thay) và nút **"Hiển thị cho khách"**: mở `QrPresentation`, một lớp toàn màn hình (portal vào `body`, nền đặc, `z-[300]`) chỉ có QR lớn, số tiền, ngân hàng, chủ tài khoản, số tài khoản, nội dung chuyển khoản và hạn mã — không có mã đơn, tên khách hay bất cứ phần nào của màn quản trị — để khách đứng quầy quét mà không nhìn thấy dữ liệu admin. Lớp này gọi `requestFullscreen` của trình duyệt khi được (iOS Safari có thể từ chối, lớp vẫn che kín trang); thoát bằng phím Esc, thoát chế độ toàn màn hình của trình duyệt, hoặc nút X nhỏ mờ ở góc phải trên; khi đơn thành `paid` lớp đổi thành "Đã nhận tiền" lớn và ở lại tới khi admin đóng. Trong lúc QR mở, tab gọi lại `fetchOrderPayment` mỗi `QR_POLL_INTERVAL_MS` (4 giây, mỗi lần một request, dừng khi hết hạn mã hoặc rời tab); khi `paymentStatus = paid` thì QR đổi thành "Đã nhận tiền" và `onChanged` làm mới panel đơn và bảng. Khi đơn `unpaid` và user có `PAYMENT_ADMIN_CONFIRM`: nút "Xác nhận đã thanh toán" (nhập giao dịch thủ công cho đúng đơn) và, ở giao dịch có kết quả có thể gắn, nút "Gắn vào đơn này".
 
 ### 4.5 Liên quan
 

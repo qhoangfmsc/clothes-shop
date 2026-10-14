@@ -21,7 +21,8 @@
       "loadFailed": "We couldn't load your orders. Please try again."
     },
     "loadMore": "Load more orders",
-    "loadingMore": "Loading..."
+    "loadingMore": "Loading...",
+    "returnsLink": "Return requests"
   },
   "detail": {
     "notFound": "Order not found.",
@@ -78,14 +79,26 @@
       "action": "Cancel order",
       "cancelling": "Cancelling...",
       "hint": "This order is unpaid, so you can cancel it right here.",
-      "paidHint": "This order is paid, so it can't be cancelled online. Please contact the store if you need to cancel or get a refund.",
       "confirm": {
         "title": "Cancel order",
         "message": "Are you sure you want to cancel this order? Any waiting transfer content is cancelled too.",
         "confirm": "Cancel order"
       },
       "done": "Order cancelled",
-      "failed": "Couldn't cancel the order"
+      "failed": "Couldn't cancel the order",
+      "contactShop": "Contact the store to cancel this order."
+    },
+    "refund": {
+      "title": "Refund",
+      "REQUESTED": "Your refund request is recorded. The store will review your request.",
+      "COMPLETED": "Refunded {amount}",
+      "REJECTED": "The store will not refund this order. Please contact the store.",
+      "reference": "Transaction reference: {ref}",
+      "referenceLabel": "refund reference",
+      "requestedAt": "Requested {date}",
+      "processedAt": "Processed {date}",
+      "reasonReturn": "Refund for a return",
+      "reasonAdminCancelled": "Cancelled by the store"
     }
   }
 }

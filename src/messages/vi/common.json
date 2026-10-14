@@ -18,7 +18,8 @@
   },
   "orderPaymentStatus": {
     "unpaid": "Chưa thanh toán",
-    "paid": "Đã thanh toán"
+    "paid": "Đã thanh toán",
+    "refunded": "Đã hoàn tiền"
   },
   "addressField": {
     "fullName": "Họ và tên",

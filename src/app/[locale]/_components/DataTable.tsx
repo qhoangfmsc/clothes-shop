@@ -503,7 +503,7 @@ function DataTableInner<T extends { id?: string | number }>(
         {data.map((row) => {
           const rowKey = keyExtractor(row);
           const isSelected = selectedKeys.has(rowKey);
-          const rowClass = `border-b border-[var(--border-subtle)] transition-opacity hover:opacity-45 ${
+          const rowClass = `border-b border-[var(--border-subtle)] transition-opacity hover:bg-[var(--color-sage-cream)] ${
             isSelected ? "bg-[rgba(201,169,110,0.08)]" : ""
           }`;
           const cells = (

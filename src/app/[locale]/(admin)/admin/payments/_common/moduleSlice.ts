@@ -8,6 +8,7 @@ import { authApi } from "@/src/lib/auth-api";
 import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import { ORDER_PICKER_LIMIT } from "./constants";
 import type {
+  AdminQrSession,
   AttemptListParams,
   AttemptListResult,
   ConfirmPaymentInput,
@@ -47,6 +48,8 @@ export const fetchPaymentTransactions = createAsyncThunk(
     const qs = buildListQuery(params, {
       verificationStatus: params.verificationStatus,
       orderId: params.orderId,
+      /* The BE accepts only `true` / `false`; absent = no filter */
+      needsReview: params.needsReview ? "true" : undefined,
     });
     return authApi.get<PaymentListResult>(`/api/admin/payments/transactions?${qs}`);
   }
@@ -76,6 +79,12 @@ export const confirmOrderPayment = createAsyncThunk(
     return res.data;
   }
 );
+
+/** Generates a fresh QR for an unpaid order (customer paying at the shop, or a lost code): every earlier pending code expires at once */
+export const createAdminQr = createAsyncThunk("payments/createAdminQr", async (orderId: string) => {
+  const res = await authApi.post<{ data: AdminQrSession }>(`/api/admin/payments/orders/${encodeURIComponent(orderId)}/qr`);
+  return res.data;
+});
 
 /** Unpaid orders matching `search` (id, customer name or phone) for the "attach to order" picker */
 export const searchUnpaidOrders = createAsyncThunk("payments/searchUnpaidOrders", async (search: string) => {

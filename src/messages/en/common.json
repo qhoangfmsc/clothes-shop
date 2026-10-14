@@ -18,7 +18,8 @@
   },
   "orderPaymentStatus": {
     "unpaid": "Unpaid",
-    "paid": "Paid"
+    "paid": "Paid",
+    "refunded": "Refunded"
   },
   "addressField": {
     "fullName": "Full name",

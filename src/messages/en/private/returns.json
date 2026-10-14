@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "Return requests",
+    "description": "Track your return requests."
+  },
+  "status": {
+    "REQUESTED": "Pending review",
+    "APPROVED": "Approved, send it back",
+    "RECEIVED": "Received by the store",
+    "REFUNDED": "Refunded",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled",
+    "progress": "Return progress"
+  },
+  "reason": {
+    "WRONG_SIZE": "Wrong size",
+    "CHANGED_MIND": "Changed my mind",
+    "DEFECTIVE": "Defective item",
+    "WRONG_ITEM": "Wrong item sent",
+    "OTHER": "Other reason"
+  },
+  "ineligible": {
+    "ORDER_NOT_PAID": "This order is not paid",
+    "ORDER_NOT_DELIVERED": "This order has not been delivered",
+    "RETURN_WINDOW_EXPIRED": "The return period has ended",
+    "NOTHING_TO_RETURN": "A return was already requested for every item"
+  },
+  "orderCard": {
+    "title": "Return",
+    "eligible": "You can request a return until {date}",
+    "request": "Request a return"
+  },
+  "list": {
+    "title": "Return requests",
+    "back": "My orders",
+    "backToOrder": "Back to order",
+    "loadMore": "Load more requests",
+    "loadingMore": "Loading...",
+    "empty": {
+      "title": "No return requests yet",
+      "description": "When you send a return request for a delivered order, it shows up here.",
+      "cta": "View orders"
+    },
+    "card": {
+      "orderNumber": "Order #{id}",
+      "quantity": "Qty {quantity}",
+      "more": "+{count} more items"
+    },
+    "toast": {
+      "loadFailed": "Couldn't load your return requests. Please try again."
+    }
+  },
+  "detail": {
+    "back": "All requests",
+    "title": "Return request",
+    "notFound": "Return request not found.",
+    "returnNumber": "Request #{id}",
+    "orderNumber": "Order #{id}",
+    "hint": {
+      "REQUESTED": "The store received your request and will review it soon.",
+      "APPROVED": "Your request is approved. Please send the items back to the store following the instructions below.",
+      "RECEIVED": "The store received and checked the items, and is transferring your refund.",
+      "REFUNDED": "The store has refunded this request.",
+      "REJECTED": "The store did not accept this return request.",
+      "CANCELLED": "You cancelled this request."
+    },
+    "adminNote": {
+      "approved": "How to send the items back",
+      "rejected": "Reason for rejection",
+      "other": "Reply from the store"
+    },
+    "items": "Items to return",
+    "quantity": "Return {quantity}",
+    "accepted": "Accepted {quantity}",
+    "reason": "Reason",
+    "note": "Note",
+    "refund": {
+      "title": "Refund",
+      "REQUESTED": "The store will transfer {amount} back to you.",
+      "COMPLETED": "Refunded {amount}",
+      "REJECTED": "The store will not refund this. Please contact the store.",
+      "reference": "Transaction reference: {ref}",
+      "referenceLabel": "refund reference",
+      "processedAt": "Processed {date}"
+    },
+    "cancel": {
+      "hint": "You can cancel this request until the store has received the items.",
+      "action": "Cancel request",
+      "cancelling": "Cancelling...",
+      "confirm": {
+        "title": "Cancel return request",
+        "message": "Are you sure you want to cancel this return request?",
+        "confirm": "Cancel request"
+      },
+      "done": "Return request cancelled",
+      "failed": "Couldn't cancel the request"
+    },
+    "toast": {
+      "loadFailed": "Couldn't load this return request. Please try again."
+    }
+  },
+  "form": {
+    "back": "Back to order",
+    "title": "Request a return",
+    "submit": "Send request",
+    "submitting": "Sending...",
+    "items": {
+      "title": "Choose the items to return",
+      "max": "up to {max} of {total}",
+      "alreadyRequested": "already requested",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity"
+    },
+    "reason": {
+      "title": "Why are you returning?"
+    },
+    "note": {
+      "label": "Note for the store (optional)"
+    },
+    "policy": {
+      "title": "Return policy",
+      "deadline": "You can return until {date}",
+      "window": "Returns are accepted within {days, plural, one {# day} other {# days}} of delivery."
+    },
+    "sizeHint": "Want a different size? Return the item, then place a new order.",
+    "errors": {
+      "items": "Choose at least one item to return",
+      "reason": "Choose a reason"
+    },
+    "unavailable": {
+      "title": "This order can't be returned",
+      "description": "Couldn't load the return information for this order."
+    },
+    "toast": {
+      "created": "Return request sent",
+      "failed": "Couldn't send the return request",
+      "loadFailed": "Couldn't load the order. Please try again."
+    }
+  }
+}

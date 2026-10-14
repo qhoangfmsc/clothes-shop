@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
-import { ArrowLeft, CheckCircle, MapPin, QrCode } from "lucide-react";
+import { ArrowLeft, CheckCircle, MapPin, QrCode, Undo2 } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
@@ -22,6 +22,7 @@ import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import OrderThumb from "../_components/OrderThumb";
+import OrderReturnCard from "../../returns/_components/OrderReturnCard";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -106,9 +107,10 @@ export default function OrderDetailContent() {
   const isPaid = order.paymentStatus === "paid";
   const canPay = order.paymentStatus === "unpaid" && order.status !== "cancelled";
   const attempts = order.paymentAttempts ?? [];
-  /* Only an order that is still pending and unpaid can be cancelled online; a paid one needs a refund, so the shop handles it */
-  const canCancel = order.status === "pending" && order.paymentStatus === "unpaid";
-  const paidNeedsShop = isPaid && (order.status === "pending" || order.status === "confirmed");
+  const refunds = order.refunds ?? [];
+  /* Online cancel: only an unpaid pending order. A paid one (or any other open order) goes through the shop, which refunds it. */
+  const canCancel = order.paymentStatus === "unpaid" && order.status === "pending";
+  const contactShop = !canCancel && (order.status === "pending" || order.status === "confirmed" || order.status === "shipping");
 
   const handleCancel = async () => {
     const ok = await confirm({
@@ -124,7 +126,7 @@ export default function OrderDetailContent() {
       if (res.data) setOrder(res.data);
       toast.success(t("cancel.done"));
     } catch (err) {
-      /* 1307 (already paid) is translated to "contact the shop" by useErrorMessage */
+      /* 1307 (paid and already handed to the carrier): the server's own message is shown */
       toast.error(toErrorMessage(err, t("cancel.failed")));
     } finally {
       setIsCancelling(false);
@@ -293,10 +295,72 @@ export default function OrderDetailContent() {
               </section>
             )}
 
-            {(canCancel || paidNeedsShop) && (
+            {/* Refund requests of a cancelled paid order */}
+            {refunds.length > 0 && (
+              <section className={CARD_CLASS}>
+                <h2 className={CARD_TITLE_CLASS}>
+                  <Undo2 size={16} /> {t("refund.title")}
+                </h2>
+                <ul className="m-0 p-0 list-none flex flex-col gap-3">
+                  {refunds.map((refund) => (
+                    <li
+                      key={`${refund.createdAt}-${refund.status}`}
+                      className="rounded-md border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 py-2.5 flex flex-col gap-1"
+                    >
+                      {(refund.reason === "RETURN" || refund.reason === "ADMIN_CANCELLED") && (
+                        <span className="font-primary text-[11px] text-[var(--text-muted)] tracking-[0.04em] uppercase">
+                          {refund.reason === "RETURN" && refund.returnId ? (
+                            <Link href={`/returns/${encodeURIComponent(refund.returnId)}`} className="text-inherit underline underline-offset-2">
+                              {t("refund.reasonReturn")}
+                            </Link>
+                          ) : (
+                            t(refund.reason === "RETURN" ? "refund.reasonReturn" : "refund.reasonAdminCancelled")
+                          )}
+                        </span>
+                      )}
+                      <span
+                        className={`font-primary text-sm font-medium tracking-[-0.02em] ${
+                          refund.status === "COMPLETED"
+                            ? "text-[var(--accent-sage)]"
+                            : refund.status === "REJECTED"
+                              ? "text-[var(--color-deep-rose)]"
+                              : "text-[var(--text-primary)]"
+                        }`}
+                      >
+                        {refund.status === "COMPLETED"
+                          ? t("refund.COMPLETED", { amount: format.number(refund.amount, "vnd") })
+                          : t(`refund.${refund.status}`)}
+                      </span>
+                      {refund.status === "COMPLETED" && refund.bankReference && (
+                        <span className="inline-flex items-center gap-1 font-primary text-xs text-[var(--text-secondary)] tracking-[-0.02em]">
+                          {t("refund.reference", { ref: refund.bankReference })}
+                          <CopyButton value={refund.bankReference} label={t("refund.referenceLabel")} />
+                        </span>
+                      )}
+                      <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
+                        {refund.status === "REQUESTED" && `${format.number(refund.amount, "vnd")} · `}
+                        {refund.processedAt
+                          ? t("refund.processedAt", { date: format.dateTime(new Date(refund.processedAt), "dateTime") })
+                          : t("refund.requestedAt", { date: format.dateTime(new Date(refund.createdAt), "dateTime") })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Return: delivered orders only */}
+            <OrderReturnCard
+              orderId={order.id}
+              orderStatus={order.status}
+              className={CARD_CLASS}
+              titleClassName={CARD_TITLE_CLASS}
+            />
+
+            {(canCancel || contactShop) && (
               <section className={`${CARD_CLASS} flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}>
                 <p className="m-0 font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em] leading-[150%]">
-                  {canCancel ? t("cancel.hint") : t("cancel.paidHint")}
+                  {canCancel ? t("cancel.hint") : t("cancel.contactShop")}
                 </p>
                 {canCancel && (
                   <button

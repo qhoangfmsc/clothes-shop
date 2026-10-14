@@ -1,7 +1,7 @@
 # Admin shell (layout, sidebar, cổng vào)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-13
-> **Code:** `src/app/[locale]/(admin)/layout.tsx` · `(admin)/AdminLayoutClient.tsx` · `(admin)/admin/page.tsx`
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-14
+> **Code:** `src/app/[locale]/(admin)/layout.tsx` · `(admin)/AdminLayoutClient.tsx` · `(admin)/admin/page.tsx` · `src/app/[locale]/_components/PendingCountsProvider.tsx`
 
 ## 1. Tóm tắt module
 
@@ -22,7 +22,8 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 | `AdminGuard` | Chặn người không có quyền vào admin |
 | Kiểm tra quyền theo route | So khớp `pathname` với mục sidebar → yêu cầu permission tương ứng |
 | `AdminPasswordGate` | Nhập mật khẩu hệ thống, TTL 15 phút |
-| Sidebar | Logo, Dashboard, ba nhóm điều hướng, thông tin người dùng, đăng xuất; cột cố định từ `lg`, drawer trượt ra dưới `lg` |
+| Sidebar | Logo, Dashboard, bốn nhóm điều hướng, thông tin người dùng, đăng xuất; cột cố định từ `lg`, drawer trượt ra dưới `lg` |
+| Badge "việc cần xử lý" | `PendingCountsProvider` (trong `AdminPasswordGate`, nên chưa hỏi BE trước khi nhập mật khẩu hệ thống) gọi `GET /api/admin/pending-counts` và chia sẻ số qua `usePendingCounts()`; menu hiện badge ở Orders, Payments, Refunds, Returns |
 | Breadcrumb | Dựng từ các segment của URL |
 | Màn từ chối | `AccessDeniedScreen` (thiếu quyền admin hoặc thiếu quyền route) |
 
@@ -42,20 +43,24 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 
 - Đầu: link `/` với logo "✦ DOOVAN" và nhãn `ADMIN` (`badge`).
 - **Dashboard** (`/admin`) luôn hiện.
-- Ba nhóm; mục chỉ hiện khi user có permission (nhóm rỗng ẩn):
+- Bốn nhóm theo thứ tự trên xuống; mục chỉ hiện khi user có permission (nhóm rỗng ẩn):
 
 | Nhóm (`nav.groups.*`) | Mục | Route | Permission cần |
 |---|---|---|---|
-| `catalog` | Products | `/admin/products` | `PRODUCT_VIEW` |
+| `orders` "Quản lý đơn hàng" | Orders | `/admin/orders` | `ORDER_ADMIN_VIEW` |
+| | Payments | `/admin/payments` | `PAYMENT_ADMIN_VIEW` |
+| | Returns | `/admin/returns` | `RETURN_ADMIN_VIEW` |
+| | Refunds | `/admin/refunds` | `PAYMENT_ADMIN_VIEW` |
+| `audience` "Khách hàng & Thống kê" | Users | `/admin/users` | `USER_ADMIN_VIEW` |
+| | Analytics | `/admin/analytics` | không yêu cầu |
+| `catalog` "Danh mục sản phẩm" | Products | `/admin/products` | `PRODUCT_VIEW` |
 | | Categories | `/admin/categories` | `CATEGORY_VIEW` |
 | | Collections | `/admin/collections` | `COLLECTION_VIEW` |
-| `management` | Orders | `/admin/orders` | `ORDER_ADMIN_VIEW` |
-| | Payments | `/admin/payments` | `PAYMENT_ADMIN_VIEW` |
-| | Users | `/admin/users` | `USER_ADMIN_VIEW` |
-| | Analytics | `/admin/analytics` | không yêu cầu |
-| `system` | Site config | `/admin/site-config` | `SITE_CONFIG_VIEW` |
+| `system` "Cấu hình hệ thống" | Site config | `/admin/site-config` | `SITE_CONFIG_VIEW` |
 | | Media | `/admin/media` | không yêu cầu |
 
+- **Badge việc cần xử lý** (`PendingBadge`): ở cuối mục Orders (`orders`), Payments (`payments`), Refunds (`refunds`), Returns (`returns`) — pill vàng nhạt (không dùng màu cảnh báo), ẩn khi giá trị là 0 **hoặc thiếu key** (key vắng = tài khoản không có quyền xem mục đó, khác với 0), `99+` khi lớn hơn 99. Chú thích dạng "3 đơn cần xử lý" nằm ở `title` (rê chuột) và ở chữ ẩn `sr-only` cho trình đọc màn hình; trên cảm ứng sidebar luôn hiện chữ của mục nên không cần nhấn giữ. Nút menu ở thanh trên (dưới `lg`) có một chấm vàng (`PendingMenuDot`) khi có mục nào đang có việc, vì drawer đóng thì không thấy badge.
+- **Nguồn số** (`PendingCountsProvider`, SWR): `GET /api/admin/pending-counts` → `{ data: { orders?, payments?, refunds?, returns? } }`. Chỉ nhận số hữu hạn ≥ 0 cho đúng bốn key. Gọi khi vào admin, làm mới mỗi 60 giây chỉ khi tab hiển thị (`refreshWhenHidden: false`), khi tab/cửa sổ trở lại foreground hoặc có mạng lại, và sau mỗi thao tác ghi thành công vào `/api/admin/*` (`authApi` phát `notifyAdminMutation()`, provider gộp các lần phát trong 300 ms thành một lần gọi). Lỗi mạng hoặc 5xx: giữ số cũ, không toast, không tự thử lại; 403: coi như không có key nào (ẩn mọi badge, không báo lỗi); 401 theo luồng đăng nhập lại của `authApi`. Các trang dùng cùng một nguồn này cho khung giải thích và số trên tab (xem [orders](./orders.md), [payments](./payments.md), [refunds](./refunds.md), [returns](./returns.md)).
 - Mục đang chọn: `pathname === href` hoặc `pathname.startsWith(href)` (chữ vàng + vạch trái).
 - Cuối: tên (hoặc email), email, nhãn role (`useRoleLabel`), nút Đăng xuất → `logout()` rồi `router.replace("/login")`.
 

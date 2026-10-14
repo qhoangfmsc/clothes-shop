@@ -1,7 +1,7 @@
 # Auth (đăng nhập, phiên, phân quyền)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
-> **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
+> **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
 
 ## 1. Tóm tắt module
 
@@ -55,6 +55,8 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 | Client | Dùng ở | Refresh 401 | Ghi chú |
 |---|---|---|---|
 | `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, dedupe bằng một promise dùng chung ở module-level; refresh trả `null` → `expireSession()` (xóa token + phát event) + ném `ApiError("", 401)` | Không map URL media |
+
+`authApi` còn phát `notifyAdminMutation()` (`src/lib/admin-events.ts`, pub/sub tối giản: `onAdminMutation(listener)` trả hàm hủy) sau mỗi request ghi (`POST`/`PUT`/`PATCH`/`DELETE`) thành công tới đường dẫn `/api/admin/…`; nơi nào phụ thuộc dữ liệu đó (hiện là badge "việc cần xử lý" của [admin-shell](../admin/admin-shell.md)) đăng ký để tự làm mới.
 | `useApiAuth().apiFetch(path, { method, body, headers, public })` | Account, Checkout, Orders, Order detail | Có, dedupe theo từng instance hook; `public: true` bỏ qua header Authorization | Kết quả đi qua `mapMediaUrls` |
 | `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token thẳng từ `localStorage`; kết quả đi qua `mapMediaUrls` |
 
@@ -63,8 +65,8 @@ Cả ba ném `ApiError(message, status, errorCode)` khi `!res.ok` (xem [data-lay
 ### 4.4 Phân quyền
 
 - `ROLES`: `admin`, `user`.
-- 21 permission dạng chuỗi, mỗi cái có mã số khớp BE: `PRODUCT_CREATE/UPDATE/DELETE` (6000–6002) và `PRODUCT_VIEW` (6003), `CATEGORY_*` (7000–7002) và `CATEGORY_VIEW` (7003), `COLLECTION_*` (8000–8002) và `COLLECTION_VIEW` (8003), `ORDER_ADMIN_VIEW` (9000), `ORDER_ADMIN_UPDATE_STATUS` (9001), `USER_ADMIN_VIEW` (10000), `USER_ADMIN_UPDATE` (10001), `SITE_CONFIG_VIEW/UPSERT/DELETE` (11000–11002), `PAYMENT_ADMIN_VIEW` (14000), `PAYMENT_ADMIN_CONFIRM` (14001).
-- `ROLE_PERMISSIONS`: `admin` có đủ 21; `user` không có quyền nào.
+- 25 permission dạng chuỗi, mỗi cái có mã số khớp BE: `PRODUCT_CREATE/UPDATE/DELETE` (6000–6002) và `PRODUCT_VIEW` (6003), `CATEGORY_*` (7000–7002) và `CATEGORY_VIEW` (7003), `COLLECTION_*` (8000–8002) và `COLLECTION_VIEW` (8003), `ORDER_ADMIN_VIEW` (9000), `ORDER_ADMIN_UPDATE_STATUS` (9001), `USER_ADMIN_VIEW` (10000), `USER_ADMIN_UPDATE` (10001), `SITE_CONFIG_VIEW/UPSERT/DELETE` (11000–11002), `PAYMENT_ADMIN_VIEW` (14000), `PAYMENT_ADMIN_CONFIRM` (14001), `PAYMENT_ADMIN_REFUND` (14002), `PAYMENT_ADMIN_CREATE_QR` (14003; role `admin` có đủ), `RETURN_ADMIN_VIEW` (16000), `RETURN_ADMIN_PROCESS` (16001). Quyền của khách (`RETURN_CREATE` 15000, `RETURN_VIEW` 15001) do BE cấp mặc định và FE không kiểm tra.
+- `ROLE_PERMISSIONS`: `admin` có đủ 25; `user` không có quyền nào.
 - `hasPermission(user, p)`: nếu `user.permissions` có phần tử thì **chỉ** xét danh sách đó (ghi đè role); ngược lại xét theo role.
 - `canAccessAdmin(user)`: role `admin` **hoặc** có ít nhất một permission.
 - Helper khác: `hasRole`, `hasAllPermissions`, `hasAnyPermission`, `getUserPermissions`, `permissionsToCodes`, `codesToPermissions`, `PERMISSION_LABELS`, `PERMISSION_GROUPS`, `getRoleLabel`.

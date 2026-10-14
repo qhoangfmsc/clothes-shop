@@ -30,11 +30,13 @@ interface OrderDetailPanelProps {
   onClose: () => void;
   /** Content of an extra "Payment" tab; the tab bar only appears when this is given */
   paymentTab?: ReactNode;
+  /** Notice shown above the details (e.g. "cancelled but not refunded") */
+  notice?: ReactNode;
 }
 
 /* ═══════════════════════════════ Component ═══════════════════════════════ */
 
-export default function OrderDetailPanel({ order, loading, onClose, paymentTab }: OrderDetailPanelProps) {
+export default function OrderDetailPanel({ order, loading, onClose, paymentTab, notice }: OrderDetailPanelProps) {
   const t = useTranslations("admin.components.orderDetailPanel");
   const format = useFormatter();
   const statusLabel = useOrderStatusLabel();
@@ -67,6 +69,8 @@ export default function OrderDetailPanel({ order, loading, onClose, paymentTab }
           onChange={(id) => setTab(id as "details" | "payment")}
         />
       )}
+
+      {notice}
 
       {/* Body */}
       {paymentTab && tab === "payment" ? (

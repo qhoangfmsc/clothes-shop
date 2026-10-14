@@ -12,6 +12,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import { API_URL, ApiError } from "./api";
+import { notifyAdminMutation } from "./admin-events";
 
 const TOKEN_KEY = "clothes_shop_access_token";
 const REFRESH_KEY = "clothes_shop_refresh_token";
@@ -131,6 +132,9 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
     const errBody = await res.json().catch(() => ({}));
     throw new ApiError(errBody.message || `API error: ${res.status}`, res.status, errBody.errorCode);
   }
+
+  /* A write to the admin API may change what the menu badges count: let them refresh */
+  if (method !== "GET" && path.startsWith("/api/admin/")) notifyAdminMutation();
 
   return res.json();
 }

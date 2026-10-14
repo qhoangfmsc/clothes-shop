@@ -1,7 +1,7 @@
 # Customer orders (đơn hàng của tôi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-13
-> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-14
+> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`
 > **i18n:** `private.orders` (`meta`, `list`, `detail`), `common.orderStatus`
 
 ## 1. Tóm tắt module
@@ -29,7 +29,7 @@ Cho khách nhìn là biết đơn đang ở đâu (chờ xử lý → xác nhậ
 - Danh sách: `GET /api/orders?sort=-createdAt&page&limit=25` (`useApiAuth().apiFetch`) → `{ data: Order[], total }`; trang đầu tải khi vào trang, nút "Xem thêm đơn hàng" (ẩn khi đã đủ `total`) tải trang kế và nối vào cuối danh sách. Lỗi tải → toast `toast.loadFailed` qua `useErrorMessage`.
 - Chi tiết: `GET /api/orders/:orderId` (id lấy từ `useParams`). Lỗi → toast; không có đơn → thông báo `notFound`.
 - `Order` (`_common/types.ts`): `id, status, subtotal, shippingFee, total, shippingMethod, shippingAddress: Record<string,string>, note, createdAt, updatedAt, items[{ id, productId | null, productName, productImage, quantity, price, size, color, createdAt }]`.
-- Thanh toán: lấy từ chính đơn (`Order.paymentStatus` `unpaid` | `paid`, `paidAt`, `paymentAttempts[]`), không gọi thêm API. `OrderPaymentAttempt { transferCode, amount (VND), status (PENDING|PAID|EXPIRED|CANCELLED, trạng thái thật), createdAt, expiresAt, paidAt, transactionRef | null }`, mới nhất trước; `transferCode` là duy nhất nên dùng làm key.
+- Thanh toán: lấy từ chính đơn (`Order.paymentStatus` `unpaid` | `paid` | `refunded`, `paidAt`, `paymentAttempts[]`, `refunds[]`; `deliveredAt` là lúc đơn giao tới khách, mở đầu thời hạn trả hàng), không gọi thêm API. `OrderPaymentAttempt { transferCode, amount (VND), status (PENDING|PAID|EXPIRED|CANCELLED, trạng thái thật), createdAt, expiresAt, paidAt, transactionRef | null }`, mới nhất trước; `transferCode` là duy nhất nên dùng làm key.
 
 ### 4.2 Hiển thị
 
@@ -40,7 +40,9 @@ Cho khách nhìn là biết đơn đang ở đâu (chờ xử lý → xác nhậ
 - Bố cục: danh sách `max-w-[720px]`; chi tiết `max-w-[1080px]`, một cột trên điện thoại/tablet (trạng thái → thanh toán → giao đến → sản phẩm & tiền), từ `lg` hai cột `minmax(0,1fr) / 400px` với thẻ sản phẩm & tiền `sticky`. Toàn bộ style bằng Tailwind.
 
 - **Hai nhãn tách riêng**: trạng thái xử lý của đơn (`OrderStatusBadge` ở danh sách, tiêu đề thẻ trạng thái ở chi tiết) và trạng thái thanh toán (`OrderPaymentBadge`: Đã thanh toán / Chưa thanh toán) cạnh nhau ở cả danh sách và chi tiết; [account](./account.md) cũng hiện nhãn thanh toán dưới trạng thái. Thanh toán thành công khiến BE tự chuyển đơn `pending` sang `confirmed`.
-- **Hủy đơn** (chi tiết): thẻ "hủy" chỉ hiện khi đơn `pending` và `unpaid`: nút "Hủy đơn" → `useConfirm` (`danger`) → `PATCH /api/orders/:id/cancel`, cập nhật đơn từ response (các mã chờ bị BE hủy theo) và toast `cancel.done`. Đơn đã thanh toán (`paid`) ở `pending`/`confirmed` không có nút mà hiện dòng "đã thanh toán nên không hủy trực tuyến, liên hệ cửa hàng"; nếu BE vẫn trả lỗi `1307` (`ORDER_CANCEL_PAID_NOT_ALLOWED`) thì `useErrorMessage` hiện cùng nội dung (`shared.errors.byCode.1307`).
+- **Hủy đơn** (chi tiết): nút "Hủy đơn" chỉ hiện khi `unpaid` **và** `pending` → `useConfirm` (`danger`) → `PATCH /api/orders/:id/cancel`; response cùng shape chi tiết đơn nên thay thẳng vào màn hình (các mã chờ bị BE hủy theo), toast `cancel.done`. Mọi đơn còn mở khác (`pending`/`confirmed`/`shipping`, gồm cả đơn đã thanh toán) ẩn nút và hiện dòng "Liên hệ cửa hàng để hủy đơn"; cửa hàng hủy đơn đã trả thì BE tự tạo khoản hoàn. Lỗi `1307` (đã trả, không hủy trực tuyến được) hiện nguyên message của BE (không có bản dịch theo mã).
+- **Hoàn tiền**: khi `refunds[]` (mới nhất trước, `[]` nếu chưa có) có phần tử, thẻ "Hoàn tiền" liệt kê từng khoản (`reason` chỉ còn `ADMIN_CANCELLED` ghi "Cửa hàng hủy đơn" và `RETURN` ghi "Hoàn tiền do trả hàng"): `REQUESTED` "Đã ghi nhận yêu cầu hoàn tiền, cửa hàng sẽ chuyển khoản lại cho bạn" (kèm số tiền VND và thời điểm yêu cầu), `COMPLETED` "Đã hoàn X ₫" kèm `bankReference` (có `CopyButton`) và thời điểm xử lý, `REJECTED` "Cửa hàng không hoàn tiền, vui lòng liên hệ cửa hàng". Không hứa thời gian hay tài khoản nhận; BE không trả `note` hay tên admin. `paymentStatus = refunded` hiện qua `OrderPaymentBadge` "Đã hoàn tiền". Khoản hoàn có `reason = RETURN` (kèm `returnId`) ghi "Hoàn tiền do trả hàng" và link sang yêu cầu trả hàng tương ứng.
+- **Trả hàng**: với đơn `delivered` / `completed`, thẻ "Trả hàng" (`OrderReturnCard`, xem [customer-returns](./customer-returns.md)) cho biết còn hạn đến khi nào và có nút "Yêu cầu trả hàng", hoặc nhãn lý do không trả được, kèm danh sách yêu cầu đã gửi của đơn. Đầu trang danh sách đơn có liên kết "Yêu cầu trả hàng" sang `/returns`.
 
 ### 4.3 Phạm vi
 
