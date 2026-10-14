@@ -4,13 +4,15 @@
     "shop": "Cửa hàng",
     "newIn": "Hàng mới về",
     "collections": "Bộ sưu tập",
-    "about": "Giới thiệu"
+    "about": "Giới thiệu",
+    "customOrder": "Đặt thiết kế"
   },
   "navDescription": {
     "home": "Chào mừng đến với cửa hàng",
     "newIn": "Sản phẩm mới nhất",
     "collections": "Tuyển chọn theo mùa",
-    "about": "Câu chuyện & tầm nhìn của chúng tôi"
+    "about": "Câu chuyện & tầm nhìn của chúng tôi",
+    "customOrder": "May đo theo ý tưởng của bạn"
   },
   "account": {
     "myAccount": "Tài khoản của tôi",

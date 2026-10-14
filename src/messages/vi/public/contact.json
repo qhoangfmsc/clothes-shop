@@ -53,7 +53,9 @@
       "bust": "Vòng ngực",
       "waist": "Vòng eo",
       "hips": "Vòng mông",
-      "unit": "cm"
+      "unit": "cm",
+      "weight": "Cân nặng",
+      "weightUnit": "kg"
     },
     "quantity": {
       "label": "Số lượng",
@@ -95,6 +97,7 @@
       "reference": "Mã sản phẩm",
       "link": "Liên kết",
       "measurements": "Số đo (cm)",
+      "weight": "Cân nặng (kg)",
       "quantity": "Số lượng",
       "neededBy": "Cần nhận trước",
       "name": "Họ tên",

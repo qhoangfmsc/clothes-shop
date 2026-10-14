@@ -49,6 +49,7 @@ export function buildOrderRequest(
     ),
     section(t("message.sections.order"), [
       measurements.length ? row(t("message.labels.measurements"), measurements.join(" · ")) : "",
+      values.weight.trim() ? row(t("message.labels.weight"), values.weight.trim()) : "",
       row(t("message.labels.quantity"), String(values.quantity)),
       values.neededBy ? row(t("message.labels.neededBy"), formatDate(values.neededBy)) : "",
     ]),

@@ -20,7 +20,8 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 | Danh sách | Search, lọc theo trạng thái và trạng thái thanh toán, sort, phân trang 25/trang, cột "Thanh toán" |
 | Đổi trạng thái | Dropdown trong ô trạng thái, chỉ hiện các bước hợp lệ tiếp theo |
 | Chi tiết đơn | Panel modal; URL `?orderId=` mở thẳng; lỗi không tìm thấy có panel riêng; tab "Thanh toán" (cần `PAYMENT_ADMIN_VIEW`) xem [payments](./payments.md) |
-| Quyền | Đổi trạng thái cần `ORDER_ADMIN_UPDATE_STATUS`, ngược lại hiện badge chỉ đọc |
+| Đổi trạng thái hàng loạt | Tick nhiều đơn → thanh chọn có dropdown "Đổi trạng thái thành…"; đơn không chuyển được sang trạng thái đó bị bỏ qua |
+| Quyền | Đổi trạng thái (từng đơn và hàng loạt) cần `ORDER_ADMIN_UPDATE_STATUS`, ngược lại hiện badge chỉ đọc và bảng không có cột chọn |
 
 ## 4. Chi tiết
 
@@ -39,6 +40,13 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 - `updateOrderStatus` → `PATCH /api/admin/orders/:id/status` với `{ status }`. Thành công: toast `statusChanged` (mã đơn + nhãn trạng thái mới), cập nhật panel đang mở, refresh bảng. Lỗi: toast `statusFailed` qua `useErrorMessage`.
 - Dropdown bị khóa khi `isUpdating`.
 - Chuyển đơn **đã thanh toán** (`paymentStatus = paid`) sang `cancelled` hỏi xác nhận trước (`useConfirm`, `danger`, `confirmCancelPaid.*`): BE sẽ tạo yêu cầu hoàn tiền, admin chuyển khoản trả khách ở [refunds](./refunds.md). Đơn `pending` chuyển sang `confirmed` tự động khi thanh toán thành công (BE), nên đơn đã trả thường đã ở `confirmed`.
+
+### 4.2.1 Đổi trạng thái hàng loạt
+
+- `DataTable` bật `selectable` chỉ khi user có `ORDER_ADMIN_UPDATE_STATUS`; `renderBulkActions` hiện một `<select>` (luôn `value=""`, placeholder `bulk.statusPlaceholder`) gồm các trạng thái mà **ít nhất một** đơn đang tick có thể chuyển tới (`ORDER_STATUS_TRANSITIONS`); khóa khi `isUpdating` hoặc không có bước nào (toàn đơn `completed`/`cancelled`).
+- Chọn một trạng thái → `handleBulkStatusChange`: chỉ lấy các đơn đang tick mà `ORDER_STATUS_TRANSITIONS[status]` chứa trạng thái đích (không còn đơn nào thì dừng). Luôn hỏi xác nhận (`useConfirm`, `bulk.confirm.*`): số đơn sẽ chuyển, số đơn bị bỏ qua (nếu có) và, khi đích là `cancelled`, số đơn đã thanh toán sẽ tạo yêu cầu hoàn tiền; `danger` chỉ khi đích là `cancelled`.
+- `updateOrderStatuses` → mỗi đơn một `PATCH /api/admin/orders/:id/status` (BE chưa có endpoint bulk) chạy song song bằng `Promise.allSettled`; trả `{ succeededIds, failed }`. Toast `statusChangedMany` cho các đơn thành công và `statusFailedMany` cho các đơn lỗi (có thể cùng hiện). Sau đó: cập nhật `status` của panel đang mở nếu đơn đó thành công, bỏ chọn, refresh bảng.
+- Thanh chọn của `DataTable` xuống dòng (`flex-wrap`) khi hẹp.
 
 ### 4.3 Chi tiết đơn (URL-driven)
 

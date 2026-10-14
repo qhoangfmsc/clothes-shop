@@ -53,7 +53,9 @@
       "bust": "Bust",
       "waist": "Waist",
       "hips": "Hips",
-      "unit": "cm"
+      "unit": "cm",
+      "weight": "Weight",
+      "weightUnit": "kg"
     },
     "quantity": {
       "label": "Quantity",
@@ -95,6 +97,7 @@
       "reference": "Reference",
       "link": "Link",
       "measurements": "Measurements (cm)",
+      "weight": "Weight (kg)",
       "quantity": "Quantity",
       "neededBy": "Needed by",
       "name": "Name",

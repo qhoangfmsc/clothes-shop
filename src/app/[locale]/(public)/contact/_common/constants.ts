@@ -12,6 +12,7 @@ export const EMPTY_ORDER_REQUEST: OrderRequestValues = {
   note: "",
   quantity: 1,
   measurements: EMPTY_MEASUREMENTS,
+  weight: "",
   neededBy: "",
   fullName: "",
   phone: "",

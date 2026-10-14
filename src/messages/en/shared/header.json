@@ -4,13 +4,15 @@
     "shop": "Shop",
     "newIn": "New In",
     "collections": "Collections",
-    "about": "About"
+    "about": "About",
+    "customOrder": "Custom Order"
   },
   "navDescription": {
     "home": "Welcome to our store",
     "newIn": "Latest arrivals",
     "collections": "Curated seasonal edits",
-    "about": "Our story & vision"
+    "about": "Our story & vision",
+    "customOrder": "Made to measure, your design"
   },
   "account": {
     "myAccount": "My Account",

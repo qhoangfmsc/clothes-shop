@@ -1,6 +1,6 @@
 # Design system (token, font, style toàn cục)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-12
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
 > **Code:** `src/styles/design-system.css` · `src/app/globals.css` · `src/assets/fonts/` · `postcss.config.mjs` · `DESIGN.md` (gốc repo) · `public/`
 > **Quy tắc dùng:** `.agent/rules/design-system.md`, `.agent/skills/03-tailwind-styling.md`
 
@@ -48,7 +48,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - Mọi `<img>` fade-in 0.4 s (`img-fade-in`); `img[data-admin-img]` và `img[data-cursor-img]` bỏ qua hiệu ứng này.
 - Keyframes: `spin`, `rt-in`/`rt-out` (route transition), `cart-shimmer`, `skeleton-shimmer`, `checkout-shimmer`, `ni-pulse`, `ni-ticker-scroll` (New In).
 - Custom variant `carousel` (điện thoại/thiết bị cảm ứng) cho Tailwind.
-- Class riêng cho drawer menu (`.drawer-*`), mega menu (`.mega-menu-item-link`), user menu (`.user-avatar-btn`, `.user-menu-item`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
+- Class riêng cho drawer menu (`.drawer-*`; `.drawer-nav-featured` là thẻ vàng nổi bật của link "Đặt thiết kế" với vệt sáng quét `drawer-featured-sweep`, tắt khi `prefers-reduced-motion`), mega menu (`.mega-menu-item-link`), user menu (`.user-avatar-btn`, `.user-menu-item`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
 - Khối `prefers-reduced-motion: reduce` tắt chuyển động cho các thành phần trên.
 
 ### 4.4 Responsive (hiện trạng)

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { Link } from "@/src/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { X, ArrowRight, User, Heart, Package, LogOut } from "lucide-react";
+import { X, ArrowRight, User, Heart, Package, LogOut, Scissors } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useCategories, useBannerConfig } from "@/src/hooks/use-api";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
@@ -16,11 +16,14 @@ import { CarouselDots } from "./CarouselControls";
 import { useAutoAdvance } from "@/src/hooks/use-auto-advance";
 import LanguageSwitcher from "./LanguageSwitcher";
 import SocialIcons from "./SocialIcons";
+import { CONTACT_PATH } from "@/src/lib/product-purchase";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
+/** `featured` links are drawn as a highlighted card. */
 const NAV_LINKS = [
   { key: "home", href: "/", hasAccordion: false },
+  { key: "customOrder", href: CONTACT_PATH, hasAccordion: false, featured: true },
   { key: "shop", href: "/shop", hasAccordion: true },
   { key: "newIn", href: "/new-in", hasAccordion: false },
   { key: "collections", href: "/collections", hasAccordion: false },
@@ -551,19 +554,6 @@ export default function HamburgerMenu() {
                           }}
                         >
                           <span
-                            style={{
-                              color: "rgba(255, 255, 255, 0.3)",
-                              fontSize: "var(--text-xs)",
-                              letterSpacing: "-0.02em",
-                              fontVariantNumeric: "tabular-nums",
-                              minWidth: 24,
-                              flexShrink: 0,
-                              fontFamily: "var(--font-primary)",
-                            }}
-                          >
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-                          <span
                             className="drawer-nav-label"
                             style={{
                               color: "#FFF",
@@ -593,6 +583,77 @@ export default function HamburgerMenu() {
                           ▾
                         </motion.span>
                       </button>
+                    ) : "featured" in link ? (
+                      /* Highlighted call-to-action card (custom order) */
+                      <Link
+                        href={link.href}
+                        onClick={close}
+                        className="drawer-nav-featured"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "16px",
+                          margin: "12px 0",
+                          padding: "18px 20px",
+                          borderRadius: 16,
+                          textDecoration: "none",
+                        }}
+                      >
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 40,
+                            height: 40,
+                            flexShrink: 0,
+                            borderRadius: "50%",
+                            background: "var(--accent-primary)",
+                            color: "var(--text-on-gold)",
+                          }}
+                        >
+                          <Scissors size={20} />
+                        </span>
+                        <span
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "4px",
+                            flex: 1,
+                            minWidth: 0,
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: "var(--accent-primary)",
+                              fontSize: "var(--text-xl)",
+                              letterSpacing: "-0.04em",
+                              lineHeight: "100%",
+                              fontWeight: 500,
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            {t(`nav.${link.key}`)}
+                          </span>
+                          <span
+                            style={{
+                              color: "rgba(255, 255, 255, 0.6)",
+                              fontSize: "var(--text-sm)",
+                              letterSpacing: "-0.02em",
+                              lineHeight: "140%",
+                            }}
+                          >
+                            {t(`navDescription.${link.key}`)}
+                          </span>
+                        </span>
+                        <ArrowRight
+                          size={18}
+                          aria-hidden="true"
+                          className="drawer-nav-featured-arrow"
+                          style={{ color: "var(--accent-primary)", flexShrink: 0 }}
+                        />
+                      </Link>
                     ) : (
                       /* Regular nav link */
                       <Link
@@ -609,20 +670,6 @@ export default function HamburgerMenu() {
                           transition: `border-color var(--duration-fast) var(--ease-default)`,
                         }}
                       >
-                        {/* Index number */}
-                        <span
-                          style={{
-                            color: "rgba(255, 255, 255, 0.3)",
-                            fontSize: "var(--text-xs)",
-                            letterSpacing: "-0.02em",
-                            fontVariantNumeric: "tabular-nums",
-                            minWidth: 24,
-                            flexShrink: 0,
-                          }}
-                        >
-                          {String(idx + 1).padStart(2, "0")}
-                        </span>
-
                         {/* Label + description */}
                         <span
                           style={{
@@ -950,10 +997,7 @@ export default function HamburgerMenu() {
                   linkClassName="drawer-social-link flex items-center text-[var(--color-ash)] transition-colors duration-150 hover:text-[var(--text-on-dark)]"
                 />
               </div>
-              <nav
-                aria-label={tLegal("title")}
-                className="flex flex-wrap gap-x-4 gap-y-1.5 py-1.5"
-              >
+              <nav aria-label={tLegal("title")} className="flex flex-wrap gap-x-4 gap-y-1.5 py-1.5">
                 {LEGAL_DOCS.map((doc) => (
                   <Link
                     key={doc.key}

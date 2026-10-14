@@ -57,6 +57,27 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
+/**
+ * Bulk status change: one PATCH per order (the BE has no bulk endpoint), so one failing order
+ * does not stop the others. Resolves with the ids that changed and how many failed.
+ */
+export const updateOrderStatuses = createAsyncThunk(
+  "orders/updateStatuses",
+  async ({
+    ids,
+    status,
+  }: {
+    ids: string[];
+    status: OrderStatus;
+  }): Promise<{ succeededIds: string[]; failed: number }> => {
+    const results = await Promise.allSettled(
+      ids.map((id) => authApi.patch(`/api/admin/orders/${id}/status`, { status }))
+    );
+    const succeededIds = ids.filter((_, i) => results[i].status === "fulfilled");
+    return { succeededIds, failed: ids.length - succeededIds.length };
+  }
+);
+
 export const fetchOrderDetail = createAsyncThunk(
   "orders/fetchDetail",
   async (id: string) => {
@@ -101,6 +122,20 @@ export const ordersSlice = createSlice({
         state.isUpdating = false;
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.isUpdating = false;
+        state.error = action.error.message ?? "Failed to update status";
+      });
+
+    /* ── Bulk Update Status ── */
+    builder
+      .addCase(updateOrderStatuses.pending, (state) => {
+        state.isUpdating = true;
+        state.error = null;
+      })
+      .addCase(updateOrderStatuses.fulfilled, (state) => {
+        state.isUpdating = false;
+      })
+      .addCase(updateOrderStatuses.rejected, (state, action) => {
         state.isUpdating = false;
         state.error = action.error.message ?? "Failed to update status";
       });

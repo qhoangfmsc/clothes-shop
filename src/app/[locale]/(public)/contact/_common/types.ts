@@ -37,6 +37,8 @@ export interface OrderRequestValues {
   note: string;
   quantity: number;
   measurements: Measurements;
+  /** Body weight in kg (free text, digits only) — optional, not part of `Measurements` because its unit is not cm. */
+  weight: string;
   /** `YYYY-MM-DD` from the date input, or empty. */
   neededBy: string;
   fullName: string;

@@ -11,7 +11,6 @@ import {
   MAX_NOTE_LENGTH,
   MAX_PHONE_DIGITS,
   MAX_QUANTITY,
-  MEASUREMENT_KEYS,
   MIN_PHONE_DIGITS,
 } from "../_common/constants";
 import type {
@@ -24,6 +23,19 @@ import ProductSummaryCard from "./ProductSummaryCard";
 
 const inputClass =
   "w-full rounded-md border border-[var(--border-light)] bg-[var(--bg-primary)] px-4 py-2.5 font-primary text-sm tracking-[-0.02em] text-[var(--text-primary)] outline-none transition-colors duration-150 placeholder:text-[var(--text-disabled)] focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_rgba(201,169,110,0.15)] motion-reduce:transition-none";
+
+/** Body fields in display order; `startsRow` puts the field in the first column of a new row. */
+const MEASUREMENT_FIELDS: {
+  key: MeasurementKey | "weight";
+  unit: "unit" | "weightUnit";
+  startsRow?: boolean;
+}[] = [
+  { key: "height", unit: "unit" },
+  { key: "weight", unit: "weightUnit" },
+  { key: "bust", unit: "unit", startsRow: true },
+  { key: "waist", unit: "unit" },
+  { key: "hips", unit: "unit" },
+];
 
 const errorBorder = "!border-[var(--color-deep-rose)]";
 
@@ -122,18 +134,27 @@ export default function OrderRequestForm({ product }: OrderRequestFormProps) {
           <SectionTitle>{t("form.details.title")}</SectionTitle>
 
           <Field label={t("form.measurements.title")}>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {MEASUREMENT_KEYS.map((key) => (
-                <label key={key} className="flex flex-col gap-1">
+            {/* One 3-column grid so every input is the same width: height + weight on the first row,
+                the three girths start a new row. */}
+            <div className="grid grid-cols-3 gap-3">
+              {MEASUREMENT_FIELDS.map(({ key, unit, startsRow }) => (
+                <label
+                  key={key}
+                  className={`flex flex-col gap-1 ${startsRow ? "col-start-1" : ""}`}
+                >
                   <span className="font-primary text-xs tracking-[-0.02em] text-[var(--text-muted)]">
-                    {t(`form.measurements.${key}`)} ({t("form.measurements.unit")})
+                    {t(`form.measurements.${key}`)} ({t(`form.measurements.${unit}`)})
                   </span>
                   <input
                     inputMode="decimal"
                     className={inputClass}
-                    value={values.measurements[key]}
+                    value={key === "weight" ? values.weight : values.measurements[key]}
                     maxLength={5}
-                    onChange={(e) => setMeasurement(key, e.target.value.replace(/[^\d.,]/g, ""))}
+                    onChange={(e) => {
+                      const next = e.target.value.replace(/[^\d.,]/g, "");
+                      if (key === "weight") set("weight", next);
+                      else setMeasurement(key, next);
+                    }}
                   />
                 </label>
               ))}

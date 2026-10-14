@@ -29,7 +29,9 @@
   },
   "toast": {
     "statusChanged": "Order #{id} → {status}",
-    "statusFailed": "Failed to update status"
+    "statusFailed": "Failed to update status",
+    "statusChangedMany": "{count, plural, one {# order} other {# orders}} moved to \"{status}\"",
+    "statusFailedMany": "{count, plural, one {# order} other {# orders}} could not be updated"
   },
   "confirmCancelPaid": {
     "title": "Cancel a paid order",
@@ -42,5 +44,16 @@
     "excludes": "Excludes: orders whose customer is transferring right now (live QR code), shipping, delivered, completed or cancelled. So the total of waiting orders can be larger than this number.",
     "how": "Open the order, confirm it and move it to \"Shipping\". If an unpaid order sits too long, contact the customer or cancel it.",
     "view": "Show orders needing action"
+  },
+  "bulk": {
+    "statusPlaceholder": "Change status to…",
+    "statusAria": "Change status of the selected orders",
+    "confirm": {
+      "title": "{count, plural, one {Change status of # order} other {Change status of # orders}}",
+      "message": "{count, plural, one {# order} other {# orders}} will move to \"{status}\".",
+      "skipped": "{count, plural, one {# selected order is} other {# selected orders are}} not allowed to move to this status and will be skipped.",
+      "refund": "{count, plural, one {# paid order} other {# paid orders}} will get a refund request, which you pay back from the Refunds page.",
+      "confirm": "Change status"
+    }
   }
 }

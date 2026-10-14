@@ -10,6 +10,7 @@ import UserMenu from "./UserMenu";
 import SearchBar from "./SearchBar";
 import { useCategories } from "@/src/hooks/use-api";
 import { MAX_INLINE_CATEGORIES } from "@/src/lib/category-display";
+import { CONTACT_PATH } from "@/src/lib/product-purchase";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -370,6 +371,31 @@ export default function HeaderNav({
           </div>
         ))}
 
+        {/* Custom order CTA — outlined pill, desktop only (mobile has it in the drawer) */}
+        <div style={{ display: "var(--nav-link-display, none)" }}>
+          <Link
+            href={CONTACT_PATH}
+            className="header-nav-cta"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              height: 30,
+              padding: "0 16px",
+              border: "1px solid currentColor",
+              borderRadius: 999,
+              fontSize: 13,
+              textTransform: "uppercase",
+              color: "currentColor",
+              letterSpacing: "-0.02em",
+              whiteSpace: "nowrap",
+              pointerEvents: "auto",
+              textDecoration: "none",
+            }}
+          >
+            {t("nav.customOrder")}
+          </Link>
+        </div>
+
         {/* <UserMenu /> */}
 
         <HamburgerMenu />
@@ -395,6 +421,13 @@ export default function HeaderNav({
           }
           .header-nav-link:hover {
             opacity: 0.85;
+          }
+          .header-nav-cta {
+            transition: opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1);
+          }
+          .header-nav-cta:hover,
+          .header-nav-cta:focus-visible {
+            opacity: 0.7;
           }
         `}</style>
       </motion.nav>

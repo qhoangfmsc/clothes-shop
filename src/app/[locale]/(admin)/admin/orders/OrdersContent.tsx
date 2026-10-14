@@ -28,11 +28,12 @@ import {
 import { PERMISSIONS, hasPermission } from "@/src/lib/permissions";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-import { fetchOrderList, updateOrderStatus, fetchOrderDetail } from "./_common/moduleSlice";
+import { fetchOrderList, updateOrderStatus, updateOrderStatuses, fetchOrderDetail } from "./_common/moduleSlice";
 import { ORDER_SORT_OPTIONS } from "./_common/constants";
 import {
   ORDER_PAYMENT_STATUSES,
   ORDER_STATUSES,
+  ORDER_STATUS_TRANSITIONS,
   getSelectableOrderStatuses,
   type OrderPaymentStatus,
   type OrderStatus,
@@ -74,6 +75,7 @@ export default function OrdersContent() {
   const { counts } = usePendingCounts();
   const { user } = useAuth();
   const canViewPayment = hasPermission(user, PERMISSIONS.PAYMENT_ADMIN_VIEW);
+  const canUpdateStatus = hasPermission(user, PERMISSIONS.ORDER_ADMIN_UPDATE_STATUS);
 
   /* ── Detail Panel State ── */
   const [detailOrder, setDetailOrder] = useState<AdminOrder | null>(null);
@@ -279,6 +281,40 @@ export default function OrdersContent() {
     }
   };
 
+  /* Moves every ticked order that may take `newStatus`; the others are skipped (and said so in the confirm) */
+  const handleBulkStatusChange = async (rows: AdminOrder[], newStatus: OrderStatus, clearSelection: () => void) => {
+    const eligible = rows.filter((o) => ORDER_STATUS_TRANSITIONS[o.status as OrderStatus]?.includes(newStatus));
+    if (eligible.length === 0) return;
+    const skipped = rows.length - eligible.length;
+    const refunds = newStatus === "cancelled" ? eligible.filter((o) => o.paymentStatus === "paid").length : 0;
+    const message = [
+      t("bulk.confirm.message", { count: eligible.length, status: statusLabel(newStatus) }),
+      skipped > 0 ? t("bulk.confirm.skipped", { count: skipped }) : "",
+      refunds > 0 ? t("bulk.confirm.refund", { count: refunds }) : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const proceed = await confirm({
+      title: t("bulk.confirm.title", { count: eligible.length }),
+      message,
+      confirmLabel: t("bulk.confirm.confirm"),
+      danger: newStatus === "cancelled",
+    });
+    if (!proceed) return;
+    const { succeededIds, failed } = await dispatch(
+      updateOrderStatuses({ ids: eligible.map((o) => o.id), status: newStatus })
+    ).unwrap();
+    if (succeededIds.length > 0) {
+      toast.success(t("toast.statusChangedMany", { count: succeededIds.length, status: statusLabel(newStatus) }));
+    }
+    if (failed > 0) toast.error(t("toast.statusFailedMany", { count: failed }));
+    if (detailOrder && succeededIds.includes(detailOrder.id)) {
+      setDetailOrder((p) => (p ? { ...p, status: newStatus } : null));
+    }
+    clearSelection();
+    tableRef.current?.refresh();
+  };
+
   /* An admin confirmed the payment from the order's payment tab: reload the open order and the table */
   const refreshAfterPayment = () => {
     if (detailOrder) {
@@ -334,6 +370,31 @@ export default function OrdersContent() {
           },
         ]}
         sortOptions={sortOptions}
+        selectable={canUpdateStatus}
+        renderBulkActions={({ rows, clear }) => {
+          /* Only the steps at least one ticked order can take */
+          const targets = ORDER_STATUSES.filter((s) =>
+            rows.some((o) => ORDER_STATUS_TRANSITIONS[o.status as OrderStatus]?.includes(s))
+          );
+          return (
+            <select
+              className="h-7 py-0 px-2 rounded-sm text-xs font-semibold font-primary border-0 cursor-pointer outline-none bg-[var(--bg-secondary)] text-[var(--text-secondary)] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label={t("bulk.statusAria")}
+              value=""
+              disabled={isUpdating || targets.length === 0}
+              onChange={(e) => handleBulkStatusChange(rows, e.target.value as OrderStatus, clear)}
+            >
+              <option value="" disabled>
+                {t("bulk.statusPlaceholder")}
+              </option>
+              {targets.map((s) => (
+                <option key={s} value={s}>
+                  {statusLabel(s)}
+                </option>
+              ))}
+            </select>
+          );
+        }}
       />
 
       {/* ═══════════════ DETAIL / ERROR PANEL ═══════════════ */}

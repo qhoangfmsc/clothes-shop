@@ -29,7 +29,9 @@
   },
   "toast": {
     "statusChanged": "Đơn hàng #{id} → {status}",
-    "statusFailed": "Cập nhật trạng thái thất bại"
+    "statusFailed": "Cập nhật trạng thái thất bại",
+    "statusChangedMany": "{count, plural, other {# đơn hàng}} đã chuyển sang \"{status}\"",
+    "statusFailedMany": "{count, plural, other {# đơn hàng}} cập nhật thất bại"
   },
   "confirmCancelPaid": {
     "title": "Hủy đơn đã thanh toán",
@@ -42,5 +44,16 @@
     "excludes": "Không gồm: đơn khách đang chuyển khoản (có mã QR còn hạn), đang giao, đã giao, hoàn tất, đã hủy. Vì vậy tổng số đơn đang chờ có thể lớn hơn số này.",
     "how": "Mở đơn, xác nhận và chuyển sang \"Đang giao\". Đơn chưa trả để quá lâu thì liên hệ khách hoặc hủy đơn.",
     "view": "Xem đơn cần xử lý"
+  },
+  "bulk": {
+    "statusPlaceholder": "Đổi trạng thái thành…",
+    "statusAria": "Đổi trạng thái các đơn đã chọn",
+    "confirm": {
+      "title": "{count, plural, other {Đổi trạng thái # đơn hàng}}",
+      "message": "{count, plural, other {# đơn hàng}} sẽ chuyển sang \"{status}\".",
+      "skipped": "{count, plural, other {# đơn đã chọn}} không thể chuyển sang trạng thái này nên sẽ được bỏ qua.",
+      "refund": "{count, plural, other {# đơn đã thanh toán}} sẽ tạo yêu cầu hoàn tiền, bạn chuyển khoản trả khách ở màn Hoàn tiền.",
+      "confirm": "Đổi trạng thái"
+    }
   }
 }

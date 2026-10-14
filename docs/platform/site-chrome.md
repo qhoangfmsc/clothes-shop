@@ -1,15 +1,15 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
 > **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
 
-Khung điều hướng của storefront: header cố định (logo, mega menu danh mục, tìm kiếm gợi ý, link chính, burger menu), footer tối, nút giỏ hàng nổi và bộ chọn ngôn ngữ. Danh mục trong menu và banner "nổi bật" trong burger menu lấy từ BE.
+Khung điều hướng của storefront: header cố định (logo, mega menu danh mục, tìm kiếm gợi ý, link chính, nút "Đặt thiết kế", burger menu), footer tối, nút giỏ hàng nổi và bộ chọn ngôn ngữ. Danh mục trong menu và banner "nổi bật" trong burger menu lấy từ BE.
 
 ## 2. Phục vụ gì / việc cần làm
 
-- Đưa khách tới Shop, New In, Collections, About và khu tài khoản từ mọi trang công khai.
+- Đưa khách tới Shop, New In, Collections, About, trang đặt thiết kế riêng ([contact](../storefront/contact.md)) và khu tài khoản từ mọi trang công khai.
 - Tìm sản phẩm nhanh bằng ô tìm kiếm có gợi ý và lịch sử sản phẩm đã mở gần đây.
 - Hiển thị danh mục/danh mục con thật từ API, có lối tắt "xem tất cả".
 - Cho thấy số lượng trong giỏ và dẫn tới giỏ từ bất cứ đâu.
@@ -21,7 +21,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 |---|---|---|
 | Header | Cố định, ẩn khi cuộn xuống/hiện khi cuộn lên, nền kính mờ sau khi cuộn | `SiteHeader.tsx` |
 | Logo | Wordmark SVG `DOOVAN` màu thương hiệu, link về `/` | `Logo.tsx` |
-| Thanh điều hướng | Link Shop/New In/Collections/About (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
+| Thanh điều hướng | Link Shop/New In/Collections/About + nút "Đặt thiết kế" (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
 | Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, lịch sử gần đây, điều hướng bằng phím | `SearchBar.tsx`, `useSearchHistory.ts` |
 | Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật, đổi ngôn ngữ, mạng xã hội, link pháp lý | `HamburgerMenu.tsx` |
 | Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
@@ -38,6 +38,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 ### 4.2 `HeaderNav`
 
 - `NAV_LINKS`: Shop (có mega menu), New In, Collections, About; chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
+- Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 30 px, link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
 - Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Panel trượt từ trên, render qua portal vào `body`.
 - Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
 - `<UserMenu />` đang được comment trong `HeaderNav` (không hiển thị); phần tài khoản nằm trong burger menu.
@@ -50,7 +51,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.4 `HamburgerMenu`
 
-- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: Home, Shop (accordion), New In, Collections, About, đánh số `01…`.
+- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: Home, **Đặt thiết kế** (ngay dưới Home), Shop (accordion), New In, Collections, About, không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành thẻ nổi bật (class `drawer-nav-featured` trong `globals.css`): nền gradient vàng, viền và bóng vàng, icon kéo `Scissors` trong vòng tròn vàng, chữ vàng, mũi tên `ArrowRight` trượt khi hover, vệt sáng quét chậm mỗi 4,5 s (tắt khi `prefers-reduced-motion`).
 - Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
 - `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → avatar + tên + email, link My account / Wishlist / Orders, nút đăng xuất (`logout()`).
 - Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`).
