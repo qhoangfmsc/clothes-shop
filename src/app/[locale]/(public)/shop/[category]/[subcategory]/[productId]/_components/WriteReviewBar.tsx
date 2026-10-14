@@ -27,7 +27,7 @@ const GHOST_CLASS =
 /**
  * Write or edit a review without leaving the product page. What the visitor can do comes from the BE's own lists, never
  * from guesswork: a purchased, delivered line of this product in "to review" → "Write a review"; their review of it
- * that still `canEdit` → "Edit your review"; otherwise a one-line note about who can review. Signed out: the button asks
+ * that still `canEdit` → "Edit your review"; otherwise nothing (a thank-you line when they already reviewed). Signed out: the button asks
  * for sign-in first, then decides.
  */
 export default function WriteReviewBar({ productId, ownReviews, onSaved }: WriteReviewBarProps) {
@@ -90,10 +90,11 @@ export default function WriteReviewBar({ productId, ownReviews, onSaved }: Write
         <span className="font-primary text-xs text-[var(--text-muted)]">{t("editHint")}</span>
       </>
     );
-  } else if (pending.isLoading) {
-    return null;
+  } else if (ownReviews.length > 0) {
+    action = <span className="font-primary text-xs text-[var(--text-muted)]">{t("alreadyReviewed")}</span>;
   } else {
-    action = <span className="font-primary text-xs text-[var(--text-muted)]">{ownReviews.length > 0 ? t("alreadyReviewed") : t("notEligible")}</span>;
+    /* Not bought / not delivered / out of time: nothing to offer and nothing to explain */
+    return null;
   }
 
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import ReviewAvatar from "@/src/app/[locale]/_components/ReviewAvatar";
 import ReviewContent from "@/src/app/[locale]/_components/ReviewContent";
 import type { PublicReview } from "@/src/types/review";
@@ -16,7 +17,7 @@ interface ReviewItemProps {
 }
 
 /** One review card on the product page: author, the review itself, then the "Helpful" button */
-export default function ReviewItem({ review, helpfulCount, voted, busy, own, onToggleHelpful }: ReviewItemProps) {
+function ReviewItem({ review, helpfulCount, voted, busy, own, onToggleHelpful }: ReviewItemProps) {
   return (
     <article className="flex flex-col gap-4 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-primary)] p-4 sm:p-5">
       <header className="flex items-center gap-3">
@@ -38,3 +39,6 @@ export default function ReviewItem({ review, helpfulCount, voted, busy, own, onT
     </article>
   );
 }
+
+/* Cards already on screen keep their props when a page is appended, so React skips them */
+export default memo(ReviewItem);

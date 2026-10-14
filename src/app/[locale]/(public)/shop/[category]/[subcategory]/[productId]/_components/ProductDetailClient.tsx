@@ -282,7 +282,7 @@ export default function ProductDetailClient({
             </h1>
             {/* Rating straight from the product response (no extra request); jumps to the reviews below */}
             {product.ratingAverage != null && product.ratingCount > 0 && (
-              <a href="#reviews" className="mt-1 inline-flex min-h-11 items-center self-start no-underline">
+              <a href="#reviews" onClick={() => window.dispatchEvent(new Event("reviews:open"))} className="mt-1 inline-flex min-h-11 items-center self-start no-underline">
                 <ProductRating average={product.ratingAverage} count={product.ratingCount} variant="full" />
               </a>
             )}

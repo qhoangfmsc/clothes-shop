@@ -59,7 +59,7 @@ Bỏ qua một dòng: `// conventions-ignore: <rule-id> <lý do>` ở dòng đó
 
 ### 4.3 `check-docs.mjs`
 
-Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường dẫn code cho đúng một doc trong `docs/`; đường dẫn dài nhất khớp thì thắng. `src/messages/**`, `src/i18n/registry.ts`, file nhị phân/sinh tự động không thuộc module nào. Hiện có 38 module (mỗi module một doc; `PendingCountsProvider.tsx` thuộc `admin/admin-shell`, `PendingActionNotice.tsx` thuộc `platform/ui-kit`, `src/lib/admin-events.ts` thuộc `platform/auth`), gồm cả `admin/payments`, `admin/refunds`, `admin/returns`, `admin/reviews`, `storefront/customer-returns` và `storefront/customer-reviews`. Đường dẫn liệt kê theo từng file (ví dụ `src/lib/brand.ts` thuộc `platform/seo`), nên file mới trong `src/lib/` phải được thêm vào entry của module sở hữu.
+Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường dẫn code cho đúng một doc trong `docs/`; đường dẫn dài nhất khớp thì thắng. `src/messages/**`, `src/i18n/registry.ts`, file nhị phân/sinh tự động không thuộc module nào. Hiện có 38 module (mỗi module một doc; `PendingCountsProvider.tsx` thuộc `admin/admin-shell`, `PendingActionNotice.tsx` và `InfoHint.tsx` thuộc `platform/ui-kit`, `src/lib/admin-events.ts` thuộc `platform/auth`), gồm cả `admin/payments`, `admin/refunds`, `admin/returns`, `admin/reviews`, `storefront/customer-returns` và `storefront/customer-reviews`. Đường dẫn liệt kê theo từng file (ví dụ `src/lib/brand.ts` thuộc `platform/seo`), nên file mới trong `src/lib/` phải được thêm vào entry của module sở hữu.
 
 | Chế độ | Việc | Khi chạy |
 |---|---|---|

@@ -67,18 +67,19 @@
       "description": "Đánh giá của những khách đã nhận sản phẩm này sẽ hiển thị tại đây."
     },
     "summary": {
-      "basedOn": "Dựa trên {count, plural, other {# đánh giá}}",
-      "distribution": "Phân bố số sao",
-      "row": "Đánh giá {stars} sao: {count}. Chọn để lọc danh sách.",
-      "fitTitle": "Form dáng"
+      "outOf": "trên 5",
+      "count": "{count, plural, other {# đánh giá}}",
+      "filterLabel": "Lọc đánh giá",
+      "chip": {
+        "all": "Tất cả",
+        "stars": "{stars} sao ({count})",
+        "photos": "Có hình ảnh ({count})"
+      },
+      "openAll": "Xem tất cả {count, plural, other {# đánh giá}}"
     },
     "filters": {
-      "rating": "Lọc theo số sao",
-      "allRatings": "Tất cả",
-      "stars": "{stars} ★",
       "fit": "Form dáng",
       "anyFit": "Mọi form dáng",
-      "withPhotos": "Có hình ảnh ({count})",
       "sort": "Sắp xếp đánh giá",
       "clear": "Xóa bộ lọc"
     },
@@ -96,8 +97,9 @@
       "loadFailed": "Không tải được các đánh giá.",
       "retry": "Thử lại",
       "noMatch": "Không có đánh giá nào khớp bộ lọc.",
-      "loadMore": "Xem thêm {remaining} đánh giá",
-      "loadingMore": "Đang tải…"
+      "loadMore": "Xem thêm {count} đánh giá",
+      "loadingMore": "Đang tải…",
+      "collapse": "Thu gọn đánh giá"
     },
     "toast": {
       "voteFailed": "Không cập nhật được lượt hữu ích. Vui lòng thử lại.",
@@ -108,9 +110,9 @@
       "signInHint": "Đăng nhập để đánh giá sản phẩm bạn đã mua và nhận.",
       "edit": "Sửa đánh giá của bạn",
       "editHint": "Mỗi đánh giá chỉ sửa được 1 lần.",
-      "alreadyReviewed": "Cảm ơn bạn đã đánh giá sản phẩm này.",
-      "notEligible": "Chỉ khách đã mua và nhận sản phẩm này mới đánh giá được."
-    }
+      "alreadyReviewed": "Cảm ơn bạn đã đánh giá sản phẩm này."
+    },
+    "info": "Chỉ khách đã mua và nhận sản phẩm này mới có thể đánh giá."
   },
   "shipping": {
     "title": "Vận chuyển & Đổi trả",

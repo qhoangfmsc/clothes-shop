@@ -4,8 +4,8 @@
 
 import type { ReviewFit } from "@/src/types/review";
 
-/** Reviews per page; "Show more" appends the next page */
-export const REVIEW_PAGE_SIZE = 10;
+/** Reviews fetched and revealed per step: the first 5 newest, then 5 more for every "Show more" */
+export const REVIEW_PAGE_SIZE = 5;
 
 /** BE sort whitelist for `GET /api/reviews/:productId`; `key` = label in public.product.reviews.sort.* */
 export const REVIEW_SORT_OPTIONS = [

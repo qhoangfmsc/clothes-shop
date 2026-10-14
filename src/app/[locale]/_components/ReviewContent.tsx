@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Store } from "lucide-react";
+import { Store } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import type { PublicReview } from "@/src/types/review";
 import StarRating from "./StarRating";
@@ -29,12 +29,6 @@ export default function ReviewContent({ review, className = "" }: ReviewContentP
         <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
           {format.dateTime(new Date(review.createdAt), "short")}
         </span>
-        {review.verified && (
-          <span className="inline-flex items-center gap-1 font-primary text-[11px] font-medium text-[var(--color-deep-gold)] tracking-[0.04em]">
-            <Check size={12} aria-hidden="true" />
-            {t("verified")}
-          </span>
-        )}
         {review.edited && (
           <span className="font-primary text-[11px] text-[var(--text-muted)] tracking-[0.02em]">{t("edited")}</span>
         )}

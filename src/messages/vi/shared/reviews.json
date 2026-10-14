@@ -5,7 +5,6 @@
     "compact": "{average} ({count})",
     "full": "{average} · {count, plural, other {# đánh giá}}"
   },
-  "verified": "Đã mua hàng",
   "edited": "Đã chỉnh sửa",
   "storeReply": "Phản hồi từ cửa hàng",
   "purchased": "Đã mua: {variant}",

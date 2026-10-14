@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
@@ -41,6 +41,8 @@ export function useReviewVotes(productId: string, onReviewGone: () => void) {
   /** Ids the BE refused a vote on (`1907`) even though the own-review lookup did not list them */
   const [refusedIds, setRefusedIds] = useState<ReadonlySet<string>>(new Set());
   const [counts, setCounts] = useState<Readonly<Record<string, number>>>({});
+  const votedRef = useRef(votedIds);
+  votedRef.current = votedIds;
   const [busyIds, setBusyIds] = useState<ReadonlySet<string>>(new Set());
 
   const loadOwn = useCallback(async () => {
@@ -79,7 +81,7 @@ export function useReviewVotes(productId: string, onReviewGone: () => void) {
     (reviewId: string) => {
       requireAuth(async () => {
         setBusyIds((prev) => new Set(prev).add(reviewId));
-        const wasVoted = votedIds.has(reviewId);
+        const wasVoted = votedRef.current.has(reviewId);
         try {
           const res = await apiFetch<VoteResult>(`/api/reviews/${encodeURIComponent(reviewId)}/helpful`, {
             method: wasVoted ? "DELETE" : "POST",
@@ -110,7 +112,7 @@ export function useReviewVotes(productId: string, onReviewGone: () => void) {
         }
       }, "continue");
     },
-    [requireAuth, votedIds, apiFetch, onReviewGone, toast, toErrorMessage, t]
+    [requireAuth, apiFetch, onReviewGone, toast, toErrorMessage, t]
   );
 
   return { votedIds, ownIds, ownReviews, reloadOwn: loadOwn, counts, busyIds, toggle };

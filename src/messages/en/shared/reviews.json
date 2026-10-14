@@ -5,7 +5,6 @@
     "compact": "{average} ({count})",
     "full": "{average} · {count, plural, one {# review} other {# reviews}}"
   },
-  "verified": "Verified purchase",
   "edited": "Edited",
   "storeReply": "Reply from the store",
   "purchased": "Purchased: {variant}",

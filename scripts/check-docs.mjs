@@ -56,7 +56,7 @@ const MODULES = [
     "src/types/",
   ] },
   { doc: "platform/ui-kit", paths: [
-    `${COMP}DataTable.tsx`, `${COMP}AdminFormKit.tsx`, `${COMP}Toast.tsx`, `${COMP}ConfirmDialog.tsx`,
+    `${COMP}DataTable.tsx`, `${COMP}AdminFormKit.tsx`, `${COMP}InfoHint.tsx`, `${COMP}Toast.tsx`, `${COMP}ConfirmDialog.tsx`,
     `${COMP}Carousel.tsx`, `${COMP}CarouselControls.tsx`, `${COMP}ImageUrlField.tsx`, `${COMP}ImageListField.tsx`,
     `${COMP}ImagePreviewLightbox.tsx`, `${COMP}ResponsiveBannerImage.tsx`,
     `${COMP}StarRating.tsx`, `${COMP}ProductRating.tsx`, `${COMP}ReviewContent.tsx`, `${COMP}ReviewAvatar.tsx`,
