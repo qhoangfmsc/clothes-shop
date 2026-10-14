@@ -11,6 +11,7 @@ const PRIVATE_PATHS = [
   "/account",
   "/orders",
   "/returns",
+  "/reviews",
   "/wishlist",
   "/unauthorized",
 ];

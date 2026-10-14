@@ -26,6 +26,7 @@ Bộ khối giao diện và hook được ≥ 2 module dùng chung: bảng dữ 
 | Ảnh | `ImageUrlField`, `ImageListField`, `ImagePreviewLightbox` | cùng tên `.tsx` |
 | Carousel | `Carousel`, `CarouselDots`, `CarouselArrow`, `useAutoAdvance` | `Carousel.tsx`, `CarouselControls.tsx`, `src/hooks/use-auto-advance.ts` |
 | Banner | `ResponsiveBannerImage`, `BannerFade`, `useBannerRotation` | cùng tên |
+| Đánh giá | `StarRating`, `ProductRating`, `ReviewContent`, `ReviewAvatar`, `ReviewImageGrid`, `ReviewImageViewer` | cùng tên (xem 4.9) |
 | Khác | `Checkbox`, `JsonLd`, `SocialIcons`, `Logo`, `OrderDetailPanel`, `OrderPaymentBadge`, `CopyButton`, `ProductBagButton` | cùng tên |
 | Hook | `useSortOptions`, `useDebounce`, `useBreakpoint`, `useAutoAdvance`, `useBannerRotation`, `useAuthAction` | `src/hooks/` |
 | Helper sản phẩm | `getPurchaseMode`, `isPurchasable`, `buildOrderInquiryHref`, style badge | `src/lib/product-purchase.ts`, `product-badge.ts` |
@@ -75,6 +76,16 @@ Quy ước: sort theo BE (`field` / `-field`); không thêm hành vi riêng củ
 - `ResponsiveBannerImage({ banner, alt, ...ImageProps })`: render `<picture>` với `<source media>` cho mobile (<640) và tablet (<1024) chỉ khi ảnh khác nhau; fallback `resolveBannerImage` (mobile → tablet → desktop). Banner không có ảnh riêng cho breakpoint nào thì thu về một `<img>`.
 - `BannerFade({ banners, index, sizes, imageOpacity = 0.85, priority = true })`: chồng banner chuyển mờ 0.8 s, lấp đầy parent.
 - `useBannerRotation(banners, intervalMs = 5000)` trả `{ ref, index, goTo, count }`, reset về 0 khi mảng banner đổi, không dừng khi hover. Ghép với `CarouselDots`.
+
+### 4.9 Thành phần đánh giá (dùng chung storefront và admin)
+
+Chuỗi nằm ở `shared.reviews` (`starsAria`, `productRating`, `verified`, `edited`, `storeReply`, `purchased`, `fit`, `images`, `viewer`) nên cả hai vai trò đều tải được.
+
+- `StarRating({ rating, size?, className? })`: 5 sao (lucide `Star`), tô tới `Math.round(rating)`, một `role="img"` đọc "N trên 5 sao".
+- `ProductRating({ average, count, variant: compact|full })`: sao + số đánh giá lấy thẳng từ `ratingAverage` / `ratingCount` trong response sản phẩm; `compact` (thẻ sản phẩm) = một sao + "4,5 (12)", `full` (trang chi tiết) = năm sao + "4,5 · 12 đánh giá"; `null` hoặc 0 đánh giá thì không render gì.
+- `ReviewContent({ review })`: thân một đánh giá công khai (sao, ngày theo `createdAt` — không parse `date`, nhãn "Đã mua hàng" khi `verified`, "Đã chỉnh sửa" khi `edited`, tiêu đề, nội dung giữ xuống dòng, "Đã mua: size · màu", "Form dáng", lưới ảnh, khối "Phản hồi từ cửa hàng" khi `reply` khác `null`). Dùng ở trang sản phẩm, "Đánh giá của tôi" và chi tiết admin; phần tên người viết và nút do nơi dùng tự thêm.
+- `ReviewAvatar({ avatar, author, size? })`: ảnh tròn khi `avatar` là URL, chữ cái đầu của tên khi chuỗi rỗng (BE có thể trả rỗng).
+- `ReviewImageGrid({ images })`: thumbnail (80 px từ `sm`, nút 44+ px trên cảm ứng) hiển thị qua `toMediaUrl`; bấm mở `ReviewImageViewer` (nạp lười bằng `next/dynamic`, `yet-another-react-lightbox` với plugin Zoom + Counter, vuốt/mũi tên đổi ảnh, phóng to bằng pinch / nhấp đúp / Ctrl + cuộn). Không có ảnh thì không render.
 
 ### 4.7 Khác
 

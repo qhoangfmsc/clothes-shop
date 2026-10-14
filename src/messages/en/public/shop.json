@@ -33,8 +33,12 @@
         "priceAsc": "Price: Low → High",
         "priceDesc": "Price: High → Low",
         "nameAsc": "Name: A → Z",
-        "nameDesc": "Name: Z → A"
-      }
+        "nameDesc": "Name: Z → A",
+        "ratingDesc": "Top rated",
+        "reviewsDesc": "Most reviewed"
+      },
+      "rating": "Rating",
+      "minRating": "{stars} stars & up"
     },
     "productsClient": {
       "loadMore": "Load More ({remaining} remaining)"

@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Product reviews",
+    "description": "Write reviews for products you received and manage the reviews you wrote."
+  },
+  "page": {
+    "title": "Product reviews",
+    "back": "Account"
+  },
+  "tabs": {
+    "pending": "To review ({count})",
+    "mine": "My reviews"
+  },
+  "retry": "Try again",
+  "loadMore": "Load more",
+  "loadingMore": "Loading…",
+  "pending": {
+    "info": "You can review items from a paid, delivered order within 30 days of delivery. Your review is published right away.",
+    "empty": {
+      "title": "Nothing to review",
+      "description": "Items you can review will show up here once an order is delivered.",
+      "cta": "Continue shopping"
+    },
+    "card": {
+      "orderNumber": "Order #{id}",
+      "quantity": "Qty {quantity}",
+      "review": "Write a review"
+    }
+  },
+  "mine": {
+    "filters": {
+      "all": "All",
+      "PUBLISHED": "Published",
+      "HIDDEN": "Hidden"
+    },
+    "productFilter": "One product",
+    "clearProductFilter": "Show all products",
+    "empty": {
+      "title": "No reviews yet",
+      "description": "Reviews you write will be listed here.",
+      "cta": "View my orders"
+    },
+    "card": {
+      "hidden": "Hidden by the store",
+      "hiddenTitle": "The store hid this review",
+      "hiddenReason": "Reason: {note}",
+      "hiddenOnlyYou": "Only you can see it, and it can't be edited.",
+      "viewProduct": "View product",
+      "productRemoved": "Product no longer available",
+      "edit": "Edit",
+      "editableUntil": "You can edit it once, until {date}.",
+      "alreadyEdited": "You already edited this review.",
+      "editExpired": "The editing period has ended.",
+      "cannotEditHidden": "A hidden review can't be edited."
+    }
+  },
+  "toast": {
+    "loadFailed": "We couldn't load your reviews."
+  }
+}

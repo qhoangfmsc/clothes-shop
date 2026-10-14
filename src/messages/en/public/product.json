@@ -60,13 +60,57 @@
     "customOrderHint": "Made to order — contact us to place your order."
   },
   "reviews": {
-    "starsAria": "{rating} out of 5 stars",
     "label": "Customer Reviews",
     "title": "What Our Clients Say",
-    "basedOn": "Based on {count, plural, one {# review} other {# reviews}}",
-    "verified": "Verified",
-    "showLess": "Show Less",
-    "showAll": "Show All {count} Reviews"
+    "empty": {
+      "title": "No reviews yet",
+      "description": "Reviews from customers who received this product will appear here."
+    },
+    "summary": {
+      "basedOn": "Based on {count, plural, one {# review} other {# reviews}}",
+      "distribution": "Rating distribution",
+      "row": "{stars}-star reviews: {count}. Select to filter the list.",
+      "fitTitle": "How it fits"
+    },
+    "filters": {
+      "rating": "Filter by rating",
+      "allRatings": "All",
+      "stars": "{stars} ★",
+      "fit": "Fit",
+      "anyFit": "Any fit",
+      "withPhotos": "With photos ({count})",
+      "sort": "Sort reviews",
+      "clear": "Clear filters"
+    },
+    "sort": {
+      "newest": "Newest",
+      "ratingHigh": "Highest rating",
+      "ratingLow": "Lowest rating",
+      "helpful": "Most helpful"
+    },
+    "item": {
+      "helpful": "Helpful ({count})",
+      "helpfulOwn": "Your review · {count} helpful"
+    },
+    "list": {
+      "loadFailed": "We couldn't load the reviews.",
+      "retry": "Try again",
+      "noMatch": "No review matches these filters.",
+      "loadMore": "Show {remaining} more",
+      "loadingMore": "Loading…"
+    },
+    "toast": {
+      "voteFailed": "Couldn't update your vote. Please try again.",
+      "voteOwn": "You can't mark your own review as helpful."
+    },
+    "write": {
+      "cta": "Write a review",
+      "signInHint": "Sign in to review products you have bought and received.",
+      "edit": "Edit your review",
+      "editHint": "You can edit it once.",
+      "alreadyReviewed": "Thanks for reviewing this product.",
+      "notEligible": "Only customers who bought and received this product can review it."
+    }
   },
   "shipping": {
     "title": "Shipping & Returns",

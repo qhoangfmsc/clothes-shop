@@ -25,6 +25,7 @@ export const MESSAGE_FILES = {
   "admin/products": load<typeof import("../messages/en/admin/products.json")>("admin/products"),
   "admin/refunds": load<typeof import("../messages/en/admin/refunds.json")>("admin/refunds"),
   "admin/returns": load<typeof import("../messages/en/admin/returns.json")>("admin/returns"),
+  "admin/reviews": load<typeof import("../messages/en/admin/reviews.json")>("admin/reviews"),
   "admin/shell": load<typeof import("../messages/en/admin/shell.json")>("admin/shell"),
   "admin/siteConfig": load<typeof import("../messages/en/admin/siteConfig.json")>("admin/siteConfig"),
   "admin/users": load<typeof import("../messages/en/admin/users.json")>("admin/users"),
@@ -35,6 +36,7 @@ export const MESSAGE_FILES = {
   "private/checkout": load<typeof import("../messages/en/private/checkout.json")>("private/checkout"),
   "private/orders": load<typeof import("../messages/en/private/orders.json")>("private/orders"),
   "private/returns": load<typeof import("../messages/en/private/returns.json")>("private/returns"),
+  "private/reviews": load<typeof import("../messages/en/private/reviews.json")>("private/reviews"),
   "private/wishlist": load<typeof import("../messages/en/private/wishlist.json")>("private/wishlist"),
   "public/about": load<typeof import("../messages/en/public/about.json")>("public/about"),
   "public/collections": load<typeof import("../messages/en/public/collections.json")>("public/collections"),
@@ -51,5 +53,6 @@ export const MESSAGE_FILES = {
   "shared/footer": load<typeof import("../messages/en/shared/footer.json")>("shared/footer"),
   "shared/header": load<typeof import("../messages/en/shared/header.json")>("shared/header"),
   "shared/legal": load<typeof import("../messages/en/shared/legal.json")>("shared/legal"),
+  "shared/reviews": load<typeof import("../messages/en/shared/reviews.json")>("shared/reviews"),
   "shared/site": load<typeof import("../messages/en/shared/site.json")>("shared/site"),
 } as const;

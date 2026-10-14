@@ -41,7 +41,7 @@ const initialState: ProductsState = {
 export const fetchProductList = createAsyncThunk(
   "products/fetchList",
   async (params: ProductListParams) => {
-    const qs = buildListQuery(params, { category: params.category, badge: params.badge, status: params.status });
+    const qs = buildListQuery(params, { category: params.category, badge: params.badge, status: params.status, minRating: params.minRating });
     return authApi.get<{ data: Product[]; total: number; page: number; limit: number }>(
       `/api/admin/products?${qs}`
     );

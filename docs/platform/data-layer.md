@@ -10,7 +10,7 @@ Tầng truy cập dữ liệu dùng chung của FE. FE không có database riên
 ## 2. Phục vụ gì / việc cần làm
 
 - Cho Server Component lấy dữ liệu công khai để render SSR/ISR và sinh sitemap.
-- Cho Client Component lấy dữ liệu công khai bằng SWR (autocomplete, mega menu, banner, review, size guide…).
+- Cho Client Component lấy dữ liệu công khai bằng SWR (autocomplete, mega menu, banner, size guide…; đánh giá của trang sản phẩm có hook riêng trong module đó, xem [product-detail](../storefront/product-detail.md)).
 - Cho khu admin gọi API có token, phân trang/lọc/sắp xếp theo đúng một hợp đồng.
 - Giữ giỏ hàng và wishlist đồng bộ giữa Redux, `localStorage` và BE.
 - Giấu địa chỉ Supabase Storage khỏi trình duyệt bằng proxy `/media/*`.
@@ -23,7 +23,7 @@ Tầng truy cập dữ liệu dùng chung của FE. FE không có database riên
 | Auth client | `authApi.get/post/put/patch/delete` + refresh token | `src/lib/auth-api.ts` (xem [auth](./auth.md)) |
 | List query | `buildListQuery`, `clampLimit`, hằng limit | `src/lib/list-query.ts` |
 | Server fetchers | Hàm fetch cho Server Component (ISR 60 s) | `shop/_lib/server-fetchers.ts` |
-| Public SWR hooks | Sản phẩm, danh mục, bộ sưu tập, review, size guide, shipping, banner, autocomplete | `src/hooks/use-api.ts` |
+| Public SWR hooks | Sản phẩm, danh mục, bộ sưu tập, size guide, shipping, banner, autocomplete | `src/hooks/use-api.ts` |
 | Admin SWR hooks | Sản phẩm, danh mục, bộ sưu tập, đơn hàng, người dùng (có CRUD) | `src/hooks/use-admin-api.ts` |
 | Redux store | Cấu hình store, slice nền `baseSlice`, đồng bộ `localStorage` | `src/store/` |
 | Media | Đổi URL Supabase → `/media/<key>`, proxy, upload | `media-url.ts`, `app/media/[...path]/route.ts`, `use-media-upload.ts` |
@@ -50,7 +50,7 @@ Mọi endpoint danh sách của BE dùng chung:
 
 ### 4.3 Server fetchers (`shop/_lib/server-fetchers.ts`)
 
-Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getNewInProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getShippingInfo()` (cấu hình vận chuyển & đổi trả, `null` khi API lỗi), `getReviews`. Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`, `ReviewListResponse`.
+Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getNewInProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getShippingInfo()` (cấu hình vận chuyển & đổi trả, `null` khi API lỗi). Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`. `ProductListParams` nhận thêm `minRating` (1–5) và sort `ratingAverage` / `-ratingAverage` / `-ratingCount`; `buildProductQS` gửi `minRating`.
 
 `ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt), minPrice, maxPrice, sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
 
@@ -66,7 +66,6 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 | `useCategories()` | `GET /api/categories?sort=priority&limit=200` |
 | `useCategory(slug)` | `GET /api/categories?slug=` |
 | `useCollections()` / `useCollection(slug)` | `GET /api/collections[?slug=]` |
-| `useReviews(productId, page, limit)` | `GET /api/reviews/:productId` (trung bình sao tính ở client) |
 | `useSizeGuide(category)` | `GET /api/size-guides/:category` |
 | `useShipping()` | `GET /api/shipping` (dedupe 5 phút): `methods[]` + `freeShippingThreshold` (`number \| null`, `null` = không có miễn phí vận chuyển) — cấu hình ở site config `SHIPPING_CONFIG` |
 | `useShippingMethodName()` | Trả hàm `(id) => tên phương thức do admin cấu hình` (`undefined` khi chưa tải hoặc id lạ); đơn chỉ lưu id nên mọi màn đặt tên phương thức đều đọc qua đây |
@@ -81,7 +80,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.6 Redux store (`src/store/`)
 
-- `store/index.ts` gộp reducer của từng module: admin (`products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`) và client (`cart`, `wishlist`). Slice nằm trong `_common/moduleSlice.ts` của từng module (quy tắc module-first).
+- `store/index.ts` gộp reducer của từng module: admin (`products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`, `reviews`) và client (`cart`, `wishlist`). Slice nằm trong `_common/moduleSlice.ts` của từng module (quy tắc module-first).
 - `baseSlice.ts`: `BaseCrudState` (`isCreating`, `isUpdating`, `isDeleting`, `error`) + `baseCrudReducers` (`create/update/deleteStart|Success|Error`, `clearError`). Slice admin spread vào, thêm `items/total/page/limit/isListLoading` và các `extraReducers` cho thunk.
 - Hooks có kiểu: `useAppDispatch`, `useAppSelector` (`store/hooks.ts`). `StoreProvider` bọc app trong `Providers`.
 - Persist: `store.subscribe` ghi `localStorage` mỗi khi đổi `cart.items` (`doovan-cart`, dạng `{state:{items},version:0}`), `cart.deselectedKeys` (`doovan-cart-selection`) và `wishlist.items` (`doovan-wishlist`). Lỗi quota bị nuốt.
@@ -96,7 +95,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.8 Kiểu dữ liệu dùng chung (`src/types/`)
 
-`product.ts` (`Product`, `ProductColor`, `ProductCategory`, `ProductSubCategory`), `category.ts` (`Category`, `SubCategory`; `priority` duy nhất, 1 = hiển thị đầu), `collection.ts`, `review.ts`, `shipping.ts` (`SHIPPING_METHOD_IDS` / `ShippingMethodId`, `SHIPPING_ICONS` / `ShippingIcon`, `ShippingMethod`, `ShippingInfo`), `size-guide.ts`, `site-config.ts` (khóa, loại, banner, `resolveBannerImage`), `enums.ts` (`PRODUCT_BADGES`, `PRODUCT_STATUSES`, `USER_ROLES`, `USER_STATUSES`, `ORDER_STATUSES`, `ORDER_STATUS_TRANSITIONS`, `getSelectableOrderStatuses`), `analytics.ts`. Giá trị enum khớp chính xác (phân biệt hoa thường) với BE.
+`product.ts` (`Product` có `ratingAverage: number | null` và `ratingCount` do BE trả, chỉ đọc; BE từ chối khi ghi), `ProductColor`, `ProductCategory`, `ProductSubCategory`), `category.ts` (`Category`, `SubCategory`; `priority` duy nhất, 1 = hiển thị đầu), `collection.ts`, `review.ts` (`PublicReview`, `AuthorReview`, `AdminReview`, `ReviewSummary`, `PendingReviewItem`, `REVIEW_FITS`, `REVIEW_STATUSES`, `REVIEW_LIMITS` — khớp BE, không có điểm tính ở client), `shipping.ts` (`SHIPPING_METHOD_IDS` / `ShippingMethodId`, `SHIPPING_ICONS` / `ShippingIcon`, `ShippingMethod`, `ShippingInfo`), `size-guide.ts`, `site-config.ts` (khóa, loại, banner, `resolveBannerImage`), `enums.ts` (`PRODUCT_BADGES`, `PRODUCT_STATUSES`, `USER_ROLES`, `USER_STATUSES`, `ORDER_STATUSES`, `ORDER_STATUS_TRANSITIONS`, `getSelectableOrderStatuses`), `analytics.ts`. Giá trị enum khớp chính xác (phân biệt hoa thường) với BE.
 
 ### 4.9 Hook tiện ích liên quan
 

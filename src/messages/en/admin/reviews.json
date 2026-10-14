@@ -1,0 +1,144 @@
+{
+  "page": {
+    "title": "Reviews",
+    "total": "{count, plural, one {# review} other {# reviews}}",
+    "productFilter": "Product: {slug}",
+    "userFilter": "Author: {id}",
+    "clearFilter": "Clear this filter"
+  },
+  "tabs": {
+    "pending": "Awaiting reply ({count})",
+    "pendingNoCount": "Awaiting reply",
+    "all": "All reviews"
+  },
+  "status": {
+    "PUBLISHED": "Published",
+    "HIDDEN": "Hidden"
+  },
+  "table": {
+    "searchPlaceholder": "Search title, text, author or product…",
+    "view": "View",
+    "columns": {
+      "product": "Product",
+      "author": "Author",
+      "rating": "Rating",
+      "content": "Review",
+      "images": "Photos",
+      "helpful": "Helpful",
+      "status": "Status",
+      "createdAt": "Date",
+      "actions": "Actions"
+    },
+    "filters": {
+      "status": "Status",
+      "replied": "Reply",
+      "rating": "Rating",
+      "fit": "Fit",
+      "hasImages": "Photos"
+    },
+    "filterOptions": {
+      "stars": "{stars, plural, one {# star} other {# stars}}",
+      "withPhotos": "With photos",
+      "withoutPhotos": "Without photos"
+    },
+    "replied": {
+      "yes": "Replied",
+      "no": "Awaiting reply"
+    },
+    "empty": {
+      "none": "No reviews yet.",
+      "filtered": "No review matches these filters.",
+      "pending": "Every published review has a reply."
+    }
+  },
+  "detail": {
+    "title": "Review",
+    "product": {
+      "section": "Product",
+      "allReviews": "All reviews of this product"
+    },
+    "review": {
+      "section": "Review",
+      "byAuthor": "All reviews by this author"
+    },
+    "trail": {
+      "section": "Details",
+      "createdAt": "Written",
+      "orderItem": "Order line",
+      "editedAt": "Edited",
+      "moderatedAt": "Last moderated",
+      "moderatedBy": "Moderated by",
+      "moderationNote": "Reason shown to the author",
+      "repliedBy": "Replied by"
+    },
+    "reply": {
+      "section": "Store reply"
+    },
+    "hide": {
+      "reminder": "Hide a review only when it breaks the content rules (links or ads, personal data, inappropriate language, spam). Never hide it because the rating is low."
+    },
+    "actions": {
+      "hide": "Hide review",
+      "publish": "Show again"
+    },
+    "publish": {
+      "confirm": {
+        "title": "Show this review again?",
+        "message": "It will appear on the product page again and count toward the product's rating.",
+        "confirm": "Show review"
+      },
+      "toast": {
+        "done": "Review is visible again",
+        "failed": "Couldn't show the review"
+      }
+    }
+  },
+  "hide": {
+    "title": "Hide review",
+    "reminder": "Hide a review only when it breaks the content rules. Never hide it because the rating is low. Once hidden, it leaves the product page and the product's average is recalculated.",
+    "note": {
+      "label": "Reason (the customer will see this)",
+      "info": "The author reads this reason in their reviews list.",
+      "counter": "{count}/{max}"
+    },
+    "reasons": {
+      "label": "Suggested reasons",
+      "link": "Contains a link or advertising.",
+      "personal": "Contains personal information.",
+      "language": "Contains inappropriate language.",
+      "spam": "Spam or unrelated content."
+    },
+    "errors": {
+      "note": "Enter the reason for hiding this review."
+    },
+    "submit": "Hide review",
+    "toast": {
+      "done": "Review hidden",
+      "failed": "Couldn't hide the review"
+    }
+  },
+  "reply": {
+    "label": "Reply to the customer",
+    "placeholder": "Thank the customer or answer their feedback…",
+    "publicNote": "Everyone sees this reply under the review.",
+    "counter": "{count}/{max}",
+    "errors": {
+      "content": "Enter a reply first."
+    },
+    "save": "Post reply",
+    "update": "Update reply",
+    "delete": "Delete reply",
+    "confirmDelete": {
+      "title": "Delete this reply?",
+      "message": "The reply will disappear from the product page.",
+      "confirm": "Delete reply"
+    },
+    "toast": {
+      "created": "Reply posted",
+      "updated": "Reply updated",
+      "deleted": "Reply deleted",
+      "saveFailed": "Couldn't save the reply",
+      "deleteFailed": "Couldn't delete the reply"
+    }
+  }
+}

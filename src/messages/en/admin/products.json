@@ -12,13 +12,20 @@
       "price": "Price",
       "status": "Status",
       "badge": "Badge",
-      "actions": "Actions"
+      "actions": "Actions",
+      "rating": "Rating"
     },
     "filters": {
       "category": "Category",
       "status": "Status",
-      "badge": "Badge"
-    }
+      "badge": "Badge",
+      "minRating": "Rating"
+    },
+    "filterOptions": {
+      "minRating": "{stars} stars & up"
+    },
+    "reviewCount": "{count, plural, one {# review} other {# reviews}}",
+    "noReviews": "No reviews"
   },
   "form": {
     "titleCreate": "New Product",

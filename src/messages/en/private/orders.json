@@ -22,7 +22,8 @@
     },
     "loadMore": "Load more orders",
     "loadingMore": "Loading...",
-    "returnsLink": "Return requests"
+    "returnsLink": "Return requests",
+    "reviewsLink": "Product reviews"
   },
   "detail": {
     "notFound": "Order not found.",
@@ -99,6 +100,9 @@
       "processedAt": "Processed {date}",
       "reasonReturn": "Refund for a return",
       "reasonAdminCancelled": "Cancelled by the store"
+    },
+    "review": {
+      "cta": "Write a review"
     }
   }
 }

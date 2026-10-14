@@ -22,14 +22,16 @@
       "siteConfig": "Site Config",
       "media": "Media",
       "refunds": "Refunds",
-      "returns": "Returns"
+      "returns": "Returns",
+      "reviews": "Reviews"
     },
     "pending": {
       "orders": "{count, plural, one {# order needs action} other {# orders need action}}",
       "payments": "{count, plural, one {# transaction to reconcile} other {# transactions to reconcile}}",
       "refunds": "{count, plural, one {# refund waiting} other {# refunds waiting}}",
       "returns": "{count, plural, one {# return request to review} other {# return requests to review}}",
-      "overflow": "99+"
+      "overflow": "99+",
+      "reviews": "{count, plural, one {# review awaiting a reply} other {# reviews awaiting a reply}}"
     }
   },
   "badge": "ADMIN",
@@ -59,7 +61,8 @@
     "site-config": "Site Config",
     "media": "Media",
     "refunds": "Refunds",
-    "returns": "Returns"
+    "returns": "Returns",
+    "reviews": "Reviews"
   },
   "pendingDot": "Work is waiting"
 }

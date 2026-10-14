@@ -13,6 +13,8 @@ export interface ProductListParams extends ListParams {
   category?: string;
   badge?: ProductBadge;
   status?: ProductStatus;
+  /** 1–5: only products whose average rating is at least this */
+  minRating?: number;
 }
 
 export interface ProductFormData {

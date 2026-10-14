@@ -10,7 +10,14 @@ import type { Product } from "@/src/types/product";
 /* ── Types ── */
 
 /** Same syntax as the BE `sort` param: `field` ascending, `-field` descending. */
-export type SortValue = "-createdAt" | "price" | "-price" | "name" | "-name";
+export type SortValue =
+  | "-createdAt"
+  | "price"
+  | "-price"
+  | "name"
+  | "-name"
+  | "-ratingAverage"
+  | "-ratingCount";
 
 export interface ActiveFilters {
   sort: SortValue;
@@ -18,6 +25,8 @@ export interface ActiveFilters {
   maxPrice: number | null;
   sizes: string[];
   colors: string[];
+  /** 1–5: only products rated at least this; `null` = any. Products without a review never match. */
+  minRating: number | null;
 }
 
 interface ShopFiltersProps {
@@ -32,13 +41,21 @@ interface ShopFiltersProps {
 export const DEFAULT_SORT: SortValue = "-createdAt";
 
 /** `key` is a label in public.shop.components.filters.sort.<key> */
-const SORT_OPTIONS: { value: SortValue; key: "newest" | "priceAsc" | "priceDesc" | "nameAsc" | "nameDesc" }[] = [
+const SORT_OPTIONS: {
+  value: SortValue;
+  key: "newest" | "priceAsc" | "priceDesc" | "nameAsc" | "nameDesc" | "ratingDesc" | "reviewsDesc";
+}[] = [
   { value: "-createdAt", key: "newest" },
   { value: "price", key: "priceAsc" },
   { value: "-price", key: "priceDesc" },
   { value: "name", key: "nameAsc" },
   { value: "-name", key: "nameDesc" },
+  { value: "-ratingAverage", key: "ratingDesc" },
+  { value: "-ratingCount", key: "reviewsDesc" },
 ];
+
+/** "N stars & up" choices of the rating filter */
+const MIN_RATING_OPTIONS = [4, 3, 2, 1] as const;
 
 /* ═══════════════════════════════ ShopFilters ═══════════════════════════════ */
 
@@ -107,7 +124,8 @@ export default function ShopFilters({
     activeFilters.minPrice != null ||
     activeFilters.maxPrice != null ||
     activeFilters.sizes.length > 0 ||
-    activeFilters.colors.length > 0;
+    activeFilters.colors.length > 0 ||
+    activeFilters.minRating != null;
 
   const clearFilters = () =>
     onFiltersChange({
@@ -116,11 +134,13 @@ export default function ShopFilters({
       maxPrice: null,
       sizes: [],
       colors: [],
+      minRating: null,
     });
 
   const activeFiltersCount =
     (activeFilters.sizes.length > 0 ? 1 : 0) +
     (activeFilters.colors.length > 0 ? 1 : 0) +
+    (activeFilters.minRating != null ? 1 : 0) +
     (activeFilters.minPrice != null || activeFilters.maxPrice != null ? 1 : 0);
 
   return (
@@ -223,6 +243,33 @@ export default function ShopFilters({
                     }
                     className="w-20 py-1.5 px-2.5 border border-[var(--border-subtle)] rounded-md text-xs font-primary bg-[var(--bg-primary)] text-[var(--text-primary)] outline-none"
                   />
+                </div>
+              </div>
+
+              {/* Rating */}
+              <div className="flex flex-col gap-2.5">
+                <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
+                  {t("rating")}
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {MIN_RATING_OPTIONS.map((stars) => {
+                    const active = activeFilters.minRating === stars;
+                    return (
+                      <button
+                        key={stars}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => onFiltersChange({ ...activeFilters, minRating: active ? null : stars })}
+                        className={`inline-flex items-center justify-center min-h-8 pointer-coarse:min-h-11 px-3 rounded-full text-xs font-medium font-primary border transition-colors ${
+                          active
+                            ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-[var(--accent-primary)]"
+                            : "bg-[var(--bg-primary)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-light)]"
+                        }`}
+                      >
+                        {t("minRating", { stars })}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

@@ -56,6 +56,11 @@ export const PERMISSIONS = {
   /* Returns (customer return requests) */
   RETURN_ADMIN_VIEW: "RETURN_ADMIN_VIEW",
   RETURN_ADMIN_PROCESS: "RETURN_ADMIN_PROCESS",
+
+  /* Product reviews (moderation and the store's replies) */
+  REVIEW_ADMIN_VIEW: "REVIEW_ADMIN_VIEW",
+  REVIEW_ADMIN_MODERATE: "REVIEW_ADMIN_MODERATE",
+  REVIEW_ADMIN_REPLY: "REVIEW_ADMIN_REPLY",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
@@ -88,6 +93,9 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     PERMISSIONS.PAYMENT_ADMIN_CREATE_QR,
     PERMISSIONS.RETURN_ADMIN_VIEW,
     PERMISSIONS.RETURN_ADMIN_PROCESS,
+    PERMISSIONS.REVIEW_ADMIN_VIEW,
+    PERMISSIONS.REVIEW_ADMIN_MODERATE,
+    PERMISSIONS.REVIEW_ADMIN_REPLY,
   ],
   user: [],
 };
@@ -119,6 +127,9 @@ export const PERMISSION_CODES: Record<Permission, number> = {
   [PERMISSIONS.PAYMENT_ADMIN_CREATE_QR]: 14003,
   [PERMISSIONS.RETURN_ADMIN_VIEW]: 16000,
   [PERMISSIONS.RETURN_ADMIN_PROCESS]: 16001,
+  [PERMISSIONS.REVIEW_ADMIN_VIEW]: 18000,
+  [PERMISSIONS.REVIEW_ADMIN_MODERATE]: 18001,
+  [PERMISSIONS.REVIEW_ADMIN_REPLY]: 18002,
 };
 
 /** Convert FE permission string names → BE numeric codes */
@@ -159,6 +170,9 @@ export const PERMISSION_LABELS: Record<Permission, string> = {
   [PERMISSIONS.PAYMENT_ADMIN_CREATE_QR]: "Create Payment QR",
   [PERMISSIONS.RETURN_ADMIN_VIEW]: "View Returns",
   [PERMISSIONS.RETURN_ADMIN_PROCESS]: "Process Returns",
+  [PERMISSIONS.REVIEW_ADMIN_VIEW]: "View Reviews",
+  [PERMISSIONS.REVIEW_ADMIN_MODERATE]: "Hide / Show Reviews",
+  [PERMISSIONS.REVIEW_ADMIN_REPLY]: "Reply to Reviews",
 };
 
 /* ── Permission groups (for display) ── */
@@ -218,6 +232,14 @@ export const PERMISSION_GROUPS: { label: string; permissions: Permission[] }[] =
   {
     label: "Returns",
     permissions: [PERMISSIONS.RETURN_ADMIN_VIEW, PERMISSIONS.RETURN_ADMIN_PROCESS],
+  },
+  {
+    label: "Reviews",
+    permissions: [
+      PERMISSIONS.REVIEW_ADMIN_VIEW,
+      PERMISSIONS.REVIEW_ADMIN_MODERATE,
+      PERMISSIONS.REVIEW_ADMIN_REPLY,
+    ],
   },
 ];
 

@@ -44,6 +44,9 @@ export interface Product {
   sizes: string[];
   colors: ProductColor[];
   tags: string[];
+  /** Average of the published reviews (1.0–5.0, one decimal); `null` while there is none. Read-only: the BE refuses it on write. */
+  ratingAverage: number | null;
+  ratingCount: number;
   createdAt: string;
   updatedAt: string;
 }

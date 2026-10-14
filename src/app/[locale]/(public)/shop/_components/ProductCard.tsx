@@ -19,6 +19,7 @@ import {
 import { useAuthAction } from "@/src/hooks/use-auth-action";
 import { useBreakpoint } from "@/src/hooks/useMediaQuery";
 import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
+import ProductRating from "@/src/app/[locale]/_components/ProductRating";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
 
@@ -185,6 +186,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
           </div>
+          {/* Stars and count come with the product; nothing is shown until it has a review */}
+          <ProductRating average={product.ratingAverage} count={product.ratingCount} />
         </div>
       </Link>
     </div>

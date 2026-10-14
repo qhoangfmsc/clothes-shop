@@ -24,6 +24,10 @@
     "processedDesc": "Processed (latest)",
     "processedAsc": "Processed (oldest)",
     "updatedDesc": "Updated (latest)",
-    "updatedAsc": "Updated (oldest)"
+    "updatedAsc": "Updated (oldest)",
+    "ratingDesc": "Rating ↓",
+    "ratingAsc": "Rating ↑",
+    "helpfulDesc": "Most helpful",
+    "reviewsDesc": "Most reviewed"
   }
 }

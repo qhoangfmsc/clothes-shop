@@ -1,0 +1,96 @@
+{
+  "starsAria": "{rating} out of 5 stars",
+  "productRating": {
+    "aria": "Rated {average} out of 5 from {count, plural, one {# review} other {# reviews}}",
+    "compact": "{average} ({count})",
+    "full": "{average} · {count, plural, one {# review} other {# reviews}}"
+  },
+  "verified": "Verified purchase",
+  "edited": "Edited",
+  "storeReply": "Reply from the store",
+  "purchased": "Purchased: {variant}",
+  "fit": {
+    "line": "Fit: {fit}",
+    "small": "Runs small",
+    "true_to_size": "True to size",
+    "large": "Runs large"
+  },
+  "images": {
+    "open": "View photo {index} of {count}",
+    "alt": "Review photo {index} of {count}"
+  },
+  "viewer": {
+    "close": "Close",
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "lightbox": "Enlarged photo viewer",
+    "gallery": "Review photos",
+    "slide": "Photo",
+    "slideOf": "Photo {index} of {total}"
+  },
+  "form": {
+    "titleCreate": "Write a review",
+    "titleEdit": "Edit your review",
+    "close": "Close",
+    "editWarning": "You can edit a review only once. After you save, it can't be changed again.",
+    "editableUntil": "Editing is possible until {date}.",
+    "rating": {
+      "label": "Your rating",
+      "option": "{stars, plural, one {# star} other {# stars}}",
+      "hint": {
+        "1": "Poor",
+        "2": "Fair",
+        "3": "Good",
+        "4": "Very good",
+        "5": "Excellent"
+      }
+    },
+    "title": {
+      "label": "Title",
+      "placeholder": "Sum it up in a few words"
+    },
+    "content": {
+      "label": "Your review",
+      "placeholder": "What did you like? How were the fabric and the fit?",
+      "counter": "{count}/{max}"
+    },
+    "fit": {
+      "label": "How does it fit?",
+      "optional": "(optional)"
+    },
+    "images": {
+      "label": "Photos",
+      "add": "Add photo",
+      "uploading": "Uploading…",
+      "remove": "Remove photo {index}",
+      "hint": "{count}/{max} photos · up to {size} MB each · JPEG, PNG, WebP, GIF or AVIF. Photos are uploaded when you send your review.",
+      "failed": "A photo could not be uploaded, so your review was not sent. Press the send button to try again, or remove the photo.",
+      "errors": {
+        "type": "{name}: only JPEG, PNG, WebP, GIF or AVIF photos are supported.",
+        "size": "{name} is larger than {size} MB.",
+        "limit": "You can add up to {max} photos."
+      },
+      "failedPhoto": "Photo {index} could not be uploaded"
+    },
+    "errors": {
+      "rating": "Please choose a star rating.",
+      "link": "Reviews can't contain links (http://, https:// or www.)."
+    },
+    "noChanges": "Change something before saving.",
+    "cancel": "Cancel",
+    "submitCreate": "Submit review",
+    "submitEdit": "Save changes",
+    "submitting": "Sending…"
+  },
+  "toast": {
+    "created": "Thanks! Your review is now published.",
+    "updated": "Your review was updated.",
+    "saveFailed": "We couldn't save your review. Please try again."
+  },
+  "deadline": {
+    "daysLeft": "{days, plural, one {# day left to review} other {# days left to review}}",
+    "lastDay": "Last day to review"
+  }
+}

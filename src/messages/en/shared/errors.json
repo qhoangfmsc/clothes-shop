@@ -44,6 +44,18 @@
     "1714": "This bank reference is already used for another refund. Please check the reference.",
     "1801": "Return request not found. Go back to the list.",
     "1803": "The item or quantity to return is no longer valid. Choose again from what can still be returned.",
-    "1804": "This request just changed state, so that action isn't possible. Reload to see the new state."
+    "1804": "This request just changed state, so that action isn't possible. Reload to see the new state.",
+    "1601": "Photo storage isn't available right now. Please try again later.",
+    "1602": "No photo was attached. Please choose an image.",
+    "1607": "You've uploaded the maximum number of photos for today. Please try again tomorrow.",
+    "1901": "This review no longer exists or is hidden. The list has been refreshed.",
+    "1902": "This item can't be reviewed: it isn't delivered and paid yet, the 30-day review window has passed, or the product was removed.",
+    "1903": "This item already has a review.",
+    "1904": "This review can't be edited any more: it was already edited once, 30 days have passed, or it is hidden.",
+    "1905": "Reviews can't contain links. Please remove any web address.",
+    "1906": "This review was just changed by someone else. It has been refreshed.",
+    "1907": "You can't mark your own review as helpful.",
+    "1908": "One of the photos isn't valid any more. Please remove it and upload it again.",
+    "9001": "You don't have permission to do this."
   }
 }

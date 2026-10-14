@@ -47,7 +47,7 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.3 Robots
 
-- Production: `allow /`, `disallow` `/api/` và các đường `/<locale>/{admin,login,cart,checkout,account,orders,returns,wishlist,unauthorized}`; trỏ `sitemap` tới `${SITE_URL}/sitemap.xml`.
+- Production: `allow /`, `disallow` `/api/` và các đường `/<locale>/{admin,login,cart,checkout,account,orders,returns,reviews,wishlist,unauthorized}`; trỏ `sitemap` tới `${SITE_URL}/sitemap.xml`.
 - `VERCEL_ENV` có giá trị khác `production` → `disallow: /` toàn bộ.
 
 ### 4.4 JSON-LD

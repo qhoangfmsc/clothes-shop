@@ -1,8 +1,8 @@
 # Customer orders (đơn hàng của tôi)
 
 > **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-14
-> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`
-> **i18n:** `private.orders` (`meta`, `list`, `detail`), `common.orderStatus`
+> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
+> **i18n:** `private.orders` (`meta`, `list`, `detail`; `list.reviewsLink`, `detail.review`), `common.orderStatus`
 
 ## 1. Tóm tắt module
 
@@ -18,6 +18,7 @@ Cho khách nhìn là biết đơn đang ở đâu (chờ xử lý → xác nhậ
 |---|---|
 | Danh sách `/orders` | Mỗi đơn là một thẻ bấm được cả khối → `/orders/<id>`: badge trạng thái + ngày, tối đa 2 sản phẩm (ảnh, tên, size · màu, số lượng nếu > 1) + "+n sản phẩm khác", dòng cuối: mã đơn (11 px, nhạt) và tổng tiền kèm mũi tên |
 | Chi tiết `/orders/[orderId]` | Thẻ trạng thái (icon màu, nhãn, câu giải thích theo trạng thái, ngày giờ + mã đơn 11 px), thẻ thanh toán (có điều kiện), thẻ "Giao đến" (người nhận · điện thoại, địa chỉ, ghi chú), thẻ sản phẩm + tiền |
+| Đánh giá sản phẩm | Đầu trang danh sách có link "Đánh giá sản phẩm" sang `/reviews` kèm số dòng đang chờ đánh giá; ở chi tiết đơn `delivered` / `completed`, dòng hàng có trong danh sách chờ hiện nút "Viết đánh giá" và "còn N ngày" (xem 4.4) |
 | `OrderStatusBadge` | Pill màu + icon + nhãn theo trạng thái (dùng ở danh sách) |
 | `OrderThumb` | Ảnh sản phẩm của một dòng, icon thay thế khi không có ảnh |
 | Trạng thái | Skeleton khi tải phiên/đơn, `UnauthenticatedState` khi chưa đăng nhập, trạng thái trống có CTA mua sắm |
@@ -48,6 +49,10 @@ Cho khách nhìn là biết đơn đang ở đâu (chờ xử lý → xác nhậ
 
 Ngoài đường dẫn sang thanh toán và hủy đơn chưa trả, trang chỉ đọc: không có theo dõi vận đơn trên giao diện khách. Việc đổi trạng thái do admin thực hiện ([admin/orders](../admin/orders.md)).
 
-### 4.4 Liên quan
+### 4.4 Đánh giá từ đơn hàng
+
+Danh sách dòng còn đánh giá được lấy từ `usePendingReviews()` (`GET /api/my-reviews/pending`, SWR khóa `reviews:pending`), đối chiếu `orderItemId` với `OrderItem.id`; trạng thái đơn không được dùng để suy ra dòng nào đánh giá được (API đơn không cho biết dòng đã đánh giá chưa). Nút chỉ hiện khi `order.status` là `delivered` hoặc `completed` và dòng nằm trong danh sách chờ; bấm mở `ReviewFormModal` (module [customer-reviews](./customer-reviews.md)). Lưu xong: làm mới danh sách chờ (nút biến mất) và tổng hợp ở trang sản phẩm; `1903` đưa sang `/reviews?tab=mine`; `1902` làm mới danh sách chờ. Danh sách chờ lỗi (kể cả thiếu quyền) thì không có nút nào, không báo lỗi. Danh sách đơn không có nút trên từng dòng vì cả thẻ là một link.
+
+### 4.5 Liên quan
 
 Đơn được tạo ở [checkout](./checkout.md) (sau khi đặt, `/checkout` chuyển sang trang thanh toán VietQR hoặc `/orders/<id>`); [account](./account.md) hiện tóm tắt 3 đơn gần nhất.

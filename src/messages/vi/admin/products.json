@@ -12,13 +12,20 @@
       "price": "Giá",
       "status": "Trạng thái",
       "badge": "Nhãn",
-      "actions": "Thao tác"
+      "actions": "Thao tác",
+      "rating": "Đánh giá"
     },
     "filters": {
       "category": "Danh mục",
       "status": "Trạng thái",
-      "badge": "Nhãn"
-    }
+      "badge": "Nhãn",
+      "minRating": "Số sao"
+    },
+    "filterOptions": {
+      "minRating": "Từ {stars} sao trở lên"
+    },
+    "reviewCount": "{count, plural, other {# đánh giá}}",
+    "noReviews": "Chưa có đánh giá"
   },
   "form": {
     "titleCreate": "Sản phẩm mới",

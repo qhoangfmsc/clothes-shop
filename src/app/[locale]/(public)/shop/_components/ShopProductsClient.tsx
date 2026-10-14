@@ -8,6 +8,19 @@ import type { Product } from "@/src/types/product";
 
 const ITEMS_PER_PAGE = 24;
 
+/** Descending by `primary`, then `secondary`; products without a review (`ratingCount` 0 / no average) always go last */
+function compareRated(
+  primary: (p: Product) => number | null,
+  secondary: (p: Product) => number | null
+): (a: Product, b: Product) => number {
+  return (a, b) => {
+    const aRated = a.ratingCount > 0 && a.ratingAverage != null;
+    const bRated = b.ratingCount > 0 && b.ratingAverage != null;
+    if (aRated !== bRated) return aRated ? -1 : 1;
+    return (primary(b) ?? 0) - (primary(a) ?? 0) || (secondary(b) ?? 0) - (secondary(a) ?? 0);
+  };
+}
+
 interface ShopProductsClientProps {
   products: Product[];
   /** Optional heading section above the toolbar */
@@ -23,6 +36,7 @@ export default function ShopProductsClient({ products, heading }: ShopProductsCl
     maxPrice: null,
     sizes: [],
     colors: [],
+    minRating: null,
   });
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
@@ -52,6 +66,11 @@ export default function ShopProductsClient({ products, heading }: ShopProductsCl
       );
     }
 
+    // Filter by rating (a product without a review has no average and never matches)
+    if (filters.minRating != null) {
+      result = result.filter((p) => p.ratingAverage != null && p.ratingAverage >= filters.minRating!);
+    }
+
     // Sort
     switch (filters.sort) {
       case "price":
@@ -65,6 +84,12 @@ export default function ShopProductsClient({ products, heading }: ShopProductsCl
         break;
       case "-name":
         result.sort((a, b) => b.name.localeCompare(a.name, locale));
+        break;
+      case "-ratingAverage":
+        result.sort(compareRated((p) => p.ratingAverage, (p) => p.ratingCount));
+        break;
+      case "-ratingCount":
+        result.sort(compareRated((p) => p.ratingCount, (p) => p.ratingAverage));
         break;
       case "-createdAt":
       default:

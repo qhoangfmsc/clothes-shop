@@ -33,8 +33,12 @@
         "priceAsc": "Giá: Thấp → Cao",
         "priceDesc": "Giá: Cao → Thấp",
         "nameAsc": "Tên: A → Z",
-        "nameDesc": "Tên: Z → A"
-      }
+        "nameDesc": "Tên: Z → A",
+        "ratingDesc": "Đánh giá cao nhất",
+        "reviewsDesc": "Nhiều đánh giá nhất"
+      },
+      "rating": "Đánh giá",
+      "minRating": "Từ {stars} sao trở lên"
     },
     "productsClient": {
       "loadMore": "Xem thêm (còn {remaining})"

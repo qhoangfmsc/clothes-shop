@@ -60,13 +60,57 @@
     "customOrderHint": "Sản phẩm đặt thiết kế — vui lòng liên hệ để đặt hàng."
   },
   "reviews": {
-    "starsAria": "{rating} trên 5 sao",
-    "label": "Đánh giá của khách hàng",
-    "title": "Khách hàng nói gì về chúng tôi",
-    "basedOn": "Dựa trên {count} đánh giá",
-    "verified": "Đã xác minh",
-    "showLess": "Thu gọn",
-    "showAll": "Xem tất cả {count} đánh giá"
+    "label": "Đánh giá của khách",
+    "title": "Khách hàng nói gì",
+    "empty": {
+      "title": "Chưa có đánh giá nào",
+      "description": "Đánh giá của những khách đã nhận sản phẩm này sẽ hiển thị tại đây."
+    },
+    "summary": {
+      "basedOn": "Dựa trên {count, plural, other {# đánh giá}}",
+      "distribution": "Phân bố số sao",
+      "row": "Đánh giá {stars} sao: {count}. Chọn để lọc danh sách.",
+      "fitTitle": "Form dáng"
+    },
+    "filters": {
+      "rating": "Lọc theo số sao",
+      "allRatings": "Tất cả",
+      "stars": "{stars} ★",
+      "fit": "Form dáng",
+      "anyFit": "Mọi form dáng",
+      "withPhotos": "Có hình ảnh ({count})",
+      "sort": "Sắp xếp đánh giá",
+      "clear": "Xóa bộ lọc"
+    },
+    "sort": {
+      "newest": "Mới nhất",
+      "ratingHigh": "Sao cao nhất",
+      "ratingLow": "Sao thấp nhất",
+      "helpful": "Hữu ích nhất"
+    },
+    "item": {
+      "helpful": "Hữu ích ({count})",
+      "helpfulOwn": "Đánh giá của bạn · {count} hữu ích"
+    },
+    "list": {
+      "loadFailed": "Không tải được các đánh giá.",
+      "retry": "Thử lại",
+      "noMatch": "Không có đánh giá nào khớp bộ lọc.",
+      "loadMore": "Xem thêm {remaining} đánh giá",
+      "loadingMore": "Đang tải…"
+    },
+    "toast": {
+      "voteFailed": "Không cập nhật được lượt hữu ích. Vui lòng thử lại.",
+      "voteOwn": "Bạn không thể bấm hữu ích cho đánh giá của chính mình."
+    },
+    "write": {
+      "cta": "Viết đánh giá",
+      "signInHint": "Đăng nhập để đánh giá sản phẩm bạn đã mua và nhận.",
+      "edit": "Sửa đánh giá của bạn",
+      "editHint": "Mỗi đánh giá chỉ sửa được 1 lần.",
+      "alreadyReviewed": "Cảm ơn bạn đã đánh giá sản phẩm này.",
+      "notEligible": "Chỉ khách đã mua và nhận sản phẩm này mới đánh giá được."
+    }
   },
   "shipping": {
     "title": "Vận chuyển & Đổi trả",

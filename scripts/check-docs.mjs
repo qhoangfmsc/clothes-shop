@@ -58,7 +58,9 @@ const MODULES = [
   { doc: "platform/ui-kit", paths: [
     `${COMP}DataTable.tsx`, `${COMP}AdminFormKit.tsx`, `${COMP}Toast.tsx`, `${COMP}ConfirmDialog.tsx`,
     `${COMP}Carousel.tsx`, `${COMP}CarouselControls.tsx`, `${COMP}ImageUrlField.tsx`, `${COMP}ImageListField.tsx`,
-    `${COMP}ImagePreviewLightbox.tsx`, `${COMP}ResponsiveBannerImage.tsx`, `${COMP}BannerFade.tsx`,
+    `${COMP}ImagePreviewLightbox.tsx`, `${COMP}ResponsiveBannerImage.tsx`,
+    `${COMP}StarRating.tsx`, `${COMP}ProductRating.tsx`, `${COMP}ReviewContent.tsx`, `${COMP}ReviewAvatar.tsx`,
+    `${COMP}ReviewImageGrid.tsx`, `${COMP}ReviewImageViewer.tsx`, `${COMP}BannerFade.tsx`,
     `${COMP}Checkbox.tsx`, `${COMP}CopyButton.tsx`, `${COMP}JsonLd.tsx`, `${COMP}PendingActionNotice.tsx`, `${COMP}OrderDetailPanel.tsx`, `${COMP}OrderPaymentBadge.tsx`, `${COMP}ProductBagButton.tsx`,
     "src/hooks/use-sort-options.ts", "src/hooks/use-auto-advance.ts", "src/hooks/use-banner-rotation.ts",
     "src/hooks/useMediaQuery.ts", "src/lib/product-badge.ts", "src/lib/product-purchase.ts",
@@ -85,6 +87,7 @@ const MODULES = [
   { doc: "admin/payments", paths: [`${ADMIN}payments/`] },
   { doc: "admin/refunds", paths: [`${ADMIN}refunds/`] },
   { doc: "admin/returns", paths: [`${ADMIN}returns/`] },
+  { doc: "admin/reviews", paths: [`${ADMIN}reviews/`] },
   { doc: "admin/users", paths: [`${ADMIN}users/`] },
   { doc: "admin/media", paths: [`${ADMIN}media/`] },
   { doc: "admin/site-config", paths: [`${ADMIN}site-config/`] },
@@ -105,6 +108,7 @@ const MODULES = [
   { doc: "storefront/checkout", paths: [`${PRIVATE}checkout/`] },
   { doc: "storefront/customer-orders", paths: [`${PRIVATE}orders/`] },
   { doc: "storefront/customer-returns", paths: [`${PRIVATE}returns/`] },
+  { doc: "storefront/customer-reviews", paths: [`${PRIVATE}reviews/`] },
   { doc: "storefront/account", paths: [`${PRIVATE}account/`] },
 ];
 

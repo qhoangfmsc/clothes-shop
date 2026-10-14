@@ -16,7 +16,13 @@ export const PRODUCT_SORT_OPTIONS = [
   { value: "price", key: "priceAsc" },
   { value: "name", key: "nameAsc" },
   { value: "-name", key: "nameDesc" },
+  { value: "-ratingAverage", key: "ratingDesc" },
+  { value: "ratingAverage", key: "ratingAsc" },
+  { value: "-ratingCount", key: "reviewsDesc" },
 ] as const;
+
+/** "N stars and up" choices of the rating filter (`minRating`, 1–5; products without a review are excluded) */
+export const PRODUCT_MIN_RATINGS = [5, 4, 3, 2, 1] as const;
 
 /* ── Size Groups ── */
 

@@ -22,14 +22,16 @@
       "siteConfig": "Cấu hình website",
       "media": "Thư viện media",
       "refunds": "Hoàn tiền",
-      "returns": "Trả hàng"
+      "returns": "Trả hàng",
+      "reviews": "Đánh giá"
     },
     "pending": {
       "orders": "{count, plural, other {# đơn cần xử lý}}",
       "payments": "{count, plural, other {# giao dịch cần đối soát}}",
       "refunds": "{count, plural, other {# khoản chờ hoàn}}",
       "returns": "{count, plural, other {# yêu cầu chờ duyệt}}",
-      "overflow": "99+"
+      "overflow": "99+",
+      "reviews": "{count, plural, other {# đánh giá chờ phản hồi}}"
     }
   },
   "badge": "QUẢN TRỊ",
@@ -59,7 +61,8 @@
     "site-config": "Cấu hình website",
     "media": "Thư viện media",
     "refunds": "Hoàn tiền",
-    "returns": "Trả hàng"
+    "returns": "Trả hàng",
+    "reviews": "Đánh giá"
   },
   "pendingDot": "Có việc cần xử lý"
 }

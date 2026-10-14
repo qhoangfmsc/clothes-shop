@@ -1,0 +1,144 @@
+{
+  "page": {
+    "title": "Đánh giá",
+    "total": "{count, plural, other {# đánh giá}}",
+    "productFilter": "Sản phẩm: {slug}",
+    "userFilter": "Người viết: {id}",
+    "clearFilter": "Bỏ bộ lọc này"
+  },
+  "tabs": {
+    "pending": "Chờ phản hồi ({count})",
+    "pendingNoCount": "Chờ phản hồi",
+    "all": "Tất cả đánh giá"
+  },
+  "status": {
+    "PUBLISHED": "Đang hiển thị",
+    "HIDDEN": "Đã ẩn"
+  },
+  "table": {
+    "searchPlaceholder": "Tìm tiêu đề, nội dung, người viết hoặc sản phẩm…",
+    "view": "Xem",
+    "columns": {
+      "product": "Sản phẩm",
+      "author": "Người viết",
+      "rating": "Số sao",
+      "content": "Nội dung",
+      "images": "Ảnh",
+      "helpful": "Hữu ích",
+      "status": "Trạng thái",
+      "createdAt": "Ngày",
+      "actions": "Thao tác"
+    },
+    "filters": {
+      "status": "Trạng thái",
+      "replied": "Phản hồi",
+      "rating": "Số sao",
+      "fit": "Form dáng",
+      "hasImages": "Hình ảnh"
+    },
+    "filterOptions": {
+      "stars": "{stars, plural, other {# sao}}",
+      "withPhotos": "Có hình ảnh",
+      "withoutPhotos": "Không có hình ảnh"
+    },
+    "replied": {
+      "yes": "Đã phản hồi",
+      "no": "Chờ phản hồi"
+    },
+    "empty": {
+      "none": "Chưa có đánh giá nào.",
+      "filtered": "Không có đánh giá nào khớp bộ lọc.",
+      "pending": "Mọi đánh giá đang hiển thị đều đã có phản hồi."
+    }
+  },
+  "detail": {
+    "title": "Đánh giá",
+    "product": {
+      "section": "Sản phẩm",
+      "allReviews": "Mọi đánh giá của sản phẩm này"
+    },
+    "review": {
+      "section": "Đánh giá",
+      "byAuthor": "Mọi đánh giá của người này"
+    },
+    "trail": {
+      "section": "Chi tiết",
+      "createdAt": "Ngày viết",
+      "orderItem": "Dòng hàng",
+      "editedAt": "Đã sửa lúc",
+      "moderatedAt": "Kiểm duyệt gần nhất",
+      "moderatedBy": "Người kiểm duyệt",
+      "moderationNote": "Lý do khách thấy",
+      "repliedBy": "Người phản hồi"
+    },
+    "reply": {
+      "section": "Phản hồi của cửa hàng"
+    },
+    "hide": {
+      "reminder": "Chỉ ẩn đánh giá khi vi phạm quy định nội dung (link hoặc quảng cáo, thông tin cá nhân, ngôn từ không phù hợp, spam). Không ẩn vì đánh giá thấp sao."
+    },
+    "actions": {
+      "hide": "Ẩn đánh giá",
+      "publish": "Hiện lại"
+    },
+    "publish": {
+      "confirm": {
+        "title": "Hiện lại đánh giá này?",
+        "message": "Đánh giá sẽ xuất hiện lại trên trang sản phẩm và được tính vào điểm trung bình.",
+        "confirm": "Hiện đánh giá"
+      },
+      "toast": {
+        "done": "Đã hiện lại đánh giá",
+        "failed": "Không hiện lại được đánh giá"
+      }
+    }
+  },
+  "hide": {
+    "title": "Ẩn đánh giá",
+    "reminder": "Chỉ ẩn đánh giá khi vi phạm quy định nội dung. Không ẩn vì đánh giá thấp sao. Sau khi ẩn, đánh giá biến mất khỏi trang sản phẩm và điểm trung bình được tính lại.",
+    "note": {
+      "label": "Lý do (khách sẽ thấy)",
+      "info": "Người viết sẽ đọc lý do này trong danh sách đánh giá của họ.",
+      "counter": "{count}/{max}"
+    },
+    "reasons": {
+      "label": "Gợi ý lý do",
+      "link": "Chứa đường link hoặc quảng cáo.",
+      "personal": "Chứa thông tin cá nhân.",
+      "language": "Chứa ngôn từ không phù hợp.",
+      "spam": "Spam hoặc nội dung không liên quan."
+    },
+    "errors": {
+      "note": "Hãy nhập lý do ẩn đánh giá."
+    },
+    "submit": "Ẩn đánh giá",
+    "toast": {
+      "done": "Đã ẩn đánh giá",
+      "failed": "Không ẩn được đánh giá"
+    }
+  },
+  "reply": {
+    "label": "Phản hồi khách hàng",
+    "placeholder": "Cảm ơn khách hoặc trả lời góp ý của khách…",
+    "publicNote": "Mọi người đều thấy phản hồi này dưới đánh giá.",
+    "counter": "{count}/{max}",
+    "errors": {
+      "content": "Hãy nhập nội dung phản hồi."
+    },
+    "save": "Đăng phản hồi",
+    "update": "Cập nhật phản hồi",
+    "delete": "Xóa phản hồi",
+    "confirmDelete": {
+      "title": "Xóa phản hồi này?",
+      "message": "Phản hồi sẽ biến mất khỏi trang sản phẩm.",
+      "confirm": "Xóa phản hồi"
+    },
+    "toast": {
+      "created": "Đã đăng phản hồi",
+      "updated": "Đã cập nhật phản hồi",
+      "deleted": "Đã xóa phản hồi",
+      "saveFailed": "Không lưu được phản hồi",
+      "deleteFailed": "Không xóa được phản hồi"
+    }
+  }
+}

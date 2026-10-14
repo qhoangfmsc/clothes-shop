@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
-import { ArrowLeft, CheckCircle, MapPin, QrCode, Undo2 } from "lucide-react";
-import { Link } from "@/src/i18n/navigation";
+import { ArrowLeft, CheckCircle, MapPin, PenLine, QrCode, Undo2 } from "lucide-react";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
@@ -23,6 +23,10 @@ import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge"
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import OrderThumb from "../_components/OrderThumb";
 import OrderReturnCard from "../../returns/_components/OrderReturnCard";
+import ReviewFormModal from "../../reviews/_components/ReviewFormModal";
+import { useDeadlineLabel } from "../../reviews/_common/use-deadline-label";
+import { usePendingReviews, useRefreshReviewData } from "../../reviews/_common/use-pending-reviews";
+import type { PendingReviewItem } from "@/src/types/review";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -47,6 +51,12 @@ export default function OrderDetailContent() {
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isCancelling, setIsCancelling] = useState(false);
+  const router = useRouter();
+  /* Which lines can still be reviewed comes from the BE's own list, never from the order status alone */
+  const pendingReviews = usePendingReviews();
+  const refreshReviewData = useRefreshReviewData();
+  const deadlineLabel = useDeadlineLabel();
+  const [reviewTarget, setReviewTarget] = useState<PendingReviewItem | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated || !params.orderId) return;
@@ -105,6 +115,8 @@ export default function OrderDetailContent() {
   const shippingFree = Number(order.shippingFee) === 0;
   /* The order itself says whether it is paid; a cancelled order can no longer be paid */
   const isPaid = order.paymentStatus === "paid";
+  /* Only a delivered / completed order has lines to review */
+  const reviewable = order.status === "delivered" || order.status === "completed";
   const canPay = order.paymentStatus === "unpaid" && order.status !== "cancelled";
   const attempts = order.paymentAttempts ?? [];
   const refunds = order.refunds ?? [];
@@ -390,6 +402,21 @@ export default function OrderDetailContent() {
                     <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
                       {t("itemMeta", { size: item.size, color: item.color })} · {t("quantity", { quantity: item.quantity })}
                     </span>
+                    {reviewable && pendingReviews.byOrderItemId.has(item.id) && (
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <button
+                          type="button"
+                          onClick={() => setReviewTarget(pendingReviews.byOrderItemId.get(item.id) ?? null)}
+                          className="inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border border-[var(--accent-primary)] bg-transparent px-3.5 font-primary text-xs font-medium text-[var(--text-accent)] hover:bg-[rgba(201,169,110,0.1)] pointer-coarse:min-h-11"
+                        >
+                          <PenLine size={13} aria-hidden="true" />
+                          {t("review.cta")}
+                        </button>
+                        <span className="font-primary text-[11px] text-[var(--text-muted)]">
+                          {deadlineLabel(pendingReviews.byOrderItemId.get(item.id)!.reviewDeadline)}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <span className="shrink-0 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
                     {format.number(Number(item.price) * item.quantity, "price")}
@@ -432,6 +459,19 @@ export default function OrderDetailContent() {
           </section>
         </div>
       </motion.div>
+
+      {reviewTarget && (
+        <ReviewFormModal
+          target={{ mode: "create", item: reviewTarget }}
+          onClose={() => setReviewTarget(null)}
+          onSaved={() => {
+            setReviewTarget(null);
+            void refreshReviewData();
+          }}
+          onAlreadyReviewed={() => router.push("/reviews?tab=mine")}
+          onStale={() => void pendingReviews.reload()}
+        />
+      )}
     </main>
   );
 }

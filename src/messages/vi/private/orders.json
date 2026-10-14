@@ -22,7 +22,8 @@
     },
     "loadMore": "Xem thêm đơn hàng",
     "loadingMore": "Đang tải...",
-    "returnsLink": "Yêu cầu trả hàng"
+    "returnsLink": "Yêu cầu trả hàng",
+    "reviewsLink": "Đánh giá sản phẩm"
   },
   "detail": {
     "notFound": "Không tìm thấy đơn hàng.",
@@ -99,6 +100,9 @@
       "processedAt": "Xử lý lúc {date}",
       "reasonReturn": "Hoàn tiền do trả hàng",
       "reasonAdminCancelled": "Cửa hàng hủy đơn"
+    },
+    "review": {
+      "cta": "Viết đánh giá"
     }
   }
 }

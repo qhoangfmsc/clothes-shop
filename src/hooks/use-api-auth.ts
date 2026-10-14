@@ -44,6 +44,8 @@ interface ApiFetchOptions {
   headers?: Record<string, string>;
   /** Skip auth header (for public endpoints) */
   public?: boolean;
+  /** Keep the BE's media URLs as they are (no `/media/...` mapping): for forms that send them back (review images) */
+  raw?: boolean;
 }
 
 /**
@@ -93,11 +95,13 @@ export function useApiAuth() {
       path: string,
       options: ApiFetchOptions = {}
     ): Promise<T> => {
-      const { method = "GET", body, headers = {}, public: isPublic } = options;
+      const { method = "GET", body, headers = {}, public: isPublic, raw } = options;
+      /* A FormData body is sent as is: the browser sets the multipart Content-Type (with its boundary) itself */
+      const isForm = typeof FormData !== "undefined" && body instanceof FormData;
 
       const buildHeaders = (token?: string | null): Record<string, string> => {
         const h: Record<string, string> = {
-          "Content-Type": "application/json",
+          ...(isForm ? {} : { "Content-Type": "application/json" }),
           ...headers,
         };
         if (!isPublic && token) {
@@ -111,7 +115,7 @@ export function useApiAuth() {
         return fetch(url, {
           method,
           headers: buildHeaders(token),
-          body: body ? JSON.stringify(body) : undefined,
+          body: isForm ? (body as FormData) : body ? JSON.stringify(body) : undefined,
         });
       };
 
@@ -139,7 +143,8 @@ export function useApiAuth() {
         );
       }
 
-      return mapMediaUrls(await res.json());
+      const json = await res.json();
+      return raw ? json : mapMediaUrls(json);
     },
     [refreshOnce]
   );

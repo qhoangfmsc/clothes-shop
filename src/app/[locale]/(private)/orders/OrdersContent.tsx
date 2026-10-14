@@ -15,6 +15,7 @@ import type { Order } from "./_common/types";
 import OrderStatusBadge from "./_components/OrderStatusBadge";
 import OrderThumb from "./_components/OrderThumb";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
+import { usePendingReviews } from "../reviews/_common/use-pending-reviews";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -38,6 +39,7 @@ export default function OrdersContent() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
+  const pendingReviews = usePendingReviews();
 
   /* The BE lists 25 orders per page: the first page loads on mount, "load more" appends the next one */
   const loadPage = useCallback(
@@ -105,12 +107,25 @@ export default function OrdersContent() {
             <h1 className="m-0 font-display font-normal text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
               {t("title")}
             </h1>
-            <Link
-              href="/returns"
-              className="inline-flex items-center min-h-11 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium hover:underline"
-            >
-              {t("returnsLink")}
-            </Link>
+            <span className="flex flex-wrap items-center gap-x-5">
+              <Link
+                href="/reviews"
+                className="inline-flex items-center gap-2 min-h-11 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium hover:underline"
+              >
+                {t("reviewsLink")}
+                {pendingReviews.total > 0 && (
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-[var(--accent-primary)] px-1.5 text-[10px] font-semibold text-[var(--text-on-gold)]">
+                    {pendingReviews.total}
+                  </span>
+                )}
+              </Link>
+              <Link
+                href="/returns"
+                className="inline-flex items-center min-h-11 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium hover:underline"
+              >
+                {t("returnsLink")}
+              </Link>
+            </span>
           </div>
         </motion.div>
 

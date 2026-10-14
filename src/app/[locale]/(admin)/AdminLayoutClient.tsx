@@ -21,6 +21,7 @@ import {
   Landmark,
   Undo2,
   PackageX,
+  MessageSquareText,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -43,6 +44,7 @@ interface NavItem {
     | "payments"
     | "refunds"
     | "returns"
+    | "reviews"
     | "siteConfig"
     | "media";
   icon: LucideIcon;
@@ -98,6 +100,13 @@ const NAV_GROUPS: NavGroup[] = [
         key: "users",
         icon: Users,
         permission: PERMISSIONS.USER_ADMIN_VIEW,
+      },
+      {
+        href: "/admin/reviews",
+        key: "reviews",
+        icon: MessageSquareText,
+        permission: PERMISSIONS.REVIEW_ADMIN_VIEW,
+        pending: "reviews",
       },
       {
         href: "/admin/analytics",

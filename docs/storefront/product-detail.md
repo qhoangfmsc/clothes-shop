@@ -1,8 +1,8 @@
 # Product detail (trang chi tiết sản phẩm)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-10-13
-> **Code:** `(public)/shop/[category]/[subcategory]/[productId]/` — `page.tsx`, `_components/{ProductDetailClient,ZoomableImage,ImageViewer,ReviewsSection,ShippingAccordion,SizeGuideModal,ShareButtons}.tsx`
-> **i18n:** `public.product` (`meta`, `detail`, `reviews`, `shipping`, `sizeGuideModal`, `share`), `common.productBadge`
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-10-14
+> **Code:** `(public)/shop/[category]/[subcategory]/[productId]/` — `page.tsx`, `_common/{reviews,use-product-reviews,use-review-votes}.ts`, `_components/{ProductDetailClient,ZoomableImage,ImageViewer,ReviewsSection,ReviewSummary,ReviewFilterBar,ReviewItem,HelpfulButton,WriteReviewBar,ShippingAccordion,SizeGuideModal,ShareButtons}.tsx`; dùng chung `_components/{ProductRating,StarRating,ReviewContent,ReviewAvatar,ReviewImageGrid}.tsx`
+> **i18n:** `public.product` (`meta`, `detail`, `reviews`, `shipping`, `sizeGuideModal`, `share`), `shared.reviews` (kể cả `form`, `toast`, `deadline` của form viết đánh giá), `common.productBadge`
 
 ## 1. Tóm tắt module
 
@@ -24,7 +24,8 @@ Giúp khách quyết định mua: xem rõ sản phẩm, chọn đúng biến th�
 | Chi tiết | Chất liệu, hướng dẫn giặt, danh mục — danh mục con. Sản phẩm `custom_order`: nhãn chất liệu là "Chất liệu thiết kế gốc" (`detail.materialCustomOrder`, cùng chữ với trang liên hệ) và không hiện dòng hướng dẫn giặt |
 | `SizeGuideModal` | Bảng size theo danh mục (`GET /api/size-guides/:category`) |
 | `ShippingAccordion` | Phương thức vận chuyển, ngưỡng free ship, chính sách đổi trả |
-| `ReviewsSection` | Điểm trung bình, số đánh giá, danh sách đánh giá, xem thêm |
+| `ReviewsSection` | Tổng hợp (điểm, số đánh giá, phân bố 1–5 sao, phân bố form dáng), lọc / sắp xếp, danh sách đánh giá phân trang, nút "Hữu ích", trạng thái trống |
+| Điểm ở đầu trang | Dưới tên sản phẩm: `ProductRating full` từ `ratingAverage` / `ratingCount` của chính response sản phẩm (link `#reviews`), ẩn khi chưa có đánh giá |
 | Liên quan | Tối đa 4 sản phẩm liên quan |
 
 ## 4. Chi tiết
@@ -59,7 +60,12 @@ Hai cột ≥ `lg`: trái (tối đa 55%, `sticky`) là gallery, phải (45%) l�
 
 - **`SizeGuideModal`**: chỉ gọi API khi mở (`useSizeGuide(isOpen ? category : null)`), portal vào `body`, đóng bằng Esc/nút; bảng theo `columns` + `rows`, mẹo (`tips`) và trạng thái `loading/unavailable`.
 - **`ShippingAccordion`** (`useShipping`, cache 5 phút): tiêu đề, dòng "miễn phí vận chuyển từ <ngưỡng>" (ẩn khi `freeShippingThreshold` là `null`), từng phương thức (tên, mô tả, thời gian, giá hoặc "Miễn phí"), phần chính sách đổi trả.
-- **`ReviewsSection`** (`useReviews(productId)`): trung bình sao (`decimal1`), tổng số đánh giá, từng đánh giá (avatar, tác giả, nhãn "đã xác minh", sao, ngày, tiêu đề, nội dung); nút "Hiện tất cả/Thu gọn". Chỉ đọc — không có form gửi đánh giá.
+- **`ReviewsSection`** (`id="reviews"`, mọi con số lấy từ BE, không tính trung bình ở client):
+  - **Tổng hợp** (`ReviewSummary`, `useReviewSummary` → `GET /api/reviews/:productId/summary`, SWR, dedupe 5 s): điểm `ratingAverage` (`decimal1`) + `StarRating`, "Dựa trên N đánh giá", năm thanh phân bố sao — mỗi thanh là nút bật/tắt lọc theo số sao đó — và ba thanh form dáng (nhỏ / đúng size / rộng) chỉ khi `fit.total > 0`. `ratingAverage` là `null` hoặc `ratingCount` 0 thì cả khối thay bằng trạng thái trống ("Chưa có đánh giá nào"), không hiện 0 sao. Trong lúc tải hiện khung xám.
+  - **Lọc / sắp xếp** (`ReviewFilterBar`): chip số sao (Tất cả, 5 … 1 ★, cuộn ngang trên điện thoại), chọn form dáng, nút "Có hình ảnh (withImages)" (`hasImages=true`), sắp xếp `-createdAt` (mặc định), `-rating`, `rating`, `-helpfulCount`, nút "Xóa bộ lọc". Mọi lọc/sort do BE xử lý (`GET /api/reviews/:productId?rating&fit&hasImages&sort&page&limit`).
+  - **Danh sách** (`useReviewList`): 10 đánh giá/trang, "Xem thêm N đánh giá" nối trang kế; đổi bộ lọc quay về trang 1, phản hồi tới muộn của bộ lọc cũ bị bỏ; lỗi tải hiện hộp lỗi + "Thử lại"; không khớp bộ lọc hiện "Không có đánh giá nào khớp". Mỗi đánh giá (`ReviewItem`): avatar (chữ cái đầu khi `avatar` rỗng), `author` đúng như BE trả (không che tên), rồi `ReviewContent` (sao, ngày `createdAt`, "Đã mua hàng", "Đã chỉnh sửa", tiêu đề, nội dung, "Đã mua: size · màu", form dáng, lưới ảnh bấm để phóng to, khối "Phản hồi từ cửa hàng"). Đánh giá không tiêu đề / nội dung / ảnh vẫn hiển thị gọn.
+  - **Hữu ích** (`HelpfulButton`, `useReviewVotes`): đã đăng nhập thì khi vào trang gọi `GET /api/my-reviews/votes?productId=` (tô các đánh giá đã bấm) và `GET /api/my-reviews?productId=&limit=200` (biết đánh giá nào của chính mình; lỗi hoặc thiếu quyền thì bỏ qua, không toast). Bấm = `POST /api/reviews/:id/helpful`, bấm lại = `DELETE`; số hiển thị lấy `helpfulCount` trong response, nút `disabled` khi đang gọi. Đánh giá của chính mình hiện chữ "Đánh giá của bạn · N hữu ích" thay cho nút (và nếu BE vẫn trả `1907` thì ghi nhớ và báo nhẹ bằng toast `info`). Chưa đăng nhập: bấm mở popup đăng nhập (`requireAuth`) rồi thực hiện vote. `1901` (đánh giá đã bị ẩn): toast + tải lại danh sách và tổng hợp.
+  - **Viết / sửa ngay tại trang** (`WriteReviewBar`, dưới tiêu đề khối đánh giá, hiện cả khi chưa có đánh giá): khả năng của khách lấy từ danh sách của BE, không đoán. Có dòng hàng của sản phẩm này trong `usePendingReviews()` (dòng sắp hết hạn nhất, kèm "còn N ngày") → nút "Viết đánh giá" mở `ReviewFormModal` (module [customer-reviews](./customer-reviews.md), cùng form với trang `/reviews` và trang đơn); không có nhưng đánh giá của mình về sản phẩm này còn `canEdit` → nút "Sửa đánh giá của bạn"; còn lại một dòng chữ ("Cảm ơn bạn đã đánh giá" hoặc "Chỉ khách đã mua và nhận sản phẩm này mới đánh giá được"). Chưa đăng nhập: nút "Viết đánh giá" mở popup đăng nhập, sau đó thanh tự đổi theo tài khoản. Lưu xong tải lại danh sách, tổng hợp và "đánh giá của mình" của trang. Đánh giá của mình lấy bằng `GET /api/my-reviews?productId=` với `raw: true` (cùng lần gọi dùng để biết đánh giá nào là của mình).
 - **`ShareButtons`** (sao chép link, chia sẻ native, X, Pinterest): đã có file nhưng hiện chưa được trang nào import.
 
 ### 4.5 Hiện trạng cần biết

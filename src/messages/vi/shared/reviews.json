@@ -1,0 +1,96 @@
+{
+  "starsAria": "{rating} trên 5 sao",
+  "productRating": {
+    "aria": "Đánh giá {average} trên 5 sao từ {count, plural, other {# đánh giá}}",
+    "compact": "{average} ({count})",
+    "full": "{average} · {count, plural, other {# đánh giá}}"
+  },
+  "verified": "Đã mua hàng",
+  "edited": "Đã chỉnh sửa",
+  "storeReply": "Phản hồi từ cửa hàng",
+  "purchased": "Đã mua: {variant}",
+  "fit": {
+    "line": "Form dáng: {fit}",
+    "small": "Nhỏ",
+    "true_to_size": "Đúng size",
+    "large": "Rộng"
+  },
+  "images": {
+    "open": "Xem ảnh {index} trên {count}",
+    "alt": "Ảnh đánh giá {index} trên {count}"
+  },
+  "viewer": {
+    "close": "Đóng",
+    "previous": "Ảnh trước",
+    "next": "Ảnh sau",
+    "zoomIn": "Phóng to",
+    "zoomOut": "Thu nhỏ",
+    "lightbox": "Xem ảnh phóng to",
+    "gallery": "Ảnh đánh giá",
+    "slide": "Ảnh",
+    "slideOf": "Ảnh {index} trên {total}"
+  },
+  "form": {
+    "titleCreate": "Viết đánh giá",
+    "titleEdit": "Sửa đánh giá",
+    "close": "Đóng",
+    "editWarning": "Mỗi đánh giá chỉ sửa được 1 lần. Sau khi lưu, bạn sẽ không thể sửa lại nữa.",
+    "editableUntil": "Bạn có thể sửa đến hết {date}.",
+    "rating": {
+      "label": "Bạn chấm mấy sao?",
+      "option": "{stars, plural, other {# sao}}",
+      "hint": {
+        "1": "Rất tệ",
+        "2": "Tạm được",
+        "3": "Bình thường",
+        "4": "Tốt",
+        "5": "Tuyệt vời"
+      }
+    },
+    "title": {
+      "label": "Tiêu đề",
+      "placeholder": "Tóm tắt trong vài từ"
+    },
+    "content": {
+      "label": "Nội dung đánh giá",
+      "placeholder": "Bạn thích điều gì? Chất vải và form dáng thế nào?",
+      "counter": "{count}/{max}"
+    },
+    "fit": {
+      "label": "Form dáng thế nào?",
+      "optional": "(không bắt buộc)"
+    },
+    "images": {
+      "label": "Hình ảnh",
+      "add": "Thêm ảnh",
+      "uploading": "Đang tải lên…",
+      "remove": "Xóa ảnh {index}",
+      "hint": "{count}/{max} ảnh · tối đa {size} MB mỗi ảnh · JPEG, PNG, WebP, GIF hoặc AVIF. Ảnh chỉ được tải lên khi bạn gửi đánh giá.",
+      "failed": "Có ảnh chưa tải lên được nên đánh giá chưa được gửi. Bấm nút gửi để thử lại hoặc xóa ảnh đó.",
+      "errors": {
+        "type": "{name}: chỉ hỗ trợ ảnh JPEG, PNG, WebP, GIF hoặc AVIF.",
+        "size": "{name} lớn hơn {size} MB.",
+        "limit": "Bạn chỉ thêm được tối đa {max} ảnh."
+      },
+      "failedPhoto": "Ảnh {index} chưa tải lên được"
+    },
+    "errors": {
+      "rating": "Vui lòng chọn số sao.",
+      "link": "Đánh giá không được chứa đường link (http://, https:// hoặc www.)."
+    },
+    "noChanges": "Hãy thay đổi nội dung trước khi lưu.",
+    "cancel": "Hủy",
+    "submitCreate": "Gửi đánh giá",
+    "submitEdit": "Lưu thay đổi",
+    "submitting": "Đang gửi…"
+  },
+  "toast": {
+    "created": "Cảm ơn bạn! Đánh giá đã được đăng.",
+    "updated": "Đã cập nhật đánh giá của bạn.",
+    "saveFailed": "Không lưu được đánh giá. Vui lòng thử lại."
+  },
+  "deadline": {
+    "daysLeft": "{days, plural, other {Còn # ngày để đánh giá}}",
+    "lastDay": "Hôm nay là ngày cuối để đánh giá"
+  }
+}

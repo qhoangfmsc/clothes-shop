@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Đánh giá sản phẩm",
+    "description": "Viết đánh giá cho sản phẩm đã nhận và quản lý các đánh giá của bạn."
+  },
+  "page": {
+    "title": "Đánh giá sản phẩm",
+    "back": "Tài khoản"
+  },
+  "tabs": {
+    "pending": "Chờ đánh giá ({count})",
+    "mine": "Đánh giá của tôi"
+  },
+  "retry": "Thử lại",
+  "loadMore": "Xem thêm",
+  "loadingMore": "Đang tải…",
+  "pending": {
+    "info": "Bạn có thể đánh giá sản phẩm của đơn đã thanh toán và đã giao trong vòng 30 ngày kể từ lúc giao. Đánh giá được đăng ngay.",
+    "empty": {
+      "title": "Chưa có gì để đánh giá",
+      "description": "Sản phẩm bạn có thể đánh giá sẽ hiện ở đây sau khi đơn được giao.",
+      "cta": "Tiếp tục mua sắm"
+    },
+    "card": {
+      "orderNumber": "Đơn #{id}",
+      "quantity": "SL {quantity}",
+      "review": "Viết đánh giá"
+    }
+  },
+  "mine": {
+    "filters": {
+      "all": "Tất cả",
+      "PUBLISHED": "Đang hiển thị",
+      "HIDDEN": "Đã bị ẩn"
+    },
+    "productFilter": "Một sản phẩm",
+    "clearProductFilter": "Xem mọi sản phẩm",
+    "empty": {
+      "title": "Bạn chưa có đánh giá nào",
+      "description": "Các đánh giá bạn viết sẽ được liệt kê ở đây.",
+      "cta": "Xem đơn hàng của tôi"
+    },
+    "card": {
+      "hidden": "Đã bị ẩn",
+      "hiddenTitle": "Cửa hàng đã ẩn đánh giá này",
+      "hiddenReason": "Lý do: {note}",
+      "hiddenOnlyYou": "Chỉ mình bạn thấy đánh giá này và không thể chỉnh sửa.",
+      "viewProduct": "Xem sản phẩm",
+      "productRemoved": "Sản phẩm không còn bán",
+      "edit": "Sửa",
+      "editableUntil": "Bạn được sửa một lần, đến hết {date}.",
+      "alreadyEdited": "Bạn đã sửa đánh giá này rồi.",
+      "editExpired": "Đã hết thời gian chỉnh sửa.",
+      "cannotEditHidden": "Đánh giá đang bị ẩn nên không sửa được."
+    }
+  },
+  "toast": {
+    "loadFailed": "Không tải được đánh giá của bạn."
+  }
+}

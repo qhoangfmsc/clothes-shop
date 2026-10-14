@@ -15,7 +15,6 @@ import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import { buildListQuery } from "@/src/lib/list-query";
 import type { Collection } from "@/src/types/collection";
-import type { Review } from "@/src/types/review";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
@@ -46,6 +45,7 @@ function buildProductQS(params: ProductListParams): string {
     badge: params.badge,
     minPrice: params.minPrice,
     maxPrice: params.maxPrice,
+    minRating: params.minRating,
     sizes: params.sizes,
     colors: params.colors,
   });
@@ -166,34 +166,6 @@ export function useCollection(slug: string | null) {
   return {
     collection: data?.data ?? null,
     products: data?.products ?? [],
-    isLoading,
-    isError: !!error,
-  };
-}
-
-/* ═══ Reviews ═══ */
-export function useReviews(productId: string | null, page = 1, limit = 24) {
-  const q = buildListQuery({ page, limit: limit !== 24 ? limit : undefined });
-
-  const { data, isLoading, error } = useSWR<{
-    data: Review[];
-    total: number;
-  }>(
-    productId ? `${API_URL}/api/reviews/${productId}${q ? `?${q}` : ""}` : null,
-    fetcher,
-    defaultConfig
-  );
-
-  /* Compute average on client side */
-  const reviews = data?.data ?? [];
-  const average = reviews.length > 0
-    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-    : 0;
-
-  return {
-    reviews,
-    average,
-    total: data?.total ?? 0,
     isLoading,
     isError: !!error,
   };

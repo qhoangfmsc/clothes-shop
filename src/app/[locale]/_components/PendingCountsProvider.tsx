@@ -13,7 +13,7 @@ const REFRESH_DEBOUNCE_MS = 300;
 
 const PENDING_COUNTS_URL = "/api/admin/pending-counts";
 
-export const PENDING_COUNT_KEYS = ["orders", "payments", "refunds", "returns"] as const;
+export const PENDING_COUNT_KEYS = ["orders", "payments", "refunds", "returns", "reviews"] as const;
 export type PendingCountKey = (typeof PENDING_COUNT_KEYS)[number];
 
 /** A key that is absent means "this account may not see that area" (not zero) */

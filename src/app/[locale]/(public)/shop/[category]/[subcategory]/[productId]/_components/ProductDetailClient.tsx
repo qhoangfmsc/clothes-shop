@@ -22,6 +22,7 @@ import { useAuthAction } from "@/src/hooks/use-auth-action";
 import { trackEvent } from "@/src/lib/analytics";
 import SizeGuideModal from "./SizeGuideModal";
 import ReviewsSection from "./ReviewsSection";
+import ProductRating from "@/src/app/[locale]/_components/ProductRating";
 import ShippingAccordion from "./ShippingAccordion";
 import ZoomableImage from "./ZoomableImage";
 const loadImageViewer = () => import("./ImageViewer");
@@ -279,6 +280,12 @@ export default function ProductDetailClient({
             <h1 className="font-display text-[clamp(28px,4vw,40px)] font-normal text-[var(--text-heading)] tracking-[-0.04em] leading-[105%]">
               {product.name}
             </h1>
+            {/* Rating straight from the product response (no extra request); jumps to the reviews below */}
+            {product.ratingAverage != null && product.ratingCount > 0 && (
+              <a href="#reviews" className="mt-1 inline-flex min-h-11 items-center self-start no-underline">
+                <ProductRating average={product.ratingAverage} count={product.ratingCount} variant="full" />
+              </a>
+            )}
           </motion.div>
 
           {/* Price */}

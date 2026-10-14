@@ -13,7 +13,6 @@ import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
-import type { Review } from "@/src/types/review";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ShippingInfo } from "@/src/types/shipping";
 import { mapMediaUrls } from "@/src/lib/media-url";
@@ -43,7 +42,18 @@ export interface ProductListParams {
   subcategory?: string;
   badge?: ProductBadge;
   /** `field` = ascending, `-field` = descending (BE whitelist). */
-  sort?: "price" | "-price" | "name" | "-name" | "createdAt" | "-createdAt";
+  sort?:
+    | "price"
+    | "-price"
+    | "name"
+    | "-name"
+    | "createdAt"
+    | "-createdAt"
+    | "ratingAverage"
+    | "-ratingAverage"
+    | "-ratingCount";
+  /** 1–5: only products whose average is at least this (products without a review are left out) */
+  minRating?: number;
   minPrice?: number;
   maxPrice?: number;
   sizes?: string;   // "S,M,L"
@@ -73,13 +83,6 @@ export interface CollectionListResponse {
   limit: number;
 }
 
-export interface ReviewListResponse {
-  data: Review[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
 /* ═══════════════════════════════════════════════════════════
    PRODUCTS
    ═══════════════════════════════════════════════════════════ */
@@ -91,6 +94,7 @@ function buildProductQS(params: ProductListParams): string {
     badge: params.badge,
     minPrice: params.minPrice,
     maxPrice: params.maxPrice,
+    minRating: params.minRating,
     sizes: params.sizes,
     colors: params.colors,
   });
@@ -224,17 +228,4 @@ export async function getShippingInfo(): Promise<ShippingInfo | null> {
   } catch {
     return null;
   }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   REVIEWS
-   ═══════════════════════════════════════════════════════════ */
-
-export async function getReviews(
-  productId: string,
-  page = 1,
-  limit = 24
-): Promise<ReviewListResponse> {
-  const q = buildListQuery({ page, limit: limit !== 24 ? limit : undefined });
-  return apiFetch<ReviewListResponse>(`/api/reviews/${productId}${q ? `?${q}` : ""}`);
 }

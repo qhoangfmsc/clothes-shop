@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, type FormEvent } from "react";
 import Image from "next/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import { Plus, Pencil, Trash2, X, ImageIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, X, ImageIcon, Star } from "lucide-react";
 import { useAdminCategories } from "@/src/hooks/use-admin-api";
 import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
@@ -36,7 +36,13 @@ import {
   updateProduct,
   deleteProduct,
 } from "./_common/moduleSlice";
-import { PRODUCT_SORT_OPTIONS, SIZE_GROUPS, TAG_SUGGESTIONS, EMPTY_FORM } from "./_common/constants";
+import {
+  PRODUCT_MIN_RATINGS,
+  PRODUCT_SORT_OPTIONS,
+  SIZE_GROUPS,
+  TAG_SUGGESTIONS,
+  EMPTY_FORM,
+} from "./_common/constants";
 import type { ProductListResult } from "./_common/types";
 import type { Product, ProductColor } from "@/src/types/product";
 import {
@@ -102,6 +108,7 @@ export default function ProductsContent() {
         category: params.filters.category || undefined,
         badge: (params.filters.badge || undefined) as ProductBadge | undefined,
         status: (params.filters.status || undefined) as ProductStatus | undefined,
+        minRating: params.filters.minRating ? Number(params.filters.minRating) : undefined,
         sort: params.sort,
         page: params.page,
         limit: params.limit,
@@ -190,6 +197,23 @@ export default function ProductsContent() {
             </span>
           ) : (
             <span className="text-[var(--text-disabled)]">—</span>
+          ),
+      },
+      {
+        key: "rating",
+        header: t("table.columns.rating"),
+        hideBelow: "md",
+        render: (p) =>
+          p.ratingAverage != null && p.ratingCount > 0 ? (
+            <span className="inline-flex flex-col gap-0.5 whitespace-nowrap">
+              <span className="inline-flex items-center gap-1 text-sm font-semibold">
+                <Star size={12} fill="currentColor" className="text-[var(--color-champagne-gold)]" aria-hidden="true" />
+                {format.number(p.ratingAverage, "decimal1")}
+              </span>
+              <span className="text-[11px] text-[var(--text-muted)]">{t("table.reviewCount", { count: p.ratingCount })}</span>
+            </span>
+          ) : (
+            <span className="text-xs text-[var(--text-disabled)]">{t("table.noReviews")}</span>
           ),
       },
       {
@@ -418,6 +442,11 @@ export default function ProductsContent() {
             key: "badge",
             label: t("table.filters.badge"),
             options: PRODUCT_BADGES.map((b) => ({ value: b, label: tBadge(b) })),
+          },
+          {
+            key: "minRating",
+            label: t("table.filters.minRating"),
+            options: PRODUCT_MIN_RATINGS.map((stars) => ({ value: String(stars), label: t("table.filterOptions.minRating", { stars }) })),
           },
         ]}
         sortOptions={sortOptions}

@@ -44,6 +44,18 @@
     "1714": "Mã giao dịch ngân hàng này đã dùng cho một khoản hoàn khác. Vui lòng kiểm tra lại mã.",
     "1801": "Không tìm thấy yêu cầu trả hàng. Hãy quay về danh sách.",
     "1803": "Sản phẩm hoặc số lượng trả không còn hợp lệ. Hãy chọn lại theo số lượng còn trả được.",
-    "1804": "Yêu cầu này vừa thay đổi trạng thái nên không thực hiện được thao tác. Hãy tải lại để xem trạng thái mới."
+    "1804": "Yêu cầu này vừa thay đổi trạng thái nên không thực hiện được thao tác. Hãy tải lại để xem trạng thái mới.",
+    "1601": "Kho lưu ảnh tạm thời chưa dùng được. Vui lòng thử lại sau.",
+    "1602": "Chưa có ảnh nào được đính kèm. Vui lòng chọn một ảnh.",
+    "1607": "Bạn đã tải lên đủ số ảnh cho phép trong hôm nay. Vui lòng thử lại vào ngày mai.",
+    "1901": "Đánh giá này không còn tồn tại hoặc đã bị ẩn. Danh sách đã được làm mới.",
+    "1902": "Sản phẩm này chưa thể đánh giá: đơn chưa giao và thanh toán, đã quá 30 ngày kể từ lúc giao, hoặc sản phẩm đã bị xóa.",
+    "1903": "Sản phẩm này đã có đánh giá.",
+    "1904": "Đánh giá này không sửa được nữa: đã sửa một lần, đã quá 30 ngày hoặc đang bị ẩn.",
+    "1905": "Đánh giá không được chứa đường link. Vui lòng xóa địa chỉ web.",
+    "1906": "Đánh giá vừa được người khác thay đổi. Dữ liệu đã được làm mới.",
+    "1907": "Bạn không thể bấm hữu ích cho đánh giá của chính mình.",
+    "1908": "Một trong các ảnh không còn hợp lệ. Vui lòng xóa và tải ảnh lên lại.",
+    "9001": "Bạn không có quyền thực hiện thao tác này."
   }
 }
