@@ -1,6 +1,6 @@
 # Landing page (trang chủ)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]` · **Cập nhật:** 2026-10-13
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]` · **Cập nhật:** 2026-10-15
 > **Code:** `(public)/page.tsx` · `(public)/landing-page/` — `page.tsx`, `_common/constants.ts`, `_components/{VideoContainer,Caption,ProductInfo,ViewButton,OutroSection,Footer,CollectionShowcase}.tsx`
 > **i18n:** `public.landing`
 
@@ -10,7 +10,7 @@ Trang chủ dạng "cuộn kể chuyện": hai video người mẫu quay trái/p
 
 ## 2. Phục vụ gì / việc cần làm
 
-Gây ấn tượng thương hiệu ngay màn hình đầu và dẫn khách tới `/shop` (nút "View") hoặc vào từng bộ sưu tập. Đồng thời xuất JSON-LD `WebSite` + `Organization` cho SEO.
+Gây ấn tượng thương hiệu ngay màn hình đầu và dẫn khách tới `/shop` (nút "View") hoặc vào từng bộ sưu tập. Đồng thời xuất JSON-LD `WebSite` + `ClothingStore` và `SiteNavigationElement` (năm mục chính: Shop, New In, Collections, Đặt thiết kế, About) cho SEO.
 
 ## 3. Submodule & chức năng hiện có
 

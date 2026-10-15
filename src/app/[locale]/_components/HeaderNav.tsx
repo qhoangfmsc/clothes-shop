@@ -18,7 +18,6 @@ const NAV_LINKS = [
   { key: "shop", href: "/shop", hasMegaMenu: true },
   { key: "newIn", href: "/new-in", hasMegaMenu: false },
   { key: "collections", href: "/collections", hasMegaMenu: false },
-  { key: "about", href: "/about", hasMegaMenu: false },
 ] as const;
 
 export default function HeaderNav({

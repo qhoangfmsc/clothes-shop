@@ -1,6 +1,6 @@
 import type { AppLocale } from "@/src/i18n/routing";
 import type { Product } from "@/src/types/product";
-import { BRAND_ALTERNATE_NAME, BRAND_DOMAIN, BRAND_FOUNDING_YEAR, BRAND_NAME } from "./brand";
+import { BRAND_ALTERNATE_NAME, BRAND_FOUNDING_YEAR, BRAND_NAME } from "./brand";
 import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164, GOOGLE_BUSINESS_URL } from "./contact";
 import { SITE_URL } from "./site-url";
 import { hasPublicPrice } from "./product-purchase";
@@ -68,9 +68,29 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
   };
 }
 
-/** Names the brand is actually known by. Search is case-insensitive, so one casing is enough;
- *  only list domains we own. */
-const BRAND_ALTERNATE_NAMES = [BRAND_ALTERNATE_NAME, BRAND_DOMAIN];
+export interface SiteNavEntry {
+  name: string;
+  /** Locale-less path. */
+  path: string;
+}
+
+/** `SiteNavigationElement` — tells Google which pages are the main sections of the site.
+ *  A hint only: Google decides on its own whether (and which) sitelinks to show under the brand result. */
+export function siteNavigationJsonLd(locale: AppLocale, entries: SiteNavEntry[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: entries.map((entry, index) => ({
+      "@type": "SiteNavigationElement",
+      position: index + 1,
+      name: entry.name,
+      url: pageUrl(locale, entry.path),
+    })),
+  };
+}
+
+/** Names the brand is actually known by. The official name is DOOVAN; the domain is only an address, not a name. */
+const BRAND_ALTERNATE_NAMES = [BRAND_ALTERNATE_NAME];
 
 /** Stable id of the brand entity, so the WebSite and any other page can point at the same Organization. */
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;

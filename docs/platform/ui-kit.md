@@ -1,6 +1,6 @@
 # UI kit (component & hook dùng chung)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
 > **Code:** `src/app/[locale]/_components/` · `src/hooks/` · `src/lib/product-badge.ts` · `src/lib/product-purchase.ts`
 > **Quy tắc dùng:** `.agent/rules/components.md`
 
@@ -91,7 +91,7 @@ Chuỗi nằm ở `shared.reviews` (`starsAria`, `productRating`, `edited`, `sto
 
 - `Checkbox({ checked, onCheckedChange, indeterminate? })`: input thật được phủ trong suốt lên ô vẽ; phải có `<label>` bọc hoặc `aria-label`.
 - `JsonLd({ data })`: nhúng `<script type="application/ld+json">`.
-- `SocialIcons({ linkClassName, iconSize, className })`: dựng từ `CONTACT_LINKS` (`src/lib/socials.tsx`): icon Email (`mailto:contact@doovan.vn`, mở cùng tab) rồi tới `SOCIALS` (Instagram `doo_doofairies`, Facebook `doovan.vn`, mở tab mới). `SOCIALS` giữ riêng vì còn dùng cho `sameAs` của JSON-LD.
+- `SocialIcons({ linkClassName, iconSize, className })`: dựng từ `CONTACT_LINKS` (`src/lib/socials.tsx`): icon Email (`mailto:contact@doovan.vn`, mở cùng tab) rồi tới `SOCIALS` (Instagram `doovan.vn`, Facebook `doovan.vn`, mở tab mới). `SOCIALS` giữ riêng vì còn dùng cho `sameAs` của JSON-LD.
 - `OrderDetailPanel({ order, loading, onClose, paymentTab?, notice? })`: nội dung chi tiết đơn (trạng thái, trạng thái thanh toán, ngày, sản phẩm, vận chuyển + địa chỉ, thanh toán, ghi chú). Khi truyền `paymentTab` (nội dung tab "Thanh toán") panel hiện thanh tab Chi tiết / Thanh toán (`FormTabs`); không truyền thì không có tab. `notice` là khối thông báo đặt ngay dưới tiêu đề, trên cả hai tab (Orders dùng cho banner hoàn tiền). Dùng trong Orders (có tab, khi user có `PAYMENT_ADMIN_VIEW`) và Users (không tab). Chuỗi: `admin.components.orderDetailPanel`.
 - `PendingActionNotice({ count, title, includes, excludes?, how, note?, active, viewLabel, viewAllLabel?, onToggle, keepWhenDone?, extra? })`: khung "việc cần xử lý" ở đầu trang admin: tiêu đề kèm số, giải thích đếm gì / không đếm gì, "Cách xử lý", nút bật/tắt bộ lọc (`active` → nhãn đổi thành `viewAllLabel`, mặc định "Xem tất cả"). Vàng nhạt, không phải màu cảnh báo. `count` là `undefined` (thiếu quyền) hoặc 0 thì ẩn; với `keepWhenDone` và `active`, ở 0 còn lại một dòng "Đã xử lý hết" kèm nút quay lại (dùng cho bộ lọc admin tự bật ở Orders và Payments). Chuỗi: `admin.components.pendingNotice`, còn nội dung từng trang nằm ở `pending.*` của namespace trang đó.
 - `CopyButton({ value, label })`: icon sao chép nhỏ (ô 28 px, vùng bấm ≈ 44 px): ghi `value` vào clipboard, toast `shared.feedback.copy.copied` / `failed`, đổi sang dấu tick 1,5 s; `label` chỉ dùng cho `aria-label`/`title` ("Sao chép <label>"). Dùng ở checkout (`DetailRow`) và admin (mã chuyển khoản, mã giao dịch).

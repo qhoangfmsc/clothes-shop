@@ -163,32 +163,19 @@ html.custom-cursor-active * {
   color: var(--accent-primary) !important;
 }
 
-/* Highlighted drawer link (custom order): gold card with a slow light sweep */
+/* Highlighted drawer link (custom order): a quiet gold-tinted row */
 .drawer-nav-featured {
-  position: relative;
-  overflow: hidden;
   border: 1px solid var(--border-gold);
-  background: linear-gradient(135deg, rgba(201, 169, 110, 0.22), rgba(201, 169, 110, 0.06));
-  box-shadow: 0 0 24px rgba(201, 169, 110, 0.12);
+  background: rgba(201, 169, 110, 0.08);
   transition:
     border-color var(--duration-fast) var(--ease-default),
-    box-shadow var(--duration-fast) var(--ease-default);
-}
-
-.drawer-nav-featured::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.14) 50%, transparent 65%);
-  transform: translateX(-100%);
-  animation: drawer-featured-sweep 4.5s var(--ease-default) 1s infinite;
-  pointer-events: none;
+    background-color var(--duration-fast) var(--ease-default);
 }
 
 .drawer-nav-featured:hover,
 .drawer-nav-featured:focus-visible {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 32px rgba(201, 169, 110, 0.25);
+  background: rgba(201, 169, 110, 0.14);
 }
 
 .drawer-nav-featured:hover .drawer-nav-featured-arrow {
@@ -199,20 +186,7 @@ html.custom-cursor-active * {
   transition: transform var(--duration-fast) var(--ease-default);
 }
 
-@keyframes drawer-featured-sweep {
-  0%,
-  60% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .drawer-nav-featured::after {
-    animation: none;
-  }
   .drawer-nav-featured,
   .drawer-nav-featured-arrow {
     transition: none;

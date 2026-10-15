@@ -20,9 +20,8 @@ import { CONTACT_PATH } from "@/src/lib/product-purchase";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/** `featured` links are drawn as a highlighted card. */
+/** `featured` links are drawn as a subtly highlighted row. */
 const NAV_LINKS = [
-  { key: "home", href: "/", hasAccordion: false },
   { key: "customOrder", href: CONTACT_PATH, hasAccordion: false, featured: true },
   { key: "shop", href: "/shop", hasAccordion: true },
   { key: "newIn", href: "/new-in", hasAccordion: false },
@@ -584,7 +583,7 @@ export default function HamburgerMenu() {
                         </motion.span>
                       </button>
                     ) : "featured" in link ? (
-                      /* Highlighted call-to-action card (custom order) */
+                      /* Highlighted call-to-action row (custom order) */
                       <Link
                         href={link.href}
                         onClick={close}
@@ -593,9 +592,9 @@ export default function HamburgerMenu() {
                           display: "flex",
                           alignItems: "center",
                           gap: "16px",
-                          margin: "12px 0",
-                          padding: "18px 20px",
-                          borderRadius: 16,
+                          marginBottom: "12px",
+                          padding: "14px 16px",
+                          borderRadius: 12,
                           textDecoration: "none",
                         }}
                       >
@@ -605,12 +604,10 @@ export default function HamburgerMenu() {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            width: 40,
-                            height: 40,
+                            width: 32,
+                            height: 32,
                             flexShrink: 0,
-                            borderRadius: "50%",
-                            background: "var(--accent-primary)",
-                            color: "var(--text-on-gold)",
+                            color: "var(--accent-primary)",
                           }}
                         >
                           <Scissors size={20} />

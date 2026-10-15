@@ -1,6 +1,6 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
 > **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
@@ -9,7 +9,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ## 2. Phục vụ gì / việc cần làm
 
-- Đưa khách tới Shop, New In, Collections, About, trang đặt thiết kế riêng ([contact](../storefront/contact.md)) và khu tài khoản từ mọi trang công khai.
+- Đưa khách tới Shop, New In, Collections, Về DOOVAN (About), trang đặt thiết kế riêng ([contact](../storefront/contact.md)) và khu tài khoản từ mọi trang công khai.
 - Tìm sản phẩm nhanh bằng ô tìm kiếm có gợi ý và lịch sử sản phẩm đã mở gần đây.
 - Hiển thị danh mục/danh mục con thật từ API, có lối tắt "xem tất cả".
 - Cho thấy số lượng trong giỏ và dẫn tới giỏ từ bất cứ đâu.
@@ -21,7 +21,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 |---|---|---|
 | Header | Cố định, ẩn khi cuộn xuống/hiện khi cuộn lên, nền kính mờ sau khi cuộn | `SiteHeader.tsx` |
 | Logo | Wordmark SVG `DOOVAN` màu thương hiệu, link về `/` | `Logo.tsx` |
-| Thanh điều hướng | Link Shop/New In/Collections/About + nút "Đặt thiết kế" (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
+| Thanh điều hướng | Link Shop/New In/Collections + nút "Đặt thiết kế" (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
 | Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, lịch sử gần đây, điều hướng bằng phím | `SearchBar.tsx`, `useSearchHistory.ts` |
 | Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật, đổi ngôn ngữ, mạng xã hội, link pháp lý | `HamburgerMenu.tsx` |
 | Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
@@ -37,7 +37,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.2 `HeaderNav`
 
-- `NAV_LINKS`: Shop (có mega menu), New In, Collections, About; chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
+- `NAV_LINKS`: Shop (có mega menu), New In, Collections (trang About không nằm trên thanh nav, chỉ có trong drawer và footer); chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
 - Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 30 px, link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
 - Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Panel trượt từ trên, render qua portal vào `body`.
 - Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
@@ -51,7 +51,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.4 `HamburgerMenu`
 
-- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: Home, **Đặt thiết kế** (ngay dưới Home), Shop (accordion), New In, Collections, About, không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành thẻ nổi bật (class `drawer-nav-featured` trong `globals.css`): nền gradient vàng, viền và bóng vàng, icon kéo `Scissors` trong vòng tròn vàng, chữ vàng, mũi tên `ArrowRight` trượt khi hover, vệt sáng quét chậm mỗi 4,5 s (tắt khi `prefers-reduced-motion`).
+- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: **Đặt thiết kế** (đầu danh sách; không có mục Home — logo đã dẫn về trang chủ), Shop (accordion), New In, Collections, Về DOOVAN (`nav.about`, link `/about`), không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành hàng nổi bật nhẹ (class `drawer-nav-featured` trong `globals.css`): nền vàng nhạt (alpha 0,08), viền vàng, icon kéo `Scissors` màu vàng (không vòng tròn), chữ vàng, mũi tên `ArrowRight` trượt khi hover; hover/focus đậm nền và viền hơn; không animation, không bóng (transition tắt khi `prefers-reduced-motion`).
 - Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
 - `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → avatar + tên + email, link My account / Wishlist / Orders, nút đăng xuất (`logout()`).
 - Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`).
@@ -63,7 +63,7 @@ Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; kh�
 
 ### 4.6 `SiteFooter`
 
-Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, About), Account (My account, Wishlist, Orders), Language (`LanguageSwitcher variant="footer"`). Thanh dưới: `copyright` (năm hiện tại) + link pháp lý. Nhãn link lấy từ `shared.header.nav|account` để khớp header; chuỗi footer ở `shared.footer`.
+Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Account (My account, Wishlist, Orders), Language (`LanguageSwitcher variant="footer"`). Thanh dưới: `copyright` (năm hiện tại) + link pháp lý. Nhãn link lấy từ `shared.header.nav|account` để khớp header; chuỗi footer ở `shared.footer`.
 
 ### 4.7 `CartFAB`
 
