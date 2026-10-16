@@ -1,7 +1,7 @@
 # Auth (đăng nhập, phiên, phân quyền)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
-> **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
+> **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `SignOutButton`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
 
 ## 1. Tóm tắt module
 
@@ -22,6 +22,7 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 | Submodule | Chức năng | File chính |
 |---|---|---|
 | Phiên đăng nhập | `AuthProvider` + `useAuth()`: `user`, `isLoading`, `isAuthenticated`, `login`, `logout`, `refresh` | `src/contexts/auth-context.tsx` |
+| Nút đăng xuất | `SignOutButton` (`variant` `profile` | `drawer`): hỏi xác nhận (`useConfirm`, `danger`) rồi `logout()`, sau đó gọi `onSignedOut`; hủy thì không làm gì. Dùng ở `ProfileHeader` của trang Account và ở burger menu | `_components/SignOutButton.tsx` |
 | Trang đăng nhập | Trang `/login` (Google + checkbox đồng ý điều khoản) | `(auth)/login/LoginContent.tsx`, `_components/GoogleSignInButton.tsx` |
 | Popup đăng nhập | Modal có thể đóng, mở bằng `useLoginPrompt()` hoặc `requireAuth()`; chạy callback sau khi đăng nhập | `_components/LoginPromptModal.tsx`, `src/hooks/use-auth-action.ts` |
 | Chặn trang riêng tư | Modal không thể đóng, hiện trên trang private khi chưa đăng nhập | `_components/UnauthenticatedState.tsx` |
@@ -38,14 +39,16 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 - `GoogleOAuthProvider` được bọc trong `Providers` (`clientId` = `NEXT_PUBLIC_GOOGLE_CLIENT_ID`).
 - `GoogleSignInButton` dùng `useGoogleLogin({ flow: "auth-code" })`. Mã `code` Google trả về được gửi sang BE bằng `login(code)` → `POST /api/auth/google` với body `{ idToken: <code> }` (tên field là `idToken` nhưng giá trị là authorization code; BE tự đổi).
 - Nút Google **bị khóa cho tới khi tick checkbox** đồng ý Điều khoản + Chính sách bảo mật (link mở tab mới `/terms`, `/privacy`). Checkbox không được nhớ: mỗi lần đăng nhập phải tick lại.
-- Thành công: lưu `accessToken` + `refreshToken` vào `localStorage`, `setUser(data.user)`, điều hướng về `/`. Lỗi: hiển thị qua `useErrorMessage()` (fallback `auth.login.google.failed`); đóng popup Google → `auth.login.google.cancelled`.
+- **Nhớ tài khoản gần nhất:** sau khi đăng nhập thành công, `login()` ghi email vào `localStorage` khóa `clothes_shop_last_google_email`; khóa này **không bị xóa khi `logout()`** hay khi phiên hết hạn. `GoogleSignInButton` đọc nó một lần ở lần render đầu (`readLastGoogleEmail()` — thư viện chỉ truyền tùy chọn cho Google lúc tạo client) và truyền làm `hint` (`login_hint`) cho `useGoogleLogin`, nên popup Google chọn sẵn tài khoản đó thay vì hiện danh sách tài khoản. Chưa có lịch sử (hoặc storage bị chặn) thì không có `hint`, Google hiện như mặc định.
+- Thành công: lưu `accessToken` + `refreshToken` vào `localStorage`, `setUser(data.user)`. Điều hướng sau đăng nhập chỉ xảy ra khi `GoogleSignInButton` nhận `redirectAfterLogin` (chỉ trang `/login` truyền): `router.push(readLastPage() ?? "/")`. Popup đăng nhập và modal chặn trang private không truyền, nên người dùng ở nguyên trang đang xem. Lỗi: hiển thị qua `useErrorMessage()` (fallback `auth.login.google.failed`); đóng popup Google → `auth.login.google.cancelled`.
 - Trang `/login` có `robots: noindex`.
 
 ### 4.2 Lưu trữ token & khởi tạo phiên
 
-- Khóa `localStorage`: `clothes_shop_access_token`, `clothes_shop_refresh_token`.
+- Khóa `localStorage`: `clothes_shop_access_token`, `clothes_shop_refresh_token`, `clothes_shop_last_google_email` (chỉ là gợi ý cho popup Google, xem 4.1) và `clothes_shop_last_page`.
+- **Trang cuối cùng:** `LastPageTracker` (render bên trong `AuthProvider`, không ảnh hưởng consumer của `useAuth()`) ghi `pathname + window.location.search` (không có tiền tố ngôn ngữ, lấy từ `usePathname` của `@/src/i18n/navigation`) vào `clothes_shop_last_page` mỗi khi `pathname` đổi; thay đổi chỉ ở query không được ghi lại. `/login` và `/unauthorized` (cùng đường dẫn con) không bao giờ được ghi; `readLastPage()` chỉ trả đường dẫn bắt đầu bằng một dấu `/` (không phải `//`) và không thuộc hai trang đó. Khóa này không bị xóa khi `logout()`, khi phiên hết hạn hay sau khi đăng nhập, nên dù đăng xuất tay (kể cả `handleLogout` của admin → `/login`), hết phiên hay bấm link "Đăng nhập", đăng nhập lại ở `/login` sẽ quay về đúng trang đó. Chưa có trang nào được ghi (hoặc storage bị chặn) thì về `/`.
 - Khi mount, `AuthProvider`: nếu có access token → `GET /api/auth/me` (`data.user`). Thất bại → thử `POST /api/auth/refresh` với refresh token (nhận `accessToken` + `user`). Vẫn thất bại → xóa cả hai token. Trong lúc đó `isLoading = true`.
-- `logout()` chỉ xóa token + `user` phía FE (không gọi BE). Admin layout gọi `logout()` rồi `router.replace("/login")`.
+- `logout()` chỉ xóa token + `user` phía FE (không gọi BE; không xóa email gần nhất). Admin layout gọi `logout()` rồi `router.replace("/login")`.
 - Refresh thất bại giữa phiên (ở `authApi` hoặc `useApiAuth`, kể cả khi không còn refresh token): `expireSession()` xóa token và phát `window` event `auth:session-expired` (`SESSION_EXPIRED_EVENT`); `AuthProvider` lắng nghe và `setUser(null)`, nên UI quay về trạng thái chưa đăng nhập. `apiFetchStandalone` không refresh nên không phát event này.
 - Token do BE cấp có claim `type` (access/refresh). FE gửi access token ở header `Authorization` và chỉ gửi refresh token tới `/api/auth/refresh`; dùng lẫn loại sẽ nhận 401. Token cũ (không có `type`) bị từ chối cả hai loại, nên phiên cũ rơi vào nhánh refresh thất bại → xóa token → chưa đăng nhập.
 - `AuthUser`: `id, email, name, image, provider, providerId, role, status, permissions?: string[], createdAt, updatedAt`.

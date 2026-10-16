@@ -19,6 +19,11 @@
     "orders": "Orders",
     "signIn": "Sign In",
     "signOut": "Sign Out",
+    "signOutConfirm": {
+      "title": "Sign out?",
+      "message": "You will need to sign in again to see your orders and wishlist.",
+      "confirm": "Sign Out"
+    },
     "userMenu": "User menu",
     "userFallback": "User"
   },
@@ -38,8 +43,6 @@
   "drawer": {
     "open": "Open menu",
     "close": "Close menu",
-    "featured": "Featured",
-    "copyright": "© {year} DOOVAN",
-    "tagline": "Crafted with intention"
+    "featured": "Featured"
   }
 }

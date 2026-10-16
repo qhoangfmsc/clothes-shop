@@ -212,11 +212,6 @@ html.custom-cursor-active * {
   color: var(--color-champagne-gold) !important;
 }
 
-/* Social links in drawer footer */
-.drawer-social-link:hover {
-  color: var(--color-champagne-gold) !important;
-}
-
 /* Featured CTA in drawer */
 .drawer-featured-cta:hover {
   opacity: 0.75;
@@ -257,7 +252,6 @@ html.custom-cursor-active * {
   .drawer-category-label,
   .drawer-close-btn,
   .drawer-signin-btn,
-  .drawer-social-link,
   .drawer-featured-cta,
   .mega-menu-item-link,
   .mega-menu-view-all,

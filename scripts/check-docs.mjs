@@ -45,7 +45,7 @@ const MODULES = [
     `${L}(auth)/`, "src/contexts/", "src/lib/auth-api.ts", "src/lib/permissions.ts",
     "src/lib/system-password.ts", "src/lib/system-password-session.ts", "src/lib/admin-events.ts",
     "src/hooks/use-api-auth.ts", "src/hooks/use-auth-action.ts",
-    `${COMP}RoleGuard.tsx`, `${COMP}LoginPromptModal.tsx`, `${COMP}UnauthenticatedState.tsx`,
+    `${COMP}RoleGuard.tsx`, `${COMP}SignOutButton.tsx`, `${COMP}LoginPromptModal.tsx`, `${COMP}UnauthenticatedState.tsx`,
     `${COMP}SystemPasswordPrompt.tsx`, `${COMP}AdminPasswordGate.tsx`,
   ] },
   { doc: "platform/i18n", paths: ["src/i18n/", "src/middleware.ts", "scripts/i18n.mjs"] },

@@ -48,7 +48,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - Mọi `<img>` fade-in 0.4 s (`img-fade-in`); `img[data-admin-img]` và `img[data-cursor-img]` bỏ qua hiệu ứng này.
 - Keyframes: `spin`, `rt-in`/`rt-out` (route transition), `cart-shimmer`, `skeleton-shimmer`, `checkout-shimmer`, `ni-pulse`, `ni-ticker-scroll` (New In).
 - Custom variant `carousel` (điện thoại/thiết bị cảm ứng) cho Tailwind.
-- Class riêng cho drawer menu (`.drawer-*`; `.drawer-nav-featured` là hàng nền vàng nhạt + viền vàng của link "Đặt thiết kế", chỉ đổi nền/viền khi hover, không animation hay bóng), mega menu (`.mega-menu-item-link`), user menu (`.user-avatar-btn`, `.user-menu-item`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
+- Class riêng cho drawer menu (`.drawer-nav-link`, `.drawer-category-link`, `.drawer-close-btn`, `.drawer-signin-btn`, `.drawer-featured-cta`, `.drawer-nav-featured`; drawer không còn style cho chân trang; `.drawer-nav-featured` là hàng nền vàng nhạt + viền vàng của link "Đặt thiết kế", chỉ đổi nền/viền khi hover, không animation hay bóng), mega menu (`.mega-menu-item-link`), user menu (`.user-avatar-btn`, `.user-menu-item`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
 - Khối `prefers-reduced-motion: reduce` tắt chuyển động cho các thành phần trên.
 
 ### 4.4 Responsive (hiện trạng)

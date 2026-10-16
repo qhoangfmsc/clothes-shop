@@ -23,7 +23,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 | Logo | Wordmark SVG `DOOVAN` màu thương hiệu, link về `/` | `Logo.tsx` |
 | Thanh điều hướng | Link Shop/New In/Collections + nút "Đặt thiết kế" (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
 | Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, lịch sử gần đây, điều hướng bằng phím | `SearchBar.tsx`, `useSearchHistory.ts` |
-| Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật, đổi ngôn ngữ, mạng xã hội, link pháp lý | `HamburgerMenu.tsx` |
+| Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật | `HamburgerMenu.tsx` |
 | Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
 | Footer | Thương hiệu + mạng xã hội, Explore, Account, Language, copyright, link pháp lý | `SiteFooter.tsx` |
 | Ngôn ngữ | `LanguageSwitcher` (xem [i18n](./i18n.md)) | `LanguageSwitcher.tsx` |
@@ -53,13 +53,13 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 - Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: **Đặt thiết kế** (đầu danh sách; không có mục Home — logo đã dẫn về trang chủ), Shop (accordion), New In, Collections, Về DOOVAN (`nav.about`, link `/about`), không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành hàng nổi bật nhẹ (class `drawer-nav-featured` trong `globals.css`): nền vàng nhạt (alpha 0,08), viền vàng, icon kéo `Scissors` màu vàng (không vòng tròn), chữ vàng, mũi tên `ArrowRight` trượt khi hover; hover/focus đậm nền và viền hơn; không animation, không bóng (transition tắt khi `prefers-reduced-motion`).
 - Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
-- `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → avatar + tên + email, link My account / Wishlist / Orders, nút đăng xuất (`logout()`).
+- `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → hàng avatar + tên + email là nút thu/mở (`aria-expanded`, mũi tên ▾ xoay 180°) một panel collapse (`#drawer-account-panel`, animation chiều cao) chứa link My account / Wishlist / Orders và nút đăng xuất `SignOutButton variant="drawer"` (hỏi xác nhận bằng `ConfirmDialog` — nằm trên drawer nhờ `z-200` — rồi `logout()` và đóng drawer; hủy thì drawer giữ nguyên; component thuộc [auth](./auth.md)). Mặc định đóng; state nằm trong component nên đóng lại mỗi khi drawer đóng.
 - Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`).
-- Chân drawer: `LanguageSwitcher variant="drawer"`, `SocialIcons` (icon Email + Instagram `instagram.com/doovan.vn` + Facebook `facebook.com/doovan.vn` từ `CONTACT_LINKS` trong `src/lib/socials.tsx`), link pháp lý (`LEGAL_DOCS`).
+- Drawer không có chân trang: sau khu nav/banner là hết; đổi ngôn ngữ, mạng xã hội, link pháp lý và copyright chỉ nằm ở `SiteFooter`.
 
 ### 4.5 `UserMenu`
 
-Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; khách → nút đăng nhập). Hiện **không** được render trong header. File vẫn được dùng vì xuất `UserAvatar` (avatar tròn: ảnh Google hoặc chữ cái đầu) cho burger menu và trang Account.
+Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; khách → nút đăng nhập). Hiện **không** được render trong header. File vẫn được dùng vì xuất `UserAvatar` (avatar tròn: ảnh Google hoặc chữ cái đầu; là `<button>` chỉ khi có `onClick`, còn lại là `<span>` để dùng được bên trong nút/link khác như hàng toggle của burger menu) cho burger menu và trang Account.
 
 ### 4.6 `SiteFooter`
 

@@ -194,7 +194,7 @@ export default function LoginContent() {
             justifyContent: "center",
           }}
         >
-          <GoogleSignInButton />
+          <GoogleSignInButton redirectAfterLogin />
         </motion.div>
 
         {/* Back to home */}

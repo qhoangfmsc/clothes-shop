@@ -19,6 +19,11 @@
     "orders": "Đơn hàng",
     "signIn": "Đăng nhập",
     "signOut": "Đăng xuất",
+    "signOutConfirm": {
+      "title": "Đăng xuất?",
+      "message": "Bạn sẽ cần đăng nhập lại để xem đơn hàng và danh sách yêu thích.",
+      "confirm": "Đăng xuất"
+    },
     "userMenu": "Menu người dùng",
     "userFallback": "Người dùng"
   },
@@ -38,8 +43,6 @@
   "drawer": {
     "open": "Mở menu",
     "close": "Đóng menu",
-    "featured": "Nổi bật",
-    "copyright": "© {year} DOOVAN",
-    "tagline": "Chế tác có chủ đích"
+    "featured": "Nổi bật"
   }
 }

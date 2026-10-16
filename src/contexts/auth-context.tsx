@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { ApiError } from "@/src/lib/api";
 import { SESSION_EXPIRED_EVENT } from "@/src/lib/auth-api";
+import { usePathname } from "@/src/i18n/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -44,6 +45,55 @@ export function useAuth() {
 
 const TOKEN_KEY = "clothes_shop_access_token";
 const REFRESH_KEY = "clothes_shop_refresh_token";
+/** Email of the last Google account that signed in. Survives logout on purpose: it is only a hint for the next Google popup. */
+const LAST_GOOGLE_EMAIL_KEY = "clothes_shop_last_google_email";
+
+/** Last page the user was on (path + query, no locale prefix). Kept across logout / session expiry so signing in again returns there. */
+const LAST_PAGE_KEY = "clothes_shop_last_page";
+/** Pages that are never a return target (they would bounce straight back to sign-in). */
+const NO_RETURN_PATHS = ["/login", "/unauthorized"];
+
+function isReturnPath(path: string): boolean {
+  if (!path.startsWith("/") || path.startsWith("//")) return false;
+  const base = path.split(/[?#]/)[0];
+  return !NO_RETURN_PATHS.some((p) => base === p || base.startsWith(`${p}/`));
+}
+
+/** Where to send the user after signing in on `/login`: the last page they used, or `undefined`. */
+export function readLastPage(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  try {
+    const path = localStorage.getItem(LAST_PAGE_KEY);
+    return path && isReturnPath(path) ? path : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Renders nothing; records the current page on every navigation. Its own re-render never touches `useAuth()` consumers. */
+function LastPageTracker() {
+  const pathname = usePathname();
+  useEffect(() => {
+    const path = `${pathname}${window.location.search}`;
+    if (!isReturnPath(path)) return;
+    try {
+      localStorage.setItem(LAST_PAGE_KEY, path);
+    } catch {
+      /* storage blocked — sign-in falls back to the home page */
+    }
+  }, [pathname]);
+  return null;
+}
+
+/** The last Google account used on this device, or `undefined` (server, no history, storage blocked). */
+export function readLastGoogleEmail(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  try {
+    return localStorage.getItem(LAST_GOOGLE_EMAIL_KEY) || undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -100,6 +150,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await res.json();
     localStorage.setItem(TOKEN_KEY, data.accessToken);
     localStorage.setItem(REFRESH_KEY, data.refreshToken);
+    try {
+      if (data.user?.email) localStorage.setItem(LAST_GOOGLE_EMAIL_KEY, data.user.email);
+    } catch {
+      /* storage blocked — next sign-in just shows the account chooser */
+    }
     setUser(data.user);
   }, []);
 
@@ -158,6 +213,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         refresh,
       }}
     >
+      <LastPageTracker />
       {children}
     </AuthContext.Provider>
   );

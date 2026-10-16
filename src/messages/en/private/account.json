@@ -13,7 +13,8 @@
     "emptyTitle": "Your wishlist is empty",
     "emptyDescription": "Tap the heart icon on any product to save it here",
     "browse": "Browse Shop",
-    "goTo": "Go to Wishlist"
+    "goTo": "Go to Wishlist",
+    "carouselAria": "Recently wishlisted products"
   },
   "orders": {
     "title": "Order History",
@@ -22,7 +23,6 @@
     "emptyDescription": "When you place your first order, it will appear here",
     "startShopping": "Start Shopping",
     "goTo": "Go to Orders",
-    "summary": "{count, plural, one {# item} other {# items}} · {date}"
-  },
-  "signOut": "Sign Out"
+    "itemCount": "{count, plural, one {# item} other {# items}}"
+  }
 }

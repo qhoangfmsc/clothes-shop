@@ -38,18 +38,23 @@ function UserAvatar({
         .toUpperCase()
     : "?";
 
+  /* A <button> only when it does something: the avatar is also shown inside other buttons / links
+     (burger menu toggle) where a nested <button> would be invalid HTML. */
+  const Root = onClick ? "button" : "span";
+  const interactiveProps = onClick
+    ? { onClick, className: `user-avatar-btn ${className ?? ""}`, "aria-label": t("userMenu") }
+    : { className };
+
   return (
-    <button
-      onClick={onClick}
-      className={`user-avatar-btn ${className ?? ""}`}
-      aria-label={t("userMenu")}
+    <Root
+      {...interactiveProps}
       style={{
         width: size,
         height: size,
         borderRadius: "50%",
         border: "1.5px solid var(--border-light)",
         background: "var(--color-champagne-cream)",
-        cursor: "pointer",
+        cursor: onClick ? "pointer" : "default",
         overflow: "hidden",
         display: "flex",
         alignItems: "center",
@@ -89,7 +94,7 @@ function UserAvatar({
           {initials}
         </span>
       )}
-    </button>
+    </Root>
   );
 }
 

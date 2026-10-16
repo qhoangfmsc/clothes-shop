@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useAuth } from "@/src/contexts/auth-context";
+import { readLastGoogleEmail, readLastPage, useAuth } from "@/src/contexts/auth-context";
 import Checkbox from "@/src/app/[locale]/_components/Checkbox";
 
 const CONSENT_LINK_CLASS =
@@ -35,7 +35,13 @@ const GoogleLogo = () => {
   );
 };
 
-export default function GoogleSignInButton() {
+interface GoogleSignInButtonProps {
+  /** Leave the page after signing in: back to the last page used (home when unknown). Only for the `/login` page —
+   *  the popup and the private-page modal sit on the page the user is already on, so they stay put. */
+  redirectAfterLogin?: boolean;
+}
+
+export default function GoogleSignInButton({ redirectAfterLogin = false }: GoogleSignInButtonProps) {
   const t = useTranslations("auth.login.google");
   const toErrorMessage = useErrorMessage();
   const tConsent = useTranslations("auth.login.consent");
@@ -46,6 +52,9 @@ export default function GoogleSignInButton() {
   /* Not remembered: every sign-in starts unticked, so consent is given each time */
   const [accepted, setAccepted] = useState(false);
   const canSignIn = accepted && !isLoading;
+  /* Read once, on the first render: useGoogleLogin hands its options to Google only when the client
+     is created, so a value that arrives later would be ignored. */
+  const [lastEmail] = useState(readLastGoogleEmail);
 
   /**
    * Use authorization_code flow:
@@ -63,7 +72,7 @@ export default function GoogleSignInButton() {
       try {
         // Send the authorization code to BE for exchange
         await login(codeResponse.code);
-        router.push("/");
+        if (redirectAfterLogin) router.push(readLastPage() ?? "/");
       } catch (err) {
         setError(toErrorMessage(err, t("failed")));
       } finally {
@@ -73,6 +82,9 @@ export default function GoogleSignInButton() {
     onError: () => {
       setError(t("cancelled"));
     },
+    /* Returning user: point Google at the account they used last (login_hint) so the popup skips the
+       account chooser and they only confirm. No history → Google's default behaviour. */
+    hint: lastEmail,
   });
 
   return (
