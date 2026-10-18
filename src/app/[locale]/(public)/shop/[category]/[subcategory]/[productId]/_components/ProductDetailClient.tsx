@@ -208,9 +208,9 @@ export default function ProductDetailClient({
   return (
     <>
       {/* ── Main Content: 2-panel layout ── */}
-      <div className="flex flex-col lg:flex-row lg:min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col lg:flex-row">
         {/* LEFT: Image Gallery with Carousel */}
-        <div className="relative flex flex-col gap-3 p-4 sm:p-6 lg:flex-1 lg:max-w-[55%] lg:py-6 lg:pr-4 lg:pl-8 lg:sticky lg:top-20 lg:h-[calc(100vh-80px)]">
+        <div className="relative flex flex-col gap-3 p-4 sm:p-6 lg:flex-1 lg:max-w-[55%] lg:py-6 lg:pr-4 lg:pl-8 lg:sticky lg:top-20 lg:h-162.5">
           {/* Main image — carousel */}
           <Carousel
             fill

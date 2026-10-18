@@ -1,6 +1,6 @@
 # Design system (token, font, style toàn cục)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
 > **Code:** `src/styles/design-system.css` · `src/app/globals.css` · `src/assets/fonts/` · `postcss.config.mjs` · `DESIGN.md` (gốc repo) · `public/`
 > **Quy tắc dùng:** `.agent/rules/design-system.md`, `.agent/skills/03-tailwind-styling.md`
 
@@ -36,6 +36,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Spacing** (lưới 4 px): `--space-1 … --space-20`; **radius** `sm 4, md 8, lg 16, xl 24, pill`.
 - **Motion**: `--ease-default/out-cubic/in-out/luxury`, `--duration-fast 150 / base 300 / slow 600 / slower 1000 / cinematic 1200`.
 - **z-index**: `base 0, panel 10, overlay 12, fixed 20, cursor 50, modal 100, toast 200`.
+- **Khung rộng trang**: `--page-max-w: 1920px` (giá trị max-width duy nhất của site) và `--page-edge: max(0px, calc((100% - var(--page-max-w)) / 2))` — khoảng cách từ mép viewport tới cột nội dung, dùng cho phần tử `fixed` (xem 4.3, 4.4).
 - Breakpoint: mặc định của Tailwind v4 (không ghi đè): `sm 640`, `md 768`, `lg 1024`, `xl 1280`, `2xl 1536` — xem 4.4.
 
 ### 4.2 Font
@@ -45,6 +46,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 ### 4.3 `globals.css`
 
 - Reset: `overflow-x: hidden`, font/ màu/ nền từ token.
+- `body` có `width: 100%; max-width: var(--page-max-w); margin-inline: auto` — toàn bộ nội dung (kể cả khu admin) nằm trong một cột căn giữa tối đa 1920 px; viewport rộng hơn (thu nhỏ trình duyệt, màn 2560+) chỉ thấy nền `--bg-primary` hai bên. Phần tử `position: fixed` không theo `body` nên tự căn bằng `--page-edge`: `SiteHeader` và panel mega menu (`left/right`), `CartFAB` (`right`), sidebar admin (`left`). Lớp phủ toàn màn (backdrop, modal, drawer menu/Quick Add, toast) và các lớp `fixed` của landing page (`landing-page/`) vẫn theo viewport.
 - Mọi `<img>` fade-in 0.4 s (`img-fade-in`); `img[data-admin-img]` và `img[data-cursor-img]` bỏ qua hiệu ứng này.
 - Keyframes: `spin`, `rt-in`/`rt-out` (route transition), `cart-shimmer`, `skeleton-shimmer`, `checkout-shimmer`, `ni-pulse`, `ni-ticker-scroll` (New In).
 - Custom variant `carousel` (điện thoại/thiết bị cảm ứng) cho Tailwind.
@@ -60,7 +62,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Phân loại theo thiết bị** nằm ở quy tắc `.agent/rules/responsive.md` (phone, tablet, iPad ngang, desktop, wide); `ResponsiveBannerImage` chọn ảnh theo `max-width` 639/1023 (mobile/tablet/desktop).
 - **Khu admin**: sidebar cố định 240 px từ `lg`, drawer off-canvas dưới `lg` (xem [admin-shell](../admin/admin-shell.md)); form/modal/bảng dùng chung có kích thước riêng cho cảm ứng qua `pointer-coarse:` (xem [ui-kit](./ui-kit.md)).
 - `html, body` có `overflow-x: hidden` (4.3).
-- `QuickAddDrawer` chừa `env(safe-area-inset-bottom)` ở chân drawer; chưa nơi nào khác dùng `safe-area`. `100vh` còn dùng ở bố cục sticky (vd. gallery trang chi tiết `lg:h-[calc(100vh-80px)]`), chưa dùng `dvh`.
+- `QuickAddDrawer` chừa `env(safe-area-inset-bottom)` ở chân drawer; chưa nơi nào khác dùng `safe-area`. `100vh` còn dùng ở một số bố cục sticky, chưa dùng `dvh`.
 
 ### 4.5 Ghi chú hiện trạng
 

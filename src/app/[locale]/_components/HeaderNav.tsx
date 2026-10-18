@@ -184,8 +184,8 @@ export default function HeaderNav({
             style={{
               position: "fixed",
               top: 0,
-              left: 0,
-              right: 0,
+              left: "var(--page-edge)",
+              right: "var(--page-edge)",
               zIndex: 15,
               background: "rgba(251, 248, 241, 0.95)",
               backdropFilter: "blur(16px)",

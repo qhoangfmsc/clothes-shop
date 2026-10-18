@@ -200,6 +200,12 @@
   --space-16: 64px;
   --space-20: 80px;
 
+  /* Page width cap — the one content max-width of the whole site (body is capped to it).
+     --page-edge is the gap between the viewport edge and the capped column, for fixed bars
+     (percentages resolve against the viewport width of the property that uses it). */
+  --page-max-w: 1920px;
+  --page-edge: max(0px, calc((100% - var(--page-max-w)) / 2));
+
   /* ─────────────────────────────────────────────────────────
      9. BORDER RADIUS
      ───────────────────────────────────────────────────────── */

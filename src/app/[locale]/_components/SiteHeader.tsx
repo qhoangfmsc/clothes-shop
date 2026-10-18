@@ -38,8 +38,8 @@ export default function SiteHeader() {
       style={{
         position: "fixed",
         top: 0,
-        left: 0,
-        right: 0,
+        left: "var(--page-edge)",
+        right: "var(--page-edge)",
         zIndex: 100,
         pointerEvents: "none",
       }}

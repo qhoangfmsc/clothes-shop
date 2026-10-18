@@ -231,7 +231,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
             {/* Sidebar — off-canvas drawer below lg, fixed column from lg; independent scroll */}
             <aside
               id="admin-sidebar"
-              className={`w-[min(280px,85vw)] lg:w-[240px] lg:min-w-[240px] bg-[var(--color-obsidian)] text-[var(--text-on-dark)] flex flex-col p-[var(--space-6)] pb-[max(var(--space-6),env(safe-area-inset-bottom))] gap-[var(--space-8)] fixed top-0 left-0 h-dvh overflow-y-auto z-40 lg:z-20 transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
+              className={`w-[min(280px,85vw)] lg:w-[240px] lg:min-w-[240px] bg-[var(--color-obsidian)] text-[var(--text-on-dark)] flex flex-col p-[var(--space-6)] pb-[max(var(--space-6),env(safe-area-inset-bottom))] gap-[var(--space-8)] fixed top-0 left-(--page-edge) h-dvh overflow-y-auto z-40 lg:z-20 transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
                 menuOpen ? "translate-x-0 visible" : "max-lg:-translate-x-full max-lg:invisible"
               }`}
             >

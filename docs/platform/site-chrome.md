@@ -1,6 +1,6 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
 > **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
@@ -25,7 +25,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 | Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, lịch sử gần đây, điều hướng bằng phím | `SearchBar.tsx`, `useSearchHistory.ts` |
 | Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật | `HamburgerMenu.tsx` |
 | Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
-| Footer | Thương hiệu + mạng xã hội, Explore, Account, Language, copyright, link pháp lý | `SiteFooter.tsx` |
+| Footer | Thương hiệu + mạng xã hội, Explore, Policies (link pháp lý), Language, copyright | `SiteFooter.tsx` |
 | Ngôn ngữ | `LanguageSwitcher` (xem [i18n](./i18n.md)) | `LanguageSwitcher.tsx` |
 | Giỏ nổi | `CartFAB` | `CartFAB.tsx` |
 
@@ -33,7 +33,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.1 `SiteHeader`
 
-`position: fixed`, `z-index 100`, `pointer-events: none` (con tự bật). Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 80 px (<1024) / 90 px (≥1024). Chứa `Logo` và `HeaderNav`.
+`position: fixed`, `z-index 100`, `pointer-events: none` (con tự bật). Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 80 px (<1024) / 90 px (≥1024). Chứa `Logo` và `HeaderNav`. `left`/`right` = `var(--page-edge)` nên header nằm trong cột `--page-max-w` của `body` (xem [design-system](./design-system.md) 4.3); panel mega menu của `HeaderNav` căn cùng cách.
 
 ### 4.2 `HeaderNav`
 
@@ -63,11 +63,11 @@ Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; kh�
 
 ### 4.6 `SiteFooter`
 
-Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Account (My account, Wishlist, Orders), Language (`LanguageSwitcher variant="footer"`). Thanh dưới: `copyright` (năm hiện tại) + link pháp lý. Nhãn link lấy từ `shared.header.nav|account` để khớp header; chuỗi footer ở `shared.footer`.
+Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Policies (tiêu đề `footer.policies.title` = "Chính sách" / "Policies", ba link `LEGAL_DOCS`: Terms, Privacy, Shipping & Returns — nhãn `shared.legal.<key>`), Language (`LanguageSwitcher variant="footer"`). Footer không còn cột tài khoản. Thanh dưới chỉ có `copyright` (năm hiện tại). Nhãn link Explore lấy từ `shared.header.nav` để khớp header; chuỗi footer ở `shared.footer`.
 
 ### 4.7 `CartFAB`
 
-Nút tròn vàng góc dưới phải (`z-20`), chỉ hiện sau khi client mount và khi `totalItems > 0` (`selectTotalItems` của slice cart); badge số lượng, nảy 600 ms mỗi lần số đổi; link `/cart`; `aria-label` `shared.cart.fab.viewBag`. Ẩn khi đường dẫn là `/cart` hoặc bắt đầu bằng `/checkout` (các trang đó có nút thanh toán riêng, nút nổi chỉ che chúng). Mount ở root layout nên có mặt ở mọi trang kể cả `/admin`.
+Nút tròn vàng góc dưới phải của cột nội dung (`z-20`, `right` = `--page-edge` + 1 rem / `sm:` 1.5 rem), chỉ hiện sau khi client mount và khi `totalItems > 0` (`selectTotalItems` của slice cart); badge số lượng, nảy 600 ms mỗi lần số đổi; link `/cart`; `aria-label` `shared.cart.fab.viewBag`. Ẩn khi đường dẫn là `/cart` hoặc bắt đầu bằng `/checkout` (các trang đó có nút thanh toán riêng, nút nổi chỉ che chúng). Mount ở root layout nên có mặt ở mọi trang kể cả `/admin`.
 
 ### 4.8 Nguồn dữ liệu
 

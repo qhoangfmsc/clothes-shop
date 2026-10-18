@@ -24,6 +24,13 @@ body {
   letter-spacing: -0.02em;
 }
 
+/* All page content lives in one centered column: zooming out must not stretch the layout past it. */
+body {
+  width: 100%;
+  max-width: var(--page-max-w);
+  margin-inline: auto;
+}
+
 /* ─── Global Image Fade-In ───
    All images appear with a smooth fade instead of popping in.
    Prevents a jarring "pop-in" effect when navigating to pages with images. */

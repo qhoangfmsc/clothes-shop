@@ -1,6 +1,6 @@
 # Admin shell (layout, sidebar, cổng vào)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-14
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-18
 > **Code:** `src/app/[locale]/(admin)/layout.tsx` · `(admin)/AdminLayoutClient.tsx` · `(admin)/admin/page.tsx` · `src/app/[locale]/_components/PendingCountsProvider.tsx`
 
 ## 1. Tóm tắt module
@@ -22,7 +22,7 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 | `AdminGuard` | Chặn người không có quyền vào admin |
 | Kiểm tra quyền theo route | So khớp `pathname` với mục sidebar → yêu cầu permission tương ứng |
 | `AdminPasswordGate` | Nhập mật khẩu hệ thống, TTL 15 phút |
-| Sidebar | Logo, Dashboard, bốn nhóm điều hướng, thông tin người dùng, đăng xuất; cột cố định từ `lg`, drawer trượt ra dưới `lg` |
+| Sidebar | Logo, Dashboard, bốn nhóm điều hướng, thông tin người dùng, đăng xuất; cột cố định từ `lg` (`left: var(--page-edge)`, bám mép trái cột `body` tối đa `--page-max-w`), drawer trượt ra dưới `lg` |
 | Badge "việc cần xử lý" | `PendingCountsProvider` (trong `AdminPasswordGate`, nên chưa hỏi BE trước khi nhập mật khẩu hệ thống) gọi `GET /api/admin/pending-counts` và chia sẻ số qua `usePendingCounts()`; menu hiện badge ở Orders, Payments, Refunds, Returns, Reviews |
 | Breadcrumb | Dựng từ các segment của URL |
 | Màn từ chối | `AccessDeniedScreen` (thiếu quyền admin hoặc thiếu quyền route) |

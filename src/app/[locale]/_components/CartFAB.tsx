@@ -42,7 +42,7 @@ export default function CartFAB() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           transition={{ duration: 0.4, ease: [...ease] }}
-          className="fixed bottom-60 right-4 z-20 sm:bottom-52 sm:right-6"
+          className="fixed bottom-60 right-[calc(var(--page-edge)+1rem)] z-20 sm:bottom-52 sm:right-[calc(var(--page-edge)+1.5rem)]"
         >
           <Link
             href="/cart"
