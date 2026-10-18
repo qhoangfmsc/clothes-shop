@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
@@ -14,14 +15,15 @@ export default function ProductSummaryCard({ product }: { product: OrderProduct 
   const t = useTranslations("public.contact.product");
   const tBadge = useTranslations("common.productBadge");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   const [activeImage, setActiveImage] = useState(0);
   const showPrice = hasPublicPrice(product.badge);
 
   const image = product.images[activeImage] ?? product.images[0];
+  /* A percentage of the two VND prices, not an amount of money */
   const discount =
-    product.originalPrice && product.originalPrice > product.price
-      ? Math.round((1 - product.price / product.originalPrice) * 100)
+    product.originalPriceVnd && product.originalPriceVnd > product.priceVnd
+      ? Math.round((1 - product.priceVnd / product.originalPriceVnd) * 100)
       : null;
   const eyebrow = [product.categoryTitle, product.subcategoryLabel].filter(Boolean).join(" · ");
 
@@ -84,12 +86,12 @@ export default function ProductSummaryCard({ product }: { product: OrderProduct 
         </h3>
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="font-primary text-lg font-medium tracking-[-0.02em] text-[var(--text-heading)]">
-            {showPrice ? format.number(product.price, "price") : tCommon("priceOnRequest")}
+            {showPrice ? fmt(product, "price") : tCommon("priceOnRequest")}
           </span>
-          {showPrice && discount && product.originalPrice && (
+          {showPrice && discount && product.originalPriceVnd && (
             <>
               <span className="font-primary text-sm text-[var(--text-disabled)] line-through">
-                {format.number(product.originalPrice, "price")}
+                {fmtOrNull(product, "originalPrice")}
               </span>
               <span className="font-primary text-xs font-medium text-[var(--color-deep-rose)]">
                 {t("discount", { percent: discount })}

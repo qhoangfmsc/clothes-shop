@@ -4,7 +4,9 @@ export interface OrderItem {
   productName: string;
   productImage: string;
   quantity: number;
-  price: number;
+  /** Unit price at order time (the BE sends no line total) */
+  priceVnd: number;
+  priceUsd: number;
   size: string;
   color: string;
   createdAt: string;
@@ -13,8 +15,9 @@ export interface OrderItem {
 /** One transfer content (QR payment session) issued for an order, newest first */
 export interface OrderPaymentAttempt {
   transferCode: string;
-  /** VND the code asks for */
-  amount: number;
+  /** What the code asks for: VND is the figure to transfer */
+  amountVnd: number;
+  amountUsd: number;
   /** Real state: a code past its expiry is `EXPIRED` */
   status: "PENDING" | "PAID" | "EXPIRED" | "CANCELLED";
   createdAt: string;
@@ -26,8 +29,8 @@ export interface OrderPaymentAttempt {
 
 /** Money the shop owes back after a paid order was cancelled. No admin note or name is ever sent to the shopper. */
 export interface OrderRefund {
-  /** VND */
-  amount: number;
+  amountVnd: number;
+  amountUsd: number;
   /** `REQUESTED` = recorded, the shop has yet to transfer; `REJECTED` = the shop will not refund */
   status: "REQUESTED" | "COMPLETED" | "REJECTED";
   reason: string;
@@ -50,9 +53,12 @@ export interface Order {
   paymentAttempts?: OrderPaymentAttempt[];
   /** Newest first, `[]` when none */
   refunds?: OrderRefund[];
-  subtotal: number;
-  shippingFee: number;
-  total: number;
+  subtotalVnd: number;
+  subtotalUsd: number;
+  shippingFeeVnd: number;
+  shippingFeeUsd: number;
+  totalVnd: number;
+  totalUsd: number;
   shippingMethod: string;
   shippingAddress: Record<string, string>;
   note: string;

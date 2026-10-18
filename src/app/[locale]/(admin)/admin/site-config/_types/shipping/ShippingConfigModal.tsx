@@ -13,6 +13,7 @@ import {
   FormActions,
   inputClass,
 } from "@/src/app/[locale]/_components/AdminFormKit";
+import VndInput from "@/src/app/[locale]/_components/VndInput";
 import { useRefreshShipping, useShipping } from "@/src/hooks/use-api";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import type { ConfigEditorProps } from "../registry";
@@ -146,11 +147,9 @@ function ShippingConfigFormBody({
 
         <FormSection title={tForm("free.section")}>
           <FormField label={tForm("free.threshold")} info={tForm("free.thresholdInfo")}>
-            <input
-              className={inputClass}
-              inputMode="decimal"
+            <VndInput
               value={form.threshold}
-              onChange={(e) => setThreshold(e.target.value)}
+              onChange={setThreshold}
               placeholder={tForm("free.placeholder")}
               aria-invalid={Boolean(errors.threshold)}
             />
@@ -233,11 +232,9 @@ function ShippingConfigFormBody({
               </FormField>
 
               <FormField label={tForm("fields.price")} required info={tForm("fields.priceInfo")}>
-                <input
-                  className={inputClass}
-                  inputMode="decimal"
+                <VndInput
                   value={m.price}
-                  onChange={(e) => setMethod(i, "price", e.target.value)}
+                  onChange={(value) => setMethod(i, "price", value)}
                   aria-invalid={Boolean(errors[`${m.id}.price`])}
                 />
                 {fieldError(`${m.id}.price`)}

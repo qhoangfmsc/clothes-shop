@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { cartItemKey } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import type { CartItem } from "@/src/app/[locale]/(private)/cart/_common/types";
+import { useMoney } from "@/src/hooks/use-money";
 import type { ShippingMethod } from "@/src/types/shipping";
 import { CARD_CLASS, type OrderQuote } from "../_common/checkout";
 import type { PaymentMethod } from "../_common/payment";
@@ -14,7 +15,6 @@ import type { PaymentMethod } from "../_common/payment";
 interface OrderSummaryProps {
   items: CartItem[];
   totalItems: number;
-  totalPrice: number;
   /** The BE's price for the chosen shipping method; `null` until the first answer */
   quote: OrderQuote | null;
   quoteLoading: boolean;
@@ -33,7 +33,6 @@ const LEGAL_LINK = "underline underline-offset-2 hover:text-[var(--text-primary)
 export default function OrderSummary({
   items,
   totalItems,
-  totalPrice,
   quote,
   quoteLoading,
   quoteFailed,
@@ -43,21 +42,21 @@ export default function OrderSummary({
   onPlaceOrder,
 }: OrderSummaryProps) {
   const t = useTranslations("private.checkout.summary");
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   /* On phones the list starts folded so the form stays first; from lg it is always shown */
   const [showItems, setShowItems] = useState(false);
 
-  const threshold = quote?.freeShippingThreshold ?? null;
+  /* Both halves are `null` together when free shipping is switched off */
+  const threshold = quote?.freeShippingThresholdVnd ?? null;
+  const thresholdText = quote ? fmtOrNull(quote, "freeShippingThreshold") : null;
   const unlocked = quote?.freeShipping ?? false;
   /* Nothing to unlock when the method is free anyway (store pickup) */
-  const showProgress = threshold !== null && method !== undefined && method.price > 0;
+  const showProgress = threshold !== null && thresholdText !== null && method !== undefined && method.priceVnd > 0;
 
   let shippingText: string;
   if (quoteLoading) shippingText = "…";
   else if (!quote || quoteFailed) shippingText = t("shipping.unavailable");
-  else
-    shippingText =
-      quote.shippingFee === 0 ? t("shipping.free") : format.number(quote.shippingFee, "price");
+  else shippingText = quote.shippingFeeVnd === 0 ? t("shipping.free") : fmt(quote, "shippingFee");
 
   return (
     <aside className={`${CARD_CLASS} flex flex-col gap-3.5`}>
@@ -110,14 +109,15 @@ export default function OrderSummary({
               </span>
             </div>
             <span className="font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em] shrink-0">
-              {format.number(item.price * item.quantity, "price")}
+              {/* The BE's line total; empty until it has priced the quantity */}
+              {fmtOrNull(item, "lineTotal") ?? "…"}
             </span>
           </li>
         ))}
       </ul>
 
       {/* Free shipping progress */}
-      {showProgress && threshold !== null && (
+      {showProgress && threshold !== null && thresholdText !== null && quote && (
         <div
           className={`py-3 px-4 rounded-md border transition-colors duration-150 motion-reduce:transition-none ${
             unlocked
@@ -132,16 +132,15 @@ export default function OrderSummary({
           >
             {unlocked
               ? t("shipping.unlocked")
-              : t("shipping.remaining", {
-                  amount: format.number(Math.ceil(threshold - totalPrice), "price"),
-                })}
+              : t("shipping.remaining", { amount: thresholdText })}
           </p>
           <div className="h-1 rounded-sm bg-[var(--border-light)] overflow-hidden">
             <div
               className={`h-full rounded-sm transition-[width] duration-[400ms] motion-reduce:transition-none ${
                 unlocked ? "bg-[var(--accent-sage)]" : "bg-[var(--accent-primary)]"
               }`}
-              style={{ width: `${Math.min((totalPrice / threshold) * 100, 100)}%` }}
+              /* Share of the threshold reached: a ratio of the BE's two VND figures, not an amount */
+              style={{ width: `${Math.min((quote.subtotalVnd / threshold) * 100, 100)}%` }}
             />
           </div>
         </div>
@@ -152,13 +151,13 @@ export default function OrderSummary({
           <dt>
             {t("subtotal")} ({t("items", { count: totalItems })})
           </dt>
-          <dd className="m-0">{format.number(quote?.subtotal ?? totalPrice, "price")}</dd>
+          <dd className="m-0">{quoteLoading || !quote ? "…" : fmt(quote, "subtotal")}</dd>
         </div>
         <div className="flex justify-between gap-3 text-sm text-[var(--text-secondary)]">
           <dt>{method ? `${t("shipping.label")} · ${method.name}` : t("shipping.label")}</dt>
           <dd
             className={`m-0 text-right ${
-              quote && !quoteLoading && quote.shippingFee === 0
+              quote && !quoteLoading && quote.shippingFeeVnd === 0
                 ? "text-[var(--accent-sage)] font-medium"
                 : ""
             } ${!quote || quoteFailed ? "text-xs text-[var(--text-muted)]" : ""}`}
@@ -169,30 +168,12 @@ export default function OrderSummary({
         <div className="flex justify-between items-baseline gap-3 pt-2 border-t border-[var(--border-subtle)] text-[var(--text-heading)] font-medium">
           <dt className="text-sm">{t("total")}</dt>
           <dd className="m-0 text-xl">
-            {quoteLoading ? "…" : format.number(quote?.total ?? totalPrice, "price")}
+            {quoteLoading || !quote ? "…" : fmt(quote, "total")}
           </dd>
         </div>
-        {paymentMethod === "vietqr" && (quoteLoading || (quote?.amountVnd != null && quote.vndPerUnit != null)) && (
-          <div className="flex flex-col gap-0.5 pt-2 border-t border-[var(--border-subtle)]">
-            <div className="flex justify-between items-baseline gap-3 text-sm text-[var(--text-secondary)]">
-              <dt>{t("transfer.label")}</dt>
-              <dd className="m-0 font-medium text-[var(--text-heading)]">
-                {quoteLoading || quote?.amountVnd == null ? "…" : format.number(quote.amountVnd, "vnd")}
-              </dd>
-            </div>
-            {!quoteLoading && quote?.vndPerUnit != null && (
-              <p className="m-0 text-xs text-[var(--text-muted)] leading-[150%]">
-                {t("transfer.rate", {
-                  unit: format.number(1, "price"),
-                  rate: format.number(quote.vndPerUnit, "vnd"),
-                })}
-              </p>
-            )}
-          </div>
-        )}
-        {threshold !== null && (
+        {thresholdText !== null && (
           <p className="m-0 text-xs text-[var(--text-muted)] leading-[150%]">
-            {t("shipping.freeNote", { amount: format.number(threshold, "price") })}
+            {t("shipping.freeNote", { amount: thresholdText })}
           </p>
         )}
       </dl>

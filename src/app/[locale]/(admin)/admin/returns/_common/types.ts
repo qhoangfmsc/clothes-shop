@@ -22,8 +22,9 @@ export interface ReturnItem {
   productImage: string | null;
   size: string | null;
   color: string | null;
-  /** Shop units */
-  price: number | null;
+  /** Unit price at order time; both `null` when the order line no longer exists */
+  priceVnd: number | null;
+  priceUsd: number | null;
   /** What the customer asked to return */
   quantity: number;
   /** What the shop accepted after checking the parcel; `null` before `RECEIVED` */
@@ -33,8 +34,8 @@ export interface ReturnItem {
 export interface ReturnRefund {
   /** Opens the refund in the Refunds screen */
   id: string;
-  /** VND */
-  amount: number;
+  amountVnd: number;
+  amountUsd: number;
   status: RefundStatus;
   bankReference: string | null;
   processedAt: string | null;
@@ -62,8 +63,10 @@ export interface ReturnRequest {
     id: string;
     status: string;
     paymentStatus: OrderPaymentStatus;
-    total: number;
-    shippingFee: number;
+    totalVnd: number;
+    totalUsd: number;
+    shippingFeeVnd: number;
+    shippingFeeUsd: number;
     deliveredAt: string | null;
     userId: string | null;
     /** Each field can be `null` */

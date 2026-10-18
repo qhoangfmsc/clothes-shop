@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
+import { moneyOf } from "@/src/lib/money";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import {
@@ -27,7 +29,7 @@ interface ReceiveReturnModalProps {
  *  The BE prices the refund from this and opens the refund request. */
 export default function ReceiveReturnModal({ request, onClose, onDone }: ReceiveReturnModalProps) {
   const t = useTranslations("admin.returns.receive");
-  const format = useFormatter();
+  const { format: formatMoney } = useMoney();
   const toErrorMessage = useErrorMessage();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
@@ -66,7 +68,7 @@ export default function ReceiveReturnModal({ request, onClose, onDone }: Receive
       ).unwrap();
       toast.success(
         updated.refund
-          ? t("toast.doneWithAmount", { id: request.id, amount: format.number(updated.refund.amount, "vnd") })
+          ? t("toast.doneWithAmount", { id: request.id, amount: formatMoney(moneyOf(updated.refund, "amount")) })
           : t("toast.done", { id: request.id })
       );
       onDone(updated);
@@ -123,7 +125,7 @@ export default function ReceiveReturnModal({ request, onClose, onDone }: Receive
                   {request.order && (
                     <span className="font-normal text-[var(--text-muted)]">
                       {" "}
-                      ({format.number(Number(request.order.shippingFee), "priceFixed")})
+                      ({formatMoney(moneyOf(request.order, "shippingFee"))})
                     </span>
                   )}
                 </span>

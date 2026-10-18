@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
 import { Trash2, ShoppingBag, ArrowLeft, ChevronRight, Minus, Plus, Heart } from "lucide-react";
@@ -16,7 +16,7 @@ import {
   selectSelectedCartItems,
   selectPurchasableCartItems,
   selectTotalItems,
-  selectSelectedTotalPrice,
+  selectCartPendingSync,
   selectSelectedTotalItems,
   updateQuantity,
   removeItem,
@@ -33,6 +33,9 @@ import {
   syncAddToWishlist,
   syncRemoveFromWishlist,
 } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
+import { useOrderQuote } from "@/src/app/[locale]/(private)/checkout/_common/use-order-quote";
+import { useMoney } from "@/src/hooks/use-money";
+import { moneyOf } from "@/src/lib/money";
 import { buildOrderInquiryHref, getPurchaseMode } from "@/src/lib/product-purchase";
 import Checkbox from "@/src/app/[locale]/_components/Checkbox";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
@@ -158,7 +161,7 @@ function CartItemRow({
 }) {
   const t = useTranslations("private.cart.item");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   const tBulk = useTranslations("private.cart.bulk.confirmRemove");
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
@@ -170,7 +173,8 @@ function CartItemRow({
       toggleWishlistItem({
         productId: item.productId,
         name: item.name,
-        price: item.price,
+        priceVnd: item.priceVnd,
+        priceUsd: item.priceUsd,
         image: item.image,
         category: item.category,
         subcategory: item.subcategory,
@@ -242,7 +246,8 @@ function CartItemRow({
             {item.name}
           </Link>
           <span className="shrink-0 font-primary text-sm sm:text-base text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-            {purchaseMode === "customOrder" ? "" : format.number(item.price * item.quantity, "price")}
+            {/* The BE's line total; empty until it has priced the quantity just chosen */}
+            {purchaseMode === "customOrder" ? "" : (fmtOrNull(item, "lineTotal") ?? "…")}
           </span>
         </div>
 
@@ -254,7 +259,7 @@ function CartItemRow({
             <span className="w-2.5 h-2.5 rounded-full border border-[var(--border-light)]" style={{ background: item.colorHex }} />
             {item.color}
           </span>
-          <span>{purchaseMode === "customOrder" ? tCommon("priceOnRequest") : format.number(item.price, "price")}</span>
+          <span>{purchaseMode === "customOrder" ? tCommon("priceOnRequest") : fmt(item, "price")}</span>
         </div>
 
         {/* Sold-out / custom-order lines stay in the bag but cannot be checked out */}
@@ -308,7 +313,7 @@ function CartItemRow({
 /* ── Main Cart Content ── */
 export default function CartContent() {
   const t = useTranslations("private.cart");
-  const format = useFormatter();
+  const { format } = useMoney();
   const { isAuthenticated, isLoading } = useAuth();
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
@@ -319,11 +324,16 @@ export default function CartContent() {
   const purchasableCount = useAppSelector(selectPurchasableCartItems).length;
   const wishlistItems = useAppSelector(selectWishlistItems);
   const totalItems = useAppSelector(selectTotalItems);
-  /* Follows the ticked lines only — they are what checkout will order */
-  const selectedPrice = useAppSelector(selectSelectedTotalPrice);
+  const pendingSync = useAppSelector(selectCartPendingSync);
   const selectedQuantity = useAppSelector(selectSelectedTotalItems);
 
   const selectedCount = selectedItems.length;
+  /* The subtotal of the ticked lines is the BE's (a quote, nothing is created), asked once the cart writes are answered */
+  const { quote: subtotalQuote, isLoading: subtotalLoading } = useOrderQuote(
+    selectedItems,
+    "standard",
+    isAuthenticated && pendingSync === 0
+  );
   /* Only purchasable lines can be ticked, so "all" means all of those */
   const allSelected = purchasableCount > 0 && selectedCount === purchasableCount;
   const someSelected = selectedCount > 0 && !allSelected;
@@ -371,7 +381,8 @@ export default function CartContent() {
         toggleWishlistItem({
           productId: line.productId,
           name: line.name,
-          price: line.price,
+          priceVnd: line.priceVnd,
+          priceUsd: line.priceUsd,
           image: line.image,
           category: line.category,
           subcategory: line.subcategory,
@@ -525,7 +536,9 @@ export default function CartContent() {
                       {t("checkout.subtotal", { count: selectedQuantity })}
                     </span>
                     <span className="font-display text-xl sm:text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
-                      {format.number(selectedPrice, "price")}
+                      {subtotalQuote && !subtotalLoading && pendingSync === 0
+                        ? format(moneyOf(subtotalQuote, "subtotal"))
+                        : "…"}
                     </span>
                   </>
                 ) : (

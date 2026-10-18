@@ -1,6 +1,6 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-14
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
 > **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/list-query.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
@@ -50,9 +50,9 @@ Mọi endpoint danh sách của BE dùng chung:
 
 ### 4.3 Server fetchers (`shop/_lib/server-fetchers.ts`)
 
-Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getNewInProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getShippingInfo()` (cấu hình vận chuyển & đổi trả, `null` khi API lỗi). Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`. `ProductListParams` nhận thêm `minRating` (1–5) và sort `ratingAverage` / `-ratingAverage` / `-ratingCount`; `buildProductQS` gửi `minRating`.
+Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getShippingInfo()` (cấu hình vận chuyển & đổi trả, `null` khi API lỗi). Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`. `ProductListParams` nhận thêm `minRating` (1–5) và sort `ratingAverage` / `-ratingAverage` / `-ratingCount`; `buildProductQS` gửi `minRating`.
 
-`ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt), minPrice, maxPrice, sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
+`ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt; `price` sắp theo VND), minPrice, maxPrice (VND nguyên), sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
 
 ### 4.4 Hook SWR công khai (`src/hooks/use-api.ts`)
 
@@ -61,13 +61,14 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 | Hook | Endpoint |
 |---|---|
 | `useProducts(params)` | `GET /api/products?…` |
+| `fetchProductPage(params)` | Không phải hook: một trang `GET /api/products?…` (qua `mapMediaUrls`) cho lưới tự nối trang như `ShopProductsClient` |
 | `useProduct(id)` | `GET /api/products/:id` (trả `product` + `related`) |
 | `useNewInProducts()` | `GET /api/products?badge=new` |
 | `useCategories()` | `GET /api/categories?sort=priority&limit=200` |
 | `useCategory(slug)` | `GET /api/categories?slug=` |
-| `useCollections()` / `useCollection(slug)` | `GET /api/collections[?slug=]` |
+| `useCollections()` / `useCollection(slug)` | `GET /api/collections?limit=200` / `GET /api/collections?slug=` (danh sách lấy tối đa 200 bộ sưu tập một trang) |
 | `useSizeGuide(category)` | `GET /api/size-guides/:category` |
-| `useShipping()` | `GET /api/shipping` (dedupe 5 phút): `methods[]` + `freeShippingThreshold` (`number \| null`, `null` = không có miễn phí vận chuyển) — cấu hình ở site config `SHIPPING_CONFIG` |
+| `useShipping()` | `GET /api/shipping` (dedupe 5 phút): `methods[]` (mỗi phương thức có `priceVnd`/`priceUsd`) + `freeShippingThresholdVnd`/`freeShippingThresholdUsd` (`number \| null`, cả hai `null` = không có miễn phí vận chuyển) — cấu hình ở site config `SHIPPING_CONFIG` |
 | `useShippingMethodName()` | Trả hàm `(id) => tên phương thức do admin cấu hình` (`undefined` khi chưa tải hoặc id lạ); đơn chỉ lưu id nên mọi màn đặt tên phương thức đều đọc qua đây |
 | `useRefreshShipping()` | Trả hàm làm mới cache của `useShipping` (admin gọi sau khi lưu/xóa `SHIPPING_CONFIG`) |
 | `useBannerConfig(key)` | `GET /api/site-config?key=` — luôn không lỗi: thất bại/rỗng → `banners = []` |

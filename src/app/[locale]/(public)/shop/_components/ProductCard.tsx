@@ -2,7 +2,8 @@
 
 import { useCallback, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
 import { Heart } from "lucide-react";
@@ -34,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const tBadge = useTranslations("common.productBadge");
   const tCommon = useTranslations("common");
   const showPrice = hasPublicPrice(product.badge);
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   const { toast } = useToast();
   const { openQuickAdd } = useQuickAdd();
   const { requireAuth } = useAuthAction();
@@ -59,7 +60,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           toggleWishlistItem({
             productId: product.id,
             name: product.name,
-            price: product.price,
+            priceVnd: product.priceVnd,
+            priceUsd: product.priceUsd,
             image: product.images[0],
             category: product.category?.slug ?? "",
             subcategory: product.subcategory?.slug ?? "",
@@ -178,11 +180,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
           <div className="flex items-baseline gap-2">
             <span className="text-[var(--text-secondary)] font-primary text-xs font-medium tracking-[-0.02em]">
-              {showPrice ? format.number(product.price, "price") : tCommon("priceOnRequest")}
+              {showPrice ? fmt(product, "price") : tCommon("priceOnRequest")}
             </span>
-            {showPrice && product.originalPrice && (
+            {showPrice && product.originalPriceVnd && (
               <span className="text-[var(--text-disabled)] line-through text-[11px]">
-                {format.number(product.originalPrice, "price")}
+                {fmtOrNull(product, "originalPrice")}
               </span>
             )}
           </div>

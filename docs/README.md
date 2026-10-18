@@ -21,6 +21,7 @@ Chỉ ghi những gì **đã có trong code**. Không viết kế hoạch, chu�
 | i18n | `next-intl`, locale, message, metadata, lỗi theo mã | [platform/i18n.md](platform/i18n.md) |
 | Data layer | HTTP client, SWR, Redux, list-query, proxy `/media` | [platform/data-layer.md](platform/data-layer.md) |
 | UI kit | `DataTable`, `AdminFormKit`, toast, confirm, carousel, banner… | [platform/ui-kit.md](platform/ui-kit.md) |
+| Currency | `Money`, `formatMoney`, `useMoney`, `MoneyText`, `VndInput` — VND gốc, USD do BE tính, mỗi màn một tiền tệ | [platform/currency.md](platform/currency.md) |
 | Design system | Token CSS, font, style toàn cục | [platform/design-system.md](platform/design-system.md) |
 | SEO | Metadata, sitemap, robots, JSON-LD | [platform/seo.md](platform/seo.md) |
 | Tooling & deploy | Scripts, kiểm tra conventions/i18n, cron, biến môi trường | [platform/dev-tooling.md](platform/dev-tooling.md) |

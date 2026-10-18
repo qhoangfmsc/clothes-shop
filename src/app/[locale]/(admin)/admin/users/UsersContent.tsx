@@ -3,6 +3,8 @@
 import { useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { Eye, X, Package, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAdminUsers, type AdminUser, type AdminOrder } from "@/src/hooks/use-admin-api";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
@@ -373,9 +375,11 @@ export default function UsersContent() {
                           >
                             {orderStatusLabel(order.status)}
                           </span>
-                          <span className="text-xs font-semibold text-[var(--text-primary)] shrink-0">
-                            {format.number(Number(order.total), "priceFixed")}
-                          </span>
+                          <MoneyText
+                            money={moneyOf(order, "total")}
+                            amountClassName="text-xs font-semibold text-[var(--text-primary)]"
+                            className="shrink-0"
+                          />
                         </div>
                       ))}
                     </div>

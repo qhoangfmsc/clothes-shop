@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Link } from "@/src/i18n/navigation";
 import Image from "next/image";
@@ -25,6 +26,7 @@ export default function WishlistContent() {
   const t = useTranslations("private.wishlist");
   const tCommon = useTranslations("common");
   const format = useFormatter();
+  const { fmt } = useMoney();
   const { isAuthenticated, isLoading } = useAuth();
   const dispatch = useAppDispatch();
   const items = useAppSelector(selectWishlistItems);
@@ -180,7 +182,7 @@ export default function WishlistContent() {
                     {item.name}
                   </Link>
                   <span className="wishlist-card__price">
-                    {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
+                    {hasPublicPrice(item.badge) ? fmt(item, "price") : tCommon("priceOnRequest")}
                   </span>
                   <span className="wishlist-card__date">
                     {t("card.added", { date: format.dateTime(new Date(item.addedAt), "short") })}

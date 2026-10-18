@@ -37,16 +37,18 @@ export interface PaymentOrderSummary {
   id: string;
   status: string;
   paymentStatus: OrderPaymentStatus;
-  total: number;
+  totalVnd: number;
+  totalUsd: number;
   userId: string | null;
 }
 
-/** One QR payment session of an order (amount in VND) */
+/** One QR payment session of an order: `amountVnd` is what the code asks for, `amountUsd` is for reference */
 export interface PaymentAttempt {
   id: string;
   orderId: string;
   transferCode: string;
-  amount: number;
+  amountVnd: number;
+  amountUsd: number;
   bankAccount: string;
   status: PaymentAttemptStatus;
   expiresAt: string;
@@ -57,13 +59,14 @@ export interface PaymentAttempt {
   order?: PaymentOrderSummary;
 }
 
-/** One bank transaction reported by SePay (or entered by an admin); amount in VND */
+/** One bank transaction reported by SePay (or entered by an admin): `amountVnd` is what the bank received */
 export interface PaymentTransaction {
   id: string;
   paymentAttemptId: string | null;
   providerTransactionId: string;
   provider: string;
-  amount: number;
+  amountVnd: number;
+  amountUsd: number;
   transferContent: string;
   verificationStatus: PaymentVerificationStatus;
   receivedAt: string;
@@ -82,9 +85,12 @@ export interface OrderPaymentOverview {
     status: string;
     paymentStatus: OrderPaymentStatus;
     paidAt: string | null;
-    subtotal: number;
-    shippingFee: number;
-    total: number;
+    subtotalVnd: number;
+    subtotalUsd: number;
+    shippingFeeVnd: number;
+    shippingFeeUsd: number;
+    totalVnd: number;
+    totalUsd: number;
     shippingMethod: string;
     /** `null` when the order has no recipient snapshot; its fields can be `null` too (store pickup has no address) */
     customer: { fullName: string | null; phone: string | null } | null;
@@ -98,7 +104,8 @@ export interface OrderPaymentOverview {
 export interface PaymentAttemptRow {
   id: string;
   transferCode: string;
-  amount: number;
+  amountVnd: number;
+  amountUsd: number;
   status: PaymentAttemptStatus;
   createdAt: string;
   expiresAt: string;
@@ -111,7 +118,7 @@ export interface PaymentAttemptRow {
   transactions: Array<
     Pick<
       PaymentTransaction,
-      "id" | "provider" | "providerTransactionId" | "amount" | "verificationStatus" | "transferContent" | "receivedAt"
+      "id" | "provider" | "providerTransactionId" | "amountVnd" | "amountUsd" | "verificationStatus" | "transferContent" | "receivedAt"
     >
   >;
 }
@@ -152,8 +159,8 @@ export type ConfirmPaymentInput = {
   | { transactionId: string }
   | {
       transferCode: string;
-      /** VND actually received */
-      amount: number;
+      /** Whole VND actually received */
+      amountVnd: number;
       /** SePay / bank statement reference, if known (defaults to the transfer code) */
       reference?: string;
       provider?: ManualConfirmProvider;
@@ -167,8 +174,9 @@ export interface AdminQrSession {
   orderId: string;
   paymentId: string;
   qrUrl: string;
-  /** VND */
-  amount: number;
+  /** The QR carries `amountVnd` only; `amountUsd` is for reference */
+  amountVnd: number;
+  amountUsd: number;
   bankName: string;
   accountNumber: string;
   accountName: string;
@@ -183,7 +191,8 @@ export interface AdminQrSession {
 export interface UnpaidOrderOption {
   id: string;
   status: string;
-  total: number;
+  totalVnd: number;
+  totalUsd: number;
   createdAt: string;
   shippingAddress: Record<string, unknown>;
 }

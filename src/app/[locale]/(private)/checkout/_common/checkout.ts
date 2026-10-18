@@ -71,17 +71,18 @@ export const CARD_TITLE_CLASS =
 /** Result of `POST /api/orders/quote`: what the order would cost for the chosen method */
 export interface OrderQuote {
   shippingMethod: ShippingMethodId;
-  subtotal: number;
-  shippingFee: number;
-  total: number;
+  subtotalVnd: number;
+  subtotalUsd: number;
+  shippingFeeVnd: number;
+  shippingFeeUsd: number;
+  /** `totalVnd` is also what the QR asks the customer to transfer */
+  totalVnd: number;
+  totalUsd: number;
   /** The fee is 0 because the subtotal reached the threshold */
   freeShipping: boolean;
-  /** `null` = free shipping is switched off */
-  freeShippingThreshold: number | null;
-  /** Rate of the bank transfer: VND per 1 unit of the shop currency; `null` when payment is not configured */
-  vndPerUnit: number | null;
-  /** `total` in VND, what the QR asks for (rate fixed when the QR is created); `null` like `vndPerUnit` */
-  amountVnd: number | null;
+  /** Both `null` = free shipping is switched off */
+  freeShippingThresholdVnd: number | null;
+  freeShippingThresholdUsd: number | null;
 }
 
 /** Server ids of the reviewed lines in the freshly read server cart; `null` when a line is missing there */

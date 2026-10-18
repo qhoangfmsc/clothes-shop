@@ -2,6 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { useSearchParams } from "next/navigation";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { Plus } from "lucide-react";
@@ -85,7 +87,7 @@ export default function PaymentsContent() {
       {
         key: "amount",
         header: t("table.columns.amount"),
-        render: (tx) => <span className="font-semibold whitespace-nowrap">{format.number(tx.amount, "vnd")}</span>,
+        render: (tx) => <MoneyText money={moneyOf(tx, "amount")} />,
       },
       {
         key: "content",

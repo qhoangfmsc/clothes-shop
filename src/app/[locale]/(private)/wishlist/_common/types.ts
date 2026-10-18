@@ -9,7 +9,8 @@ import type { ProductBadge } from "@/src/types/enums";
 export interface WishlistItem {
   productId: string;
   name: string;
-  price: number;
+  priceVnd: number;
+  priceUsd: number;
   image: string;
   category: string;
   subcategory: string;

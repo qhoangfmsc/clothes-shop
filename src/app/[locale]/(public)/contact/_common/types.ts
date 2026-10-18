@@ -11,8 +11,10 @@ export interface OrderProduct {
   name: string;
   /** Reference code, only put into the message. */
   sku: string;
-  price: number;
-  originalPrice: number | null;
+  priceVnd: number;
+  priceUsd: number;
+  originalPriceVnd: number | null;
+  originalPriceUsd: number | null;
   badge: ProductBadge | null;
   images: string[];
   categoryTitle: string | null;

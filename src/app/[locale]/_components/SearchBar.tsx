@@ -3,7 +3,8 @@
 import { Fragment, useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useRouter } from "@/src/i18n/navigation";
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { History, Search, X } from "lucide-react";
 import { useAutocomplete, getProductUrl, type AutocompleteItem } from "@/src/hooks/use-api";
@@ -306,7 +307,7 @@ function SearchDropdown({
 }) {
   const t = useTranslations("shared.header.search");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt } = useMoney();
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
   const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -483,7 +484,7 @@ function SearchDropdown({
                         letterSpacing: "-0.02em",
                       }}
                     >
-                      {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
+                      {hasPublicPrice(item.badge) ? fmt(item, "price") : tCommon("priceOnRequest")}
                     </span>
                   </div>
                 </button>

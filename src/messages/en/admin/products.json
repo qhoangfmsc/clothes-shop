@@ -43,8 +43,8 @@
     "fields": {
       "name": "Product Name",
       "description": "Description",
-      "price": "Price ($)",
-      "originalPrice": "Original Price ($)",
+      "price": "Price (VND)",
+      "originalPrice": "Original Price (VND)",
       "category": "Category",
       "subcategory": "SubCategory",
       "status": "Status",
@@ -59,7 +59,8 @@
     "info": {
       "originalPrice": "Leave empty if there's no discount.",
       "status": "Disabled products are hidden from the storefront.",
-      "images": "Upload files or paste URLs. The first image is used as the main thumbnail."
+      "images": "Upload files or paste URLs. The first image is used as the main thumbnail.",
+      "price": "Whole dong, from 1 to 1,000,000,000. The USD price is provided by the server."
     },
     "placeholders": {
       "name": "e.g. Classic White T-Shirt",
@@ -68,7 +69,8 @@
       "customSize": "Type custom size and press Enter",
       "material": "e.g. 100% Cotton",
       "care": "e.g. Machine wash cold",
-      "tag": "Type tag and press Enter..."
+      "tag": "Type tag and press Enter...",
+      "price": "e.g. 350000"
     },
     "options": {
       "selectCategory": "— Select a category —",
@@ -90,7 +92,11 @@
     },
     "tagsRemove": "Remove tag {tag}",
     "submitCreate": "Create Product",
-    "submitUpdate": "Update Product"
+    "submitUpdate": "Update Product",
+    "errors": {
+      "price": "Enter a whole VND amount from 1 to 1,000,000,000.",
+      "originalPrice": "Enter a whole VND amount that is not below the price (up to 1,000,000,000), or leave it empty."
+    }
   },
   "toast": {
     "colorExists": "Color name already exists",

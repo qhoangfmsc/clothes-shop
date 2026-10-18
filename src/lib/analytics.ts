@@ -8,20 +8,30 @@
    Rules:
    - Two properties per event at most (the Vercel Pro plan limit).
    - Never send personal data (name, email, phone, address): ids and totals only.
+   - An amount is sent as ONE property named after its currency (`vnd` or `usd`, see `moneyProp`): the UI language
+     picks the currency and the number is the BE's own field, never converted here.
 
    Usage:
-     import { trackEvent } from "@/src/lib/analytics";
-     trackEvent("add_to_cart", { productId: product.id, value: price * quantity });
+     import { moneyProp, trackEvent } from "@/src/lib/analytics";
+     trackEvent("add_to_cart", { productId: product.id, ...moneyProp(moneyOf(product, "price"), locale) });
    ═══════════════════════════════════════════════════════════ */
 
 import { track } from "@vercel/analytics";
+import { currencyForLocale, type Money } from "@/src/lib/money";
+
+/** An amount in the currency of the UI language: `{ vnd }` for Vietnamese, `{ usd }` otherwise */
+export type AnalyticsAmount = { vnd: number; usd?: never } | { usd: number; vnd?: never };
 
 export type AnalyticsEventMap = {
-  view_product: { productId: string; price: number };
-  add_to_cart: { productId: string; value: number };
-  begin_checkout: { items: number; value: number };
-  purchase: { orderId: string; value: number };
+  view_product: { productId: string } & AnalyticsAmount;
+  add_to_cart: { productId: string } & AnalyticsAmount;
+  begin_checkout: { items: number } & AnalyticsAmount;
+  purchase: { orderId: string } & AnalyticsAmount;
 };
+
+export function moneyProp(money: Money, locale: string): AnalyticsAmount {
+  return currencyForLocale(locale) === "VND" ? { vnd: money.vnd } : { usd: money.usd };
+}
 
 export type AnalyticsEventName = keyof AnalyticsEventMap;
 

@@ -15,7 +15,7 @@
     "hintSize": "Chọn kích cỡ",
     "hintColor": "Chọn màu sắc",
     "added": "Đã thêm",
-    "addToBag": "Thêm vào giỏ — {price}",
+    "addToBag": "Thêm vào giỏ",
     "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>"
   },
   "productAction": {

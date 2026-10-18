@@ -1,6 +1,6 @@
 # Orders (quản lý đơn hàng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/orders` (`?orderId=<id>` mở chi tiết) · **Cập nhật:** 2026-10-14
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/orders` (`?orderId=<id>` mở chi tiết) · **Cập nhật:** 2026-10-17
 > **Code:** `(admin)/admin/orders/` — `OrdersContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `page.tsx` · dùng `_components/OrderDetailPanel.tsx`, `_components/OrderPaymentBadge.tsx`, `admin/payments/_components/OrderPaymentTab.tsx`, `admin/refunds/_components/OrderRefundBanner.tsx`
 > **i18n:** `admin.orders`, `admin.components.orderDetailPanel`, `common.orderStatus`, `common.orderPaymentStatus`
 > **Redux slice:** `state.orders`
@@ -27,8 +27,8 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 
 ### 4.1 Bảng
 
-- Cột: **Order ID** (`#id`), **Customer** (`shippingAddress.fullName` hoặc `userId`), **Items** (số món), **Total** (`priceFixed`), **Status**, **Payment** (`OrderPaymentBadge`, ẩn dưới `sm`), **Date** (`short`), **Actions** (nút "View").
-- Lọc `status` (`ORDER_STATUSES`) và `paymentStatus` (`ORDER_PAYMENT_STATUSES`: `unpaid`, `paid`, `refunded`). Sort (`ORDER_SORT_OPTIONS`): `-createdAt` (mặc định), `createdAt`, `-total`, `total`.
+- Cột: **Order ID** (`#id`), **Customer** (`shippingAddress.fullName` hoặc `userId`), **Items** (số món), **Total** (`MoneyText`, theo ngôn ngữ), **Status**, **Payment** (`OrderPaymentBadge`, ẩn dưới `sm`), **Date** (`short`), **Actions** (nút "View").
+- Lọc `status` (`ORDER_STATUSES`) và `paymentStatus` (`ORDER_PAYMENT_STATUSES`: `unpaid`, `paid`, `refunded`). Sort (`ORDER_SORT_OPTIONS`): `-createdAt` (mặc định), `createdAt`, `-total`, `total` (sắp theo VND).
 - Ô tìm kiếm (placeholder: mã đơn, SĐT, tên, nội dung chuyển khoản) cũng khớp nội dung chuyển khoản của mọi phiên thanh toán, kể cả đã hết hạn.
 - `fetchOrderList` → `GET /api/admin/orders?search&status&paymentStatus&sort&page&limit`.
 
@@ -53,14 +53,14 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 - Bấm "View": `router.push("/admin/orders?orderId=<id>", { scroll: false })`, hiện ngay dữ liệu dòng đang có rồi tải bản mới nhất (`GET /api/admin/orders/:id`, giữ dữ liệu cũ nếu lỗi).
 - Mở trang với `?orderId=` sẵn: `useEffect` tự tải chi tiết (một lần, chống chạy lại bằng `hasAutoOpened`); lỗi → panel "không tìm thấy" (`detail.notFoundTitle/notFoundMessage` kèm mã).
 - Đóng: bỏ query khỏi URL. `page.tsx` bọc `OrdersContent` bằng `<Suspense>` vì dùng `useSearchParams`.
-- Nội dung panel (`OrderDetailPanel`): trạng thái, trạng thái thanh toán (`paymentStatus`), ngày giờ (phương thức vận chuyển hiện tên cấu hình qua `useShippingMethodName()`, chưa có thì hiện mã), danh sách món (ảnh, tên, size/màu, số lượng, thành tiền), vận chuyển (phương thức, phí, từng trường địa chỉ với nhãn qua `useAddressFieldLabel`), thanh toán (tạm tính, phí ship, tổng), ghi chú.
+- Nội dung panel (`OrderDetailPanel`): trạng thái, trạng thái thanh toán (`paymentStatus`), ngày giờ (phương thức vận chuyển hiện tên cấu hình qua `useShippingMethodName()`, chưa có thì hiện mã), danh sách món (ảnh, tên, size/màu, số lượng, thành tiền), vận chuyển (phương thức, phí, từng trường địa chỉ với nhãn qua `useAddressFieldLabel`), thanh toán (tạm tính, phí ship, tổng — mỗi số là `MoneyText`, VND ở `vi`, USD ở ngôn ngữ khác, không hiện tỷ giá), ghi chú; mỗi món hiện đơn giá `MoneyText` × số lượng (BE không trả thành tiền dòng của đơn).
 
 - **Banner hoàn tiền**: đơn `cancelled` mà `paymentStatus = paid` (và user có `PAYMENT_ADMIN_VIEW`) hiện `OrderRefundBanner` qua prop `notice` của panel: "Đơn đã hủy nhưng chưa hoàn tiền", link sang [refunds](./refunds.md) và nút "Tạo yêu cầu hoàn" (cần `PAYMENT_ADMIN_REFUND`) khi chưa có khoản `REQUESTED`.
 - Tab **Thanh toán**: chỉ hiện khi user có `PAYMENT_ADMIN_VIEW` (`hasPermission`); nội dung là `OrderPaymentTab` của module payments. Khi admin xác nhận thanh toán trong tab, `refreshAfterPayment` tải lại đơn đang mở (`fetchOrderDetail`) và làm mới bảng.
 
 ### 4.4 Kiểu dữ liệu
 
-`AdminOrder { id, userId, status, paymentStatus (`unpaid` | `paid` | `refunded`), paidAt, subtotal, shippingFee, total, shippingMethod, shippingAddress: Record<string, unknown>, note, items: AdminOrderItem[], createdAt, updatedAt }`, `AdminOrderItem { id, productId | null, productName, productImage, price, quantity, size, color }` (định nghĩa trong `src/hooks/use-admin-api.ts`). Module: `OrderListParams extends ListParams { status? }`, `OrderListResult`. Giá trị tiền do BE trả có thể là chuỗi nên luôn ép `Number(...)` khi hiển thị.
+`AdminOrder { id, userId, status, paymentStatus (`unpaid` | `paid` | `refunded`), paidAt, subtotalVnd/Usd, shippingFeeVnd/Usd, totalVnd/Usd, shippingMethod, shippingAddress: Record<string, unknown>, note, items: AdminOrderItem[], createdAt, updatedAt }`, `AdminOrderItem { id, productId | null, productName, productImage, priceVnd, priceUsd, quantity, size, color }` (định nghĩa trong `src/hooks/use-admin-api.ts`). Module: `OrderListParams extends ListParams { status? }`, `OrderListResult`. Giá trị tiền do BE trả có thể là chuỗi nên luôn ép `Number(...)` khi hiển thị.
 
 ### 4.5 Liên quan
 

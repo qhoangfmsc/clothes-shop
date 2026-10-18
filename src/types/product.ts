@@ -29,8 +29,12 @@ export interface Product {
   slug: string;
   sku: string;
   name: string;
-  price: number;
-  originalPrice: number | null;
+  /** Whole dong; `priceUsd` is the BE's conversion at the current rate */
+  priceVnd: number;
+  priceUsd: number;
+  /** Struck-through price: both `null` when the product has none */
+  originalPriceVnd: number | null;
+  originalPriceUsd: number | null;
   images: string[];
   /** BE returns relation object (joined), NOT a plain string */
   category: ProductCategory | null;

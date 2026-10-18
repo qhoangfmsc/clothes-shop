@@ -92,7 +92,7 @@ export default function ReviewSummaryPanel({ summary, filters, onChange, onOpen 
             aria-controls="review-list"
             className="min-h-11 cursor-pointer self-start rounded-full border border-[var(--accent-primary)] bg-transparent px-6 font-primary text-xs font-medium uppercase tracking-[0.04em] text-[var(--text-accent)] transition-colors hover:bg-[rgba(201,169,110,0.1)] motion-reduce:transition-none"
           >
-            {t("openAll", { count: ratingCount })}
+            {t("openAll")}
           </button>
         )}
       </div>

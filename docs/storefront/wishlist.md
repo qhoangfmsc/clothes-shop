@@ -1,6 +1,6 @@
 # Wishlist (sản phẩm yêu thích)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-17
 > **Code:** `(private)/wishlist/` — `page.tsx`, `layout.tsx`, `WishlistContent.tsx`, `_common/{moduleSlice,types}.ts`
 > **i18n:** `private.wishlist`
 > **Redux slice:** `state.wishlist`
@@ -25,7 +25,7 @@ Cho khách đánh dấu sản phẩm quan tâm từ thẻ sản phẩm, trang ch
 
 ### 4.1 Dữ liệu
 
-`WishlistItem { productId, name, price, image, category, subcategory, addedAt }`. State: `items`, `isSyncing`. Lưu ở `localStorage` khóa `doovan-wishlist` (qua subscriber ở `src/store/index.ts`; nạp lại khi khởi tạo, chấp nhận cả dạng `{state:{items}}` và `{items}`).
+`WishlistItem { productId, name, priceVnd, priceUsd, image, category, subcategory, addedAt }`. State: `items`, `isSyncing`. Lưu ở `localStorage` khóa `doovan-wishlist` (qua subscriber ở `src/store/index.ts`; nạp lại khi khởi tạo, chấp nhận cả dạng `{state:{items}}` và `{items}`).
 
 ### 4.2 Reducer, thunk, selector
 
@@ -47,4 +47,4 @@ Cho khách đánh dấu sản phẩm quan tâm từ thẻ sản phẩm, trang ch
 
 Wishlist **không** được xóa khi đăng xuất (giỏ hàng thì có, qua `CartSync`); bản địa phương chỉ được thay bằng bản BE khi mở trang wishlist lúc đã đăng nhập.
 
-- `WishlistItem.badge` (lấy từ sản phẩm khi thêm, và từ `product.badge` khi `fetchWishlist`) quyết định có hiện giá: `custom_order` hiện `common.priceOnRequest`. Mục lưu trước khi có trường này chưa có `badge` nên vẫn hiện giá đến lần đồng bộ kế tiếp.
+- `WishlistItem.badge` (lấy từ sản phẩm khi thêm, và từ `product.badge` khi `fetchWishlist`) quyết định có hiện giá: `custom_order` hiện `common.priceOnRequest`. Mục lưu trước khi có trường này chưa có `badge` nên vẫn hiện giá đến lần đồng bộ kế tiếp. Giá hiện theo ngôn ngữ (`fmt(item, "price")`); mục lưu trong `localStorage` từ trước khi giá là cặp VND/USD (không có `priceVnd`) bị bỏ khi nạp và được `fetchWishlist` điền lại.

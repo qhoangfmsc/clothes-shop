@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { CheckCircle, Loader2, Maximize2 } from "lucide-react";
 import DetailRow from "@/src/app/[locale]/(private)/checkout/_components/DetailRow";
 import { isSafeQrUrl } from "@/src/app/[locale]/(private)/checkout/_common/payment";
@@ -45,9 +47,7 @@ export default function AdminQrPanel({ qr, paid, expired }: AdminQrPanelProps) {
             className="w-full max-w-[180px] aspect-square rounded-md bg-white p-1.5 border border-[var(--border-subtle)] object-contain"
           />
         )}
-        <span className="text-lg font-semibold font-primary text-[var(--text-heading)]">
-          {format.number(qr.amount, "vnd")}
-        </span>
+        <MoneyText money={moneyOf(qr, "amount")} amountClassName="text-lg font-semibold font-primary text-[var(--text-heading)]" />
         <button
           type="button"
           onClick={() => setPresenting(true)}

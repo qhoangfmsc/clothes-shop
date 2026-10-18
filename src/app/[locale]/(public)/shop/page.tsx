@@ -5,7 +5,8 @@ import ShopHero from "./_components/ShopHero";
 import CategoryGrid from "./_components/CategoryGrid";
 import BreadcrumbNav from "./_components/BreadcrumbNav";
 import ShopProductsClient from "./_components/ShopProductsClient";
-import { getCategories, getAllProducts, getBannerConfig } from "./_lib/server-fetchers";
+import { getCategories, getProductsWithParams, getBannerConfig } from "./_lib/server-fetchers";
+import { SHOP_PAGE_SIZE } from "./_common/constants";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
 import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import JsonLd from "@/src/app/[locale]/_components/JsonLd";
@@ -32,9 +33,9 @@ export default async function ShopPage({ params }: ShopPageProps) {
   const t = await getTranslations("public.shop.pages.index");
   const tNav = await getTranslations("shared.header.nav");
 
-  const [categories, allProducts, heroBanners] = await Promise.all([
+  const [categories, firstPage, heroBanners] = await Promise.all([
     getCategories(),
-    getAllProducts(),
+    getProductsWithParams({ limit: SHOP_PAGE_SIZE }),
     getBannerConfig(SITE_CONFIG_KEYS.SHOP_HERO_BANNERS),
   ]);
 
@@ -78,7 +79,8 @@ export default async function ShopPage({ params }: ShopPageProps) {
         }}
       >
         <ShopProductsClient
-          products={allProducts}
+          initialProducts={firstPage.data}
+          initialTotal={firstPage.total}
           heading={
             <div className="flex flex-col gap-2 px-4 sm:px-6 lg:px-8 pt-4">
               <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium">

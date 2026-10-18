@@ -1,6 +1,6 @@
 # Collections (bộ sưu tập)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/collections` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/collections` · **Cập nhật:** 2026-10-17
 > **Code:** `(admin)/admin/collections/` — `CollectionsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.collections`, `admin.components.crud`
 > **Redux slice:** `state.collections`
@@ -19,7 +19,7 @@ Cho phép admin gom sản phẩm theo chủ đề/chiến dịch (ví dụ "Limi
 |---|---|
 | Danh sách | Search, lọc theo mùa, sort, phân trang 25/trang |
 | Tạo / sửa | Modal 2 tab: Info, Products |
-| Chọn sản phẩm | Ô tìm kiếm cục bộ trên toàn bộ sản phẩm (tối đa 200), danh sách đã chọn có nút bỏ |
+| Chọn sản phẩm | Ô tìm kiếm cục bộ trên toàn bộ sản phẩm (tối đa 200; mỗi dòng hiện danh mục và giá VND `priceVnd`), danh sách đã chọn có nút bỏ |
 | Xóa | Có xác nhận |
 
 ## 4. Chi tiết

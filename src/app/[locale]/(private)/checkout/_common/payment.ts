@@ -9,8 +9,9 @@ export interface PaymentSession {
   orderId: string;
   paymentId: string;
   qrUrl: string;
-  /** Amount to transfer, in VND */
-  amount: number;
+  /** Amount to transfer: `amountVnd` is the figure the QR carries, `amountUsd` only helps customers abroad */
+  amountVnd: number;
+  amountUsd: number;
   bankName: string;
   accountNumber: string;
   accountName: string;
@@ -22,7 +23,12 @@ export interface PaymentSession {
 export interface PaymentStatusResult {
   orderId: string;
   status: PaymentStatus;
+  amountVnd: number;
+  amountUsd: number;
 }
+
+/** What the order costs, as the last answer of the BE says (QR session or status poll): kept on screen in every phase */
+export type PaymentAmount = Pick<PaymentStatusResult, "amountVnd" | "amountUsd">;
 
 /** How often the payment page asks the BE whether the transfer arrived */
 export const PAYMENT_POLL_INTERVAL_MS = 3000;

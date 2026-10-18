@@ -12,30 +12,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
     messages: await loadMessages(locale),
     /* One fixed zone so server and client render the same date text (no hydration mismatch) */
     timeZone: "Asia/Ho_Chi_Minh",
-    /* Named formats: use `format.number(v, "price")` / `format.dateTime(d, "short")` — never toFixed / toLocaleString */
+    /* Named formats: `format.number(v, "decimal1")` / `format.dateTime(d, "short")`. Money never goes through here: use `useMoney()` (src/hooks/use-money.ts) */
     formats: {
       number: {
-        /* Prices are stored in USD; only the notation follows the language */
-        price: {
-          style: "currency",
-          currency: "USD",
-          currencyDisplay: "narrowSymbol",
-          maximumFractionDigits: 2,
-        },
-        priceFixed: {
-          style: "currency",
-          currency: "USD",
-          currencyDisplay: "narrowSymbol",
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        },
-        /* Bank transfers (VietQR) are settled in VND: whole dong, no decimals */
-        vnd: {
-          style: "currency",
-          currency: "VND",
-          currencyDisplay: "narrowSymbol",
-          maximumFractionDigits: 0,
-        },
         decimal1: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
       },
       dateTime: {

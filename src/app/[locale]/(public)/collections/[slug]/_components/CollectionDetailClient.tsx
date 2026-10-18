@@ -10,7 +10,8 @@ import type { Product } from "@/src/types/product";
 import { useQuickAdd } from "@/src/app/[locale]/_components/QuickAddDrawer";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { Heart, ArrowRight, ArrowLeft } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
 import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
@@ -29,7 +30,7 @@ export default function CollectionDetailClient({
   const t = useTranslations("public.collections.detail");
   const tBadge = useTranslations("common.productBadge");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   const heroRef = useRef<HTMLElement>(null);
   const editorialRef = useRef<HTMLDivElement>(null);
   const shopAllRef = useRef<HTMLDivElement>(null);
@@ -325,10 +326,10 @@ export default function CollectionDetailClient({
                     {product.description}
                   </p>
                   <span className="cd-editorial__price [font-family:var(--font-primary)] text-[20px] text-[var(--text-heading)] tracking-[-0.02em] flex items-baseline gap-2">
-                    {hasPublicPrice(product.badge) ? format.number(product.price, "price") : tCommon("priceOnRequest")}
-                    {hasPublicPrice(product.badge) && product.originalPrice && (
+                    {hasPublicPrice(product.badge) ? fmt(product, "price") : tCommon("priceOnRequest")}
+                    {hasPublicPrice(product.badge) && product.originalPriceVnd && (
                       <span className="text-[12px] text-[var(--text-disabled)] line-through">
-                        {format.number(product.originalPrice, "price")}
+                        {fmtOrNull(product, "originalPrice")}
                       </span>
                     )}
                   </span>
@@ -437,7 +438,7 @@ export default function CollectionDetailClient({
                     {product.name}
                   </span>
                   <span className="text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[12px] tracking-[-0.02em]">
-                    {hasPublicPrice(product.badge) ? format.number(product.price, "price") : tCommon("priceOnRequest")}
+                    {hasPublicPrice(product.badge) ? fmt(product, "price") : tCommon("priceOnRequest")}
                   </span>
                 </div>
               </Link>

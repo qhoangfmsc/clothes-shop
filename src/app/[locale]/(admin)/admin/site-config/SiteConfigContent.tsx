@@ -2,16 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useErrorMessage } from "@/src/i18n/use-error-message";
-import { useToast } from "@/src/app/[locale]/_components/Toast";
-import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
 import { FormTabs } from "@/src/app/[locale]/_components/AdminFormKit";
-import { useRefreshShipping } from "@/src/hooks/use-api";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import type { SiteConfigType } from "@/src/types/site-config";
-import { fetchSiteConfigKeys, fetchSiteConfigList, deleteSiteConfig } from "./_common/moduleSlice";
+import { fetchSiteConfigKeys, fetchSiteConfigList } from "./_common/moduleSlice";
 import type { SiteConfigRow } from "./_common/types";
 import { CONFIG_TYPE_ORDER, CONFIG_TYPE_VIEWS } from "./_types/registry";
 
@@ -21,16 +17,12 @@ import { CONFIG_TYPE_ORDER, CONFIG_TYPE_VIEWS } from "./_types/registry";
  *  line in `_types/<type>/`; this page only lists the keys of the chosen type and opens the right editor. */
 export default function SiteConfigContent() {
   const t = useTranslations("admin.siteConfig");
-  const toErrorMessage = useErrorMessage();
   /* Config keys come from the API; an unknown key shows its raw name */
   const keyLabel = (key: string) =>
     t.has(`keys.${key}.label` as never) ? t(`keys.${key}.label` as never) : key;
   const keyDescription = (key: string) =>
     t.has(`keys.${key}.description` as never) ? t(`keys.${key}.description` as never) : "";
-  const { toast } = useToast();
-  const confirm = useConfirm();
   const dispatch = useAppDispatch();
-  const refreshShipping = useRefreshShipping();
   const { keys, items, isListLoading } = useAppSelector((s) => s.siteConfig);
 
   /* Guard against React Strict Mode's dev-only double-invoke of mount effects
@@ -57,26 +49,6 @@ export default function SiteConfigContent() {
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const editingRow = rows.find((r) => r.key === editingKey) ?? null;
   const Editor = editingRow ? CONFIG_TYPE_VIEWS[editingRow.type]?.Editor : undefined;
-
-  const handleReset = async (row: SiteConfigRow) => {
-    const view = CONFIG_TYPE_VIEWS[row.type];
-    if (!view) return;
-    const ok = await confirm({
-      title: t("confirmDelete.title"),
-      message: t(`confirmDelete.${view.deleteMessage}`),
-      confirmLabel: t("card.delete"),
-      danger: true,
-    });
-    if (!ok) return;
-    try {
-      await dispatch(deleteSiteConfig(row.key)).unwrap();
-      /* Customer pages keep the shipping info for 5 min: make them read the defaults again */
-      if (row.type === "SHIPPING") await refreshShipping();
-      toast.success(t("toast.deleted"));
-    } catch (err) {
-      toast.error(toErrorMessage(err, t("toast.deleteFailed")));
-    }
-  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -120,14 +92,16 @@ export default function SiteConfigContent() {
                     <p className="text-xs text-[var(--text-muted)] font-primary mt-1">{keyDescription(row.key)}</p>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs font-primary text-[var(--text-secondary)]">
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        row.config ? "bg-[var(--color-sage)]" : "bg-[var(--text-disabled)]"
-                      }`}
-                    />
-                    {Summary && <Summary config={row.config} />}
-                  </div>
+                  {Summary && (
+                    <div className="flex items-center gap-2 text-xs font-primary text-[var(--text-secondary)]">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          row.config ? "bg-[var(--color-sage)]" : "bg-[var(--text-disabled)]"
+                        }`}
+                      />
+                      <Summary config={row.config} />
+                    </div>
+                  )}
 
                   <div className="flex gap-2 mt-1">
                     <RoleGuard permission={PERMISSIONS.SITE_CONFIG_UPSERT}>
@@ -138,16 +112,6 @@ export default function SiteConfigContent() {
                         {t("card.edit")}
                       </button>
                     </RoleGuard>
-                    {row.config && (
-                      <RoleGuard permission={PERMISSIONS.SITE_CONFIG_DELETE}>
-                        <button
-                          className="py-2 px-3 pointer-coarse:min-h-11 bg-transparent border border-[var(--border-subtle)] text-[var(--accent-rose)] rounded-lg text-xs font-primary cursor-pointer"
-                          onClick={() => handleReset(row)}
-                        >
-                          {t("card.delete")}
-                        </button>
-                      </RoleGuard>
-                    )}
                   </div>
                 </div>
               );

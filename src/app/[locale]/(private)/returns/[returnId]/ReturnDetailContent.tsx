@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { ArrowLeft, MessageSquare, Package, Undo2 } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -34,6 +35,7 @@ export default function ReturnDetailContent() {
   const toErrorMessage = useErrorMessage();
   const confirm = useConfirm();
   const format = useFormatter();
+  const { fmt } = useMoney();
   const params = useParams<{ returnId: string }>();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { apiFetch } = useApiAuth();
@@ -238,9 +240,9 @@ export default function ReturnDetailContent() {
                 }`}
               >
                 {request.refund.status === "COMPLETED"
-                  ? t("refund.COMPLETED", { amount: format.number(request.refund.amount, "vnd") })
+                  ? t("refund.COMPLETED", { amount: fmt(request.refund, "amount") })
                   : request.refund.status === "REQUESTED"
-                    ? t("refund.REQUESTED", { amount: format.number(request.refund.amount, "vnd") })
+                    ? t("refund.REQUESTED", { amount: fmt(request.refund, "amount") })
                     : t("refund.REJECTED")}
               </span>
               {request.refund.status === "COMPLETED" && request.refund.bankReference && (

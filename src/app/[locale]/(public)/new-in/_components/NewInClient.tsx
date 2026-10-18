@@ -8,7 +8,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Product } from "@/src/types/product";
 import { ArrowDown, ArrowRight, Mail } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import ShopProductsClient from "../../shop/_components/ShopProductsClient";
 import BannerFade from "@/src/app/[locale]/_components/BannerFade";
 import { CarouselDots } from "@/src/app/[locale]/_components/CarouselControls";
@@ -38,21 +39,24 @@ function buildSpotlights(
 }
 
 interface NewInClientProps {
+  /** First page of the "new" products */
   products: Product[];
+  /** All "new" products, over every page */
+  total: number;
   /** Hero background banner(s). 1 = static, 2+ = auto-rotating crossfade. */
   heroBanners: BannerItem[];
 }
 
-export default function NewInClient({ products, heroBanners }: NewInClientProps) {
+export default function NewInClient({ products, total, heroBanners }: NewInClientProps) {
   const t = useTranslations("public.newIn");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt } = useMoney();
   const TICKER_ITEMS = [t("ticker.newDrop"), t("ticker.limited"), t("ticker.handcrafted")];
   const SPOTLIGHTS = buildSpotlights(
     products,
     [t("spotlight.editorsPick"), t("spotlight.mostWanted")],
     t("spotlight.featured"),
-    (p) => (hasPublicPrice(p.badge) ? format.number(p.price, "price") : tCommon("priceOnRequest"))
+    (p) => (hasPublicPrice(p.badge) ? fmt(p, "price") : tCommon("priceOnRequest"))
   );
   const spotlightRefs = useRef<(HTMLElement | null)[]>([]);
   /* Auto-rotates the hero background when there is more than one banner */
@@ -357,7 +361,9 @@ export default function NewInClient({ products, heroBanners }: NewInClientProps)
         }}
       >
         <ShopProductsClient
-          products={products}
+          initialProducts={products}
+          initialTotal={total}
+          scope={{ badge: "new" }}
           heading={
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-4 px-4 sm:px-6 lg:px-8">
               <div>

@@ -58,6 +58,15 @@ for (const file of files) {
     }
   }
 
+  /* money-format: amounts are formatted in one place (src/lib/money.ts, via useMoney) */
+  if (isApp || rel.startsWith("src/hooks/") || rel.startsWith("src/lib/")) {
+    if (rel !== "src/lib/money.ts") {
+      for (const m of code.matchAll(/\bIntl\.NumberFormat\b|\.toLocaleString\s*\(|\.toFixed\s*\(|format\.number\([^)]*["'](?:price|priceFixed|vnd)["']/g)) {
+        report("money-format", file, m.index, code, "Format money with useMoney() (@/src/hooks/use-money) or <MoneyText>; src/lib/money.ts is the only place that formats or rounds an amount, and the FE never converts, adds or multiplies money.");
+      }
+    }
+  }
+
   /* native-dialog: themed dialogs only */
   for (const m of code.matchAll(/(window\.)?\b(alert|confirm|prompt)\s*\(/g)) {
     const [, windowPrefix, name] = m;

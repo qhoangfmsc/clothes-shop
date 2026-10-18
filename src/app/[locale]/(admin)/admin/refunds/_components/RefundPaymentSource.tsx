@@ -1,6 +1,8 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
+import { moneyOf } from "@/src/lib/money";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import type { Refund } from "../_common/types";
 
@@ -8,6 +10,7 @@ import type { Refund } from "../_common/types";
 export default function RefundPaymentSource({ payment }: { payment: Refund["payment"] }) {
   const t = useTranslations("admin.refunds.source");
   const format = useFormatter();
+  const { format: formatMoney } = useMoney();
   return (
     <div className="flex flex-col gap-1 text-xs font-primary text-[var(--text-secondary)] min-w-0">
       <span className="inline-flex items-center gap-1 min-w-0">
@@ -26,7 +29,7 @@ export default function RefundPaymentSource({ payment }: { payment: Refund["paym
       <span className="text-[var(--text-muted)]">
         {[
           payment.provider,
-          format.number(payment.paidAmount, "vnd"),
+          formatMoney(moneyOf(payment, "paidAmount")),
           payment.paidAt ? format.dateTime(new Date(payment.paidAt), "dateTime") : null,
         ]
           .filter(Boolean)

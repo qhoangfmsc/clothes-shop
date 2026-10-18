@@ -1,6 +1,6 @@
 # Customer returns (trả hàng của khách)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-14
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-17
 > **Code:** `(private)/returns/` — `layout.tsx`, `page.tsx`, `ReturnsContent.tsx`, `[returnId]/{page.tsx,ReturnDetailContent.tsx}`, `new/{page.tsx,NewReturnContent.tsx}`, `_common/{types,constants,use-return-eligibility}.ts`, `_components/{ReturnStatusBadge,ReturnProgress,OrderReturnCard}.tsx`
 > **i18n:** `private.returns` (`meta`, `status`, `reason`, `ineligible`, `orderCard`, `list`, `detail`, `form`), `shared.errors.byCode` (1801, 1803, 1804)
 
@@ -33,12 +33,12 @@ Cho khách biết đơn nào còn trả được (và đến hạn nào), trả 
 | `GET /api/returns/:returnId` | chi tiết | Lỗi → toast + trạng thái "không tìm thấy" (1801) |
 | `PATCH /api/returns/:returnId/cancel` | chi tiết | Nút chỉ hiện khi `REQUESTED` hoặc `APPROVED` (`CUSTOMER_CANCELLABLE_STATUSES`), qua `useConfirm`; response là yêu cầu đã cập nhật. Lỗi (1804: trạng thái vừa đổi) → toast và tải lại |
 
-`ReturnRequest { id, orderId, status (REQUESTED | APPROVED | RECEIVED | REFUNDED | REJECTED | CANCELLED), reason, note, adminNote, createdAt, approvedAt, receivedAt, items[{ id, orderItemId, productName, productImage, size, color, price, quantity, acceptedQuantity | null }], refund { amount (VND), status, bankReference, processedAt } | null }`. Không có tên hay id của admin.
+`ReturnRequest { id, orderId, status (REQUESTED | APPROVED | RECEIVED | REFUNDED | REJECTED | CANCELLED), reason, note, adminNote, createdAt, approvedAt, receivedAt, items[{ id, orderItemId, productName, productImage, size, color, priceVnd | null, priceUsd | null, quantity, acceptedQuantity | null }], refund { amountVnd, amountUsd, status, bankReference, processedAt } | null }`. Không có tên hay id của admin.
 
 ### 4.2 Hiển thị
 
 - Chính sách đổi trả lấy từ cấu hình (`returnPolicy` của `GET /api/shipping`), không hardcode; khi chưa tải được thì chỉ hiện số ngày `returnWindowDays` của eligibility.
-- Khoản hoàn ở chi tiết: `REQUESTED` "Cửa hàng sẽ chuyển khoản lại {số tiền}", `COMPLETED` "Đã hoàn {số tiền}" kèm `bankReference` (có `CopyButton`), `REJECTED` "Cửa hàng không hoàn tiền, vui lòng liên hệ cửa hàng".
+- Số tiền hoàn hiện theo ngôn ngữ (`fmt(refund, "amount")`: VND ở `vi`, USD ở ngôn ngữ khác, nửa cặp do BE trả). Khoản hoàn ở chi tiết: `REQUESTED` "Cửa hàng sẽ chuyển khoản lại {số tiền}", `COMPLETED` "Đã hoàn {số tiền}" kèm `bankReference` (có `CopyButton`), `REJECTED` "Cửa hàng không hoàn tiền, vui lòng liên hệ cửa hàng".
 - Lỗi: 1801, 1803, 1804 có bản dịch; 1802 (đơn không trả được) và 1805 hiện message của BE (`useErrorMessage`).
 - `/returns` nằm trong `PRIVATE_PATHS` của `robots.ts`; liên kết "Yêu cầu trả hàng" ở đầu trang [customer-orders](./customer-orders.md).
 

@@ -2,6 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { Link } from "@/src/i18n/navigation";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
@@ -69,7 +71,7 @@ export default function AttemptsTable() {
       {
         key: "amount",
         header: t("columns.amount"),
-        render: (a) => <span className="font-semibold whitespace-nowrap">{format.number(a.amount, "vnd")}</span>,
+        render: (a) => <MoneyText money={moneyOf(a, "amount")} />,
       },
       {
         key: "createdBy",
@@ -124,7 +126,7 @@ export default function AttemptsTable() {
               {a.transactions.map((tx) => (
                 <div key={tx.id} className="flex flex-col gap-0.5 items-start">
                   <span className="inline-flex items-center gap-2">
-                    <span className="text-xs font-semibold whitespace-nowrap">{format.number(tx.amount, "vnd")}</span>
+                    <MoneyText money={moneyOf(tx, "amount")} amountClassName="text-xs font-semibold" />
                     <VerificationBadge status={tx.verificationStatus} />
                   </span>
                   <span className="text-[11px] text-[var(--text-muted)] break-all">
@@ -181,7 +183,7 @@ export default function AttemptsTable() {
         <ConfirmPaymentModal
           fixedOrderId={confirming.order.id}
           lockedTransferCode={confirming.transferCode}
-          defaultAmount={confirming.amount}
+          defaultAmountVnd={confirming.amountVnd}
           onClose={() => setConfirming(null)}
           onConfirmed={() => {
             setConfirming(null);

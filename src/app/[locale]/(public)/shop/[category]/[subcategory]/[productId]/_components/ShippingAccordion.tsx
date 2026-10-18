@@ -2,8 +2,9 @@
 
 import { useState, useCallback, type ReactElement } from "react";
 import { Truck, Zap, Home, ChevronDown, Check } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useShipping } from "@/src/hooks/use-api";
+import { useMoney } from "@/src/hooks/use-money";
 
 const ICON_MAP: Record<string, () => ReactElement> = {
   truck: () => <Truck size={18} />,
@@ -13,7 +14,7 @@ const ICON_MAP: Record<string, () => ReactElement> = {
 
 export default function ShippingAccordion() {
   const t = useTranslations("public.product.shipping");
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   const { shipping, isLoading } = useShipping();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,6 +23,9 @@ export default function ShippingAccordion() {
   }, []);
 
   if (isLoading || !shipping) return null;
+
+  /* Both halves are `null` together when free shipping is switched off */
+  const freeOver = fmtOrNull(shipping, "freeShippingThreshold");
 
   return (
     <div className="flex flex-col">
@@ -44,10 +48,10 @@ export default function ShippingAccordion() {
       {isOpen && (
         <div className="flex flex-col gap-4 pb-5">
           {/* Free shipping note */}
-          {shipping.freeShippingThreshold !== null && (
+          {freeOver !== null && (
             <div className="flex items-center gap-2 font-primary text-xs font-medium text-[var(--color-deep-gold)] tracking-[-0.02em] bg-[rgba(201,169,110,0.08)] rounded-md px-3 py-2.5">
               <Check size={14} />
-              {t("freeOver", { amount: format.number(shipping.freeShippingThreshold, "price") })}
+              {t("freeOver", { amount: freeOver })}
             </div>
           )}
 
@@ -76,7 +80,7 @@ export default function ShippingAccordion() {
                       {method.estimatedDays}
                     </span>
                     <span className="font-primary text-xs font-medium text-[var(--text-primary)] tracking-[-0.02em]">
-                      {method.price === 0 ? t("free") : format.number(method.price, "price")}
+                      {method.priceVnd === 0 ? t("free") : fmt(method, "price")}
                     </span>
                   </div>
                 </div>

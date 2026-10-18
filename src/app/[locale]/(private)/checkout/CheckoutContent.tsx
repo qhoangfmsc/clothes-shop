@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeft, ChevronRight, CreditCard, Package } from "lucide-react";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -11,7 +11,6 @@ import {
   cartItemKey,
   fetchCart,
   selectSelectedCartItems,
-  selectSelectedTotalPrice,
   selectSelectedTotalItems,
   removeItems,
 } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
@@ -19,7 +18,8 @@ import { useApiAuth } from "@/src/hooks/use-api-auth";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
-import { trackEvent } from "@/src/lib/analytics";
+import { moneyProp, trackEvent } from "@/src/lib/analytics";
+import { moneyOf } from "@/src/lib/money";
 import {
   INITIAL_ADDRESS,
   PICKUP_FIELDS,
@@ -50,11 +50,11 @@ export default function CheckoutContent() {
   const dispatch = useAppDispatch();
   /* Only the items ticked in the bag are ordered; the rest stay in the bag */
   const items = useAppSelector(selectSelectedCartItems);
-  const totalPrice = useAppSelector(selectSelectedTotalPrice);
   const totalItems = useAppSelector(selectSelectedTotalItems);
   const { apiFetch } = useApiAuth();
   const { toast } = useToast();
   const router = useRouter();
+  const locale = useLocale();
 
   const [address, setAddress] = useState<AddressForm>({
     ...INITIAL_ADDRESS,
@@ -86,11 +86,12 @@ export default function CheckoutContent() {
     setAddress((prev) => (prev.fullName ? prev : { ...prev, fullName: name }));
   }, [user?.name]);
 
+  /* The funnel value is the BE's subtotal of the first quote, in the currency of the UI language */
   useEffect(() => {
-    if (beginTrackedRef.current || !isAuthenticated || items.length === 0) return;
+    if (beginTrackedRef.current || !isAuthenticated || items.length === 0 || !quote) return;
     beginTrackedRef.current = true;
-    trackEvent("begin_checkout", { items: totalItems, value: totalPrice });
-  }, [isAuthenticated, items.length, totalItems, totalPrice]);
+    trackEvent("begin_checkout", { items: totalItems, ...moneyProp(moneyOf(quote, "subtotal"), locale) });
+  }, [isAuthenticated, items.length, totalItems, quote, locale]);
 
   const updateField = useCallback((field: keyof AddressForm, value: string) => {
     setAddress((prev) => ({ ...prev, [field]: value }));
@@ -143,7 +144,7 @@ export default function CheckoutContent() {
         recipient = { addressId };
       }
 
-      const orderRes = await apiFetch<{ data: { id: string } }>("/api/orders", {
+      const orderRes = await apiFetch<{ data: { id: string; totalVnd: number; totalUsd: number } }>("/api/orders", {
         method: "POST",
         body: {
           ...recipient,
@@ -154,7 +155,9 @@ export default function CheckoutContent() {
       });
 
       const orderId = orderRes.data?.id ?? null;
-      if (orderId) trackEvent("purchase", { orderId, value: totalPrice });
+      if (orderId && orderRes.data) {
+        trackEvent("purchase", { orderId, ...moneyProp(moneyOf(orderRes.data, "total"), locale) });
+      }
       setIsRedirecting(true);
       dispatch(removeItems(items.map(cartItemKey)));
       toast.success(t("toast.placed"));
@@ -169,7 +172,7 @@ export default function CheckoutContent() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [isSubmitting, address, items, totalPrice, pickup, shippingMethod, paymentMethod, apiFetch, dispatch, router, toast, t, toErrorMessage]);
+  }, [isSubmitting, address, items, locale, pickup, shippingMethod, paymentMethod, apiFetch, dispatch, router, toast, t, toErrorMessage]);
 
   if (isLoading || isRedirecting) {
     return (
@@ -250,7 +253,6 @@ export default function CheckoutContent() {
             <OrderSummary
               items={items}
               totalItems={totalItems}
-              totalPrice={totalPrice}
               quote={currentQuote}
               quoteLoading={quoteLoading || (!currentQuote && !quoteError)}
               quoteFailed={Boolean(quoteError) && !quoteLoading}

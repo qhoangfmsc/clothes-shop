@@ -1,6 +1,6 @@
 # Tooling, cấu hình & triển khai
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
 > **Code:** `package.json` · `scripts/i18n.mjs` · `scripts/check-conventions.mjs` · `scripts/check-docs.mjs` · `next.config.ts` · `vercel.json` · `src/app/api/cron/ping/route.ts` · `.env.local` (không commit) · `.agent/` · `.claude/` · `CLAUDE.md`
 
 ## 1. Tóm tắt module
@@ -48,6 +48,7 @@ Quét `src/**/*.ts(x)` (bỏ `messages`), bỏ qua comment. Luật:
 | `error-message` | Import `errorMessage` trần trong `src/app` (phải dùng `useErrorMessage`) |
 | `native-dialog` | `alert/confirm/prompt` (cho phép `confirm` của `useConfirm`) |
 | `old-sort-syntax` | `price_asc`, `name_desc`, `"sorts"`… |
+| `money-format` | `Intl.NumberFormat`, `.toLocaleString(`, `.toFixed(` và `format.number(…, "price" \| "priceFixed" \| "vnd")` ngoài `src/lib/money.ts` (tiền đi qua `useMoney()` / `MoneyText`, xem [currency](./currency.md)) |
 | `list-query` | `.set("limit"/"page"/"sort"/"search")` ngoài `list-query.ts` |
 | `max-limit` | `limit`/`pageSize` ≥ 3 chữ số vượt 200 |
 | `carousel` | `snap-x`, `scroll-snap-type` ngoài `Carousel.tsx` |

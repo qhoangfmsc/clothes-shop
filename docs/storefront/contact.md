@@ -1,6 +1,6 @@
 # Contact / Custom order (liên hệ đặt may)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-14
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-17
 > **Code:** `(public)/contact/` — `page.tsx`, `_common/{types,constants,build-order-request}.ts`, `_components/{OrderRequestForm,ProductSummaryCard}.tsx` · `src/lib/product-purchase.ts` (`CONTACT_PATH`, `buildOrderInquiryHref`) · `src/lib/contact.ts` (`CONTACT_EMAIL`, `buildMailto`) · `src/lib/socials.tsx`
 > **i18n:** `public.contact`
 
@@ -25,7 +25,7 @@ Sản phẩm gắn badge `custom_order` không vào giỏ được; nút "Đặt
 
 ## 4. Chi tiết
 
-- `searchParams.product` là id sản phẩm. `loadOrderProduct` gọi `getProductById` (`shop/_lib/server-fetchers.ts`) và rút gọn thành `OrderProduct` (`id, name, sku, price, originalPrice, badge, images, categoryTitle, subcategoryLabel, description, material, url`; giá được ép `Number(...)` vì API trả chuỗi thập phân; `url` = `pageUrl(locale, /shop/<category>/<subcategory>/<id>)`, `sku` chỉ đi vào nội dung tin nhắn). Chữ của thẻ nằm ở `public.contact.product.*`. Không có id hoặc id không tồn tại → `product = null`: form vẫn dùng được, không có thẻ sản phẩm và message bỏ khối `PRODUCT`.
+- `searchParams.product` là id sản phẩm. `loadOrderProduct` gọi `getProductById` (`shop/_lib/server-fetchers.ts`) và rút gọn thành `OrderProduct` (`id, name, sku, priceVnd, priceUsd, originalPriceVnd, originalPriceUsd, badge, images, categoryTitle, subcategoryLabel, description, material, url`; giá lấy nguyên cặp VND/USD của API; phần trăm giảm của thẻ tính từ hai giá VND, không phải số tiền; `url` = `pageUrl(locale, /shop/<category>/<subcategory>/<id>)`, `sku` chỉ đi vào nội dung tin nhắn). Chữ của thẻ nằm ở `public.contact.product.*`. Không có id hoặc id không tồn tại → `product = null`: form vẫn dùng được, không có thẻ sản phẩm và message bỏ khối `PRODUCT`.
 - Điểm vào: `ProductBagButton` (thẻ sản phẩm), nút mua ở trang chi tiết sản phẩm và dòng sản phẩm trong giỏ hàng (khi sản phẩm có badge `custom_order`) → `buildOrderInquiryHref(productId)` = `/contact?product=<encodeURIComponent(id)>`.
 - `buildOrderRequest(t, { product, values, formatDate })` (`_common/build-order-request.ts`) dựng `{ subject, body }` dạng văn bản thuần (`mailto:` không mang được HTML): lời chào, câu mở đầu, các khối `PRODUCT` / `PERSONALISED DESIGN REQUEST` / `ORDER DETAILS` (số đo, cân nặng, số lượng, ngày cần) / `CONTACT` (tiêu đề in hoa, dòng `  nhãn: giá trị`), lời kết kèm tên. Khối hoặc dòng không có dữ liệu bị bỏ. Chuỗi nằm ở `public.contact.message.*`; ngày hiển thị bằng `format.dateTime(…, "long")`.
 - Cân nặng (`values.weight`, chuỗi chỉ gồm số/`.`/`,`, tối đa 5 ký tự) tách khỏi `Measurements` vì đơn vị là kg, không phải cm; vào message thành dòng riêng `message.labels.weight` ("Cân nặng (kg)"), bỏ khi để trống. Chuỗi form: `form.measurements.weight|weightUnit`.

@@ -3,7 +3,7 @@
 import { useCallback, type ReactNode } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
   AlertCircle,
   CheckCircle,
@@ -21,6 +21,7 @@ import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { isSafeQrUrl } from "../../_common/payment";
 import { usePaymentSession } from "../../_common/use-payment-session";
 import DetailRow from "../../_components/DetailRow";
+import PaymentAmountBlock from "../../_components/PaymentAmountBlock";
 import PaymentCountdown from "../../_components/PaymentCountdown";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -97,12 +98,11 @@ function CodeCard({ code, label }: { code: string; label: string }) {
 
 export default function PaymentContent() {
   const t = useTranslations("private.checkout.payment");
-  const format = useFormatter();
   const toErrorMessage = useErrorMessage();
   const { toast } = useToast();
   const { orderId } = useParams<{ orderId: string }>();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { phase, session, error, connectionLost, isCreating, previousCodes, retry, recreate } = usePaymentSession(
+  const { phase, session, amount, error, connectionLost, isCreating, previousCodes, retry, recreate } = usePaymentSession(
     orderId,
     isAuthenticated
   );
@@ -153,7 +153,12 @@ export default function PaymentContent() {
           title={t("paid.title")}
           description={t("paid.description")}
           orderLabel={orderLabel}
-          extra={session && <CodeCard code={session.transferContent} label={t("transferContent")} />}
+          extra={
+            <div className="flex flex-col items-center gap-3 w-full">
+              {amount && <PaymentAmountBlock amount={amount} label={t("paid.amount")} />}
+              {session && <CodeCard code={session.transferContent} label={t("transferContent")} />}
+            </div>
+          }
         >
           <Link href={`/orders/${orderId}`} className={PRIMARY_BUTTON}>
             {t("paid.viewOrder")} <ChevronRight size={14} />
@@ -175,14 +180,17 @@ export default function PaymentContent() {
           description={t("expired.description")}
           orderLabel={orderLabel}
           extra={
-            session && (
-              <div className="flex flex-col items-center gap-2 w-full max-w-[380px]">
-                <CodeCard code={session.transferContent} label={t("transferContent")} />
-                <p className="m-0 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
-                  {t("expired.oldCodeHint")}
-                </p>
-              </div>
-            )
+            <div className="flex flex-col items-center gap-3 w-full">
+              {amount && <PaymentAmountBlock amount={amount} label={t("amount")} />}
+              {session && (
+                <div className="flex flex-col items-center gap-2 w-full max-w-[380px]">
+                  <CodeCard code={session.transferContent} label={t("transferContent")} />
+                  <p className="m-0 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
+                    {t("expired.oldCodeHint")}
+                  </p>
+                </div>
+              )}
+            </div>
           }
         >
           <button
@@ -207,6 +215,7 @@ export default function PaymentContent() {
           title={t("cancelled.title")}
           description={t("cancelled.description")}
           orderLabel={orderLabel}
+          extra={amount && <PaymentAmountBlock amount={amount} label={t("amount")} />}
         >
           {orderLink}
           <Link href="/shop" className={SECONDARY_LINK}>
@@ -254,14 +263,7 @@ export default function PaymentContent() {
               className="w-full max-w-[200px] md:max-w-[260px] aspect-square rounded-md bg-white p-2 border border-[var(--border-subtle)] object-contain"
             />
           )}
-          <div className="flex flex-col items-center gap-1">
-            <span className="font-primary text-xs text-[var(--text-muted)] tracking-[0.08em] uppercase font-medium">
-              {t("amount")}
-            </span>
-            <span className="font-display text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
-              {format.number(session.amount, "vnd")}
-            </span>
-          </div>
+          <PaymentAmountBlock amount={amount ?? session} label={t("amount")} />
           {session.expiresAt && <PaymentCountdown expiresAt={session.expiresAt} />}
         </div>
 

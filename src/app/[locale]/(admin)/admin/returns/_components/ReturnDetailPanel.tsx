@@ -2,6 +2,9 @@
 
 import { useState, type ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { Link } from "@/src/i18n/navigation";
 import { ModalShell, ModalBody, FormSection } from "@/src/app/[locale]/_components/AdminFormKit";
 import { RoleGuard } from "@/src/app/[locale]/_components/RoleGuard";
@@ -39,6 +42,7 @@ export default function ReturnDetailPanel({ request, onClose, onChanged }: Retur
   const t = useTranslations("admin.returns.detail");
   const tReason = useTranslations("admin.returns.reason");
   const format = useFormatter();
+  const { format: formatMoney } = useMoney();
   const [action, setAction] = useState<"approve" | "reject" | "receive" | null>(null);
 
   const { order, refund } = request;
@@ -62,9 +66,11 @@ export default function ReturnDetailPanel({ request, onClose, onChanged }: Retur
                 <span className="text-xs font-medium text-[var(--text-muted)]">{t("refund.expected")}</span>
                 <RefundBadge status={refund.status} />
               </div>
-              <span className="text-xl font-semibold text-[var(--text-primary)]">
-                {format.number(refund.amount, "vnd")}
-              </span>
+              <MoneyText
+                money={moneyOf(refund, "amount")}
+                className="text-[var(--text-primary)]"
+                amountClassName="text-xl font-semibold"
+              />
               {refund.bankReference && (
                 <span className="inline-flex items-center gap-1 text-xs text-[var(--text-secondary)]">
                   {t("refund.reference", { ref: refund.bankReference })}
@@ -110,8 +116,12 @@ export default function ReturnDetailPanel({ request, onClose, onChanged }: Retur
               <Row label={t("order.customer")}>
                 {[order.customer.fullName, order.customer.phone].filter(Boolean).join(" · ") || "—"}
               </Row>
-              <Row label={t("order.total")}>{format.number(Number(order.total), "priceFixed")}</Row>
-              <Row label={t("order.shippingFee")}>{format.number(Number(order.shippingFee), "priceFixed")}</Row>
+              <Row label={t("order.total")}>
+                <MoneyText money={moneyOf(order, "total")} />
+              </Row>
+              <Row label={t("order.shippingFee")}>
+                <MoneyText money={moneyOf(order, "shippingFee")} amountClassName="font-normal" />
+              </Row>
               <Row label={t("order.deliveredAt")}>{order.deliveredAt ? date(order.deliveredAt) : "—"}</Row>
               <Row label={t("order.payment")}>
                 <OrderPaymentBadge status={order.paymentStatus} />
@@ -129,7 +139,7 @@ export default function ReturnDetailPanel({ request, onClose, onChanged }: Retur
                     </span>
                     <span className="text-xs font-primary text-[var(--text-muted)]">
                       {[item.size, item.color].filter(Boolean).join(" · ")}
-                      {item.price !== null && ` · ${format.number(item.price, "priceFixed")}`}
+                      {item.priceVnd !== null && item.priceUsd !== null && ` · ${formatMoney({ vnd: item.priceVnd, usd: item.priceUsd })}`}
                     </span>
                   </div>
                   <span className="shrink-0 text-right text-xs font-primary text-[var(--text-secondary)]">

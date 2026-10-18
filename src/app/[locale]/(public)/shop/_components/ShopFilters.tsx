@@ -1,11 +1,10 @@
 "use client";
 
-import { hasPublicPrice } from "@/src/lib/product-purchase";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ChevronDown, X, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFormatter, useTranslations } from "next-intl";
-import type { Product } from "@/src/types/product";
+import { useTranslations } from "next-intl";
+import { formatVnd } from "@/src/lib/money";
 
 /* ── Types ── */
 
@@ -30,7 +29,9 @@ export interface ActiveFilters {
 }
 
 interface ShopFiltersProps {
-  products: Product[];
+  /** Size and color choices (gathered from the products fetched so far) */
+  sizes: string[];
+  colors: [name: string, hex: string][];
   activeFilters: ActiveFilters;
   onFiltersChange: (filters: ActiveFilters) => void;
   totalFiltered: number;
@@ -54,45 +55,29 @@ const SORT_OPTIONS: {
   { value: "-ratingCount", key: "reviewsDesc" },
 ];
 
+/** Price bands of the filter in whole dong, the unit the BE filters and sorts by. `null` = open end. They are fixed
+ *  (not typed in) so the shop never converts a USD figure back to VND. */
+const PRICE_BANDS: readonly { min: number | null; max: number | null }[] = [
+  { min: null, max: 500_000 },
+  { min: 500_000, max: 1_000_000 },
+  { min: 1_000_000, max: 2_000_000 },
+  { min: 2_000_000, max: null },
+];
+
 /** "N stars & up" choices of the rating filter */
 const MIN_RATING_OPTIONS = [4, 3, 2, 1] as const;
 
 /* ═══════════════════════════════ ShopFilters ═══════════════════════════════ */
 
 export default function ShopFilters({
-  products,
+  sizes: availableSizes,
+  colors: availableColors,
   activeFilters,
   onFiltersChange,
   totalFiltered,
 }: ShopFiltersProps) {
   const t = useTranslations("public.shop.components.filters");
-  const format = useFormatter();
   const [open, setOpen] = useState(false);
-
-  /* Collect available sizes from products */
-  const availableSizes = useMemo(() => {
-    const set = new Set<string>();
-    products.forEach((p) => p.sizes?.forEach((s) => set.add(s)));
-    return Array.from(set).sort();
-  }, [products]);
-
-  /* Collect available colors from products */
-  const availableColors = useMemo(() => {
-    const map = new Map<string, string>(); // name → hex
-    products.forEach((p) =>
-      p.colors?.forEach(({ name, hex }) => {
-        if (!map.has(name)) map.set(name, hex);
-      })
-    );
-    return Array.from(map.entries()); // [name, hex][]
-  }, [products]);
-
-  /* Price range from products */
-  const priceRange = useMemo(() => {
-    /* Custom-order products show no price, so they do not stretch the range */
-    const prices = products.filter((p) => hasPublicPrice(p.badge)).map((p) => p.price);
-    return { min: Math.floor(Math.min(...prices, 0)), max: Math.ceil(Math.max(...prices, 200)) };
-  }, [products]);
 
   const setSort = useCallback(
     (sort: SortValue) => onFiltersChange({ ...activeFilters, sort }),
@@ -217,32 +202,34 @@ export default function ShopFilters({
                 <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
                   {t("priceRange")}
                 </span>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    placeholder={format.number(priceRange.min, "price")}
-                    value={activeFilters.minPrice ?? ""}
-                    onChange={(e) =>
-                      onFiltersChange({
-                        ...activeFilters,
-                        minPrice: e.target.value ? Number(e.target.value) : null,
-                      })
-                    }
-                    className="w-20 py-1.5 px-2.5 border border-[var(--border-subtle)] rounded-md text-xs font-primary bg-[var(--bg-primary)] text-[var(--text-primary)] outline-none"
-                  />
-                  <span className="text-xs text-[var(--text-muted)]">{t("to")}</span>
-                  <input
-                    type="number"
-                    placeholder={format.number(priceRange.max, "price")}
-                    value={activeFilters.maxPrice ?? ""}
-                    onChange={(e) =>
-                      onFiltersChange({
-                        ...activeFilters,
-                        maxPrice: e.target.value ? Number(e.target.value) : null,
-                      })
-                    }
-                    className="w-20 py-1.5 px-2.5 border border-[var(--border-subtle)] rounded-md text-xs font-primary bg-[var(--bg-primary)] text-[var(--text-primary)] outline-none"
-                  />
+                <div className="flex flex-wrap gap-1.5">
+                  {PRICE_BANDS.map((band) => {
+                    const active = activeFilters.minPrice === band.min && activeFilters.maxPrice === band.max;
+                    return (
+                      <button
+                        key={`${band.min}-${band.max}`}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() =>
+                          onFiltersChange({
+                            ...activeFilters,
+                            minPrice: active ? null : band.min,
+                            maxPrice: active ? null : band.max,
+                          })
+                        }
+                        className={`inline-flex items-center justify-center min-h-8 pointer-coarse:min-h-11 px-3 rounded-full text-xs font-medium font-primary border transition-colors ${
+                          active
+                            ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-[var(--accent-primary)]"
+                            : "bg-[var(--bg-primary)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-light)]"
+                        }`}
+                      >
+                        {band.min === null && band.max !== null && t("priceBand.under", { max: formatVnd(band.max) })}
+                        {band.min !== null && band.max !== null &&
+                          t("priceBand.between", { min: formatVnd(band.min), max: formatVnd(band.max) })}
+                        {band.min !== null && band.max === null && t("priceBand.over", { min: formatVnd(band.min) })}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

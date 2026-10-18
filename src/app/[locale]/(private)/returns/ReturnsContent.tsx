@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { ArrowLeft, ChevronRight, PackageX } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -31,6 +32,7 @@ export default function ReturnsContent() {
   const { toast } = useToast();
   const toErrorMessage = useErrorMessage();
   const format = useFormatter();
+  const { fmt } = useMoney();
   const searchParams = useSearchParams();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { apiFetch } = useApiAuth();
@@ -178,7 +180,7 @@ export default function ReturnsContent() {
                         {t("card.orderNumber", { id: request.orderId })} · {tReason(request.reason)}
                       </span>
                       <span className="flex items-center gap-1 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-                        {request.refund ? format.number(request.refund.amount, "vnd") : null}
+                        {request.refund ? fmt(request.refund, "amount") : null}
                         <ChevronRight size={16} className="text-[var(--text-muted)]" />
                       </span>
                     </div>

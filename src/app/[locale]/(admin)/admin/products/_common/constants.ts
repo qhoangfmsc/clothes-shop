@@ -45,13 +45,18 @@ export const TAG_SUGGESTIONS = [
   "streetwear",
 ] as const;
 
+/* ── Price limits (whole VND, enforced by the BE with a 400) ── */
+
+export const MIN_PRICE_VND = 1;
+export const MAX_PRICE_VND = 1_000_000_000;
+
 /* ── Empty Form State ── */
 
 export const EMPTY_FORM = {
   name: "",
   slug: "",
-  price: 0,
-  originalPrice: null as number | null,
+  priceVnd: "",
+  originalPriceVnd: "",
   images: [] as string[],
   categoryId: "",
   subcategoryId: "",

@@ -1,6 +1,6 @@
 # Account (tài khoản)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-15
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-17
 > **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserMenu.tsx`
 > **i18n:** `private.account`
 
@@ -17,8 +17,8 @@ Là điểm vào của khu "của tôi": từ đây khách nhảy sang Wishlist 
 | Khối | Chức năng |
 |---|---|
 | `ProfileHeader` | Avatar (`UserAvatar` 64 px), tên (hoặc lời chào mặc định), email, "Thành viên từ <ngày dạng long>" và nút Đăng xuất (`logout()`): dưới `lg` là một hàng gọn với nút icon tròn 44 px bên phải, từ `lg` là thẻ ở cột phải (căn giữa, nút chữ đầy chiều ngang) |
-| `WishlistSection` | 4 sản phẩm yêu thích mới nhất (`items.slice(-4).reverse()`) trong `Carousel` dùng chung (2,5 thẻ/khung dưới 640 px để thẻ kế lộ ra và vuốt ngang; 4 thẻ từ `sm`, nên không cuộn); thẻ gồm ảnh 3:4, tên, giá; không mũi tên, chấm, tự chạy hay lặp vòng; link "Xem tất cả" → `/wishlist`; trống → gợi ý duyệt shop |
-| `OrdersSection` | 3 đơn đầu của `GET /api/orders` (card tóm tắt, link `/orders/<id>`: ngày đặt (`short`) + số món (`itemCount`), nhãn trạng thái và tổng — không hiện mã đơn, mã chỉ nằm trong link; mỗi thẻ có một ảnh vuông 48 px của sản phẩm đầu có ảnh (không có ảnh → icon gói hàng); nhãn thanh toán nếu có `paymentStatus` chỉ hiện từ `sm` (≥ 640 px)); link "Xem tất cả" → `/orders`; trống → gợi ý mua sắm |
+| `WishlistSection` | 4 sản phẩm yêu thích mới nhất (`items.slice(-4).reverse()`) trong `Carousel` dùng chung (2,5 thẻ/khung dưới 640 px để thẻ kế lộ ra và vuốt ngang; 4 thẻ từ `sm`, nên không cuộn); thẻ gồm ảnh 3:4, tên, giá theo ngôn ngữ (`useMoney`); không mũi tên, chấm, tự chạy hay lặp vòng; link "Xem tất cả" → `/wishlist`; trống → gợi ý duyệt shop |
+| `OrdersSection` | 3 đơn đầu của `GET /api/orders` (card tóm tắt, link `/orders/<id>`: ngày đặt (`short`) + số món (`itemCount`), nhãn trạng thái và tổng (`fmt(order, "total")`, theo ngôn ngữ) — không hiện mã đơn, mã chỉ nằm trong link; mỗi thẻ có một ảnh vuông 48 px của sản phẩm đầu có ảnh (không có ảnh → icon gói hàng); nhãn thanh toán nếu có `paymentStatus` chỉ hiện từ `sm` (≥ 640 px)); link "Xem tất cả" → `/orders`; trống → gợi ý mua sắm |
 | Trạng thái | `AccountSkeleton` khi tải phiên; chưa đăng nhập → `UnauthenticatedState` |
 
 ## 4. Chi tiết

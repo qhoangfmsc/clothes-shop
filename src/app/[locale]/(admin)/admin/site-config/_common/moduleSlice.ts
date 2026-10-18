@@ -40,11 +40,6 @@ export const upsertSiteConfig = createAsyncThunk(
   }
 );
 
-export const deleteSiteConfig = createAsyncThunk("siteConfig/delete", async (key: string) => {
-  await authApi.delete(`/api/admin/site-config/${key}`);
-  return key;
-});
-
 /* ── Slice ── */
 
 export const siteConfigSlice = createSlice({
@@ -93,20 +88,6 @@ export const siteConfigSlice = createSlice({
         state.error = action.error.message ?? "Failed to save";
       });
 
-    /* ── Delete ── */
-    builder
-      .addCase(deleteSiteConfig.pending, (state) => {
-        state.isDeleting = true;
-        state.error = null;
-      })
-      .addCase(deleteSiteConfig.fulfilled, (state, action) => {
-        state.isDeleting = false;
-        state.items = state.items.filter((c) => c.key !== action.payload);
-      })
-      .addCase(deleteSiteConfig.rejected, (state, action) => {
-        state.isDeleting = false;
-        state.error = action.error.message ?? "Failed to delete";
-      });
   },
 });
 

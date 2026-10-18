@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { CheckCircle, X } from "lucide-react";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import { isSafeQrUrl } from "@/src/app/[locale]/(private)/checkout/_common/payment";
@@ -40,6 +41,7 @@ function Line({ label, value, copyable = false }: { label: string; value: string
 export default function QrPresentation({ qr, paid, onClose }: QrPresentationProps) {
   const t = useTranslations("admin.payments.orderTab.qr.present");
   const format = useFormatter();
+  const { format: formatMoney } = useMoney();
   const layerRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -114,7 +116,7 @@ export default function QrPresentation({ qr, paid, onClose }: QrPresentationProp
                 {t("amount")}
               </span>
               <span className="font-display text-4xl sm:text-6xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
-                {format.number(qr.amount, "vnd")}
+                {formatMoney({ vnd: qr.amountVnd, usd: qr.amountUsd })}
               </span>
             </div>
             <div className="flex flex-col gap-4 pt-5 border-t border-[var(--border-subtle)]">

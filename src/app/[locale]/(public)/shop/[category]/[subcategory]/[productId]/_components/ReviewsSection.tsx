@@ -196,7 +196,7 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
                       ? t("list.loadingMore")
                       : list.status === "error"
                         ? t("list.retry")
-                        : t("list.loadMore", { count: Math.min(REVIEW_PAGE_SIZE, list.total - list.items.length) })}
+                        : t("list.loadMore")}
                   </button>
                 )}
               </div>

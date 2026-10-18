@@ -25,7 +25,11 @@
       "filter": "Filter",
       "clearAll": "Clear all",
       "priceRange": "Price Range",
-      "to": "to",
+      "priceBand": {
+        "under": "Under {max}",
+        "between": "{min} – {max}",
+        "over": "Over {min}"
+      },
       "size": "Size",
       "color": "Color",
       "sort": {
@@ -41,7 +45,9 @@
       "minRating": "{stars} stars & up"
     },
     "productsClient": {
-      "loadMore": "Load More ({remaining} remaining)"
+      "loadMore": "Load more",
+      "loadingMore": "Loading…",
+      "loadFailed": "Couldn't load the products. Please try again."
     }
   },
   "pages": {

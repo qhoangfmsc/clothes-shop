@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useLocale, useFormatter, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { useRouter } from "@/src/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { X, AlertTriangle } from "lucide-react";
@@ -191,7 +193,7 @@ export default function OrdersContent() {
         key: "total",
         header: t("table.columns.total"),
         render: (o) => (
-          <span className="font-semibold">{format.number(Number(o.total), "priceFixed")}</span>
+          <MoneyText money={moneyOf(o, "total")} />
         ),
       },
       {

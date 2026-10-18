@@ -20,8 +20,9 @@ export interface Refund {
   reason: RefundReason;
   /** The return request this refund came from (`reason = RETURN`) */
   returnRequestId: string | null;
-  /** VND to transfer back */
-  amount: number;
+  /** Whole VND to transfer back; `amountUsd` is for reference */
+  amountVnd: number;
+  amountUsd: number;
   createdAt: string;
   processedAt: string | null;
   /** Bank reference of the transfer the admin made (set when `COMPLETED`) */
@@ -32,7 +33,8 @@ export interface Refund {
     id: string;
     status: string;
     paymentStatus: OrderPaymentStatus;
-    total: number;
+    totalVnd: number;
+    totalUsd: number;
     userId: string | null;
     /** Each field can be `null` (no recipient snapshot) */
     customer: { fullName: string | null; phone: string | null } | null;
@@ -40,8 +42,9 @@ export interface Refund {
   /** The money that was received: tells the admin where to send it back */
   payment: {
     transferCode: string;
-    /** VND the customer paid */
-    paidAmount: number;
+    /** What the customer paid */
+    paidAmountVnd: number;
+    paidAmountUsd: number;
     paidAt: string | null;
     provider: string | null;
     transactionRef: string | null;

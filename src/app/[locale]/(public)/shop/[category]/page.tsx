@@ -7,7 +7,8 @@ import BreadcrumbNav from "../_components/BreadcrumbNav";
 import SubcategoryChips from "../_components/SubcategoryChips";
 import ShopProductsClient from "../_components/ShopProductsClient";
 
-import { getCategoryBySlug, getProducts, getCategories } from "../_lib/server-fetchers";
+import { getCategoryBySlug, getProducts, getProductsWithParams, getCategories } from "../_lib/server-fetchers";
+import { SHOP_PAGE_SIZE } from "../_common/constants";
 import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import JsonLd from "@/src/app/[locale]/_components/JsonLd";
 import { breadcrumbJsonLd } from "@/src/lib/structured-data";
@@ -62,7 +63,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const products = await getProducts(slug);
+  const firstPage = await getProductsWithParams({ category: slug, limit: SHOP_PAGE_SIZE });
+  const products = firstPage.data;
 
   /* Hero image comes from this category's first product — no placeholder
      banner. An empty category (no products yet) just shows a plain hero. */
@@ -103,7 +105,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         }}
       >
         <ShopProductsClient
-          products={products}
+          initialProducts={products}
+          initialTotal={firstPage.total}
+          scope={{ category: slug }}
           heading={
             <div className="flex flex-col gap-2 px-4 sm:px-6 lg:px-8 pt-4">
               <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium">

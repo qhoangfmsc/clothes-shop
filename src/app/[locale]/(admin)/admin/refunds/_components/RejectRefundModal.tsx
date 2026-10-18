@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
+import { moneyOf } from "@/src/lib/money";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import {
@@ -26,7 +28,7 @@ interface RejectRefundModalProps {
 /** "The shop will not refund this": the reason is required and kept for later checks (the customer does not see it) */
 export default function RejectRefundModal({ refund, onClose, onDone }: RejectRefundModalProps) {
   const t = useTranslations("admin.refunds.reject");
-  const format = useFormatter();
+  const { format: formatMoney } = useMoney();
   const toErrorMessage = useErrorMessage();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
@@ -56,7 +58,7 @@ export default function RejectRefundModal({ refund, onClose, onDone }: RejectRef
       <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col">
         <ModalBody>
           <p className="m-0 text-sm font-primary text-[var(--text-secondary)] rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-3">
-            {t("warning", { id: refund.orderId, amount: format.number(refund.amount, "vnd") })}
+            {t("warning", { id: refund.orderId, amount: formatMoney(moneyOf(refund, "amount")) })}
           </p>
           <FormSection>
             <FormField label={t("note.label")} required info={t("note.info")}>

@@ -14,13 +14,15 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { X, Check, ShoppingBag } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useSizeGuide } from "@/src/hooks/use-api";
 import { useAppDispatch } from "@/src/store/hooks";
-import { trackEvent } from "@/src/lib/analytics";
+import { moneyProp, trackEvent } from "@/src/lib/analytics";
+import { moneyOf } from "@/src/lib/money";
 import { isPurchasable } from "@/src/lib/product-purchase";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 
@@ -52,7 +54,7 @@ export function useQuickAdd(): QuickAddContextValue {
 /* ── Drawer Content ── */
 function QuickAddContent({ product, onClose }: { product: Product; onClose: () => void }) {
   const t = useTranslations("shared.cart.quickAdd");
-  const format = useFormatter();
+  const { fmt, fmtOrNull, locale } = useMoney();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -113,7 +115,8 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
         {
           productId: product.id,
           name: product.name,
-          price: product.price,
+          priceVnd: product.priceVnd,
+          priceUsd: product.priceUsd,
           image: product.images[0],
           size: selectedSize!,
           color: colorName,
@@ -129,7 +132,8 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
     dispatch(
       syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity })
     );
-    trackEvent("add_to_cart", { productId: product.id, value: product.price * quantity });
+    /* Unit price: the BE prices the line only once the add is answered */
+    trackEvent("add_to_cart", { productId: product.id, ...moneyProp(moneyOf(product, "price"), locale) });
     setAddedToCart(true);
     toast.success(
       t.rich("toastAdded", {
@@ -151,6 +155,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
     quantity,
     toast,
     onClose,
+    locale,
     t,
   ]);
 
@@ -224,10 +229,10 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
               {product.name}
             </Link>
             <div className="flex items-center gap-2 font-primary text-sm font-medium text-[var(--text-primary)]">
-              <span>{format.number(product.price, "price")}</span>
-              {product.originalPrice && (
+              <span>{fmt(product, "price")}</span>
+              {product.originalPriceVnd && (
                 <span className="text-[var(--text-muted)] line-through text-xs">
-                  {format.number(product.originalPrice, "price")}
+                  {fmtOrNull(product, "originalPrice")}
                 </span>
               )}
             </div>
@@ -421,7 +426,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
             ) : (
               <>
                 <ShoppingBag size={16} />
-                {t("addToBag", { price: format.number(product.price * quantity, "price") })}
+                {t("addToBag")}
               </>
             )}
           </button>

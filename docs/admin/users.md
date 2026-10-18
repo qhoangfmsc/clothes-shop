@@ -1,6 +1,6 @@
 # Users (quản lý người dùng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/users` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/users` · **Cập nhật:** 2026-10-17
 > **Code:** `(admin)/admin/users/` — `UsersContent.tsx`, `_common/{moduleSlice,types,constants}.ts` · dùng `_components/OrderDetailPanel.tsx`, `SystemPasswordPrompt.tsx`
 > **i18n:** `admin.users`, `common.role`, `common.status`
 > **Redux slice:** `state.users`
@@ -38,7 +38,7 @@ Cho admin tra cứu khách hàng, xem lịch sử mua và cấp/thu hồi quyề
 ### 4.3 Tab Orders
 
 - Tải `GET /api/admin/orders?userId=<id>&page&limit=5` (dựng bằng `buildListQuery({ page, limit: 5 }, { userId })`), phân trang trước/sau, hiển thị "trang x/y" khi > 5 đơn.
-- Mỗi đơn: mã, số món, ngày (ẩn trên màn nhỏ), badge trạng thái (`useOrderStatusLabel`), tổng tiền. Bấm → `GET /api/admin/orders/:id?userId=<id>` (giữ dữ liệu cũ nếu lỗi) → `OrderDetailPanel` chồng lên.
+- Mỗi đơn: mã, số món, ngày (ẩn trên màn nhỏ), badge trạng thái (`useOrderStatusLabel`), tổng tiền (`MoneyText`, theo ngôn ngữ). Bấm → `GET /api/admin/orders/:id?userId=<id>` (giữ dữ liệu cũ nếu lỗi) → `OrderDetailPanel` chồng lên.
 - Lỗi tải danh sách đơn bị nuốt thành danh sách rỗng (hiện trạng thái "không có đơn").
 
 ### 4.4 Tab Role

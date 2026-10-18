@@ -43,8 +43,8 @@
     "fields": {
       "name": "Tên sản phẩm",
       "description": "Mô tả",
-      "price": "Giá ($)",
-      "originalPrice": "Giá gốc ($)",
+      "price": "Giá (VND)",
+      "originalPrice": "Giá gốc (VND)",
       "category": "Danh mục",
       "subcategory": "Danh mục con",
       "status": "Trạng thái",
@@ -59,7 +59,8 @@
     "info": {
       "originalPrice": "Để trống nếu không giảm giá.",
       "status": "Sản phẩm bị vô hiệu hóa sẽ bị ẩn khỏi cửa hàng.",
-      "images": "Tải tệp lên hoặc dán URL. Ảnh đầu tiên được dùng làm ảnh đại diện chính."
+      "images": "Tải tệp lên hoặc dán URL. Ảnh đầu tiên được dùng làm ảnh đại diện chính.",
+      "price": "Số nguyên VND, từ 1 đến 1.000.000.000. Giá USD do máy chủ cung cấp."
     },
     "placeholders": {
       "name": "VD: Áo thun trắng cổ điển",
@@ -68,7 +69,8 @@
       "customSize": "Nhập kích cỡ tùy chỉnh rồi nhấn Enter",
       "material": "VD: 100% Cotton",
       "care": "VD: Giặt máy nước lạnh",
-      "tag": "Nhập thẻ rồi nhấn Enter..."
+      "tag": "Nhập thẻ rồi nhấn Enter...",
+      "price": "vd: 350000"
     },
     "options": {
       "selectCategory": "— Chọn danh mục —",
@@ -90,7 +92,11 @@
     },
     "tagsRemove": "Xóa thẻ {tag}",
     "submitCreate": "Tạo sản phẩm",
-    "submitUpdate": "Cập nhật sản phẩm"
+    "submitUpdate": "Cập nhật sản phẩm",
+    "errors": {
+      "price": "Nhập số nguyên VND từ 1 đến 1.000.000.000.",
+      "originalPrice": "Nhập số nguyên VND không nhỏ hơn giá bán (tối đa 1.000.000.000), hoặc để trống."
+    }
   },
   "toast": {
     "colorExists": "Tên màu đã tồn tại",

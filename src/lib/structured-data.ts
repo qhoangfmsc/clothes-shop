@@ -3,6 +3,7 @@ import type { Product } from "@/src/types/product";
 import { BRAND_ALTERNATE_NAME, BRAND_FOUNDING_YEAR, BRAND_NAME } from "./brand";
 import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164, GOOGLE_BUSINESS_URL } from "./contact";
 import { SITE_URL } from "./site-url";
+import { currencyForLocale, moneyValue } from "./money";
 import { hasPublicPrice } from "./product-purchase";
 import { SOCIALS } from "./socials";
 
@@ -36,7 +37,8 @@ export function breadcrumbJsonLd(locale: AppLocale, crumbs: BreadcrumbEntry[]) {
   };
 }
 
-/** `Product` with one `Offer` (none for custom-order products). Prices are always USD (the shop never converts currencies).
+/** `Product` with one `Offer` (none for custom-order products). The offer follows the page language like the visible
+ *  price: VND (`priceVnd`) on the Vietnamese page, USD (`priceUsd`) on the others — both straight from the API.
  *  The public API only returns `active` products and has no stock levels, so every listed
  *  product is advertised as in stock. No `aggregateRating`: it must reflect real reviews. */
 export function productJsonLd(locale: AppLocale, product: Product, path: string) {
@@ -59,8 +61,8 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
       offers: {
         "@type": "Offer",
         url,
-        priceCurrency: "USD",
-        price: Number(product.price).toFixed(2), // the API sends decimals as strings
+        priceCurrency: currencyForLocale(locale),
+        price: moneyValue({ vnd: product.priceVnd, usd: product.priceUsd }, locale),
         availability: "https://schema.org/InStock",
         itemCondition: "https://schema.org/NewCondition",
       },

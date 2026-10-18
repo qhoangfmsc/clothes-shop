@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { ArrowLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -32,6 +33,7 @@ export default function OrdersContent() {
   const { toast } = useToast();
   const toErrorMessage = useErrorMessage();
   const format = useFormatter();
+  const { fmt } = useMoney();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { apiFetch } = useApiAuth();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -206,7 +208,7 @@ export default function OrdersContent() {
                       </span>
                       <span className="flex items-center gap-1 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
                         <span className="text-xs text-[var(--text-muted)] font-normal">{t("card.total")}</span>
-                        {format.number(Number(order.total), "price")}
+                        {fmt(order, "total")}
                         <ChevronRight size={16} className="text-[var(--text-muted)]" />
                       </span>
                     </div>

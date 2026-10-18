@@ -24,6 +24,9 @@ Before building UI, check this list. If a shared component covers the need, **us
 | Banner / responsive `<picture>` | `ResponsiveBannerImage` | |
 | Checkbox | `Checkbox` | |
 | Structured data | `JsonLd` + `src/lib/structured-data.ts` | |
+| Any amount of money | `useMoney()` (`src/hooks/use-money.ts`) | VND is the base, USD comes from the BE, the UI language picks one (vi = VND, others = USD): never convert, add, multiply or round money in the FE, never use `Intl.NumberFormat` / `toFixed` / `toLocaleString`. See `docs/platform/currency.md`. |
+| An amount in an admin table / panel | `MoneyText` | One currency by locale. Never show VND and USD together, never show the exchange rate. |
+| Whole-VND input (admin forms) | `VndInput` + `parseVndInput` (`src/lib/money.ts`) | Digits only, dot-grouped; no decimals. |
 
 ## Carousel
 

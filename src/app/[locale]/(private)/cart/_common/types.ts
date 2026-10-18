@@ -11,7 +11,12 @@ export interface CartItem {
   serverItemId?: string;
   productId: string;
   name: string;
-  price: number;
+  /** Unit price: whole dong and the BE's USD conversion */
+  priceVnd: number;
+  priceUsd: number;
+  /** Line total as the BE priced it (`lineTotalVnd/Usd`); `null` while the quantity changed here and the BE has not answered yet */
+  lineTotalVnd: number | null;
+  lineTotalUsd: number | null;
   image: string;
   size: string;
   color: string;
@@ -22,3 +27,6 @@ export interface CartItem {
   /** Badge of the product. `sold_out` / `custom_order` lines stay in the bag but cannot be ticked or checked out. */
   badge?: ProductBadge | null;
 }
+
+/** A line as built from a product, before the BE has priced it */
+export type NewCartItem = Omit<CartItem, "quantity" | "serverItemId" | "lineTotalVnd" | "lineTotalUsd">;

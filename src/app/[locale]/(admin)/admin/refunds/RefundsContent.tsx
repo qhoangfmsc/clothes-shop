@@ -3,6 +3,8 @@
 import { useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { X } from "lucide-react";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { FormTabs } from "@/src/app/[locale]/_components/AdminFormKit";
@@ -113,7 +115,7 @@ export default function RefundsContent() {
       {
         key: "amount",
         header: t("table.columns.amount"),
-        render: (r) => <span className="font-semibold whitespace-nowrap">{format.number(r.amount, "vnd")}</span>,
+        render: (r) => <MoneyText money={moneyOf(r, "amount")} />,
       },
       {
         key: "order",

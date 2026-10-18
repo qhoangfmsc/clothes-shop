@@ -1,6 +1,6 @@
 # Analytics (lưu lượng & phễu mua hàng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/analytics` · **API route:** `GET /api/analytics` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/analytics` · **API route:** `GET /api/analytics` · **Cập nhật:** 2026-10-17
 > **Code:** `(admin)/admin/analytics/` · `src/app/api/analytics/` · `src/hooks/use-admin-analytics.ts` · `src/lib/analytics.ts` · `src/types/analytics.ts` · `src/lib/percent-change.ts` · `src/app/[locale]/_components/VercelTelemetry.tsx`
 > **i18n:** `admin.analytics`
 
@@ -26,14 +26,14 @@ Cho admin biết bao nhiêu người ghé site, trang nào/nguồn nào/thiết 
 
 ### 4.1 Sự kiện thu thập (`src/lib/analytics.ts`)
 
-`trackEvent(name, data)` bọc `track` của `@vercel/analytics` trong `try/catch` (adblock/offline/SSR không được làm hỏng storefront). Tối đa 2 thuộc tính mỗi sự kiện (giới hạn gói Pro), không gửi dữ liệu cá nhân.
+`trackEvent(name, data)` bọc `track` của `@vercel/analytics` trong `try/catch` (adblock/offline/SSR không được làm hỏng storefront). Tối đa 2 thuộc tính mỗi sự kiện (giới hạn gói Pro), không gửi dữ liệu cá nhân. Số tiền gửi bằng **một** thuộc tính đặt tên theo tiền tệ của ngôn ngữ (`vnd` ở `vi`, `usd` ở ngôn ngữ khác; `moneyProp(money, locale)`), giá trị là field tiền của BE, không quy đổi ở FE.
 
 | Sự kiện | Payload | Gọi ở |
 |---|---|---|
-| `view_product` | `{ productId, price }` | Chi tiết sản phẩm |
-| `add_to_cart` | `{ productId, value }` | Quick Add, chi tiết sản phẩm |
-| `begin_checkout` | `{ items, value }` | Checkout |
-| `purchase` | `{ orderId, value }` | Checkout (đặt hàng xong) |
+| `view_product` | `{ productId, vnd \| usd }` (giá bán) | Chi tiết sản phẩm |
+| `add_to_cart` | `{ productId, vnd \| usd }` (đơn giá; BE tính thành tiền dòng sau khi thêm) | Quick Add, chi tiết sản phẩm |
+| `begin_checkout` | `{ items, vnd \| usd }` (`subtotal` của báo giá đầu tiên) | Checkout |
+| `purchase` | `{ orderId, vnd \| usd }` (`total` của đơn BE trả về) | Checkout (đặt hàng xong) |
 
 `FUNNEL_EVENTS` (thứ tự phễu) dùng chung giữa bộ thu thập và báo cáo. Pageview do `<Analytics>` tự gửi; URL admin bị loại bởi `beforeSend`.
 

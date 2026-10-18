@@ -12,7 +12,8 @@ export interface ShippingMethod {
   name: string;
   description: string;
   estimatedDays: string;
-  price: number;
+  priceVnd: number;
+  priceUsd: number;
   icon: ShippingIcon;
 }
 
@@ -25,6 +26,7 @@ export interface ReturnPolicy {
 export interface ShippingInfo {
   methods: ShippingMethod[];
   returnPolicy: ReturnPolicy;
-  /** Subtotal from which every method ships free; `null` = no free shipping */
-  freeShippingThreshold: number | null;
+  /** Subtotal from which every method ships free; both `null` = no free shipping */
+  freeShippingThresholdVnd: number | null;
+  freeShippingThresholdUsd: number | null;
 }

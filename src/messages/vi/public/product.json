@@ -75,7 +75,7 @@
         "stars": "{stars} sao ({count})",
         "photos": "Có hình ảnh ({count})"
       },
-      "openAll": "Xem tất cả {count, plural, other {# đánh giá}}"
+      "openAll": "Xem tất cả đánh giá"
     },
     "filters": {
       "fit": "Form dáng",
@@ -97,7 +97,7 @@
       "loadFailed": "Không tải được các đánh giá.",
       "retry": "Thử lại",
       "noMatch": "Không có đánh giá nào khớp bộ lọc.",
-      "loadMore": "Xem thêm {count} đánh giá",
+      "loadMore": "Xem thêm",
       "loadingMore": "Đang tải…",
       "collapse": "Thu gọn đánh giá"
     },

@@ -56,7 +56,7 @@
       "label": "Shipping",
       "free": "Free",
       "unlocked": "🎉 You've unlocked free shipping!",
-      "remaining": "Spend {amount} more for free shipping",
+      "remaining": "Reach {amount} to get free shipping",
       "freeNote": "Free shipping on orders of {amount} or more.",
       "unavailable": "Couldn't load the shipping fee"
     },
@@ -65,11 +65,7 @@
     "placeAndPay": "Place Order & Pay",
     "placing": "Placing Order...",
     "legalNote": "By placing your order, you agree to our <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy> and <shipping>Shipping & Returns</shipping> policy.",
-    "showItems": "Show items",
-    "transfer": {
-      "label": "Amount to transfer",
-      "rate": "Paid in VND at the rate {unit} = {rate}."
-    }
+    "showItems": "Show items"
   },
   "payment": {
     "title": "Scan to pay",
@@ -98,7 +94,8 @@
     "paid": {
       "title": "Payment successful!",
       "description": "We have received your payment. Thank you for your order.",
-      "viewOrder": "View order details"
+      "viewOrder": "View order details",
+      "amount": "Amount paid"
     },
     "expired": {
       "title": "Payment session expired",

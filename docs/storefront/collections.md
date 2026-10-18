@@ -1,6 +1,6 @@
 # Collections (bộ sưu tập — danh sách & chi tiết)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/collections`, `/[locale]/collections/[slug]` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/collections`, `/[locale]/collections/[slug]` · **Cập nhật:** 2026-10-18
 > **Code:** `(public)/collections/` — `page.tsx`, `loading.tsx`, `_components/CollectionsClient.tsx`, `[slug]/page.tsx`, `[slug]/loading.tsx`, `[slug]/_components/CollectionDetailClient.tsx`
 > **i18n:** `public.collections` (`meta`, `detailMeta`, `list`, `detail`)
 > Quản trị: [admin/collections](../admin/collections.md)
@@ -25,8 +25,8 @@ Dẫn khách vào từng chiến dịch/chủ đề thay vì duyệt theo danh m
 
 ### 4.1 Server
 
-- Danh sách: `getCollections()` + `getBannerConfig("COLLECTIONS_HERO_BANNERS")` (ISR 60 s). JSON-LD `BreadcrumbList` (Home › Collections).
-- Chi tiết: `getCollectionBySlug(slug)` (không có → `notFound()`) và `getCollectionProducts(slug)` (sản phẩm đi kèm trong cùng response `GET /api/collections?slug=`). `generateStaticParams` từ `getCollections()`. Metadata dùng `public.collections.detailMeta.title` (`{name}`), mô tả = `collection.description`, ảnh chia sẻ = `collection.image`. JSON-LD Home › Collections › <tên>.
+- Danh sách: `getCollections()` (`GET /api/collections?limit=200`, tối đa của BE, để danh sách không bị cắt ở 25 bộ sưu tập) + `getBannerConfig("COLLECTIONS_HERO_BANNERS")` (ISR 60 s). JSON-LD `BreadcrumbList` (Home › Collections).
+- Chi tiết: `getCollectionBySlug(slug)` (không có → `notFound()`) và `getCollectionProducts(slug)` (sản phẩm đi kèm trong cùng response `GET /api/collections?slug=`, BE trả đủ mọi sản phẩm của bộ sưu tập, không phân trang). `generateStaticParams` từ `getCollections()`. Metadata dùng `public.collections.detailMeta.title` (`{name}`), mô tả = `collection.description`, ảnh chia sẻ = `collection.image`. JSON-LD Home › Collections › <tên>.
 - Bộ sưu tập có trong sitemap (kèm ảnh bìa).
 
 ### 4.2 Danh sách (`CollectionsClient`)
@@ -39,9 +39,9 @@ Dẫn khách vào từng chiến dịch/chủ đề thay vì duyệt theo danh m
 ### 4.3 Chi tiết (`CollectionDetailClient`)
 
 - Hero: ảnh bìa (`cd-hero__media`) zoom-out khi vào, parallax khi cuộn; mùa (`collection.season`), tên, phụ đề, đường kẻ, mô tả hiện lần lượt.
-- **Lookbook**: `products.slice(0, min(3, n))` — mỗi sản phẩm là một khối lớn (badge, "01 / 03", tên, giá, "Xem chi tiết") link tới trang sản phẩm.
+- **Lookbook**: `products.slice(0, min(3, n))` — mỗi sản phẩm là một khối lớn (badge, "01 / 03", tên, giá theo ngôn ngữ, "Xem chi tiết") link tới trang sản phẩm.
 - Khối trích dẫn (`quoteBy` kèm `season`).
-- **Shop the collection**: toàn bộ `products` (số lượng `pieces`), mỗi thẻ gồm ảnh, badge (`PRODUCT_CARD_BADGE_STYLES`), nút tim, `ProductBagButton` (icon trên mobile, chữ khi hover trên desktop), tên, giá.
+- **Shop the collection**: toàn bộ `products` (số lượng `pieces`), mỗi thẻ gồm ảnh, badge (`PRODUCT_CARD_BADGE_STYLES`), nút tim, `ProductBagButton` (icon trên mobile, chữ khi hover trên desktop), tên, giá theo ngôn ngữ (và giá gốc gạch ngang khi `originalPriceVnd` không `null`).
 - Nút giỏ → `openQuickAdd(product)` (không qua `requireAuth` ở màn hình này). Sản phẩm `sold_out`/`custom_order` xử lý theo `ProductBagButton`.
 - Chân trang: link về `/collections` và `/shop` (`allCollections`, `exploreAll`).
 

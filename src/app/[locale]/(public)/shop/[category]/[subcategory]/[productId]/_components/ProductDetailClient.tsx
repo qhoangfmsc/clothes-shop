@@ -5,7 +5,8 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { motion } from "framer-motion";
-import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { Check, ShoppingBag, Heart, Share2, MessageCircle } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import Carousel, { type CarouselHandle } from "@/src/app/[locale]/_components/Carousel";
@@ -19,7 +20,8 @@ import {
   selectIsWishlisted,
 } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import { useAuthAction } from "@/src/hooks/use-auth-action";
-import { trackEvent } from "@/src/lib/analytics";
+import { moneyProp, trackEvent } from "@/src/lib/analytics";
+import { moneyOf } from "@/src/lib/money";
 import SizeGuideModal from "./SizeGuideModal";
 import ReviewsSection from "./ReviewsSection";
 import ProductRating from "@/src/app/[locale]/_components/ProductRating";
@@ -29,6 +31,7 @@ const loadImageViewer = () => import("./ImageViewer");
 const ImageViewer = dynamic(loadImageViewer, { ssr: false });
 import { PRODUCT_DETAIL_BADGE_STYLES } from "@/src/lib/product-badge";
 import { buildOrderInquiryHref, getPurchaseMode, hasPublicPrice } from "@/src/lib/product-purchase";
+import { RELATED_PRODUCTS_LIMIT } from "../../../../_common/constants";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -48,7 +51,7 @@ export default function ProductDetailClient({
   const t = useTranslations("public.product.detail");
   const tNav = useTranslations("shared.header.nav");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt, fmtOrNull } = useMoney();
   const locale = useLocale();
   const [activeImage, setActiveImage] = useState(0);
   /* Full-screen viewer: null until the first open (keeps its chunk unloaded); the gallery stops auto-advancing while it is open */
@@ -94,8 +97,11 @@ export default function ProductDetailClient({
 
   /* Funnel: one view per product page opened */
   useEffect(() => {
-    trackEvent("view_product", { productId: product.id, price: product.price });
-  }, [product.id, product.price]);
+    trackEvent("view_product", {
+      productId: product.id,
+      ...moneyProp({ vnd: product.priceVnd, usd: product.priceUsd }, locale),
+    });
+  }, [product.id, product.priceVnd, product.priceUsd, locale]);
 
   /* Keyboard navigation */
   useEffect(() => {
@@ -116,7 +122,8 @@ export default function ProductDetailClient({
           {
             productId: product.id,
             name: product.name,
-            price: product.price,
+            priceVnd: product.priceVnd,
+            priceUsd: product.priceUsd,
             image: product.images[0],
             size: selectedSize!,
             color: colorName,
@@ -137,7 +144,11 @@ export default function ProductDetailClient({
           quantity,
         })
       );
-      trackEvent("add_to_cart", { productId: product.id, value: product.price * quantity });
+      /* Unit price: the BE prices the line only once the add is answered */
+      trackEvent("add_to_cart", {
+        productId: product.id,
+        ...moneyProp(moneyOf(product, "price"), locale),
+      });
       setAddedToCart(true);
       toast.success(
         t.rich("toastAdded", {
@@ -159,6 +170,7 @@ export default function ProductDetailClient({
     selectedColor,
     quantity,
     toast,
+    locale,
     t,
   ]);
 
@@ -168,7 +180,8 @@ export default function ProductDetailClient({
         toggleWishlistItem({
           productId: product.id,
           name: product.name,
-          price: product.price,
+          priceVnd: product.priceVnd,
+          priceUsd: product.priceUsd,
           image: product.images[0],
           category: product.category?.slug ?? "",
           subcategory: product.subcategory?.slug ?? "",
@@ -282,8 +295,16 @@ export default function ProductDetailClient({
             </h1>
             {/* Rating straight from the product response (no extra request); jumps to the reviews below */}
             {product.ratingAverage != null && product.ratingCount > 0 && (
-              <a href="#reviews" onClick={() => window.dispatchEvent(new Event("reviews:open"))} className="mt-1 inline-flex min-h-11 items-center self-start no-underline">
-                <ProductRating average={product.ratingAverage} count={product.ratingCount} variant="full" />
+              <a
+                href="#reviews"
+                onClick={() => window.dispatchEvent(new Event("reviews:open"))}
+                className="mt-1 inline-flex min-h-11 items-center self-start no-underline"
+              >
+                <ProductRating
+                  average={product.ratingAverage}
+                  count={product.ratingCount}
+                  variant="full"
+                />
               </a>
             )}
           </motion.div>
@@ -296,11 +317,11 @@ export default function ProductDetailClient({
             transition={{ duration: 0.5, ease: [...ease], delay: 0.2 }}
           >
             <span className="font-primary text-xl font-medium text-[var(--text-heading)] tracking-[-0.04em]">
-              {showPrice ? format.number(product.price, "price") : tCommon("priceOnRequest")}
+              {showPrice ? fmt(product, "price") : tCommon("priceOnRequest")}
             </span>
-            {showPrice && product.originalPrice && (
+            {showPrice && product.originalPriceVnd && (
               <span className="font-primary text-[15px] font-medium text-[var(--text-disabled)] line-through tracking-[-0.04em]">
-                {format.number(product.originalPrice, "price")}
+                {fmtOrNull(product, "originalPrice")}
               </span>
             )}
           </motion.div>
@@ -333,7 +354,9 @@ export default function ProductDetailClient({
             >
               <span className="flex items-center gap-2 font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.08em] uppercase">
                 {t("size")}{" "}
-                {selectedSize && <span className="text-[var(--text-heading)]">— {selectedSize}</span>}
+                {selectedSize && (
+                  <span className="text-[var(--text-heading)]">— {selectedSize}</span>
+                )}
                 <button
                   type="button"
                   className="ml-auto border-none bg-transparent p-0 font-primary text-xs text-[var(--accent-primary)] underline underline-offset-2 decoration-[rgba(201,169,110,0.4)] cursor-pointer tracking-[0.04em] transition hover:decoration-[var(--accent-primary)]"
@@ -469,17 +492,19 @@ export default function ProductDetailClient({
                     : purchaseMode === "customOrder"
                       ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)] shadow-[var(--shadow-gold-sm)] hover:opacity-90"
                       : addedToCart
-                    ? "!bg-[var(--accent-primary)] !text-[var(--text-on-gold)] pointer-events-none"
-                    : !isSelectionComplete
-                      ? "opacity-45 cursor-not-allowed hover:transform-none hover:shadow-none bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)]"
-                      : "bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)] hover:bg-[var(--color-charcoal)] hover:shadow-[var(--shadow-lg)]"
+                        ? "!bg-[var(--accent-primary)] !text-[var(--text-on-gold)] pointer-events-none"
+                        : !isSelectionComplete
+                          ? "opacity-45 cursor-not-allowed hover:transform-none hover:shadow-none bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)]"
+                          : "bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)] hover:bg-[var(--color-charcoal)] hover:shadow-[var(--shadow-lg)]"
                 }`}
                 onClick={
                   purchaseMode === "customOrder"
                     ? () => router.push(buildOrderInquiryHref(product.id))
                     : handleAddToCart
                 }
-                disabled={purchaseMode === "soldOut" || (purchaseMode === "cart" && !isSelectionComplete)}
+                disabled={
+                  purchaseMode === "soldOut" || (purchaseMode === "cart" && !isSelectionComplete)
+                }
               >
                 {purchaseMode === "soldOut" ? (
                   <>
@@ -604,19 +629,19 @@ export default function ProductDetailClient({
               {t("related.title")}
             </h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 px-4 sm:px-6 lg:px-8">
-            {relatedProducts.slice(0, 4).map((rp) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 px-4 sm:px-6 lg:px-0 pt-2">
+            {relatedProducts.slice(0, RELATED_PRODUCTS_LIMIT).map((rp, index) => (
               <Link
                 key={rp.id}
                 href={`/shop/${rp.category?.slug ?? ""}/${rp.subcategory?.slug ?? ""}/${rp.id}`}
-                className="group flex flex-col gap-2 no-underline text-inherit"
+                className={`group flex-col gap-2 no-underline text-inherit ${index === RELATED_PRODUCTS_LIMIT - 1 ? "hidden lg:flex" : "flex"}`}
               >
                 <div className="relative aspect-[2/3] rounded-md overflow-hidden bg-[var(--bg-elevated)]">
                   <Image
                     src={rp.images[0]}
                     alt={rp.name}
                     fill
-                    sizes="(max-width: 640px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
                     style={{ objectFit: "cover" }}
                     className="transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                   />
@@ -625,7 +650,7 @@ export default function ProductDetailClient({
                   {rp.name}
                 </span>
                 <span className="font-primary text-sm font-medium text-[var(--text-muted)] tracking-[-0.02em]">
-                  {hasPublicPrice(rp.badge) ? format.number(rp.price, "price") : tCommon("priceOnRequest")}
+                  {hasPublicPrice(rp.badge) ? fmt(rp, "price") : tCommon("priceOnRequest")}
                 </span>
               </Link>
             ))}

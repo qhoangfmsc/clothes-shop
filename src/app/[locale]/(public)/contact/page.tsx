@@ -56,9 +56,10 @@ async function loadOrderProduct(
     id: product.id,
     name: product.name,
     sku: product.sku,
-    /* The API sends prices as decimal strings ("185.00") */
-    price: Number(product.price),
-    originalPrice: product.originalPrice == null ? null : Number(product.originalPrice),
+    priceVnd: product.priceVnd,
+    priceUsd: product.priceUsd,
+    originalPriceVnd: product.originalPriceVnd,
+    originalPriceUsd: product.originalPriceUsd,
     badge: product.badge,
     images: product.images,
     categoryTitle: product.category?.title ?? null,

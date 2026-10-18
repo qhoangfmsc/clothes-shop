@@ -56,7 +56,7 @@
       "label": "Vận chuyển",
       "free": "Miễn phí",
       "unlocked": "🎉 Bạn đã được miễn phí vận chuyển!",
-      "remaining": "Mua thêm {amount} để được miễn phí vận chuyển",
+      "remaining": "Mua đủ {amount} để được miễn phí vận chuyển",
       "freeNote": "Miễn phí vận chuyển cho đơn hàng từ {amount} trở lên.",
       "unavailable": "Không tải được phí vận chuyển"
     },
@@ -65,11 +65,7 @@
     "placeAndPay": "Đặt hàng & thanh toán",
     "placing": "Đang đặt hàng...",
     "legalNote": "Khi đặt hàng, bạn đồng ý với <terms>Điều khoản sử dụng</terms>, <privacy>Chính sách bảo mật</privacy> và chính sách <shipping>Giao hàng & đổi trả</shipping> của chúng tôi.",
-    "showItems": "Xem sản phẩm",
-    "transfer": {
-      "label": "Số tiền chuyển khoản",
-      "rate": "Thanh toán bằng VND theo tỷ giá {unit} = {rate}."
-    }
+    "showItems": "Xem sản phẩm"
   },
   "payment": {
     "title": "Quét mã để thanh toán",
@@ -98,7 +94,8 @@
     "paid": {
       "title": "Thanh toán thành công!",
       "description": "Chúng tôi đã nhận được thanh toán của bạn. Cảm ơn bạn đã đặt hàng.",
-      "viewOrder": "Xem chi tiết đơn hàng"
+      "viewOrder": "Xem chi tiết đơn hàng",
+      "amount": "Số tiền đã thanh toán"
     },
     "expired": {
       "title": "Phiên thanh toán đã hết hạn",

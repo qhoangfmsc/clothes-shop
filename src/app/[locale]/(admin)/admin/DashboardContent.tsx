@@ -3,6 +3,7 @@
 import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import { useMemo } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import {
   DollarSign,
   ShoppingBag,
@@ -16,6 +17,8 @@ import {
   XCircle,
 } from "lucide-react";
 import { DataTable, type DataTableColumn } from "@/src/app/[locale]/_components/DataTable";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { useAdminProducts, type AdminOrder } from "@/src/hooks/use-admin-api";
 import { useAdminOrders } from "@/src/hooks/use-admin-api";
 import { useAdminUsers } from "@/src/hooks/use-admin-api";
@@ -89,9 +92,7 @@ function buildRecentOrderColumns(ctx: {
       key: "total",
       header: headers.total,
       render: (o) => (
-        <span className="font-semibold text-[var(--accent-primary)]">
-          {format.number(Number(o.total), "priceFixed")}
-        </span>
+        <MoneyText money={moneyOf(o, "total")} amountClassName="font-semibold text-[var(--accent-primary)]" />
       ),
     },
     {
@@ -141,6 +142,7 @@ const KPI_ACCENTS = {
 export default function DashboardContent() {
   const t = useTranslations("admin.dashboard");
   const format = useFormatter();
+  const { vnd } = useMoney();
   const statusLabel = useOrderStatusLabel();
   const recentOrderColumns = buildRecentOrderColumns({
     headers: {
@@ -171,9 +173,10 @@ export default function DashboardContent() {
     const activeProducts = products.filter((p) => p.status === "active").length;
     const inactiveProducts = totalProducts - activeProducts;
 
-    /* Revenue = sum of non-cancelled orders */
+    /* Revenue = sum of non-cancelled orders, in VND: whole dong add up exactly, and no USD is derived from the sum
+       (the BE has no revenue total yet) */
     const validOrders = orders.filter((o) => o.status !== "cancelled");
-    const totalRevenue = validOrders.reduce((sum, o) => sum + Number(o.total), 0);
+    const totalRevenueVnd = validOrders.reduce((sum, o) => sum + o.totalVnd, 0);
 
     /* Orders by status */
     const ordersByStatus: Record<string, number> = {};
@@ -191,7 +194,7 @@ export default function DashboardContent() {
     return {
       activeProducts,
       inactiveProducts,
-      totalRevenue,
+      totalRevenueVnd,
       ordersByStatus,
       productsByCategory,
       validOrders,
@@ -214,7 +217,7 @@ export default function DashboardContent() {
         <KpiCard
           icon={<DollarSign size={20} />}
           label={t("kpi.revenue.label")}
-          value={loading ? "—" : format.number(stats.totalRevenue, "price")}
+          value={loading ? "—" : vnd(stats.totalRevenueVnd)}
           sub={t("kpi.revenue.sub", { count: stats.validOrders.length })}
           {...KPI_ACCENTS.gold}
         />

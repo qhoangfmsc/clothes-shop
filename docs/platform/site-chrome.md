@@ -1,6 +1,6 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
 > **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
@@ -73,4 +73,4 @@ Nút tròn vàng góc dưới phải (`z-20`), chỉ hiện sau khi client mount
 
 `useCategories` (`GET /api/categories?sort=priority&limit=200`), `useBannerConfig("NAV_MENU_BANNERS")`, `useAutocomplete` (`GET /api/products/autocomplete?q=&limit=`). Chi tiết: [data-layer](./data-layer.md). Banner `NAV_MENU_BANNERS` cấu hình ở [site-config](../admin/site-config.md).
 
-- `AutocompleteItem` = `{ id, name, slug, price, image, badge }`; dropdown tìm kiếm ẩn giá sản phẩm `custom_order` theo `badge`. BE khớp tên/slug theo "chứa" (tên bắt đầu bằng từ khóa xếp trước), chỉ sản phẩm `active`. Danh sách cuộn khi cao quá `min(60vh, 560px)`.
+- `AutocompleteItem` = `{ id, name, slug, priceVnd, priceUsd, image, badge }`; dropdown tìm kiếm hiện giá theo ngôn ngữ (`useMoney`) và ẩn giá sản phẩm `custom_order` theo `badge`. BE khớp tên/slug theo "chứa" (tên bắt đầu bằng từ khóa xếp trước), chỉ sản phẩm `active`. Danh sách cuộn khi cao quá `min(60vh, 560px)`.

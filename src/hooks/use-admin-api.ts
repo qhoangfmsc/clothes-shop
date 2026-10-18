@@ -37,7 +37,7 @@ export interface ProductFilters {
   category?: string;
   badge?: ProductBadge;
   status?: ProductStatus;
-  sort?: string; // field = ascending, -field = descending: price | name | createdAt
+  sort?: string; // field = ascending, -field = descending: price (by VND) | name | createdAt
   search?: string;
   page?: number;
   limit?: number;
@@ -47,8 +47,10 @@ export interface ProductFilters {
 export interface ProductFormData {
   name: string;
   slug: string;
-  price: number;
-  originalPrice: number | null;
+  /** Whole VND, 1 to 1.000.000.000 */
+  priceVnd: number;
+  /** Whole VND, not below `priceVnd`; `null` = no struck-through price */
+  originalPriceVnd: number | null;
   images: string[];
   categoryId: string;
   subcategoryId: string | null;
@@ -214,7 +216,9 @@ export interface AdminOrderItem {
   productId: string | null;
   productName: string;
   productImage: string;
-  price: number;
+  /** Unit price at order time (the BE sends no line total) */
+  priceVnd: number;
+  priceUsd: number;
   quantity: number;
   size: string;
   color: string;
@@ -225,9 +229,12 @@ export interface AdminOrder {
   status: OrderStatus;
   paymentStatus: OrderPaymentStatus;
   paidAt: string | null;
-  subtotal: number;
-  shippingFee: number;
-  total: number;
+  subtotalVnd: number;
+  subtotalUsd: number;
+  shippingFeeVnd: number;
+  shippingFeeUsd: number;
+  totalVnd: number;
+  totalUsd: number;
   shippingMethod: string;
   shippingAddress: Record<string, unknown>;
   note: string;

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import {
@@ -29,7 +31,6 @@ type FieldErrors = Partial<Record<"reference" | "note", string>>;
 /** "I transferred the money back": records the bank reference. Transfer first, then confirm here. */
 export default function CompleteRefundModal({ refund, onClose, onDone }: CompleteRefundModalProps) {
   const t = useTranslations("admin.refunds.complete");
-  const format = useFormatter();
   const toErrorMessage = useErrorMessage();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
@@ -70,9 +71,11 @@ export default function CompleteRefundModal({ refund, onClose, onDone }: Complet
           <FormSection title={t("refundSection")}>
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("amount")}</span>
-              <span className="text-lg font-semibold text-[var(--text-primary)] font-primary">
-                {format.number(refund.amount, "vnd")}
-              </span>
+              <MoneyText
+                money={moneyOf(refund, "amount")}
+                className="text-[var(--text-primary)]"
+                amountClassName="text-lg font-semibold font-primary"
+              />
             </div>
             <div className="flex items-start justify-between gap-3">
               <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("order")}</span>

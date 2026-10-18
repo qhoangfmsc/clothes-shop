@@ -25,7 +25,11 @@
       "filter": "Bộ lọc",
       "clearAll": "Xóa tất cả",
       "priceRange": "Khoảng giá",
-      "to": "đến",
+      "priceBand": {
+        "under": "Dưới {max}",
+        "between": "{min} – {max}",
+        "over": "Trên {min}"
+      },
       "size": "Kích cỡ",
       "color": "Màu sắc",
       "sort": {
@@ -41,7 +45,9 @@
       "minRating": "Từ {stars} sao trở lên"
     },
     "productsClient": {
-      "loadMore": "Xem thêm (còn {remaining})"
+      "loadMore": "Xem thêm",
+      "loadingMore": "Đang tải…",
+      "loadFailed": "Không tải được sản phẩm. Vui lòng thử lại."
     }
   },
   "pages": {

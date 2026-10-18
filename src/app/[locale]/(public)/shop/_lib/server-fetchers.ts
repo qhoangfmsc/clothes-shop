@@ -9,6 +9,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import type { Product } from "@/src/types/product";
+import { RELATED_PRODUCTS_LIMIT } from "../_common/constants";
 import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
@@ -16,7 +17,7 @@ import type { Collection } from "@/src/types/collection";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ShippingInfo } from "@/src/types/shipping";
 import { mapMediaUrls } from "@/src/lib/media-url";
-import { buildListQuery } from "@/src/lib/list-query";
+import { buildListQuery, LIST_MAX_LIMIT } from "@/src/lib/list-query";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -54,6 +55,7 @@ export interface ProductListParams {
     | "-ratingCount";
   /** 1–5: only products whose average is at least this (products without a review are left out) */
   minRating?: number;
+  /** Whole VND: the BE filters and sorts prices in VND only */
   minPrice?: number;
   maxPrice?: number;
   sizes?: string;   // "S,M,L"
@@ -119,11 +121,6 @@ export async function getAllProducts(): Promise<Product[]> {
   return data;
 }
 
-export async function getNewInProducts(): Promise<Product[]> {
-  const { data } = await apiFetch<ProductListResponse>("/api/products?badge=new");
-  return data;
-}
-
 export async function getProductById(id: string): Promise<Product | undefined> {
   try {
     const { data } = await apiFetch<{ data: Product; related: Product[] }>(`/api/products/${id}`);
@@ -138,7 +135,9 @@ export async function getProductWithRelated(id: string): Promise<{
   related: Product[];
 } | undefined> {
   try {
-    const result = await apiFetch<{ data: Product; related: Product[] }>(`/api/products/${id}`);
+    const result = await apiFetch<{ data: Product; related: Product[] }>(
+      `/api/products/${id}?relatedLimit=${RELATED_PRODUCTS_LIMIT}`,
+    );
     return { product: result.data, related: result.related };
   } catch {
     return undefined;
@@ -179,7 +178,8 @@ export async function getSubcategory(
    ═══════════════════════════════════════════════════════════ */
 
 export async function getCollections(): Promise<Collection[]> {
-  const { data } = await apiFetch<CollectionListResponse>("/api/collections");
+  /* Every collection in one page (BE max), like the categories: the default page would cut the list at 25 */
+  const { data } = await apiFetch<CollectionListResponse>(`/api/collections?limit=${LIST_MAX_LIMIT}`);
   return data;
 }
 

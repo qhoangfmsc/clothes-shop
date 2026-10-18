@@ -13,7 +13,7 @@ import type { Product } from "@/src/types/product";
 import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
-import { buildListQuery } from "@/src/lib/list-query";
+import { buildListQuery, LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import type { Collection } from "@/src/types/collection";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
@@ -49,6 +49,12 @@ function buildProductQS(params: ProductListParams): string {
     sizes: params.sizes,
     colors: params.colors,
   });
+}
+
+/** One page of products, for lists that append pages themselves (the shop grids) */
+export function fetchProductPage(params: ProductListParams): Promise<ProductListResponse> {
+  const qs = buildProductQS(params);
+  return fetcher<ProductListResponse>(`${API_URL}/api/products${qs ? `?${qs}` : ""}`);
 }
 
 export function useProducts(params: ProductListParams = {}) {
@@ -141,7 +147,7 @@ export function useCategory(slug: string | null) {
 /* ═══ Collections ═══ */
 export function useCollections() {
   const { data, isLoading, error } = useSWR<{ data: Collection[]; total: number }>(
-    `${API_URL}/api/collections`,
+    `${API_URL}/api/collections?limit=${LIST_MAX_LIMIT}`,
     fetcher,
     defaultConfig
   );
@@ -249,7 +255,8 @@ export interface AutocompleteItem {
   id: string;
   name: string;
   slug: string;
-  price: number;
+  priceVnd: number;
+  priceUsd: number;
   image: string;
   /** `custom_order` products show no price in the search dropdown. */
   badge: ProductBadge | null;
@@ -351,7 +358,7 @@ export function useAutocomplete(limit: number) {
 
 /**
  * Resolve a product's real detail-page URL (`/shop/{category}/{subcategory}/{id}`).
- * Autocomplete results only carry id/name/slug/price/image — not enough to build
+ * Autocomplete results only carry id/name/slug/priceVnd/priceUsd/image — not enough to build
  * the URL — so this looks the product up by id first. Used on click, not render,
  * so it's a plain fetch rather than a hook.
  */

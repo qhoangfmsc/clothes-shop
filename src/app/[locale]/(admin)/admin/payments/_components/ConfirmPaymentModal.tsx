@@ -2,6 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import VndInput from "@/src/app/[locale]/_components/VndInput";
+import { maskVndInput, moneyOf, parseVndInput } from "@/src/lib/money";
 import { ChevronDown } from "lucide-react";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
@@ -38,8 +41,8 @@ interface ConfirmPaymentModalProps {
   fixedOrderId?: string;
   /** The code is known (opened from a row of the lookup): it is filled in and cannot be edited */
   lockedTransferCode?: string;
-  /** Suggested amount in VND (the amount of the session that carries the code) */
-  defaultAmount?: number;
+  /** Suggested whole-VND amount (`amountVnd` of the session that carries the code) */
+  defaultAmountVnd?: number;
   onClose: () => void;
   onConfirmed: () => void;
 }
@@ -57,7 +60,7 @@ export default function ConfirmPaymentModal({
   transaction,
   fixedOrderId,
   lockedTransferCode,
-  defaultAmount,
+  defaultAmountVnd,
   onClose,
   onConfirmed,
 }: ConfirmPaymentModalProps) {
@@ -71,7 +74,7 @@ export default function ConfirmPaymentModal({
 
   const [orderId, setOrderId] = useState<string | null>(fixedOrderId ?? null);
   const [transferCode, setTransferCode] = useState(lockedTransferCode ?? "");
-  const [amount, setAmount] = useState(defaultAmount ? String(defaultAmount) : "");
+  const [amount, setAmount] = useState(defaultAmountVnd ? maskVndInput(String(defaultAmountVnd)) : "");
   const [showMore, setShowMore] = useState(false);
   const [reference, setReference] = useState("");
   /* "" = let the BE choose (sepay with a reference, manual without) */
@@ -85,7 +88,7 @@ export default function ConfirmPaymentModal({
     if (!orderId) found.order = t("errors.order");
     if (!transaction) {
       if (!transferCode.trim()) found.transferCode = t("errors.transferCode");
-      if (!/^[1-9]\d*$/.test(amount.trim())) found.amount = t("errors.amount");
+      if (!(parseVndInput(amount) || 0)) found.amount = t("errors.amount");
     }
     if (!note.trim()) found.note = t("errors.note");
     return found;
@@ -101,7 +104,7 @@ export default function ConfirmPaymentModal({
     return {
       ...common,
       transferCode: transferCode.trim().toUpperCase(),
-      amount: Number(amount),
+      amountVnd: parseVndInput(amount) as number,
       ...(reference.trim() ? { reference: reference.trim() } : {}),
       ...(provider ? { provider } : {}),
       ...(transferContent.trim() ? { transferContent: transferContent.trim() } : {}),
@@ -147,9 +150,7 @@ export default function ConfirmPaymentModal({
           {transaction && (
             <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-3 flex flex-col gap-1.5 text-xs font-primary text-[var(--text-secondary)]">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">
-                  {format.number(transaction.amount, "vnd")}
-                </span>
+                <MoneyText money={moneyOf(transaction, "amount")} className="text-[var(--text-primary)]" />
                 <VerificationBadge status={transaction.verificationStatus} />
               </div>
               <span className="break-all">{transaction.transferContent || "—"}</span>
@@ -182,12 +183,7 @@ export default function ConfirmPaymentModal({
                 {fieldError("transferCode")}
               </FormField>
               <FormField label={t("manual.amount")} required info={t("manual.amountInfo")}>
-                <input
-                  className={inputClass}
-                  inputMode="numeric"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                />
+                <VndInput value={amount} onChange={setAmount} aria-invalid={Boolean(errors.amount)} />
                 {fieldError("amount")}
               </FormField>
 

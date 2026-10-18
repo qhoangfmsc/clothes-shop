@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { ArrowLeft, CheckCircle, MapPin, PenLine, QrCode, Undo2 } from "lucide-react";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -42,6 +43,7 @@ export default function OrderDetailContent() {
   const { toast } = useToast();
   const toErrorMessage = useErrorMessage();
   const format = useFormatter();
+  const { fmt } = useMoney();
   const statusLabel = useOrderStatusLabel();
   const shippingMethodName = useShippingMethodName();
   const params = useParams<{ orderId: string }>();
@@ -112,7 +114,7 @@ export default function OrderDetailContent() {
   /* The name the admin configured; the translated label while the config loads or if the method was removed */
   const methodLabel = (id: ShippingMethodId | undefined) =>
     (id && shippingMethodName(id)) || (id ? t(`shippingMethod.${id}`) : order.shippingMethod);
-  const shippingFree = Number(order.shippingFee) === 0;
+  const shippingFree = order.shippingFeeVnd === 0;
   /* The order itself says whether it is paid; a cancelled order can no longer be paid */
   const isPaid = order.paymentStatus === "paid";
   /* Only a delivered / completed order has lines to review */
@@ -245,7 +247,7 @@ export default function OrderDetailContent() {
                             </span>
                           </div>
                           <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
-                            {format.number(attempt.amount, "vnd")} ·{" "}
+                            {fmt(attempt, "amount")} ·{" "}
                             {attempt.paidAt
                               ? t("payment.paidAt", { date: format.dateTime(new Date(attempt.paidAt), "dateTime") })
                               : t("payment.expiresAt", { date: format.dateTime(new Date(attempt.expiresAt), "dateTime") })}
@@ -340,7 +342,7 @@ export default function OrderDetailContent() {
                         }`}
                       >
                         {refund.status === "COMPLETED"
-                          ? t("refund.COMPLETED", { amount: format.number(refund.amount, "vnd") })
+                          ? t("refund.COMPLETED", { amount: fmt(refund, "amount") })
                           : t(`refund.${refund.status}`)}
                       </span>
                       {refund.status === "COMPLETED" && refund.bankReference && (
@@ -350,7 +352,7 @@ export default function OrderDetailContent() {
                         </span>
                       )}
                       <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
-                        {refund.status === "REQUESTED" && `${format.number(refund.amount, "vnd")} · `}
+                        {refund.status === "REQUESTED" && `${fmt(refund, "amount")} · `}
                         {refund.processedAt
                           ? t("refund.processedAt", { date: format.dateTime(new Date(refund.processedAt), "dateTime") })
                           : t("refund.requestedAt", { date: format.dateTime(new Date(refund.createdAt), "dateTime") })}
@@ -419,7 +421,8 @@ export default function OrderDetailContent() {
                     )}
                   </div>
                   <span className="shrink-0 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-                    {format.number(Number(item.price) * item.quantity, "price")}
+                    {/* Unit price × quantity: the BE sends no line total for an order */}
+                    {fmt(item, "price")} × {item.quantity}
                   </span>
                 </li>
               ))}
@@ -428,7 +431,7 @@ export default function OrderDetailContent() {
             <dl className="m-0 pt-4 border-t border-[var(--border-subtle)] flex flex-col gap-2 font-primary tracking-[-0.02em]">
               <div className="flex justify-between gap-3 text-sm text-[var(--text-secondary)]">
                 <dt>{t("subtotal")}</dt>
-                <dd className="m-0">{format.number(Number(order.subtotal), "price")}</dd>
+                <dd className="m-0">{fmt(order, "subtotal")}</dd>
               </div>
               <div className="flex justify-between gap-3 text-sm text-[var(--text-secondary)]">
                 <dt>
@@ -441,12 +444,12 @@ export default function OrderDetailContent() {
                   )}
                 </dt>
                 <dd className={`m-0 ${shippingFree ? "text-[var(--accent-sage)] font-medium" : ""}`}>
-                  {shippingFree ? t("free") : format.number(Number(order.shippingFee), "price")}
+                  {shippingFree ? t("free") : fmt(order, "shippingFee")}
                 </dd>
               </div>
               <div className="flex justify-between items-baseline gap-3 text-[var(--text-heading)] font-medium">
                 <dt className="text-sm">{t("total")}</dt>
-                <dd className="m-0 text-xl">{format.number(Number(order.total), "price")}</dd>
+                <dd className="m-0 text-xl">{fmt(order, "total")}</dd>
               </div>
             </dl>
 

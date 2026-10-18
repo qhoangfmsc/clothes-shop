@@ -20,8 +20,10 @@ export interface ProductListParams extends ListParams {
 export interface ProductFormData {
   name: string;
   slug: string;
-  price: number;
-  originalPrice: number | null;
+  /** Whole VND as typed (dot-grouped); parsed with `parseVndInput` on save */
+  priceVnd: string;
+  /** Empty = no struck-through price */
+  originalPriceVnd: string;
   images: string[];
   categoryId: string;
   subcategoryId: string | null;

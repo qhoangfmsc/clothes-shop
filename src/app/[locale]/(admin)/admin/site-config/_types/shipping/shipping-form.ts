@@ -5,6 +5,7 @@ import {
   type ShippingInfo,
   type ShippingMethodId,
 } from "@/src/types/shipping";
+import { maskVndInput, parseVndInput } from "@/src/lib/money";
 
 /* Form model of the SHIPPING_CONFIG site config. The BE rejects unknown fields at every level,
    so `serializeShippingForm` writes exactly the stored shape. */
@@ -16,7 +17,7 @@ export interface ShippingMethodForm {
   name: string;
   description: string;
   estimatedDays: string;
-  /** Kept as text while typing; validated and converted on save */
+  /** Whole VND, kept as dot-grouped text while typing; validated and converted on save (`priceVnd` in the config) */
   price: string;
   icon: ShippingIcon;
 }
@@ -30,7 +31,7 @@ export interface ReturnPolicyForm {
 }
 
 export interface ShippingConfigForm {
-  /** Empty = no free shipping (`null`) */
+  /** Whole VND as text (`freeShippingThresholdVnd` in the config); empty = no free shipping (`null`) */
   threshold: string;
   methods: ShippingMethodForm[];
   /** `null` = not known: it is left out and the BE keeps/fills its own default */
@@ -41,7 +42,7 @@ export const SHIPPING_LIMITS = {
   name: 100,
   description: 255,
   estimatedDays: 100,
-  money: 99_999_999,
+  money: 1_000_000_000,
   returnDaysMax: 365,
   returnDescription: 500,
   returnConditions: 10,
@@ -52,7 +53,8 @@ const isMethodId = (value: unknown): value is ShippingMethodId =>
   SHIPPING_METHOD_IDS.some((id) => id === value);
 const isIcon = (value: unknown): value is ShippingIcon => SHIPPING_ICONS.some((icon) => icon === value);
 const text = (value: unknown) => (typeof value === "string" ? value : "");
-const money = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? String(value) : "");
+const money = (value: unknown) =>
+  typeof value === "number" && Number.isSafeInteger(value) ? maskVndInput(String(value)) : "";
 
 function returnPolicyFrom(raw: unknown): ReturnPolicyForm | null {
   if (typeof raw !== "object" || raw === null) return null;
@@ -67,7 +69,7 @@ function returnPolicyFrom(raw: unknown): ReturnPolicyForm | null {
 /** Builds the form from a stored/served config; null when the shape is not usable */
 function fromObject(raw: unknown): ShippingConfigForm | null {
   if (typeof raw !== "object" || raw === null) return null;
-  const { freeShippingThreshold, methods } = raw as { freeShippingThreshold?: unknown; methods?: unknown };
+  const { freeShippingThresholdVnd, methods } = raw as { freeShippingThresholdVnd?: unknown; methods?: unknown };
   if (!Array.isArray(methods)) return null;
 
   const form: ShippingMethodForm[] = [];
@@ -79,11 +81,11 @@ function fromObject(raw: unknown): ShippingConfigForm | null {
       name: text(found.name),
       description: text(found.description),
       estimatedDays: text(found.estimatedDays),
-      price: money(found.price),
+      price: money(found.priceVnd),
       icon: found.icon,
     });
   }
-  return { threshold: money(freeShippingThreshold), methods: form, returnPolicy: returnPolicyFrom((raw as { returnPolicy?: unknown }).returnPolicy) };
+  return { threshold: money(freeShippingThresholdVnd), methods: form, returnPolicy: returnPolicyFrom((raw as { returnPolicy?: unknown }).returnPolicy) };
 }
 
 /** The saved `value` string (a JSON string), or null when it is missing or broken */
@@ -100,7 +102,7 @@ export function parseShippingValue(value: string | undefined): ShippingConfigFor
 export function shippingInfoToForm(info: ShippingInfo | null): ShippingConfigForm | null {
   if (!info) return null;
   return fromObject({
-    freeShippingThreshold: info.freeShippingThreshold,
+    freeShippingThresholdVnd: info.freeShippingThresholdVnd,
     methods: info.methods,
     returnPolicy: info.returnPolicy,
   });
@@ -118,11 +120,9 @@ export type ShippingFieldError =
 /** Errors by field path: `threshold`, `returnPolicy.<days|description|conditions>`, or `<methodId>.<name|description|estimatedDays|price>` */
 export type ShippingFormErrors = Record<string, ShippingFieldError>;
 
-const MONEY_PATTERN = /^\d+(\.\d{1,2})?$/;
-
 function checkMoney(value: string, { allowZero }: { allowZero: boolean }): ShippingFieldError | null {
-  if (!MONEY_PATTERN.test(value)) return { kind: "number" };
-  const amount = Number(value);
+  const amount = parseVndInput(value);
+  if (amount === null) return { kind: "number" };
   if (amount > SHIPPING_LIMITS.money) return { kind: "tooBig" };
   if (!allowZero && amount <= 0) return { kind: "positive" };
   return null;
@@ -170,13 +170,13 @@ const splitConditions = (value: string) =>
 /** The string for `PUT /api/admin/site-config/SHIPPING_CONFIG` (`{ value }`) — call only on a valid form */
 export function serializeShippingForm(form: ShippingConfigForm): string {
   return JSON.stringify({
-    freeShippingThreshold: form.threshold.trim() ? Number(form.threshold) : null,
+    freeShippingThresholdVnd: form.threshold.trim() ? parseVndInput(form.threshold) : null,
     methods: form.methods.map((m) => ({
       id: m.id,
       name: m.name.trim(),
       description: m.description.trim(),
       estimatedDays: m.estimatedDays.trim(),
-      price: Number(m.price),
+      priceVnd: parseVndInput(m.price),
       icon: m.icon,
     })),
     ...(form.returnPolicy

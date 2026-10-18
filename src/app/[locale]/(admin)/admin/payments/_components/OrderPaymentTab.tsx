@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
@@ -59,7 +61,7 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
   /* `{}` = record a transaction by hand; with `transaction` = attach that one */
   const [confirming, setConfirming] = useState<{
     transaction?: PaymentTransaction;
-    code?: { transferCode: string; amount: number };
+    code?: { transferCode: string; amountVnd: number };
   } | null>(null);
 
   /* The QR the admin just generated, and whether that request is running */
@@ -176,7 +178,9 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
         <OrderPaymentBadge status={order.paymentStatus} />
       </Row>
       {order.paidAt && <Row label={t("paidAt")}>{date(order.paidAt)}</Row>}
-      <Row label={t("total")}>{format.number(Number(order.total), "priceFixed")}</Row>
+      <Row label={t("total")}>
+        <MoneyText money={moneyOf(order, "total")} />
+      </Row>
       <Row label={t("customer")}>
         {[order.customer?.fullName, order.customer?.phone].filter(Boolean).join(" · ") || "—"}
       </Row>
@@ -220,7 +224,7 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
                   <code className="font-mono font-semibold text-[var(--text-primary)]">{attempt.transferCode}</code>
                   <CopyButton value={attempt.transferCode} label={t("transferCode")} />
                 </span>
-                <span className="font-semibold text-[var(--text-primary)]">{format.number(attempt.amount, "vnd")}</span>
+                <MoneyText money={moneyOf(attempt, "amount")} className="text-[var(--text-primary)]" />
               </div>
               <div className="flex items-center justify-between gap-3">
                 <AttemptBadge status={attempt.status} />
@@ -237,7 +241,7 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
                       type="button"
                       className={ACTION_BUTTON}
                       onClick={() =>
-                        setConfirming({ code: { transferCode: attempt.transferCode, amount: attempt.amount } })
+                        setConfirming({ code: { transferCode: attempt.transferCode, amountVnd: attempt.amountVnd } })
                       }
                     >
                       {t("confirmCode")}
@@ -261,9 +265,7 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
               className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-3 flex flex-col gap-1.5 text-xs font-primary text-[var(--text-secondary)]"
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">
-                  {format.number(tx.amount, "vnd")}
-                </span>
+                <MoneyText money={moneyOf(tx, "amount")} className="text-[var(--text-primary)]" />
                 <VerificationBadge status={tx.verificationStatus} />
               </div>
               <span className="break-all">{tx.transferContent || "—"}</span>
@@ -296,7 +298,7 @@ export default function OrderPaymentTab({ orderId, onChanged }: OrderPaymentTabP
           transaction={confirming.transaction}
           fixedOrderId={order.id}
           lockedTransferCode={confirming.code?.transferCode}
-          defaultAmount={confirming.code?.amount}
+          defaultAmountVnd={confirming.code?.amountVnd}
           onClose={() => setConfirming(null)}
           onConfirmed={handleConfirmed}
         />

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useMemo, useRef, type FormEvent } from "react";
 import Image from "next/image";
-import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { Plus, Pencil, Trash2, X, ImageIcon, Search } from "lucide-react";
 import { useAdminProducts } from "@/src/hooks/use-admin-api";
 import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
@@ -60,7 +61,7 @@ export default function CollectionsContent() {
   const tCrud = useTranslations("admin.components.crud");
   const sortOptions = useSortOptions(COLLECTION_SORT_OPTIONS);
   const locale = useLocale();
-  const format = useFormatter();
+  const { fmt } = useMoney();
   const COLLECTION_TABS: FormTab[] = [
     { id: "info", label: t("form.tabs.info") },
     { id: "products", label: t("form.tabs.products") },
@@ -487,7 +488,7 @@ export default function CollectionsContent() {
                                     selected ? "text-white/70" : "text-[var(--text-muted)]"
                                   }`}
                                 >
-                                  {p.category?.slug ?? "—"} — {format.number(Number(p.price), "priceFixed")}
+                                  {p.category?.slug ?? "—"} — {fmt(p, "price")}
                                 </div>
                               </div>
                               {selected && (

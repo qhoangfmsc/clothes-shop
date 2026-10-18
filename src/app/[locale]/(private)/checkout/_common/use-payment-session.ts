@@ -6,6 +6,7 @@ import { useApiAuth } from "@/src/hooks/use-api-auth";
 import {
   PAYMENT_POLL_INTERVAL_MS,
   normalizePaymentStatus,
+  type PaymentAmount,
   type PaymentSession,
   type PaymentStatus,
 } from "./payment";
@@ -35,6 +36,8 @@ export function usePaymentSession(orderId: string, enabled: boolean) {
   const [session, setSession] = useState<PaymentSession | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [connectionLost, setConnectionLost] = useState(false);
+  /* Latest amount the BE reported (QR session or status answer), so the page never loses the figure */
+  const [amount, setAmount] = useState<PaymentAmount | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   /* Codes of earlier sessions of this order that expired and were replaced: a shopper may still have paid one */
   const [previousCodes, setPreviousCodes] = useState<string[]>([]);
@@ -46,10 +49,12 @@ export function usePaymentSession(orderId: string, enabled: boolean) {
   const runRef = useRef(0);
 
   const fetchStatus = useCallback(async (): Promise<PaymentStatus> => {
-    const res = await apiFetch<{ data: { status: string } }>(
+    const res = await apiFetch<{ data: { status: string } & PaymentAmount }>(
       `/api/payments/${encodeURIComponent(orderId)}/status`
     );
     if (!res.data) throw new Error("");
+    const { amountVnd, amountUsd } = res.data;
+    setAmount({ amountVnd, amountUsd });
     return normalizePaymentStatus(res.data.status);
   }, [apiFetch, orderId]);
 
@@ -60,6 +65,8 @@ export function usePaymentSession(orderId: string, enabled: boolean) {
       body: { orderId },
     });
     if (!res.data) throw new Error("");
+    const { amountVnd, amountUsd } = res.data;
+    setAmount({ amountVnd, amountUsd });
     return { ...res.data, status: normalizePaymentStatus(res.data.status) };
   }, [apiFetch, orderId]);
 
@@ -191,5 +198,5 @@ export function usePaymentSession(orderId: string, enabled: boolean) {
     };
   }, [phase, expiresAt, fetchStatus]);
 
-  return { phase, session, error, connectionLost, isCreating, previousCodes, retry: start, recreate };
+  return { phase, session, amount, error, connectionLost, isCreating, previousCodes, retry: start, recreate };
 }

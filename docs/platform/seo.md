@@ -1,6 +1,6 @@
 # SEO (metadata, sitemap, robots, dữ liệu có cấu trúc)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
 > **Code:** `src/app/robots.ts` · `src/app/sitemap.ts` · `src/lib/structured-data.ts` · `src/lib/site-url.ts` · `src/lib/brand.ts` · `src/lib/legal.ts` · `src/i18n/metadata.ts` · `src/app/[locale]/_components/JsonLd.tsx` · `src/app/[locale]/layout.tsx`
 
 ## 1. Tóm tắt module
@@ -54,7 +54,7 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 - Trang chủ: `siteJsonLd(locale, description, identity)` = `WebSite` (`name` `DOOVAN`, `alternateName` `Doovan`, `description`, `inLanguage`, `publisher` trỏ `@id` của Organization) + `ClothingStore` (loại con của `LocalBusiness` và `Organization`; `@id` = `${SITE_URL}/#organization`, cùng tên, `description`, `disambiguatingDescription` = `shared.site.identity` — một câu nói rõ đây là thương hiệu thời trang Việt Nam ở TP. Hồ Chí Minh —, `foundingDate` = `BRAND_FOUNDING_YEAR` (`2026`), `email`, `telephone` (`CONTACT_PHONE_E164`), `address` (`PostalAddress` từ `CONTACT_ADDRESS_PARTS`) và `contactPoint` `customer service` (email + telephone), `logo` `${SITE_URL}/icon.png`, `sameAs` từ `SOCIALS`; `hasMap` và phần tử cuối của `sameAs` là `GOOGLE_BUSINESS_URL`). Chưa khai giờ mở cửa. `description` là `shared.site.meta.description` của ngôn ngữ hiện tại.
 - Trang chủ còn có `siteNavigationJsonLd(locale, entries)` = `ItemList` các `SiteNavigationElement` (Shop, New In, Collections, Đặt thiết kế `/contact`, About; tên lấy từ `shared.header.nav`, URL tuyệt đối theo locale). Chỉ là gợi ý cho Google; việc hiện sitelinks do Google quyết định.
-- Sản phẩm: `productJsonLd(locale, product, path)` — `Product` + `Offer` (`priceCurrency` USD vì giá trên trang hiển thị bằng USD, giá `toFixed(2)`, `InStock`, `NewCondition`), không có `aggregateRating`.
+- Sản phẩm: `productJsonLd(locale, product, path)` — `Product` + `Offer` (`priceCurrency` và `price` theo ngôn ngữ của trang như giá hiển thị: `vi` → `VND` với `priceVnd`, ngôn ngữ khác → `USD` với `priceUsd`, lấy nguyên từ API; `InStock`, `NewCondition`), không có `aggregateRating`.
 - `breadcrumbJsonLd(locale, crumbs)` cho `BreadcrumbList`.
 - `JsonLd` nhúng script; URL ảnh `/media/...` được đổi thành tuyệt đối bằng `absoluteUrl`.
 

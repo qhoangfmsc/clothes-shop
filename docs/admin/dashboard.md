@@ -1,6 +1,6 @@
 # Dashboard
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin` · **Cập nhật:** 2026-10-17
 > **Code:** `(admin)/admin/page.tsx` · `(admin)/admin/DashboardContent.tsx` · `(admin)/admin/_components/AnalyticsSummary.tsx`
 > **i18n:** `admin.dashboard`
 
@@ -37,7 +37,7 @@ Số liệu tính ở client từ tối đa 200 bản ghi gần nhất (theo sor
 
 | Thẻ | Giá trị | Phụ đề |
 |---|---|---|
-| Revenue | Tổng `total` của các đơn **không** `cancelled`, định dạng `price` | Số đơn hợp lệ |
+| Revenue | Tổng `totalVnd` của các đơn **không** `cancelled`, hiện bằng VND (cộng số nguyên VND nên không lệch; không suy ra USD vì BE chưa có tổng doanh thu) | Số đơn hợp lệ |
 | Processing | Số đơn `pending` (thẻ nhấp nháy khi > 0) | Cố định |
 | Orders | `total` đơn | Số đơn `completed` |
 | Products | `total` sản phẩm | Số `active` / không active (`total − active`) |

@@ -41,16 +41,19 @@ export interface ReturnItem {
   productImage: string | null;
   size: string | null;
   color: string | null;
-  price: number | null;
+  /** Unit price at order time; both `null` when the order line no longer exists */
+  priceVnd: number | null;
+  priceUsd: number | null;
   /** What the customer asked to send back */
   quantity: number;
   /** What the shop accepted after checking the parcel; `null` before `RECEIVED` */
   acceptedQuantity: number | null;
 }
 
-/** The refund a return produced (VND). The admin who handled it is never exposed. */
+/** The refund a return produced. The admin who handled it is never exposed. */
 export interface ReturnRefund {
-  amount: number;
+  amountVnd: number;
+  amountUsd: number;
   status: "REQUESTED" | "COMPLETED" | "REJECTED";
   bankReference: string | null;
   processedAt: string | null;

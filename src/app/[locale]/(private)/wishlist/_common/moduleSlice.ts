@@ -52,7 +52,8 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
         product: {
           id: string;
           name: string;
-          price: number;
+          priceVnd: number;
+          priceUsd: number;
           badge?: ProductBadge | null;
           images: string[];
           category: string;
@@ -65,7 +66,8 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
     return (res.data ?? []).map((si) => ({
       productId: si.productId,
       name: si.product?.name ?? "",
-      price: Number(si.product?.price ?? 0),
+      priceVnd: si.product?.priceVnd ?? 0,
+      priceUsd: si.product?.priceUsd ?? 0,
       image: si.product?.images?.[0] ?? "",
       badge: si.product?.badge ?? null,
       category:
@@ -92,7 +94,8 @@ function loadFromStorage(): WishlistItem[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     const items = parsed?.state?.items ?? parsed?.items ?? [];
-    return Array.isArray(items) ? items : [];
+    /* Items saved before prices became a VND/USD pair carry no `priceVnd`: drop them (the server list refills it) */
+    return Array.isArray(items) ? items.filter((i) => typeof i?.priceVnd === "number") : [];
   } catch {
     return [];
   }

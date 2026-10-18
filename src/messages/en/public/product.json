@@ -75,7 +75,7 @@
         "stars": "{stars} Star ({count})",
         "photos": "With photos ({count})"
       },
-      "openAll": "See all {count, plural, one {# review} other {# reviews}}"
+      "openAll": "See all reviews"
     },
     "filters": {
       "fit": "Fit",
@@ -97,7 +97,7 @@
       "loadFailed": "We couldn't load the reviews.",
       "retry": "Try again",
       "noMatch": "No review matches these filters.",
-      "loadMore": "Show {count} more",
+      "loadMore": "Show more",
       "loadingMore": "Loading…",
       "collapse": "Hide reviews"
     },

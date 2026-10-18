@@ -15,7 +15,7 @@
     "hintSize": "Select a size",
     "hintColor": "Select a color",
     "added": "Added",
-    "addToBag": "Add to Bag — {price}",
+    "addToBag": "Add to Bag",
     "toastAdded": "{name} ({details}) added — <link>View Bag</link>"
   },
   "productAction": {

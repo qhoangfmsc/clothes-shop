@@ -58,7 +58,7 @@ function newest(dates: Array<string | undefined>): string | undefined {
     .at(-1);
 }
 
-/** The API returns 24 products by default, so walk every page. */
+/** The API returns 25 products by default, so walk every page. */
 async function fetchAllProducts(): Promise<Product[]> {
   const products: Product[] = [];
   for (let page = 1; page <= MAX_PAGES; page++) {

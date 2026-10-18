@@ -5,9 +5,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import ShopHero from "../../_components/ShopHero";
 import BreadcrumbNav from "../../_components/BreadcrumbNav";
 import SubcategoryChips from "../../_components/SubcategoryChips";
-import ProductGrid from "../../_components/ProductGrid";
+import ShopProductsClient from "../../_components/ShopProductsClient";
 
-import { getSubcategory, getProducts, getCategories } from "../../_lib/server-fetchers";
+import { getSubcategory, getProducts, getProductsWithParams, getCategories } from "../../_lib/server-fetchers";
+import { SHOP_PAGE_SIZE } from "../../_common/constants";
 import { buildAlternates, buildSocialMetadata, withBrand } from "@/src/i18n/metadata";
 import JsonLd from "@/src/app/[locale]/_components/JsonLd";
 import { breadcrumbJsonLd } from "@/src/lib/structured-data";
@@ -72,7 +73,8 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   }
 
   const { category, subcategory } = result;
-  const products = await getProducts(catSlug, subSlug);
+  const firstPage = await getProductsWithParams({ category: catSlug, subcategory: subSlug, limit: SHOP_PAGE_SIZE });
+  const products = firstPage.data;
 
   /* Hero image comes from this subcategory's first product — no placeholder
      banner. An empty subcategory (no products yet) just shows a plain hero. */
@@ -117,18 +119,24 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
           paddingTop: 1,
         }}
       >
-        <div className="flex flex-col gap-2 py-5 sm:py-6 sm:px-6">
-          <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium px-4 sm:px-0">
-            {subcategory.description}
-          </span>
-          <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none px-4 sm:px-0">
-            {subcategory.label}
-          </h2>
-          <p className="text-[var(--text-muted)] font-primary text-[15px] tracking-[-0.02em] leading-[150%] max-w-[480px] mt-2 px-4 sm:px-0">
-            {t("pieceCount", { count: products.length })}
-          </p>
-        </div>
-        <ProductGrid products={products} />
+        <ShopProductsClient
+          initialProducts={products}
+          initialTotal={firstPage.total}
+          scope={{ category: catSlug, subcategory: subSlug }}
+          heading={
+            <div className="flex flex-col gap-2 py-5 sm:py-6 sm:px-6">
+              <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium px-4 sm:px-0">
+                {subcategory.description}
+              </span>
+              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none px-4 sm:px-0">
+                {subcategory.label}
+              </h2>
+              <p className="text-[var(--text-muted)] font-primary text-[15px] tracking-[-0.02em] leading-[150%] max-w-[480px] mt-2 px-4 sm:px-0">
+                {t("pieceCount", { count: firstPage.total })}
+              </p>
+            </div>
+          }
+        />
       </div>
     <JsonLd
         data={breadcrumbJsonLd(locale, [

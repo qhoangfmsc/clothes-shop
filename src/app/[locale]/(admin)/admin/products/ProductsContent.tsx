@@ -5,6 +5,10 @@ import Image from "next/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Plus, Pencil, Trash2, X, ImageIcon, Star } from "lucide-react";
 import { useAdminCategories } from "@/src/hooks/use-admin-api";
+import { useMoney } from "@/src/hooks/use-money";
+import { maskVndInput, moneyOf, parseVndInput } from "@/src/lib/money";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import VndInput from "@/src/app/[locale]/_components/VndInput";
 import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useSortOptions } from "@/src/hooks/use-sort-options";
@@ -42,6 +46,8 @@ import {
   SIZE_GROUPS,
   TAG_SUGGESTIONS,
   EMPTY_FORM,
+  MIN_PRICE_VND,
+  MAX_PRICE_VND,
 } from "./_common/constants";
 import type { ProductListResult } from "./_common/types";
 import type { Product, ProductColor } from "@/src/types/product";
@@ -84,6 +90,7 @@ export default function ProductsContent() {
   const tCrud = useTranslations("admin.components.crud");
   const locale = useLocale();
   const format = useFormatter();
+  const { fmtOrNull } = useMoney();
   const PRODUCT_TABS: FormTab[] = [
     { id: "general", label: t("form.tabs.general") },
     { id: "variants", label: t("form.tabs.variants") },
@@ -164,14 +171,12 @@ export default function ProductsContent() {
         key: "price",
         header: t("table.columns.price"),
         render: (p) => (
-          <>
-            <span className="font-semibold">{format.number(Number(p.price), "priceFixed")}</span>
-            {p.originalPrice && (
-              <span className="text-xs text-[var(--text-muted)] line-through ml-1.5">
-                {format.number(Number(p.originalPrice), "priceFixed")}
-              </span>
+          <div className="flex flex-col gap-0.5">
+            <MoneyText money={moneyOf(p, "price")} />
+            {p.originalPriceVnd !== null && (
+              <span className="text-xs text-[var(--text-muted)] line-through">{fmtOrNull(p, "originalPrice")}</span>
             )}
-          </>
+          </div>
         ),
       },
       {
@@ -245,7 +250,7 @@ export default function ProductsContent() {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [catList, locale]
+    [catList, locale, fmtOrNull]
   );
 
   /* ── Filter options ── */
@@ -261,7 +266,8 @@ export default function ProductsContent() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>(PRODUCT_TABS[0].id);
   const [form, setForm] = useState(EMPTY_FORM);
-  /* Color builder */
+  /* Errors of the price fields, shown under them; the BE would refuse the same values with a 400 */
+  const [priceErrors, setPriceErrors] = useState<{ price?: boolean; originalPrice?: boolean }>({});  /* Color builder */
   const [colorName, setColorName] = useState("");
   const [colorHex, setColorHex] = useState("#333333");
   /* Tag input */
@@ -303,6 +309,7 @@ export default function ProductsContent() {
     setColorName("");
     setColorHex("#333333");
     setTagInput("");
+    setPriceErrors({});
   };
 
   const openCreate = () => {
@@ -317,8 +324,8 @@ export default function ProductsContent() {
     setForm({
       name: p.name,
       slug: p.slug,
-      price: Number(p.price) || 0,
-      originalPrice: p.originalPrice != null ? Number(p.originalPrice) : null,
+      priceVnd: maskVndInput(String(p.priceVnd)),
+      originalPriceVnd: p.originalPriceVnd !== null ? maskVndInput(String(p.originalPriceVnd)) : "",
       images: [...p.images],
       categoryId: p.category?.id ?? "",
       subcategoryId: p.subcategory?.id ? String(p.subcategory.id) : "",
@@ -334,6 +341,7 @@ export default function ProductsContent() {
     setColorName("");
     setColorHex("#333333");
     setTagInput("");
+    setPriceErrors({});
     setActiveTab(PRODUCT_TABS[0].id);
     setShowModal(true);
   };
@@ -366,11 +374,28 @@ export default function ProductsContent() {
       return;
     }
 
+    /* Whole VND from 1 to 1.000.000.000; the struck-through price may not be below the price */
+    const priceVnd = parseVndInput(form.priceVnd);
+    const originalPriceVnd = form.originalPriceVnd ? parseVndInput(form.originalPriceVnd) : null;
+    const priceInvalid = priceVnd === null || priceVnd < MIN_PRICE_VND || priceVnd > MAX_PRICE_VND;
+    const originalInvalid =
+      Boolean(form.originalPriceVnd) &&
+      (originalPriceVnd === null ||
+        originalPriceVnd > MAX_PRICE_VND ||
+        (priceVnd !== null && originalPriceVnd < priceVnd));
+    if (priceInvalid || originalInvalid) {
+      setPriceErrors({ price: priceInvalid, originalPrice: originalInvalid });
+      setActiveTab(PRODUCT_TABS[0].id);
+      return;
+    }
+    setPriceErrors({});
+
     try {
+      const { priceVnd: _price, originalPriceVnd: _original, ...rest } = form;
       const payload = {
-        ...form,
-        price: Number(form.price) || 0,
-        originalPrice: form.originalPrice != null ? Number(form.originalPrice) : null,
+        ...rest,
+        priceVnd,
+        originalPriceVnd,
         subcategoryId: form.subcategoryId || null,
       };
       if (editingId) {
@@ -492,36 +517,42 @@ export default function ProductsContent() {
                   </FormSection>
 
                   <FormSection title={t("form.sections.pricing")}>
-                    <FormField label={t("form.fields.price")} required>
-                      <input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        className={inputClass}
-                        value={form.price}
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, price: parseFloat(e.target.value) || 0 }))
-                        }
+                    <FormField label={t("form.fields.price")} required info={t("form.info.price")}>
+                      <VndInput
+                        value={form.priceVnd}
+                        onChange={(value) => {
+                          setForm((p) => ({ ...p, priceVnd: value }));
+                          setPriceErrors((prev) => ({ ...prev, price: false }));
+                        }}
+                        onReject={() => setPriceErrors((prev) => ({ ...prev, price: true }))}
+                        aria-invalid={priceErrors.price || undefined}
+                        placeholder={t("form.placeholders.price")}
                         required
                       />
+                      {priceErrors.price && (
+                        <p role="alert" className="m-0 text-xs text-[var(--accent-rose)] font-primary">
+                          {t("form.errors.price")}
+                        </p>
+                      )}
                     </FormField>
                     <FormField
                       label={t("form.fields.originalPrice")}
                       info={t("form.info.originalPrice")}
                     >
-                      <input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        className={inputClass}
-                        value={form.originalPrice ?? ""}
-                        onChange={(e) =>
-                          setForm((p) => ({
-                            ...p,
-                            originalPrice: e.target.value ? parseFloat(e.target.value) : null,
-                          }))
-                        }
+                      <VndInput
+                        value={form.originalPriceVnd}
+                        onChange={(value) => {
+                          setForm((p) => ({ ...p, originalPriceVnd: value }));
+                          setPriceErrors((prev) => ({ ...prev, originalPrice: false }));
+                        }}
+                        onReject={() => setPriceErrors((prev) => ({ ...prev, originalPrice: true }))}
+                        aria-invalid={priceErrors.originalPrice || undefined}
                       />
+                      {priceErrors.originalPrice && (
+                        <p role="alert" className="m-0 text-xs text-[var(--accent-rose)] font-primary">
+                          {t("form.errors.originalPrice")}
+                        </p>
+                      )}
                     </FormField>
                   </FormSection>
 

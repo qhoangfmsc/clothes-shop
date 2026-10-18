@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
+import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Link } from "@/src/i18n/navigation";
 import Image from "next/image";
@@ -21,14 +22,16 @@ interface OrderPreview {
   id: string;
   status: string;
   paymentStatus?: string;
-  total: number;
+  totalVnd: number;
+  totalUsd: number;
   createdAt: string;
   items: Array<{
     id: string;
     productName: string;
     productImage: string;
     quantity: number;
-    price: number;
+    priceVnd: number;
+    priceUsd: number;
     size: string;
     color: string;
   }>;
@@ -84,7 +87,7 @@ function ProfileHeader({
 function WishlistSection() {
   const t = useTranslations("private.account.wishlist");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
+  const { fmt } = useMoney();
   const items = useAppSelector(selectWishlistItems);
   const latestItems = items.slice(-4).reverse();
 
@@ -179,7 +182,7 @@ function WishlistSection() {
                       {item.name}
                     </span>
                     <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
-                      {hasPublicPrice(item.badge) ? format.number(item.price, "price") : tCommon("priceOnRequest")}
+                      {hasPublicPrice(item.badge) ? fmt(item, "price") : tCommon("priceOnRequest")}
                     </span>
                   </div>
                 </Link>
@@ -198,6 +201,7 @@ function WishlistSection() {
 function OrdersSection() {
   const t = useTranslations("private.account.orders");
   const format = useFormatter();
+  const { fmt } = useMoney();
   const statusLabel = useOrderStatusLabel();
   const paymentLabel = useOrderPaymentStatusLabel();
   const { isAuthenticated } = useAuth();
@@ -342,7 +346,7 @@ function OrdersSection() {
                       </span>
                     )}
                     <span className="font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">
-                      {format.number(Number(order.total), "price")}
+                      {fmt(order, "total")}
                     </span>
                   </div>
 

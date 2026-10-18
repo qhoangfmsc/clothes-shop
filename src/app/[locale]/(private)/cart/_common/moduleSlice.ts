@@ -15,7 +15,7 @@ import type { RootState } from "@/src/store";
 import { apiFetchStandalone } from "@/src/hooks/use-api-auth";
 import { isPurchasable } from "@/src/lib/product-purchase";
 import type { ProductBadge } from "@/src/types/enums";
-import type { CartItem } from "./types";
+import type { CartItem, NewCartItem } from "./types";
 
 /* ── State ── */
 
@@ -26,6 +26,9 @@ interface CartState {
   deselectedKeys: string[];
   /** Keys of lines whose "add" request is still in flight; a cart refetch must not drop them. Not persisted. */
   pendingAddKeys: string[];
+  /** Cart writes (add / quantity / remove) the server has not answered yet. Line totals from an answer are only
+   *  trusted when none is left. Not persisted. */
+  pendingSync: number;
   isOpen: boolean;
   isSyncing: boolean;
 }
@@ -43,8 +46,11 @@ interface ServerCart {
     items?: Array<{
       id: string;
       productId: string;
+      lineTotalVnd?: number;
+      lineTotalUsd?: number;
       product?: {
-        price: number;
+        priceVnd: number;
+        priceUsd: number;
         name: string;
         badge?: ProductBadge | null;
         images?: string[];
@@ -69,7 +75,10 @@ function mapServerCart(res: ServerCart): CartItem[] {
       serverItemId: si.id,
       productId: si.productId,
       name: si.product?.name ?? "",
-      price: Number(si.product?.price ?? 0),
+      priceVnd: si.product?.priceVnd ?? 0,
+      priceUsd: si.product?.priceUsd ?? 0,
+      lineTotalVnd: si.lineTotalVnd ?? null,
+      lineTotalUsd: si.lineTotalUsd ?? null,
       image: si.product?.images?.[0] ?? "",
       size: si.size,
       color: si.color,
@@ -83,38 +92,40 @@ function mapServerCart(res: ServerCart): CartItem[] {
 }
 
 /** Adds a line on the server. The response is the whole cart (`data.id` is the CART id, not the
- *  item id), so the new line's id is found by product + size + color, the same key the server merges on. */
+ *  item id), so the new line's id is found by product + size + color, the same key the server merges on.
+ *  Every cart write resolves with the server's lines: that is where the BE's line totals come from. */
 export const syncAddToCartItem = createAsyncThunk<
-  CartItem | undefined,
+  CartItem[],
   { productId: string; size: string; color: string; quantity: number }
 >("cart/syncAdd", async ({ productId, size, color, quantity }) => {
   const res = await apiFetchStandalone<ServerCart>("/api/cart/items", {
     method: "POST",
     body: { productId, size, color, quantity },
   });
-  return mapServerCart(res).find(
-    (i) => i.productId === productId && i.size === size && i.color === color
-  );
+  return mapServerCart(res);
 });
 
-export const syncRemoveCartItem = createAsyncThunk<void, string>(
+export const syncRemoveCartItem = createAsyncThunk<CartItem[], string>(
   "cart/syncRemove",
-  async (serverItemId) => {
-    await apiFetchStandalone(`/api/cart/items/${serverItemId}`, {
-      method: "DELETE",
-    });
-  }
+  async (serverItemId) =>
+    mapServerCart(
+      await apiFetchStandalone<ServerCart>(`/api/cart/items/${serverItemId}`, {
+        method: "DELETE",
+      })
+    )
 );
 
 export const syncUpdateCartItemQuantity = createAsyncThunk<
-  void,
+  CartItem[],
   { serverItemId: string; quantity: number }
->("cart/syncUpdateQuantity", async ({ serverItemId, quantity }) => {
-  await apiFetchStandalone(`/api/cart/items/${serverItemId}`, {
-    method: "PATCH",
-    body: { quantity },
-  });
-});
+>("cart/syncUpdateQuantity", async ({ serverItemId, quantity }) =>
+  mapServerCart(
+    await apiFetchStandalone<ServerCart>(`/api/cart/items/${serverItemId}`, {
+      method: "PATCH",
+      body: { quantity },
+    })
+  )
+);
 
 export const fetchCart = createAsyncThunk<CartItem[]>(
   "cart/fetch",
@@ -141,7 +152,8 @@ function loadFromStorage(): CartItem[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     const items = parsed?.state?.items ?? parsed?.items ?? [];
-    return Array.isArray(items) ? items : [];
+    /* Lines saved before prices became a VND/USD pair carry no `priceVnd`: drop them (the server cart refills it) */
+    return Array.isArray(items) ? items.filter((i) => typeof i?.priceVnd === "number") : [];
   } catch {
     return [];
   }
@@ -162,9 +174,26 @@ const initialState: CartState = {
   items: loadFromStorage(),
   deselectedKeys: loadDeselectedFromStorage(),
   pendingAddKeys: [],
+  pendingSync: 0,
   isOpen: false,
   isSyncing: false,
 };
+
+/** Takes the BE's prices and line totals from the server lines. A line total is only valid for the quantity the BE
+ *  priced, so a line whose local quantity differs (a failed write) shows no total until the next refetch. */
+function applyServerPricing(state: CartState, serverLines: CartItem[]) {
+  if (state.pendingSync > 0) return;
+  const byKey = new Map(serverLines.map((line) => [cartItemKey(line), line]));
+  for (const line of state.items) {
+    const server = byKey.get(cartItemKey(line));
+    if (!server) continue;
+    line.priceVnd = server.priceVnd;
+    line.priceUsd = server.priceUsd;
+    const sameQuantity = server.quantity === line.quantity;
+    line.lineTotalVnd = sameQuantity ? server.lineTotalVnd : null;
+    line.lineTotalUsd = sameQuantity ? server.lineTotalUsd : null;
+  }
+}
 
 /** Drops unticked keys whose item is gone, so re-adding it later starts selected again. */
 function pruneDeselected(state: CartState) {
@@ -182,7 +211,7 @@ const cartSlice = createSlice({
       reducer(
         state,
         action: PayloadAction<{
-          item: Omit<CartItem, "quantity" | "serverItemId">;
+          item: NewCartItem;
           quantity: number;
         }>
       ) {
@@ -196,14 +225,13 @@ const cartSlice = createSlice({
 
         if (existing) {
           existing.quantity += quantity;
+          existing.lineTotalVnd = null;
+          existing.lineTotalUsd = null;
         } else {
-          state.items.push({ ...item, quantity });
+          state.items.push({ ...item, quantity, lineTotalVnd: null, lineTotalUsd: null });
         }
       },
-      prepare(
-        item: Omit<CartItem, "quantity" | "serverItemId">,
-        quantity = 1
-      ) {
+      prepare(item: NewCartItem, quantity = 1) {
         return { payload: { item, quantity } };
       },
     },
@@ -262,6 +290,8 @@ const cartSlice = createSlice({
         pruneDeselected(state);
       } else {
         item.quantity = quantity;
+        item.lineTotalVnd = null;
+        item.lineTotalUsd = null;
       }
     },
 
@@ -316,20 +346,37 @@ const cartSlice = createSlice({
     /* syncAddToCartItem — remember the server id of the line so it can be updated / removed / ordered */
     builder.addCase(syncAddToCartItem.pending, (state, action) => {
       state.pendingAddKeys.push(cartItemKey(action.meta.arg));
+      state.pendingSync += 1;
     });
     builder.addCase(syncAddToCartItem.fulfilled, (state, action) => {
       const key = cartItemKey(action.meta.arg);
       const pendingIndex = state.pendingAddKeys.indexOf(key);
       if (pendingIndex >= 0) state.pendingAddKeys.splice(pendingIndex, 1);
-      const serverId = action.payload?.serverItemId;
-      if (!serverId) return;
+      state.pendingSync -= 1;
+      const serverId = action.payload.find((i) => cartItemKey(i) === key)?.serverItemId;
       const line = state.items.find((i) => cartItemKey(i) === key);
-      if (line) line.serverItemId = serverId;
+      if (line && serverId) line.serverItemId = serverId;
+      applyServerPricing(state, action.payload);
     });
     builder.addCase(syncAddToCartItem.rejected, (state, action) => {
       const index = state.pendingAddKeys.indexOf(cartItemKey(action.meta.arg));
       if (index >= 0) state.pendingAddKeys.splice(index, 1);
+      state.pendingSync -= 1;
     });
+
+    /* Quantity changes and removals: the answer carries the BE's line totals */
+    for (const thunk of [syncUpdateCartItemQuantity, syncRemoveCartItem]) {
+      builder.addCase(thunk.pending, (state) => {
+        state.pendingSync += 1;
+      });
+      builder.addCase(thunk.fulfilled, (state, action) => {
+        state.pendingSync -= 1;
+        applyServerPricing(state, action.payload);
+      });
+      builder.addCase(thunk.rejected, (state) => {
+        state.pendingSync -= 1;
+      });
+    }
   },
 });
 
@@ -362,8 +409,8 @@ export const selectCartIsSyncing = (state: RootState) =>
 export const selectTotalItems = (state: RootState) =>
   state.cart.items.reduce((sum, i) => sum + i.quantity, 0);
 
-export const selectTotalPrice = (state: RootState) =>
-  state.cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+/** Cart writes the server has not answered yet (a quote or total read now could miss them) */
+export const selectCartPendingSync = (state: RootState) => state.cart.pendingSync;
 
 /* Selection — what the bulk actions, the summary and checkout work on */
 export const selectDeselectedKeys = (state: RootState) =>
@@ -383,9 +430,4 @@ export const selectSelectedCartItems = createSelector(
 export const selectSelectedTotalItems = createSelector(
   [selectSelectedCartItems],
   (items) => items.reduce((sum, i) => sum + i.quantity, 0)
-);
-
-export const selectSelectedTotalPrice = createSelector(
-  [selectSelectedCartItems],
-  (items) => items.reduce((sum, i) => sum + i.price * i.quantity, 0)
 );

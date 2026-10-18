@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import MoneyText from "@/src/app/[locale]/_components/MoneyText";
+import { moneyOf } from "@/src/lib/money";
 import { Search } from "lucide-react";
 import { useDebounce } from "@/src/hooks/use-debounce";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
@@ -94,9 +96,11 @@ export default function OrderPicker({ value, onChange }: OrderPickerProps) {
                     {format.dateTime(new Date(order.createdAt), "short")}
                   </span>
                 </span>
-                <span className="shrink-0 text-sm font-semibold text-[var(--text-primary)]">
-                  {format.number(Number(order.total), "priceFixed")}
-                </span>
+                <MoneyText
+                  money={moneyOf(order, "total")}
+                  className="shrink-0 text-[var(--text-primary)]"
+                  amountClassName="text-sm font-semibold"
+                />
               </button>
             );
           })

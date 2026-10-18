@@ -1,7 +1,8 @@
 "use client";
 
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Home, Truck, Zap } from "lucide-react";
+import { useMoney } from "@/src/hooks/use-money";
 import type { ShippingIcon, ShippingMethod, ShippingMethodId } from "@/src/types/shipping";
 import { GROUP_TITLE_CLASS, SECTION_CARD_CLASS } from "../_common/checkout";
 import OptionList, { type OptionRow } from "./OptionList";
@@ -27,11 +28,11 @@ export default function ShippingMethodSection({
   freeShipping,
 }: ShippingMethodSectionProps) {
   const t = useTranslations("private.checkout.delivery");
-  const format = useFormatter();
+  const { fmt } = useMoney();
 
   const options: OptionRow<ShippingMethodId>[] = (methods ?? []).map((method) => {
     const Icon = ICONS[method.icon];
-    const free = freeShipping || method.price === 0;
+    const free = freeShipping || method.priceVnd === 0;
     return {
       value: method.id,
       icon: <Icon size={18} />,
@@ -43,7 +44,7 @@ export default function ShippingMethodSection({
             free ? "text-[var(--accent-sage)]" : "text-[var(--text-heading)]"
           }`}
         >
-          {free ? t("free") : format.number(method.price, "price")}
+          {free ? t("free") : fmt(method, "price")}
         </span>
       ),
     };

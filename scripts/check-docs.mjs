@@ -65,6 +65,9 @@ const MODULES = [
     "src/hooks/use-sort-options.ts", "src/hooks/use-auto-advance.ts", "src/hooks/use-banner-rotation.ts",
     "src/hooks/useMediaQuery.ts", "src/lib/product-badge.ts", "src/lib/product-purchase.ts",
   ] },
+  { doc: "platform/currency", paths: [
+    "src/lib/money.ts", "src/hooks/use-money.ts", `${COMP}MoneyText.tsx`, `${COMP}VndInput.tsx`,
+  ] },
   { doc: "platform/design-system", paths: ["src/styles/", "src/app/globals.css", "src/assets/"] },
   { doc: "platform/seo", paths: [
     "src/app/robots.ts", "src/app/sitemap.ts", "src/lib/structured-data.ts", "src/lib/site-url.ts", "src/lib/brand.ts",

@@ -24,13 +24,16 @@
     "SHIPPING_CONFIG": {
       "label": "Shipping — Fees",
       "description": "Shipping fees and the free-shipping threshold."
+    },
+    "EXCHANGE_RATE": {
+      "label": "Exchange rate",
+      "description": "VND per 1 USD that the server uses for every USD price."
     }
   },
   "card": {
     "configured": "Configured — {count, plural, one {# banner} other {# banners}}",
     "empty": "Empty",
     "edit": "Edit",
-    "delete": "Delete",
     "shippingConfigured": "Configured",
     "shippingDefault": "Using default values"
   },
@@ -67,23 +70,16 @@
   "toast": {
     "desktopRequired": "Every banner needs a Desktop image",
     "saved": "Config saved",
-    "saveFailed": "Failed to save",
-    "deleted": "Config deleted",
-    "deleteFailed": "Failed to delete"
-  },
-  "confirmDelete": {
-    "title": "Delete config",
-    "message": "Delete this config? The page will fall back to its default content.",
-    "shippingMessage": "Delete this config? Shipping fees and the free-shipping threshold go back to the system defaults."
+    "saveFailed": "Failed to save"
   },
   "shipping": {
     "loading": "Loading…",
     "loadFailed": "Couldn't load the current shipping fees. Please try again.",
-    "notice": "Changes apply to orders created after saving. Existing orders keep their fee. Amounts use the same currency as product prices.",
+    "notice": "Changes apply to orders created after saving. Existing orders keep their fee. All amounts are whole VND; the USD prices customers see are converted by the server.",
     "free": {
       "section": "Free shipping",
-      "threshold": "Free shipping from",
-      "thresholdInfo": "Orders with a subtotal at or above this amount ship free, for every method. Leave empty to turn free shipping off.",
+      "threshold": "Free shipping from (VND)",
+      "thresholdInfo": "Orders with a subtotal at or above this amount (whole VND) ship free, for every method. Leave empty to turn free shipping off.",
       "placeholder": "Empty = no free shipping"
     },
     "methods": {
@@ -96,8 +92,8 @@
       "name": "Name",
       "description": "Description",
       "estimatedDays": "Delivery time",
-      "price": "Fee",
-      "priceInfo": "0 or more, up to 2 decimals. 0 = free.",
+      "price": "Fee (VND)",
+      "priceInfo": "Whole VND, 0 or more. 0 = free.",
       "icon": "Icon"
     },
     "icons": {
@@ -108,9 +104,9 @@
     "errors": {
       "required": "This field is required",
       "tooLong": "At most {max} characters",
-      "number": "Enter a number with up to 2 decimals",
+      "number": "Enter a whole VND amount (digits only)",
       "positive": "Must be greater than 0",
-      "tooBig": "Must be at most {max}",
+      "tooBig": "Must be at most {max, number}",
       "range": "Enter a whole number from 1 to {max}",
       "tooMany": "At most {max} lines"
     },
@@ -135,6 +131,17 @@
     "SHIPPING": {
       "label": "Shipping & returns",
       "description": "Shipping fees, the free-shipping threshold and the return policy shown to customers."
+    },
+    "CURRENCY": {
+      "label": "Exchange rate",
+      "description": "The VND-per-USD rate the server uses to work out USD amounts."
+    }
+  },
+  "exchangeRate": {
+    "field": "VND per 1 USD",
+    "errors": {
+      "number": "Enter a number with at most 2 decimals, without thousand separators (e.g. 26000 or 25999.5).",
+      "range": "Must be between {min, number} and {max, number}."
     }
   }
 }

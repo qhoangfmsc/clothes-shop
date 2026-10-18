@@ -3,10 +3,12 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
+import { moneyOf } from "@/src/lib/money";
 import { X, Package, MapPin, CreditCard } from "lucide-react";
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
 import { useAddressFieldLabel, useOrderStatusLabel } from "@/src/i18n/use-labels";
 import { useShippingMethodName } from "@/src/hooks/use-api";
+import MoneyText from "./MoneyText";
 import OrderPaymentBadge from "./OrderPaymentBadge";
 import { FormTabs } from "./AdminFormKit";
 
@@ -130,8 +132,10 @@ export default function OrderDetailPanel({ order, loading, onClose, paymentTab, 
                   {t("quantity", { quantity: item.quantity })}
                 </p>
               </div>
-              <span className="text-sm font-semibold text-[var(--text-primary)] shrink-0">
-                {format.number(Number(item.price) * item.quantity, "priceFixed")}
+              {/* Unit price: the BE sends no line total for an order */}
+              <span className="flex flex-col items-end gap-0.5 text-sm text-[var(--text-primary)] shrink-0">
+                <MoneyText money={moneyOf(item, "price")} />
+                <span className="text-[11px] text-[var(--text-muted)]">× {item.quantity}</span>
               </span>
             </div>
           ))}
@@ -150,7 +154,7 @@ export default function OrderDetailPanel({ order, loading, onClose, paymentTab, 
         <div className="flex justify-between items-center py-2">
           <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("shipping.fee")}</span>
           <span className="text-sm text-[var(--text-primary)] font-primary">
-            {format.number(Number(order.shippingFee), "priceFixed")}
+            <MoneyText money={moneyOf(order, "shippingFee")} amountClassName="font-normal" />
           </span>
         </div>
         {order.shippingAddress && (
@@ -174,19 +178,19 @@ export default function OrderDetailPanel({ order, loading, onClose, paymentTab, 
         <div className="flex justify-between items-center py-2">
           <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("payment.subtotal")}</span>
           <span className="text-sm text-[var(--text-primary)] font-primary">
-            {format.number(Number(order.subtotal), "priceFixed")}
+            <MoneyText money={moneyOf(order, "subtotal")} amountClassName="font-normal" />
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
           <span className="text-xs text-[var(--text-muted)] font-primary font-medium">{t("payment.shipping")}</span>
           <span className="text-sm text-[var(--text-primary)] font-primary">
-            {format.number(Number(order.shippingFee), "priceFixed")}
+            <MoneyText money={moneyOf(order, "shippingFee")} amountClassName="font-normal" />
           </span>
         </div>
         <div className="flex justify-between items-center py-2 pt-3 border-t border-[var(--border-subtle)]">
           <span className="text-xs font-semibold text-[var(--text-primary)] font-primary">{t("payment.total")}</span>
           <span className="text-md font-semibold text-[var(--text-primary)] font-primary">
-            {format.number(Number(order.total), "priceFixed")}
+            <MoneyText money={moneyOf(order, "total")} />
           </span>
         </div>
         {order.note && (
