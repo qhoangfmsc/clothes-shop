@@ -26,7 +26,7 @@ export default function PublicError({
       <h1 className="font-display font-normal text-2xl text-[var(--text-heading)] tracking-[-0.04em]">
         {t("title")}
       </h1>
-      <p className="font-primary text-[15px] text-[var(--text-muted)] tracking-[-0.02em] max-w-96 leading-[150%]">
+      <p className="font-primary text-[0.9375rem] text-[var(--text-muted)] tracking-[-0.02em] max-w-96 leading-[150%]">
         {t("description")}
       </p>
       <div className="flex items-center gap-3 mt-2">

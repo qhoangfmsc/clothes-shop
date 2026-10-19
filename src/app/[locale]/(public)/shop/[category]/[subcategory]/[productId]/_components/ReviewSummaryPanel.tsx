@@ -38,7 +38,7 @@ export default function ReviewSummaryPanel({ summary, filters, onChange, onOpen 
     <div className="flex flex-col gap-4 rounded-xl bg-[var(--bg-primary)] p-5 shadow-[var(--shadow-sm)] sm:p-6 md:flex-row md:items-center md:gap-10">
       <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1 md:flex-col md:items-start md:gap-1.5">
         <div className="flex items-baseline gap-2">
-          <span className="font-display text-[40px] font-normal leading-none tracking-[-0.04em] text-[var(--text-heading)]">
+          <span className="font-display text-[2.5rem] font-normal leading-none tracking-[-0.04em] text-[var(--text-heading)]">
             {ratingAverage !== null ? format.number(ratingAverage, "decimal1") : "–"}
           </span>
           <span className="font-primary text-sm text-[var(--text-muted)]">{t("outOf")}</span>

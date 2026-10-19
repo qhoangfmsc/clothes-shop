@@ -223,7 +223,7 @@ export default function ProductDetailClient({
             autoplay={viewer?.open ? false : undefined}
             onPageChange={setActiveImage}
             className="flex-1 rounded-lg overflow-hidden bg-[var(--bg-elevated)]"
-            slideClassName="relative min-h-[400px] lg:min-h-0 select-none"
+            slideClassName="relative min-h-[25rem] lg:min-h-0 select-none"
           >
             {images.map((img, idx) => (
               <ZoomableImage
@@ -267,9 +267,9 @@ export default function ProductDetailClient({
             transition={{ duration: 0.4, ease: [...ease], delay: 0.1 }}
           >
             <Link href="/shop">{tNav("shop")}</Link>
-            <span className="text-[var(--text-disabled)] text-[10px]">◆</span>
+            <span className="text-[var(--text-disabled)] text-[0.625rem]">◆</span>
             <Link href={`/shop/${product.category?.slug ?? ""}`}>{categoryTitle}</Link>
-            <span className="text-[var(--text-disabled)] text-[10px]">◆</span>
+            <span className="text-[var(--text-disabled)] text-[0.625rem]">◆</span>
             <Link href={`/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}`}>
               {subcategoryLabel}
             </Link>
@@ -290,7 +290,7 @@ export default function ProductDetailClient({
                 {t(`badge.${product.badge}`)}
               </span>
             )}
-            <h1 className="font-display text-[clamp(28px,4vw,40px)] font-normal text-[var(--text-heading)] tracking-[-0.04em] leading-[105%]">
+            <h1 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] font-normal text-[var(--text-heading)] tracking-[-0.04em] leading-[105%]">
               {product.name}
             </h1>
             {/* Rating straight from the product response (no extra request); jumps to the reviews below */}
@@ -320,7 +320,7 @@ export default function ProductDetailClient({
               {showPrice ? fmt(product, "price") : tCommon("priceOnRequest")}
             </span>
             {showPrice && product.originalPriceVnd && (
-              <span className="font-primary text-[15px] font-medium text-[var(--text-disabled)] line-through tracking-[-0.04em]">
+              <span className="font-primary text-[0.9375rem] font-medium text-[var(--text-disabled)] line-through tracking-[-0.04em]">
                 {fmtOrNull(product, "originalPrice")}
               </span>
             )}
@@ -336,7 +336,7 @@ export default function ProductDetailClient({
 
           {/* Description */}
           <motion.p
-            className="font-primary text-[15px] font-medium text-[var(--text-secondary)] tracking-[-0.02em] leading-[160%]"
+            className="font-primary text-[0.9375rem] font-medium text-[var(--text-secondary)] tracking-[-0.02em] leading-[160%]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [...ease], delay: 0.3 }}
@@ -405,7 +405,7 @@ export default function ProductDetailClient({
                   <button
                     key={color.hex}
                     type="button"
-                    className={`w-9 h-9 rounded-full border-2 bg-transparent flex items-center justify-center cursor-pointer p-[3px] transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+                    className={`w-9 h-9 rounded-full border-2 bg-transparent flex items-center justify-center cursor-pointer p-[0.1875rem] transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
                       selectedColor === color.hex
                         ? "border-[var(--accent-primary)] shadow-[var(--shadow-gold-sm)] scale-110"
                         : "border-transparent hover:border-[var(--border-default)] hover:scale-110"
@@ -438,19 +438,19 @@ export default function ProductDetailClient({
               <div className="flex items-center gap-0 border border-[var(--border-light)] rounded-full overflow-hidden">
                 <button
                   type="button"
-                  className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[0.9375rem] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity <= 1}
                   aria-label={t("decrease")}
                 >
                   −
                 </button>
-                <span className="w-10 text-center font-primary text-[15px] font-medium text-[var(--text-heading)] tracking-[0.02em]">
+                <span className="w-10 text-center font-primary text-[0.9375rem] font-medium text-[var(--text-heading)] tracking-[0.02em]">
                   {quantity}
                 </span>
                 <button
                   type="button"
-                  className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[0.9375rem] font-primary cursor-pointer flex items-center justify-center transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
                   onClick={() => setQuantity((q) => Math.min(10, q + 1))}
                   disabled={quantity >= 10}
                   aria-label={t("increase")}
@@ -486,7 +486,7 @@ export default function ProductDetailClient({
             <div className="flex gap-3 items-stretch">
               <button
                 type="button"
-                className={`flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-none font-primary text-[15px] font-medium tracking-[0.04em] uppercase cursor-pointer transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:-translate-y-px ${
+                className={`flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-none font-primary text-[0.9375rem] font-medium tracking-[0.04em] uppercase cursor-pointer transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:-translate-y-px ${
                   purchaseMode === "soldOut"
                     ? "!opacity-45 !cursor-not-allowed hover:transform-none bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)]"
                     : purchaseMode === "customOrder"
@@ -625,7 +625,7 @@ export default function ProductDetailClient({
             <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium px-4 sm:px-0">
               {t("related.label")}
             </span>
-            <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none px-4 sm:px-0">
+            <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(1.75rem,5vw,3rem)] tracking-[-0.04em] leading-none px-4 sm:px-0">
               {t("related.title")}
             </h2>
           </div>
@@ -646,7 +646,7 @@ export default function ProductDetailClient({
                     className="transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                   />
                 </div>
-                <span className="font-primary text-[13px] font-medium text-[var(--text-primary)] tracking-[-0.02em]">
+                <span className="font-primary text-[0.8125rem] font-medium text-[var(--text-primary)] tracking-[-0.02em]">
                   {rp.name}
                 </span>
                 <span className="font-primary text-sm font-medium text-[var(--text-muted)] tracking-[-0.02em]">

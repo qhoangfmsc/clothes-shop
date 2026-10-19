@@ -31,7 +31,7 @@ export default function Checkbox({
   const filled = checked || indeterminate;
 
   return (
-    <span className={`relative inline-flex h-[18px] w-[18px] shrink-0 ${className}`}>
+    <span className={`relative inline-flex h-[1.125rem] w-[1.125rem] shrink-0 ${className}`}>
       <input
         {...inputProps}
         ref={inputRef}
@@ -42,7 +42,7 @@ export default function Checkbox({
       />
       <span
         aria-hidden="true"
-        className={`flex h-full w-full items-center justify-center rounded-[5px] border transition-colors duration-150 motion-reduce:transition-none peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--accent-primary)] peer-focus-visible:ring-offset-2 peer-disabled:opacity-50 ${
+        className={`flex h-full w-full items-center justify-center rounded-[0.3125rem] border transition-colors duration-150 motion-reduce:transition-none peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--accent-primary)] peer-focus-visible:ring-offset-2 peer-disabled:opacity-50 ${
           filled
             ? "border-[var(--accent-primary)] bg-[var(--accent-primary)] text-[var(--text-on-gold)]"
             : "border-[var(--border-default)] bg-[var(--color-white)] text-transparent"

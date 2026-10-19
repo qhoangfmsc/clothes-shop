@@ -38,13 +38,13 @@ export default function AdminQrPanel({ qr, paid, expired }: AdminQrPanelProps) {
 
   return (
     <div className="mt-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-4 flex flex-col sm:flex-row gap-4">
-      <div className="flex flex-col items-center gap-2 sm:w-[180px] shrink-0">
+      <div className="flex flex-col items-center gap-2 sm:w-[11.25rem] shrink-0">
         {isSafeQrUrl(qr.qrUrl) && (
           /* eslint-disable-next-line @next/next/no-img-element -- the QR is a BE-generated image of any host; it must reach the banking app untouched */
           <img
             src={qr.qrUrl}
             alt={t("alt")}
-            className="w-full max-w-[180px] aspect-square rounded-md bg-white p-1.5 border border-[var(--border-subtle)] object-contain"
+            className="w-full max-w-[11.25rem] aspect-square rounded-md bg-white p-1.5 border border-[var(--border-subtle)] object-contain"
           />
         )}
         <MoneyText money={moneyOf(qr, "amount")} amountClassName="text-lg font-semibold font-primary text-[var(--text-heading)]" />

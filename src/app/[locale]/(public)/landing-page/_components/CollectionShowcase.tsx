@@ -23,8 +23,8 @@ function buildLayout(count: number, cols: number): { col: number; imageIdx: numb
       row.push({ col: a, imageIdx: imgIdx++ });
     }
 
-    // Every 3rd row, place a second image
-    if (r % 3 === 0 && imgIdx < count) {
+    // Every 3rd row (every 2nd on 5+ columns, where one image per row would leave the left side empty), place a second image
+    if (r % (cols >= 5 ? 2 : 3) === 0 && imgIdx < count) {
       let b = (a + 2) % cols;
       if (b === a) b = (a + 1) % cols;
       row.push({ col: b, imageIdx: imgIdx++ });
@@ -63,6 +63,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
   }, [GALLERY_ITEMS.length]);
 
   /* Compute layouts for each breakpoint (we'll use CSS grid + responsive cols) */
+  const cols5Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 5), [GALLERY_ITEMS.length]);
   const cols4Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 4), [GALLERY_ITEMS.length]);
   const cols3Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 3), [GALLERY_ITEMS.length]);
   const cols2Layout = useMemo(() => buildLayout(GALLERY_ITEMS.length, 2), [GALLERY_ITEMS.length]);
@@ -101,7 +102,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
                 src={galleryItem.image}
                 alt={galleryItem.name}
                 fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 20vw"
                 style={{
                   objectFit: "cover",
                   transition: "transform 600ms cubic-bezier(0.16, 1, 0.3, 1)",
@@ -195,6 +196,8 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
         ref={wrapRef}
         style={{
           width: "100%",
+          maxWidth: "var(--page-max-w)",
+          marginInline: "auto",
           paddingTop: "40vh",
           paddingBottom: "80vh",
         }}
@@ -225,7 +228,7 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
 
         {/* Desktop: 4 cols */}
         <div
-          className="hidden lg:grid"
+          className="hidden lg:grid 2xl:hidden"
           style={{
             gridTemplateColumns: "repeat(4, 1fr)",
             gap: "var(--space-4)",
@@ -233,6 +236,18 @@ export default function CollectionShowcase({ panelRef, wrapRef }: CollectionShow
           }}
         >
           {renderGrid(cols4Layout, 4)}
+        </div>
+
+        {/* Wide screen: 5 cols, so cards keep the size they have at 1536 instead of growing with the viewport */}
+        <div
+          className="hidden 2xl:grid"
+          style={{
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gap: "var(--space-4)",
+            padding: "0 var(--space-8)",
+          }}
+        >
+          {renderGrid(cols5Layout, 5)}
         </div>
       </div>
     </div>

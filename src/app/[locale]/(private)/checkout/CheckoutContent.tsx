@@ -41,7 +41,7 @@ import ShippingForm from "./_components/ShippingForm";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[96px] sm:pt-[104px] pb-8 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-screen pt-[6rem] sm:pt-[6.5rem] pb-8 bg-[var(--bg-primary)]";
 
 export default function CheckoutContent() {
   const t = useTranslations("private.checkout");
@@ -177,8 +177,8 @@ export default function CheckoutContent() {
   if (isLoading || isRedirecting) {
     return (
       <main className={SHELL_CLASS}>
-        <div className="max-w-[1080px] mx-auto px-4 sm:px-6">
-          <div className="h-[400px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
+        <div className="max-w-[67.5rem] mx-auto px-4 sm:px-6">
+          <div className="h-[25rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
         </div>
       </main>
     );
@@ -195,7 +195,7 @@ export default function CheckoutContent() {
   if (items.length === 0) {
     return (
       <main className={SHELL_CLASS}>
-        <div className="max-w-[640px] mx-auto px-4 sm:px-6 flex flex-col items-center gap-5 py-16 text-center">
+        <div className="max-w-[40rem] mx-auto px-4 sm:px-6 flex flex-col items-center gap-5 py-16 text-center">
           <Package size={40} style={{ color: "var(--text-disabled)" }} />
           <h1 className="m-0 font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em]">
             {t("empty.title")}
@@ -218,7 +218,7 @@ export default function CheckoutContent() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [...ease] }}
-        className="max-w-[1080px] mx-auto px-4 sm:px-6 flex flex-col gap-3"
+        className="max-w-[67.5rem] mx-auto px-4 sm:px-6 flex flex-col gap-3"
       >
         {/* Same header as the bag page: way back, then the page title */}
         <div className="flex flex-col gap-2">
@@ -235,7 +235,7 @@ export default function CheckoutContent() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-3 sm:gap-4 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_23.75rem] gap-3 sm:gap-4 items-start">
           {/* Three sections in the order a shopper fills them: who and where → how it ships → how it is paid */}
           <div className="flex flex-col gap-3 sm:gap-4 min-w-0">
             <ShippingForm address={address} errors={errors} pickup={pickup} onChange={updateField} />
@@ -249,7 +249,7 @@ export default function CheckoutContent() {
             <PaymentMethodSection value={paymentMethod} onChange={setPaymentMethod} />
           </div>
 
-          <div className="min-w-0 lg:sticky lg:top-[96px]">
+          <div className="min-w-0 lg:sticky lg:top-[6rem]">
             <OrderSummary
               items={items}
               totalItems={totalItems}

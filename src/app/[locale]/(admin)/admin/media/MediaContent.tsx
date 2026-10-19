@@ -35,7 +35,7 @@ function formatType(mimeType: string): string {
 }
 
 const secondaryButtonClass =
-  "flex items-center gap-1.5 py-[10px] px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40";
+  "flex items-center gap-1.5 py-[0.625rem] px-4 bg-transparent border border-[var(--border-subtle)] rounded-lg text-sm font-primary text-[var(--text-secondary)] cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-40";
 const actionButtonClass =
   "flex items-center justify-center w-8 h-8 border-0 rounded-sm bg-transparent cursor-pointer hover:opacity-70 disabled:opacity-40";
 
@@ -203,7 +203,7 @@ export default function MediaContent() {
         key: "name",
         header: t("table.columns.name"),
         render: (file) => (
-          <div className="max-w-[240px]">
+          <div className="max-w-[15rem]">
             <p className="font-semibold text-sm truncate" title={file.name}>
               {file.name}
             </p>
@@ -342,7 +342,7 @@ export default function MediaContent() {
           </button>
           {!loadError && (
             <button
-              className="flex items-center gap-1.5 py-[10px] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-60"
+              className="flex items-center gap-1.5 py-[0.625rem] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-60"
               onClick={() => uploadInputRef.current?.click()}
               disabled={isUploading}
             >
@@ -366,7 +366,7 @@ export default function MediaContent() {
 
       {/* ── Not configured yet ── */}
       {notConfigured && (
-        <div className="flex flex-col gap-3 p-6 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-secondary)] max-w-[640px]">
+        <div className="flex flex-col gap-3 p-6 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-secondary)] max-w-[40rem]">
           <h2 className="font-display text-lg text-[var(--text-heading)] font-normal">
             {t("notConfigured.title")}
           </h2>
@@ -400,7 +400,7 @@ export default function MediaContent() {
 
       {/* ── Generic error ── */}
       {loadError && !notConfigured && (
-        <div className="flex flex-col items-start gap-3 p-4 border border-[var(--accent-rose)] rounded-lg max-w-[640px]">
+        <div className="flex flex-col items-start gap-3 p-4 border border-[var(--accent-rose)] rounded-lg max-w-[40rem]">
           <p className="text-sm text-[var(--accent-rose)] font-primary">
             {toErrorMessage(loadError, t("errors.loadFailed"))}
           </p>

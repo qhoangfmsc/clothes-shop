@@ -137,7 +137,7 @@ export default function ReturnsContent() {
               </Link>
               {r.order && <OrderPaymentBadge status={r.order.paymentStatus} />}
             </span>
-            <span className="text-[11px] text-[var(--text-muted)]">
+            <span className="text-[0.6875rem] text-[var(--text-muted)]">
               {[r.order?.customer.fullName, r.order?.customer.phone].filter(Boolean).join(" · ") || "—"}
             </span>
           </div>

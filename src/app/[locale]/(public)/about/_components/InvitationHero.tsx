@@ -35,7 +35,7 @@ export default function InvitationHero() {
       />
 
       {/* Content — centered */}
-      <div className="relative flex flex-col items-center text-center py-[120px] px-8 max-w-[640px]">
+      <div className="relative flex flex-col items-center text-center py-[7.5rem] px-8 max-w-[40rem]">
         {/* Label */}
         <motion.span
           initial={{ opacity: 0, y: 12 }}
@@ -51,7 +51,7 @@ export default function InvitationHero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.3 }}
-          className="text-[var(--text-heading)] tracking-[-0.04em] leading-none font-normal [font-family:var(--font-display)] text-[clamp(42px,8vw,80px)]"
+          className="text-[var(--text-heading)] tracking-[-0.04em] leading-none font-normal [font-family:var(--font-display)] text-[clamp(2.625rem,8vw,5rem)]"
         >
           {t("heading")}
         </motion.h1>
@@ -69,7 +69,7 @@ export default function InvitationHero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.6 }}
-          className="text-[var(--text-secondary)] tracking-[-0.02em] leading-[160%] text-[clamp(13px,1.5vw,16px)] max-w-[400px]"
+          className="text-[var(--text-secondary)] tracking-[-0.02em] leading-[160%] text-[clamp(0.8125rem,1.5vw,1rem)] max-w-[25rem]"
         >
           {t("subheading")}
         </motion.p>

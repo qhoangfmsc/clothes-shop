@@ -74,7 +74,7 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
   }, [heroRef]);
 
   return (
-    <section ref={heroRef} className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[560px] flex flex-col justify-end overflow-hidden py-16 px-4 sm:py-16 sm:px-6 lg:py-20 lg:px-8">
+    <section ref={heroRef} className="relative min-h-[26.25rem] sm:min-h-[30rem] lg:min-h-[35rem] flex flex-col justify-end overflow-hidden py-16 px-4 sm:py-16 sm:px-6 lg:py-20 lg:px-8">
       {/* Background: a champagne base color always shows underneath, and the
           image (when available) sits at slightly reduced opacity on top —
           so the brand color and the photo are both visible together, not
@@ -104,10 +104,10 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
       />
 
       {/* Content */}
-      <div className="relative z-2 max-w-[720px]">
+      <div className="relative z-2 max-w-[45rem]">
         <span data-hero-label className="block text-[var(--color-champagne-gold)] uppercase text-xs tracking-[0.12em] leading-[140%] font-primary font-medium mb-4">{label}</span>
-        <h1 data-hero-title className="text-[var(--color-pearl-cream)] tracking-[-0.04em] leading-none font-normal font-display text-[clamp(36px,7vw,72px)] mb-4">{title}</h1>
-        {description && <p data-hero-desc className="text-[rgba(255,255,255,0.65)] tracking-[-0.02em] leading-[150%] text-[15px] font-primary max-w-[400px]">{description}</p>}
+        <h1 data-hero-title className="text-[var(--color-pearl-cream)] tracking-[-0.04em] leading-none font-normal font-display text-[clamp(2.25rem,7vw,4.5rem)] mb-4">{title}</h1>
+        {description && <p data-hero-desc className="text-[rgba(255,255,255,0.65)] tracking-[-0.02em] leading-[150%] text-[0.9375rem] font-primary max-w-[25rem]">{description}</p>}
       </div>
     </section>
   );

@@ -215,7 +215,7 @@ export default function ProductsContent() {
                 <Star size={12} fill="currentColor" className="text-[var(--color-champagne-gold)]" aria-hidden="true" />
                 {format.number(p.ratingAverage, "decimal1")}
               </span>
-              <span className="text-[11px] text-[var(--text-muted)]">{t("table.reviewCount", { count: p.ratingCount })}</span>
+              <span className="text-[0.6875rem] text-[var(--text-muted)]">{t("table.reviewCount", { count: p.ratingCount })}</span>
             </span>
           ) : (
             <span className="text-xs text-[var(--text-disabled)]">{t("table.noReviews")}</span>
@@ -443,7 +443,7 @@ export default function ProductsContent() {
         </div>
         <RoleGuard permission={PERMISSIONS.PRODUCT_CREATE}>
           <button
-            className="flex items-center gap-1.5 py-[10px] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 py-[0.625rem] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
             onClick={openCreate}
           >
             <Plus size={16} /> {t("page.add")}
@@ -622,7 +622,7 @@ export default function ProductsContent() {
                       {form.sizes.length > 0 && (
                         <button
                           type="button"
-                          className="self-start inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[10px] font-primary text-[var(--text-muted)] cursor-pointer"
+                          className="self-start inline-flex items-center gap-1 py-0.5 px-2 bg-transparent border-0 rounded-sm text-[0.625rem] font-primary text-[var(--text-muted)] cursor-pointer"
                           onClick={() => setForm((p) => ({ ...p, sizes: [] }))}
                         >
                           {t("form.sizes.clearAll", { count: form.sizes.length })}
@@ -631,7 +631,7 @@ export default function ProductsContent() {
                       )}
                       {SIZE_GROUPS.map((group) => (
                         <div key={group.key} className="mb-2">
-                          <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
+                          <span className="text-[0.625rem] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em] mb-1 block">
                             {t(`form.sizes.groups.${group.key}`)}
                           </span>
                           <div className="flex flex-wrap gap-1.5">
@@ -641,7 +641,7 @@ export default function ProductsContent() {
                                 <button
                                   key={size}
                                   type="button"
-                                  className={`inline-flex items-center gap-1 py-[5px] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
+                                  className={`inline-flex items-center gap-1 py-[0.3125rem] px-3 rounded-full text-xs font-primary cursor-pointer border-0 transition-all ${
                                     active
                                       ? "bg-[var(--accent-sage)] text-white px-2 font-semibold cursor-default"
                                       : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
@@ -713,14 +713,14 @@ export default function ProductsContent() {
                         {form.colors.map((c, i) => (
                           <span
                             key={`${c.name}-${c.hex}`}
-                            className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
+                            className="inline-flex items-center gap-1 py-[0.3125rem] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
                           >
                             <span
                               className="inline-block w-4 h-4 rounded-sm border border-black/15 shrink-0"
                               style={{ background: c.hex }}
                             />
                             <span className="text-xs font-medium">{c.name}</span>
-                            <code className="text-[10px] text-white/70">{c.hex}</code>
+                            <code className="text-[0.625rem] text-white/70">{c.hex}</code>
                             <button
                               type="button"
                               className="inline-flex items-center justify-center w-4 h-4 border-0 bg-transparent cursor-pointer text-white/70 p-0 ml-0.5 rounded-full shrink-0"
@@ -768,7 +768,7 @@ export default function ProductsContent() {
                           <button
                             key={tag}
                             type="button"
-                            className="inline-flex items-center gap-1 py-[5px] px-2.5 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)] text-[11px] font-primary cursor-pointer border-0 transition-all"
+                            className="inline-flex items-center gap-1 py-[0.3125rem] px-2.5 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)] text-[0.6875rem] font-primary cursor-pointer border-0 transition-all"
                             onClick={() => setForm((p) => ({ ...p, tags: [...p.tags, tag] }))}
                           >
                             + {tag}
@@ -799,7 +799,7 @@ export default function ProductsContent() {
                         {form.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="inline-flex items-center gap-1 py-[5px] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
+                            className="inline-flex items-center gap-1 py-[0.3125rem] px-2 rounded-full bg-[var(--accent-sage)] text-white text-xs font-semibold cursor-default"
                           >
                             {tag}
                             <button

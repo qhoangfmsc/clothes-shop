@@ -23,10 +23,10 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 /** Lines shown on a card; the rest collapse into "+n more" */
 const PREVIEW_ITEMS = 2;
 
-const SHELL_CLASS = "min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]";
-const WRAP_CLASS = "max-w-[720px] mx-auto px-4 sm:px-6";
+const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const WRAP_CLASS = "max-w-[45rem] mx-auto px-4 sm:px-6";
 const SKELETON_CLASS =
-  "h-[180px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none";
+  "h-[11.25rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none";
 
 export default function OrdersContent() {
   const t = useTranslations("private.orders.list");
@@ -116,7 +116,7 @@ export default function OrdersContent() {
               >
                 {t("reviewsLink")}
                 {pendingReviews.total > 0 && (
-                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-[var(--accent-primary)] px-1.5 text-[10px] font-semibold text-[var(--text-on-gold)]">
+                  <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-[var(--accent-primary)] px-1.5 text-[0.625rem] font-semibold text-[var(--text-on-gold)]">
                     {pendingReviews.total}
                   </span>
                 )}
@@ -142,7 +142,7 @@ export default function OrdersContent() {
             <h2 className="m-0 font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em]">
               {t("empty.title")}
             </h2>
-            <p className="m-0 max-w-[380px] font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
+            <p className="m-0 max-w-[23.75rem] font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
               {t("empty.description")}
             </p>
             <Link
@@ -203,7 +203,7 @@ export default function OrdersContent() {
                     )}
 
                     <div className="flex items-end justify-between gap-3 pt-3 border-t border-[var(--border-subtle)]">
-                      <span className="font-primary text-[11px] text-[var(--text-disabled)] tracking-[0.02em] break-all">
+                      <span className="font-primary text-[0.6875rem] text-[var(--text-disabled)] tracking-[0.02em] break-all">
                         {t("card.orderNumber", { id: order.id })}
                       </span>
                       <span className="flex items-center gap-1 font-primary text-sm text-[var(--text-heading)] font-medium tracking-[-0.02em]">

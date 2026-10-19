@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh, giỏ nổi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-18
 > **Code:** `(private)/cart/` — `page.tsx`, `layout.tsx`, `CartContent.tsx`, `_common/{moduleSlice,types}.ts`, `_components/CartSync.tsx` · `_components/QuickAddDrawer.tsx`, `_components/CartFAB.tsx` (dùng chung) · `src/store/index.ts` (lưu `localStorage`)
 > **i18n:** `private.cart`, `shared.cart` (`fab`, `quickAdd`, `productAction`)
 > **Redux slice:** `state.cart`
@@ -60,7 +60,7 @@ Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăn
 - Chưa đăng nhập → `UnauthenticatedState`; đang tải phiên → skeleton.
 - Header: link "Tiếp tục mua sắm", tiêu đề, tổng số lượng (`selectTotalItems`). Giỏ trống: thông báo + nút tới `/shop`.
 - Thanh chọn: checkbox "Chọn tất cả" (3 trạng thái, chỉ tính dòng mua được), đếm đã chọn/tổng, hai nút icon: **thêm vào wishlist** (các dòng đã chọn; toast số lượng thêm hoặc "đã có") và **xóa** (xác nhận `danger`, toast `removed`, xóa local rồi `syncRemoveCartItem` từng dòng).
-- Mỗi dòng (`CartItemRow`, `<li>`): checkbox (khóa nếu không mua được), ảnh 80×107 px (104×139 từ `sm`, mờ đi khi không mua được), tên (link sản phẩm) và thành tiền dòng (`lineTotal`, theo ngôn ngữ; "…" khi BE chưa tính) cùng hàng, chip size + chip màu + đơn giá (`price`), hàng cuối: `QuantityControl` (1–10) bên trái, nút tim (wishlist + sync) và nút xóa (xác nhận) bên phải (viền chỉ hiện khi hover/được bật). Dòng `sold_out`/`custom_order` hiện cảnh báo; riêng `custom_order` có link "Đặt may" tới `/contact?product=…`.
+- Mỗi dòng (`CartItemRow`, `<li>`): checkbox (khóa nếu không mua được), ảnh 80×107 px (104×139 từ `sm`, mờ đi khi không mua được), ảnh và tên (link sản phẩm qua `useProductLink()`: `GET /api/cart` không nạp category/subcategory của sản phẩm nên slug có thể rỗng, khi đó bấm sẽ tra URL thật bằng `getProductUrl`; `fetchCart.fulfilled` giữ slug đã lưu cục bộ của cùng `productId`) và thành tiền dòng (`lineTotal`, theo ngôn ngữ; "…" khi BE chưa tính) cùng hàng, chip size + chip màu + đơn giá (`price`), hàng cuối: `QuantityControl` (1–10) bên trái, nút tim (wishlist + sync) và nút xóa (xác nhận) bên phải (viền chỉ hiện khi hover/được bật). Dòng `sold_out`/`custom_order` hiện cảnh báo; riêng `custom_order` có link "Đặt may" tới `/contact?product=…`.
 - Bố cục một cột `max-w-[820px]`: header, rồi **một thẻ duy nhất** gồm ba phần liền nhau: thanh chọn (nền champagne: "Chọn tất cả" + đếm, icon yêu thích / xóa hàng loạt), danh sách dòng (`<ul>` ngăn bằng đường kẻ mảnh, không có khung riêng cho từng dòng) và chân thẻ thanh toán (`sticky bottom-0`, luôn ghim cuối màn hình khi danh sách dài, chừa `safe-area-inset-bottom`). Chân thẻ hiện "Tạm tính (n sản phẩm)" + số tiền của các dòng **đã chọn**: `subtotal` của báo giá BE (`useOrderQuote(selectedItems, "standard", đã đăng nhập và pendingSync = 0)` từ [checkout](./checkout.md), không tạo gì; hiện "…" khi đang hỏi) và `selectSelectedTotalItems` cho số lượng và nút **Tiến hành thanh toán** → `/checkout`; chưa chọn dòng nào thì thay số tiền bằng gợi ý `checkout.selectToCheckout` và khóa nút. Không có khối tóm tắt, vận chuyển hay thanh miễn phí vận chuyển: các thông tin đó nằm ở [checkout](./checkout.md) 4.4.
 - Metadata: `private.cart.meta`; layout có header + footer; `robots noindex` (từ layout `(private)`).
 
@@ -78,3 +78,5 @@ Luồng tiếp theo: [checkout](./checkout.md). Quy tắc mua theo badge: [ui-ki
 
 - Dòng giỏ có `badge` `custom_order` (chỉ còn khi giỏ cũ chứa sản phẩm này) không hiện đơn giá và thành tiền dòng, thay bằng `common.priceOnRequest`; dòng này vốn không được tính vào tổng và checkout.
 - Tiền hiện qua `useMoney` ([currency](../platform/currency.md)): `vi` → VND, ngôn ngữ khác → USD, luôn lấy nửa cặp BE đã trả.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

@@ -192,18 +192,18 @@ export default function HeaderNav({
               WebkitBackdropFilter: "blur(16px)",
               borderBottom: "1px solid rgba(201, 169, 110, 0.12)",
               boxShadow: "0 10px 40px rgba(58, 49, 42, 0.08)",
-              paddingTop: "var(--header-bg-height, 90px)", // Push content below header
+              paddingTop: "var(--header-bg-height, 5.625rem)", // Push content below header
             }}
           >
             {/* Category grid */}
             <div
               style={{
-                maxWidth: 960,
+                maxWidth: "60rem",
                 margin: "0 auto",
-                padding: "40px 36px 60px",
+                padding: "2.5rem 2.25rem 3.75rem",
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                gap: 32,
+                gap: "2rem",
               }}
             >
               {shopCategories.slice(0, MAX_INLINE_CATEGORIES).map((cat) => (
@@ -221,8 +221,8 @@ export default function HeaderNav({
                       textDecoration: "none",
                       fontFamily: "var(--font-primary)",
                       fontWeight: 500,
-                      marginBottom: 16,
-                      paddingBottom: 8,
+                      marginBottom: "1rem",
+                      paddingBottom: "0.5rem",
                       borderBottom: "1px solid rgba(201, 169, 110, 0.15)",
                     }}
                   >
@@ -235,7 +235,7 @@ export default function HeaderNav({
                       margin: 0,
                       display: "flex",
                       flexDirection: "column",
-                      gap: 10,
+                      gap: "0.625rem",
                     }}
                   >
                     {cat.items.map((item) => (
@@ -271,7 +271,7 @@ export default function HeaderNav({
                           textDecoration: "none",
                           fontFamily: "var(--font-primary)",
                           fontWeight: 500,
-                          marginTop: 4,
+                          marginTop: "0.25rem",
                           transition: "color 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
                         }}
                       >
@@ -284,7 +284,7 @@ export default function HeaderNav({
             </div>
 
             {shopCategories.length > MAX_INLINE_CATEGORIES && (
-              <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 36px 40px", marginTop: -20 }}>
+              <div style={{ maxWidth: "60rem", margin: "0 auto", padding: "0 2.25rem 2.5rem", marginTop: "-1.25rem" }}>
                 <Link
                   href="/shop"
                   onClick={closeNow}
@@ -320,14 +320,14 @@ export default function HeaderNav({
         style={{
           position: "absolute",
           pointerEvents: "none",
-          height: 30,
+          height: "1.875rem",
           display: "flex",
           flexDirection: "row",
           justifyContent: "flex-end",
           alignItems: "center",
-          gap: 28,
-          top: 32,
-          right: 32,
+          gap: "1.75rem",
+          top: "2rem",
+          right: "2rem",
         }}
       >
         {/* Search — desktop only, hidden on mobile where HamburgerMenu handles it */}
@@ -349,7 +349,7 @@ export default function HeaderNav({
               href={link.href}
               className="header-nav-link"
               style={{
-                fontSize: 13,
+                fontSize: "0.8125rem",
                 textTransform: "uppercase",
                 color: "currentColor",
                 letterSpacing: "-0.02em",
@@ -378,11 +378,11 @@ export default function HeaderNav({
             style={{
               display: "inline-flex",
               alignItems: "center",
-              height: 30,
-              padding: "0 16px",
+              height: "1.875rem",
+              padding: "0 1rem",
               border: "1px solid currentColor",
               borderRadius: 999,
-              fontSize: 13,
+              fontSize: "0.8125rem",
               textTransform: "uppercase",
               color: "currentColor",
               letterSpacing: "-0.02em",

@@ -21,8 +21,8 @@ import ReturnStatusBadge from "../_components/ReturnStatusBadge";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]";
-const WRAP_CLASS = "max-w-[720px] mx-auto px-4 sm:px-6";
+const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const WRAP_CLASS = "max-w-[45rem] mx-auto px-4 sm:px-6";
 const CARD_CLASS =
   "p-5 sm:p-6 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]";
 const CARD_TITLE_CLASS =
@@ -64,7 +64,7 @@ export default function ReturnDetailContent() {
     return (
       <main className={SHELL_CLASS}>
         <div className={WRAP_CLASS}>
-          <div className="h-[320px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
+          <div className="h-[20rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
         </div>
       </main>
     );
@@ -156,7 +156,7 @@ export default function ReturnDetailContent() {
             <p className="m-0 font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em] leading-[150%]">
               {t(`hint.${request.status}`)}
             </p>
-            <p className="m-0 font-primary text-[11px] text-[var(--text-disabled)] tracking-[0.02em] break-all">
+            <p className="m-0 font-primary text-[0.6875rem] text-[var(--text-disabled)] tracking-[0.02em] break-all">
               {format.dateTime(new Date(request.createdAt), "dateTime")} · {t("returnNumber", { id: request.id })} ·{" "}
               <Link href={`/orders/${encodeURIComponent(request.orderId)}`} className="text-inherit underline underline-offset-2">
                 {t("orderNumber", { id: request.orderId })}

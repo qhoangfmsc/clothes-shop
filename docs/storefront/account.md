@@ -1,6 +1,6 @@
 # Account (tài khoản)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-18
 > **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserMenu.tsx`
 > **i18n:** `private.account`
 
@@ -25,9 +25,11 @@ Là điểm vào của khu "của tôi": từ đây khách nhảy sang Wishlist 
 
 - **Bố cục** (`AccountContent`): dưới `lg` một cột rộng tối đa 720 px theo thứ tự hồ sơ → `OrdersSection` → `WishlistSection`; từ `lg` khung rộng tối đa 1080 px, lưới `minmax(0,1fr) 300px` giống trang chi tiết đơn: đơn hàng rồi yêu thích ở cột trái, thẻ hồ sơ + đăng xuất ở cột phải (`sticky`, `top-[104px]`). `AccountSkeleton` dùng cùng lưới.
 
-- `WishlistSection` đọc trực tiếp store (`selectWishlistItems`), không gọi API; dữ liệu có thể là bản cục bộ (xem [wishlist](./wishlist.md)). Mỗi thẻ link tới `/shop/<category>/<subcategory>/<productId>`.
+- `WishlistSection` đọc trực tiếp store (`selectWishlistItems`), không gọi API; dữ liệu có thể là bản cục bộ (xem [wishlist](./wishlist.md)). Mỗi thẻ link tới `/shop/<category>/<subcategory>/<productId>` qua `useProductLink()` (thiếu slug thì tra URL khi bấm, xem [wishlist](./wishlist.md)).
 - `OrdersSection` dùng `useApiAuth().apiFetch("/api/orders")` rồi cắt 3 đơn; lỗi được bỏ qua âm thầm (hiện như chưa có đơn). Màu trạng thái được khai báo riêng trong component (`STATUS_COLORS`), nhãn qua `useOrderStatusLabel`.
 - Đăng xuất chỉ xóa token và `user` phía FE (`logout()` của `AuthProvider`), không điều hướng; khi `isAuthenticated` thành `false` trang chuyển sang `UnauthenticatedState`, và `CartSync` xóa giỏ cục bộ.
 - Metadata `private.account.meta`; layout có header + footer; `noindex`.
 - Là nơi đích của link "Back" ở các trang Wishlist và Orders.
 - Mục wishlist trong tài khoản ẩn giá của sản phẩm `custom_order` (hiện `common.priceOnRequest`) theo `WishlistItem.badge`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

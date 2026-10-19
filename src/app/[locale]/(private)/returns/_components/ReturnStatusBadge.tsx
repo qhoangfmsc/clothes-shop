@@ -12,7 +12,7 @@ export default function ReturnStatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className="inline-flex items-center gap-1 py-0.5 px-2.5 rounded-full border font-primary text-[11px] font-medium tracking-[0.04em] uppercase whitespace-nowrap"
+      className="inline-flex items-center gap-1 py-0.5 px-2.5 rounded-full border font-primary text-[0.6875rem] font-medium tracking-[0.04em] uppercase whitespace-nowrap"
       style={{ color: config.color, borderColor: config.color }}
     >
       <Icon size={12} />

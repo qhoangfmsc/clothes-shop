@@ -1,6 +1,6 @@
 # Auth (đăng nhập, phiên, phân quyền)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-15
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
 > **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `SignOutButton`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
 
 ## 1. Tóm tắt module
@@ -109,3 +109,5 @@ Hiển thị tiêu đề, câu khác nhau cho đã/chưa đăng nhập (`shared.
 - Biến môi trường: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.
 - Endpoint BE: `POST /api/auth/google`, `POST /api/auth/refresh`, `GET /api/auth/me`.
 - Route handler `/api/analytics` tự xác thực admin bằng cách gọi `GET /api/auth/me` với bearer token của request (xem [analytics](../admin/analytics.md)).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](./design-system.md) 4.3).

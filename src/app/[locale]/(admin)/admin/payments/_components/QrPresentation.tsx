@@ -97,7 +97,7 @@ export default function QrPresentation({ qr, paid, onClose }: QrPresentationProp
           <p className="m-0 font-primary text-base sm:text-xl text-[var(--text-secondary)]">{t("thanks")}</p>
         </div>
       ) : (
-        <div className="min-h-full grid grid-cols-1 landscape:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-6 sm:gap-10 p-6 sm:p-10 max-w-[1280px] mx-auto">
+        <div className="min-h-full grid grid-cols-1 landscape:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-6 sm:gap-10 p-6 sm:p-10 max-w-[80rem] mx-auto">
           <div className="flex flex-col items-center gap-4">
             {isSafeQrUrl(qr.qrUrl) && (
               /* eslint-disable-next-line @next/next/no-img-element -- the QR is a BE-generated image of any host; it must reach the banking app untouched */

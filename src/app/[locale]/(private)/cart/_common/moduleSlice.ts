@@ -335,7 +335,14 @@ const cartSlice = createSlice({
           state.pendingAddKeys.includes(cartItemKey(i)) &&
           !serverKeys.has(cartItemKey(i))
       );
-      state.items = [...action.payload, ...inFlight];
+      /* `GET /api/cart` does not load the product's category / sub-category (they come back empty): keep the slugs
+         the line was saved with so its link keeps working */
+      const slugsOf = new Map(state.items.map((i) => [i.productId, i]));
+      const merged = action.payload.map((i) => {
+        const local = slugsOf.get(i.productId);
+        return { ...i, category: i.category || local?.category || "", subcategory: i.subcategory || local?.subcategory || "" };
+      });
+      state.items = [...merged, ...inFlight];
       pruneDeselected(state);
       state.isSyncing = false;
     });

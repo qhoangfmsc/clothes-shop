@@ -50,8 +50,8 @@ export default function SignOutButton({ variant, onSignedOut }: SignOutButtonPro
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 12,
-        padding: "14px 0",
+        gap: "0.75rem",
+        padding: "0.875rem 0",
         background: "none",
         border: "none",
         cursor: "pointer",

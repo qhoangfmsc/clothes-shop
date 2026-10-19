@@ -11,6 +11,15 @@
   }
 }
 
+/* ─── Wide-screen scale ───
+   Up to 1536px (2xl) the root is the browser default (16px, unchanged). Above it the root grows with the viewport
+   and stops at 20px (1920px, the --page-max-w column), so every rem-based size — type tokens, Tailwind spacing,
+   rem max-widths — grows in step with the images instead of staying put while photos get bigger.
+   Media queries and `rem` here use the initial font-size, so breakpoints do not move. */
+html {
+  font-size: clamp(1rem, 1.0417vw, 1.25rem);
+}
+
 /* ─── Global Reset ─── */
 html,
 body {
@@ -228,14 +237,14 @@ html.custom-cursor-active * {
 @media (min-width: 640px) {
   .drawer-featured-panel {
     display: flex !important;
-    width: 320px;
+    width: 20rem;
     flex-shrink: 0;
   }
 }
 
 @media (min-width: 1024px) {
   .drawer-featured-panel {
-    width: 380px;
+    width: 23.75rem;
   }
 }
 

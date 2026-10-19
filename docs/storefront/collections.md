@@ -39,9 +39,9 @@ Dẫn khách vào từng chiến dịch/chủ đề thay vì duyệt theo danh m
 ### 4.3 Chi tiết (`CollectionDetailClient`)
 
 - Hero: ảnh bìa (`cd-hero__media`) zoom-out khi vào, parallax khi cuộn; mùa (`collection.season`), tên, phụ đề, đường kẻ, mô tả hiện lần lượt.
-- **Lookbook**: `products.slice(0, min(3, n))` — mỗi sản phẩm là một khối lớn (badge, "01 / 03", tên, giá theo ngôn ngữ, "Xem chi tiết") link tới trang sản phẩm.
+- **Lookbook**: `products.slice(0, min(3, n))` — mỗi sản phẩm là một khối lớn (badge, "01 / 03", tên, giá theo ngôn ngữ, "Xem chi tiết") link tới trang sản phẩm. Khối nằm trong cột `max-w-[96rem]` căn giữa. Từ `lg` ảnh 3:4 có bề rộng `min(0.75 × min(85dvh, 56 rem), 44vw)` (không cao hơn ~85% màn hình) và cặp ảnh + cột chữ (tối đa 32 rem) được căn giữa, ảnh lẻ đảo bên; dưới `lg` là lưới `3fr/2fr` (md) hoặc một cột.
 - Khối trích dẫn (`quoteBy` kèm `season`).
-- **Shop the collection**: toàn bộ `products` (số lượng `pieces`), mỗi thẻ gồm ảnh, badge (`PRODUCT_CARD_BADGE_STYLES`), nút tim, `ProductBagButton` (icon trên mobile, chữ khi hover trên desktop), tên, giá theo ngôn ngữ (và giá gốc gạch ngang khi `originalPriceVnd` không `null`).
+- **Shop the collection** (lưới 2 / 3 / 4 / 5 cột ở base / `sm` / `lg` / `xl`, cùng nhịp với `ProductGrid`): toàn bộ `products` (số lượng `pieces`), mỗi thẻ gồm ảnh, badge (`PRODUCT_CARD_BADGE_STYLES`), nút tim, `ProductBagButton` (icon trên mobile, chữ khi hover trên desktop), tên, giá theo ngôn ngữ (và giá gốc gạch ngang khi `originalPriceVnd` không `null`).
 - Nút giỏ → `openQuickAdd(product)` (không qua `requireAuth` ở màn hình này). Sản phẩm `sold_out`/`custom_order` xử lý theo `ProductBagButton`.
 - Chân trang: link về `/collections` và `/shop` (`allCollections`, `exploreAll`).
 

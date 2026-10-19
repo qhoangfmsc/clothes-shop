@@ -107,13 +107,13 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
 
   return (
     <section id="reviews" className="scroll-mt-24 border-t border-[var(--border-subtle)] bg-[var(--bg-section-1)] pb-16 pt-12 sm:pt-16">
-      <div className="mx-auto max-w-[1120px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[70rem] px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col gap-2">
           <span className="font-primary text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-accent)]">
             {t("label")}
           </span>
           <div className="flex items-center gap-3">
-            <h2 className="m-0 font-display text-[clamp(28px,5vw,48px)] font-normal leading-none tracking-[-0.04em] text-[var(--text-heading)]">
+            <h2 className="m-0 font-display text-[clamp(1.75rem,5vw,3rem)] font-normal leading-none tracking-[-0.04em] text-[var(--text-heading)]">
               {t("title")}
             </h2>
             {/* Who may review: hover / focus on a mouse, tap on touch */}
@@ -133,7 +133,7 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
             <h3 className="m-0 font-display text-xl font-normal tracking-[-0.04em] text-[var(--text-heading)]">
               {t("empty.title")}
             </h3>
-            <p className="m-0 max-w-[420px] font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--text-muted)]">
+            <p className="m-0 max-w-[26.25rem] font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--text-muted)]">
               {t("empty.description")}
             </p>
           </div>

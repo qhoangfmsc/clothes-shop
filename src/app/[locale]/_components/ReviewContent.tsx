@@ -30,17 +30,17 @@ export default function ReviewContent({ review, className = "" }: ReviewContentP
           {format.dateTime(new Date(review.createdAt), "short")}
         </span>
         {review.edited && (
-          <span className="font-primary text-[11px] text-[var(--text-muted)] tracking-[0.02em]">{t("edited")}</span>
+          <span className="font-primary text-[0.6875rem] text-[var(--text-muted)] tracking-[0.02em]">{t("edited")}</span>
         )}
       </div>
 
       {review.title && (
-        <h4 className="m-0 font-primary text-[15px] font-medium text-[var(--text-heading)] tracking-[-0.02em] leading-[140%] break-words">
+        <h4 className="m-0 font-primary text-[0.9375rem] font-medium text-[var(--text-heading)] tracking-[-0.02em] leading-[140%] break-words">
           {review.title}
         </h4>
       )}
       {review.content && (
-        <p className="m-0 whitespace-pre-line break-words font-primary text-[14px] font-medium text-[var(--text-secondary)] tracking-[-0.02em] leading-[165%]">
+        <p className="m-0 whitespace-pre-line break-words font-primary text-[0.875rem] font-medium text-[var(--text-secondary)] tracking-[-0.02em] leading-[165%]">
           {review.content}
         </p>
       )}
@@ -56,14 +56,14 @@ export default function ReviewContent({ review, className = "" }: ReviewContentP
 
       {review.reply && (
         <div className="flex flex-col gap-1.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-secondary)] p-3 sm:p-4">
-          <span className="inline-flex items-center gap-1.5 font-primary text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-accent)]">
+          <span className="inline-flex items-center gap-1.5 font-primary text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-[var(--text-accent)]">
             <Store size={13} aria-hidden="true" />
             {t("storeReply")}
           </span>
-          <p className="m-0 whitespace-pre-line break-words font-primary text-[13px] text-[var(--text-secondary)] leading-[160%] tracking-[-0.02em]">
+          <p className="m-0 whitespace-pre-line break-words font-primary text-[0.8125rem] text-[var(--text-secondary)] leading-[160%] tracking-[-0.02em]">
             {review.reply.content}
           </p>
-          <span className="font-primary text-[11px] text-[var(--text-disabled)]">
+          <span className="font-primary text-[0.6875rem] text-[var(--text-disabled)]">
             {format.dateTime(new Date(review.reply.repliedAt), "short")}
           </span>
         </div>

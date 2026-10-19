@@ -213,7 +213,7 @@ export default function DashboardContent() {
       </h1>
 
       {/* ══════ KPI Cards ══════ */}
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-[var(--space-5)]">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(13.75rem,1fr))] gap-[var(--space-5)]">
         <KpiCard
           icon={<DollarSign size={20} />}
           label={t("kpi.revenue.label")}
@@ -306,7 +306,7 @@ export default function DashboardContent() {
                       key={status}
                       className="flex items-center justify-between gap-[var(--space-3)]"
                     >
-                      <div className="flex items-center gap-1.5 min-w-[100px]">
+                      <div className="flex items-center gap-1.5 min-w-[6.25rem]">
                         <span style={{ color: STATUS_COLOR[status] }}>{STATUS_ICON[status]}</span>
                         <span className="font-primary text-sm text-[var(--text-primary)]">
                           {statusLabel(status)}
@@ -323,7 +323,7 @@ export default function DashboardContent() {
                           />
                         </div>
                         <span
-                          className="text-sm font-semibold font-primary min-w-[24px] text-right"
+                          className="text-sm font-semibold font-primary min-w-[1.5rem] text-right"
                           style={{ color: STATUS_COLOR[status] ?? "var(--text-primary)" }}
                         >
                           {count}

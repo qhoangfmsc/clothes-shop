@@ -78,3 +78,5 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 ### 4.5 i18n
 
 `admin.shell` (`meta`, `nav`, `badge`, `logout`, `menu`, `closeMenu`, `denied`, `breadcrumb`), `admin.components.guards`, `common.role`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

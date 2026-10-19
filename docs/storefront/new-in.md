@@ -31,3 +31,5 @@ Giới thiệu những sản phẩm gắn badge `new` để khách quay lại th
 - Có trong sitemap (`/new-in`, `lastModified` = sản phẩm cập nhật mới nhất). Không có JSON-LD breadcrumb riêng.
 - Xem thêm: [shop](./shop.md) (lọc/lưới), [ui-kit](../platform/ui-kit.md) (banner).
 - Sản phẩm badge `custom_order` không hiện giá: giá ở Spotlight (và thẻ trong lưới, qua `ProductCard`) hiện `common.priceOnRequest`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

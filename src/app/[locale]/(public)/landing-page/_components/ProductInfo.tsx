@@ -23,11 +23,11 @@ export default function ProductInfo() {
         flexDirection: "column",
         alignItems: "center",
       }}
-      className="right-4 bottom-14 sm:right-8 sm:bottom-0 sm:w-[330px]"
+      className="right-[calc(var(--page-edge)+1rem)] bottom-14 sm:right-[calc(var(--page-edge)+2rem)] sm:bottom-0 sm:w-[20.625rem]"
     >
       {/* Top block */}
       <div
-        className="w-[252px] mb-3 sm:w-full sm:mb-8"
+        className="w-[15.75rem] mb-3 sm:w-full sm:mb-8"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -36,7 +36,7 @@ export default function ProductInfo() {
       >
         {/* Circle icon with symbol */}
         <div
-          className="w-5 h-5 sm:w-[20px] sm:h-[20px]"
+          className="w-5 h-5 sm:w-[1.25rem] sm:h-[1.25rem]"
           style={{
             position: "relative",
           }}
@@ -62,7 +62,7 @@ export default function ProductInfo() {
               textTransform: "uppercase",
               color: "white",
             }}
-            className="text-[10px] sm:text-[15px]"
+            className="text-[0.625rem] sm:text-[0.9375rem]"
           >
             8
           </span>
@@ -70,7 +70,7 @@ export default function ProductInfo() {
 
         {/* Collection label */}
         <div
-          className="text-[30px]"
+          className="text-[1.875rem]"
           style={{
             lineHeight: "100%",
             textAlign: "right",

@@ -13,7 +13,7 @@ export default function UnauthorizedContent() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[var(--bg-primary)] p-6">
-      <div className="flex flex-col items-center text-center gap-4 max-w-[440px] py-12 px-8 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg">
+      <div className="flex flex-col items-center text-center gap-4 max-w-[27.5rem] py-12 px-8 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg">
         <div className="w-20 h-20 rounded-xl bg-[rgba(212,165,165,0.1)] flex items-center justify-center mb-2">
           <ShieldX size={40} style={{ color: "var(--accent-rose)" }} />
         </div>

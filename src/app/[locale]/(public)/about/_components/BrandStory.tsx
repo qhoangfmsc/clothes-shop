@@ -20,9 +20,9 @@ export default function BrandStory() {
   }, []);
 
   return (
-    <section className="bg-[var(--bg-primary)] px-[clamp(24px,5vw,80px)] py-[clamp(80px,12vw,160px)]">
+    <section className="bg-[var(--bg-primary)] px-[clamp(1.5rem,5vw,5rem)] py-[clamp(5rem,12vw,10rem)]">
       <div
-        className={`max-w-[1200px] mx-auto grid items-center ${
+        className={`max-w-[75rem] mx-auto grid items-center ${
           isDesktop ? "grid-cols-2 gap-16" : "grid-cols-1 gap-12"
         }`}
       >
@@ -45,7 +45,7 @@ export default function BrandStory() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: [...ease], delay: 0.1 }}
-            className="text-[var(--text-heading)] tracking-[-0.04em] leading-none font-medium text-[clamp(30px,5vw,52px)] mb-10"
+            className="text-[var(--text-heading)] tracking-[-0.04em] leading-none font-medium text-[clamp(1.875rem,5vw,3.25rem)] mb-10"
           >
             {t("title")}
           </motion.h2>
@@ -72,7 +72,7 @@ export default function BrandStory() {
                   ease: [...ease],
                   delay: 0.2 + idx * 0.1,
                 }}
-                className="text-[var(--text-primary)] tracking-[-0.02em] leading-[180%] text-[clamp(13px,1.5vw,15px)]"
+                className="text-[var(--text-primary)] tracking-[-0.02em] leading-[180%] text-[clamp(0.8125rem,1.5vw,0.9375rem)]"
               >
                 {t(`paragraphs.${paragraphKey}`)}
               </motion.p>
@@ -85,7 +85,7 @@ export default function BrandStory() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, ease: [...ease], delay: 0.35 }}
-            className="border-l-2 border-l-[var(--accent-primary)] pl-5 text-[var(--text-heading)] tracking-[-0.04em] leading-[140%] font-medium italic text-[clamp(16px,2vw,22px)]"
+            className="border-l-2 border-l-[var(--accent-primary)] pl-5 text-[var(--text-heading)] tracking-[-0.04em] leading-[140%] font-medium italic text-[clamp(1rem,2vw,1.375rem)]"
           >
             {t("quote")}
           </motion.blockquote>

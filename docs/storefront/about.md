@@ -1,6 +1,6 @@
 # About (giới thiệu thương hiệu)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/about` · **Cập nhật:** 2026-10-15
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/about` · **Cập nhật:** 2026-10-18
 > **Code:** `(public)/about/` — `page.tsx`, `_common/constants.ts`, `_components/{InvitationHero,BrandStory,ServicesSection,ContactCTA}.tsx`
 > **i18n:** `public.about`
 
@@ -28,3 +28,5 @@ Kể câu chuyện DOOVAN và các dịch vụ (tuyển chọn, may đo, tư v�
 - `BrandStory` dùng `useState/useEffect` để biết đang ở desktop (bố cục khác nhau theo kích thước).
 - Nội dung chữ hoàn toàn từ `public.about` (`meta, hero, story, services, cta`); cấu trúc (khóa đoạn văn, dịch vụ + icon) nằm ở `_common/constants.ts`.
 - Có trong sitemap (`/about`, ưu tiên 0.8, không có `lastModified`).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

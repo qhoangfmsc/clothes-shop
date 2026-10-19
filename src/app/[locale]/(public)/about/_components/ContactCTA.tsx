@@ -9,7 +9,7 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 export default function ContactCTA() {
   const t = useTranslations("public.about.cta");
   return (
-    <section className="bg-[var(--bg-secondary)] h-screen px-[clamp(24px,5vw,80px)] flex flex-col items-center justify-center text-center relative">
+    <section className="bg-[var(--bg-secondary)] h-screen px-[clamp(1.5rem,5vw,5rem)] flex flex-col items-center justify-center text-center relative">
       {/* Decorative symbol */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -27,7 +27,7 @@ export default function ContactCTA() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, ease: [...ease], delay: 0.1 }}
-        className="text-[var(--text-heading)] tracking-[-0.04em] leading-[120%] font-medium max-w-[480px] mb-12 text-[clamp(25px,4vw,42px)]"
+        className="text-[var(--text-heading)] tracking-[-0.04em] leading-[120%] font-medium max-w-[30rem] mb-12 text-[clamp(1.5625rem,4vw,2.625rem)]"
       >
         {t("text")}
       </motion.p>
@@ -40,7 +40,7 @@ export default function ContactCTA() {
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6, ease: [...ease], delay: 0.2 }}
         whileHover={{ scale: 1.02, opacity: 0.9 }}
-        className="inline-flex items-center justify-center bg-[var(--accent-primary)] text-[var(--color-white)] rounded-full py-[14px] px-9 text-base tracking-[-0.02em] uppercase no-underline font-medium shadow-[var(--shadow-md)] cursor-pointer"
+        className="inline-flex items-center justify-center bg-[var(--accent-primary)] text-[var(--color-white)] rounded-full py-[0.875rem] px-9 text-base tracking-[-0.02em] uppercase no-underline font-medium shadow-[var(--shadow-md)] cursor-pointer"
         style={{
           transition:
             "opacity var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-default)",

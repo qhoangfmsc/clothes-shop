@@ -41,7 +41,7 @@ export default function PendingReviewCard({ item, onReview }: PendingReviewCardP
           </span>
           <Link
             href={`/orders/${item.orderId}`}
-            className="self-start font-primary text-[11px] text-[var(--text-disabled)] no-underline hover:underline"
+            className="self-start font-primary text-[0.6875rem] text-[var(--text-disabled)] no-underline hover:underline"
           >
             {t("orderNumber", { id: item.orderId })}
           </Link>

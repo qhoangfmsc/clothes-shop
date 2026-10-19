@@ -1,6 +1,6 @@
 # Customer reviews (đánh giá của khách)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/reviews` (`?tab=pending|mine`, `?productId=<id>` lọc "Đánh giá của tôi") · **Cập nhật:** 2026-10-14
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/reviews` (`?tab=pending|mine`, `?productId=<id>` lọc "Đánh giá của tôi") · **Cập nhật:** 2026-10-18
 > **Code:** `(private)/reviews/` — `page.tsx`, `layout.tsx`, `ReviewsContent.tsx`, `_common/{constants,types,upload,use-deadline-label,use-my-reviews,use-pending-reviews}.ts`, `_components/{PendingReviewCard,MyReviewCard,ReviewFormModal,ReviewImageUploader,StarPicker}.tsx`; dùng chung `_components/{ReviewContent,ReviewImageGrid,StarRating}.tsx`
 > **i18n:** `private.reviews` (`meta`, `page`, `tabs`, `pending`, `mine`, `toast.loadFailed`), `shared.reviews` (`form`, `toast`, `deadline` — để form dùng được cả ở trang sản phẩm thuộc scope `public`), `shared.errors.byCode` (1601, 1602, 1606, 1607, 1901–1908, 9001), `private.orders.detail.review`, `private.orders.list.reviewsLink`
 
@@ -64,3 +64,5 @@ FE không kiểm `REVIEW_CREATE/VIEW/VOTE` của khách (giống `RETURN_*`): đ
 ### 4.5 Responsive
 
 Một cột `max-w-[720px]`. Dialog form: toàn chiều rộng và tối đa `100dvh` dưới `sm`, `max-w-[560px]` và `90dvh` từ `sm`; chân form chừa `env(safe-area-inset-bottom)`; sao, chip form dáng, nút X, nút xóa ảnh đạt 44 px trên cảm ứng (`pointer-coarse:`). Thẻ chờ đánh giá xếp dọc dưới `sm`, nút nằm cạnh nội dung từ `sm`. Đã kiểm ở 390 và 1440 (không tràn ngang).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

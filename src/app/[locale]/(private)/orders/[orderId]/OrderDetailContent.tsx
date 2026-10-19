@@ -31,8 +31,8 @@ import type { PendingReviewItem } from "@/src/types/review";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]";
-const WRAP_CLASS = "max-w-[1080px] mx-auto px-4 sm:px-6";
+const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const WRAP_CLASS = "max-w-[67.5rem] mx-auto px-4 sm:px-6";
 const CARD_CLASS =
   "p-5 sm:p-6 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]";
 const CARD_TITLE_CLASS =
@@ -81,7 +81,7 @@ export default function OrderDetailContent() {
     return (
       <main className={SHELL_CLASS}>
         <div className={WRAP_CLASS}>
-          <div className="h-[360px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
+          <div className="h-[22.5rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
         </div>
       </main>
     );
@@ -164,7 +164,7 @@ export default function OrderDetailContent() {
           {t("back")}
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_25rem] gap-6 items-start">
           <div className="flex flex-col gap-6 min-w-0">
             {/* Status */}
             <section className={`${CARD_CLASS} flex items-start gap-4`}>
@@ -185,7 +185,7 @@ export default function OrderDetailContent() {
                 <p className="m-0 font-primary text-sm text-[var(--text-secondary)] tracking-[-0.02em] leading-[150%]">
                   {t(`statusHint.${status}`)}
                 </p>
-                <p className="m-0 mt-1 font-primary text-[11px] text-[var(--text-disabled)] tracking-[0.02em] break-all">
+                <p className="m-0 mt-1 font-primary text-[0.6875rem] text-[var(--text-disabled)] tracking-[0.02em] break-all">
                   {format.dateTime(new Date(order.createdAt), "dateTime")} · {t("orderNumber", { id: order.id })}
                 </p>
               </div>
@@ -322,7 +322,7 @@ export default function OrderDetailContent() {
                       className="rounded-md border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-3 py-2.5 flex flex-col gap-1"
                     >
                       {(refund.reason === "RETURN" || refund.reason === "ADMIN_CANCELLED") && (
-                        <span className="font-primary text-[11px] text-[var(--text-muted)] tracking-[0.04em] uppercase">
+                        <span className="font-primary text-[0.6875rem] text-[var(--text-muted)] tracking-[0.04em] uppercase">
                           {refund.reason === "RETURN" && refund.returnId ? (
                             <Link href={`/returns/${encodeURIComponent(refund.returnId)}`} className="text-inherit underline underline-offset-2">
                               {t("refund.reasonReturn")}
@@ -391,7 +391,7 @@ export default function OrderDetailContent() {
           </div>
 
           {/* Items + totals */}
-          <section className={`${CARD_CLASS} min-w-0 flex flex-col gap-5 lg:sticky lg:top-[104px]`}>
+          <section className={`${CARD_CLASS} min-w-0 flex flex-col gap-5 lg:sticky lg:top-[6.5rem]`}>
             <h2 className={`${CARD_TITLE_CLASS} mb-0`}>{t("items", { count: totalQuantity })}</h2>
             <ul className="m-0 p-0 list-none flex flex-col gap-4">
               {order.items.map((item) => (
@@ -414,7 +414,7 @@ export default function OrderDetailContent() {
                           <PenLine size={13} aria-hidden="true" />
                           {t("review.cta")}
                         </button>
-                        <span className="font-primary text-[11px] text-[var(--text-muted)]">
+                        <span className="font-primary text-[0.6875rem] text-[var(--text-muted)]">
                           {deadlineLabel(pendingReviews.byOrderItemId.get(item.id)!.reviewDeadline)}
                         </span>
                       </div>

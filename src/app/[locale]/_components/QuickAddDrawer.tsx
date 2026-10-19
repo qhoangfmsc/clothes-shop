@@ -195,7 +195,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
       {/* Drawer — always reset both x and y to prevent stale transforms */}
       <motion.div
         ref={drawerRef}
-        className="fixed z-101 bottom-0 left-0 right-0 max-h-[90vh] bg-[var(--bg-primary)] rounded-t-lg flex flex-col overflow-hidden sm:max-w-[480px] sm:left-auto sm:right-0 sm:top-0 sm:bottom-0 sm:max-h-screen sm:rounded-l-lg sm:rounded-tr-none"
+        className="fixed z-101 bottom-0 left-0 right-0 max-h-[90vh] bg-[var(--bg-primary)] rounded-t-lg flex flex-col overflow-hidden sm:max-w-[30rem] sm:left-auto sm:right-0 sm:top-0 sm:bottom-0 sm:max-h-screen sm:rounded-l-lg sm:rounded-tr-none"
         style={{ boxShadow: "0 -8px 40px rgba(58,49,42,0.15)" }}
         initial={isDesktop ? { x: "100%", y: 0 } : { y: "100%", x: 0 }}
         animate={{ x: 0, y: 0 }}
@@ -211,7 +211,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
 
         {/* Product info row */}
         <div className="flex items-center gap-3 py-3 px-5 border-b border-[var(--border-subtle)] sm:gap-4 sm:py-5 sm:px-6 shrink-0">
-          <div className="relative w-16 h-20 rounded-sm overflow-hidden shrink-0 bg-[var(--bg-elevated)] sm:w-20 sm:h-[100px] sm:rounded-md">
+          <div className="relative w-16 h-20 rounded-sm overflow-hidden shrink-0 bg-[var(--bg-elevated)] sm:w-20 sm:h-[6.25rem] sm:rounded-md">
             <Image
               src={product.images[0]}
               alt={product.name}
@@ -223,7 +223,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
           <div className="flex-1 min-w-0 flex flex-col gap-0.5 sm:gap-1">
             <Link
               href={productUrl}
-              className="font-display text-[15px] sm:text-lg text-[var(--text-heading)] tracking-[-0.04em] no-underline truncate hover:text-[var(--accent-primary)] transition-colors duration-150"
+              className="font-display text-[0.9375rem] sm:text-lg text-[var(--text-heading)] tracking-[-0.04em] no-underline truncate hover:text-[var(--accent-primary)] transition-colors duration-150"
               onClick={onClose}
             >
               {product.name}
@@ -300,7 +300,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
                       width: "100%",
                       borderCollapse: "collapse",
                       fontFamily: "var(--font-primary)",
-                      fontSize: 12,
+                      fontSize: "0.75rem",
                     }}
                   >
                     <thead>
@@ -346,7 +346,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
                   <button
                     key={color.hex}
                     type="button"
-                    className={`w-9 h-9 rounded-full border-2 bg-transparent flex items-center justify-center cursor-pointer p-[3px] transition-all duration-150 ${
+                    className={`w-9 h-9 rounded-full border-2 bg-transparent flex items-center justify-center cursor-pointer p-[0.1875rem] transition-all duration-150 ${
                       selectedColor === color.hex
                         ? "!border-[var(--accent-primary)] shadow-[var(--shadow-gold-sm)] scale-110"
                         : "border-transparent hover:border-[var(--border-default)] hover:scale-110"
@@ -373,19 +373,19 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
             <div className="flex items-center gap-0 border border-[var(--border-light)] rounded-full overflow-hidden">
               <button
                 type="button"
-                className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-150 hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[0.9375rem] font-primary cursor-pointer flex items-center justify-center transition-all duration-150 hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 disabled={quantity <= 1}
                 aria-label={t("decrease")}
               >
                 −
               </button>
-              <span className="w-10 text-center font-primary text-[15px] font-medium text-[var(--text-heading)] tracking-[0.02em]">
+              <span className="w-10 text-center font-primary text-[0.9375rem] font-medium text-[var(--text-heading)] tracking-[0.02em]">
                 {quantity}
               </span>
               <button
                 type="button"
-                className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[15px] font-primary cursor-pointer flex items-center justify-center transition-all duration-150 hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-10 h-10 border-none bg-transparent text-[var(--text-secondary)] text-[0.9375rem] font-primary cursor-pointer flex items-center justify-center transition-all duration-150 hover:bg-[var(--bg-elevated)] hover:text-[var(--text-heading)] disabled:opacity-30 disabled:cursor-not-allowed"
                 onClick={() => setQuantity((q) => Math.min(10, q + 1))}
                 disabled={quantity >= 10}
                 aria-label={t("increase")}
@@ -398,7 +398,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
         {/* end scrollable content */}
 
         {/* Add to Bag */}
-        <div className="flex flex-col gap-2 p-4 pb-[max(20px,env(safe-area-inset-bottom))] sm:gap-3 sm:p-6 sm:border-t sm:border-[var(--border-subtle)] shrink-0">
+        <div className="flex flex-col gap-2 p-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:gap-3 sm:p-6 sm:border-t sm:border-[var(--border-subtle)] shrink-0">
           {!isSelectionComplete && (
             <p className="font-primary text-xs text-[var(--text-muted)] tracking-[0.04em] text-center m-0">
               {!selectedSize && !selectedColor
@@ -410,7 +410,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
           )}
           <button
             type="button"
-            className={`w-full inline-flex items-center justify-center gap-2 p-4 rounded-full border-none font-primary text-[15px] font-medium tracking-[0.04em] uppercase cursor-pointer transition-all duration-150 ${
+            className={`w-full inline-flex items-center justify-center gap-2 p-4 rounded-full border-none font-primary text-[0.9375rem] font-medium tracking-[0.04em] uppercase cursor-pointer transition-all duration-150 ${
               addedToCart
                 ? "!bg-[var(--accent-primary)] !text-[var(--text-on-gold)] pointer-events-none"
                 : "bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)] hover:bg-[var(--color-charcoal)] hover:-translate-y-px hover:shadow-[var(--shadow-lg)]"

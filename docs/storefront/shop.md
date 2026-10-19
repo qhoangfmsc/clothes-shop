@@ -68,3 +68,5 @@ Giúp khách tìm sản phẩm: xem các danh mục, lọc theo giá/size/màu, 
 Redux `wishlist`, `useQuickAdd`, `useAuthAction`, `Carousel`, `BannerFade`, `JsonLd`, `useBreakpoint`. API: `GET /api/products`, `/api/categories`, `/api/site-config?key=`.
 
 - Sản phẩm badge `custom_order` không hiện giá: `ProductCard` hiện `common.priceOnRequest` thay cho giá và giá gốc (`hasPublicPrice`); các mức giá của `ShopFilters` là cố định nên không phụ thuộc giá sản phẩm.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

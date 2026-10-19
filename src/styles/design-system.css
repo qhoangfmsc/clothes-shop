@@ -175,30 +175,30 @@
   --font-weight-body: 400;
   --font-weight-display: 400;
 
-  /* Type Scale */
-  --text-xs: 11px;
-  --text-sm: 12px;
-  --text-base: 13px;
-  --text-md: 15px;
-  --text-lg: 20px;
-  --text-xl: 25px;
-  --text-2xl: 30px;
-  --text-3xl: 42px;
+  /* Type Scale — rem, so it follows the wide-screen root size set in globals.css (16px up to 1536px, 20px at 1920px+) */
+  --text-xs: 0.6875rem; /* 11px at the 16px root */
+  --text-sm: 0.75rem; /* 12 */
+  --text-base: 0.8125rem; /* 13 */
+  --text-md: 0.9375rem; /* 15 */
+  --text-lg: 1.25rem; /* 20 */
+  --text-xl: 1.5625rem; /* 25 */
+  --text-2xl: 1.875rem; /* 30 */
+  --text-3xl: 2.625rem; /* 42 */
 
   /* ─────────────────────────────────────────────────────────
-     8. SPACING — 4px Base Grid
+     8. SPACING — 4px Base Grid (rem: scales with the wide-screen root size)
      ───────────────────────────────────────────────────────── */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-20: 80px;
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
 
   /* Page width cap — the one content max-width of the whole site (body is capped to it).
      --page-edge is the gap between the viewport edge and the capped column, for fixed bars
@@ -209,10 +209,10 @@
   /* ─────────────────────────────────────────────────────────
      9. BORDER RADIUS
      ───────────────────────────────────────────────────────── */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 1rem; /* 16px */
+  --radius-xl: 1.5rem; /* 24px */
   --radius-pill: 9999px;
 
   /* ─────────────────────────────────────────────────────────

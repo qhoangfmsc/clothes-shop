@@ -161,7 +161,7 @@ export default function UserMenu() {
         href="/login"
         className="header-nav-link"
         style={{
-          fontSize: 13,
+          fontSize: "0.8125rem",
           textTransform: "uppercase",
           color: "currentColor",
           letterSpacing: "-0.02em",
@@ -207,7 +207,7 @@ export default function UserMenu() {
               top: triggerRect.bottom + 12,
               right: Math.max(16, window.innerWidth - triggerRect.right),
               zIndex: 99,
-              minWidth: 220,
+              minWidth: "13.75rem",
               background: "rgba(251, 248, 241, 0.95)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
@@ -220,11 +220,11 @@ export default function UserMenu() {
             {/* User info header */}
             <div
               style={{
-                padding: "16px 20px",
+                padding: "1rem 1.25rem",
                 borderBottom: "1px solid var(--border-subtle)",
                 display: "flex",
                 alignItems: "center",
-                gap: 12,
+                gap: "0.75rem",
               }}
             >
               <UserAvatar user={user} size={36} />
@@ -269,7 +269,7 @@ export default function UserMenu() {
             </div>
 
             {/* Menu items */}
-            <div style={{ padding: "8px 0" }}>
+            <div style={{ padding: "0.5rem 0" }}>
               {MENU_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -281,8 +281,8 @@ export default function UserMenu() {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 12,
-                      padding: "10px 20px",
+                      gap: "0.75rem",
+                      padding: "0.625rem 1.25rem",
                       textDecoration: "none",
                       color: "var(--text-primary)",
                       fontSize: "var(--text-base)",
@@ -302,7 +302,7 @@ export default function UserMenu() {
             {/* Sign out */}
             <div
               style={{
-                padding: "8px 0",
+                padding: "0.5rem 0",
                 borderTop: "1px solid var(--border-subtle)",
               }}
             >
@@ -315,8 +315,8 @@ export default function UserMenu() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 12,
-                  padding: "10px 20px",
+                  gap: "0.75rem",
+                  padding: "0.625rem 1.25rem",
                   width: "100%",
                   background: "none",
                   border: "none",

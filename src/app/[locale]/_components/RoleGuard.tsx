@@ -144,7 +144,7 @@ function DefaultLoading() {
         alignItems: "center",
         justifyContent: "center",
         padding: "var(--space-16)",
-        gap: 12,
+        gap: "0.75rem",
       }}
     >
       <Loader2
@@ -197,7 +197,7 @@ function UnauthorizedBlock() {
           fontSize: "var(--text-sm)",
           color: "var(--text-muted)",
           fontFamily: "var(--font-primary)",
-          maxWidth: 360,
+          maxWidth: "22.5rem",
         }}
       >
         {t("message")}

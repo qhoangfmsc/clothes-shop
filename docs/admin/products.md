@@ -1,6 +1,6 @@
 # Products (quản lý sản phẩm)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/products` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/products` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/products/` — `ProductsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.products`, `admin.components.crud`, `common.status`, `common.productBadge`
 > **Redux slice:** `state.products`
@@ -56,3 +56,5 @@ Cho phép admin đưa sản phẩm lên cửa hàng và giữ catalog đúng: gi
 
 - Badge `sold_out` / `custom_order` thay đổi nút mua ở storefront ([shop](../storefront/shop.md), [product-detail](../storefront/product-detail.md)).
 - Sản phẩm được chọn vào bộ sưu tập ở [collections](./collections.md).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

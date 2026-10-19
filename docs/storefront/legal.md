@@ -1,6 +1,6 @@
 # Legal (Điều khoản, Chính sách bảo mật, Vận chuyển & đổi trả)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/terms`, `/privacy`, `/shipping-returns`, `/legal` · **Cập nhật:** 2026-10-13
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/terms`, `/privacy`, `/shipping-returns`, `/legal` · **Cập nhật:** 2026-10-18
 > **Code:** `(public)/legal/` — `page.tsx`, `_common/{content,metadata,types}.ts`, `_components/{LegalPage,LegalToc}.tsx` · `(public)/{terms,privacy,shipping-returns}/page.tsx` · `src/lib/legal.ts`
 > **i18n:** `public.legal`, `shared.legal`
 
@@ -41,3 +41,5 @@ Cung cấp các điều khoản mà khách phải đồng ý khi đăng nhập (
 ### 4.4 Nơi tham chiếu
 
 Footer (`SiteFooter`), burger menu, footer của landing (chỉ 2 văn bản đầu), checkbox đồng ý ở [auth](../platform/auth.md) mục 4.1, và [seo](../platform/seo.md) (sitemap).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

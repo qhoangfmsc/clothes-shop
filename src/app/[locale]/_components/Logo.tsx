@@ -14,7 +14,7 @@ export default function Logo() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [...ease], delay: 0 }}
       style={{ position: "absolute" }}
-      className="top-8 left-6 w-[120px] sm:top-6 sm:w-[130px] md:top-6 lg:w-[180px] text-[var(--color-brand)]"
+      className="top-8 left-6 w-[7.5rem] sm:top-6 sm:w-[8.125rem] md:top-6 lg:w-[11.25rem] text-[var(--color-brand)]"
     >
       <Link
         href="/"

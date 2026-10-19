@@ -175,7 +175,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Info */}
         <div className="flex flex-col gap-1 pt-3 px-0.5 pb-0">
-          <span className="text-[var(--text-primary)] font-primary text-[13px] font-medium tracking-[-0.02em] leading-[140%] transition-colors duration-150 group-hover:text-[var(--text-heading)]">
+          <span className="text-[var(--text-primary)] font-primary text-[0.8125rem] font-medium tracking-[-0.02em] leading-[140%] transition-colors duration-150 group-hover:text-[var(--text-heading)]">
             {product.name}
           </span>
           <div className="flex items-baseline gap-2">
@@ -183,7 +183,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               {showPrice ? fmt(product, "price") : tCommon("priceOnRequest")}
             </span>
             {showPrice && product.originalPriceVnd && (
-              <span className="text-[var(--text-disabled)] line-through text-[11px]">
+              <span className="text-[var(--text-disabled)] line-through text-[0.6875rem]">
                 {fmtOrNull(product, "originalPrice")}
               </span>
             )}

@@ -104,7 +104,7 @@ function ToastItemComponent({
   const t = useTranslations("shared.feedback.toast");
   return (
     <motion.div
-      className={`flex items-center gap-3 py-3 px-4 sm:px-5 rounded-full font-primary text-sm font-medium tracking-[0.02em] text-[var(--color-pearl-cream)] border max-w-[480px] max-sm:max-w-full max-sm:justify-center backdrop-blur-[20px] shadow-[0_8px_32px_rgba(58,49,42,0.18)] cursor-default pointer-events-auto ${variantClasses[item.variant]}`}
+      className={`flex items-center gap-3 py-3 px-4 sm:px-5 rounded-full font-primary text-sm font-medium tracking-[0.02em] text-[var(--color-pearl-cream)] border max-w-[30rem] max-sm:max-w-full max-sm:justify-center backdrop-blur-[20px] shadow-[0_8px_32px_rgba(58,49,42,0.18)] cursor-default pointer-events-auto ${variantClasses[item.variant]}`}
       layout
       initial={{ opacity: 0, y: 16, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}

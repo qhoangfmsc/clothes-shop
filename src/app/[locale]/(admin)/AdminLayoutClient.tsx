@@ -231,7 +231,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
             {/* Sidebar — off-canvas drawer below lg, fixed column from lg; independent scroll */}
             <aside
               id="admin-sidebar"
-              className={`w-[min(280px,85vw)] lg:w-[240px] lg:min-w-[240px] bg-[var(--color-obsidian)] text-[var(--text-on-dark)] flex flex-col p-[var(--space-6)] pb-[max(var(--space-6),env(safe-area-inset-bottom))] gap-[var(--space-8)] fixed top-0 left-(--page-edge) h-dvh overflow-y-auto z-40 lg:z-20 transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
+              className={`w-[min(17.5rem,85vw)] lg:w-[15rem] lg:min-w-[15rem] bg-[var(--color-obsidian)] text-[var(--text-on-dark)] flex flex-col p-[var(--space-6)] pb-[max(var(--space-6),env(safe-area-inset-bottom))] gap-[var(--space-8)] fixed top-0 left-(--page-edge) h-dvh overflow-y-auto z-40 lg:z-20 transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
                 menuOpen ? "translate-x-0 visible" : "max-lg:-translate-x-full max-lg:invisible"
               }`}
             >
@@ -244,7 +244,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
                   <span className="font-display text-md text-[var(--text-on-dark)]">DOOVAN</span>
                 </Link>
                 <span className="flex items-center gap-2">
-                  <span className="text-[9px] font-bold tracking-[0.15em] text-[var(--color-obsidian)] bg-[var(--accent-primary)] py-0.5 px-2 rounded-[var(--radius-pill)]">
+                  <span className="text-[0.5625rem] font-bold tracking-[0.15em] text-[var(--color-obsidian)] bg-[var(--accent-primary)] py-0.5 px-2 rounded-[var(--radius-pill)]">
                     {t("badge")}
                   </span>
                   <button
@@ -276,7 +276,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
                 {/* Grouped nav sections */}
                 {visibleGroups.map((group, gi) => (
                   <div key={group.key}>
-                    <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-white/25 font-primary pt-[var(--space-5)] px-[var(--space-2)] pb-[var(--space-1)]">
+                    <div className="text-[0.5625rem] font-bold uppercase tracking-[0.12em] text-white/25 font-primary pt-[var(--space-5)] px-[var(--space-2)] pb-[var(--space-1)]">
                       {t(`nav.groups.${group.key}`)}
                     </div>
                     {group.items.map((item) => {
@@ -314,7 +314,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
                     {user?.email}
                   </span>
                   <span
-                    className={`text-[9px] font-bold tracking-[0.1em] uppercase py-0.5 px-2 rounded-[var(--radius-pill)] self-start mt-0.5 ${
+                    className={`text-[0.5625rem] font-bold tracking-[0.1em] uppercase py-0.5 px-2 rounded-[var(--radius-pill)] self-start mt-0.5 ${
                       user?.role === "admin"
                         ? "bg-[rgba(201,169,110,0.2)] text-[var(--accent-primary)]"
                         : "bg-white/10 text-white/50"
@@ -334,7 +334,7 @@ export default function AdminLayoutClient({ children }: { children: ReactNode })
             </aside>
 
             {/* Main */}
-            <main className="flex-1 flex flex-col min-w-0 h-dvh overflow-hidden lg:ml-[240px]">
+            <main className="flex-1 flex flex-col min-w-0 h-dvh overflow-hidden lg:ml-[15rem]">
               <div className="shrink-0 flex items-center gap-2 lg:gap-[var(--space-4)] py-2 px-4 sm:px-6 lg:py-[var(--space-4)] lg:px-[var(--space-8)] border-b border-[var(--border-subtle)] bg-[var(--bg-primary)]">
                 <button
                   ref={menuButtonRef}
@@ -400,7 +400,7 @@ function PendingBadge({ pendingKey }: { pendingKey: PendingCountKey }) {
       <span
         aria-hidden="true"
         title={text}
-        className="shrink-0 min-w-5 h-5 px-1.5 rounded-full bg-[rgba(201,169,110,0.25)] text-[var(--accent-primary)] text-[11px] font-bold leading-5 text-center"
+        className="shrink-0 min-w-5 h-5 px-1.5 rounded-full bg-[rgba(201,169,110,0.25)] text-[var(--accent-primary)] text-[0.6875rem] font-bold leading-5 text-center"
       >
         {count > 99 ? t("overflow") : count}
       </span>
@@ -430,8 +430,8 @@ function AccessDeniedScreen({ title, message }: { title: string; message: string
   const t = useTranslations("admin.shell.denied");
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh bg-[var(--bg-primary)] gap-4 p-4 sm:p-[var(--space-8)]">
-      <div className="flex flex-col items-center text-center gap-[var(--space-4)] max-w-[400px] py-[var(--space-12)] px-6 sm:px-[var(--space-8)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
-        <span className="text-[40px]">🔒</span>
+      <div className="flex flex-col items-center text-center gap-[var(--space-4)] max-w-[25rem] py-[var(--space-12)] px-6 sm:px-[var(--space-8)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
+        <span className="text-[2.5rem]">🔒</span>
         <h2 className="font-display text-xl text-[var(--text-heading)] font-normal m-0">{title}</h2>
         <p className="text-sm text-[var(--text-muted)] font-primary leading-relaxed m-0">
           {message}

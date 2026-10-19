@@ -37,7 +37,7 @@ export default function OutroSection() {
         <div
           style={{
             width: 1,
-            height: 48,
+            height: "3rem",
             background: "var(--accent-primary)",
             opacity: 0.4,
             marginBottom: "var(--space-8)",
@@ -54,7 +54,7 @@ export default function OutroSection() {
             letterSpacing: "-0.04em",
             lineHeight: "110%",
           }}
-          className="text-[38px] sm:text-[68px] lg:text-[96px]"
+          className="text-[2.375rem] sm:text-[4.25rem] lg:text-[6rem]"
         >
           <span style={{ display: "block" }}>{t("titleLine1")}</span>
           <span
@@ -86,8 +86,8 @@ export default function OutroSection() {
           />
           <div
             style={{
-              width: 6,
-              height: 6,
+              width: "0.375rem",
+              height: "0.375rem",
               borderRadius: "var(--radius-pill)",
               background: "var(--accent-primary)",
               opacity: 0.6,
@@ -111,7 +111,7 @@ export default function OutroSection() {
             fontFamily: "var(--font-primary)",
             fontWeight: 500,
           }}
-          className="text-[12px] sm:text-[14px] lg:text-[15px] max-w-[280px] sm:max-w-[400px] lg:max-w-[440px]"
+          className="text-[0.75rem] sm:text-[0.875rem] lg:text-[0.9375rem] max-w-[17.5rem] sm:max-w-[25rem] lg:max-w-[27.5rem]"
         >
           {t("subtitle")}
           <br />
@@ -122,7 +122,7 @@ export default function OutroSection() {
         <div
           style={{
             width: 1,
-            height: 48,
+            height: "3rem",
             background: "var(--accent-primary)",
             opacity: 0.4,
             marginTop: "var(--space-8)",

@@ -308,7 +308,7 @@ export default function CategoriesContent() {
         </div>
         <RoleGuard permission={PERMISSIONS.CATEGORY_CREATE}>
           <button
-            className="flex items-center gap-1.5 py-[10px] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 py-[0.625rem] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
             onClick={openCreate}
           >
             <Plus size={16} /> {t("page.add")}
@@ -402,7 +402,7 @@ export default function CategoriesContent() {
                       className="flex flex-col gap-2 p-3 border border-[var(--border-subtle)] rounded-lg"
                     >
                       <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em]">
+                        <span className="text-[0.625rem] font-semibold text-[var(--text-muted)] uppercase tracking-[0.06em]">
                           {t("subcategories.item", { index: i + 1 })}
                         </span>
                         <button

@@ -36,7 +36,7 @@ export default function SiteFooter() {
 
   return (
     <footer className="relative overflow-hidden border-t border-[var(--ft-line)] bg-[var(--bg-dark)] text-[var(--text-on-dark)] [--ft-line:color-mix(in_srgb,var(--text-on-dark)_14%,transparent)] [--ft-muted:color-mix(in_srgb,var(--text-on-dark)_60%,transparent)]">
-      <div className="mx-auto max-w-[1280px] px-4 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-20">
+      <div className="mx-auto max-w-[80rem] px-4 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-20">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-10">
           {/* Brand */}
           <div className="col-span-2 flex flex-col sm:col-span-3 lg:col-span-1">
@@ -44,16 +44,16 @@ export default function SiteFooter() {
               <Link
                 href="/"
                 aria-label={t("homeAria")}
-                className="font-display text-[36px] leading-none tracking-[-0.04em] text-[var(--text-on-dark)] no-underline"
+                className="font-display text-[2.25rem] leading-none tracking-[-0.04em] text-[var(--text-on-dark)] no-underline"
               >
                 DOOVAN
               </Link>
             </div>
-            <p className="m-0 mt-2 max-w-[300px] font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--ft-muted)]">
+            <p className="m-0 mt-2 max-w-[18.75rem] font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--ft-muted)]">
               {t("tagline")}
             </p>
             {/* Name · address · phone on every page, the same text as the structured data */}
-            <address className="mt-4 flex max-w-[300px] flex-col gap-2 font-primary text-sm not-italic leading-[150%] tracking-[-0.02em]">
+            <address className="mt-4 flex max-w-[18.75rem] flex-col gap-2 font-primary text-sm not-italic leading-[150%] tracking-[-0.02em]">
               <p className="m-0">
                 <span className="text-[var(--text-on-dark)]">{t("address")}:</span>{" "}
                 <a

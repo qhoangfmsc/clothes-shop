@@ -20,6 +20,7 @@ import type { ShippingInfo } from "@/src/types/shipping";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ProductListParams, ProductListResponse } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
 import { mapMediaUrls } from "@/src/lib/media-url";
+import { useRouter } from "@/src/i18n/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -372,4 +373,28 @@ export async function getProductUrl(id: string): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+/**
+ * Link props for a product that was saved with only its id and category / sub-category slugs (cart line,
+ * wishlist item). The cart and wishlist APIs do not load the product's category, so the slugs can be empty;
+ * then `href` is `/shop` and a click looks the real URL up (`getProductUrl`) before navigating.
+ */
+export function useProductLink() {
+  const router = useRouter();
+  return useCallback(
+    (item: { productId: string; category?: string; subcategory?: string }) => {
+      const complete = Boolean(item.category && item.subcategory);
+      return {
+        href: complete ? `/shop/${item.category}/${item.subcategory}/${item.productId}` : "/shop",
+        onClick: complete
+          ? undefined
+          : async (e: React.MouseEvent) => {
+              e.preventDefault();
+              router.push((await getProductUrl(item.productId)) ?? "/shop");
+            },
+      };
+    },
+    [router]
+  );
 }

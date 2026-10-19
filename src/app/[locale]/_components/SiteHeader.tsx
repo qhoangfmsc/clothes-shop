@@ -33,7 +33,7 @@ export default function SiteHeader() {
   return (
     <motion.header
       initial={{ y: 0 }}
-      animate={{ y: hidden ? -140 : 0 }}
+      animate={{ y: hidden ? "-9rem" : 0 }}
       transition={{ duration: 0.6, ease: [...LUXURY_EASE] }}
       style={{
         position: "fixed",
@@ -54,7 +54,7 @@ export default function SiteHeader() {
           top: 0,
           left: 0,
           right: 0,
-          height: "var(--header-bg-height, 120px)",
+          height: "var(--header-bg-height, 7.5rem)",
           background: "rgba(251, 248, 241, 0.95)", // --color-pearl-cream with opacity
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
@@ -78,9 +78,9 @@ export default function SiteHeader() {
       </div>
 
       <style>{`
-        :root { --header-bg-height: 80px; }
+        :root { --header-bg-height: 5rem; }
         @media (min-width: 1024px) {
-          :root { --header-bg-height: 90px; }
+          :root { --header-bg-height: 5.625rem; }
         }
       `}</style>
     </motion.header>

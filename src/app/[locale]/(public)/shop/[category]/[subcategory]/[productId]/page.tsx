@@ -76,7 +76,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       }}
     >
       {/* Spacer for fixed nav */}
-      <div style={{ height: 80 }} />
+      <div style={{ height: "5rem" }} />
 
       <ProductDetailClient
         product={product}

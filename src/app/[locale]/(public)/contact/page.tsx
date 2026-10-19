@@ -79,16 +79,16 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
   const product = await loadOrderProduct(locale, productParam);
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] pt-[120px] pb-20">
-      <div className="mx-auto flex max-w-[1040px] flex-col gap-14 px-4 sm:px-6">
+    <main className="min-h-screen bg-[var(--bg-primary)] pt-[7.5rem] pb-20">
+      <div className="mx-auto flex max-w-[65rem] flex-col gap-14 px-4 sm:px-6">
         <header className="flex flex-col gap-4">
           <span className="font-primary text-xs font-medium uppercase tracking-[0.08em] text-[var(--accent-primary)]">
             {t("hero.label")}
           </span>
-          <h1 className="m-0 font-display text-[clamp(32px,5vw,52px)] font-normal leading-[105%] tracking-[-0.04em] text-[var(--text-heading)]">
+          <h1 className="m-0 font-display text-[clamp(2rem,5vw,3.25rem)] font-normal leading-[105%] tracking-[-0.04em] text-[var(--text-heading)]">
             {t("hero.heading")}
           </h1>
-          <p className="m-0 max-w-[600px] font-primary text-base leading-[160%] tracking-[-0.02em] text-[var(--text-secondary)]">
+          <p className="m-0 max-w-[37.5rem] font-primary text-base leading-[160%] tracking-[-0.02em] text-[var(--text-secondary)]">
             {t("hero.description")}
           </p>
         </header>
@@ -167,7 +167,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
             rel="noopener noreferrer"
             className="inline-flex items-start gap-2 self-start font-primary text-sm leading-[160%] tracking-[-0.02em] text-[var(--text-primary)] no-underline hover:underline"
           >
-            <MapPin size={18} aria-hidden="true" className="mt-[3px] shrink-0" />
+            <MapPin size={18} aria-hidden="true" className="mt-[0.1875rem] shrink-0" />
             <address className="not-italic">{CONTACT_ADDRESS}</address>
           </a>
           <p className="m-0 font-primary text-sm leading-[160%] tracking-[-0.02em] text-[var(--text-muted)]">

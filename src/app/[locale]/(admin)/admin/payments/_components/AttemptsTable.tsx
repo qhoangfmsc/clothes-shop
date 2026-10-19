@@ -62,7 +62,7 @@ export default function AttemptsTable() {
               <code className="text-xs font-mono font-semibold text-[var(--text-primary)]">{a.transferCode}</code>
               <CopyButton value={a.transferCode} label={t("columns.code")} />
             </span>
-            <span className="text-[11px] text-[var(--text-muted)] whitespace-nowrap">
+            <span className="text-[0.6875rem] text-[var(--text-muted)] whitespace-nowrap">
               {t("createdAt", { date: format.dateTime(new Date(a.createdAt), "dateTime") })}
             </span>
           </div>
@@ -85,7 +85,7 @@ export default function AttemptsTable() {
         render: (a) => (
           <div className="flex flex-col gap-0.5 items-start">
             <AttemptBadge status={a.status} />
-            <span className="text-[11px] text-[var(--text-muted)] whitespace-nowrap">
+            <span className="text-[0.6875rem] text-[var(--text-muted)] whitespace-nowrap">
               {a.paidAt
                 ? t("paidAt", { date: format.dateTime(new Date(a.paidAt), "dateTime") })
                 : t("expiresAt", { date: format.dateTime(new Date(a.expiresAt), "dateTime") })}
@@ -108,7 +108,7 @@ export default function AttemptsTable() {
               </Link>
               <OrderPaymentBadge status={a.order.paymentStatus} />
             </span>
-            <span className="text-[11px] text-[var(--text-muted)]">
+            <span className="text-[0.6875rem] text-[var(--text-muted)]">
               {[a.order.customer?.fullName, a.order.customer?.phone].filter(Boolean).join(" · ") || "—"}
             </span>
           </div>
@@ -129,7 +129,7 @@ export default function AttemptsTable() {
                     <MoneyText money={moneyOf(tx, "amount")} amountClassName="text-xs font-semibold" />
                     <VerificationBadge status={tx.verificationStatus} />
                   </span>
-                  <span className="text-[11px] text-[var(--text-muted)] break-all">
+                  <span className="text-[0.6875rem] text-[var(--text-muted)] break-all">
                     {tx.providerTransactionId} · {format.dateTime(new Date(tx.receivedAt), "dateTime")}
                   </span>
                 </div>

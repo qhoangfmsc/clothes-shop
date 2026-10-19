@@ -173,7 +173,7 @@ function getPageRange(current: number, total: number): (number | "...")[] {
 const inputClass =
   "py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none";
 const selectClass =
-  "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[130px] h-9 pointer-coarse:h-11 pointer-coarse:text-base";
+  "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[8.125rem] h-9 pointer-coarse:h-11 pointer-coarse:text-base";
 
 /* ═══════════════════════════════ Sortable row ═══════════════════════════════ */
 

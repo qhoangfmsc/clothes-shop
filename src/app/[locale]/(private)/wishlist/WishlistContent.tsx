@@ -6,6 +6,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Link } from "@/src/i18n/navigation";
+import { useProductLink } from "@/src/hooks/use-api";
 import Image from "next/image";
 import { Heart, Trash2, ChevronRight, ArrowLeft, ShoppingBag } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
@@ -28,6 +29,7 @@ export default function WishlistContent() {
   const format = useFormatter();
   const { fmt } = useMoney();
   const { isAuthenticated, isLoading } = useAuth();
+  const productLink = useProductLink();
   const dispatch = useAppDispatch();
   const items = useAppSelector(selectWishlistItems);
   const { toast } = useToast();
@@ -160,7 +162,7 @@ export default function WishlistContent() {
                 className="wishlist-card"
               >
                 <Link
-                  href={`/shop/${item.category}/${item.subcategory}/${item.productId}`}
+                  {...productLink(item)}
                   className="wishlist-card__link"
                 >
                   <div className="wishlist-card__image-wrap">
@@ -176,7 +178,7 @@ export default function WishlistContent() {
 
                 <div className="wishlist-card__info">
                   <Link
-                    href={`/shop/${item.category}/${item.subcategory}/${item.productId}`}
+                    {...productLink(item)}
                     className="wishlist-card__name"
                   >
                     {item.name}

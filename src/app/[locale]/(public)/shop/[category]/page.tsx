@@ -113,7 +113,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium">
                 {category.description}
               </span>
-              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none">
+              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(1.75rem,5vw,3rem)] tracking-[-0.04em] leading-none">
                 {t("collectionHeading", { category: category.title })}
               </h2>
             </div>

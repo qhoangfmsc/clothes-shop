@@ -1,6 +1,6 @@
 # Categories (danh mục & danh mục con)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/categories` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/categories` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/categories/` — `CategoriesContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.categories`, `admin.components.crud`
 > **Redux slice:** `state.categories`
@@ -49,3 +49,5 @@ Giữ cấu trúc catalog: mỗi sản phẩm thuộc một danh mục và (nế
 
 - Storefront đọc danh mục bằng `sort=priority&limit=200` (`PUBLIC_CATEGORIES_QUERY`); `MAX_INLINE_CATEGORIES = 4` điều khiển việc lưới `/shop` chuyển thành carousel và mega menu thêm link "xem thêm".
 - Dropdown danh mục của [products](./products.md) lấy từ `useAdminCategories`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

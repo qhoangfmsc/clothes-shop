@@ -33,9 +33,9 @@ const SECONDARY_LINK =
 
 function Shell({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
   return (
-    <main className="min-h-screen pt-[104px] sm:pt-[120px] pb-10 bg-[var(--bg-primary)]">
+    <main className="min-h-screen pt-[6.5rem] sm:pt-[7.5rem] pb-10 bg-[var(--bg-primary)]">
       <div
-        className={`${wide ? "max-w-[880px]" : "max-w-[640px]"} mx-auto px-4 sm:px-6 flex flex-col gap-6`}
+        className={`${wide ? "max-w-[55rem]" : "max-w-[40rem]"} mx-auto px-4 sm:px-6 flex flex-col gap-6`}
       >
         {children}
       </div>
@@ -73,7 +73,7 @@ function ResultPanel({
       <h1 className="font-display font-normal text-2xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
         {title}
       </h1>
-      <p className="m-0 font-primary text-base text-[var(--text-secondary)] tracking-[-0.02em] leading-[140%] max-w-[380px]">
+      <p className="m-0 font-primary text-base text-[var(--text-secondary)] tracking-[-0.02em] leading-[140%] max-w-[23.75rem]">
         {description}
       </p>
       {orderLabel && (
@@ -90,7 +90,7 @@ function ResultPanel({
 /** A transfer code in a small bordered card with a copy icon: what the shopper quotes if payment needs follow-up */
 function CodeCard({ code, label }: { code: string; label: string }) {
   return (
-    <div className="w-full max-w-[380px] px-4 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-elevated)]">
+    <div className="w-full max-w-[23.75rem] px-4 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-elevated)]">
       <DetailRow label={label} value={code} copyable />
     </div>
   );
@@ -131,7 +131,7 @@ export default function PaymentContent() {
         <div
           aria-busy="true"
           aria-label={t("loading")}
-          className="h-[480px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none"
+          className="h-[30rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none"
         />
       </Shell>
     );
@@ -183,7 +183,7 @@ export default function PaymentContent() {
             <div className="flex flex-col items-center gap-3 w-full">
               {amount && <PaymentAmountBlock amount={amount} label={t("amount")} />}
               {session && (
-                <div className="flex flex-col items-center gap-2 w-full max-w-[380px]">
+                <div className="flex flex-col items-center gap-2 w-full max-w-[23.75rem]">
                   <CodeCard code={session.transferContent} label={t("transferContent")} />
                   <p className="m-0 font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
                     {t("expired.oldCodeHint")}
@@ -251,7 +251,7 @@ export default function PaymentContent() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [...ease] }}
-        className="grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-5 md:gap-8 p-4 sm:p-6 md:p-8 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]"
+        className="grid grid-cols-1 md:grid-cols-[16.25rem_minmax(0,1fr)] gap-5 md:gap-8 p-4 sm:p-6 md:p-8 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]"
       >
         {/* QR + amount */}
         <div className="flex flex-col items-center gap-3 md:justify-center">
@@ -260,7 +260,7 @@ export default function PaymentContent() {
             <img
               src={session.qrUrl}
               alt={t("qrAlt")}
-              className="w-full max-w-[200px] md:max-w-[260px] aspect-square rounded-md bg-white p-2 border border-[var(--border-subtle)] object-contain"
+              className="w-full max-w-[12.5rem] md:max-w-[16.25rem] aspect-square rounded-md bg-white p-2 border border-[var(--border-subtle)] object-contain"
             />
           )}
           <PaymentAmountBlock amount={amount ?? session} label={t("amount")} />
@@ -274,7 +274,7 @@ export default function PaymentContent() {
               <h1 className="m-0 font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em] leading-none">
                 {t("title")}
               </h1>
-              <p className="m-0 font-primary text-[11px] text-[var(--text-disabled)] tracking-[0.02em] break-all">
+              <p className="m-0 font-primary text-[0.6875rem] text-[var(--text-disabled)] tracking-[0.02em] break-all">
                 {orderLabel}
               </p>
             </div>

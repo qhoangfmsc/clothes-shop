@@ -206,7 +206,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
         className="flex flex-col lg:flex-row min-h-screen overflow-hidden bg-[var(--bg-primary)]"
       >
         {/* Text side */}
-        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-[120px] pb-12 sm:pb-16 lg:py-0 gap-6 relative overflow-hidden">
+        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-[7.5rem] pb-12 sm:pb-16 lg:py-0 gap-6 relative overflow-hidden">
           <div
             className="font-primary text-xs font-normal tracking-[0.2em] uppercase text-[var(--color-champagne-gold)] flex items-center gap-3 opacity-0"
             data-ni-hero-date
@@ -215,7 +215,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
             {t("hero.live")}
           </div>
 
-          <h1 className="font-display text-[clamp(52px,10vw,100px)] font-light text-[var(--text-heading)] tracking-[-0.05em] leading-[90%] overflow-hidden">
+          <h1 className="font-display text-[clamp(3.25rem,10vw,6.25rem)] font-light text-[var(--text-heading)] tracking-[-0.05em] leading-[90%] overflow-hidden">
             <span className="block opacity-0 translate-y-full" data-ni-hero-title-line>
               {t("hero.titleLine1")}
             </span>
@@ -225,7 +225,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           </h1>
 
           <p
-            className="font-primary text-base font-normal text-[var(--text-muted)] tracking-[-0.02em] leading-[160%] max-w-[380px] opacity-0"
+            className="font-primary text-base font-normal text-[var(--text-muted)] tracking-[-0.02em] leading-[160%] max-w-[23.75rem] opacity-0"
             data-ni-hero-subtitle
           >
             {t("hero.subtitle")}
@@ -242,7 +242,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           </a>
 
           <span
-            className="absolute -right-5 lg:-right-10 -bottom-[30px] lg:bottom-5 font-display text-[clamp(120px,25vw,280px)] font-light text-[var(--border-subtle)] tracking-[-0.06em] leading-[80%] opacity-0 pointer-events-none select-none"
+            className="absolute -right-5 lg:-right-10 -bottom-[1.875rem] lg:bottom-5 font-display text-[clamp(7.5rem,25vw,17.5rem)] font-light text-[var(--border-subtle)] tracking-[-0.06em] leading-[80%] opacity-0 pointer-events-none select-none"
             data-ni-hero-watermark
           >
             {t("hero.watermark")}
@@ -254,7 +254,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
             top — so the brand color and the photo are both visible together.
             No image yet → the base color alone. */}
         <div
-          className="flex-1 relative min-h-[400px] lg:min-h-auto overflow-hidden"
+          className="flex-1 relative min-h-[25rem] lg:min-h-auto overflow-hidden"
           data-ni-hero-image
           style={{ background: "var(--bg-section-3)" }}
         >
@@ -300,7 +300,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           style={{ background: SPOTLIGHTS[0].bgColor }}
         >
           <div
-            className="flex-[1.2] relative min-h-[400px] overflow-hidden"
+            className="flex-[1.2] relative min-h-[25rem] overflow-hidden"
             data-ni-spotlight-image
           >
             <Image
@@ -322,13 +322,13 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
               {SPOTLIGHTS[0].tag}
             </span>
             <h2
-              className="font-display text-[clamp(28px,5vw,48px)] font-light text-[var(--text-heading)] tracking-[-0.04em] leading-[105%] opacity-0"
+              className="font-display text-[clamp(1.75rem,5vw,3rem)] font-light text-[var(--text-heading)] tracking-[-0.04em] leading-[105%] opacity-0"
               data-ni-spotlight-name
             >
               {SPOTLIGHTS[0].name}
             </h2>
             <p
-              className="font-primary text-base font-normal text-[var(--text-secondary)] tracking-[-0.02em] leading-[170%] max-w-[400px] opacity-0"
+              className="font-primary text-base font-normal text-[var(--text-secondary)] tracking-[-0.02em] leading-[170%] max-w-[25rem] opacity-0"
               data-ni-spotlight-desc
             >
               {SPOTLIGHTS[0].desc}
@@ -370,7 +370,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
                 <span className="font-primary text-xs font-normal tracking-[0.12em] uppercase text-[var(--text-accent)]">
                   {t("grid.label")}
                 </span>
-                <h2 className="font-display text-[clamp(28px,5vw,44px)] font-light text-[var(--text-heading)] tracking-[-0.04em] leading-[100%]">
+                <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] font-light text-[var(--text-heading)] tracking-[-0.04em] leading-[100%]">
                   {t("grid.title")}
                 </h2>
               </div>
@@ -389,7 +389,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           style={{ background: SPOTLIGHTS[1].bgColor }}
         >
           <div
-            className="flex-[1.2] relative min-h-[400px] overflow-hidden"
+            className="flex-[1.2] relative min-h-[25rem] overflow-hidden"
             data-ni-spotlight-image
           >
             <Image
@@ -411,13 +411,13 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
               {SPOTLIGHTS[1].tag}
             </span>
             <h2
-              className="font-display text-[clamp(28px,5vw,48px)] font-light text-[var(--text-heading)] tracking-[-0.04em] leading-[105%] opacity-0"
+              className="font-display text-[clamp(1.75rem,5vw,3rem)] font-light text-[var(--text-heading)] tracking-[-0.04em] leading-[105%] opacity-0"
               data-ni-spotlight-name
             >
               {SPOTLIGHTS[1].name}
             </h2>
             <p
-              className="font-primary text-base font-normal text-[var(--text-secondary)] tracking-[-0.02em] leading-[170%] max-w-[400px] opacity-0"
+              className="font-primary text-base font-normal text-[var(--text-secondary)] tracking-[-0.02em] leading-[170%] max-w-[25rem] opacity-0"
               data-ni-spotlight-desc
             >
               {SPOTLIGHTS[1].desc}
@@ -445,13 +445,13 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
         <div className="w-12 h-12 rounded-full border border-[rgba(201,169,110,0.3)] flex items-center justify-center text-[var(--color-champagne-gold)]">
           <Mail size={20} />
         </div>
-        <h2 className="font-display text-[clamp(24px,4vw,40px)] font-light text-[var(--color-pearl-cream)] tracking-[-0.04em] leading-[105%]">
+        <h2 className="font-display text-[clamp(1.5rem,4vw,2.5rem)] font-light text-[var(--color-pearl-cream)] tracking-[-0.04em] leading-[105%]">
           {t("newsletter.title")}
         </h2>
-        <p className="font-primary text-base font-normal text-[rgba(255,255,255,0.5)] tracking-[-0.02em] leading-[160%] max-w-[400px]">
+        <p className="font-primary text-base font-normal text-[rgba(255,255,255,0.5)] tracking-[-0.02em] leading-[160%] max-w-[25rem]">
           {t("newsletter.description")}
         </p>
-        <form className="flex gap-2 w-full max-w-[400px]" onSubmit={(e) => e.preventDefault()}>
+        <form className="flex gap-2 w-full max-w-[25rem]" onSubmit={(e) => e.preventDefault()}>
           <input
             type="email"
             className="flex-1 py-3 px-5 rounded-full border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.06)] text-[var(--color-pearl-cream)] font-primary text-sm font-normal tracking-[-0.02em] outline-none transition-colors duration-150 placeholder:text-[rgba(255,255,255,0.3)] focus:border-[var(--color-champagne-gold)]"

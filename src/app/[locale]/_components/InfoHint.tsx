@@ -64,7 +64,7 @@ export function InfoHint({ text, size = 13 }: { text: string; /** Icon size in p
         <span
           ref={bubbleRef}
           role="tooltip"
-          className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 w-max max-w-56 whitespace-normal rounded-md bg-[var(--text-heading)] px-2.5 py-1.5 text-[11px] leading-snug text-white shadow-lg text-center z-20"
+          className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 w-max max-w-56 whitespace-normal rounded-md bg-[var(--text-heading)] px-2.5 py-1.5 text-[0.6875rem] leading-snug text-white shadow-lg text-center z-20"
         >
           {text}
         </span>

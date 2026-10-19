@@ -1,6 +1,6 @@
 # Payments (đối soát thanh toán chuyển khoản)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/payments` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/payments` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/payments/` — `page.tsx`, `PaymentsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{AdminQrPanel,AttemptsTable,AttemptBadge,ConfirmPaymentModal,OrderPicker,OrderPaymentTab,QrPresentation,VerificationBadge}.tsx` · `src/app/[locale]/_components/OrderPaymentBadge.tsx`
 > **i18n:** `admin.payments`, `common.orderPaymentStatus`, `shared.errors.byCode` (1702, 1703, 1707–1709)
 > **Redux slice:** `state.payments`
@@ -59,3 +59,5 @@ Tải `fetchOrderPayment(orderId)`. Hiển thị: trạng thái thanh toán (`Or
 ### 4.5 Liên quan
 
 Khách tạo QR và theo dõi trạng thái ở [checkout](../storefront/checkout.md) 4.6. Danh sách và panel đơn: [orders](./orders.md). Quyền và mã: [auth](../platform/auth.md). Menu: [admin-shell](./admin-shell.md).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

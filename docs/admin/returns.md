@@ -1,6 +1,6 @@
 # Returns (trả hàng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/returns` (`?returnId=<id>` mở chi tiết, `?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/returns` (`?returnId=<id>` mở chi tiết, `?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/returns/` — `page.tsx`, `ReturnsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{ReturnBadge,ReturnDetailPanel,ApproveReturnModal,RejectReturnModal,ReceiveReturnModal}.tsx`
 > **i18n:** `admin.returns`, `shared.errors.byCode` (1801, 1803, 1804), `admin.components.crud.sort` (`updatedDesc`, `updatedAsc`)
 > **Redux slice:** `state.returns`
@@ -46,3 +46,5 @@ Cả ba thao tác trả về yêu cầu đã cập nhật nên panel thay thẳn
 ### 4.2 Liên quan
 
 Khách tạo và theo dõi yêu cầu ở [customer-returns](../storefront/customer-returns.md). Khoản hoàn ở [refunds](./refunds.md) (cột lý do của khoản `RETURN` link về `?returnId=`). Menu: [admin-shell](./admin-shell.md). Quyền: [auth](../platform/auth.md).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

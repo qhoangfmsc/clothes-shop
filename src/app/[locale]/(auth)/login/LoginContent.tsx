@@ -34,8 +34,8 @@ export default function LoginContent() {
           position: "absolute",
           top: "10%",
           left: "5%",
-          width: 200,
-          height: 200,
+          width: "12.5rem",
+          height: "12.5rem",
           borderRadius: "50%",
           background: "var(--color-rose-milk)",
           opacity: 0.5,
@@ -48,8 +48,8 @@ export default function LoginContent() {
           position: "absolute",
           bottom: "15%",
           right: "10%",
-          width: 300,
-          height: 300,
+          width: "18.75rem",
+          height: "18.75rem",
           borderRadius: "50%",
           background: "var(--color-cloud)",
           opacity: 0.5,
@@ -62,8 +62,8 @@ export default function LoginContent() {
           position: "absolute",
           top: "50%",
           right: "30%",
-          width: 150,
-          height: 150,
+          width: "9.375rem",
+          height: "9.375rem",
           borderRadius: "50%",
           background: "var(--color-soft-gold)",
           opacity: 0.35,
@@ -76,8 +76,8 @@ export default function LoginContent() {
           position: "absolute",
           bottom: "30%",
           left: "20%",
-          width: 180,
-          height: 180,
+          width: "11.25rem",
+          height: "11.25rem",
           borderRadius: "50%",
           background: "var(--color-sage-cream)",
           opacity: 0.4,
@@ -106,7 +106,7 @@ export default function LoginContent() {
           border: "1px solid var(--border-light)",
           boxShadow: "var(--shadow-lg)",
           width: "100%",
-          maxWidth: 400,
+          maxWidth: "25rem",
         }}
         className="mx-4 sm:mx-0"
       >
@@ -153,7 +153,7 @@ export default function LoginContent() {
               fontFamily: "var(--font-display), serif",
               fontWeight: 400,
             }}
-            className="text-[25px] sm:text-[30px]"
+            className="text-[1.5625rem] sm:text-[1.875rem]"
           >
             {t("welcome.title")}
           </h1>

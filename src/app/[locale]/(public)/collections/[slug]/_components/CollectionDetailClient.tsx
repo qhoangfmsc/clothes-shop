@@ -219,7 +219,7 @@ export default function CollectionDetailClient({
       {/* ═══ 1. HERO — Split-screen cinematic ═══ */}
       <section
         ref={heroRef}
-        className="cd-hero relative h-screen min-h-[560px] overflow-hidden flex items-end bg-[var(--color-noir)]"
+        className="cd-hero relative h-screen min-h-[35rem] overflow-hidden flex items-end bg-[var(--color-noir)]"
       >
         <div className="cd-hero__media absolute inset-0">
           <Image
@@ -234,23 +234,23 @@ export default function CollectionDetailClient({
         </div>
         <div className="absolute inset-0 z-1 pointer-events-none bg-[linear-gradient(to_top,rgba(10,10,8,0.75)_0%,rgba(10,10,8,0.15)_50%,transparent_100%),linear-gradient(to_right,rgba(10,10,8,0.4)_0%,transparent_60%)]" />
 
-        <div className="relative z-2 px-4 py-8 max-w-[560px] sm:px-6 sm:py-10 sm:max-w-[600px] lg:px-8 lg:py-12 lg:max-w-[640px]">
-          <span className="cd-hero__season inline-block text-[var(--color-champagne-gold)] [font-family:var(--font-primary)] text-[11px] tracking-[0.2em] uppercase mb-4 opacity-0 translate-y-2">
+        <div className="relative z-2 px-4 py-8 max-w-[35rem] sm:px-6 sm:py-10 sm:max-w-[37.5rem] lg:px-8 lg:py-12 lg:max-w-[40rem]">
+          <span className="cd-hero__season inline-block text-[var(--color-champagne-gold)] [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.2em] uppercase mb-4 opacity-0 translate-y-2">
             {collection.season}
           </span>
-          <h1 className="cd-hero__title [font-family:var(--font-display)] text-[clamp(40px,8vw,88px)] text-[var(--color-pearl-cream)] tracking-[-0.05em] leading-[95%] mb-3 opacity-0 translate-y-5">
+          <h1 className="cd-hero__title [font-family:var(--font-display)] text-[clamp(2.5rem,8vw,5.5rem)] text-[var(--color-pearl-cream)] tracking-[-0.05em] leading-[95%] mb-3 opacity-0 translate-y-5">
             {collection.name}
           </h1>
-          <p className="cd-hero__subtitle [font-family:var(--font-display)] text-[clamp(16px,3vw,24px)] text-[rgba(201,169,110,0.8)] tracking-[-0.02em] leading-[120%] mb-5 opacity-0 translate-y-3">
+          <p className="cd-hero__subtitle [font-family:var(--font-display)] text-[clamp(1rem,3vw,1.5rem)] text-[rgba(201,169,110,0.8)] tracking-[-0.02em] leading-[120%] mb-5 opacity-0 translate-y-3">
             {collection.subtitle}
           </p>
-          <div className="cd-hero__line w-[60px] h-px bg-[var(--color-champagne-gold)] opacity-40 mb-5 origin-left scale-x-0" />
-          <p className="cd-hero__description text-white/55 [font-family:var(--font-primary)] text-[15px] tracking-[-0.02em] leading-[160%] max-w-[420px] opacity-0 translate-y-3">
+          <div className="cd-hero__line w-[3.75rem] h-px bg-[var(--color-champagne-gold)] opacity-40 mb-5 origin-left scale-x-0" />
+          <p className="cd-hero__description text-white/55 [font-family:var(--font-primary)] text-[0.9375rem] tracking-[-0.02em] leading-[160%] max-w-[26.25rem] opacity-0 translate-y-3">
             {collection.description}
           </p>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-3 flex flex-col items-center gap-2 text-white/30 [font-family:var(--font-primary)] text-[11px] tracking-[0.12em] uppercase">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-3 flex flex-col items-center gap-2 text-white/30 [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.12em] uppercase">
           <div className="w-px h-9 bg-[linear-gradient(to_bottom,rgba(201,169,110,0.5),transparent)] animate-[cd-scroll-pulse_1.8s_ease-in-out_infinite] motion-reduce:animate-none" />
           <span>{t("scroll")}</span>
         </div>
@@ -259,15 +259,15 @@ export default function CollectionDetailClient({
       {/* ═══ 2. EDITORIAL LOOKBOOK — Asymmetric magazine layout ═══ */}
       <section className="bg-[var(--bg-primary)] pb-4">
         <div className="px-4 pt-16 pb-8 flex flex-col items-center text-center gap-3 sm:px-6 sm:pt-20 sm:pb-10">
-          <span className="text-[var(--text-accent)] uppercase text-[11px] tracking-[0.14em] [font-family:var(--font-primary)]">
+          <span className="text-[var(--text-accent)] uppercase text-[0.6875rem] tracking-[0.14em] [font-family:var(--font-primary)]">
             {t("lookbook")}
           </span>
-          <h2 className="text-[var(--text-heading)] [font-family:var(--font-display)] text-[clamp(32px,6vw,56px)] tracking-[-0.04em] leading-none">
+          <h2 className="text-[var(--text-heading)] [font-family:var(--font-display)] text-[clamp(2rem,6vw,3.5rem)] tracking-[-0.04em] leading-none">
             {t("curatedPieces")}
           </h2>
         </div>
 
-        <div ref={editorialRef} className="flex flex-col gap-4 px-4 sm:gap-6 sm:px-6 lg:gap-8 lg:px-8">
+        <div ref={editorialRef} className="mx-auto flex w-full max-w-[96rem] flex-col gap-4 px-4 sm:gap-6 sm:px-6 lg:gap-8 lg:px-8">
           {editorialProducts.map((product, idx) => {
             const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
             /* Alternate: large left, small right, then reversed */
@@ -277,12 +277,12 @@ export default function CollectionDetailClient({
               <Link
                 key={product.id}
                 href={productUrl}
-                className={`cd-editorial__item group grid grid-cols-1 gap-6 no-underline text-inherit md:grid-cols-[3fr_2fr] md:gap-8 md:items-center ${
-                  isOdd ? "md:grid-cols-[2fr_3fr]" : ""
+                className={`cd-editorial__item group grid grid-cols-1 gap-6 no-underline text-inherit md:grid-cols-[3fr_2fr] md:gap-8 md:items-center lg:gap-12 ${
+                  isOdd ? "md:grid-cols-[2fr_3fr] lg:grid-cols-[minmax(0,32rem)_auto] lg:justify-center" : "lg:grid-cols-[auto_minmax(0,32rem)] lg:justify-center"
                 }`}
               >
                 <div
-                  className={`cd-editorial__img relative aspect-3/4 overflow-hidden rounded-[var(--radius-lg)] bg-[var(--bg-elevated)] ${
+                  className={`cd-editorial__img relative aspect-3/4 overflow-hidden rounded-[var(--radius-lg)] bg-[var(--bg-elevated)] lg:w-[min(calc(min(85dvh,56rem)*0.75),44vw)] ${
                     isOdd ? "md:order-2" : ""
                   }`}
                 >
@@ -290,14 +290,14 @@ export default function CollectionDetailClient({
                     src={product.images[0]}
                     alt={product.name}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 65vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 45vw"
                     style={{ objectFit: "cover" }}
                     className="transition-transform duration-[800ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] motion-reduce:transition-none"
                   />
 
                   {product.badge && (
                     <span
-                      className={`absolute top-4 left-4 z-2 py-1 px-3 rounded-full [font-family:var(--font-primary)] text-[11px] tracking-[0.06em] uppercase ${
+                      className={`absolute top-4 left-4 z-2 py-1 px-3 rounded-full [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.06em] uppercase ${
                         PRODUCT_CARD_BADGE_STYLES[product.badge] ?? ""
                       }`}
                     >
@@ -311,29 +311,29 @@ export default function CollectionDetailClient({
                     isOdd ? "md:order-1 md:text-right md:items-end" : ""
                   }`}
                 >
-                  <span className="cd-editorial__tag text-[var(--text-accent)] [font-family:var(--font-primary)] text-[11px] tracking-[0.12em] uppercase">
+                  <span className="cd-editorial__tag text-[var(--text-accent)] [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.12em] uppercase">
                     {String(idx + 1).padStart(2, "0")} /{" "}
                     {String(editorialProducts.length).padStart(2, "0")}
                   </span>
-                  <span className="cd-editorial__name [font-family:var(--font-display)] text-[clamp(24px,4vw,36px)] text-[var(--text-heading)] tracking-[-0.04em] leading-[105%]">
+                  <span className="cd-editorial__name [font-family:var(--font-display)] text-[clamp(1.5rem,4vw,2.25rem)] text-[var(--text-heading)] tracking-[-0.04em] leading-[105%]">
                     {product.name}
                   </span>
                   <p
-                    className={`text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[15px] tracking-[-0.02em] leading-[160%] max-w-[380px] ${
+                    className={`text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[0.9375rem] tracking-[-0.02em] leading-[160%] max-w-[23.75rem] ${
                       isOdd ? "md:ml-auto" : ""
                     }`}
                   >
                     {product.description}
                   </p>
-                  <span className="cd-editorial__price [font-family:var(--font-primary)] text-[20px] text-[var(--text-heading)] tracking-[-0.02em] flex items-baseline gap-2">
+                  <span className="cd-editorial__price [font-family:var(--font-primary)] text-[1.25rem] text-[var(--text-heading)] tracking-[-0.02em] flex items-baseline gap-2">
                     {hasPublicPrice(product.badge) ? fmt(product, "price") : tCommon("priceOnRequest")}
                     {hasPublicPrice(product.badge) && product.originalPriceVnd && (
-                      <span className="text-[12px] text-[var(--text-disabled)] line-through">
+                      <span className="text-[0.75rem] text-[var(--text-disabled)] line-through">
                         {fmtOrNull(product, "originalPrice")}
                       </span>
                     )}
                   </span>
-                  <span className="inline-flex items-center gap-2 text-[var(--text-accent)] [font-family:var(--font-primary)] text-[11px] tracking-[0.08em] uppercase transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] group-hover:text-[var(--accent-primary)] motion-reduce:transition-none">
+                  <span className="inline-flex items-center gap-2 text-[var(--text-accent)] [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.08em] uppercase transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] group-hover:text-[var(--accent-primary)] motion-reduce:transition-none">
                     {t("viewDetails")}
                     <ArrowRight size={14} />
                   </span>
@@ -346,10 +346,10 @@ export default function CollectionDetailClient({
 
       {/* ═══ 3. DIVIDER QUOTE ═══ */}
       <section className="py-20 px-4 flex flex-col items-center text-center gap-5 bg-[var(--bg-section-5)] border-t border-b border-[var(--border-subtle)] sm:px-12">
-        <blockquote className="[font-family:var(--font-display)] text-[clamp(20px,4vw,32px)] text-[var(--text-heading)] tracking-[-0.03em] leading-[140%] max-w-[680px] italic">
+        <blockquote className="[font-family:var(--font-display)] text-[clamp(1.25rem,4vw,2rem)] text-[var(--text-heading)] tracking-[-0.03em] leading-[140%] max-w-[42.5rem] italic">
           “{collection.description}”
         </blockquote>
-        <span className="text-[var(--text-accent)] [font-family:var(--font-primary)] text-[11px] tracking-[0.12em] uppercase">
+        <span className="text-[var(--text-accent)] [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.12em] uppercase">
           {t("quoteBy", { season: collection.season })}
         </span>
       </section>
@@ -358,21 +358,21 @@ export default function CollectionDetailClient({
       <section className="bg-[var(--bg-primary)] pb-16">
         <div className="pt-16 px-4 pb-8 flex items-end justify-between gap-4 sm:px-6 lg:pt-20 lg:px-8">
           <div>
-            <span className="text-[var(--text-accent)] uppercase text-[11px] tracking-[0.12em] [font-family:var(--font-primary)]">
+            <span className="text-[var(--text-accent)] uppercase text-[0.6875rem] tracking-[0.12em] [font-family:var(--font-primary)]">
               {t("shopCollection")}
             </span>
-            <h2 className="text-[var(--text-heading)] [font-family:var(--font-display)] text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none mt-2">
+            <h2 className="text-[var(--text-heading)] [font-family:var(--font-display)] text-[clamp(1.75rem,5vw,3rem)] tracking-[-0.04em] leading-none mt-2">
               {collection.name}
             </h2>
           </div>
-          <span className="text-[var(--text-muted)] [font-family:var(--font-primary)] text-[11px] tracking-[0.06em] uppercase whitespace-nowrap">
+          <span className="text-[var(--text-muted)] [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.06em] uppercase whitespace-nowrap">
             {t("pieces", { count: products.length })}
           </span>
         </div>
 
         <div
           ref={shopAllRef}
-          className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3 sm:gap-5 sm:px-6 lg:grid-cols-4 lg:gap-6 lg:px-8"
+          className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3 sm:gap-5 sm:px-6 lg:grid-cols-4 lg:gap-6 lg:px-8 xl:grid-cols-5"
         >
           {gridProducts.map((product) => {
             const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
@@ -434,10 +434,10 @@ export default function CollectionDetailClient({
                   </div>
                 </div>
                 <div className="flex flex-col gap-1 pt-3 px-1">
-                  <span className="text-[var(--text-primary)] [font-family:var(--font-primary)] text-[13px] tracking-[-0.02em] leading-[140%] transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] group-hover:text-[var(--text-heading)] motion-reduce:transition-none">
+                  <span className="text-[var(--text-primary)] [font-family:var(--font-primary)] text-[0.8125rem] tracking-[-0.02em] leading-[140%] transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] group-hover:text-[var(--text-heading)] motion-reduce:transition-none">
                     {product.name}
                   </span>
-                  <span className="text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[12px] tracking-[-0.02em]">
+                  <span className="text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[0.75rem] tracking-[-0.02em]">
                     {hasPublicPrice(product.badge) ? fmt(product, "price") : tCommon("priceOnRequest")}
                   </span>
                 </div>
@@ -452,21 +452,21 @@ export default function CollectionDetailClient({
         <div className="text-center flex flex-col items-center gap-4">
           <Link
             href="/collections"
-            className="inline-flex items-center gap-2 text-[var(--text-muted)] [font-family:var(--font-primary)] text-[11px] tracking-[0.06em] uppercase no-underline transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] hover:text-[var(--accent-primary)] motion-reduce:transition-none"
+            className="inline-flex items-center gap-2 text-[var(--text-muted)] [font-family:var(--font-primary)] text-[0.6875rem] tracking-[0.06em] uppercase no-underline transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] hover:text-[var(--accent-primary)] motion-reduce:transition-none"
           >
             <ArrowLeft size={14} />
             {t("allCollections")}
           </Link>
           <div className="w-10 h-px bg-[var(--border-subtle)] my-2" />
-          <span className="text-[var(--text-accent)] uppercase text-[11px] tracking-[0.12em] [font-family:var(--font-primary)]">
+          <span className="text-[var(--text-accent)] uppercase text-[0.6875rem] tracking-[0.12em] [font-family:var(--font-primary)]">
             {t("discoverMore")}
           </span>
-          <h2 className="text-[var(--text-heading)] [font-family:var(--font-display)] text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none">
+          <h2 className="text-[var(--text-heading)] [font-family:var(--font-display)] text-[clamp(1.75rem,5vw,3rem)] tracking-[-0.04em] leading-none">
             {t("exploreAll")}
           </h2>
           <Link
             href="/collections"
-            className="inline-flex items-center justify-center gap-2 py-4 px-8 rounded-full bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)] [font-family:var(--font-primary)] text-[12px] tracking-[0.06em] uppercase no-underline cursor-pointer border-none transition-all duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] hover:bg-[var(--color-charcoal)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)] motion-reduce:transition-none"
+            className="inline-flex items-center justify-center gap-2 py-4 px-8 rounded-full bg-[var(--color-obsidian)] text-[var(--color-pearl-cream)] [font-family:var(--font-primary)] text-[0.75rem] tracking-[0.06em] uppercase no-underline cursor-pointer border-none transition-all duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] hover:bg-[var(--color-charcoal)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)] motion-reduce:transition-none"
           >
             {t("viewCollections")}
             <ArrowRight size={14} />

@@ -23,7 +23,7 @@ function DocumentBody({
   const SectionHeading = showHeading ? "h3" : "h2";
 
   return (
-    <article id={doc.key} className="flex scroll-mt-[120px] flex-col gap-10">
+    <article id={doc.key} className="flex scroll-mt-[7.5rem] flex-col gap-10">
       {showHeading && (
         <header className="flex flex-col gap-3 border-b border-[var(--border-light)] pb-6">
           <h2 className="m-0 font-display text-2xl font-normal leading-none tracking-[-0.04em] text-[var(--text-heading)] sm:text-3xl">
@@ -39,7 +39,7 @@ function DocumentBody({
         <section
           key={section.key}
           id={`${doc.key}-${section.key}`}
-          className="flex scroll-mt-[120px] flex-col gap-3"
+          className="flex scroll-mt-[7.5rem] flex-col gap-3"
         >
           <SectionHeading className="m-0 font-display text-lg font-normal leading-[120%] tracking-[-0.04em] text-[var(--text-heading)] sm:text-xl">
             {index + 1}. {section.title}
@@ -86,8 +86,8 @@ export default async function LegalPage({ locale, docs: docKeys }: LegalPageProp
   const otherDocs = LEGAL_DOCS.filter((d) => !docKeys.includes(d.key));
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] pt-[120px] pb-20">
-      <div className="mx-auto max-w-[1040px] px-4 sm:px-6">
+    <main className="min-h-screen bg-[var(--bg-primary)] pt-[7.5rem] pb-20">
+      <div className="mx-auto max-w-[65rem] px-4 sm:px-6">
         <header className="mb-10 flex flex-col gap-3 lg:mb-14">
           <p className="m-0 font-primary text-xs font-medium uppercase tracking-[0.12em] text-[var(--accent-primary)]">
             {tTitles("title")}
@@ -95,7 +95,7 @@ export default async function LegalPage({ locale, docs: docKeys }: LegalPageProp
           <h1 className="m-0 font-display text-3xl font-normal leading-none tracking-[-0.04em] text-[var(--text-heading)] sm:text-4xl">
             {title}
           </h1>
-          <p className="m-0 max-w-[640px] font-primary text-base leading-[150%] tracking-[-0.02em] text-[var(--text-secondary)]">
+          <p className="m-0 max-w-[40rem] font-primary text-base leading-[150%] tracking-[-0.02em] text-[var(--text-secondary)]">
             {subtitle}
           </p>
           <p className="m-0 font-primary text-sm tracking-[-0.02em] text-[var(--text-muted)]">
@@ -104,7 +104,7 @@ export default async function LegalPage({ locale, docs: docKeys }: LegalPageProp
         </header>
 
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16">
-          <aside className="lg:w-[260px] lg:shrink-0">
+          <aside className="lg:w-[16.25rem] lg:shrink-0">
             <LegalToc locale={locale} docs={docs} />
           </aside>
 

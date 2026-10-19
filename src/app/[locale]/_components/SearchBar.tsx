@@ -169,7 +169,7 @@ export default function SearchBar() {
       style={{
         display: "flex",
         alignItems: "center",
-        height: "34px",
+        height: "2.125rem",
         position: "relative",
       }}
     >
@@ -179,13 +179,13 @@ export default function SearchBar() {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "6px",
+          gap: "0.375rem",
           background: expanded ? "var(--bg-primary)" : "transparent",
           borderRadius: expanded ? "20px" : "30px",
           border: expanded ? "1px solid var(--border-subtle)" : "1px solid transparent",
-          padding: expanded ? "0 10px" : "0",
-          height: "34px",
-          maxWidth: expanded ? "220px" : "34px",
+          padding: expanded ? "0 0.625rem" : "0",
+          height: "2.125rem",
+          maxWidth: expanded ? "13.75rem" : "2.125rem",
           overflow: "hidden",
           cursor: expanded ? "text" : "pointer",
           transition:
@@ -234,7 +234,7 @@ export default function SearchBar() {
               border: "none",
               background: "transparent",
               outline: "none",
-              fontSize: "13px",
+              fontSize: "0.8125rem",
               fontFamily: "var(--font-primary)",
               color: "var(--text-primary)",
               width: "100%",
@@ -360,14 +360,14 @@ function SearchDropdown({
       }}
     >
       {/* Results list */}
-      <div style={{ maxHeight: "min(60vh, 560px)", overflowY: "auto" }} role="listbox">
+      <div style={{ maxHeight: "min(60vh, 35rem)", overflowY: "auto" }} role="listbox">
         {showLoading && (
           <div
             style={{
-              padding: "16px 16px",
+              padding: "1rem 1rem",
               textAlign: "center",
               fontFamily: "var(--font-primary)",
-              fontSize: 13,
+              fontSize: "0.8125rem",
               color: "var(--text-muted)",
             }}
           >
@@ -378,10 +378,10 @@ function SearchDropdown({
         {showNoResults && (
           <div
             style={{
-              padding: "16px 16px",
+              padding: "1rem 1rem",
               textAlign: "center",
               fontFamily: "var(--font-primary)",
-              fontSize: 13,
+              fontSize: "0.8125rem",
               color: "var(--text-muted)",
             }}
           >
@@ -397,9 +397,9 @@ function SearchDropdown({
                 <div
                   role="presentation"
                   style={{
-                    padding: "10px 14px 4px",
+                    padding: "0.625rem 0.875rem 0.25rem",
                     fontFamily: "var(--font-primary)",
-                    fontSize: 11,
+                    fontSize: "0.6875rem",
                     fontWeight: 500,
                     letterSpacing: "0.04em",
                     textTransform: "uppercase",
@@ -427,12 +427,12 @@ function SearchDropdown({
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 12,
+                    gap: "0.75rem",
                     flex: 1,
                     minWidth: 0,
                     border: "none",
                     background: "transparent",
-                    padding: isHistory ? "10px 4px 10px 14px" : "10px 14px",
+                    padding: isHistory ? "0.625rem 0.25rem 0.625rem 0.875rem" : "0.625rem 0.875rem",
                     cursor: "pointer",
                     textAlign: "left",
                     fontFamily: "var(--font-primary)",
@@ -448,8 +448,8 @@ function SearchDropdown({
                   {/* Thumbnail */}
                   <div
                     style={{
-                      width: 42,
-                      height: 56,
+                      width: "2.625rem",
+                      height: "3.5rem",
                       borderRadius: 4,
                       overflow: "hidden",
                       flexShrink: 0,
@@ -464,7 +464,7 @@ function SearchDropdown({
                   <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: 1, minWidth: 0 }}>
                     <span
                       style={{
-                        fontSize: 13,
+                        fontSize: "0.8125rem",
                         fontWeight: 500,
                         color: "var(--text-primary)",
                         letterSpacing: "-0.02em",
@@ -478,7 +478,7 @@ function SearchDropdown({
                     </span>
                     <span
                       style={{
-                        fontSize: 13,
+                        fontSize: "0.8125rem",
                         fontWeight: 500,
                         color: "var(--text-muted)",
                         letterSpacing: "-0.02em",
@@ -501,7 +501,7 @@ function SearchDropdown({
                       border: "none",
                       background: "transparent",
                       cursor: "pointer",
-                      padding: "10px 14px",
+                      padding: "0.625rem 0.875rem",
                       color: "var(--text-muted)",
                       display: "flex",
                       alignItems: "center",

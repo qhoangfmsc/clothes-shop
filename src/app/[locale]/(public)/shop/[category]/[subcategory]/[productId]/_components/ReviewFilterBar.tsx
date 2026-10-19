@@ -53,7 +53,7 @@ export default function ReviewFilterBar({ filters, onChange, onClear }: ReviewFi
         <button
           type="button"
           onClick={onClear}
-          className="inline-flex items-center gap-1 min-h-9 pointer-coarse:min-h-11 border-0 bg-transparent px-2 font-primary text-[11px] text-[var(--text-muted)] cursor-pointer hover:text-[var(--text-secondary)]"
+          className="inline-flex items-center gap-1 min-h-9 pointer-coarse:min-h-11 border-0 bg-transparent px-2 font-primary text-[0.6875rem] text-[var(--text-muted)] cursor-pointer hover:text-[var(--text-secondary)]"
         >
           <X size={11} aria-hidden="true" />
           {t("clear")}

@@ -164,7 +164,7 @@ export default function ShopFilters({
             <SlidersHorizontal size={13} />
             {t("filter")}
             {activeFiltersCount > 0 && (
-              <span className="inline-flex items-center justify-center w-4.5 h-4.5 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] text-[10px] font-semibold">
+              <span className="inline-flex items-center justify-center w-4.5 h-4.5 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] text-[0.625rem] font-semibold">
                 {activeFiltersCount}
               </span>
             )}
@@ -178,7 +178,7 @@ export default function ShopFilters({
             <button
               type="button"
               onClick={clearFilters}
-              className="inline-flex items-center gap-1 py-1 px-2 border-0 bg-transparent cursor-pointer text-[11px] text-[var(--text-muted)] font-primary hover:text-[var(--text-secondary)] transition-colors"
+              className="inline-flex items-center gap-1 py-1 px-2 border-0 bg-transparent cursor-pointer text-[0.6875rem] text-[var(--text-muted)] font-primary hover:text-[var(--text-secondary)] transition-colors"
             >
               <X size={11} /> {t("clearAll")}
             </button>
@@ -199,7 +199,7 @@ export default function ShopFilters({
             <div className="flex flex-col gap-5 p-5 bg-[var(--bg-secondary)] rounded-xl border border-[var(--border-subtle)]">
               {/* Price Range */}
               <div className="flex flex-col gap-2.5">
-                <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
+                <span className="text-[0.6875rem] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
                   {t("priceRange")}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -235,7 +235,7 @@ export default function ShopFilters({
 
               {/* Rating */}
               <div className="flex flex-col gap-2.5">
-                <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
+                <span className="text-[0.6875rem] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
                   {t("rating")}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -263,7 +263,7 @@ export default function ShopFilters({
               {/* Size */}
               {availableSizes.length > 0 && (
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
+                  <span className="text-[0.6875rem] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
                     {t("size")}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -274,7 +274,7 @@ export default function ShopFilters({
                           key={size}
                           type="button"
                           onClick={() => toggleSize(size)}
-                          className={`inline-flex items-center justify-center min-w-[36px] h-8 px-2 rounded-md text-xs font-medium font-primary border transition-colors ${
+                          className={`inline-flex items-center justify-center min-w-[2.25rem] h-8 px-2 rounded-md text-xs font-medium font-primary border transition-colors ${
                             active
                               ? "bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-[var(--accent-primary)]"
                               : "bg-[var(--bg-primary)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-light)]"
@@ -291,7 +291,7 @@ export default function ShopFilters({
               {/* Color */}
               {availableColors.length > 0 && (
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
+                  <span className="text-[0.6875rem] uppercase tracking-[0.08em] text-[var(--text-muted)] font-semibold">
                     {t("color")}
                   </span>
                   <div className="flex flex-wrap gap-2">

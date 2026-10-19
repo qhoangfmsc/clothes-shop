@@ -82,7 +82,7 @@ export default function BreakdownCard({ card, tabs, data }: BreakdownCardProps) 
         </p>
       ) : (
         <div className="flex flex-col gap-1">
-          <div className="flex justify-end gap-[var(--space-4)] text-[11px] font-semibold uppercase tracking-wider text-[var(--text-muted)] font-primary pb-1">
+          <div className="flex justify-end gap-[var(--space-4)] text-[0.6875rem] font-semibold uppercase tracking-wider text-[var(--text-muted)] font-primary pb-1">
             <span className="w-16 text-right">{t("breakdown.visitors")}</span>
             <span className="w-16 text-right">{t("breakdown.pageviews")}</span>
           </div>

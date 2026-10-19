@@ -13,7 +13,7 @@ export default function Footer() {
       style={{
         position: "fixed",
         pointerEvents: "none",
-        left: 16,
+        left: "calc(var(--page-edge) + 1rem)",
         mixBlendMode: "exclusion",
         opacity: 0,
         display: "flex",
@@ -23,7 +23,7 @@ export default function Footer() {
         color: "white",
         letterSpacing: "-0.02em",
       }}
-      className="bottom-6 gap-5 justify-between w-[calc(100%-32px)] text-[11px] sm:bottom-8 sm:gap-20 sm:w-auto sm:text-[13px]"
+      className="bottom-6 gap-5 justify-between w-[calc(100%-2rem-2*var(--page-edge))] text-[0.6875rem] sm:bottom-8 sm:gap-20 sm:w-auto sm:text-[0.8125rem]"
     >
       <span>{t("copyright", { year: new Date().getFullYear() })}</span>
       {/* The bar ignores the pointer so it never blocks the page behind it; the links opt back in */}

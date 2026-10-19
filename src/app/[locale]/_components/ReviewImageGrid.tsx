@@ -31,7 +31,7 @@ export default function ReviewImageGrid({ images, className = "" }: ReviewImageG
               type="button"
               onClick={() => setViewer({ open: true, index: i })}
               aria-label={t("open", { index: i + 1, count: urls.length })}
-              className="block size-16 sm:size-20 overflow-hidden rounded-md border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-0 cursor-pointer transition-opacity hover:opacity-80 motion-reduce:transition-none pointer-coarse:size-[72px]"
+              className="block size-16 sm:size-20 overflow-hidden rounded-md border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-0 cursor-pointer transition-opacity hover:opacity-80 motion-reduce:transition-none pointer-coarse:size-[4.5rem]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- review photos are small user uploads served through /media */}
               <img src={url} alt="" loading="lazy" className="size-full object-cover" />

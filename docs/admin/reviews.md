@@ -1,6 +1,6 @@
 # Reviews (kiểm duyệt đánh giá)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-14
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/reviews/` — `page.tsx`, `ReviewsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{ReviewStatusBadge,ReviewDetailPanel,HideReviewModal,ReviewReplyForm}.tsx`; dùng chung `_components/{ReviewContent,ReviewAvatar,StarRating}.tsx`
 > **i18n:** `admin.reviews`, `shared.reviews`, `shared.errors.byCode` (1901, 1906), `admin.components.crud.sort` (`ratingDesc`, `ratingAsc`, `helpfulDesc`), `admin.shell.nav.pending.reviews`
 > **Redux slice:** `state.reviews`
@@ -51,3 +51,5 @@ Toast qua `useErrorMessage` với fallback `toast.failed` / `saveFailed` / `dele
 ### 4.4 Phụ thuộc
 
 Hình dạng dữ liệu `AdminReview` ở `src/types/review.ts` (dùng chung với storefront); phía khách ở [customer-reviews](../storefront/customer-reviews.md), hiển thị công khai ở [product-detail](../storefront/product-detail.md). Điểm trung bình và số đánh giá của sản phẩm hiện ở cột Rating của [products](./products.md).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

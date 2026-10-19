@@ -42,7 +42,7 @@ export default function MyReviewCard({ review, onEdit }: MyReviewCardProps) {
             <button
               type="button"
               onClick={() => void openProduct()}
-              className="min-h-6 cursor-pointer self-start border-0 bg-transparent p-0 font-primary text-[11px] text-[var(--text-accent)] hover:underline pointer-coarse:min-h-11"
+              className="min-h-6 cursor-pointer self-start border-0 bg-transparent p-0 font-primary text-[0.6875rem] text-[var(--text-accent)] hover:underline pointer-coarse:min-h-11"
             >
               {t("viewProduct")}
             </button>

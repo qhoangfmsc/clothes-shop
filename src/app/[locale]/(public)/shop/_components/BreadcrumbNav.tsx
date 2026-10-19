@@ -20,7 +20,7 @@ export default function BreadcrumbNav({ crumbs }: BreadcrumbNavProps) {
         const isLast = idx === crumbs.length - 1;
         return (
           <span key={crumb.label} className="flex items-center gap-2">
-            {idx > 0 && <span className="text-[var(--text-disabled)] text-[10px]">◆</span>}
+            {idx > 0 && <span className="text-[var(--text-disabled)] text-[0.625rem]">◆</span>}
             {isLast || !crumb.href ? (
               <span className="text-[var(--text-primary)]">{crumb.label}</span>
             ) : (

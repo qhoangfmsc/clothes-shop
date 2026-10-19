@@ -33,12 +33,12 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.1 `SiteHeader`
 
-`position: fixed`, `z-index 100`, `pointer-events: none` (con tự bật). Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 80 px (<1024) / 90 px (≥1024). Chứa `Logo` và `HeaderNav`. `left`/`right` = `var(--page-edge)` nên header nằm trong cột `--page-max-w` của `body` (xem [design-system](./design-system.md) 4.3); panel mega menu của `HeaderNav` căn cùng cách.
+`position: fixed`, `z-index 100`, `pointer-events: none` (con tự bật). Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 5 rem (<1024) / 5.625 rem (≥1024) (80 / 90 px ở gốc 16 px, lớn theo thang màn rộng); ẩn dịch lên `-9rem`. Kích thước trong style inline của header, mega menu, tìm kiếm, burger menu viết bằng `rem` để theo thang này. Chứa `Logo` và `HeaderNav`. `left`/`right` = `var(--page-edge)` nên header nằm trong cột `--page-max-w` của `body` (xem [design-system](./design-system.md) 4.3); panel mega menu của `HeaderNav` căn cùng cách.
 
 ### 4.2 `HeaderNav`
 
 - `NAV_LINKS`: Shop (có mega menu), New In, Collections (trang About không nằm trên thanh nav, chỉ có trong drawer và footer); chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
-- Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 30 px, link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
+- Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 1.875 rem (30 px ở gốc 16 px), link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
 - Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Panel trượt từ trên, render qua portal vào `body`.
 - Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
 - `<UserMenu />` đang được comment trong `HeaderNav` (không hiển thị); phần tài khoản nằm trong burger menu.

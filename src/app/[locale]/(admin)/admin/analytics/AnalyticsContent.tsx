@@ -22,7 +22,7 @@ import StatusCard from "./_components/StatusCard";
 /* Recharts is ~100 KB: keep it out of every other admin page's bundle */
 const TrafficChart = dynamic(() => import("./_components/TrafficChart"), {
   ssr: false,
-  loading: () => <div className="h-[280px]" />,
+  loading: () => <div className="h-[17.5rem]" />,
 });
 
 const CARD =
@@ -121,7 +121,7 @@ export default function AnalyticsContent() {
             {report ? (
               <TrafficChart series={report.series} granularity={report.granularity} />
             ) : (
-              <div className="h-[280px]" />
+              <div className="h-[17.5rem]" />
             )}
           </section>
 

@@ -1,6 +1,6 @@
 # Collections (bộ sưu tập)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/collections` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/collections` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/collections/` — `CollectionsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.collections`, `admin.components.crud`
 > **Redux slice:** `state.collections`
@@ -44,3 +44,5 @@ Cho phép admin gom sản phẩm theo chủ đề/chiến dịch (ví dụ "Limi
 ### 4.4 Liên quan
 
 Storefront: [collections](../storefront/collections.md) đọc từ `GET /api/collections` (danh sách) và `?slug=` (chi tiết + sản phẩm).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

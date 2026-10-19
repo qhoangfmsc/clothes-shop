@@ -62,10 +62,10 @@ export default async function ShopPage({ params }: ShopPageProps) {
         <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium px-4 sm:px-0">
           {t("browse.label")}
         </span>
-        <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none px-4 sm:px-0">
+        <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(1.75rem,5vw,3rem)] tracking-[-0.04em] leading-none px-4 sm:px-0">
           {t("browse.title")}
         </h2>
-        <p className="text-[var(--text-muted)] font-primary text-[15px] tracking-[-0.02em] leading-[150%] max-w-[480px] mt-2 px-4 sm:px-0">
+        <p className="text-[var(--text-muted)] font-primary text-[0.9375rem] tracking-[-0.02em] leading-[150%] max-w-[30rem] mt-2 px-4 sm:px-0">
           {t("browse.description", { count: categories.length })}
         </p>
       </div>
@@ -86,10 +86,10 @@ export default async function ShopPage({ params }: ShopPageProps) {
               <span className="text-[var(--text-accent)] uppercase text-xs tracking-[0.12em] font-primary font-medium">
                 {t("all.label")}
               </span>
-              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(28px,5vw,48px)] tracking-[-0.04em] leading-none">
+              <h2 className="text-[var(--text-heading)] font-display font-normal text-[clamp(1.75rem,5vw,3rem)] tracking-[-0.04em] leading-none">
                 {t("all.title")}
               </h2>
-              <p className="text-[var(--text-muted)] font-primary text-[15px] tracking-[-0.02em] leading-[150%] max-w-[480px] mt-2">
+              <p className="text-[var(--text-muted)] font-primary text-[0.9375rem] tracking-[-0.02em] leading-[150%] max-w-[30rem] mt-2">
                 {t("all.description")}
               </p>
             </div>

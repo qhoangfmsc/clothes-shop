@@ -120,7 +120,7 @@ export default function OrderRequestForm({ product }: OrderRequestFormProps) {
 
   return (
     <div
-      className={`grid gap-10 lg:items-start ${product ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]" : ""}`}
+      className={`grid gap-10 lg:items-start ${product ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,22.5rem)]" : ""}`}
     >
       <form
         className="flex flex-col gap-8"
@@ -166,19 +166,19 @@ export default function OrderRequestForm({ product }: OrderRequestFormProps) {
               <div className="inline-flex w-fit items-center overflow-hidden rounded-full border border-[var(--border-light)]">
                 <button
                   type="button"
-                  className="h-10 w-10 cursor-pointer border-none bg-transparent text-[15px] text-[var(--text-secondary)] transition-colors duration-150 hover:bg-[var(--bg-elevated)] disabled:cursor-not-allowed disabled:opacity-30"
+                  className="h-10 w-10 cursor-pointer border-none bg-transparent text-[0.9375rem] text-[var(--text-secondary)] transition-colors duration-150 hover:bg-[var(--bg-elevated)] disabled:cursor-not-allowed disabled:opacity-30"
                   onClick={() => set("quantity", Math.max(1, values.quantity - 1))}
                   disabled={values.quantity <= 1}
                   aria-label={t("form.quantity.decrease")}
                 >
                   −
                 </button>
-                <span className="w-10 text-center font-primary text-[15px] font-medium text-[var(--text-heading)]">
+                <span className="w-10 text-center font-primary text-[0.9375rem] font-medium text-[var(--text-heading)]">
                   {values.quantity}
                 </span>
                 <button
                   type="button"
-                  className="h-10 w-10 cursor-pointer border-none bg-transparent text-[15px] text-[var(--text-secondary)] transition-colors duration-150 hover:bg-[var(--bg-elevated)] disabled:cursor-not-allowed disabled:opacity-30"
+                  className="h-10 w-10 cursor-pointer border-none bg-transparent text-[0.9375rem] text-[var(--text-secondary)] transition-colors duration-150 hover:bg-[var(--bg-elevated)] disabled:cursor-not-allowed disabled:opacity-30"
                   onClick={() => set("quantity", Math.min(MAX_QUANTITY, values.quantity + 1))}
                   disabled={values.quantity >= MAX_QUANTITY}
                   aria-label={t("form.quantity.increase")}
@@ -207,7 +207,7 @@ export default function OrderRequestForm({ product }: OrderRequestFormProps) {
             error={errors.note ? t("form.errors.note") : undefined}
           >
             <textarea
-              className={`${inputClass} min-h-[180px] resize-y leading-[160%] ${errors.note ? errorBorder : ""}`}
+              className={`${inputClass} min-h-[11.25rem] resize-y leading-[160%] ${errors.note ? errorBorder : ""}`}
               value={values.note}
               maxLength={MAX_NOTE_LENGTH}
               onChange={(e) => set("note", e.target.value)}
@@ -262,7 +262,7 @@ export default function OrderRequestForm({ product }: OrderRequestFormProps) {
       </form>
 
       {product && (
-        <aside className="order-first lg:sticky lg:top-[110px] lg:order-none">
+        <aside className="order-first lg:sticky lg:top-[6.875rem] lg:order-none">
           <ProductSummaryCard product={product} />
         </aside>
       )}

@@ -59,7 +59,7 @@ export function ImageListField({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(84px,1fr))] gap-2">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(5.25rem,1fr))] gap-2">
         {value.map((url, i) => (
           <div
             key={`${url}-${i}`}
@@ -79,7 +79,7 @@ export function ImageListField({
               />
             </div>
             {i === 0 && (
-              <span className="absolute bottom-1 left-1 text-[9px] font-semibold bg-black/60 text-white py-0.5 px-1.5 rounded-sm">
+              <span className="absolute bottom-1 left-1 text-[0.5625rem] font-semibold bg-black/60 text-white py-0.5 px-1.5 rounded-sm">
                 {t("list.main")}
               </span>
             )}

@@ -44,7 +44,7 @@ export default function OptionList<V extends string>({ name, value, options, onC
             />
             <span
               aria-hidden="true"
-              className={`shrink-0 w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center ${
+              className={`shrink-0 w-[1.125rem] h-[1.125rem] rounded-full border-2 flex items-center justify-center ${
                 selected ? "border-[var(--accent-primary)]" : "border-[var(--border-light)]"
               }`}
             >

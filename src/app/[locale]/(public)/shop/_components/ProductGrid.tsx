@@ -60,7 +60,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
       <div className="flex flex-col items-center justify-center py-20 px-4 text-center gap-4">
         <CirclePlus size={48} className="text-[var(--text-disabled)]" />
         <h3 className="font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em]">{t("comingSoon")}</h3>
-        <p className="font-primary text-[15px] text-[var(--text-muted)] tracking-[-0.02em] max-w-80 leading-[150%]">
+        <p className="font-primary text-[0.9375rem] text-[var(--text-muted)] tracking-[-0.02em] max-w-80 leading-[150%]">
           {t("comingSoonDescription")}
         </p>
       </div>

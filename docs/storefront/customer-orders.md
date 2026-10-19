@@ -1,6 +1,6 @@
 # Customer orders (đơn hàng của tôi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-18
 > **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
 > **i18n:** `private.orders` (`meta`, `list`, `detail`; `list.reviewsLink`, `detail.review`), `common.orderStatus`
 
@@ -56,3 +56,5 @@ Danh sách dòng còn đánh giá được lấy từ `usePendingReviews()` (`GE
 ### 4.5 Liên quan
 
 Đơn được tạo ở [checkout](./checkout.md) (sau khi đặt, `/checkout` chuyển sang trang thanh toán VietQR hoặc `/orders/<id>`); [account](./account.md) hiện tóm tắt 3 đơn gần nhất.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

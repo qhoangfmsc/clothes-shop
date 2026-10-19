@@ -74,6 +74,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 | `useBannerConfig(key)` | `GET /api/site-config?key=` — luôn không lỗi: thất bại/rỗng → `banners = []` |
 | `useAutocomplete(limit)` | `GET /api/products/autocomplete?q=&limit=` — `limit` 1–10 (BE trả 400 nếu ngoài khoảng), debounce 300 ms, tối thiểu 2 ký tự, hủy request cũ bằng `AbortController` |
 | `getProductUrl(id)` | Hàm thường: tra sản phẩm theo id để dựng `/shop/<cat>/<sub>/<id>` |
+| `useProductLink()` | Trả hàm `(item: { productId, category?, subcategory? }) => { href, onClick? }` để spread vào `Link`: đủ hai slug → `href` `/shop/<cat>/<sub>/<id>`; thiếu → `href` `/shop` và `onClick` tra URL thật bằng `getProductUrl` rồi `router.push` (không tra được thì `/shop`). Dùng cho dòng giỏ hàng, thẻ wishlist và wishlist ở Account, vì `GET /api/cart` và `GET /api/wishlist` không nạp category/subcategory của sản phẩm |
 
 ### 4.5 Hook SWR admin (`src/hooks/use-admin-api.ts`)
 

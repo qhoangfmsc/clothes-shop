@@ -68,7 +68,7 @@ export default function ReviewImageUploader({ slots, notice, disabled = false, o
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={disabled}
-              className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-[var(--border-light)] bg-transparent font-primary text-[11px] text-[var(--text-muted)] transition-colors hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none"
+              className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-[var(--border-light)] bg-transparent font-primary text-[0.6875rem] text-[var(--text-muted)] transition-colors hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none"
             >
               <ImagePlus size={20} aria-hidden="true" />
               {t("add")}

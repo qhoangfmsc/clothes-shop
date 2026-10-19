@@ -37,7 +37,7 @@ export default function ProductRating({ average, count, variant = "compact", cla
   return (
     <span role="img" aria-label={aria} className={`inline-flex items-center gap-1 ${className}`}>
       <Star size={12} aria-hidden="true" fill="currentColor" className="text-[var(--color-champagne-gold)]" />
-      <span aria-hidden="true" className="font-primary text-[11px] text-[var(--text-muted)] tracking-[-0.02em]">
+      <span aria-hidden="true" className="font-primary text-[0.6875rem] text-[var(--text-muted)] tracking-[-0.02em]">
         {t("compact", { average: value, count })}
       </span>
     </span>

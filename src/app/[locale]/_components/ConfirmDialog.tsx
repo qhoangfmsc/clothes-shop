@@ -98,7 +98,7 @@ function ConfirmPortal({
           onClick={() => onSettle(false)}
         >
           <motion.div
-            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-[400px] shadow-xl p-6 flex flex-col gap-5"
+            className="bg-[var(--bg-primary)] rounded-2xl w-full max-w-[25rem] shadow-xl p-6 flex flex-col gap-5"
             initial={{ opacity: 0, scale: 0.96, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 8 }}

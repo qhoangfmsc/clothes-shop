@@ -1,6 +1,6 @@
 # Landing page (trang chủ)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]` · **Cập nhật:** 2026-10-15
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]` · **Cập nhật:** 2026-10-18
 > **Code:** `(public)/page.tsx` · `(public)/landing-page/` — `page.tsx`, `_common/constants.ts`, `_components/{VideoContainer,Caption,ProductInfo,ViewButton,OutroSection,Footer,CollectionShowcase}.tsx`
 > **i18n:** `public.landing`
 
@@ -39,10 +39,14 @@ Hai thẻ `<video muted>` xếp chồng, chuyển bằng `opacity` (`FADE_MS = 6
 
 ### 4.3 Bộ sưu tập (`CollectionShowcase`)
 
-`useCollections()` (SWR) → mỗi bộ sưu tập một thẻ `aspect-ratio 2/3`, `next/image` fill, lớp phủ gradient + tên + "Shop now" (`showcase.shopNow`). `buildLayout(count, cols)` rải thẻ so le: hàng `r` đặt ở cột `(2r + r%2) % cols`, cứ mỗi 3 hàng thêm một thẻ thứ hai. Có ba lưới (2, 3, 4 cột) hiển thị theo breakpoint. Khi dữ liệu về xong, component bắn sự kiện `resize` sau 50 ms để trang tính lại chiều cao spacer. Thẻ ở nửa trái có `transform-origin: right bottom`, nửa phải `left bottom`.
+`useCollections()` (SWR) → mỗi bộ sưu tập một thẻ `aspect-ratio 2/3`, `next/image` fill, lớp phủ gradient + tên + "Shop now" (`showcase.shopNow`). `buildLayout(count, cols)` rải thẻ so le: hàng `r` đặt ở cột `(2r + r%2) % cols`, cứ mỗi 3 hàng thêm một thẻ thứ hai. Có bốn lưới (2, 3, 4, 5 cột) hiển thị theo breakpoint (5 cột từ `2xl`, để thẻ giữ cỡ như ở 1536 px thay vì to ra theo viewport; từ 5 cột trở lên cứ hai hàng thì một hàng có thêm thẻ thứ hai thay vì ba hàng). Khối lưới nằm trong cột `--page-max-w` căn giữa, nền đen và panel vẫn phủ toàn viewport. Khi dữ liệu về xong, component bắn sự kiện `resize` sau 50 ms để trang tính lại chiều cao spacer. Thẻ ở nửa trái có `transform-origin: right bottom`, nửa phải `left bottom`.
 
 ### 4.4 Khác
+
+- Video và panel đen phủ toàn viewport, còn các lớp chữ `fixed` (`Caption`, `ProductInfo`, `ViewButton`, footer của landing) đặt `left`/`right` theo `var(--page-edge)` nên thẳng hàng với header trong cột `--page-max-w` khi viewport rộng hơn 1920 px. Từ `2xl`, `Caption` rộng 36 rem, cỡ chữ 0.875 rem (dưới đó 0.75 rem).
 
 - Landing page nằm trong `(public)/layout.tsx` nên vẫn có `SiteHeader` + `SiteFooter` chung (xem [site-chrome](../platform/site-chrome.md)).
 - Tài sản: `public/videos/*.mp4`; ảnh bộ sưu tập là `collection.image` từ BE (qua `/media/...`).
 - Không có dữ liệu bộ sưu tập thì lưới trống (không có nội dung dự phòng).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

@@ -67,7 +67,7 @@ export default function TrafficChart({ series, granularity }: TrafficChartProps)
           {t("empty")}
         </p>
       ) : showTable ? (
-        <div className="max-h-[320px] overflow-auto">
+        <div className="max-h-[20rem] overflow-auto">
           <table className="w-full border-collapse text-xs font-primary">
             <thead>
               <tr className="text-left text-[var(--text-muted)]">
@@ -100,7 +100,7 @@ export default function TrafficChart({ series, granularity }: TrafficChartProps)
           </table>
         </div>
       ) : (
-        <div className="h-[280px] w-full" role="img" aria-label={t("ariaLabel")}>
+        <div className="h-[17.5rem] w-full" role="img" aria-label={t("ariaLabel")}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={series} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
               <defs>

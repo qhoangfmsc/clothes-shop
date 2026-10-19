@@ -95,7 +95,7 @@ export default function RefundsContent() {
             <span className="text-xs text-[var(--text-muted)] whitespace-nowrap">
               {format.dateTime(new Date(r.createdAt), "dateTime")}
             </span>
-            <span className="text-[11px] text-[var(--text-secondary)]">
+            <span className="text-[0.6875rem] text-[var(--text-secondary)]">
               {r.returnRequestId ? (
                 <Link
                   href={`/admin/returns?returnId=${encodeURIComponent(r.returnRequestId)}`}
@@ -131,7 +131,7 @@ export default function RefundsContent() {
               </Link>
               <OrderPaymentBadge status={r.order.paymentStatus} />
             </span>
-            <span className="text-[11px] text-[var(--text-muted)]">
+            <span className="text-[0.6875rem] text-[var(--text-muted)]">
               {[r.order.customer?.fullName, r.order.customer?.phone].filter(Boolean).join(" · ") || "—"}
             </span>
           </div>
@@ -147,20 +147,20 @@ export default function RefundsContent() {
         key: "status",
         header: t("table.columns.status"),
         render: (r) => (
-          <div className="flex flex-col gap-1 items-start max-w-[240px]">
+          <div className="flex flex-col gap-1 items-start max-w-[15rem]">
             <RefundBadge status={r.status} />
             {r.processedAt && (
-              <span className="text-[11px] text-[var(--text-muted)] whitespace-nowrap">
+              <span className="text-[0.6875rem] text-[var(--text-muted)] whitespace-nowrap">
                 {t("table.processedAt", { date: format.dateTime(new Date(r.processedAt), "dateTime") })}
               </span>
             )}
             {r.bankReference && (
-              <span className="inline-flex items-center gap-1 text-[11px] text-[var(--text-secondary)] min-w-0">
+              <span className="inline-flex items-center gap-1 text-[0.6875rem] text-[var(--text-secondary)] min-w-0">
                 <span className="break-all">{r.bankReference}</span>
                 <CopyButton value={r.bankReference} label={t("table.bankReference")} />
               </span>
             )}
-            {r.note && <span className="text-[11px] text-[var(--text-muted)] italic break-words">{r.note}</span>}
+            {r.note && <span className="text-[0.6875rem] text-[var(--text-muted)] italic break-words">{r.note}</span>}
           </div>
         ),
       },

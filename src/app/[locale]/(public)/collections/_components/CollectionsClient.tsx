@@ -313,7 +313,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           >
             {t("heroSeason")}
           </span>
-          <h1 className="font-display font-normal text-[clamp(48px,10vw,120px)] text-[var(--color-pearl-cream)] tracking-tight leading-[1] mb-5">
+          <h1 className="font-display font-normal text-[clamp(3rem,10vw,7.5rem)] text-[var(--color-pearl-cream)] tracking-tight leading-[1] mb-5">
             <div className="overflow-hidden">
               <span data-hero-title-line className="block opacity-0 translate-y-full">
                 {t("heroTitleLine1")}
@@ -327,7 +327,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           </h1>
           <p
             data-hero-subtitle
-            className="text-white/55 font-primary text-[15px] font-medium tracking-[-0.02em] leading-[160%] max-w-90 opacity-0"
+            className="text-white/55 font-primary text-[0.9375rem] font-medium tracking-[-0.02em] leading-[160%] max-w-90 opacity-0"
           >
             {t("heroSubtitle")}
           </p>
@@ -348,7 +348,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           {[...Array(4)].map((_, i) => (
             <span
               key={i}
-              className="font-display font-normal text-[clamp(40px,6vw,80px)] text-[rgba(201,169,110,0.12)] tracking-[-0.04em] px-10 shrink-0"
+              className="font-display font-normal text-[clamp(2.5rem,6vw,5rem)] text-[rgba(201,169,110,0.12)] tracking-[-0.04em] px-10 shrink-0"
             >
               {MARQUEE_TEXT}
             </span>
@@ -410,21 +410,21 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           >
             <span
               data-spread-num
-              className="font-display font-normal text-[clamp(80px,12vw,160px)] text-[var(--border-subtle)] tracking-[-0.06em] leading-[80%] opacity-0"
+              className="font-display font-normal text-[clamp(5rem,12vw,10rem)] text-[var(--border-subtle)] tracking-[-0.06em] leading-[80%] opacity-0"
               style={{ color: section.textColor }}
             >
               {section.num}
             </span>
             <h2
               data-spread-heading
-              className="font-display font-normal text-[clamp(28px,4vw,48px)] tracking-[-0.04em] leading-[105%] opacity-0"
+              className="font-display font-normal text-[clamp(1.75rem,4vw,3rem)] tracking-[-0.04em] leading-[105%] opacity-0"
               style={{ color: section.textColor }}
             >
               {section.heading}
             </h2>
             <p
               data-spread-desc
-              className="font-primary text-[15px] font-medium tracking-[-0.02em] leading-[170%] max-w-100 opacity-0"
+              className="font-primary text-[0.9375rem] font-medium tracking-[-0.02em] leading-[170%] max-w-100 opacity-0"
               style={{ color: "var(--text-secondary)" }}
             >
               {section.description}
@@ -462,7 +462,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           {[...Array(4)].map((_, i) => (
             <span
               key={i}
-              className="font-display font-normal text-[clamp(40px,6vw,80px)] text-[var(--border-light)] tracking-[-0.04em] px-10 shrink-0"
+              className="font-display font-normal text-[clamp(2.5rem,6vw,5rem)] text-[var(--border-light)] tracking-[-0.04em] px-10 shrink-0"
             >
               {MARQUEE_TEXT}
             </span>

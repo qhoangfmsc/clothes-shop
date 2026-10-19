@@ -1,6 +1,6 @@
 # App shell (layout gốc, provider, route group, trang lỗi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-13
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
 > **Code:** `src/app/[locale]/layout.tsx` · `src/app/[locale]/_components/Providers.tsx` · `src/middleware.ts` · `src/app/[locale]/(public|private|admin|auth)/layout.tsx` · `not-found.tsx` · `[...rest]/page.tsx` · `(public)/error.tsx` · `unauthorized/` · `RouteTransition.tsx` · `cursor/` · `VercelTelemetry.tsx`
 
 ## 1. Tóm tắt module
@@ -73,3 +73,5 @@ Lắng nghe `click` (capture) trên document; nếu là link nội bộ khác tr
 ### 4.7 Phụ thuộc
 
 `next-intl`, `framer-motion`, `@react-oauth/google`, `@vercel/analytics`, `@vercel/speed-insights`, `react-redux`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](./design-system.md) 4.3).

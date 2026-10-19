@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
 import { useMoney } from "@/src/hooks/use-money";
+import { useProductLink } from "@/src/hooks/use-api";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { Link } from "@/src/i18n/navigation";
 import Image from "next/image";
@@ -89,6 +90,7 @@ function WishlistSection() {
   const tCommon = useTranslations("common");
   const { fmt } = useMoney();
   const items = useAppSelector(selectWishlistItems);
+  const productLink = useProductLink();
   const latestItems = items.slice(-4).reverse();
 
   return (
@@ -127,7 +129,7 @@ function WishlistSection() {
           <p className="font-display font-normal text-lg text-[var(--text-heading)] tracking-[-0.04em] leading-none">
             {t("emptyTitle")}
           </p>
-          <p className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] max-w-[280px]">
+          <p className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] max-w-[17.5rem]">
             {t("emptyDescription")}
           </p>
           <div className="flex flex-col items-center gap-2 mt-2 sm:flex-row sm:gap-3">
@@ -165,7 +167,7 @@ function WishlistSection() {
                 transition={{ duration: 0.4, ease: [...ease], delay: 0.15 + idx * 0.05 }}
               >
                 <Link
-                  href={`/shop/${item.category}/${item.subcategory}/${item.productId}`}
+                  {...productLink(item)}
                   className="group flex flex-col gap-2 no-underline transition-opacity duration-150 hover:opacity-85 motion-reduce:transition-none"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden rounded-md bg-[var(--color-champagne-cream)]">
@@ -265,8 +267,8 @@ function OrdersSection() {
 
       {loading ? (
         <div className="flex flex-col gap-3 px-6 py-4">
-          <div className="h-[52px] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
-          <div className="h-[52px] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+          <div className="h-[3.25rem] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+          <div className="h-[3.25rem] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
         </div>
       ) : orders.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-10 px-6 text-center">
@@ -274,7 +276,7 @@ function OrdersSection() {
           <p className="font-display font-normal text-lg text-[var(--text-heading)] tracking-[-0.04em] leading-none">
             {t("emptyTitle")}
           </p>
-          <p className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] max-w-[280px]">
+          <p className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%] max-w-[17.5rem]">
             {t("emptyDescription")}
           </p>
           <div className="flex flex-col items-center gap-2 mt-2 sm:flex-row sm:gap-3">
@@ -335,13 +337,13 @@ function OrdersSection() {
                   {/* Status + Total */}
                   <div className="flex flex-col items-end gap-0.5 shrink-0">
                     <span
-                      className="font-primary text-[11px] font-medium tracking-[0.04em] uppercase"
+                      className="font-primary text-[0.6875rem] font-medium tracking-[0.04em] uppercase"
                       style={{ color: statusColor }}
                     >
                       {statusLabel(order.status)}
                     </span>
                     {order.paymentStatus && (
-                      <span className="hidden font-primary text-[11px] text-[var(--text-muted)] tracking-[0.02em] sm:block">
+                      <span className="hidden font-primary text-[0.6875rem] text-[var(--text-muted)] tracking-[0.02em] sm:block">
                         {paymentLabel(order.paymentStatus)}
                       </span>
                     )}
@@ -366,17 +368,17 @@ function OrdersSection() {
    ═══════════════════════════════════════════════ */
 function AccountSkeleton() {
   return (
-    <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
-      <div className="max-w-[720px] lg:max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-8">
+    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <div className="max-w-[45rem] lg:max-w-[67.5rem] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_18.75rem] lg:items-start lg:gap-8">
         <div className="flex items-center gap-4 py-2 sm:gap-6 sm:py-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:flex-col lg:py-8">
           <div className="w-16 h-16 shrink-0 rounded-full bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
           <div className="flex flex-col gap-2 lg:items-center">
-            <div className="w-[180px] h-6 rounded-sm bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
-            <div className="w-[120px] h-4 rounded-sm bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+            <div className="w-[11.25rem] h-6 rounded-sm bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+            <div className="w-[7.5rem] h-4 rounded-sm bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
           </div>
         </div>
-        <div className="h-[200px] rounded-lg lg:col-start-1 lg:row-start-1 bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
-        <div className="h-[200px] rounded-lg lg:col-start-1 lg:row-start-2 bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+        <div className="h-[12.5rem] rounded-lg lg:col-start-1 lg:row-start-1 bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+        <div className="h-[12.5rem] rounded-lg lg:col-start-1 lg:row-start-2 bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
       </div>
     </main>
   );
@@ -396,7 +398,7 @@ export default function AccountContent() {
   /* Not logged in — show inline unauthenticated state */
   if (!isAuthenticated || !user) {
     return (
-      <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <UnauthenticatedState />
       </main>
     );
@@ -404,10 +406,10 @@ export default function AccountContent() {
 
   /* Logged in — full account page */
   return (
-    <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
-      <div className="max-w-[720px] lg:max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-8">
+    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <div className="max-w-[45rem] lg:max-w-[67.5rem] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_18.75rem] lg:items-start lg:gap-8">
         {/* Phone/tablet: profile → orders → wishlist. lg: orders + wishlist left, sticky profile card right */}
-        <div className="lg:sticky lg:top-[104px] lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div className="lg:sticky lg:top-[6.5rem] lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <ProfileHeader user={user} />
         </div>
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">

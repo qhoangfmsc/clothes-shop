@@ -335,7 +335,7 @@ export default function UsersContent() {
                     {t("orders.summary", { count: ordersTotal })}
                   </span>
                   {ordersTotal > ORDERS_PAGE_SIZE && (
-                    <span className="text-[11px] text-[var(--text-muted)] font-primary">
+                    <span className="text-[0.6875rem] text-[var(--text-muted)] font-primary">
                       {t("orders.pageOf", { page: ordersPage, total: Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) })}
                     </span>
                   )}
@@ -360,18 +360,18 @@ export default function UsersContent() {
                           onClick={() => openOrderDetail(order)}
                           title={t("orders.viewOrder", { id: order.id })}
                         >
-                          <code className="text-[11px] bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono font-semibold shrink-0">
+                          <code className="text-[0.6875rem] bg-[var(--bg-elevated)] py-0.5 px-1.5 rounded-sm font-mono font-semibold shrink-0">
                             #{order.id}
                           </code>
-                          <span className="text-[11px] text-[var(--text-muted)] shrink-0">
+                          <span className="text-[0.6875rem] text-[var(--text-muted)] shrink-0">
                             {t("orders.itemCount", { count: order.items?.length ?? 0 })}
                           </span>
-                          <span className="text-[11px] text-[var(--text-muted)] shrink-0 hidden sm:block">
+                          <span className="text-[0.6875rem] text-[var(--text-muted)] shrink-0 hidden sm:block">
                             {format.dateTime(new Date(order.createdAt), "short")}
                           </span>
                           <div className="flex-1" />
                           <span
-                            className={`inline-block py-0.5 px-2 rounded-full text-[11px] font-semibold font-primary shrink-0 ${statusStyle(order.status)}`}
+                            className={`inline-block py-0.5 px-2 rounded-full text-[0.6875rem] font-semibold font-primary shrink-0 ${statusStyle(order.status)}`}
                           >
                             {orderStatusLabel(order.status)}
                           </span>
@@ -398,7 +398,7 @@ export default function UsersContent() {
                         >
                           <ChevronLeft size={14} />
                         </button>
-                        <span className="text-[11px] text-[var(--text-muted)] font-primary">
+                        <span className="text-[0.6875rem] text-[var(--text-muted)] font-primary">
                           {t("orders.pager", { page: ordersPage, total: Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) })}
                         </span>
                         <button

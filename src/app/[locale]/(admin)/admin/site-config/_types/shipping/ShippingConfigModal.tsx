@@ -201,7 +201,7 @@ function ShippingConfigFormBody({
                 {tForm(`methods.${m.id}`)}
               </span>
               <span
-                className="text-[10px] font-bold tracking-[0.04em] py-0.5 px-2 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)]"
+                className="text-[0.625rem] font-bold tracking-[0.04em] py-0.5 px-2 rounded-full bg-[var(--bg-elevated)] text-[var(--text-muted)]"
                 title={tForm("idReadonly")}
               >
                 {m.id}

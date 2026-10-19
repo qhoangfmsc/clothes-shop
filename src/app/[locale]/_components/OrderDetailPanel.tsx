@@ -135,7 +135,7 @@ export default function OrderDetailPanel({ order, loading, onClose, paymentTab, 
               {/* Unit price: the BE sends no line total for an order */}
               <span className="flex flex-col items-end gap-0.5 text-sm text-[var(--text-primary)] shrink-0">
                 <MoneyText money={moneyOf(item, "price")} />
-                <span className="text-[11px] text-[var(--text-muted)]">× {item.quantity}</span>
+                <span className="text-[0.6875rem] text-[var(--text-muted)]">× {item.quantity}</span>
               </span>
             </div>
           ))}

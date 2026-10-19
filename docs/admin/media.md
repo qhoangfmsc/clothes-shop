@@ -1,6 +1,6 @@
 # Media (thư viện ảnh)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/media` · **Cập nhật:** 2026-10-12
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/media` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/media/` — `MediaContent.tsx`, `_common/{moduleSlice,types,constants,download}.ts` · `src/hooks/use-media-upload.ts` · `src/app/media/[...path]/route.ts`
 > **i18n:** `admin.media`, `admin.components.imageFields`
 > **Redux slice:** `state.media`
@@ -56,3 +56,5 @@ Thunk reject bằng `{ message, errorCode }` (`MediaError`) để UI phân biệ
 ### 4.5 Kiểu dữ liệu & liên quan
 
 `MediaFile { id, name, mimeType, sizeOriginal, createdAt, url }`, `MediaListParams = ListParams`, `MediaListResult`, `MediaError`. URL thực tế là Supabase Storage; storefront và admin hiển thị qua proxy `/media/<key>` — xem [data-layer](../platform/data-layer.md) 4.7.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

@@ -74,3 +74,5 @@ Hai cột ≥ `lg`: trái (tối đa 55%, `sticky top-20`, cao cố định `lg:
 - `SizeGuideModal` còn một dòng "Measurements in {unit}" cứng bằng tiếng Anh (không qua i18n).
 - `QuickAddDrawer` (thêm nhanh từ thẻ sản phẩm) lặp lại logic chọn size/màu/số lượng của trang này — xem [cart](./cart.md).
 - Sản phẩm badge `custom_order` không hiện giá: dòng giá chính và giá ở "sản phẩm liên quan" hiện `common.priceOnRequest` (`hasPublicPrice`); JSON-LD không có `Offer` cho sản phẩm này. Giá chính, giá gốc gạch ngang (khi `originalPriceVnd` không `null`) và giá sản phẩm liên quan hiện theo ngôn ngữ qua `useMoney`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

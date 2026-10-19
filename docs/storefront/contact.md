@@ -1,6 +1,6 @@
 # Contact / Custom order (liên hệ đặt may)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-17
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-18
 > **Code:** `(public)/contact/` — `page.tsx`, `_common/{types,constants,build-order-request}.ts`, `_components/{OrderRequestForm,ProductSummaryCard}.tsx` · `src/lib/product-purchase.ts` (`CONTACT_PATH`, `buildOrderInquiryHref`) · `src/lib/contact.ts` (`CONTACT_EMAIL`, `buildMailto`) · `src/lib/socials.tsx`
 > **i18n:** `public.contact`
 
@@ -36,3 +36,5 @@ Sản phẩm gắn badge `custom_order` không vào giỏ được; nút "Đặt
 - Hồ sơ mạng xã hội cấu hình ở `src/lib/socials.tsx` (Instagram `doovan.vn`, Facebook `doovan.vn`).
 - Hiện trạng: yêu cầu không được lưu hay gửi từ server; khách dùng app mail của mình để gửi và đính kèm ảnh tham khảo.
 - Thẻ sản phẩm không hiện giá khi sản phẩm có badge `custom_order` (hiện `common.priceOnRequest`, `hasPublicPrice`).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

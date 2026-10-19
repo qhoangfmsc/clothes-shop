@@ -37,7 +37,7 @@ export default function ReturnProgress({ status }: { status: ReturnStatus }) {
               <span className={`h-0.5 flex-1 ${index === RETURN_PROGRESS_STEPS.length - 1 ? "bg-transparent" : done ? "bg-[var(--accent-primary)]" : "bg-[var(--border-light)]"}`} />
             </span>
             <span
-              className={`font-primary text-[11px] leading-[130%] tracking-[-0.02em] ${
+              className={`font-primary text-[0.6875rem] leading-[130%] tracking-[-0.02em] ${
                 done || active ? "text-[var(--text-heading)] font-medium" : "text-[var(--text-muted)]"
               }`}
             >

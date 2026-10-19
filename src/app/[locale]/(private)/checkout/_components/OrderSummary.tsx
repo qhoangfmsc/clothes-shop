@@ -82,13 +82,13 @@ export default function OrderSummary({
 
       <ul
         id="checkout-summary-items"
-        className={`m-0 p-0 list-none flex-col gap-3 lg:flex lg:max-h-[200px] lg:overflow-y-auto lg:pt-2 lg:pr-2 ${
+        className={`m-0 p-0 list-none flex-col gap-3 lg:flex lg:max-h-[12.5rem] lg:overflow-y-auto lg:pt-2 lg:pr-2 ${
           showItems ? "flex" : "hidden"
         }`}
       >
         {items.map((item) => (
           <li key={cartItemKey(item)} className="flex items-center gap-3">
-            <div className="relative w-14 h-[72px] rounded-sm bg-[var(--color-champagne-cream)] shrink-0">
+            <div className="relative w-14 h-[4.5rem] rounded-sm bg-[var(--color-champagne-cream)] shrink-0">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -96,7 +96,7 @@ export default function OrderSummary({
                 sizes="56px"
                 className="rounded-sm object-cover"
               />
-              <span className="absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full bg-[var(--text-heading)] text-[var(--bg-primary)] font-primary text-[11px] font-medium flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full bg-[var(--text-heading)] text-[var(--bg-primary)] font-primary text-[0.6875rem] font-medium flex items-center justify-center">
                 {item.quantity}
               </span>
             </div>

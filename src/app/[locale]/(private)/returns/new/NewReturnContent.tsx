@@ -34,8 +34,8 @@ import { useReturnEligibility } from "../_common/use-return-eligibility";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[96px] sm:pt-[104px] pb-8 bg-[var(--bg-primary)]";
-const WRAP_CLASS = "max-w-[1080px] mx-auto px-4 sm:px-6";
+const SHELL_CLASS = "min-h-screen pt-[6rem] sm:pt-[6.5rem] pb-8 bg-[var(--bg-primary)]";
+const WRAP_CLASS = "max-w-[67.5rem] mx-auto px-4 sm:px-6";
 const ICON_BUTTON =
   "w-9 h-9 pointer-coarse:w-11 pointer-coarse:h-11 rounded-full border border-[var(--border-light)] bg-[var(--bg-primary)] text-[var(--text-primary)] flex items-center justify-center cursor-pointer hover:border-[var(--text-disabled)] disabled:opacity-40 disabled:cursor-not-allowed";
 
@@ -143,7 +143,7 @@ export default function NewReturnContent() {
     return (
       <main className={SHELL_CLASS}>
         <div className={WRAP_CLASS}>
-          <div className="h-[400px] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
+          <div className="h-[25rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
         </div>
       </main>
     );
@@ -172,14 +172,14 @@ export default function NewReturnContent() {
   if (!orderId || !order || !eligibility || !eligibility.eligible) {
     return (
       <main className={SHELL_CLASS}>
-        <div className={`${WRAP_CLASS} max-w-[640px] flex flex-col gap-3`}>
+        <div className={`${WRAP_CLASS} max-w-[40rem] flex flex-col gap-3`}>
           {backLink}
           <div className="flex flex-col items-center gap-3 py-12 px-6 text-center bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)]">
             <PackageX size={40} style={{ color: "var(--text-disabled)" }} />
             <h1 className="m-0 font-display font-normal text-xl text-[var(--text-heading)] tracking-[-0.04em]">
               {t("unavailable.title")}
             </h1>
-            <p className="m-0 max-w-[380px] font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
+            <p className="m-0 max-w-[23.75rem] font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[150%]">
               {eligibility?.reason
                 ? tIneligible(eligibility.reason)
                 : eligibilityError
@@ -208,7 +208,7 @@ export default function NewReturnContent() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-3 sm:gap-4 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_21.25rem] gap-3 sm:gap-4 items-start">
           <div className="flex flex-col gap-3 sm:gap-4 min-w-0">
             {/* Lines */}
             <section className={SECTION_CARD_CLASS}>
@@ -307,7 +307,7 @@ export default function NewReturnContent() {
                   onChange={(e) => setNote(e.target.value)}
                   className="w-full resize-y py-2.5 px-3.5 rounded-md border border-[var(--border-light)] bg-[var(--bg-primary)] font-primary text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-primary)]"
                 />
-                <span className="self-end font-primary text-[11px] text-[var(--text-disabled)]">
+                <span className="self-end font-primary text-[0.6875rem] text-[var(--text-disabled)]">
                   {note.length}/{RETURN_NOTE_MAX}
                 </span>
               </label>
@@ -315,7 +315,7 @@ export default function NewReturnContent() {
           </div>
 
           {/* Policy + submit */}
-          <aside className={`${CARD_CLASS} flex flex-col gap-3.5 lg:sticky lg:top-[96px]`}>
+          <aside className={`${CARD_CLASS} flex flex-col gap-3.5 lg:sticky lg:top-[6rem]`}>
             <h2 className="m-0 font-display font-normal text-lg text-[var(--text-heading)] tracking-[-0.04em] leading-none">
               {t("policy.title")}
             </h2>

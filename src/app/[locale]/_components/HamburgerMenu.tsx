@@ -53,8 +53,8 @@ function AuthDrawerSection({ close }: { close: () => void }) {
           ease: [...ease],
           delay,
         }}
-        style={{ marginTop: 32 }}
-        className="sm:!mt-[40px]"
+        style={{ marginTop: "2rem" }}
+        className="sm:!mt-[2.5rem]"
       >
         <Link
           href="/login"
@@ -64,11 +64,11 @@ function AuthDrawerSection({ close }: { close: () => void }) {
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "8px",
+            gap: "0.5rem",
             background: "#FFF",
             color: "#000",
             borderRadius: "var(--radius-pill)",
-            padding: "12px 32px",
+            padding: "0.75rem 2rem",
             fontSize: "var(--text-md)",
             letterSpacing: "-0.02em",
             textTransform: "uppercase",
@@ -96,12 +96,12 @@ function AuthDrawerSection({ close }: { close: () => void }) {
         delay,
       }}
       style={{
-        marginTop: 32,
+        marginTop: "2rem",
         display: "flex",
         flexDirection: "column",
         gap: 0,
       }}
-      className="sm:!mt-[40px]"
+      className="sm:!mt-[2.5rem]"
     >
       {/* User info — toggles the account panel */}
       <button
@@ -112,9 +112,9 @@ function AuthDrawerSection({ close }: { close: () => void }) {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 12,
+          gap: "0.75rem",
           width: "100%",
-          padding: "0 0 20px",
+          padding: "0 0 1.25rem",
           background: "none",
           border: "none",
           borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
@@ -209,8 +209,8 @@ function AuthDrawerSection({ close }: { close: () => void }) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 12,
-                      padding: "14px 0",
+                      gap: "0.75rem",
+                      padding: "0.875rem 0",
                       textDecoration: "none",
                       borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
                       transition: `border-color var(--duration-fast) var(--ease-default)`,
@@ -247,7 +247,7 @@ function AuthDrawerSection({ close }: { close: () => void }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: ACCOUNT_LINKS.length * 0.04 }}
-              style={{ marginTop: 16 }}
+              style={{ marginTop: "1rem" }}
             >
               <SignOutButton variant="drawer" onSignedOut={close} />
             </motion.div>
@@ -422,7 +422,7 @@ export default function HamburgerMenu() {
               bottom: 0,
               zIndex: 100,
               width: "100%",
-              maxWidth: 860,
+              maxWidth: "53.75rem",
               background: "rgba(10, 10, 8, 0.88)",
               backdropFilter: "blur(50px)",
               WebkitBackdropFilter: "blur(50px)",
@@ -440,9 +440,9 @@ export default function HamburgerMenu() {
                 alignItems: "center",
                 flexShrink: 0,
                 borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                padding: "26px 20px",
+                padding: "1.625rem 1.25rem",
               }}
-              className="sm:!py-[28px] sm:!px-[40px]"
+              className="sm:!py-[1.75rem] sm:!px-[2.5rem]"
             >
               <motion.span
                 initial={{ opacity: 0, x: -12 }}
@@ -450,7 +450,7 @@ export default function HamburgerMenu() {
                 transition={{ duration: 0.4, ease: [...ease], delay: 0.15 }}
                 style={{
                   color: "#FFF",
-                  fontSize: "34px",
+                  fontSize: "2.125rem",
                   letterSpacing: "-0.04em",
                   lineHeight: "100%",
                   fontWeight: 500,
@@ -470,8 +470,8 @@ export default function HamburgerMenu() {
                   border: "1px solid rgba(255, 255, 255, 0.2)",
                   borderRadius: "var(--radius-pill)",
                   cursor: "pointer",
-                  width: 40,
-                  height: 40,
+                  width: "2.5rem",
+                  height: "2.5rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -500,10 +500,10 @@ export default function HamburgerMenu() {
                   flex: 1,
                   display: "flex",
                   flexDirection: "column",
-                  padding: "32px 24px",
+                  padding: "2rem 1.5rem",
                   overflowY: "auto",
                 }}
-                className="sm:!px-[40px] sm:!py-[40px]"
+                className="sm:!px-[2.5rem] sm:!py-[2.5rem]"
               >
                 {NAV_LINKS.map((link, idx) => (
                   <motion.div
@@ -527,8 +527,8 @@ export default function HamburgerMenu() {
                           alignItems: "baseline",
                           justifyContent: "space-between",
                           width: "100%",
-                          gap: "16px",
-                          padding: "20px 0",
+                          gap: "1rem",
+                          padding: "1.25rem 0",
                           textDecoration: "none",
                           borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
                           transition: `border-color var(--duration-fast) var(--ease-default)`,
@@ -545,7 +545,7 @@ export default function HamburgerMenu() {
                           style={{
                             display: "flex",
                             alignItems: "baseline",
-                            gap: "16px",
+                            gap: "1rem",
                           }}
                         >
                           <span
@@ -587,9 +587,9 @@ export default function HamburgerMenu() {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          gap: "16px",
-                          marginBottom: "12px",
-                          padding: "14px 16px",
+                          gap: "1rem",
+                          marginBottom: "0.75rem",
+                          padding: "0.875rem 1rem",
                           borderRadius: 12,
                           textDecoration: "none",
                         }}
@@ -600,8 +600,8 @@ export default function HamburgerMenu() {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            width: 32,
-                            height: 32,
+                            width: "2rem",
+                            height: "2rem",
                             flexShrink: 0,
                             color: "var(--accent-primary)",
                           }}
@@ -612,7 +612,7 @@ export default function HamburgerMenu() {
                           style={{
                             display: "flex",
                             flexDirection: "column",
-                            gap: "4px",
+                            gap: "0.25rem",
                             flex: 1,
                             minWidth: 0,
                           }}
@@ -656,8 +656,8 @@ export default function HamburgerMenu() {
                         style={{
                           display: "flex",
                           alignItems: "baseline",
-                          gap: "16px",
-                          padding: "20px 0",
+                          gap: "1rem",
+                          padding: "1.25rem 0",
                           textDecoration: "none",
                           borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
                           transition: `border-color var(--duration-fast) var(--ease-default)`,
@@ -668,7 +668,7 @@ export default function HamburgerMenu() {
                           style={{
                             display: "flex",
                             flexDirection: "column",
-                            gap: "4px",
+                            gap: "0.25rem",
                           }}
                         >
                           <span
@@ -712,7 +712,7 @@ export default function HamburgerMenu() {
                           >
                             <div
                               style={{
-                                padding: "8px 0 16px 40px",
+                                padding: "0.5rem 0 1rem 2.5rem",
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: 0,
@@ -736,8 +736,8 @@ export default function HamburgerMenu() {
                                     style={{
                                       display: "flex",
                                       alignItems: "center",
-                                      gap: 12,
-                                      padding: "12px 0",
+                                      gap: "0.75rem",
+                                      padding: "0.75rem 0",
                                       textDecoration: "none",
                                       borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
                                       transition: `border-color var(--duration-fast) var(--ease-default)`,
@@ -746,8 +746,8 @@ export default function HamburgerMenu() {
                                     {/* Category color indicator dot */}
                                     <span
                                       style={{
-                                        width: 6,
-                                        height: 6,
+                                        width: "0.375rem",
+                                        height: "0.375rem",
                                         borderRadius: "50%",
                                         flexShrink: 0,
                                         background:
@@ -796,7 +796,7 @@ export default function HamburgerMenu() {
                                   duration: 0.3,
                                   delay: shopCategories.length * 0.04 + 0.1,
                                 }}
-                                style={{ marginTop: 8 }}
+                                style={{ marginTop: "0.5rem" }}
                               >
                                 <Link
                                   href="/shop"
@@ -811,7 +811,7 @@ export default function HamburgerMenu() {
                                     fontWeight: 500,
                                     display: "inline-flex",
                                     alignItems: "center",
-                                    gap: 6,
+                                    gap: "0.375rem",
                                     transition: "opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
                                   }}
                                 >
@@ -874,12 +874,12 @@ export default function HamburgerMenu() {
                           bottom: 0,
                           left: 0,
                           right: 0,
-                          padding: "80px 24px 24px",
+                          padding: "5rem 1.5rem 1.5rem",
                           background:
                             "linear-gradient(to top, rgba(10, 10, 8, 0.85) 0%, transparent 100%)",
                           display: "flex",
                           flexDirection: "column",
-                          gap: 6,
+                          gap: "0.375rem",
                         }}
                       >
                         <span
@@ -925,14 +925,14 @@ export default function HamburgerMenu() {
                           style={{
                             display: "inline-flex",
                             alignItems: "center",
-                            gap: 6,
+                            gap: "0.375rem",
                             color: "var(--color-champagne-gold)",
                             fontSize: "var(--text-xs)",
                             letterSpacing: "0.08em",
                             textTransform: "uppercase",
                             textDecoration: "none",
                             fontFamily: "var(--font-primary)",
-                            marginTop: 8,
+                            marginTop: "0.5rem",
                             transition: "opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
                           }}
                         >
@@ -980,7 +980,7 @@ export default function HamburgerMenu() {
         }}
       >
         <svg
-          className="w-6 h-6 lg:w-[30px] lg:h-[30px]"
+          className="w-6 h-6 lg:w-[1.875rem] lg:h-[1.875rem]"
           viewBox="0 0 40 40"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

@@ -17,7 +17,7 @@ export default function StatusCard(props: StatusCardProps) {
   const configured = props.kind === "error";
 
   return (
-    <div className="flex flex-col gap-[var(--space-4)] max-w-[640px] mx-auto py-[var(--space-10)] px-[var(--space-8)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] font-primary">
+    <div className="flex flex-col gap-[var(--space-4)] max-w-[40rem] mx-auto py-[var(--space-10)] px-[var(--space-8)] bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] font-primary">
       <div className="flex items-center gap-[var(--space-3)] text-[var(--accent-primary)]">
         {configured ? <AlertTriangle size={22} aria-hidden /> : <PlugZap size={22} aria-hidden />}
         <h2 className="m-0 font-display text-lg font-normal text-[var(--text-heading)]">

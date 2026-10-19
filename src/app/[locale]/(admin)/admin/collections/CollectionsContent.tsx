@@ -283,7 +283,7 @@ export default function CollectionsContent() {
         </div>
         <RoleGuard permission={PERMISSIONS.COLLECTION_CREATE}>
           <button
-            className="flex items-center gap-1.5 py-[10px] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 py-[0.625rem] px-5 bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-lg text-sm font-semibold font-primary cursor-pointer hover:opacity-90 transition-opacity"
             onClick={openCreate}
           >
             <Plus size={16} /> {t("page.add")}
@@ -398,7 +398,7 @@ export default function CollectionsContent() {
                           return (
                             <span
                               key={pid}
-                              className="inline-flex items-center gap-0.5 py-0.5 px-1.5 rounded-full bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)] text-[11px] font-medium border border-[rgba(163,177,138,0.25)]"
+                              className="inline-flex items-center gap-0.5 py-0.5 px-1.5 rounded-full bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)] text-[0.6875rem] font-medium border border-[rgba(163,177,138,0.25)]"
                             >
                               {prod?.images?.[0] && (
                                 <div className="relative w-3.5 h-4.5 shrink-0">
@@ -411,7 +411,7 @@ export default function CollectionsContent() {
                                   />
                                 </div>
                               )}
-                              <span className="text-[11px] max-w-24 overflow-hidden text-ellipsis whitespace-nowrap">
+                              <span className="text-[0.6875rem] max-w-24 overflow-hidden text-ellipsis whitespace-nowrap">
                                 {prod?.name ?? pid}
                               </span>
                               <button
@@ -484,7 +484,7 @@ export default function CollectionsContent() {
                                   {p.name}
                                 </div>
                                 <div
-                                  className={`text-[10px] ${
+                                  className={`text-[0.625rem] ${
                                     selected ? "text-white/70" : "text-[var(--text-muted)]"
                                   }`}
                                 >

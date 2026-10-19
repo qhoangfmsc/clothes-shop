@@ -17,12 +17,11 @@ export default function Caption() {
         pointerEvents: "none",
         zIndex: 10,
         mixBlendMode: "exclusion",
-        fontSize: 12,
         lineHeight: "140%",
         letterSpacing: "-0.04em",
         color: "#FFF",
       }}
-      className="top-[118px] left-4 w-[calc(100vw-82px)] sm:top-[180px] sm:left-4 sm:w-[calc(50vw-90px)] lg:top-[280px] lg:left-8 lg:w-[500px]"
+      className="top-[7.375rem] left-[calc(var(--page-edge)+1rem)] w-[calc(100vw-82px)] text-[0.75rem] sm:top-[11.25rem] sm:w-[calc(50vw-90px)] lg:top-[17.5rem] lg:left-[calc(var(--page-edge)+2rem)] lg:w-[31.25rem] 2xl:w-[36rem] 2xl:text-[0.875rem]"
     >
       {t("caption")}
     </motion.div>

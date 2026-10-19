@@ -93,7 +93,7 @@ export default function ShippingAccordion() {
             <span className="font-primary text-xs font-medium text-[var(--text-muted)] tracking-[0.06em] uppercase">
               {t("returns")}
             </span>
-            <p className="font-primary text-[13px] font-medium text-[var(--text-secondary)] tracking-[-0.02em] leading-[160%] m-0">
+            <p className="font-primary text-[0.8125rem] font-medium text-[var(--text-secondary)] tracking-[-0.02em] leading-[160%] m-0">
               {shipping.returnPolicy.description}
             </p>
           </div>

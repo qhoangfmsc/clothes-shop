@@ -94,9 +94,9 @@ export default function PaymentsContent() {
         header: t("table.columns.content"),
         hideBelow: "md",
         render: (tx) => (
-          <div className="flex flex-col max-w-[280px]">
+          <div className="flex flex-col max-w-[17.5rem]">
             <span className="text-xs text-[var(--text-secondary)] break-words">{tx.transferContent || "—"}</span>
-            <span className="text-[11px] text-[var(--text-muted)] break-all">{tx.providerTransactionId}</span>
+            <span className="text-[0.6875rem] text-[var(--text-muted)] break-all">{tx.providerTransactionId}</span>
           </div>
         ),
       },

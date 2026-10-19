@@ -24,10 +24,10 @@ export default function ViewButton() {
         justifyContent: "center",
         boxShadow: "var(--shadow-lg)",
       }}
-      className="left-4 right-4 bottom-[60px] h-[72px] sm:left-auto sm:right-8 sm:bottom-8 sm:w-[200px] sm:h-[60px]"
+      className="left-[calc(var(--page-edge)+1rem)] right-[calc(var(--page-edge)+1rem)] bottom-[3.75rem] h-[4.5rem] sm:left-auto sm:right-[calc(var(--page-edge)+2rem)] sm:bottom-8 sm:w-[12.5rem] sm:h-[3.75rem]"
     >
       <span
-        className="text-[26px] sm:text-[32px]"
+        className="text-[1.625rem] sm:text-[2rem]"
         style={{
           letterSpacing: "-0.04em",
           color: "var(--color-white)",

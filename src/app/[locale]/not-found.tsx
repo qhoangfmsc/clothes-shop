@@ -62,7 +62,7 @@ export default function NotFound() {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          maxWidth: 600,
+          maxWidth: "37.5rem",
         }}
         className="px-6 sm:px-8"
       >
@@ -93,9 +93,9 @@ export default function NotFound() {
             letterSpacing: "-0.03em",
             lineHeight: "105%",
             fontWeight: 400,
-            marginTop: 20,
+            marginTop: "1.25rem",
           }}
-          className="text-[42px] sm:text-[56px] lg:text-[72px]"
+          className="text-[2.625rem] sm:text-[3.5rem] lg:text-[4.5rem]"
         >
           {t("title")}
         </motion.h1>
@@ -106,12 +106,12 @@ export default function NotFound() {
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.6, ease: [...ease], delay: 0.5 }}
           style={{
-            width: 40,
+            width: "2.5rem",
             height: 1,
             background: "var(--accent-primary)",
             transformOrigin: "center",
-            marginTop: 32,
-            marginBottom: 32,
+            marginTop: "2rem",
+            marginBottom: "2rem",
           }}
         />
 
@@ -125,9 +125,9 @@ export default function NotFound() {
             letterSpacing: "-0.02em",
             lineHeight: "170%",
             fontWeight: 500,
-            maxWidth: 340,
+            maxWidth: "21.25rem",
           }}
-          className="text-[13px] sm:text-[14px]"
+          className="text-[0.8125rem] sm:text-[0.875rem]"
         >
           {t("description")}
         </motion.p>
@@ -140,7 +140,7 @@ export default function NotFound() {
           style={{
             display: "flex",
             gap: "var(--space-3)",
-            marginTop: 40,
+            marginTop: "2.5rem",
           }}
         >
           <Link
@@ -149,7 +149,7 @@ export default function NotFound() {
               background: "var(--accent-primary)",
               color: "var(--text-on-gold)",
               borderRadius: "var(--radius-pill)",
-              padding: "12px 32px",
+              padding: "0.75rem 2rem",
               letterSpacing: "-0.01em",
               textTransform: "uppercase",
               textDecoration: "none",
@@ -177,7 +177,7 @@ export default function NotFound() {
               color: "var(--accent-primary)",
               border: "1px solid var(--accent-primary)",
               borderRadius: "var(--radius-pill)",
-              padding: "12px 32px",
+              padding: "0.75rem 2rem",
               letterSpacing: "-0.01em",
               textTransform: "uppercase",
               textDecoration: "none",

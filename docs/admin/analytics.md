@@ -1,6 +1,6 @@
 # Analytics (lưu lượng & phễu mua hàng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/analytics` · **API route:** `GET /api/analytics` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/analytics` · **API route:** `GET /api/analytics` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/analytics/` · `src/app/api/analytics/` · `src/hooks/use-admin-analytics.ts` · `src/lib/analytics.ts` · `src/types/analytics.ts` · `src/lib/percent-change.ts` · `src/app/[locale]/_components/VercelTelemetry.tsx`
 > **i18n:** `admin.analytics`
 
@@ -65,3 +65,5 @@ Cho admin biết bao nhiêu người ghé site, trang nào/nguồn nào/thiết 
 ### 4.4 Biến môi trường
 
 `WEB_ANALYTICS_TOKEN`, `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID` (tùy chọn), `WEB_ANALYTICS_PLAN`, `NEXT_PUBLIC_API_URL`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

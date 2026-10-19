@@ -37,9 +37,9 @@ const FIELDS: readonly FieldConfig[] = [
 
 /* Floating label: the label sits in the field as its placeholder and floats up once the field has focus or a value */
 const FLOAT_INPUT_CLASS =
-  "peer w-full h-[52px] pt-5 pb-1.5 px-4 rounded-md border bg-[var(--bg-primary)] font-primary text-sm text-[var(--text-primary)] tracking-[-0.02em] outline-none transition-colors duration-150 placeholder:text-transparent focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_rgba(201,169,110,0.15)] motion-reduce:transition-none";
+  "peer w-full h-[3.25rem] pt-5 pb-1.5 px-4 rounded-md border bg-[var(--bg-primary)] font-primary text-sm text-[var(--text-primary)] tracking-[-0.02em] outline-none transition-colors duration-150 placeholder:text-transparent focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_rgba(201,169,110,0.15)] motion-reduce:transition-none";
 const FLOAT_LABEL_CLASS =
-  "pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] transition-all duration-150 motion-reduce:transition-none peer-focus:top-[17px] peer-focus:text-[11px] peer-not-placeholder-shown:top-[17px] peer-not-placeholder-shown:text-[11px]";
+  "pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] transition-all duration-150 motion-reduce:transition-none peer-focus:top-[1.0625rem] peer-focus:text-[0.6875rem] peer-not-placeholder-shown:top-[1.0625rem] peer-not-placeholder-shown:text-[0.6875rem]";
 const TEXTAREA_CLASS =
   "w-full py-2.5 px-4 rounded-md border border-[var(--border-light)] bg-[var(--bg-primary)] font-primary text-sm text-[var(--text-primary)] tracking-[-0.02em] outline-none transition-colors duration-150 placeholder:text-[var(--text-disabled)] focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_rgba(201,169,110,0.15)] resize-y motion-reduce:transition-none";
 
@@ -107,7 +107,7 @@ export default function ShippingForm({ address, errors, pickup, onChange }: Ship
           rel="noopener noreferrer"
           className="inline-flex items-start gap-2 self-start font-primary text-sm leading-[150%] tracking-[-0.02em] text-[var(--text-primary)] no-underline hover:underline"
         >
-          <MapPin size={16} aria-hidden="true" className="mt-[3px] shrink-0" />
+          <MapPin size={16} aria-hidden="true" className="mt-[0.1875rem] shrink-0" />
           <span>
             <span className="text-[var(--text-muted)]">{t("pickupAt")}</span> {CONTACT_ADDRESS}
           </span>

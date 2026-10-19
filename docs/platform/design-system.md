@@ -32,8 +32,8 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Họ màu thô** (`--color-*`): Champagne (`pearl-cream #fbf8f1`, `champagne-cream`, `warm-linen`, `soft-beige`, `sand`); Brand (`#a49078` + `mist`, `cream`, `deep`); Gold (`champagne-gold #c9a96e`, `pale`, `soft`, `deep`, `antique`); Dusty Rose; Sage; Lavender; Dusty Blue; Chocolate; Soft Yellow (`butter`, `vanilla`, `honey`); Noir (`noir`, `obsidian`, `charcoal`, `slate`, `ash`); `white`, `black`.
 - **Alias ngữ nghĩa**: `--bg-primary/secondary/elevated/surface/inset/dark`, `--bg-section-1…8` + `--bg-section-noir`, `--text-primary/heading/secondary/muted/disabled/accent/brand/on-dark/on-gold`, `--border-subtle/light/default/gold/strong/brand/dark`, `--brand-*`, `--accent-primary/hover/subtle/pressed`, `--accent-rose/sage/lavender/blue/chocolate/butter`.
 - **Bóng**: `--shadow-sm…xl` (nâu ấm), `--shadow-gold-sm/md/lg/glow`.
-- **Chữ**: `--font-primary` và `--font-display` cùng trỏ `var(--font-site)` (Doovan Display, 400) kèm fallback serif; `--text-xs 11px` → `--text-3xl 42px` (`xs 11, sm 12, base 13, md 15, lg 20, xl 25, 2xl 30, 3xl 42`).
-- **Spacing** (lưới 4 px): `--space-1 … --space-20`; **radius** `sm 4, md 8, lg 16, xl 24, pill`.
+- **Chữ**: `--font-primary` và `--font-display` cùng trỏ `var(--font-site)` (Doovan Display, 400) kèm fallback serif; `--text-xs` → `--text-3xl` tính bằng `rem` (`xs 0.6875, sm 0.75, base 0.8125, md 0.9375, lg 1.25, xl 1.5625, 2xl 1.875, 3xl 2.625`; tương đương 11 / 12 / 13 / 15 / 20 / 25 / 30 / 42 px khi gốc là 16 px). Tailwind `text-xs … text-3xl` đọc đúng các biến này.
+- **Spacing** (lưới 4 px): `--space-1 … --space-20` và **radius** `sm / md / lg / xl` đều bằng `rem` (4 px = 0.25 rem …); `pill` = 9999 px.
 - **Motion**: `--ease-default/out-cubic/in-out/luxury`, `--duration-fast 150 / base 300 / slow 600 / slower 1000 / cinematic 1200`.
 - **z-index**: `base 0, panel 10, overlay 12, fixed 20, cursor 50, modal 100, toast 200`.
 - **Khung rộng trang**: `--page-max-w: 1920px` (giá trị max-width duy nhất của site) và `--page-edge: max(0px, calc((100% - var(--page-max-w)) / 2))` — khoảng cách từ mép viewport tới cột nội dung, dùng cho phần tử `fixed` (xem 4.3, 4.4).
@@ -45,8 +45,9 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 
 ### 4.3 `globals.css`
 
+- **Thang co giãn màn rộng**: `html { font-size: clamp(1rem, 1.0417vw, 1.25rem) }` — bằng cỡ mặc định của trình duyệt (16 px) tới 1536 px, tăng tuyến tính theo viewport (1728 px → 18 px) và dừng ở 20 px từ 1920 px (đúng bề rộng `--page-max-w`). `rem` trong media query vẫn theo cỡ mặc định của trình duyệt nên các breakpoint không dịch chuyển; dưới 1536 px kết quả y hệt thang 16 px. Kích thước viết bằng `px` cố định (`w-[400px]`…) không đi theo thang này nên phải viết bằng `rem` (`.agent/rules/responsive.md`).
 - Reset: `overflow-x: hidden`, font/ màu/ nền từ token.
-- `body` có `width: 100%; max-width: var(--page-max-w); margin-inline: auto` — toàn bộ nội dung (kể cả khu admin) nằm trong một cột căn giữa tối đa 1920 px; viewport rộng hơn (thu nhỏ trình duyệt, màn 2560+) chỉ thấy nền `--bg-primary` hai bên. Phần tử `position: fixed` không theo `body` nên tự căn bằng `--page-edge`: `SiteHeader` và panel mega menu (`left/right`), `CartFAB` (`right`), sidebar admin (`left`). Lớp phủ toàn màn (backdrop, modal, drawer menu/Quick Add, toast) và các lớp `fixed` của landing page (`landing-page/`) vẫn theo viewport.
+- `body` có `width: 100%; max-width: var(--page-max-w); margin-inline: auto` — toàn bộ nội dung (kể cả khu admin) nằm trong một cột căn giữa tối đa 1920 px; viewport rộng hơn (thu nhỏ trình duyệt, màn 2560+) chỉ thấy nền `--bg-primary` hai bên. Phần tử `position: fixed` không theo `body` nên tự căn bằng `--page-edge`: `SiteHeader` và panel mega menu (`left/right`), `CartFAB` (`right`), sidebar admin (`left`). Lớp phủ toàn màn (backdrop, modal, drawer menu/Quick Add, toast), video và panel nền của landing page (`landing-page/`) vẫn theo viewport; các lớp chữ `fixed` của landing page đặt theo `--page-edge`.
 - Mọi `<img>` fade-in 0.4 s (`img-fade-in`); `img[data-admin-img]` và `img[data-cursor-img]` bỏ qua hiệu ứng này.
 - Keyframes: `spin`, `rt-in`/`rt-out` (route transition), `cart-shimmer`, `skeleton-shimmer`, `checkout-shimmer`, `ni-pulse`, `ni-ticker-scroll` (New In).
 - Custom variant `carousel` (điện thoại/thiết bị cảm ứng) cho Tailwind.
@@ -61,6 +62,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Truy vấn theo thiết bị nhập**: `(pointer: fine)` ở con trỏ tùy biến (`use-cursor-tracker.ts`), kéo chuột của `Carousel`, con trỏ `zoom-in` của `ZoomableImage`; `(hover: none)` ở mũi tên `Carousel` (luôn hiện trên cảm ứng) và `CollectionShowcase`; GSAP ở `CollectionsClient` chỉ chạy khi `(min-width: 768px) and (pointer: fine)`.
 - **Phân loại theo thiết bị** nằm ở quy tắc `.agent/rules/responsive.md` (phone, tablet, iPad ngang, desktop, wide); `ResponsiveBannerImage` chọn ảnh theo `max-width` 639/1023 (mobile/tablet/desktop).
 - **Khu admin**: sidebar cố định 240 px từ `lg`, drawer off-canvas dưới `lg` (xem [admin-shell](../admin/admin-shell.md)); form/modal/bảng dùng chung có kích thước riêng cho cảm ứng qua `pointer-coarse:` (xem [ui-kit](./ui-kit.md)).
+- **Thang co giãn màn rộng**: xem 4.3 — gốc `html` lớn dần từ 1536 px tới 20 px ở 1920 px, mọi kích thước `rem` (token chữ/spacing, class Tailwind, `max-w-[…rem]`, `text-[…rem]`) lớn theo cùng nhịp với ảnh. Kích thước độc lập với thang này (hairline ≤ 2 px, `border`, `blur`, bóng, kích thước `size={…}` của icon lucide, con trỏ tùy biến) vẫn là px.
 - `html, body` có `overflow-x: hidden` (4.3).
 - `QuickAddDrawer` chừa `env(safe-area-inset-bottom)` ở chân drawer; chưa nơi nào khác dùng `safe-area`. `100vh` còn dùng ở một số bố cục sticky, chưa dùng `dvh`.
 

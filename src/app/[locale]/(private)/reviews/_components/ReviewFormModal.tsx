@@ -286,7 +286,7 @@ export default function ReviewFormModal({ target, onClose, onSaved, onAlreadyRev
         role="dialog"
         aria-modal="true"
         aria-labelledby="review-form-title"
-        className="flex max-h-[100dvh] w-full flex-col overflow-hidden rounded-t-2xl bg-[var(--bg-primary)] shadow-xl sm:max-h-[90dvh] sm:max-w-[560px] sm:rounded-2xl"
+        className="flex max-h-[100dvh] w-full flex-col overflow-hidden rounded-t-2xl bg-[var(--bg-primary)] shadow-xl sm:max-h-[90dvh] sm:max-w-[35rem] sm:rounded-2xl"
       >
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--border-subtle)] px-4 py-3 sm:px-6 sm:py-4">
           <h2 id="review-form-title" className="m-0 min-w-0 font-display text-xl font-normal tracking-[-0.04em] text-[var(--text-heading)]">

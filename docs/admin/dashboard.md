@@ -1,6 +1,6 @@
 # Dashboard
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin` · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin` · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/page.tsx` · `(admin)/admin/DashboardContent.tsx` · `(admin)/admin/_components/AnalyticsSummary.tsx`
 > **i18n:** `admin.dashboard`
 
@@ -63,3 +63,5 @@ Với từng trạng thái trong `pending, confirmed, shipping, delivered, compl
 
 - Trang không có kiểm tra permission riêng (mọi người vào được admin đều thấy), nhưng các API admin tương ứng do BE kiểm tra quyền.
 - Bố cục đáy cố định `grid-cols-[2fr_1fr]`.
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

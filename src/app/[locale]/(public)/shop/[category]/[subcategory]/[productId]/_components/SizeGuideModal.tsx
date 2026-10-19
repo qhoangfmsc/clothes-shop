@@ -100,7 +100,7 @@ export default function SizeGuideModal({ category, isOpen, onClose }: SizeGuideM
               overflow: "hidden",
             } : {
               width: "100%",
-              maxWidth: 640,
+              maxWidth: "40rem",
               maxHeight: "85vh",
               background: "var(--bg-primary)",
               borderRadius: 16,
@@ -121,7 +121,7 @@ export default function SizeGuideModal({ category, isOpen, onClose }: SizeGuideM
                 className="m-0"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "clamp(20px, 3vw, 26px)",
+                  fontSize: "clamp(1.25rem, 3vw, 1.625rem)",
                   fontWeight: 400,
                   color: "var(--text-heading)",
                   letterSpacing: "-0.04em",
@@ -186,7 +186,7 @@ export default function SizeGuideModal({ category, isOpen, onClose }: SizeGuideM
                       width: "100%",
                       borderCollapse: "collapse",
                       fontFamily: "var(--font-primary)",
-                      fontSize: 13,
+                      fontSize: "0.8125rem",
                     }}>
                       <thead>
                         <tr>
@@ -246,7 +246,7 @@ export default function SizeGuideModal({ category, isOpen, onClose }: SizeGuideM
                         {sizeGuide.tips.map((tip, idx) => (
                           <li
                             key={idx}
-                            className="font-primary text-[13px] font-medium leading-[160%] tracking-[-0.02em]"
+                            className="font-primary text-[0.8125rem] font-medium leading-[160%] tracking-[-0.02em]"
                             style={{ color: "var(--text-secondary)" }}
                           >
                             {tip}

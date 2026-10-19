@@ -35,6 +35,7 @@ import {
 } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import { useOrderQuote } from "@/src/app/[locale]/(private)/checkout/_common/use-order-quote";
 import { useMoney } from "@/src/hooks/use-money";
+import { useProductLink } from "@/src/hooks/use-api";
 import { moneyOf } from "@/src/lib/money";
 import { buildOrderInquiryHref, getPurchaseMode } from "@/src/lib/product-purchase";
 import Checkbox from "@/src/app/[locale]/_components/Checkbox";
@@ -205,7 +206,7 @@ function CartItemRow({
     }
   }, [item, dispatch, confirm, t, tBulk]);
 
-  const productUrl = `/shop/${item.category}/${item.subcategory}/${item.productId}`;
+  const productLink = useProductLink();
   const purchaseMode = getPurchaseMode(item.badge);
   const purchasable = purchaseMode === "cart";
 
@@ -226,9 +227,9 @@ function CartItemRow({
       />
 
       {/* Image */}
-      <Link href={productUrl} className="block shrink-0 no-underline">
+      <Link {...productLink(item)} className="block shrink-0 no-underline">
         <div
-          className={`relative w-20 h-[107px] sm:w-[104px] sm:h-[139px] rounded-md overflow-hidden bg-[var(--color-champagne-cream)] ${
+          className={`relative w-20 h-[6.6875rem] sm:w-[6.5rem] sm:h-[8.6875rem] rounded-md overflow-hidden bg-[var(--color-champagne-cream)] ${
             purchasable ? "" : "opacity-60"
           }`}
         >
@@ -240,7 +241,7 @@ function CartItemRow({
       <div className="flex-1 min-w-0 flex flex-col gap-2 self-stretch">
         <div className="flex items-start justify-between gap-3">
           <Link
-            href={productUrl}
+            {...productLink(item)}
             className="font-primary text-sm sm:text-base text-[var(--text-heading)] tracking-[-0.02em] leading-[130%] no-underline font-medium line-clamp-2 hover:text-[var(--accent-primary)]"
           >
             {item.name}
@@ -399,11 +400,11 @@ export default function CartContent() {
   /* Loading */
   if (isLoading) {
     return (
-      <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
-        <div className="max-w-[820px] mx-auto px-4 sm:px-6">
-          <div className="h-[60px] rounded-md bg-[var(--color-champagne-cream)] mb-8 animate-[cart-shimmer_1.5s_ease_infinite]" />
-          <div className="h-[120px] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
-          <div className="h-[120px] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
+      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+        <div className="max-w-[51.25rem] mx-auto px-4 sm:px-6">
+          <div className="h-[3.75rem] rounded-md bg-[var(--color-champagne-cream)] mb-8 animate-[cart-shimmer_1.5s_ease_infinite]" />
+          <div className="h-[7.5rem] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
+          <div className="h-[7.5rem] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
         </div>
       </main>
     );
@@ -412,15 +413,15 @@ export default function CartContent() {
   /* Not authenticated */
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <UnauthenticatedState />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen pt-[120px] pb-16 bg-[var(--bg-primary)]">
-      <div className="max-w-[820px] mx-auto px-4 sm:px-6">
+    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <div className="max-w-[51.25rem] mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

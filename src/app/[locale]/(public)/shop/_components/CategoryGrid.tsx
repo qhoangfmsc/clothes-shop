@@ -103,7 +103,7 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
           ))}
         </Carousel>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] lg:gap-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-[repeat(auto-fit,minmax(13.75rem,1fr))] lg:gap-5">
           {categories.map((cat) => (
             <CategoryCard key={cat.slug} cat={cat} />
           ))}

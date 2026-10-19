@@ -19,7 +19,7 @@ export default async function LegalToc({ locale, docs }: LegalTocProps) {
   return (
     <nav
       aria-label={t("contents")}
-      className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-5 lg:sticky lg:top-[120px]"
+      className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-5 lg:sticky lg:top-[7.5rem]"
     >
       <p className="m-0 mb-3 font-primary text-xs font-medium uppercase tracking-[0.12em] text-[var(--accent-primary)]">
         {t("contents")}

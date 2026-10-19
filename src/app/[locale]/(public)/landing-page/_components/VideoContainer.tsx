@@ -113,7 +113,7 @@ export default function VideoContainer() {
         transition: "opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)",
         zIndex: 0,
       }}
-      className="inset-0 w-full h-full max-sm:top-[220px] max-sm:left-0 max-sm:w-screen max-sm:h-[calc(100vh-220px)] bg-white"
+      className="inset-0 w-full h-full max-sm:top-[13.75rem] max-sm:left-0 max-sm:w-screen max-sm:h-[calc(100vh-220px)] bg-white"
     >
       {/* Left video */}
       <video

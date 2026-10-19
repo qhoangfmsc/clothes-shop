@@ -106,7 +106,7 @@ export default function GoogleSignInButton({ redirectAfterLogin = false }: Googl
           color: "var(--text-heading)",
           border: "1px solid var(--border-default)",
           borderRadius: "var(--radius-pill)",
-          padding: "14px 32px",
+          padding: "0.875rem 2rem",
           fontSize: "var(--text-md)",
           fontFamily: "var(--font-primary)",
           fontWeight: 500,
@@ -115,7 +115,7 @@ export default function GoogleSignInButton({ redirectAfterLogin = false }: Googl
           boxShadow: "var(--shadow-sm)",
           transition: `opacity var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default), border-color var(--duration-fast) var(--ease-default)`,
           width: "100%",
-          maxWidth: 320,
+          maxWidth: "20rem",
           opacity: canSignIn ? 1 : isLoading ? 0.7 : 0.5,
         }}
       >
@@ -124,8 +124,8 @@ export default function GoogleSignInButton({ redirectAfterLogin = false }: Googl
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             style={{
-              width: 20,
-              height: 20,
+              width: "1.25rem",
+              height: "1.25rem",
               borderRadius: "50%",
               border: "2px solid var(--border-default)",
               borderTopColor: "var(--text-heading)",
@@ -139,7 +139,7 @@ export default function GoogleSignInButton({ redirectAfterLogin = false }: Googl
 
       {/* Terms & privacy consent — the Google button above stays disabled until it is ticked.
           Links open in a new tab so the sign-in state is not lost while reading. */}
-      <label className="mt-2 flex w-full max-w-[320px] cursor-pointer items-start gap-3 text-left font-primary text-sm leading-[140%] tracking-[-0.02em] text-[var(--text-secondary)]">
+      <label className="mt-2 flex w-full max-w-[20rem] cursor-pointer items-start gap-3 text-left font-primary text-sm leading-[140%] tracking-[-0.02em] text-[var(--text-secondary)]">
         <Checkbox
           className="mt-0.5"
           checked={accepted}

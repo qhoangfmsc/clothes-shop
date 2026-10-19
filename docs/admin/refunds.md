@@ -1,6 +1,6 @@
 # Refunds (hoàn tiền)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/refunds` (`?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/refunds` (`?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-18
 > **Code:** `(admin)/admin/refunds/` — `page.tsx`, `RefundsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{RefundBadge,RefundPaymentSource,CompleteRefundModal,RejectRefundModal,OrderRefundBanner}.tsx`
 > **i18n:** `admin.refunds`, `shared.errors.byCode` (1711, 1713, 1714), `admin.components.crud.sort` (`processedDesc`, `processedAsc`)
 > **Redux slice:** `state.refunds`
@@ -43,3 +43,5 @@ Hệ thống **không tự chuyển tiền**. Hủy đơn đã trả (khách ho�
 ### 4.2 Liên quan
 
 Khoản hoàn do trả hàng (`reason = RETURN`) có `returnRequestId` nên cột lý do link sang [returns](./returns.md) (`?returnId=`); khi hoàn xong ở đây BE tự đưa yêu cầu trả hàng sang `REFUNDED`. Khách thấy khoản hoàn ở [customer-orders](../storefront/customer-orders.md) 4.2; panel đơn và bộ lọc `refunded`: [orders](./orders.md); khoản tiền gốc và xác nhận thanh toán: [payments](./payments.md). Menu: [admin-shell](./admin-shell.md). Quyền: [auth](../platform/auth.md).
+
+- **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).

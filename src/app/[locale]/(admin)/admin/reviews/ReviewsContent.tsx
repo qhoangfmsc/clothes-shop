@@ -155,7 +155,7 @@ export default function ReviewsContent() {
             {r.userId && (
               <Link
                 href={`/admin/reviews?userId=${encodeURIComponent(r.userId)}`}
-                className="text-[11px] font-mono text-[var(--text-muted)] no-underline hover:underline"
+                className="text-[0.6875rem] font-mono text-[var(--text-muted)] no-underline hover:underline"
               >
                 {r.userId}
               </Link>
@@ -173,7 +173,7 @@ export default function ReviewsContent() {
         header: t("table.columns.content"),
         hideBelow: "lg",
         render: (r) => (
-          <div className="flex max-w-[280px] flex-col gap-0.5">
+          <div className="flex max-w-[17.5rem] flex-col gap-0.5">
             {r.title && <span className="truncate text-xs font-semibold">{r.title}</span>}
             <span className="line-clamp-2 text-xs text-[var(--text-secondary)]">{r.content || "—"}</span>
           </div>
@@ -206,7 +206,7 @@ export default function ReviewsContent() {
           <div className="flex flex-col items-start gap-1">
             <ReviewStatusBadge status={r.status} />
             <span
-              className={`text-[11px] font-primary ${r.reply ? "text-[var(--text-muted)]" : "text-[var(--text-accent)] font-semibold"}`}
+              className={`text-[0.6875rem] font-primary ${r.reply ? "text-[var(--text-muted)]" : "text-[var(--text-accent)] font-semibold"}`}
             >
               {r.reply ? t("table.replied.yes") : t("table.replied.no")}
             </span>

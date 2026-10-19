@@ -56,7 +56,7 @@ export default function CartFAB() {
             >
               <ShoppingBag size={20} />
             </motion.div>
-            <span className="absolute -top-1 -right-1 min-w-5 h-5 rounded-full bg-[var(--color-deep-rose)] text-[var(--color-pearl-cream)] font-primary text-[11px] font-semibold tracking-[-0.02em] flex items-center justify-center px-1.5 border-2 border-[var(--bg-primary)]">
+            <span className="absolute -top-1 -right-1 min-w-5 h-5 rounded-full bg-[var(--color-deep-rose)] text-[var(--color-pearl-cream)] font-primary text-[0.6875rem] font-semibold tracking-[-0.02em] flex items-center justify-center px-1.5 border-2 border-[var(--bg-primary)]">
               {totalItems}
             </span>
           </Link>
