@@ -11,16 +11,20 @@
 2. 38 module còn lại (hoặc mới phủ một phần) phải làm dần. Làm nhiều module trong một phiên thì ngữ cảnh phình to và dễ sót; chưa có cách chia việc và đo tiến độ mà không phải đọc lại cả dự án.
 3. Test component cần dựng lại provider (i18n, đăng nhập, điều hướng) ở từng file; không có bộ khung chung nên mỗi batch sẽ chép lại và lệch nhau.
 
+4. Comment quá dài: 134 khối dài hơn 3 dòng ở 113 file (922 dòng), 88 khối trang trí bằng `═══`, nhiều khối là đoạn văn hoặc ví dụ sử dụng mà `docs/` và skill đã có. Người đọc phải lội qua chữ để tới code.
+
 **Mục tiêu.**
 - **Ma trận test bắt buộc, máy kiểm tra**: mỗi spec khai báo module có chiều auth / permission hay không (kèm lý do nếu không), và bảng luồng gán *tình huống* (đúng / lỗi) và *danh tính* (khách / user / admin đủ quyền / admin thiếu quyền) cho từng luồng. Gate từ chối spec thiếu ô bắt buộc.
 - **Quy trình test chia batch**: kế hoạch 8 batch (tối đa 5 module mỗi batch, theo rủi ro × giá trị) lưu trong repo; lệnh `yarn test:progress` tính tiến độ từ chính repo (không có sổ ghi tay) và in bảng làm việc gọn cho từng batch; `--verify` là cổng kết thúc batch.
 - **Bộ khung render** dùng chung (`tests/_support/`): dựng component với i18n thật, đăng nhập thật qua MSW theo danh tính, điều hướng giả.
+- **Comment ngắn**: chỉ viết khi code không tự nói được *vì sao*; tối đa 3 dòng; không trang trí, không ví dụ sử dụng, không lịch sử. Máy kiểm tra, file cũ vi phạm nằm trong baseline chỉ được ngắn đi.
 - Quy trình được ghi thành skill để mỗi phiên làm một batch mà không phải nạp lại toàn bộ bối cảnh.
 
 ## 2. Phạm vi
 
 | Làm | Không làm (và vì sao) |
 |---|---|
+| Quy tắc comment ngắn (`.agent/rules/comments.md`), kiểm bằng `comment-lib.mjs` trong `check-conventions`, baseline `scripts/comment-baseline.json`; rút gọn comment ở các file của đợt refactor này | Rút gọn comment ở 100+ file cũ trong một lần: diff rất lớn, tách thành một phần riêng để rà từng file |
 | Mục 6 của spec có thêm `Phạm vi`, `Chiều kiểm thử` và hai cột `Tình huống`, `Danh tính`; gate kiểm tra ma trận | Ép mọi module có chiều auth/permission: module không có chiều đó khai `không (lý do)` |
 | `scripts/progress-lib.mjs` (hàm thuần, gồm cả logic đột biến) + `scripts/test-progress.mjs` và `scripts/test-mutants.mjs` (CLI) + `scripts/test-batches.json` | Sổ ghi tiến độ viết tay: sẽ lệch khỏi repo. Tiến độ luôn *tính* từ spec, test và baseline |
 | Bộ khung render `tests/_support/{render,identities,messages,navigation}` | Khung cho Redux store và `next/navigation`: thêm ở batch đầu tiên cần tới (giỏ hàng, trang có `searchParams`), không dựng trước khi có người dùng |
@@ -48,6 +52,8 @@
 **`yarn test:progress`**: không tham số → bảng tổng (theo batch: số module xong / tổng, từng module một dòng với trạng thái và thiếu gì). `--batch N` → bảng làm việc của batch: mỗi module có doc, spec, thư mục test, 8 file lớn nhất (số dòng), gợi ý chiều auth/permission theo vị trí, các ô còn thiếu. `--verify N` → mã thoát 1 nếu còn module chưa xong, in báo cáo ngắn để dán vào cuối phiên. `--json` → cùng dữ liệu dạng JSON.
 
 **`scripts/test-batches.json`**: `{ "done": [...], "batches": [{ "id", "title", "why", "focus", "modules": [...] }] }`. Hợp lệ khi mọi module của `MODULES` xuất hiện đúng một lần (trong `done` hoặc một batch) và mỗi batch có từ 1 đến 5 module.
+
+**Quy tắc comment** (`scripts/comment-lib.mjs`, chạy trong `yarn conventions:check` cho `src/`, `scripts/`, `tests/` và hai file cấu hình): vi phạm khi một khối `/* … */` hoặc `/** … */` dài hơn 3 dòng, khi có hơn 3 dòng `//` liền nhau, hoặc khi một dòng comment chứa dải trang trí (5 ký tự `═` liền nhau). Các chỉ thị (`eslint-…`, `@ts-…`, `conventions-ignore`) không tính. File vi phạm phải nằm trong `scripts/comment-baseline.json`; file không vi phạm mà còn trong baseline phải bị gỡ; baseline không được thêm mục (`quality:check --changed`).
 
 **`yarn test:mutants <module>`**: đọc `tests/<module>/mutants.json` (`name`, `file`, `find`, `replace`), áp từng đột biến lên file thật, chạy test của module, **khôi phục file** (cả khi Ctrl-C hoặc lỗi), báo số test đỏ cho từng đột biến. Một đột biến *bị bắt* khi có ít nhất một test đỏ. `find` không còn khớp, hoặc thay thế không đổi gì, là lỗi to chứ không phải "sống sót". Thoát 1 nếu còn đột biến sống sót hoặc danh sách rỗng.
 
@@ -118,6 +124,7 @@ Tiếng Anh cho code, thông báo lỗi của script và comment; spec và tài 
 | QG-3 | Luồng không nêu test, test không tồn tại, ID trùng, không có luồng → lỗi | lỗi | — | unit | `tests/platform/dev-tooling/quality-lib.test.ts` |
 | QG-4 | Baseline: module đủ spec+test phải rời danh sách, module thiếu phải ở trong; bảng luồng sống còn hợp lệ | lỗi | — | unit | `tests/platform/dev-tooling/quality-lib.test.ts` |
 | QG-10 | Đột biến: áp thay thế đầu tiên; từ chối khi `find` không khớp hoặc không đổi gì; tổng kết bắt được / sống sót; danh sách rỗng không tính là đạt | lỗi | — | unit | `tests/platform/dev-tooling/progress.test.ts` |
+| QG-11 | Quy tắc comment: khối dài hơn 3 dòng, hơn 3 dòng `//` liền nhau và dải `═` bị phát hiện (kèm số dòng); comment ngắn, chỉ thị và chuỗi chứa `//` hoặc `/*` thì không; baseline: vi phạm mới → lỗi, file đã sạch còn trong baseline → lỗi | lỗi | — | unit | `tests/platform/dev-tooling/comment-lib.test.ts` |
 | QG-5 | Token E2E: đọc `exp`, phân loại thiếu / hết hạn / bị từ chối / không gọi được / sắp hết; che email; nạp `.env.e2e.local` | lỗi | — | unit | `tests/platform/dev-tooling/e2e-session.test.ts` |
 | QG-6 | Ma trận: thiếu `Phạm vi` / `Chiều kiểm thử`, giá trị lạ, `không` không lý do, thiếu hàng đúng/lỗi, thiếu khách hoặc đã đăng nhập khi auth = có, thiếu có quyền hoặc thiếu quyền khi permission = có → lỗi; đủ thì qua | lỗi | — | unit | `tests/platform/dev-tooling/matrix.test.ts` |
 | QG-7 | Tiến độ: phân loại pending / partial / done, liệt kê ô còn thiếu; kế hoạch batch phải phủ đúng mọi module, mỗi batch ≤ 5; `--verify` chỉ qua khi cả batch xong | lỗi | — | unit | `tests/platform/dev-tooling/progress.test.ts` |
@@ -145,3 +152,4 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-21 · Thêm vòng spec → test → code → docs: `modules.mjs`, `check-quality.mjs`, `quality-lib.mjs`, `quality-baseline.json`, Vitest + MSW, Playwright, CI, rules/skills 09–12.
 - 2026-10-21 · Thêm luồng E2E chưa đăng nhập / đã đăng nhập và kiểm tra token (`.env.e2e.local`, `auth.setup.ts`, `e2e-session.ts`); chỉ cần `E2E_REFRESH_TOKEN` vì BE không xoay vòng refresh token.
 - 2026-10-21 · Thêm quy trình test chia batch: ma trận bắt buộc (đúng/lỗi × khách/user/admin đủ quyền/admin thiếu quyền), `progress-lib`, `test-progress`, `test-batches.json`, bộ khung render, skill `test-process`.
+- 2026-10-21 · Thêm quy tắc comment ngắn có máy kiểm tra và baseline chỉ ngắn đi; rút gọn comment ở các file của đợt refactor này.

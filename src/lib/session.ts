@@ -1,13 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   SESSION — the one place that owns "who is signed in" on the wire
-
-   Token storage, the 401 → refresh → retry loop, and session expiry. Every HTTP client that sends the user's
-   token (`authApi`, `useApiAuth().apiFetch`, `apiFetchStandalone`) and `AuthProvider` build on it, so the rules
-   below exist exactly once. Plain TypeScript (no React): callable from thunks, hooks and tests.
-
-   Usage:
-     const res = await requestWithSession((token) => fetch(url, { headers: bearer(token) }));
-   ═══════════════════════════════════════════════════════════ */
+/* One owner for the session: token storage, the shared refresh and the 401 → refresh → retry loop. */
 
 import { API_URL, ApiError } from "./api";
 
@@ -99,11 +90,7 @@ interface SessionRequestOptions {
   authenticated?: boolean;
 }
 
-/**
- * Runs `send` with the stored access token. On a 401 it refreshes the token once and retries once; when the
- * refresh is impossible it expires the session and throws `ApiError("", 401)`. Any other response is returned
- * untouched, so each client keeps its own way of reading bodies and errors.
- */
+/** Runs `send` with the stored token; on a 401 refreshes once and retries once, else expires the session. */
 export async function requestWithSession(
   send: (token: string | null) => Promise<Response>,
   { authenticated = true }: SessionRequestOptions = {}

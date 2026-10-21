@@ -1,23 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 import { loadE2EEnv } from "./tests/_support/e2e-session";
 
-/**
- * Browser tests (Playwright) — the few flows that must work end to end. Files: `tests/**\/*.e2e.ts`, next to the
- * unit tests of the module they protect (`tests/<group>/<module>/`), plus cross-module journeys in `tests/e2e/`.
- *
- * Two kinds of flow:
- *   - signed out:  `*.e2e.ts`        projects `desktop` and `phone` (no login needed, always run)
- *   - signed in:   `*.auth.e2e.ts`   projects `desktop-auth` and `phone-auth`, after `setup` has checked the test
- *                                    account's token (tests/_support/auth.setup.ts). If the token expired, `setup`
- *                                    fails with what to replace, and only the signed-in projects stop.
- *
- * They run against the REAL API, not mocks. The only thing the owner maintains is `E2E_REFRESH_TOKEN` in
- * `.env.e2e.local` (git-ignored; template `.env.e2e.example`). The rest are optional overrides from the shell/CI:
- *   - `E2E_REFRESH_TOKEN`  the test account's refresh token (the only secret; 30 days)
- *   - `E2E_BASE_URL`       the site to test (a deployed FE). Unset = use / start `yarn dev` (API from `.env.local`)
- *   - `E2E_API_URL`        the API behind that site (required with `E2E_BASE_URL`)
- *   - `E2E_ALLOW_WRITES=1` lets write tests change data. Off by default; only against non-production data.
- */
+/* Browser tests against the real API: `*.e2e.ts` signed out, `*.auth.e2e.ts` signed in.
+   Token and switches: tests/README.md. */
 loadE2EEnv();
 const baseURL = process.env.E2E_BASE_URL || "http://localhost:3000";
 const isCI = !!process.env.CI;

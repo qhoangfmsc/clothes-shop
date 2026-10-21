@@ -1,11 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   E2E SESSION — the signed-in test account for browser tests
-
-   Needs one thing from the owner: the REFRESH token of a test account (`.env.e2e.local`, git-ignored). It
-   lasts 30 days; the access token is fetched from it on every run. This file decides, before any browser
-   opens, whether that token still works — and says so in plain words when it does not.
-   Pure functions (no Playwright): unit tested in tests/platform/dev-tooling/e2e-session.test.ts.
-   ═══════════════════════════════════════════════════════════ */
+/* Decides before any browser opens whether the E2E test account's refresh token still works. Pure, no Playwright. */
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -39,10 +32,7 @@ export function readJwtExp(token: string): number | null {
   }
 }
 
-/**
- * Is the refresh token good? An expired date is caught locally; otherwise the API itself answers
- * (`POST /api/auth/refresh`), which also covers a disabled account or a changed server secret.
- */
+/** Is the refresh token good? Expiry is read locally; otherwise the API answers (also covers a disabled account). */
 export async function checkSession(options: { apiUrl: string; refreshToken: string; now?: number }): Promise<SessionCheck> {
   const { apiUrl, refreshToken, now = Date.now() } = options;
   if (!refreshToken) return { status: "missing" };

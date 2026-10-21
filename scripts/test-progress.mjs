@@ -1,15 +1,6 @@
 #!/usr/bin/env node
-/**
- * Test process scoreboard — how far the programme is, and the worksheet for one batch.
- *
- *   node scripts/test-progress.mjs                 overview: every batch, every module, what is missing
- *   node scripts/test-progress.mjs --batch N       worksheet for batch N (files to read, dimensions to cover, gaps)
- *   node scripts/test-progress.mjs --verify N      end-of-batch gate: exit 1 unless every module of batch N is done
- *   node scripts/test-progress.mjs --json          the overview as JSON
- *
- * Start a test-process session with `--batch N` instead of reading the whole project: it prints only what that
- * batch needs. Rules: .agent/skills/13-test-process.md. Pure logic: scripts/progress-lib.mjs.
- */
+/* Test process board: `node scripts/test-progress.mjs [--batch N | --verify N | --json]`.
+   Rules: .agent/skills/13-test-process.md. */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";

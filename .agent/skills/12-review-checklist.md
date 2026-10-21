@@ -31,6 +31,7 @@ Dùng sau khi code, trước khi báo xong; người review dùng cùng danh sá
 ## Conventions
 - [ ] Code/identifier/comment/commit tiếng Anh; chữ hiển thị qua i18n, có đủ mọi locale.
 - [ ] Tailwind-first (không `.css` mới, `style={{}}` chỉ cho giá trị động); điều hướng qua `@/src/i18n/navigation`.
+- [ ] Comment ngắn: chỉ có khi cần giải thích *vì sao*, tối đa 3 dòng, không banner / ví dụ / lịch sử; comment dài trong file vừa sửa đã được rút gọn.
 - [ ] Không `any`; ngoại lệ (`conventions-ignore`, `eslint-disable`) có lý do tại dòng đó.
 - [ ] UI: đã kiểm 390 / 768 / 1024 / 1440 / 1920 hoặc nói rõ chưa chạy trình duyệt; mọi tính năng hover có đường cảm ứng.
 

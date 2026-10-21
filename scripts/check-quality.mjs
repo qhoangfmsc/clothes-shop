@@ -1,15 +1,6 @@
 #!/usr/bin/env node
-/**
- * Specs + tests gate — keeps `specs/` (one tech spec per module) and `tests/` (its automated tests) in step
- * with the code, the same way `check-docs.mjs` does for `docs/`.
- *
- *   node scripts/check-quality.mjs                       structure: specs valid, test files exist, baseline honest
- *   node scripts/check-quality.mjs --changed [--base=X]  + every module whose code changed (vs HEAD, or X) must
- *                                                        have its spec updated and a test file touched
- *
- * Workflow it enforces: .agent/rules/quality-loop.md · .agent/skills/09-tech-specs.md · .agent/skills/10-testing.md.
- * Module map: scripts/modules.mjs. Modules not yet covered: scripts/quality-baseline.json (can only shrink).
- */
+/* Gate for specs/ and tests/: `node scripts/check-quality.mjs [--changed [--base=X]]`.
+   Every module has a valid spec and tests; changed code needs a changed spec and tests. */
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
@@ -104,7 +95,7 @@ let touchedCount = 0;
 if (args.includes("--changed")) {
   const baseArg = args.find((a) => a.startsWith("--base="));
   const base = baseArg ? baseArg.slice("--base=".length) : "HEAD";
-  const git = (...a) => execFileSync("git", a, { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const git = (...a) => execFileSync("git", a, { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] });
   const split = (out) => out.split("\0").filter(Boolean);
   const changed = new Set([...split(git("diff", "--name-only", "-z", base)), ...split(git("ls-files", "--others", "--exclude-standard", "-z"))]);
   const tracked = (path) => {
@@ -155,6 +146,18 @@ if (args.includes("--changed")) {
     }
   })();
   if (before) for (const doc of pending) if (!before.includes(doc)) fail(`${BASELINE_PATH}: "${doc}" was added — the baseline can only shrink`);
+
+  const commentBase = (() => {
+    try {
+      return JSON.parse(git("show", `${base}:scripts/comment-baseline.json`)).files ?? [];
+    } catch {
+      return null;
+    }
+  })();
+  if (commentBase) {
+    const now = JSON.parse(readFileSync(join(ROOT, "scripts/comment-baseline.json"), "utf8")).files ?? [];
+    for (const file of now) if (!commentBase.includes(file)) fail(`scripts/comment-baseline.json: "${file}" was added — shorten its comments instead`);
+  }
 }
 
 if (errors.length) {

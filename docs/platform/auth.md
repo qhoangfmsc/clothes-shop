@@ -61,7 +61,7 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 | Thành phần | Việc |
 |---|---|
 | `getAccessToken`, `getRefreshToken`, `saveAccessToken`, `saveTokens`, `clearTokens` | Đọc/ghi/xóa hai token trong `localStorage`; đọc trả `null` khi không có `window` (server) |
-| `refreshAccessToken()` | `POST /api/auth/refresh` body `{ refreshToken }`. Không có refresh token → `null` (không xóa gì). BE từ chối (`!res.ok`) hoặc lỗi mạng → xóa cả hai token, trả `null`. Thành công → lưu access token mới, trả token đó. Các lần gọi chồng nhau dùng chung một request (promise ở mức module), cho mọi client và mọi instance hook |
+| `refreshAccessToken()` | `POST /api/auth/refresh` body `{ refreshToken }`. Không có refresh token → `null` (không xóa gì). BE từ chối (`!res.ok`) hoặc lỗi mạng → xóa cả hai token, trả `null`. Thành công → lưu access token mới, trả token đó. Các lần gọi chồng nhau dùng chung một request (promise ở mức module), cho mọi client và mọi instance hook. BE chỉ trả access token mới và không xoay vòng refresh token (access sống 1 ngày, refresh 30 ngày), nên lần refresh thừa không đăng xuất ai; dùng chung chỉ để bớt request |
 | `requestWithSession(send, { authenticated })` | Gọi `send(token)` với access token đang lưu. Gặp 401 và `authenticated` (mặc định `true`) → refresh một lần rồi gọi lại `send` đúng một lần với token mới; không refresh được → `expireSession()` rồi ném `ApiError("", 401)`. `authenticated: false` thì `send(null)` và không bao giờ refresh. Phản hồi khác trả nguyên cho client tự đọc |
 | `expireSession()`, `SESSION_EXPIRED_EVENT` | Xóa token và phát event `auth:session-expired` trên `window` |
 

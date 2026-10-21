@@ -1,17 +1,10 @@
 #!/usr/bin/env node
-/**
- * Project conventions check — keeps every list page, table, carousel, toast and error
- * handler on the shared building blocks. Runs before `yarn build` (and via `yarn conventions:check`).
- *
- * Each rule says what to use instead; the full reasoning lives in:
- *   .agent/rules/components.md · .agent/skills/05-list-pages.md · .agent/skills/06-errors-and-toasts.md
- *
- * Opt out of one line (rarely, with a reason):  // conventions-ignore: <rule-id> <why>
- * on the offending line or the line above it.
- */
-import { readdirSync, readFileSync, statSync } from "node:fs";
+/* Keeps lists, tables, carousels, toasts, errors and comments on the shared rules; runs before `yarn build`.
+   Opt out of one line: `// conventions-ignore: <rule-id> <why>` on or above it. */
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { findLongComments, validateCommentBaseline } from "./comment-lib.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const SRC = join(ROOT, "src");
@@ -125,10 +118,28 @@ for (const file of files) {
   }
 }
 
+/* comment-length: comments stay short (.agent/rules/comments.md). Old files may be listed until they are trimmed. */
+const COMMENT_ROOTS = ["src", "scripts", "tests"];
+const COMMENT_FILES = ["vitest.config.mts", "playwright.config.ts", "next.config.ts"];
+const COMMENT_EXT = /\.(ts|tsx|mts|mjs)$/;
+function walkAll(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) return name === "messages" || name === "node_modules" ? [] : walkAll(full);
+    return COMMENT_EXT.test(name) ? [full] : [];
+  });
+}
+const commentFiles = [...COMMENT_ROOTS.flatMap((d) => walkAll(join(ROOT, d))), ...COMMENT_FILES.map((f) => join(ROOT, f))].filter((f) => existsSync(f));
+const offenders = commentFiles.filter((f) => findLongComments(readFileSync(f, "utf8")).length > 0).map(posix);
+const commentBaseline = JSON.parse(readFileSync(join(ROOT, "scripts/comment-baseline.json"), "utf8")).files ?? [];
+for (const message of validateCommentBaseline(offenders, commentBaseline)) {
+  violations.push({ rule: "comment-length", file: message.split(" ")[0], line: 1, message });
+}
+
 if (violations.length) {
   console.error(`\nConventions check failed — ${violations.length} problem(s):\n`);
   for (const v of violations) console.error(`  ${v.file}:${v.line}  [${v.rule}]\n    ${v.message}`);
   console.error("\nSee .agent/rules/components.md and .agent/skills/05-list-pages.md / 06-errors-and-toasts.md.\n");
   process.exit(1);
 }
-console.log(`conventions check OK — ${files.length} files`);
+console.log(`conventions check OK — ${files.length} files, comments checked in ${commentFiles.length} (${commentBaseline.length} still to trim)`);

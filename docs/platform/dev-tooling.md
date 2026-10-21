@@ -1,7 +1,7 @@
 # Tooling, cấu hình & triển khai
 
 > **Nhóm:** Platform · **Cập nhật:** 2026-10-21
-> **Code:** `package.json` · `scripts/i18n.mjs` · `scripts/check-conventions.mjs` · `scripts/check-docs.mjs` · `scripts/check-quality.mjs` · `scripts/quality-lib.mjs` · `scripts/quality-baseline.json` · `scripts/modules.mjs` · `scripts/progress-lib.mjs` · `scripts/test-progress.mjs` · `scripts/test-mutants.mjs` · `scripts/test-batches.json` · `vitest.config.mts` · `playwright.config.ts` · `tests/` · `specs/` · `.github/workflows/ci.yml` · `next.config.ts` · `vercel.json` · `src/app/api/cron/ping/route.ts` · `.env.local` · `.env.e2e.local` · `.env.e2e.example` (không commit `.env.*.local`) · `.agent/` · `.claude/` · `CLAUDE.md`
+> **Code:** `package.json` · `scripts/i18n.mjs` · `scripts/check-conventions.mjs` · `scripts/check-docs.mjs` · `scripts/check-quality.mjs` · `scripts/quality-lib.mjs` · `scripts/comment-lib.mjs` · `scripts/comment-baseline.json` · `scripts/quality-baseline.json` · `scripts/modules.mjs` · `scripts/progress-lib.mjs` · `scripts/test-progress.mjs` · `scripts/test-mutants.mjs` · `scripts/test-batches.json` · `vitest.config.mts` · `playwright.config.ts` · `tests/` · `specs/` · `.github/workflows/ci.yml` · `next.config.ts` · `vercel.json` · `src/app/api/cron/ping/route.ts` · `.env.local` · `.env.e2e.local` · `.env.e2e.example` (không commit `.env.*.local`) · `.agent/` · `.claude/` · `CLAUDE.md`
 
 ## 1. Tóm tắt module
 
@@ -65,6 +65,7 @@ Quét `src/**/*.ts(x)` (bỏ `messages`), bỏ qua comment. Luật:
 | `carousel` | `snap-x`, `scroll-snap-type` ngoài `Carousel.tsx` |
 | `auto-advance` | `setInterval` ngoài `use-auto-advance.ts` |
 | `toast-i18n` | `toast.success("literal")` trong `src/app` |
+| `comment-length` | Khối comment dài hơn 3 dòng (dòng thẻ JSDoc `@param`/`@returns` không tính), hơn 3 dòng `//` liền nhau, hoặc dải `═` trong `src/`, `scripts/`, `tests/`, `vitest.config.mts`, `playwright.config.ts`, `next.config.ts`; file vi phạm phải nằm trong `scripts/comment-baseline.json` (hiện 137 file), file đã sạch phải rời danh sách, và `quality:check --changed` không cho thêm file vào đó. Logic ở `scripts/comment-lib.mjs` (bỏ qua chuỗi, template và regex) |
 | `data-table` | `<DataTable>` server mode thiếu `sortOptions` hoặc `searchPlaceholder` (trừ `searchable={false}`) |
 
 Bỏ qua một dòng: `// conventions-ignore: <rule-id> <lý do>` ở dòng đó hoặc dòng trước. Khi thêm một khối dùng chung mới thì thêm luật vào script trong cùng thay đổi.

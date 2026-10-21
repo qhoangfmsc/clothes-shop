@@ -1,14 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   AUTHENTICATED API FETCHER
-   
-   Provides `apiFetch` — a fetch wrapper that auto-attaches
-   Authorization header and handles 401 → refresh flow.
-   
-   Usage:
-     const { apiFetch } = useApiAuth();
-     const data = await apiFetch('/api/cart');
-     await apiFetch('/api/cart/items', { method: 'POST', body: {...} });
-   ═══════════════════════════════════════════════════════════ */
+/* Authenticated fetch: the `useApiAuth` hook (refreshes on 401) and `apiFetchStandalone` (does not). */
 
 import { useCallback } from "react";
 import { mapMediaUrls } from "@/src/lib/media-url";
@@ -25,10 +15,7 @@ interface ApiFetchOptions {
   raw?: boolean;
 }
 
-/**
- * Hook providing authenticated fetch.
- * Handles token refresh on 401 automatically (one retry), via the shared session (`requestWithSession`).
- */
+/** Authenticated fetch that refreshes the token once on a 401. */
 export function useApiAuth() {
   /** Main fetch function */
   const apiFetch = useCallback(

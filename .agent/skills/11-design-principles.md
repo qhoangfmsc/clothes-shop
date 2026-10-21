@@ -68,7 +68,7 @@ Quy ước hiện hành: xem `.agent/rules/coding.md`, `components.md`, và các
 
 - **Tên**: component `PascalCase.tsx`; hook `use-xxx.ts`/`useXxx`; test `<tên>.test.ts(x)`, E2E `<tên>.e2e.ts`; hằng `UPPER_SNAKE`.
 - **Kiểu**: không `any`; `unknown` ở biên dữ liệu chưa kiểm chứng; kiểu của module ở `_common/types.ts`.
-- **Comment giải thích *vì sao***, không lặp lại code (ví dụ vì sao `expireSession` vẫn chạy khi không có refresh token).
+- **Comment ít và ngắn** (`.agent/rules/comments.md`): chỉ khi có một *vì sao* không hiển nhiên, một dòng nếu được, tối đa 3 dòng; không banner, không ví dụ sử dụng, không lịch sử, không lặp lại code. Máy kiểm tra bằng `yarn conventions:check` (rule `comment-length`).
 - **Ngoại lệ phải có lý do** viết ngay tại dòng: `// conventions-ignore: <rule-id> <lý do>`, `eslint-disable-next-line … -- <lý do>`.
 - **Một cách làm cho mỗi việc**: tiền → `useMoney`, lỗi → `useErrorMessage`, phiên → `session.ts`, list → `buildListQuery`. Thấy cách thứ hai là dấu hiệu cần gộp, không phải cần thêm.
 

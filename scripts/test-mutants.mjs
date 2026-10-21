@@ -1,14 +1,6 @@
 #!/usr/bin/env node
-/**
- * Mutation check, by hand-picked mutants: break the code on purpose and see whether the tests notice.
- *
- *   node scripts/test-mutants.mjs <module>          e.g. platform/auth  (reads tests/<module>/mutants.json)
- *
- * mutants.json: [{ "name": "…", "file": "src/…", "find": "exact text", "replace": "text" }, …]
- * Each mutant is applied to the real source file, the module's tests run, and the file is restored — also on
- * Ctrl-C or a crash. A mutant is *caught* when at least one test fails. Exit 1 if any mutant survives.
- * Why: green tests prove nothing until you have seen them go red (.agent/skills/10-testing.md, section 4).
- */
+/* Breaks the code on purpose to see whether the tests notice: `node scripts/test-mutants.mjs <group>/<module>`.
+   Reads tests/<module>/mutants.json, restores every file afterwards; exits 1 if a mutant survives. */
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";

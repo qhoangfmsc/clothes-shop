@@ -1,7 +1,4 @@
-/**
- * Pure checks behind `scripts/check-quality.mjs` — no file system or git here, so they can be unit tested
- * (tests/platform/dev-tooling/quality-lib.test.ts). Each function returns a list of problems (empty = fine).
- */
+/* Pure checks behind check-quality.mjs. Each returns a list of problems (empty = fine). */
 
 export const SPEC_HEADINGS = [
   "## 1. Bối cảnh & mục tiêu",
@@ -58,11 +55,7 @@ function parseDimension(part, name) {
   return m ? { has: m[1] === "có", reason: (m[2] ?? "").trim() } : null;
 }
 
-/**
- * Reads a spec into the facts the gates and the progress board need: status, the section 6 scope line, the
- * auth / permission dimensions, and the flow rows with their situation and identity.
- * Nothing is validated here; see `validateMatrix`.
- */
+/** Reads a spec into status, scope, auth/permission dimensions and flow rows. Validates nothing. */
 export function parseSpec(text) {
   const lines = text.split("\n");
   const header = lines.slice(0, 8).join("\n");
@@ -103,11 +96,7 @@ export function parseSpec(text) {
   return { status, hasSection: at >= 0, scopeRaw, scope, dimsRaw, dims, columns: table.header, rows };
 }
 
-/**
- * The test matrix: every module has a right flow and an error flow; auth = có adds a guest flow and a signed-in
- * flow; permission = có adds a flow for an admin who may and one for an admin who may not. A dimension that
- * does not apply says why. Returns problems without a file prefix.
- */
+/** The test matrix: a right and an error flow, plus guest/signed-in and allowed/denied admin flows when they apply. */
 export function validateMatrix(parsed) {
   if (!parsed.hasSection) return [];
   const problems = [];

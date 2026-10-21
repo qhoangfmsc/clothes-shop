@@ -1,21 +1,13 @@
-/**
- * Pure logic behind `yarn test:progress` — how far each module is, and the batch plan that splits the work
- * (scripts/test-batches.json). No file system here: `scripts/test-progress.mjs` reads the repo and passes data in,
- * so the rules can be unit tested (tests/platform/dev-tooling/progress.test.ts).
- *
- * Progress is always *derived* from the repo (spec, tests, baseline); there is no hand-kept ledger to go stale.
- */
+/* Pure logic for `yarn test:progress`. Progress is derived from the repo, never kept by hand. */
 
 /** A batch is one working session: small enough to read and finish without losing track. */
 export const MAX_BATCH_SIZE = 5;
 const BASELINE_FILE = "scripts/quality-baseline.json";
 
 /**
- * Where one module stands.
+ * Where one module stands: `pending` (no spec or tests, or still in the baseline), `partial`, or `done`.
  * @param {{ doc: string, spec: null | { status: string | null, scope: { full: boolean, note: string } | null, matrixProblems: string[], flowCount: number }, hasTests: boolean, testCount: number, pending: boolean }} input
  * @returns {{ state: "pending" | "partial" | "done", gaps: string[] }}
- *   `pending`: no spec, no tests, or still in the baseline. `partial`: spec and tests exist but something is missing.
- *   `done`: spec Implemented for the whole module, full matrix, at least one test per flow, out of the baseline.
  */
 export function classifyModule({ spec, hasTests, testCount, pending }) {
   const gaps = [];

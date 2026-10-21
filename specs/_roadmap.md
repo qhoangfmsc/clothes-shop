@@ -16,6 +16,20 @@ Kế hoạch nằm ở `scripts/test-batches.json`: **8 batch, mỗi batch tối
 
 **Mỗi phiên làm một batch rồi dừng**, theo `.agent/skills/13-test-process.md` (skill `test-process`). Việc refactor theo SOLID/pattern của từng module (ví dụ tách `ProductsContent`, `ProductDetailClient`, `HamburgerMenu`; một chiến lược server-state cho admin; factory cho bộ thunk lặp ở 11 slice; một nơi persist cho cart/wishlist) làm **sau khi** module có test, trong chính batch của nó, theo mục 5 và 7 của spec module.
 
+## Các phần của nhánh `refactor/fe-overhaul`
+
+Làm lần lượt; sau mỗi phần: chạy lại mọi cổng, commit lên nhánh, báo cáo, chờ chủ dự án xác nhận mới sang phần tiếp theo. Nhánh này được merge vào `main` hay không do chủ dự án quyết định.
+
+| # | Phần | Nội dung | Trạng thái |
+|---|---|---|---|
+| 1 | Nhánh và commit nền | Chuyển toàn bộ code đang dở sang nhánh; tách commit: việc có sẵn từ `main`, hạ tầng test, lớp phiên auth, cổng chất lượng và quy trình | xong |
+| 2 | Quy tắc comment | `.agent/rules/comments.md`, kiểm bằng `comment-length`, baseline chỉ ngắn đi; rút gọn comment ở các file của đợt refactor | xong |
+| 3 | Rút gọn comment toàn dự án | 137 file trong `scripts/comment-baseline.json`, rút gọn dần cho tới khi baseline rỗng | chưa |
+| 4–11 | Batch 1 đến 8 của quy trình test | Mỗi batch tối đa 5 module (`scripts/test-batches.json`, `.agent/skills/13-test-process.md`); mỗi batch là một phần | chưa |
+| 12 | Nợ thiết kế đã biết | Sau khi có test: bỏ `baseCrudReducers` chết, factory cho bộ thunk, một nơi persist cho cart/wishlist, đảo hướng import của hai hook, chọn một chiến lược server-state cho admin | chưa |
+| 13 | Component quá lớn và giao diện | Tách `HamburgerMenu`, `ProductDetailClient`, `ProductsContent`; thay `style={{}}` bằng Tailwind; thẻ `<main>` trang chủ; 14 chỗ `exhaustive-deps` | chưa |
+| 14 | Kiểm tra cuối | `yarn build` (cần tắt dev server), rà CI, tổng kết | chưa |
+
 ## Xong một module nghĩa là
 
 `yarn test:progress` hiện module ✓, tức là: spec `Implemented` cho toàn module; **ma trận đủ** (luồng đúng và lỗi; khách và người đã đăng nhập khi có auth; admin đủ quyền và admin thiếu quyền khi có permission; chiều nào bỏ thì có lý do); mỗi luồng có test; module đã rời `scripts/quality-baseline.json`. Cộng với những điều máy không kiểm: `yarn test:mutants <module>` bắt hết đột biến, mục 5 spec đủ bốn mục con với lý do, doc và `specs/_critical-flows.md` cập nhật, ngưỡng coverage của file lõi (T0 ≥ 90%, T1 ≥ 75%) đã đặt. Chi tiết: `.agent/skills/13-test-process.md` mục 1.

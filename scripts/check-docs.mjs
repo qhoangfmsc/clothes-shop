@@ -1,18 +1,6 @@
 #!/usr/bin/env node
-/**
- * Module docs gate — keeps `docs/` (one as-built doc per module) in step with the code.
- *
- *   node scripts/check-docs.mjs                       structure + coverage (runs in `yarn build`)
- *   node scripts/check-docs.mjs --changed [--base=X]  + every module whose code changed (vs HEAD, or X)
- *                                                     must have its doc updated, with a new `Cập nhật` date
- *   node scripts/check-docs.mjs --who <path|module>   which module / doc owns a file (read this BEFORE editing)
- *
- * The workflow it enforces is in .agent/rules/module-docs.md and .agent/skills/07-module-docs.md:
- * read the module's doc → change the code → update the doc → `yarn docs:check --changed`.
- *
- * MODULES (scripts/modules.mjs) is the single map of "which files belong to which doc". A new module = a new
- * entry there, a new file in docs/, and a row in docs/README.md.
- */
+/* Docs gate: `node scripts/check-docs.mjs [--changed [--base=X] | --who <path|module>]`.
+   Every module has an as-built doc, and a changed module has a changed doc. Rules: .agent/rules/module-docs.md. */
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, dirname, relative, resolve, sep, basename } from "node:path";

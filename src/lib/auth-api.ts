@@ -1,16 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   AUTH API CLIENT — Authenticated fetch
-
-   JSON client for the admin API: attaches the access token and rides on `requestWithSession` (401 → refresh
-   → retry, session expiry — see `session.ts`).
-   Used by Redux Toolkit slices and SWR hooks.
-   NOT a React hook — callable from plain functions.
-
-   Usage:
-     import { authApi } from "@/src/lib/auth-api";
-     const data = await authApi.get("/api/admin/products");
-     await authApi.post("/api/admin/products", { name: "..." });
-   ═══════════════════════════════════════════════════════════ */
+/* JSON client for the admin API: the session token and 401 → refresh → retry. Not a hook. */
 
 import { API_URL, toApiError } from "./api";
 import { notifyAdminMutation } from "./admin-events";

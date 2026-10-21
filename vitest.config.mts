@@ -4,14 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 
-/**
- * Unit + component + integration tests (Vitest, jsdom, MSW). Everything lives under `tests/`, mirroring
- * `docs/` and `specs/` (`tests/<group>/<module>/*.test.ts(x)`). Browser flows live in `tests/e2e/` (Playwright).
- *
- * Coverage is a signal, not a target (see .agent/skills/10-testing.md): the thresholds below are set per
- * file for the critical paths that have tests, and are raised as more modules are covered. They are never
- * lowered to make a build pass.
- */
+/* Unit, component and integration tests; see tests/README.md. Coverage thresholds only go up, never down. */
 export default defineConfig({
   plugins: [react()],
   resolve: { alias: [{ find: /^@\//, replacement: root }] },

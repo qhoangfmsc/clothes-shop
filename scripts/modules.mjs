@@ -1,10 +1,4 @@
-/**
- * The single map of "which files belong to which module".
- *
- * One module = one doc (`docs/<doc>.md`) = one tech spec (`specs/<doc>.md`) = one test folder (`tests/<doc>/`).
- * Read by `scripts/check-docs.mjs` (docs gate) and `scripts/check-quality.mjs` (specs + tests gate).
- * A new module = a new entry here, a doc, a spec, tests, and a row in `docs/README.md`.
- */
+/* Maps code to modules: one module = one doc (`docs/`) = one spec (`specs/`) = one test folder (`tests/`). */
 
 const L = "src/app/[locale]/";
 const ADMIN = `${L}(admin)/admin/`;
@@ -57,7 +51,7 @@ export const MODULES = [
     "src/app/robots.ts", "src/app/sitemap.ts", "src/lib/structured-data.ts", "src/lib/site-url.ts", "src/lib/brand.ts",
   ] },
   { doc: "platform/dev-tooling", paths: [
-    "scripts/check-conventions.mjs", "scripts/check-docs.mjs", "scripts/check-quality.mjs", "scripts/quality-lib.mjs", "scripts/modules.mjs", "scripts/quality-baseline.json",
+    "scripts/check-conventions.mjs", "scripts/check-docs.mjs", "scripts/check-quality.mjs", "scripts/quality-lib.mjs", "scripts/comment-lib.mjs", "scripts/comment-baseline.json", "scripts/modules.mjs", "scripts/quality-baseline.json",
     "scripts/progress-lib.mjs", "scripts/test-progress.mjs", "scripts/test-mutants.mjs", "scripts/test-batches.json",
     "next.config.ts", "vercel.json", "vitest.config.mts", "playwright.config.ts", "src/app/api/cron/",
   ] },

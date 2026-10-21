@@ -32,10 +32,7 @@ export const IDENTITIES: Record<IdentityName, AuthUser | null> = {
   adminLimited: { ...BASE, id: "a-2", email: "staff@example.com", name: "Staff", role: "admin", permissions: LIMITED_PERMISSIONS },
 };
 
-/**
- * Makes the app believe `identity` is signed in: stores tokens and answers `GET /api/auth/me` with that user.
- * `guest` clears any stored session, so the app never calls the API. Pass your own `AuthUser` for a one-off case.
- */
+/** Makes the app believe `identity` is signed in (token + `/me`); `guest` clears any session. */
 export function signInAs(identity: IdentityName | AuthUser | null = "guest"): AuthUser | null {
   const user = typeof identity === "string" ? IDENTITIES[identity] : identity;
   if (!user) {
