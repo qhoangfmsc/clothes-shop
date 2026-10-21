@@ -20,7 +20,7 @@ read doc ──► understand module ──► change code ──► update doc 
 4. **Change the code** — follow the other rules (`coding.md`, `components.md`, `design-system.md`, the `i18n` / `list-pages` / `errors-and-toasts` skills).
 5. **Update the doc in the same change** — edit every section the change affects (sections 1–4), rewrite sentences instead of appending notes, bump `Cập nhật` to today.
 6. **Gate** — run `yarn docs:check --changed` (alias: `node scripts/check-docs.mjs --changed`). It fails if a module's code changed and its doc did not, if the `Cập nhật` date was not bumped, if a code file has no owner, or if a doc is malformed. Also run the usual checks (`npx tsc --noEmit`, `yarn i18n:check`, `yarn conventions:check`). Fix everything it reports.
-7. **New / removed / renamed module** — add or edit its entry in `MODULES` (`scripts/check-docs.mjs`), create / delete / move `docs/<group>/<module>.md`, and add / fix its row in `docs/README.md`, and every link to it.
+7. **New / removed / renamed module** — add or edit its entry in `MODULES` (`scripts/modules.mjs`), create / delete / move `docs/<group>/<module>.md`, and add / fix its row in `docs/README.md`, and every link to it.
 8. **Report** — the final message lists the docs you read and the docs you updated. Never say a task is done while the gate fails or a touched module's doc is stale.
 
 Skipping a step is not allowed because "the change is small": a one-line behaviour change still needs the doc line. The only exemptions are changes with **no behaviour or contract change** (formatting, renaming a local variable, comment edits, dependency bumps) — and even then `docs:check --changed` is the judge: if it flags the module, update the doc.

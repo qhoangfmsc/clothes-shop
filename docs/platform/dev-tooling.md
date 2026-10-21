@@ -1,11 +1,11 @@
 # Tooling, cấu hình & triển khai
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
-> **Code:** `package.json` · `scripts/i18n.mjs` · `scripts/check-conventions.mjs` · `scripts/check-docs.mjs` · `next.config.ts` · `vercel.json` · `src/app/api/cron/ping/route.ts` · `.env.local` (không commit) · `.agent/` · `.claude/` · `CLAUDE.md`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-21
+> **Code:** `package.json` · `scripts/i18n.mjs` · `scripts/check-conventions.mjs` · `scripts/check-docs.mjs` · `scripts/check-quality.mjs` · `scripts/quality-lib.mjs` · `scripts/quality-baseline.json` · `scripts/modules.mjs` · `scripts/progress-lib.mjs` · `scripts/test-progress.mjs` · `scripts/test-mutants.mjs` · `scripts/test-batches.json` · `vitest.config.mts` · `playwright.config.ts` · `tests/` · `specs/` · `.github/workflows/ci.yml` · `next.config.ts` · `vercel.json` · `src/app/api/cron/ping/route.ts` · `.env.local` · `.env.e2e.local` · `.env.e2e.example` (không commit `.env.*.local`) · `.agent/` · `.claude/` · `CLAUDE.md`
 
 ## 1. Tóm tắt module
 
-Những thứ giúp dự án chạy, kiểm tra và triển khai: script npm, ba bộ kiểm tra tự động (i18n, conventions và docs), cấu hình Next.js, cron của Vercel, danh sách biến môi trường và nơi đặt quy tắc cho AI/dev.
+Những thứ giúp dự án chạy, kiểm tra và triển khai: script npm, bốn bộ kiểm tra tự động (i18n, conventions, docs và specs + tests), bộ test (Vitest, Playwright), CI, cấu hình Next.js, cron của Vercel, danh sách biến môi trường và nơi đặt quy tắc cho AI/dev.
 
 ## 2. Phục vụ gì / việc cần làm
 
@@ -21,6 +21,11 @@ Những thứ giúp dự án chạy, kiểm tra và triển khai: script npm, ba
 | i18n tooling | Sinh registry, kiểm tra đủ khóa | `scripts/i18n.mjs` (xem [i18n](./i18n.md)) |
 | Conventions check | Quét `src/**/*.ts(x)` tìm vi phạm quy ước | `scripts/check-conventions.mjs` |
 | Docs check | Mỗi file code thuộc một module có doc đúng cấu trúc; module đổi thì doc phải đổi | `scripts/check-docs.mjs` |
+| Quality check | Mỗi module có tech spec đúng cấu trúc và test; module đổi code thì spec và test đổi; danh sách module chưa phủ chỉ ngắn đi | `scripts/check-quality.mjs`, `scripts/quality-lib.mjs`, `scripts/quality-baseline.json` |
+| Bản đồ module | `MODULES`: đường dẫn code → doc/spec/thư mục test | `scripts/modules.mjs` |
+| Test | Vitest + Testing Library + MSW (unit/integration/component), Playwright (luồng chưa/đã đăng nhập, kiểm tra token), khung render dùng chung `tests/_support/` | `vitest.config.mts`, `playwright.config.ts`, `tests/` |
+| Tiến độ test | Chia module thành 8 batch (tối đa 5 module), tính tiến độ từ repo, cổng kết thúc batch, kiểm đột biến | `scripts/progress-lib.mjs`, `scripts/test-progress.mjs`, `scripts/test-mutants.mjs`, `scripts/test-batches.json` |
+| CI | Chạy các kiểm tra và test trên mỗi PR/push | `.github/workflows/ci.yml` |
 | Next config | next-intl plugin, remote image hosts, header cache dev | `next.config.ts` |
 | Cron | Ping BE mỗi ngày 00:00 UTC | `vercel.json`, `src/app/api/cron/ping/route.ts` |
 | Quy tắc cho AI/dev | Rules, skills, CLAUDE.md | `.agent/rules/`, `.agent/skills/`, `.claude/skills/`, `CLAUDE.md` |
@@ -32,9 +37,15 @@ Những thứ giúp dự án chạy, kiểm tra và triển khai: script npm, ba
 | Script | Việc |
 |---|---|
 | `dev` | `next dev --turbopack` (chạy `predev` = `i18n sync` trước) |
-| `build` | `next build` (`prebuild` = `i18n sync` → `i18n check` → `check-conventions` → `check-docs`) |
-| `start`, `lint` (`next lint`), `format` (prettier cho `app/**`) | — |
+| `build` | `next build` (`prebuild` = `i18n sync` → `i18n check` → `check-conventions` → `check-docs` → `check-quality`) |
+| `start`, `lint` (`next lint --dir src --dir tests`), `format` (prettier cho `app/**`) | — |
 | `i18n:sync`, `i18n:check`, `conventions:check`, `docs:check` | chạy riêng từng bước (`yarn docs:check --changed` kiểm tra doc theo thay đổi) |
+| `quality:check` | kiểm tra spec + test (`--changed [--base=<ref>]` theo thay đổi); chạy trong `prebuild` sau `docs:check` |
+| `test`, `test:watch`, `test:coverage` | Vitest một lần / theo dõi / kèm coverage |
+| `test:progress` | bảng tiến độ test của toàn bộ module; `--batch N` bảng làm việc của batch; `--verify N` cổng kết thúc batch; `--json` |
+| `test:mutants <nhóm>/<module>` | phá code cố ý theo `tests/<module>/mutants.json` và báo đột biến nào test không bắt |
+| `test:e2e` | Playwright (`tests/**/*.e2e.ts`) |
+| `typecheck` | `tsc --noEmit` |
 | `docs:who <file\|folder\|module>` | in ra module và doc sở hữu đường dẫn đó |
 
 Stack chính: Next 15 (App Router) · React 19 · Tailwind 4 · Redux Toolkit · SWR · next-intl 4 · framer-motion · GSAP · recharts · dnd-kit · `@react-oauth/google` · `@vercel/analytics` + `speed-insights`.
@@ -60,7 +71,7 @@ Bỏ qua một dòng: `// conventions-ignore: <rule-id> <lý do>` ở dòng đó
 
 ### 4.3 `check-docs.mjs`
 
-Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường dẫn code cho đúng một doc trong `docs/`; đường dẫn dài nhất khớp thì thắng. `src/messages/**`, `src/i18n/registry.ts`, file nhị phân/sinh tự động không thuộc module nào. Hiện có 38 module (mỗi module một doc; `PendingCountsProvider.tsx` thuộc `admin/admin-shell`, `PendingActionNotice.tsx` và `InfoHint.tsx` thuộc `platform/ui-kit`, `src/lib/admin-events.ts` và `SignOutButton.tsx` thuộc `platform/auth`), gồm cả `admin/payments`, `admin/refunds`, `admin/returns`, `admin/reviews`, `storefront/customer-returns` và `storefront/customer-reviews`. Đường dẫn liệt kê theo từng file (ví dụ `src/lib/brand.ts` thuộc `platform/seo`), nên file mới trong `src/lib/` phải được thêm vào entry của module sở hữu.
+Bản đồ sở hữu `MODULES` (trong `scripts/modules.mjs`, dùng chung với `check-quality.mjs`) gán từng đường dẫn code cho đúng một doc trong `docs/` (ví dụ `src/lib/product-url.ts` thuộc `platform/data-layer`); đường dẫn dài nhất khớp thì thắng. `src/messages/**`, `src/i18n/registry.ts`, file nhị phân/sinh tự động không thuộc module nào. Hiện có 39 module (mỗi module một doc; `PendingCountsProvider.tsx` thuộc `admin/admin-shell`, `PendingActionNotice.tsx` và `InfoHint.tsx` thuộc `platform/ui-kit`, `src/lib/admin-events.ts` và `SignOutButton.tsx` thuộc `platform/auth`), gồm cả `admin/payments`, `admin/refunds`, `admin/returns`, `admin/reviews`, `storefront/customer-returns` và `storefront/customer-reviews`. Đường dẫn liệt kê theo từng file (ví dụ `src/lib/brand.ts` thuộc `platform/seo`), nên file mới trong `src/lib/` phải được thêm vào entry của module sở hữu.
 
 | Chế độ | Việc | Khi chạy |
 |---|---|---|
@@ -68,7 +79,37 @@ Bản đồ sở hữu `MODULES` (trong chính script) gán từng đường d�
 | `--changed [--base=<ref>]` | Như trên, và với mọi module có file code đổi so với `HEAD` (hoặc `<ref>`, gồm cả file chưa theo dõi): doc của module phải được sửa và dòng `Cập nhật` phải đổi, hoặc đã mang ngày hôm nay (hay muộn hơn) từ lần sửa trước trong ngày (doc mới hoàn toàn thì bỏ qua kiểm tra ngày) | trước khi kết thúc một task |
 | `--who <đường dẫn\|tên module>` | In doc sở hữu và toàn bộ đường dẫn module đó sở hữu | trước khi sửa |
 
-Thêm module mới = thêm entry vào `MODULES`, tạo doc, thêm hàng README. Quy trình đầy đủ: `.agent/rules/module-docs.md`.
+Thêm module mới = thêm entry vào `MODULES` (`scripts/modules.mjs`), tạo doc, thêm hàng README (và spec + test, xem 4.3b). Quy trình đầy đủ: `.agent/rules/module-docs.md`.
+
+### 4.3b `check-quality.mjs`
+
+Mỗi module (entry của `MODULES`) sở hữu một spec `specs/<doc>.md` và một thư mục test `tests/<doc>/`. Logic kiểm tra thuần nằm ở `scripts/quality-lib.mjs` (`validateSpec`, `validateCriticalFlows`, `validateBaseline`); `check-quality.mjs` lo duyệt file và git.
+
+| Chế độ | Việc |
+|---|---|
+| mặc định (trong `prebuild`) | `scripts/test-batches.json` đặt mỗi module đúng một lần (trong `done` hoặc một batch, 1 đến 5 module mỗi batch); `specs/` chỉ chứa `README.md`, `_*.md` và spec của module; `tests/` chỉ chứa `README.md`, `_support/`, `e2e/` và thư mục module; mỗi spec có header `Nhóm … Cập nhật … Trạng thái (Draft/Approved/Implemented)`, dòng `Doc` và `Test`, tám mục đúng thứ tự, mục 5 đủ bốn mục con không rỗng (Design pattern, Kiến trúc, SOLID, Conventions), mục 6 có hai dòng `Phạm vi` (`toàn module` hoặc `một phần — …`) và `Chiều kiểm thử` (`auth = có|không (lý do) · permission = có|không (lý do)`), và bảng luồng có cột `Tình huống` (`đúng`/`lỗi`) và `Danh tính` (`khách`, `user`, `admin đủ quyền`, `admin thiếu quyền`, `—`); ma trận phải có luồng đúng và lỗi, khi auth = có thì có luồng khách và luồng của người đã đăng nhập, khi permission = có thì có luồng admin đủ quyền và admin thiếu quyền (và permission = có cần auth = có); mọi đường dẫn `tests/…` ở ô cuối của bảng tồn tại; `specs/_critical-flows.md` có tier `P0`/`P1`, module hợp lệ, test tồn tại; module vừa có spec vừa có file test (`*.test.ts(x)` hoặc `*.e2e.ts`) thì không được còn trong `pending` của `scripts/quality-baseline.json`, module thiếu một trong hai thì phải có trong `pending` |
+| `--changed [--base=<ref>]` | Với mọi module có code đổi (cùng định nghĩa file code với `check-docs`): spec phải được sửa và dòng `Cập nhật` đổi (hoặc đã mang ngày hôm nay), và một file test dưới `tests/<doc>/` phải được thêm/đổi, trừ khi diff của spec thêm một dòng chứa `no-test: <lý do>`; `pending` không được thêm mục so với `<ref>` |
+
+`scripts/quality-baseline.json` hiện liệt kê 36 module chưa có spec và test; 3 module đã có spec và test: `platform/auth` (toàn module), `platform/data-layer` và `platform/dev-tooling` (một phần). Phần duyệt file và git của `check-quality.mjs` chưa có test tự động; phần luật (`quality-lib.mjs`) được test ở `tests/platform/dev-tooling/quality-lib.test.ts`.
+
+### 4.3c Test
+
+- **Vitest** (`vitest.config.mts`): môi trường `jsdom`, plugin React, alias `@/` → gốc repo, `NEXT_PUBLIC_API_URL=http://api.test`, `restoreMocks`, bao gồm `tests/**/*.test.{ts,tsx}` (bỏ `tests/e2e/**`). Coverage `v8` cho `src/lib`, `src/hooks`, `src/contexts`, `src/store`, các component của auth (`RoleGuard`, `AdminPasswordGate`, `SystemPasswordPrompt`, `LoginPromptModal`, `SignOutButton`, `UnauthenticatedState`), `(auth)/login/**` và `unauthorized/**`; ngưỡng theo file (dòng / nhánh / hàm): `session.ts`, `auth-api.ts` (90 / 85 / 90), `api.ts` (90 / – / 90), `use-api-auth.ts` (90 / 80 / 90), `auth-context.tsx` (85 / – / 70), `permissions.ts` (85 / 95), `use-auth-action.ts` (95 / 75), `RoleGuard.tsx` (90 / 85 / 90), `AdminPasswordGate.tsx` (90 / 80), `SystemPasswordPrompt.tsx` (90 / 85), `LoginPromptModal.tsx` (90 / 80), `SignOutButton.tsx` (90 / 85), `UnauthenticatedState.tsx` (85), `GoogleSignInButton.tsx` (90 / 80). Khóa dạng `**/Tên.tsx` vì đường dẫn có `[locale]` bị hiểu là lớp ký tự trong glob.
+- **Helper dùng chung** (`tests/_support/`): `setup.ts` (jest-dom, MSW `listen({ onUnhandledFrame: "error" })` nên request không có handler làm test đỏ, cài bản giả của `@/src/i18n/navigation` và `@react-oauth/google` cho mọi test, dọn `localStorage`/`sessionStorage`/handler/DOM/router/Google sau mỗi test), `render.tsx` (`renderApp(ui, { as, locale, waitForAuth })`: `NextIntlClientProvider` với bản dịch thật, `AuthProvider` thật, `ToastProvider`, `ConfirmProvider`, `SystemPasswordPromptProvider`, `LoginPromptProvider` đúng thứ tự của `app/[locale]/layout.tsx`; chờ phiên xác định rồi mới hiện `ui`; trả `user` và `rerender` giữ provider; chưa có Redux store và `next/navigation`), `identities.ts` (`IDENTITIES`: `guest`, `user`, `adminFull`, `adminLimited` chỉ có `ORDER_ADMIN_VIEW`; `signInAs` đặt token và handler `GET /api/auth/me` chỉ chấp nhận token đã lưu; `guest` xóa phiên cũ), `messages.ts` (`MESSAGES` vi/en nạp bằng `import.meta.glob`, `msg("namespace.key")`), `navigation.ts` (`navigation.pathname`, `router.push/replace/…`, `redirects`), `google.ts` (`google.succeed(code)`, `google.fail()`), `msw-server.ts`, `api.ts` (`API`, khóa token, `seedSession`), `e2e.ts` (`test` có fixture `requireWrites`, `expect`, `ALLOW_WRITES`, `readAuthMeta`, `refreshTokenFromEnv`, khóa token), `e2e-session.ts` (`readJwtExp`, `checkSession`, `explainCheck`, `maskEmail`, `loadE2EEnv`), `auth.setup.ts` (project `setup`).
+- **Playwright** (`playwright.config.ts`): `testDir: tests`; năm project: `desktop` (1440×900) và `phone` (Pixel 7) chạy `*.e2e.ts` (trừ `*.auth.e2e.ts`) không cần đăng nhập; `setup` chạy `tests/_support/auth.setup.ts`; `desktop-auth` và `phone-auth` chạy `*.auth.e2e.ts`, phụ thuộc `setup`, dùng `storageState` `.auth/user.json`. `baseURL` = `E2E_BASE_URL` hoặc `http://localhost:3000` (khi không đặt `E2E_BASE_URL` thì dùng/khởi động `yarn dev`, gọi API trong `.env.local`); cấu hình nạp `.env.e2e.local` qua `loadE2EEnv()`; trace và ảnh chụp khi lỗi; CI: 1 retry, 2 worker, reporter `github` + `html`. Test chạy trên API thật và chỉ đọc; fixture `requireWrites` bỏ qua test ghi dữ liệu trừ khi `E2E_ALLOW_WRITES=1`.
+- **Token của luồng đã đăng nhập:** một giá trị `E2E_REFRESH_TOKEN` (refresh token của tài khoản test, sống 30 ngày vì BE không xoay vòng) trong `.env.e2e.local` ở root (gitignore; mẫu `.env.e2e.example`) hoặc biến môi trường thật (biến thật thắng; giá trị rỗng trong file bị bỏ qua). `auth.setup.ts` ghi `.auth/user.json` (trạng thái localStorage của trình duyệt) và `.auth/session.json` (`status`, email, vai trò, số ngày còn lại), cả hai gitignore. Kết quả kiểm tra: thiếu token → in cảnh báo, luồng đã đăng nhập `skipped`; còn dưới 5 ngày → cảnh báo, vẫn chạy; token hết hạn (ngày `exp` của JWT) hoặc API từ chối `POST /api/auth/refresh` hoặc không gọi được API → `setup` fail với thông báo tiếng Việt kèm cách lấy token mới, các project đã đăng nhập không chạy. Email trong log được che, token không in. Khi đặt `E2E_BASE_URL` thì phải đặt cả `E2E_API_URL`; không thì API lấy từ `NEXT_PUBLIC_API_URL` trong `.env.local` (mặc định `http://localhost:7001`).
+- Hiện có các file: `tests/platform/auth/` (`auth-api`, `use-api-auth`, `session`, `session-dedupe`, `auth-context`, `login.e2e`), `tests/platform/data-layer/` (`api`, `api-error`), `tests/platform/dev-tooling/` (`quality-lib`, `matrix`, `progress`, `e2e-session`, `harness`), `tests/e2e/` (`smoke.e2e`, `private-pages.e2e`, `signed-in.auth.e2e`).
+
+### 4.3e Quy trình test theo batch
+
+- **`scripts/test-batches.json`**: `done` (module đã xong lúc lập danh sách) và 8 batch `{ id, title, why, focus, modules }`; mỗi module của `MODULES` xuất hiện đúng một lần, mỗi batch có 1 đến 5 module (hằng `MAX_BATCH_SIZE` trong `scripts/progress-lib.mjs`). Thứ tự: batch 1 hàm thuần và nền dữ liệu, 2 giỏ hàng/checkout/đơn của khách, 3 phần dùng chung của admin và trang admin chuyển tiền, 4 admin hậu mãi và người dùng, 5 admin còn lại, 6 storefront duyệt và mua, 7 storefront tài khoản/đánh giá/nội dung, 8 khung giao diện.
+- **`yarn test:progress`**: tiến độ luôn được tính từ repo (spec, thư mục test, `scripts/quality-baseline.json`), không có sổ ghi tay. Mỗi module có trạng thái `done` (spec `Implemented` với phạm vi `toàn module`, ma trận đủ, số test không ít hơn số luồng, đã rời baseline), `partial` (có spec và test nhưng còn thiếu, kèm danh sách thiếu) hoặc `pending` (chưa có spec hoặc test, hoặc còn trong baseline). `--batch N` in bảng làm việc: lý do và trọng tâm của batch, và với mỗi module: số file và số dòng code, đường dẫn doc/spec/test, số luồng và số test (đếm `it(`/`test(`, một bảng `it.each` tính một), gợi ý chiều auth/permission theo vị trí (`admin/` → có cả hai; trang riêng của khách → auth; trang công khai → xem có `requireAuth` không), 8 file lớn nhất, các ô còn thiếu. `--verify N` thoát 1 nếu batch N còn module chưa `done`.
+- **`yarn test:mutants <module>`**: áp từng phần tử của `tests/<module>/mutants.json` lên file thật (thay lần xuất hiện đầu tiên của `find` bằng `replace`), chạy `vitest run tests/<module>` với báo cáo JSON, khôi phục file (cả khi nhận SIGINT/SIGTERM hoặc thoát), in số test đỏ; thoát 1 nếu có đột biến không làm test nào đỏ, `find` không khớp, hoặc danh sách rỗng. `platform/auth` có 14 đột biến, bắt cả 14.
+- Quy trình đầy đủ cho một phiên: `.agent/skills/13-test-process.md` (skill `test-process`).
+
+### 4.3d CI
+
+`.github/workflows/ci.yml` chạy trên PR và push `main`. Job `checks` (Node 22, `yarn install --frozen-lockfile`): `i18n:check`, `conventions:check`, `docs:check`, `quality:check`, và trên PR thêm `docs:check --changed` và `quality:check --changed` với `--base=origin/<nhánh đích>`, rồi `typecheck`, `lint`, `test:coverage`. Job `e2e` chỉ chạy khi biến repo `E2E_BASE_URL` được đặt; nhận biến `E2E_BASE_URL`, `E2E_API_URL` và secret `E2E_REFRESH_TOKEN`; không bật `E2E_ALLOW_WRITES`; tải báo cáo Playwright khi lỗi.
 
 ### 4.4 Next config
 
@@ -91,9 +132,10 @@ Thêm module mới = thêm entry vào `MODULES`, tạo doc, thêm hàng README. 
 | `CRON_SECRET` | cron ping | tùy chọn |
 | `WEB_ANALYTICS_TOKEN`, `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID`, `WEB_ANALYTICS_PLAN` | `/api/analytics` | xem [analytics](../admin/analytics.md) |
 | `VERCEL_ENV` | `robots.ts` | do Vercel đặt |
+| `E2E_REFRESH_TOKEN`, `E2E_API_URL`, `E2E_BASE_URL`, `E2E_ALLOW_WRITES` | Playwright | chỉ cho `yarn test:e2e`; đặt trong `.env.e2e.local` hoặc môi trường; xem 4.3c |
 
 ### 4.7 Nơi đặt quy tắc
 
-- `CLAUDE.md`: quy tắc dự án (vòng lặp docs → feature → docs, code tiếng Anh/UI qua i18n, list/error/toast chuẩn hóa, dùng lại component chung).
-- `.agent/rules/` (`coding.md`, `components.md`, `design-system.md`, `module-docs.md`) — luôn bật; `.agent/skills/01…07-*.md` — hướng dẫn chi tiết; `.claude/skills/<tên>/SKILL.md` — bản rút gọn trỏ về skill tương ứng.
+- `CLAUDE.md`: quy tắc dự án (vòng lặp spec → test → code → docs, nguyên tắc thiết kế, docs là sự thật về code, code tiếng Anh/UI qua i18n, list/error/toast chuẩn hóa, dùng lại component chung).
+- `.agent/rules/` (`coding.md`, `components.md`, `design-system.md`, `module-docs.md`, `quality-loop.md`, `responsive.md`) — luôn bật; `.agent/skills/01…12-*.md` — hướng dẫn chi tiết (`09-tech-specs`, `10-testing`, `11-design-principles`, `12-review-checklist`); `.claude/skills/<tên>/SKILL.md` — bản rút gọn trỏ về skill tương ứng.
 - Đường dẫn BE để đối chiếu: `/Users/quochoang/Documents/Projects/clothes-shop-api/` (không sửa code BE từ repo này).

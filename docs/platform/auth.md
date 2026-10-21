@@ -1,7 +1,7 @@
 # Auth (đăng nhập, phiên, phân quyền)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
-> **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `SignOutButton`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-21
+> **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/session.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `SignOutButton`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
 
 ## 1. Tóm tắt module
 
@@ -26,6 +26,7 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 | Trang đăng nhập | Trang `/login` (Google + checkbox đồng ý điều khoản) | `(auth)/login/LoginContent.tsx`, `_components/GoogleSignInButton.tsx` |
 | Popup đăng nhập | Modal có thể đóng, mở bằng `useLoginPrompt()` hoặc `requireAuth()`; chạy callback sau khi đăng nhập | `_components/LoginPromptModal.tsx`, `src/hooks/use-auth-action.ts` |
 | Chặn trang riêng tư | Modal không thể đóng, hiện trên trang private khi chưa đăng nhập | `_components/UnauthenticatedState.tsx` |
+| Phiên | Lưu/đọc/xóa token, refresh có dedupe, hết phiên, vòng 401 → refresh → thử lại (`requestWithSession`) | `src/lib/session.ts` |
 | HTTP client có token | `authApi` (cho thunk/SWR), `useApiAuth().apiFetch` (hook), `apiFetchStandalone` (thunk, không refresh) | `src/lib/auth-api.ts`, `src/hooks/use-api-auth.ts` |
 | Permission | Hằng số role/permission, helper kiểm tra | `src/lib/permissions.ts` |
 | Guard UI | `RoleGuard` (ẩn/hiện theo role/permission), `AdminGuard` (cả khu admin) | `_components/RoleGuard.tsx` |
@@ -45,25 +46,34 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 
 ### 4.2 Lưu trữ token & khởi tạo phiên
 
-- Khóa `localStorage`: `clothes_shop_access_token`, `clothes_shop_refresh_token`, `clothes_shop_last_google_email` (chỉ là gợi ý cho popup Google, xem 4.1) và `clothes_shop_last_page`.
+- Khóa `localStorage`: `clothes_shop_access_token`, `clothes_shop_refresh_token` (hai khóa này do `src/lib/session.ts` sở hữu, mọi nơi khác đi qua các hàm của nó), `clothes_shop_last_google_email` (chỉ là gợi ý cho popup Google, xem 4.1) và `clothes_shop_last_page`.
 - **Trang cuối cùng:** `LastPageTracker` (render bên trong `AuthProvider`, không ảnh hưởng consumer của `useAuth()`) ghi `pathname + window.location.search` (không có tiền tố ngôn ngữ, lấy từ `usePathname` của `@/src/i18n/navigation`) vào `clothes_shop_last_page` mỗi khi `pathname` đổi; thay đổi chỉ ở query không được ghi lại. `/login` và `/unauthorized` (cùng đường dẫn con) không bao giờ được ghi; `readLastPage()` chỉ trả đường dẫn bắt đầu bằng một dấu `/` (không phải `//`) và không thuộc hai trang đó. Khóa này không bị xóa khi `logout()`, khi phiên hết hạn hay sau khi đăng nhập, nên dù đăng xuất tay (kể cả `handleLogout` của admin → `/login`), hết phiên hay bấm link "Đăng nhập", đăng nhập lại ở `/login` sẽ quay về đúng trang đó. Chưa có trang nào được ghi (hoặc storage bị chặn) thì về `/`.
 - Khi mount, `AuthProvider`: nếu có access token → `GET /api/auth/me` (`data.user`). Thất bại → thử `POST /api/auth/refresh` với refresh token (nhận `accessToken` + `user`). Vẫn thất bại → xóa cả hai token. Trong lúc đó `isLoading = true`.
 - `logout()` chỉ xóa token + `user` phía FE (không gọi BE; không xóa email gần nhất). Admin layout gọi `logout()` rồi `router.replace("/login")`.
-- Refresh thất bại giữa phiên (ở `authApi` hoặc `useApiAuth`, kể cả khi không còn refresh token): `expireSession()` xóa token và phát `window` event `auth:session-expired` (`SESSION_EXPIRED_EVENT`); `AuthProvider` lắng nghe và `setUser(null)`, nên UI quay về trạng thái chưa đăng nhập. `apiFetchStandalone` không refresh nên không phát event này.
+- Refresh thất bại giữa phiên (ở `authApi` hoặc `useApiAuth`, tức trong `requestWithSession`, kể cả khi không còn refresh token): `expireSession()` xóa token và phát `window` event `auth:session-expired` (`SESSION_EXPIRED_EVENT`); `AuthProvider` lắng nghe và `setUser(null)`, nên UI quay về trạng thái chưa đăng nhập. `apiFetchStandalone` không refresh nên không phát event này.
 - Token do BE cấp có claim `type` (access/refresh). FE gửi access token ở header `Authorization` và chỉ gửi refresh token tới `/api/auth/refresh`; dùng lẫn loại sẽ nhận 401. Token cũ (không có `type`) bị từ chối cả hai loại, nên phiên cũ rơi vào nhánh refresh thất bại → xóa token → chưa đăng nhập.
 - `AuthUser`: `id, email, name, image, provider, providerId, role, status, permissions?: string[], createdAt, updatedAt`.
 
-### 4.3 Ba cách gọi API có token
+### 4.3 Phiên và ba cách gọi API có token
+
+`src/lib/session.ts` là nơi duy nhất sở hữu phiên (TypeScript thuần: không React, không `"use client"`), nên gọi được từ thunk, hook và test:
+
+| Thành phần | Việc |
+|---|---|
+| `getAccessToken`, `getRefreshToken`, `saveAccessToken`, `saveTokens`, `clearTokens` | Đọc/ghi/xóa hai token trong `localStorage`; đọc trả `null` khi không có `window` (server) |
+| `refreshAccessToken()` | `POST /api/auth/refresh` body `{ refreshToken }`. Không có refresh token → `null` (không xóa gì). BE từ chối (`!res.ok`) hoặc lỗi mạng → xóa cả hai token, trả `null`. Thành công → lưu access token mới, trả token đó. Các lần gọi chồng nhau dùng chung một request (promise ở mức module), cho mọi client và mọi instance hook |
+| `requestWithSession(send, { authenticated })` | Gọi `send(token)` với access token đang lưu. Gặp 401 và `authenticated` (mặc định `true`) → refresh một lần rồi gọi lại `send` đúng một lần với token mới; không refresh được → `expireSession()` rồi ném `ApiError("", 401)`. `authenticated: false` thì `send(null)` và không bao giờ refresh. Phản hồi khác trả nguyên cho client tự đọc |
+| `expireSession()`, `SESSION_EXPIRED_EVENT` | Xóa token và phát event `auth:session-expired` trên `window` |
 
 | Client | Dùng ở | Refresh 401 | Ghi chú |
 |---|---|---|---|
-| `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, dedupe bằng một promise dùng chung ở module-level; refresh trả `null` → `expireSession()` (xóa token + phát event) + ném `ApiError("", 401)` | Không map URL media |
+| `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, qua `requestWithSession` | JSON; không map URL media; trả `res.json()` nguyên |
+| `useApiAuth().apiFetch(path, { method, body, headers, public, raw })` | Account, Checkout, Orders, Order detail, đánh giá của khách | Có, qua `requestWithSession`; `public: true` bỏ qua header Authorization và không refresh; `body` là `FormData` thì gửi nguyên (không `Content-Type`, không `JSON.stringify`) | Kết quả đi qua `mapMediaUrls`, trừ khi `raw: true` (giữ URL gốc của BE, cho form gửi lại URL như ảnh đánh giá). Hàm `apiFetch` giữ nguyên danh tính giữa các lần render |
+| `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token qua `getAccessToken()`; không phát event hết phiên; kết quả đi qua `mapMediaUrls` |
 
 `authApi` còn phát `notifyAdminMutation()` (`src/lib/admin-events.ts`, pub/sub tối giản: `onAdminMutation(listener)` trả hàm hủy) sau mỗi request ghi (`POST`/`PUT`/`PATCH`/`DELETE`) thành công tới đường dẫn `/api/admin/…`; nơi nào phụ thuộc dữ liệu đó (hiện là badge "việc cần xử lý" của [admin-shell](../admin/admin-shell.md)) đăng ký để tự làm mới.
-| `useApiAuth().apiFetch(path, { method, body, headers, public, raw })` | Account, Checkout, Orders, Order detail, đánh giá của khách | Có, dedupe theo từng instance hook; `public: true` bỏ qua header Authorization; `body` là `FormData` thì gửi nguyên (không `Content-Type`, không `JSON.stringify`) | Kết quả đi qua `mapMediaUrls`, trừ khi `raw: true` (giữ URL gốc của BE, cho form gửi lại URL như ảnh đánh giá) |
-| `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token thẳng từ `localStorage`; kết quả đi qua `mapMediaUrls` |
 
-Cả ba ném `ApiError(message, status, errorCode)` khi `!res.ok` (xem [data-layer](./data-layer.md)). `uploadMediaFile` (upload ảnh) tự dùng `fetch` + `getAccessToken()` và **không** có refresh.
+Cả ba ném `ApiError(message, status, errorCode)` khi `!res.ok`, dựng bằng `toApiError(res)` (xem [data-layer](./data-layer.md)). `uploadMediaFile` (upload ảnh) tự dùng `fetch` với `getAccessToken()` của `session.ts` và **không** có refresh. `AuthProvider` tự gọi `/api/auth/me`, `/api/auth/refresh` và `/api/auth/google` (cần `user` trong phản hồi) nhưng đọc/ghi/xóa token qua các hàm của `session.ts`.
 
 ### 4.4 Phân quyền
 
@@ -74,6 +84,7 @@ Cả ba ném `ApiError(message, status, errorCode)` khi `!res.ok` (xem [data-lay
 - `canAccessAdmin(user)`: role `admin` **hoặc** có ít nhất một permission.
 - Helper khác: `hasRole`, `hasAllPermissions`, `hasAnyPermission`, `getUserPermissions`, `permissionsToCodes`, `codesToPermissions`, `PERMISSION_LABELS`, `PERMISSION_GROUPS`, `getRoleLabel`.
 - Hiện trạng: `PERMISSION_LABELS`, `PERMISSION_GROUPS`, `permissionsToCodes`, `codesToPermissions`, `getRoleLabel`, `getUserPermissions`, `hasRole` có định nghĩa nhưng chưa có nơi nào trong `src/` gọi tới. Nhãn trong các hằng này là tiếng Anh cứng, không đi qua i18n.
+- Hiện trạng (được test khóa lại): `hasAllPermissions(user, [])` là `true` và `hasAnyPermission(user, [])` là `false`; FE không xét `status` của tài khoản nên admin bị khóa vẫn qua `canAccessAdmin` (BE từ chối các lệnh gọi); `permissions` là mảng rỗng thì quyền tính theo role; một tài khoản `user` có permission riêng vào được khu admin.
 - `RoleGuard` props: `role`, `permission`, `permissions` (tất cả), `anyPermission` (một trong), `fallback` (mặc định ẩn), `loading`. Đang tải phiên → spinner (`admin.components.guards.checking`). Chưa đăng nhập → render `fallback`. Chú thích ví dụ trong file dùng chuỗi kiểu `"products:write"`, nhưng giá trị hợp lệ là các hằng trong `PERMISSIONS`.
 - `AdminGuard`: `canAccessAdmin(user)` sai → `UnauthorizedBlock` (hoặc `fallback`).
 
@@ -111,3 +122,8 @@ Hiển thị tiêu đề, câu khác nhau cho đã/chưa đăng nhập (`shared.
 - Route handler `/api/analytics` tự xác thực admin bằng cách gọi `GET /api/auth/me` với bearer token của request (xem [analytics](../admin/analytics.md)).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](./design-system.md) 4.3).
+- **Kích thước trong `<style>` của `UnauthenticatedState` và `LoginPromptModal`** (rộng, cao, padding) viết bằng `rem` để theo thang chữ gốc màn rộng ([design-system](./design-system.md) 4.3).
+
+### 4.10 Thiết kế và test
+
+Thiết kế và lý do của lớp phiên, ma trận test: [specs/platform/auth.md](../../specs/platform/auth.md). Test của module nằm ở `tests/platform/auth/` (Vitest + MSW, 167 ca): `auth-api.test.ts`, `use-api-auth.test.tsx`, `session.test.ts`, `session-dedupe.test.ts`, `auth-context.test.tsx` (phiên và API), `permissions.test.ts`, `role-guard.test.tsx` (quyền và guard theo bốn danh tính), `login-prompt.test.tsx` (`requireAuth` và popup), `system-password.test.tsx`, `sign-out-button.test.tsx`, `google-sign-in.test.tsx`, `access-screens.test.tsx` (màn chặn, `/unauthorized`, `/login`); `login.e2e.ts` ở đây và `private-pages.e2e.ts`, `signed-in.auth.e2e.ts` ở `tests/e2e/` (Playwright, API thật, chỉ đọc). `tests/platform/auth/mutants.json` liệt kê 14 đột biến (quyền, guard, `requireAuth`, popup, mật khẩu hệ thống, đăng xuất, nút Google, cổng admin, phiên); `yarn test:mutants platform/auth` bắt cả 14.

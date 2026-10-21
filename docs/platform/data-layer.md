@@ -1,7 +1,7 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
-> **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/list-query.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-21
+> **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
 
@@ -33,7 +33,8 @@ Tầng truy cập dữ liệu dùng chung của FE. FE không có database riên
 
 ### 4.1 Hai HTTP client + `ApiError`
 
-- `api` (public): `fetch` JSON, ném `ApiError(message, status, errorCode)` khi `!res.ok`. `message` lấy từ `body.message`, thiếu thì `API error: <status>`.
+- `api` (public): `fetch` JSON, không gửi token, ném `ApiError(message, status, errorCode)` khi `!res.ok`.
+- `toApiError(res)` (`src/lib/api.ts`) là nơi duy nhất dựng `ApiError` từ phản hồi lỗi của BE: `message` lấy từ `body.message`, thiếu hoặc rỗng (hay body không phải JSON) thì `API error: <status>`; `errorCode` lấy từ `body.errorCode`. `api`, `authApi`, `useApiAuth().apiFetch` và `apiFetchStandalone` đều dùng nó. `AuthProvider.login` và `uploadMediaFile` dựng `ApiError` riêng (message mặc định rỗng).
 - `ApiError` có `status`, `errorCode` (số, BE gửi kèm) và `code` (cùng giá trị dạng chuỗi — vì serializer của Redux giữ `code`, nên lỗi từ thunk vẫn mang mã). `useErrorMessage()` dựa vào các mã này để dịch lỗi (xem [i18n](./i18n.md)).
 - `authApi`: xem [auth](./auth.md) mục 4.3.
 
@@ -54,6 +55,14 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 `ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt; `price` sắp theo VND), minPrice, maxPrice (VND nguyên), sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
 
+### 4.3b Hai dạng sản phẩm & URL sản phẩm
+
+- `Product` (`src/types/product.ts`): dạng đầy đủ — danh sách, chi tiết, related, cart, wishlist, collection và API admin sản phẩm; `category { id, slug, title, description, heroImage, priority, createdAt, updatedAt }` (không có `subcategories`) và `subcategory { id (chuỗi), slug, label, description, count, createdAt, updatedAt }` (không có `category`). Danh sách danh mục con đọc từ `Category.subcategories` (`GET /api/categories`, `GET /api/admin/categories`), không từ sản phẩm.
+- `ProductSummary` (cùng file): `{ id, name, slug, image | null, badge | null, category { id, slug, title } | null, subcategory { id, slug, label } | null }` — dạng tóm tắt của autocomplete (`AutocompleteItem` = `ProductSummary` + `priceVnd`, `priceUsd`) và `product` trong đánh giá (`ReviewProduct` = `ProductSummary`, `null` khi sản phẩm đã xóa).
+- `product: ProductSummary | null` còn nằm ở dòng hàng của đơn (`OrderItem` của khách, `AdminOrderItem` của admin: sản phẩm hiện tại cạnh ảnh chụp `productId`/`productName`/`productImage` lúc đặt) và ở `PendingReviewItem`; `null` khi sản phẩm đã bị xóa. Dòng của phiếu trả hàng (`ReturnItem`) chưa có `product`.
+- `Collection.products?: Product[]` (cùng sản phẩm đầy đủ, luôn kèm category/subcategory) nằm trong từng phần tử của `GET /api/collections` và `GET /api/admin/collections`; `?slug=` trả `products` ngang hàng với `data`.
+- `src/lib/product-url.ts`: `productPath(product)` → `/shop/<category.slug>/<subcategory.slug>/<id>` hoặc `null` nếu thiếu slug (nhận cả `Product` lẫn `ProductSummary`); `buildProductPath(id, categorySlug, subcategorySlug)` cho nơi chỉ giữ slug dạng chuỗi (dòng giỏ hàng, mục wishlist). Mọi link sản phẩm của storefront đi qua hai hàm này (hoặc `useProductLink`).
+
 ### 4.4 Hook SWR công khai (`src/hooks/use-api.ts`)
 
 `fetcher` ném `Error("API error: <status>")` khi lỗi và map URL media. Cấu hình mặc định: `revalidateOnFocus: false`, `dedupingInterval: 30 s`.
@@ -73,8 +82,8 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 | `useRefreshShipping()` | Trả hàm làm mới cache của `useShipping` (admin gọi sau khi lưu/xóa `SHIPPING_CONFIG`) |
 | `useBannerConfig(key)` | `GET /api/site-config?key=` — luôn không lỗi: thất bại/rỗng → `banners = []` |
 | `useAutocomplete(limit)` | `GET /api/products/autocomplete?q=&limit=` — `limit` 1–10 (BE trả 400 nếu ngoài khoảng), debounce 300 ms, tối thiểu 2 ký tự, hủy request cũ bằng `AbortController` |
-| `getProductUrl(id)` | Hàm thường: tra sản phẩm theo id để dựng `/shop/<cat>/<sub>/<id>` |
-| `useProductLink()` | Trả hàm `(item: { productId, category?, subcategory? }) => { href, onClick? }` để spread vào `Link`: đủ hai slug → `href` `/shop/<cat>/<sub>/<id>`; thiếu → `href` `/shop` và `onClick` tra URL thật bằng `getProductUrl` rồi `router.push` (không tra được thì `/shop`). Dùng cho dòng giỏ hàng, thẻ wishlist và wishlist ở Account, vì `GET /api/cart` và `GET /api/wishlist` không nạp category/subcategory của sản phẩm |
+| `getProductUrl(id)` | Hàm thường: tra sản phẩm theo id để dựng `/shop/<cat>/<sub>/<id>`; chỉ là đường lui khi sản phẩm không mang sẵn slug (xem `productPath`) |
+| `useProductLink()` | Trả hàm `(item: { productId, category?, subcategory? }) => { href, onClick? }` để spread vào `Link`: đủ hai slug → `href` `/shop/<cat>/<sub>/<id>`; thiếu → `href` `/shop` và `onClick` tra URL thật bằng `getProductUrl` rồi `router.push` (không tra được thì `/shop`). Dùng cho dòng giỏ hàng, thẻ wishlist và wishlist ở Account (slug đến từ `product.category.slug` / `subcategory.slug` của `GET /api/cart` / `GET /api/wishlist`; chỉ mục lưu cục bộ từ trước đó mới thiếu) |
 
 ### 4.5 Hook SWR admin (`src/hooks/use-admin-api.ts`)
 
@@ -92,7 +101,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 - Ảnh lưu ở Supabase Storage. `toMediaUrl(url)` đổi `https://<host>/storage/v1/object/public/<bucket>/<key>` thành `/media/<key>`; URL khác giữ nguyên. `mapMediaUrls(data)` làm đệ quy trên mọi chuỗi của payload — áp dụng cho các fetch **chỉ đọc** (storefront/tài khoản). Fetch admin **không** map để form giữ URL gốc (khi hiển thị ảnh trong admin thì gọi `toMediaUrl`).
 - `GET /media/[...path]` (route handler): proxy tới `MEDIA_STORAGE_ORIGIN/<key>`; từ chối segment `.`/`..`/chứa `/`; chuyển tiếp `Range`; chỉ trả các header `content-type, content-length, etag, last-modified` và `cache-control: public, max-age=259200` (3 ngày). Thiếu `MEDIA_STORAGE_ORIGIN` → 503; upstream 404/400 → 404, lỗi khác → 502.
-- `uploadMediaFile(file)`: `POST ${API_URL}/api/admin/media` (multipart), trả `UploadedMedia {id,name,mimeType,sizeOriginal,url}`; lỗi → `ApiError`. Dùng chung bởi Media, `ImageUrlField`, `ImageListField`.
+- `uploadMediaFile(file)`: `POST ${API_URL}/api/admin/media` (multipart, token từ `getAccessToken()` của `src/lib/session.ts`, không refresh), trả `UploadedMedia {id,name,mimeType,sizeOriginal,url}`; lỗi → `ApiError`. Dùng chung bởi Media, `ImageUrlField`, `ImageListField`.
 - `next.config.ts` cho phép `next/image` tải từ `images.higgs.ai`, `lh3.googleusercontent.com`, `d8j0ntlcm91z4.cloudfront.net`; ảnh `/media/*` cùng origin.
 
 ### 4.8 Kiểu dữ liệu dùng chung (`src/types/`)
@@ -106,3 +115,7 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 ### 4.10 Biến môi trường
 
 `NEXT_PUBLIC_API_URL`, `MEDIA_STORAGE_ORIGIN` (chỉ server). Xem thêm [dev-tooling](./dev-tooling.md).
+
+### 4.11 Thiết kế và test
+
+Thiết kế của phần `toApiError` và phiên: [specs/platform/data-layer.md](../../specs/platform/data-layer.md). Test: `tests/platform/data-layer/` (`api-error.test.ts`, `api.test.ts`).

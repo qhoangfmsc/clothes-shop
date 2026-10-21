@@ -12,7 +12,7 @@ The loop (no step may be skipped):
 1. **Locate** — `yarn docs:who <file|folder|module>` for everything you will touch.
 2. **Read** the owning doc(s) fully, then the module's code; if they disagree, the code wins — fix the doc first. Say in one or two sentences what the module does and what your change touches.
 3. **Change** the code with the usual rules/skills.
-4. **Update the doc** in the same change: every affected section, `Cập nhật` bumped to today. New module → `MODULES` entry in `scripts/check-docs.mjs` + new doc + `docs/README.md` row. Deleted/renamed → remove/move all three.
+4. **Update the doc** in the same change: every affected section, `Cập nhật` bumped to today. New module → `MODULES` entry in `scripts/modules.mjs` + new doc + `docs/README.md` row. Deleted/renamed → remove/move all three.
 5. **Gate** — `yarn docs:check --changed` (plus `npx tsc --noEmit`, `yarn i18n:check`, `yarn conventions:check`) must pass.
 6. **Report** the docs read and updated; never call a task done while the gate fails.
 
