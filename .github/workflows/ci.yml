@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Static checks, unit and component tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn i18n:check
+      - run: yarn conventions:check
+      - run: yarn docs:check
+      - run: yarn quality:check
+      - name: Docs and specs follow the code (pull requests)
+        if: github.event_name == 'pull_request'
+        run: |
+          yarn docs:check --changed --base=origin/${{ github.base_ref }}
+          yarn quality:check --changed --base=origin/${{ github.base_ref }}
+      - run: yarn typecheck
+      - run: yarn lint
+      - run: yarn test:coverage
+
+  e2e:
+    name: Browser tests (real API, read-only)
+    runs-on: ubuntu-latest
+    # Needs the repository variables E2E_BASE_URL (a deployed site) and E2E_API_URL (the API behind it).
+    # Signed-in flows also need the secret E2E_REFRESH_TOKEN (30 days: when the run says it expired, replace it).
+    if: ${{ vars.E2E_BASE_URL != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: npx playwright install --with-deps chromium
+      - run: yarn test:e2e
+        env:
+          E2E_BASE_URL: ${{ vars.E2E_BASE_URL }}
+          E2E_API_URL: ${{ vars.E2E_API_URL }}
+          # Writes stay off here. Turn on E2E_ALLOW_WRITES only for a workflow that targets non-production data.
+          E2E_REFRESH_TOKEN: ${{ secrets.E2E_REFRESH_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results

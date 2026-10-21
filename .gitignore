@@ -6,3 +6,11 @@
 # macOS / build artifacts
 .DS_Store
 *.tsbuildinfo
+
+# test output
+/coverage
+/test-results
+/playwright-report
+/blob-report
+.env.e2e.local
+/.auth

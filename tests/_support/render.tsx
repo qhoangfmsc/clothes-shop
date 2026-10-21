@@ -1,0 +1,72 @@
+import { render, waitFor, type RenderResult } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import { useEffect, type ReactElement, type ReactNode } from "react";
+import { expect } from "vitest";
+import { AuthProvider, useAuth, type AuthUser } from "@/src/contexts/auth-context";
+import { ConfirmProvider } from "@/src/app/[locale]/_components/ConfirmDialog";
+import { LoginPromptProvider } from "@/src/app/[locale]/_components/LoginPromptModal";
+import { SystemPasswordPromptProvider } from "@/src/app/[locale]/_components/SystemPasswordPrompt";
+import { ToastProvider } from "@/src/app/[locale]/_components/Toast";
+import { MESSAGES } from "./messages";
+import { signInAs, type IdentityName } from "./identities";
+
+/* Renders a component the way the app does: real translations, the real AuthProvider answered by MSW, and the
+   same provider order as app/[locale]/layout.tsx. Navigation and Google are stand-ins installed in setup.ts.
+   Not included yet (add when the first module needs them): the Redux store, `next/navigation` hooks. */
+
+/** Mirrors `formats` in src/i18n/request.ts (server-only there, so it cannot be imported). */
+const FORMATS = {
+  number: { decimal1: { minimumFractionDigits: 1, maximumFractionDigits: 1 } },
+  dateTime: {
+    short: { year: "numeric", month: "short", day: "numeric" },
+    long: { year: "numeric", month: "long", day: "numeric" },
+    dateTime: { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" },
+    monthYear: { year: "numeric", month: "long" },
+  },
+} as const;
+
+interface RenderAppOptions {
+  /** Who is signed in. Default `guest`. */
+  as?: IdentityName | AuthUser | null;
+  locale?: "vi" | "en";
+  /** Wait until the session is known before showing the component (default). `false` shows the loading state. */
+  waitForAuth?: boolean;
+}
+
+/** Shows `children` once the session is known and flags `<body data-auth-ready>` so the test can wait for it. */
+function AuthReady({ children }: { children: ReactNode }) {
+  const { isLoading } = useAuth();
+  useEffect(() => {
+    if (isLoading) return;
+    document.body.dataset.authReady = "1";
+    return () => {
+      delete document.body.dataset.authReady;
+    };
+  }, [isLoading]);
+  return isLoading ? null : <>{children}</>;
+}
+
+export async function renderApp(ui: ReactElement, options: RenderAppOptions = {}): Promise<RenderResult & { user: AuthUser | null }> {
+  const { as = "guest", locale = "vi", waitForAuth = true } = options;
+  const user = signInAs(as);
+
+  const tree = (children: ReactElement) => (
+    <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]} timeZone="Asia/Ho_Chi_Minh" formats={FORMATS}>
+      <AuthProvider>
+        <ToastProvider position="bottom-center">
+          <ConfirmProvider>
+            <SystemPasswordPromptProvider>
+              <LoginPromptProvider>{waitForAuth ? <AuthReady>{children}</AuthReady> : children}</LoginPromptProvider>
+            </SystemPasswordPromptProvider>
+          </ConfirmProvider>
+        </ToastProvider>
+      </AuthProvider>
+    </NextIntlClientProvider>
+  );
+
+  const result = render(tree(ui));
+  if (waitForAuth) await waitFor(() => expect(document.body.dataset.authReady).toBe("1"));
+  /* `rerender` keeps the providers around the new element */
+  const rerenderRoot = result.rerender;
+  return Object.assign(result, { user, rerender: (next: ReactElement) => rerenderRoot(tree(next)) });
+}
