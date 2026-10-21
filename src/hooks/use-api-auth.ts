@@ -10,33 +10,10 @@
      await apiFetch('/api/cart/items', { method: 'POST', body: {...} });
    ═══════════════════════════════════════════════════════════ */
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { mapMediaUrls } from "@/src/lib/media-url";
-import { ApiError } from "@/src/lib/api";
-import { expireSession } from "@/src/lib/auth-api";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
-const TOKEN_KEY = "clothes_shop_access_token";
-const REFRESH_KEY = "clothes_shop_refresh_token";
-
-function getToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(TOKEN_KEY);
-}
-
-function getRefreshToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(REFRESH_KEY);
-}
-
-function setToken(token: string) {
-  localStorage.setItem(TOKEN_KEY, token);
-}
-
-function clearTokens() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(REFRESH_KEY);
-}
+import { API_URL, toApiError } from "@/src/lib/api";
+import { getAccessToken, requestWithSession } from "@/src/lib/session";
 
 interface ApiFetchOptions {
   method?: string;
@@ -50,45 +27,9 @@ interface ApiFetchOptions {
 
 /**
  * Hook providing authenticated fetch.
- * Handles token refresh on 401 automatically (one retry).
+ * Handles token refresh on 401 automatically (one retry), via the shared session (`requestWithSession`).
  */
 export function useApiAuth() {
-  const refreshingRef = useRef<Promise<string | null> | null>(null);
-
-  /** Try refresh token → new access token */
-  const doRefresh = useCallback(async (): Promise<string | null> => {
-    const refreshToken = getRefreshToken();
-    if (!refreshToken) return null;
-
-    try {
-      const res = await fetch(`${API_URL}/api/auth/refresh`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
-      });
-      if (!res.ok) {
-        clearTokens();
-        return null;
-      }
-      const data = await res.json();
-      setToken(data.accessToken);
-      return data.accessToken;
-    } catch {
-      clearTokens();
-      return null;
-    }
-  }, []);
-
-  /** Deduplicated refresh — prevents concurrent refresh calls */
-  const refreshOnce = useCallback(async (): Promise<string | null> => {
-    if (!refreshingRef.current) {
-      refreshingRef.current = doRefresh().finally(() => {
-        refreshingRef.current = null;
-      });
-    }
-    return refreshingRef.current;
-  }, [doRefresh]);
-
   /** Main fetch function */
   const apiFetch = useCallback(
     async <T = unknown>(
@@ -98,55 +39,28 @@ export function useApiAuth() {
       const { method = "GET", body, headers = {}, public: isPublic, raw } = options;
       /* A FormData body is sent as is: the browser sets the multipart Content-Type (with its boundary) itself */
       const isForm = typeof FormData !== "undefined" && body instanceof FormData;
+      const url = path.startsWith("http") ? path : `${API_URL}${path}`;
 
-      const buildHeaders = (token?: string | null): Record<string, string> => {
-        const h: Record<string, string> = {
-          ...(isForm ? {} : { "Content-Type": "application/json" }),
-          ...headers,
-        };
-        if (!isPublic && token) {
-          h.Authorization = `Bearer ${token}`;
-        }
-        return h;
-      };
+      const res = await requestWithSession(
+        (token) =>
+          fetch(url, {
+            method,
+            headers: {
+              ...(isForm ? {} : { "Content-Type": "application/json" }),
+              ...headers,
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: isForm ? (body as FormData) : body ? JSON.stringify(body) : undefined,
+          }),
+        { authenticated: !isPublic }
+      );
 
-      const doFetch = async (token?: string | null): Promise<Response> => {
-        const url = path.startsWith("http") ? path : `${API_URL}${path}`;
-        return fetch(url, {
-          method,
-          headers: buildHeaders(token),
-          body: isForm ? (body as FormData) : body ? JSON.stringify(body) : undefined,
-        });
-      };
-
-      /* First attempt */
-      let token = getToken();
-      let res = await doFetch(token);
-
-      /* 401 → try refresh → retry once */
-      if (res.status === 401 && !isPublic) {
-        const newToken = await refreshOnce();
-        if (newToken) {
-          res = await doFetch(newToken);
-        } else {
-          expireSession();
-          throw new ApiError("", 401);
-        }
-      }
-
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new ApiError(
-          errBody.message || `API error: ${res.status}`,
-          res.status,
-          errBody.errorCode
-        );
-      }
+      if (!res.ok) throw await toApiError(res);
 
       const json = await res.json();
       return raw ? json : mapMediaUrls(json);
     },
-    [refreshOnce]
+    []
   );
 
   return { apiFetch };
@@ -161,7 +75,7 @@ export async function apiFetchStandalone<T = unknown>(
   options: ApiFetchOptions = {}
 ): Promise<T> {
   const { method = "GET", body, headers = {} } = options;
-  const token = getToken();
+  const token = getAccessToken();
 
   const url = path.startsWith("http") ? path : `${API_URL}${path}`;
   const res = await fetch(url, {
@@ -174,14 +88,7 @@ export async function apiFetchStandalone<T = unknown>(
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new ApiError(
-      errBody.message || `API error: ${res.status}`,
-      res.status,
-      errBody.errorCode
-    );
-  }
+  if (!res.ok) throw await toApiError(res);
 
   return mapMediaUrls(await res.json());
 }

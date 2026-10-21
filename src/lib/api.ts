@@ -28,10 +28,7 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new ApiError(errBody.message || `API error: ${res.status}`, res.status, errBody.errorCode);
-  }
+  if (!res.ok) throw await toApiError(res);
 
   return res.json();
 }
@@ -49,6 +46,12 @@ export class ApiError extends Error {
     this.code = errorCode !== undefined ? String(errorCode) : undefined;
     this.name = "ApiError";
   }
+}
+
+/** Turns a failed BE response into an `ApiError`: its `message` and `errorCode`, or `API error: <status>` when the body has none. */
+export async function toApiError(res: Response): Promise<ApiError> {
+  const body = await res.json().catch(() => ({}));
+  return new ApiError(body.message || `API error: ${res.status}`, res.status, body.errorCode);
 }
 
 export const api = {

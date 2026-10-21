@@ -1,0 +1,86 @@
+[
+  {
+    "name": "permissions: an empty list no longer falls back to the role",
+    "file": "src/lib/permissions.ts",
+    "find": "user.permissions && user.permissions.length > 0) {\n    return user.permissions.includes(permission);",
+    "replace": "user.permissions && user.permissions.length >= 0) {\n    return user.permissions.includes(permission);"
+  },
+  {
+    "name": "RoleGuard: 'all of' becomes 'any of'",
+    "file": "src/app/[locale]/_components/RoleGuard.tsx",
+    "find": "authorized = hasAllPermissions(user, permissions);",
+    "replace": "authorized = hasAnyPermission(user, permissions);"
+  },
+  {
+    "name": "AdminGuard: lets any signed-in user in",
+    "file": "src/app/[locale]/_components/RoleGuard.tsx",
+    "find": "if (!canAccessAdmin(user)) {\n    return fallback",
+    "replace": "if (!user) {\n    return fallback"
+  },
+  {
+    "name": "system password: unlock lasts one tick too long",
+    "file": "src/lib/system-password-session.ts",
+    "find": "< TTL_MS",
+    "replace": "<= TTL_MS"
+  },
+  {
+    "name": "requireAuth: runs the action for guests",
+    "file": "src/hooks/use-auth-action.ts",
+    "find": "if (isAuthenticated) {",
+    "replace": "if (true) {"
+  },
+  {
+    "name": "login prompt: a dismissed action is kept",
+    "file": "src/app/[locale]/_components/LoginPromptModal.tsx",
+    "find": "const handleClose = useCallback(() => {\n    pendingCallbackRef.current = null;",
+    "replace": "const handleClose = useCallback(() => {"
+  },
+  {
+    "name": "sign out: cancel still signs out",
+    "file": "src/app/[locale]/_components/SignOutButton.tsx",
+    "find": "if (!ok) return;",
+    "replace": ""
+  },
+  {
+    "name": "google button: terms gate removed",
+    "file": "src/app/[locale]/(auth)/login/_components/GoogleSignInButton.tsx",
+    "find": "disabled={!canSignIn}",
+    "replace": "disabled={isLoading}"
+  },
+  {
+    "name": "admin gate: cancel no longer leaves",
+    "file": "src/app/[locale]/_components/AdminPasswordGate.tsx",
+    "find": "router.replace(\"/\");",
+    "replace": ""
+  },
+  {
+    "name": "session: refreshes are no longer shared",
+    "file": "src/lib/session.ts",
+    "find": "if (!refreshInFlight) {",
+    "replace": "if (true) {"
+  },
+  {
+    "name": "session: a public request is refreshed on 401",
+    "file": "src/lib/session.ts",
+    "find": "if (res.status !== 401 || !authenticated) return res;",
+    "replace": "if (res.status !== 401) return res;"
+  },
+  {
+    "name": "session: expiry is no longer announced",
+    "file": "src/lib/session.ts",
+    "find": "window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));",
+    "replace": ""
+  },
+  {
+    "name": "authApi: a GET also notifies the admin badges",
+    "file": "src/lib/auth-api.ts",
+    "find": "if (method !== \"GET\" && path.startsWith(\"/api/admin/\"))",
+    "replace": "if (path.startsWith(\"/api/admin/\"))"
+  },
+  {
+    "name": "apiFetch: the public flag is ignored",
+    "file": "src/hooks/use-api-auth.ts",
+    "find": "{ authenticated: !isPublic }",
+    "replace": "{ authenticated: true }"
+  }
+]

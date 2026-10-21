@@ -1,11 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
-import { ApiError } from "@/src/lib/api";
-import { SESSION_EXPIRED_EVENT } from "@/src/lib/auth-api";
+import { API_URL, ApiError } from "@/src/lib/api";
+import {
+  SESSION_EXPIRED_EVENT,
+  clearTokens,
+  getAccessToken,
+  getRefreshToken,
+  saveAccessToken,
+  saveTokens,
+} from "@/src/lib/session";
 import { usePathname } from "@/src/i18n/navigation";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
 export interface AuthUser {
   id: string;
@@ -43,8 +48,6 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-const TOKEN_KEY = "clothes_shop_access_token";
-const REFRESH_KEY = "clothes_shop_refresh_token";
 /** Email of the last Google account that signed in. Survives logout on purpose: it is only a hint for the next Google popup. */
 const LAST_GOOGLE_EMAIL_KEY = "clothes_shop_last_google_email";
 
@@ -115,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   /** Try refresh token to get new access token */
   const tryRefresh = useCallback(async (): Promise<string | null> => {
-    const refreshToken = localStorage.getItem(REFRESH_KEY);
+    const refreshToken = getRefreshToken();
     if (!refreshToken) return null;
 
     try {
@@ -126,7 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       if (!res.ok) return null;
       const data = await res.json();
-      localStorage.setItem(TOKEN_KEY, data.accessToken);
+      saveAccessToken(data.accessToken);
       setUser(data.user);
       return data.accessToken;
     } catch {
@@ -148,8 +151,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const data = await res.json();
-    localStorage.setItem(TOKEN_KEY, data.accessToken);
-    localStorage.setItem(REFRESH_KEY, data.refreshToken);
+    saveTokens(data.accessToken, data.refreshToken);
     try {
       if (data.user?.email) localStorage.setItem(LAST_GOOGLE_EMAIL_KEY, data.user.email);
     } catch {
@@ -160,8 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   /** Logout — clear tokens and user */
   const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(REFRESH_KEY);
+    clearTokens();
     setUser(null);
   }, []);
 
@@ -183,7 +184,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /** On mount: check existing session */
   useEffect(() => {
     const init = async () => {
-      const token = localStorage.getItem(TOKEN_KEY);
+      const token = getAccessToken();
       if (token) {
         const me = await fetchMe(token);
         if (me) {
@@ -192,8 +193,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // Token expired — try refresh
           const newToken = await tryRefresh();
           if (!newToken) {
-            localStorage.removeItem(TOKEN_KEY);
-            localStorage.removeItem(REFRESH_KEY);
+            clearTokens();
           }
         }
       }

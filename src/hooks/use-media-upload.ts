@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/src/lib/auth-api";
+import { getAccessToken } from "@/src/lib/session";
 import { ApiError } from "@/src/lib/api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
