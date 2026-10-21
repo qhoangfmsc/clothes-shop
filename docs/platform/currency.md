@@ -1,6 +1,6 @@
 # Currency (tiền tệ: VND gốc, USD do BE suy ra)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-21
 > **Code:** `src/lib/money.ts` · `src/hooks/use-money.ts` · `src/app/[locale]/_components/MoneyText.tsx` · `src/app/[locale]/_components/VndInput.tsx`
 
 ## 1. Tóm tắt module
@@ -43,7 +43,7 @@ Một chỗ duy nhất định dạng số tiền cho cả storefront và admin.
 
 ### 4.4 Nhập VND (admin)
 
-`VndInput` + `maskVndInput` bỏ mọi ký tự không phải chữ số và nhóm ba số bằng dấu chấm. Văn bản có phần thập phân (`350000.5`, `350000,5`: dấu phẩy, hoặc 1–2 chữ số sau dấu chấm) bị **từ chối** khi gõ hoặc dán — ô giữ giá trị cũ và gọi `onReject` để form hiện lỗi — nên số lẻ không bao giờ bị đọc thành số nguyên lớn hơn; xóa ký tự (`350.000` → `350.00`) vẫn hoạt động. `parseVndInput(text)` chỉ nhận chuỗi chữ số hoặc nhóm ba số bằng dấu chấm, trả `null` với mọi chuỗi khác; form kiểm khoảng giá trị (sản phẩm 1–1.000.000.000, phí ship 0–1.000.000.000) trước khi gửi.
+`VndInput` + `maskVndInput` bỏ mọi ký tự không phải chữ số và nhóm ba số bằng dấu chấm. Văn bản có phần thập phân (`350000.5`, `350000,5`: dấu phẩy, hoặc dấu chấm đứng riêng hay kèm 1–2 chữ số sau nó) bị **từ chối** khi gõ hoặc dán — kể cả khi gõ từng phím (`13.` bị từ chối ngay ở dấu chấm, nên không có chuyện dấu chấm bị bỏ lặng lẽ rồi `13.46` thành `1.346`; các chữ số gõ tiếp sau đó vẫn được nhận, form hiện cảnh báo nhờ `onReject`) — ô giữ giá trị cũ và gọi `onReject` để form hiện lỗi — nên số lẻ không bao giờ bị đọc thành số nguyên lớn hơn; xóa ký tự (`350.000` → `350.00`) vẫn hoạt động. `parseVndInput(text)` chỉ nhận chuỗi chữ số hoặc nhóm ba số bằng dấu chấm, trả `null` với mọi chuỗi khác; form kiểm khoảng giá trị (sản phẩm 1–1.000.000.000, phí ship 0–1.000.000.000) trước khi gửi.
 
 ### 4.5 Ranh giới
 
@@ -54,3 +54,7 @@ Một chỗ duy nhất định dạng số tiền cho cả storefront và admin.
 ### 4.6 Liên quan
 
 JSON-LD theo ngôn ngữ ở [seo](seo.md); sự kiện phễu ở [analytics](../admin/analytics.md); định dạng khác ở [i18n](i18n.md).
+
+### 4.7 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết (field thiếu hiện `NaN`, số lẻ bị làm tròn khi định dạng, số âm không có quy ước riêng): [specs/platform/currency.md](../../specs/platform/currency.md). Test ở `tests/platform/currency/` (`money`, `use-money`, `vnd-input`); `mutants.json` có 22 đột biến, `yarn test:mutants platform/currency` bắt cả 22.

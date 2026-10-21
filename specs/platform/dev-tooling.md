@@ -57,6 +57,8 @@
 
 **`yarn test:mutants <module>`**: đọc `tests/<module>/mutants.json` (`name`, `file`, `find`, `replace`), áp từng đột biến lên file thật, chạy test của module, **khôi phục file** (cả khi Ctrl-C hoặc lỗi), báo số test đỏ cho từng đột biến. Một đột biến *bị bắt* khi có ít nhất một test đỏ. `find` không còn khớp, hoặc thay thế không đổi gì, là lỗi to chứ không phải "sống sót". Thoát 1 nếu còn đột biến sống sót hoặc danh sách rỗng.
 
+**Dữ liệu tách khỏi cấu hình.** Tập file tính coverage và ngưỡng theo file nằm ở `tests/_support/coverage.json` (`vitest.config.mts` chỉ đọc nó). Hai baseline (`scripts/quality-baseline.json`, `scripts/comment-baseline.json`) là dữ liệu nên không thuộc module nào. Nhờ vậy hoàn thành một module (gỡ khỏi baseline, thêm ngưỡng) không buộc sửa spec và doc của `platform/dev-tooling`.
+
 **Bộ khung render** (`tests/_support/`):
 
 ```ts
@@ -92,6 +94,7 @@ tests/_support/{identities,messages,navigation,render}.tsx ◄── mọi tests
 | **Fixture / test data builder** cho danh tính (`IDENTITIES`) | Cùng một khách/user/admin ở mọi test, đổi một chỗ khi hình dạng user đổi | Mỗi test tự dựng object user |
 | **Fake ở biên mạng** (MSW cho `/api/auth/me`) thay vì mock `useAuth` | Component chạy qua `AuthProvider` thật, gần với production; test phát hiện được lỗi nối dây | Mock `useAuth` từng test (nhanh nhưng không kiểm tra provider) |
 | **Provider composition** trong `renderApp` mô phỏng `layout.tsx` | Một chỗ duy nhất biết thứ tự provider | Mỗi test tự bọc provider |
+| **Tách dữ liệu khỏi mã** (`coverage.json`, hai baseline) | Dữ liệu đổi theo từng module, mã cấu hình đổi hiếm; tách ra thì gate không bắt sửa spec của công cụ mỗi lần một module xong | Giữ ngưỡng trong `vitest.config.mts` (mỗi module chạm vào dev-tooling) |
 | **Functional core** (`quality-lib`, `progress-lib`) | Luật kiểm tra test được không cần dựng cây thư mục | Đọc file lẫn trong luật |
 
 ### Kiến trúc
@@ -125,6 +128,7 @@ Tiếng Anh cho code, thông báo lỗi của script và comment; spec và tài 
 | QG-4 | Baseline: module đủ spec+test phải rời danh sách, module thiếu phải ở trong; bảng luồng sống còn hợp lệ | lỗi | — | unit | `tests/platform/dev-tooling/quality-lib.test.ts` |
 | QG-10 | Đột biến: áp thay thế đầu tiên; từ chối khi `find` không khớp hoặc không đổi gì; tổng kết bắt được / sống sót; danh sách rỗng không tính là đạt | lỗi | — | unit | `tests/platform/dev-tooling/progress.test.ts` |
 | QG-11 | Quy tắc comment: khối dài hơn 3 dòng, hơn 3 dòng `//` liền nhau và dải `═` bị phát hiện (kèm số dòng); comment ngắn, chỉ thị và chuỗi chứa `//` hoặc `/*` thì không; baseline: vi phạm mới → lỗi, file đã sạch còn trong baseline → lỗi | lỗi | — | unit | `tests/platform/dev-tooling/comment-lib.test.ts` |
+| QG-12 | Cấu hình coverage: mỗi ngưỡng và mỗi mục `include` trỏ tới file có thật, ngưỡng là số trong 0–100 | lỗi | — | unit | `tests/platform/dev-tooling/coverage-config.test.ts` |
 | QG-5 | Token E2E: đọc `exp`, phân loại thiếu / hết hạn / bị từ chối / không gọi được / sắp hết; che email; nạp `.env.e2e.local` | lỗi | — | unit | `tests/platform/dev-tooling/e2e-session.test.ts` |
 | QG-6 | Ma trận: thiếu `Phạm vi` / `Chiều kiểm thử`, giá trị lạ, `không` không lý do, thiếu hàng đúng/lỗi, thiếu khách hoặc đã đăng nhập khi auth = có, thiếu có quyền hoặc thiếu quyền khi permission = có → lỗi; đủ thì qua | lỗi | — | unit | `tests/platform/dev-tooling/matrix.test.ts` |
 | QG-7 | Tiến độ: phân loại pending / partial / done, liệt kê ô còn thiếu; kế hoạch batch phải phủ đúng mọi module, mỗi batch ≤ 5; `--verify` chỉ qua khi cả batch xong | lỗi | — | unit | `tests/platform/dev-tooling/progress.test.ts` |
@@ -153,3 +157,4 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-21 · Thêm luồng E2E chưa đăng nhập / đã đăng nhập và kiểm tra token (`.env.e2e.local`, `auth.setup.ts`, `e2e-session.ts`); chỉ cần `E2E_REFRESH_TOKEN` vì BE không xoay vòng refresh token.
 - 2026-10-21 · Thêm quy trình test chia batch: ma trận bắt buộc (đúng/lỗi × khách/user/admin đủ quyền/admin thiếu quyền), `progress-lib`, `test-progress`, `test-batches.json`, bộ khung render, skill `test-process`.
 - 2026-10-21 · Thêm quy tắc comment ngắn có máy kiểm tra và baseline chỉ ngắn đi; rút gọn comment ở các file của đợt refactor này.
+- 2026-10-21 · Tách dữ liệu coverage ra `tests/_support/coverage.json` và coi hai baseline là dữ liệu không thuộc module (không còn buộc sửa spec/doc của công cụ khi một module xong).

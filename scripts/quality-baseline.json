@@ -5,7 +5,6 @@
     "platform/site-chrome",
     "platform/i18n",
     "platform/ui-kit",
-    "platform/currency",
     "platform/design-system",
     "platform/seo",
     "admin/admin-shell",

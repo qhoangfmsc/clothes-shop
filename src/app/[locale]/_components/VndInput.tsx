@@ -27,9 +27,9 @@ function isDeletion(previous: string, next: string): boolean {
  *  a decimal is refused (`onReject`), so neither can end up in the amount. The BE takes whole VND only (`...Vnd` fields). */
 export default function VndInput({ value, onChange, onReject, className = inputClass, ...rest }: VndInputProps) {
   const handleChange = (raw: string) => {
-    /* Thousand groups are always three digits, so a 1–2 digit tail after `.` or `,` (or any comma) is a decimal.
+    /* Thousand groups are always three digits, so a `.` with 0–2 digits after it, or any comma, is a decimal.
        Deleting characters can leave such a tail (`350.000` → `350.00`) and must still work: only added text is refused. */
-    if (/,|[.]\d{1,2}$/.test(raw) && !isDeletion(value, raw)) {
+    if (/,|[.]\d{0,2}$/.test(raw) && !isDeletion(value, raw)) {
       onReject?.();
       return;
     }

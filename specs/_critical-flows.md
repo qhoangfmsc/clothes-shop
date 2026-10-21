@@ -15,7 +15,7 @@ Danh sách những luồng mà nếu hỏng thì cửa hàng ngừng bán đư�
 | F-06 | Duyệt danh mục và xem sản phẩm | P0 | storefront/shop | — |
 | F-07 | Thêm sản phẩm vào giỏ (khách và đã đăng nhập), giỏ giữ qua lần tải lại | P0 | storefront/cart | — |
 | F-08 | Checkout tạo đơn và hiển thị thanh toán | P0 | storefront/checkout | — |
-| F-09 | Số tiền hiển thị đúng tiền tệ theo ngôn ngữ, không tự quy đổi ở FE | P0 | platform/currency | — |
+| F-09 | Số tiền hiển thị đúng tiền tệ theo ngôn ngữ, không tự quy đổi ở FE | P0 | platform/currency | `tests/platform/currency/money.test.ts` `tests/platform/currency/use-money.test.tsx` |
 | F-10 | Đổi ngôn ngữ vi/en giữ nguyên trang đang xem | P1 | platform/i18n | — |
 | F-11 | Xem đơn hàng của tôi và chi tiết đơn | P1 | storefront/customer-orders | — |
 | F-12 | Yêu cầu trả hàng cho đơn đủ điều kiện | P1 | storefront/customer-returns | — |

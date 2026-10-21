@@ -51,7 +51,7 @@ export const MODULES = [
     "src/app/robots.ts", "src/app/sitemap.ts", "src/lib/structured-data.ts", "src/lib/site-url.ts", "src/lib/brand.ts",
   ] },
   { doc: "platform/dev-tooling", paths: [
-    "scripts/check-conventions.mjs", "scripts/check-docs.mjs", "scripts/check-quality.mjs", "scripts/quality-lib.mjs", "scripts/comment-lib.mjs", "scripts/comment-baseline.json", "scripts/modules.mjs", "scripts/quality-baseline.json",
+    "scripts/check-conventions.mjs", "scripts/check-docs.mjs", "scripts/check-quality.mjs", "scripts/quality-lib.mjs", "scripts/comment-lib.mjs", "scripts/modules.mjs",
     "scripts/progress-lib.mjs", "scripts/test-progress.mjs", "scripts/test-mutants.mjs", "scripts/test-batches.json",
     "next.config.ts", "vercel.json", "vitest.config.mts", "playwright.config.ts", "src/app/api/cron/",
   ] },
@@ -97,7 +97,7 @@ export const MODULES = [
 
 /* Not owned by a module on purpose: translations (they change with every module — the module's doc names the
    namespace), generated or binary files. */
-export const IGNORED = [/^src\/messages\//, /^src\/i18n\/registry\.ts$/, /(^|\/)\.next\//, /\.(png|jpe?g|webp|svg|ico|woff2?|otf|mp4)$/];
+export const IGNORED = [/^scripts\/(quality|comment)-baseline\.json$/, /^src\/messages\//, /^src\/i18n\/registry\.ts$/, /(^|\/)\.next\//, /\.(png|jpe?g|webp|svg|ico|woff2?|otf|mp4)$/];
 export const CODE_ROOTS = ["src", "scripts"];
 export const CODE_FILES = ["next.config.ts", "vercel.json", "vitest.config.mts", "playwright.config.ts"];
 export const CODE_EXT = /\.(ts|tsx|mts|css|mjs|json)$/;
