@@ -65,7 +65,7 @@ Quét `src/**/*.ts(x)` (bỏ `messages`), bỏ qua comment. Luật:
 | `carousel` | `snap-x`, `scroll-snap-type` ngoài `Carousel.tsx` |
 | `auto-advance` | `setInterval` ngoài `use-auto-advance.ts` |
 | `toast-i18n` | `toast.success("literal")` trong `src/app` |
-| `comment-length` | Khối comment dài hơn 3 dòng (dòng thẻ JSDoc `@param`/`@returns` không tính), hơn 3 dòng `//` liền nhau, hoặc dải `═` trong `src/`, `scripts/`, `tests/`, `vitest.config.mts`, `playwright.config.ts`, `next.config.ts`; file vi phạm phải nằm trong `scripts/comment-baseline.json` (hiện 137 file), file đã sạch phải rời danh sách, và `quality:check --changed` không cho thêm file vào đó. Logic ở `scripts/comment-lib.mjs` (bỏ qua chuỗi, template và regex) |
+| `comment-length` | Khối comment dài hơn 3 dòng (dòng thẻ JSDoc `@param`/`@returns` không tính), hơn 3 dòng `//` liền nhau, hoặc dải `═` trong `src/`, `scripts/`, `tests/`, `vitest.config.mts`, `playwright.config.ts`, `next.config.ts`; file vi phạm phải nằm trong `scripts/comment-baseline.json` (hiện 142 file), file đã sạch phải rời danh sách, và `quality:check --changed` không cho thêm file vào đó. Logic ở `scripts/comment-lib.mjs` (bỏ qua chuỗi, template — kể cả phần sau `${…}` — và regex) |
 | `data-table` | `<DataTable>` server mode thiếu `sortOptions` hoặc `searchPlaceholder` (trừ `searchable={false}`) |
 
 Bỏ qua một dòng: `// conventions-ignore: <rule-id> <lý do>` ở dòng đó hoặc dòng trước. Khi thêm một khối dùng chung mới thì thêm luật vào script trong cùng thay đổi.

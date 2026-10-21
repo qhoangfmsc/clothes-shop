@@ -24,8 +24,9 @@ function scanComments(code) {
   const aloneOnLine = (i) => /^\s*$/.test(code.slice(lineStart, i));
 
   let i = 0;
+  /* Reads template text from `i` up to the closing backtick, or up to the next `${` (which opens code again). */
   const readTemplate = () => {
-    for (i++; i < code.length; i++) {
+    for (; i < code.length; i++) {
       const c = code[i];
       if (c === "\\") i++;
       else if (c === "\n") newline(i);
@@ -63,6 +64,7 @@ function scanComments(code) {
       i++;
       previous = c;
     } else if (c === "`") {
+      i++;
       readTemplate();
       previous = "`";
     } else if (c === "/" && REGEX_PRECEDERS.has(previous)) {

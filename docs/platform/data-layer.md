@@ -1,7 +1,7 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
 > **Nhóm:** Platform · **Cập nhật:** 2026-10-21
-> **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
+> **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/product-list.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
 
@@ -53,7 +53,7 @@ Mọi endpoint danh sách của BE dùng chung:
 
 Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` giây, kết quả đi qua `mapMediaUrls`. Hàm có sẵn: `getProducts`, `getProductsWithParams`, `getAllProducts`, `getProductById`, `getProductWithRelated`, `getCategories`, `getCategoryBySlug`, `getSubcategory`, `getCollections`, `getCollectionBySlug`, `getCollectionProducts`, `getBannerConfig(key)`, `getShippingInfo()` (cấu hình vận chuyển & đổi trả, `null` khi API lỗi). Các hàm "lấy một" trả `undefined` khi lỗi (để trang gọi `notFound()`); `getBannerConfig` luôn trả `[]` khi lỗi để banner không làm hỏng trang. Cũng export các kiểu `ProductListParams`, `ProductListResponse`, `CategoryListResponse`, `CollectionListResponse`. `ProductListParams` nhận thêm `minRating` (1–5) và sort `ratingAverage` / `-ratingAverage` / `-ratingCount`; `buildProductQS` gửi `minRating`.
 
-`ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt; `price` sắp theo VND), minPrice, maxPrice (VND nguyên), sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
+`ProductListParams` (và `ProductListResponse`, `buildProductQS`) nằm ở `src/lib/product-list.ts`, dùng chung cho server fetcher và hook SWR; `server-fetchers.ts` export lại hai kiểu. `ProductListParams`: `search, category, subcategory, badge, sort (price|-price|name|-name|createdAt|-createdAt; `price` sắp theo VND), minPrice, maxPrice (VND nguyên), sizes ("S,M,L"), colors ("Red,Blue"), page, limit`.
 
 ### 4.3b Hai dạng sản phẩm & URL sản phẩm
 
@@ -118,4 +118,4 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.11 Thiết kế và test
 
-Thiết kế của phần `toApiError` và phiên: [specs/platform/data-layer.md](../../specs/platform/data-layer.md). Test: `tests/platform/data-layer/` (`api-error.test.ts`, `api.test.ts`).
+Thiết kế, các điểm cần biết (hook công khai và fetcher server ném `Error` thuần, `useProducts` mặc định `limit` 24, `baseCrudReducers` không nơi nào dispatch, proxy không chuyển `Content-Range`, `uploadMediaFile` không refresh khi 401) và nợ thiết kế: [specs/platform/data-layer.md](../../specs/platform/data-layer.md). Test ở `tests/platform/data-layer/` (204 ca, Vitest + MSW): `api-error`, `api`, `list-query`, `media-url`, `product-url`, `types`, `use-debounce`, `use-api`, `use-autocomplete`, `use-admin-api`, `media-upload`, `media-proxy`, `server-fetchers`, `store`; `mutants.json` có 46 đột biến, `yarn test:mutants platform/data-layer` bắt cả 46. Hook admin được test với bốn danh tính (chưa đăng nhập: 401 rồi xóa phiên; khách hàng và admin thiếu quyền: 403 giữ phiên; admin đủ quyền).

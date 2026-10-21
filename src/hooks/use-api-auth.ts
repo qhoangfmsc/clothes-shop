@@ -53,10 +53,7 @@ export function useApiAuth() {
   return { apiFetch };
 }
 
-/**
- * Standalone (non-hook) version for use in Redux thunks.
- * Does NOT auto-refresh — simpler for background sync.
- */
+/** `fetch` with the stored token, no refresh on 401: for Redux thunks (cart, wishlist). */
 export async function apiFetchStandalone<T = unknown>(
   path: string,
   options: ApiFetchOptions = {}

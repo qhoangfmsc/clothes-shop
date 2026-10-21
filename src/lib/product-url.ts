@@ -3,11 +3,7 @@ export function buildProductPath(id: string, categorySlug?: string | null, subca
   return categorySlug && subcategorySlug ? `/shop/${categorySlug}/${subcategorySlug}/${id}` : null;
 }
 
-/**
- * Product URL from the product itself — the full product or the `ProductSummary` of autocomplete and reviews
- * (`category` / `subcategory` can be `null` there). `null` when the product carries no slugs: hide the link or
- * fall back (`getProductUrl`).
- */
+/** Product URL from a full product or a `ProductSummary`; `null` when it has no slugs (hide the link or look it up). */
 export function productPath(product: {
   id: string;
   category?: { slug: string } | null;

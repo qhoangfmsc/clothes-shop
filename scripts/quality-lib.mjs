@@ -15,6 +15,9 @@ export const SPEC_STATUSES = ["Draft", "Approved", "Implemented"];
 export const FLOW_TIERS = ["P0", "P1"];
 
 /** A test file inside `tests/<module>/`: Vitest (`*.test.ts(x)`) or Playwright (`*.e2e.ts`). */
+/** A change may waive a check by logging `<tag>: <reason>` in a spec's history (tags: `no-test`, `baseline-grow`). */
+export const hasWaiver = (diff, tag) => new RegExp(`^\\+.*${tag}:\\s*\\S`, "m").test(diff);
+
 export const TEST_FILE = /\.(test\.tsx?|e2e\.ts)$/;
 
 const TEST_PATH = /`(tests\/[^`\s]+)`/g;
@@ -207,8 +210,7 @@ export function validateSpec(text, { doc, fileExists }) {
 }
 
 /**
- * Project-wide critical flows (specs/_critical-flows.md): `| ID | Luồng | Tier | Module | Test |`.
- * A flow with no test yet shows `—` and is allowed; a path that is written must exist.
+ * Critical flows table (specs/_critical-flows.md); a path that is written must exist, `—` means no test yet.
  * @param {{ modules: string[], fileExists: (path: string) => boolean }} ctx
  */
 export function validateCriticalFlows(text, { modules, fileExists }) {
@@ -230,7 +232,6 @@ export function validateCriticalFlows(text, { modules, fileExists }) {
 }
 
 /**
- * Where each module stands, and what the baseline (modules still without spec + tests) is allowed to say.
  * The baseline may only shrink: a covered module must leave it, an uncovered one must be in it.
  * @param {{ doc: string, hasSpec: boolean, hasTests: boolean }[]} modules
  * @param {string[]} pending

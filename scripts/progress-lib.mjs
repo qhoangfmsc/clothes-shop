@@ -83,8 +83,7 @@ export function batchReport(plan, statuses, id) {
 }
 
 /**
- * One mutant: the source text with `find` replaced by `replace` (first occurrence). Throws when `find` is not
- * there or the change is a no-op, so an out-of-date mutant fails loudly instead of "surviving" harmlessly.
+ * One mutant: the text with `find` replaced by `replace`; throws if `find` is missing or the change is a no-op.
  * @param {string} source
  * @param {{ find: string, replace: string }} mutation
  */

@@ -18,7 +18,7 @@ import type { Collection } from "@/src/types/collection";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
-import type { ProductListParams, ProductListResponse } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
+import { buildProductQS, type ProductListParams, type ProductListResponse } from "@/src/lib/product-list";
 import { mapMediaUrls } from "@/src/lib/media-url";
 import { useRouter } from "@/src/i18n/navigation";
 import { buildProductPath } from "@/src/lib/product-url";
@@ -39,19 +39,6 @@ const defaultConfig = {
 };
 
 /* ═══ Products ═══ */
-
-function buildProductQS(params: ProductListParams): string {
-  return buildListQuery(params, {
-    category: params.category,
-    subcategory: params.subcategory,
-    badge: params.badge,
-    minPrice: params.minPrice,
-    maxPrice: params.maxPrice,
-    minRating: params.minRating,
-    sizes: params.sizes,
-    colors: params.colors,
-  });
-}
 
 /** One page of products, for lists that append pages themselves (the shop grids) */
 export function fetchProductPage(params: ProductListParams): Promise<ProductListResponse> {

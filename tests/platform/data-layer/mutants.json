@@ -1,0 +1,278 @@
+[
+  {
+    "name": "list-query: page 1 is sent",
+    "file": "src/lib/list-query.ts",
+    "find": "params.page && params.page > 1",
+    "replace": "params.page && params.page >= 1"
+  },
+  {
+    "name": "list-query: the maximum limit is raised",
+    "file": "src/lib/list-query.ts",
+    "find": "export const LIST_MAX_LIMIT = 200;",
+    "replace": "export const LIST_MAX_LIMIT = 500;"
+  },
+  {
+    "name": "list-query: 0 and false filters are dropped",
+    "file": "src/lib/list-query.ts",
+    "find": "if (value !== undefined && value !== null && value !== \"\") qs.set",
+    "replace": "if (value) qs.set"
+  },
+  {
+    "name": "list-query: a fractional limit below 1 is kept",
+    "file": "src/lib/list-query.ts",
+    "find": "if (!limit || limit < 1) return",
+    "replace": "if (!limit) return"
+  },
+  {
+    "name": "list-query: the sort is sent before the search",
+    "file": "src/lib/list-query.ts",
+    "find": "if (params.search) qs.set(\"search\", params.search);",
+    "replace": "if (params.sort) qs.set(\"sort\", params.sort);\n  if (params.search) qs.set(\"search\", params.search);"
+  },
+  {
+    "name": "category-display: categories come in the default page",
+    "file": "src/lib/category-display.ts",
+    "find": "limit=${LIST_MAX_LIMIT}",
+    "replace": "limit=25"
+  },
+  {
+    "name": "media-url: the bucket stays in the path",
+    "file": "src/lib/media-url.ts",
+    "find": "/storage\\/v1\\/object\\/public\\/[^/]+\\/(.+)$/",
+    "replace": "/storage\\/v1\\/object\\/public\\/(.+)$/"
+  },
+  {
+    "name": "media-url: arrays are not mapped",
+    "file": "src/lib/media-url.ts",
+    "find": "if (Array.isArray(data)) return data.map(mapMediaUrls) as T;",
+    "replace": "if (Array.isArray(data)) return data;"
+  },
+  {
+    "name": "media-url: nested objects are not mapped",
+    "file": "src/lib/media-url.ts",
+    "find": "mapMediaUrls(value)]",
+    "replace": "value]"
+  },
+  {
+    "name": "product-url: one slug is enough",
+    "file": "src/lib/product-url.ts",
+    "find": "categorySlug && subcategorySlug ?",
+    "replace": "categorySlug || subcategorySlug ?"
+  },
+  {
+    "name": "use-debounce: the wait does not restart",
+    "file": "src/hooks/use-debounce.ts",
+    "find": "[value, delay]",
+    "replace": "[]"
+  },
+  {
+    "name": "use-debounce: the timer is not cleared",
+    "file": "src/hooks/use-debounce.ts",
+    "find": "return () => clearTimeout(timer);",
+    "replace": ""
+  },
+  {
+    "name": "product-list: the rating filter is not sent",
+    "file": "src/lib/product-list.ts",
+    "find": "    minRating: params.minRating,\n",
+    "replace": ""
+  },
+  {
+    "name": "use-api: an HTTP error is not an error",
+    "file": "src/hooks/use-api.ts",
+    "find": "if (!res.ok) throw new Error(`API error: ${res.status}`);",
+    "replace": ""
+  },
+  {
+    "name": "use-api: banners that are not an array are used",
+    "file": "src/hooks/use-api.ts",
+    "find": "return Array.isArray(parsed) ? mapMediaUrls(parsed) : [];",
+    "replace": "return parsed;"
+  },
+  {
+    "name": "use-api: autocomplete asks from one character",
+    "file": "src/hooks/use-api.ts",
+    "find": "const MIN_QUERY_LENGTH = 2;",
+    "replace": "const MIN_QUERY_LENGTH = 1;"
+  },
+  {
+    "name": "use-api: autocomplete does not wait",
+    "file": "src/hooks/use-api.ts",
+    "find": "const DEBOUNCE_MS = 300;",
+    "replace": "const DEBOUNCE_MS = 0;"
+  },
+  {
+    "name": "use-api: an old autocomplete request is not cancelled",
+    "file": "src/hooks/use-api.ts",
+    "find": "    // Abort any in-flight request\n    if (abortRef.current) {\n      abortRef.current.abort();\n      abortRef.current = null;\n    }",
+    "replace": "    // Abort any in-flight request"
+  },
+  {
+    "name": "use-api: autocomplete uses the first limit forever",
+    "file": "src/hooks/use-api.ts",
+    "find": "limitRef.current = limit;",
+    "replace": ""
+  },
+  {
+    "name": "use-api: autocomplete text is not trimmed",
+    "file": "src/hooks/use-api.ts",
+    "find": "q: q.trim(), limit",
+    "replace": "q, limit"
+  },
+  {
+    "name": "use-api: an incomplete product link points nowhere",
+    "file": "src/hooks/use-api.ts",
+    "find": "href: path ?? \"/shop\",",
+    "replace": "href: path ?? \"#\","
+  },
+  {
+    "name": "use-api: the wrong shipping method is named",
+    "file": "src/hooks/use-api.ts",
+    "find": "method.id === id",
+    "replace": "method.id !== id"
+  },
+  {
+    "name": "use-admin-api: creating a product does not refresh the list",
+    "file": "src/hooks/use-admin-api.ts",
+    "find": "    const res = await authApi.post<SingleResponse<Product>>(\"/api/admin/products\", body);\n    await mutate();",
+    "replace": "    const res = await authApi.post<SingleResponse<Product>>(\"/api/admin/products\", body);"
+  },
+  {
+    "name": "use-admin-api: the default page size changes",
+    "file": "src/hooks/use-admin-api.ts",
+    "find": "limit: data?.limit ?? LIST_DEFAULT_LIMIT,",
+    "replace": "limit: data?.limit ?? 10,"
+  },
+  {
+    "name": "use-admin-api: order status goes to the wrong path",
+    "file": "src/hooks/use-admin-api.ts",
+    "find": "/status`",
+    "replace": "/state`"
+  },
+  {
+    "name": "use-admin-api: user update does not refresh",
+    "file": "src/hooks/use-admin-api.ts",
+    "find": "const res = await authApi.patch<SingleResponse<AdminUser>>(`/api/admin/users/${userId}`, body);\n    await mutate();",
+    "replace": "const res = await authApi.patch<SingleResponse<AdminUser>>(`/api/admin/users/${userId}`, body);"
+  },
+  {
+    "name": "upload: the token is never sent",
+    "file": "src/hooks/use-media-upload.ts",
+    "find": "headers: token ? { Authorization: `Bearer ${token}` } : undefined,",
+    "replace": "headers: undefined,"
+  },
+  {
+    "name": "upload: the file field is renamed",
+    "file": "src/hooks/use-media-upload.ts",
+    "find": "formData.append(\"file\", file);",
+    "replace": "formData.append(\"image\", file);"
+  },
+  {
+    "name": "upload: an error gets a default message",
+    "file": "src/hooks/use-media-upload.ts",
+    "find": "body.message ?? \"\"",
+    "replace": "body.message ?? \"x\""
+  },
+  {
+    "name": "proxy: the etag is not forwarded",
+    "file": "src/app/media/[...path]/route.ts",
+    "find": "[\"content-type\", \"content-length\", \"etag\", \"last-modified\"]",
+    "replace": "[\"content-type\", \"content-length\", \"last-modified\"]"
+  },
+  {
+    "name": "proxy: a parent path is allowed",
+    "file": "src/app/media/[...path]/route.ts",
+    "find": "segment === \".\" || segment === \"..\" ||",
+    "replace": "segment === \".\" ||"
+  },
+  {
+    "name": "proxy: upstream 400 becomes 502",
+    "file": "src/app/media/[...path]/route.ts",
+    "find": "upstream.status === 404 || upstream.status === 400 ? 404 : 502",
+    "replace": "upstream.status === 404 ? 404 : 502"
+  },
+  {
+    "name": "proxy: the cache lifetime is lost",
+    "file": "src/app/media/[...path]/route.ts",
+    "find": "max-age=259200",
+    "replace": "max-age=0"
+  },
+  {
+    "name": "proxy: the range is not forwarded",
+    "file": "src/app/media/[...path]/route.ts",
+    "find": "headers: { ...(request.headers.get(\"range\") && { range: request.headers.get(\"range\")! }) },",
+    "replace": "headers: {},"
+  },
+  {
+    "name": "server: pages are never cached",
+    "file": "src/app/[locale]/(public)/shop/_lib/server-fetchers.ts",
+    "find": "revalidate = 60",
+    "replace": "revalidate = 0"
+  },
+  {
+    "name": "server: no retry without the related limit",
+    "file": "src/app/[locale]/(public)/shop/_lib/server-fetchers.ts",
+    "find": "    try {\n      const result = await apiFetch<{ data: Product; related: Product[] }>(`/api/products/${id}`);\n      return { product: result.data, related: result.related };\n    } catch {\n      return undefined;\n    }",
+    "replace": "    return undefined;"
+  },
+  {
+    "name": "server: a banner config that is not an array is used",
+    "file": "src/app/[locale]/(public)/shop/_lib/server-fetchers.ts",
+    "find": "return Array.isArray(parsed) ? mapMediaUrls(parsed) : [];",
+    "replace": "return parsed;"
+  },
+  {
+    "name": "server: missing shipping data is passed on",
+    "file": "src/app/[locale]/(public)/shop/_lib/server-fetchers.ts",
+    "find": "return data ?? null;",
+    "replace": "return data;"
+  },
+  {
+    "name": "store: cart changes are not saved",
+    "file": "src/store/index.ts",
+    "find": "if (state.cart.items !== prevCartItems) {",
+    "replace": "if (false) {"
+  },
+  {
+    "name": "store: the wishlist key changes",
+    "file": "src/store/index.ts",
+    "find": "const WISHLIST_STORAGE_KEY = \"doovan-wishlist\";",
+    "replace": "const WISHLIST_STORAGE_KEY = \"doovan-wish\";"
+  },
+  {
+    "name": "store: a full storage breaks the app",
+    "file": "src/store/index.ts",
+    "find": "} catch { /* quota exceeded — silently ignore */ }",
+    "replace": "} catch (e) { throw e; }"
+  },
+  {
+    "name": "enums: a pending order may jump to shipping",
+    "file": "src/types/enums.ts",
+    "find": "pending: [\"confirmed\", \"cancelled\"],",
+    "replace": "pending: [\"confirmed\", \"shipping\", \"cancelled\"],"
+  },
+  {
+    "name": "enums: the current status is not offered",
+    "file": "src/types/enums.ts",
+    "find": "return next ? [current, ...next] : [current];",
+    "replace": "return next ? [...next] : [current];"
+  },
+  {
+    "name": "site-config: tablet falls back to mobile",
+    "file": "src/types/site-config.ts",
+    "find": "if (overrides.tablet) return overrides.tablet;",
+    "replace": "if (overrides.mobile) return overrides.mobile;"
+  },
+  {
+    "name": "baseSlice: starting does not clear the error",
+    "file": "src/store/baseSlice.ts",
+    "find": "createStart(state: BaseCrudState) {\n    state.isCreating = true;\n    state.error = null;",
+    "replace": "createStart(state: BaseCrudState) {\n    state.isCreating = true;"
+  },
+  {
+    "name": "api: an empty message is kept",
+    "file": "src/lib/api.ts",
+    "find": "body.message || `API error: ${res.status}`",
+    "replace": "body.message ?? `API error: ${res.status}`"
+  }
+]

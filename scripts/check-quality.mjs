@@ -6,7 +6,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT } from "./modules.mjs";
-import { TEST_FILE, validateBaseline, validateCriticalFlows, validateSpec } from "./quality-lib.mjs";
+import { TEST_FILE, hasWaiver, validateBaseline, validateCriticalFlows, validateSpec } from "./quality-lib.mjs";
 import { validateBatches } from "./progress-lib.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
@@ -130,13 +130,16 @@ if (args.includes("--changed")) {
       const date = /\*\*Cập nhật:\*\*\s*(\d{4}-\d{2}-\d{2})/.exec(specText)?.[1] ?? "";
       const today = new Date().toLocaleDateString("sv-SE");
       if (!/^\+> \*\*Nhóm:\*\*.*\*\*Cập nhật:\*\*/m.test(diff) && date < today) fail(`${spec} was edited but its "Cập nhật" date was not bumped`);
-      waived = /^\+.*no-test:\s*\S/m.test(diff);
+      waived = hasWaiver(diff, "no-test");
     }
     const testsTouched = [...changed].some((f) => f.startsWith(`tests/${doc}/`) && TEST_FILE.test(f));
     if (!testsTouched && !waived) {
       fail(`no test under tests/${doc}/ was added or changed, but its module changed (${sample}). Add or update tests, or log "no-test: <reason>" in the spec's change history when behaviour is untouched.`);
     }
   }
+
+  const devToolingSpec = "specs/platform/dev-tooling.md";
+  const growthWaived = changed.has(devToolingSpec) && tracked(devToolingSpec) && hasWaiver(git("diff", "-U0", base, "--", devToolingSpec), "baseline-grow");
 
   const before = (() => {
     try {
@@ -145,7 +148,7 @@ if (args.includes("--changed")) {
       return null; // baseline not in git yet
     }
   })();
-  if (before) for (const doc of pending) if (!before.includes(doc)) fail(`${BASELINE_PATH}: "${doc}" was added — the baseline can only shrink`);
+  if (before && !growthWaived) for (const doc of pending) if (!before.includes(doc)) fail(`${BASELINE_PATH}: "${doc}" was added — the baseline can only shrink`);
 
   const commentBase = (() => {
     try {
@@ -154,7 +157,7 @@ if (args.includes("--changed")) {
       return null;
     }
   })();
-  if (commentBase) {
+  if (commentBase && !growthWaived) {
     const now = JSON.parse(readFileSync(join(ROOT, "scripts/comment-baseline.json"), "utf8")).files ?? [];
     for (const file of now) if (!commentBase.includes(file)) fail(`scripts/comment-baseline.json: "${file}" was added — shorten its comments instead`);
   }

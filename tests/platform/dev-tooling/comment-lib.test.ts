@@ -59,6 +59,26 @@ describe("QG-11 findLongComments", () => {
     expect(findLongComments(code)).toEqual([]);
   });
 
+  it("reads templates correctly when an interpolation ends right before the closing backtick or before /*", () => {
+    const code = [
+      "const a = `${base}`;",
+      "const b = `${base}/*`;",
+      "const c = `x ${y} z ${w}`;",
+      "const d = `${a}${b}`;",
+      "const e = `nested ${`inner ${deep}`} end`;",
+      "const f = 1;",
+      "// a short comment after all that",
+    ].join("\n");
+
+    expect(findLongComments(code)).toEqual([]);
+  });
+
+  it("still finds a long comment after a template that ends with an interpolation", () => {
+    const code = ["const a = `${base}`;", "// 1", "// 2", "// 3", "// 4"].join("\n");
+
+    expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 2, length: 4 }]);
+  });
+
   it("reports several findings in order", () => {
     const code = ["// a", "// b", "// c", "// d", "const x = 1;", "/*", "1", "2", "3", "*/"].join("\n");
 

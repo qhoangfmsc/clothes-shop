@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateBaseline, validateCriticalFlows, validateSpec } from "@/scripts/quality-lib.mjs";
+import { hasWaiver, validateBaseline, validateCriticalFlows, validateSpec } from "@/scripts/quality-lib.mjs";
 
 /* The rules behind `yarn quality:check`. Spec: specs/platform/dev-tooling.md, flows QG-1 … QG-4. */
 
@@ -163,5 +163,19 @@ describe("QG-4 baseline and critical flows", () => {
     expect(problems).toContain('tier "P9"');
     expect(problems).toContain('unknown module "nowhere/x"');
     expect(problems).toContain("tests/gone.test.ts, which does not exist");
+  });
+});
+
+describe("QG-4 waivers logged in a spec", () => {
+  it("accepts a no-test or baseline-grow line that was added with a reason", () => {
+    expect(hasWaiver("+- 2026-10-21 · fix. no-test: comments only", "no-test")).toBe(true);
+    expect(hasWaiver("+baseline-grow: detector fixed", "baseline-grow")).toBe(true);
+  });
+
+  it("ignores a waiver with no reason, one that was not added, or another tag", () => {
+    expect(hasWaiver("+ no-test:", "no-test")).toBe(false);
+    expect(hasWaiver("- no-test: removed line", "no-test")).toBe(false);
+    expect(hasWaiver(" no-test: unchanged line", "no-test")).toBe(false);
+    expect(hasWaiver("+ no-test: x", "baseline-grow")).toBe(false);
   });
 });

@@ -69,7 +69,7 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 |---|---|---|---|
 | `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, qua `requestWithSession` | JSON; không map URL media; trả `res.json()` nguyên |
 | `useApiAuth().apiFetch(path, { method, body, headers, public, raw })` | Account, Checkout, Orders, Order detail, đánh giá của khách | Có, qua `requestWithSession`; `public: true` bỏ qua header Authorization và không refresh; `body` là `FormData` thì gửi nguyên (không `Content-Type`, không `JSON.stringify`) | Kết quả đi qua `mapMediaUrls`, trừ khi `raw: true` (giữ URL gốc của BE, cho form gửi lại URL như ảnh đánh giá). Hàm `apiFetch` giữ nguyên danh tính giữa các lần render |
-| `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token qua `getAccessToken()`; không phát event hết phiên; kết quả đi qua `mapMediaUrls` |
+| `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token qua `getAccessToken()`; luôn gửi JSON (bỏ qua `public`, `raw` và `FormData`); không phát event hết phiên; kết quả đi qua `mapMediaUrls` |
 
 `authApi` còn phát `notifyAdminMutation()` (`src/lib/admin-events.ts`, pub/sub tối giản: `onAdminMutation(listener)` trả hàm hủy) sau mỗi request ghi (`POST`/`PUT`/`PATCH`/`DELETE`) thành công tới đường dẫn `/api/admin/…`; nơi nào phụ thuộc dữ liệu đó (hiện là badge "việc cần xử lý" của [admin-shell](../admin/admin-shell.md)) đăng ký để tự làm mới.
 

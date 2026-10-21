@@ -10,14 +10,16 @@
 
 import type { Product } from "@/src/types/product";
 import { RELATED_PRODUCTS_LIMIT } from "../_common/constants";
-import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ShippingInfo } from "@/src/types/shipping";
 import { mapMediaUrls } from "@/src/lib/media-url";
-import { buildListQuery, LIST_MAX_LIMIT } from "@/src/lib/list-query";
+import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
+import { buildProductQS, type ProductListParams, type ProductListResponse } from "@/src/lib/product-list";
+
+export type { ProductListParams, ProductListResponse };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -37,40 +39,6 @@ async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
    TYPES
    ═══════════════════════════════════════════════════════════ */
 
-export interface ProductListParams {
-  search?: string;
-  category?: string;
-  subcategory?: string;
-  badge?: ProductBadge;
-  /** `field` = ascending, `-field` = descending (BE whitelist). */
-  sort?:
-    | "price"
-    | "-price"
-    | "name"
-    | "-name"
-    | "createdAt"
-    | "-createdAt"
-    | "ratingAverage"
-    | "-ratingAverage"
-    | "-ratingCount";
-  /** 1–5: only products whose average is at least this (products without a review are left out) */
-  minRating?: number;
-  /** Whole VND: the BE filters and sorts prices in VND only */
-  minPrice?: number;
-  maxPrice?: number;
-  sizes?: string;   // "S,M,L"
-  colors?: string;  // "Red,Blue"
-  page?: number;
-  limit?: number;
-}
-
-export interface ProductListResponse {
-  data: Product[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
 export interface CategoryListResponse {
   data: Category[];
   total: number;
@@ -88,19 +56,6 @@ export interface CollectionListResponse {
 /* ═══════════════════════════════════════════════════════════
    PRODUCTS
    ═══════════════════════════════════════════════════════════ */
-
-function buildProductQS(params: ProductListParams): string {
-  return buildListQuery(params, {
-    category: params.category,
-    subcategory: params.subcategory,
-    badge: params.badge,
-    minPrice: params.minPrice,
-    maxPrice: params.maxPrice,
-    minRating: params.minRating,
-    sizes: params.sizes,
-    colors: params.colors,
-  });
-}
 
 export async function getProducts(category?: string, subcategory?: string): Promise<Product[]> {
   const params: ProductListParams = { category, subcategory };

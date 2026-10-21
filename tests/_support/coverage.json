@@ -6,7 +6,11 @@
     "src/store/**",
     "src/app/[locale]/_components/{RoleGuard,AdminPasswordGate,SystemPasswordPrompt,LoginPromptModal,SignOutButton,UnauthenticatedState,MoneyText,VndInput}.tsx",
     "src/app/[locale]/(auth)/login/**",
-    "src/app/[locale]/unauthorized/**"
+    "src/app/[locale]/unauthorized/**",
+    "src/app/media/**",
+    "src/types/enums.ts",
+    "src/types/site-config.ts",
+    "**/server-fetchers.ts"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -20,8 +24,9 @@
       "functions": 90
     },
     "src/lib/api.ts": {
-      "lines": 90,
-      "functions": 90
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
     },
     "src/hooks/use-api-auth.ts": {
       "lines": 90,
@@ -84,6 +89,91 @@
     "**/VndInput.tsx": {
       "lines": 95,
       "branches": 90
+    },
+    "src/lib/list-query.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/media-url.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-url.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-list.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/category-display.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-debounce.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/index.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/baseSlice.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/hooks.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/StoreProvider.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/types/enums.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/types/site-config.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-api.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-admin-api.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-media-upload.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/media/**": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "**/server-fetchers.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
     }
   }
 }
