@@ -140,7 +140,14 @@ export async function getProductWithRelated(id: string): Promise<{
     );
     return { product: result.data, related: result.related };
   } catch {
-    return undefined;
+    /* The BE answers 400 to a `relatedLimit` it rejects (outside 1–20, not an integer): the page must still render,
+       so ask again without it (the BE then sends its default of 4); a missing product fails again and ends as 404. */
+    try {
+      const result = await apiFetch<{ data: Product; related: Product[] }>(`/api/products/${id}`);
+      return { product: result.data, related: result.related };
+    } catch {
+      return undefined;
+    }
   }
 }
 

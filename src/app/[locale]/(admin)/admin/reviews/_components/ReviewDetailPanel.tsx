@@ -13,6 +13,7 @@ import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { ApiError } from "@/src/lib/api";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { toMediaUrl } from "@/src/lib/media-url";
+import { productPath } from "@/src/lib/product-url";
 import { useAppDispatch } from "@/src/store/hooks";
 import type { AdminReview } from "@/src/types/review";
 import { fetchReviewDetail, publishReview } from "../_common/moduleSlice";
@@ -114,6 +115,17 @@ export default function ReviewDetailPanel({ review, onClose, onChanged, onGone }
                     className="text-xs text-[var(--accent-primary)] no-underline hover:underline pointer-coarse:min-h-11 inline-flex items-center"
                   >
                     {t("product.allReviews")}
+                  </Link>
+                )}
+                {/* The link comes from the product's own category / sub-category (`null` when the BE could not load them: no link) */}
+                {review.product && productPath(review.product) && (
+                  <Link
+                    href={productPath(review.product)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[var(--accent-primary)] no-underline hover:underline pointer-coarse:min-h-11 inline-flex items-center"
+                  >
+                    {t("product.viewOnStore")}
                   </Link>
                 )}
               </div>

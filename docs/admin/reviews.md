@@ -1,6 +1,6 @@
 # Reviews (kiểm duyệt đánh giá)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-19
 > **Code:** `(admin)/admin/reviews/` — `page.tsx`, `ReviewsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{ReviewStatusBadge,ReviewDetailPanel,HideReviewModal,ReviewReplyForm}.tsx`; dùng chung `_components/{ReviewContent,ReviewAvatar,StarRating}.tsx`
 > **i18n:** `admin.reviews`, `shared.reviews`, `shared.errors.byCode` (1901, 1906), `admin.components.crud.sort` (`ratingDesc`, `ratingAsc`, `helpfulDesc`), `admin.shell.nav.pending.reviews`
 > **Redux slice:** `state.reviews`
@@ -19,7 +19,7 @@ Trả lời đánh giá (hàng đợi "chờ phản hồi" khớp badge menu) v�
 |---|---|
 | Tab | "Chờ phản hồi (N)" (mặc định) = `status=PUBLISHED&replied=false`; N là `counts.reviews` từ `usePendingCounts()` — cùng nguồn và cùng điều kiện với badge menu; "Tất cả đánh giá". Tab nằm trong URL `?tab=` (vắng = chờ phản hồi), đổi tab hay bộ lọc `?product=`/`?userId=` thì dựng lại bảng (`key`) |
 | Bảng (`DataTable`, server) | Search (tiêu đề, nội dung, tên người viết, tên sản phẩm), sort `createdAt` / `rating` / `helpfulCount`, 25 dòng/trang; lọc `rating`, `fit`, `hasImages` (cả hai tab) và `status`, `replied` (chỉ tab "Tất cả"). Cột: sản phẩm (ảnh + tên), người viết (+ `userId` là link lọc), sao, nội dung rút gọn (ẩn dưới `lg`), số ảnh (ẩn dưới `md`), hữu ích (ẩn dưới `lg`), trạng thái + "Đã phản hồi / Chờ phản hồi", ngày (ẩn dưới `sm`), "Xem" |
-| Chi tiết (`ReviewDetailPanel`) | Modal: sản phẩm (+ link "Mọi đánh giá của sản phẩm này"), người viết (+ link "Mọi đánh giá của người này"), trạng thái, `ReviewContent` (sao, nội dung, ảnh phóng to được, form dáng, size/màu, phản hồi), mục "Chi tiết" (ngày viết, `orderItemId`, `editedAt`, `moderatedAt` / `moderatedBy`, lý do ẩn, `repliedBy`) |
+| Chi tiết (`ReviewDetailPanel`) | Modal: sản phẩm (+ link "Mọi đánh giá của sản phẩm này" và link "Xem sản phẩm trên cửa hàng" mở tab mới tới `/shop/<category>/<subcategory>/<id>` dựng từ `product.category.slug` / `product.subcategory.slug`; `product` của review là `ProductSummary`, hai trường này `null` hoặc `product` `null` thì không có link cửa hàng), người viết (+ link "Mọi đánh giá của người này"), trạng thái, `ReviewContent` (sao, nội dung, ảnh phóng to được, form dáng, size/màu, phản hồi), mục "Chi tiết" (ngày viết, `orderItemId`, `editedAt`, `moderatedAt` / `moderatedBy`, lý do ẩn, `repliedBy`) |
 | Ẩn (`HideReviewModal`) | `note` bắt buộc ≤ 500, nhãn "Lý do (khách sẽ thấy)"; bốn gợi ý bấm một chạm (link/quảng cáo, thông tin cá nhân, ngôn từ không phù hợp, spam; không có gợi ý "đánh giá thấp"); khung nhắc "chỉ ẩn khi vi phạm, không ẩn vì thấp sao" trong modal và gần nút "Ẩn đánh giá" |
 | Hiện lại | `useConfirm` rồi `POST .../publish` (không body) |
 | Phản hồi (`ReviewReplyForm`) | Ô ≤ 1000 + bộ đếm, ghi chú "mọi người đều thấy"; "Đăng / Cập nhật phản hồi" (`PUT`) và "Xóa phản hồi" (`useConfirm`, `DELETE`) |

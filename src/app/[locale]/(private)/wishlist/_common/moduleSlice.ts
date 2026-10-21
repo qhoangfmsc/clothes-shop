@@ -56,8 +56,8 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
           priceUsd: number;
           badge?: ProductBadge | null;
           images: string[];
-          category: string;
-          subcategory: string;
+          category?: { slug: string } | null;
+          subcategory?: { slug: string } | null;
         };
         createdAt: string;
       }>;
@@ -70,14 +70,8 @@ export const fetchWishlist = createAsyncThunk<WishlistItem[]>(
       priceUsd: si.product?.priceUsd ?? 0,
       image: si.product?.images?.[0] ?? "",
       badge: si.product?.badge ?? null,
-      category:
-        (si.product as any)?.category?.slug ??
-        (si.product as any)?.category ??
-        "",
-      subcategory:
-        (si.product as any)?.subcategory?.slug ??
-        (si.product as any)?.subcategory ??
-        "",
+      category: si.product?.category?.slug ?? "",
+      subcategory: si.product?.subcategory?.slug ?? "",
       addedAt: si.createdAt ?? new Date().toISOString(),
     }));
   }
@@ -144,17 +138,7 @@ const wishlistSlice = createSlice({
       state.isSyncing = true;
     });
     builder.addCase(fetchWishlist.fulfilled, (state, action) => {
-      /* `GET /api/wishlist` does not load the product's category / sub-category (they come back empty): keep the slugs
-         already saved locally so the item's link keeps working */
-      const saved = new Map(state.items.map((i) => [i.productId, i]));
-      state.items = action.payload.map((i) => {
-        const local = saved.get(i.productId);
-        return {
-          ...i,
-          category: i.category || local?.category || "",
-          subcategory: i.subcategory || local?.subcategory || "",
-        };
-      });
+      state.items = action.payload;
       state.isSyncing = false;
     });
     builder.addCase(fetchWishlist.rejected, (state) => {

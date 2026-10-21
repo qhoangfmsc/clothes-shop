@@ -83,7 +83,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "var(--page-min-h)",
         background: "var(--bg-primary)",
       }}
     >

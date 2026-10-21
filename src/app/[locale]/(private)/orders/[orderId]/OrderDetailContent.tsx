@@ -22,6 +22,7 @@ import type { Order } from "../_common/types";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
+import ProductLink from "@/src/app/[locale]/_components/ProductLink";
 import OrderThumb from "../_components/OrderThumb";
 import OrderReturnCard from "../../returns/_components/OrderReturnCard";
 import ReviewFormModal from "../../reviews/_components/ReviewFormModal";
@@ -31,7 +32,7 @@ import type { PendingReviewItem } from "@/src/types/review";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
 const WRAP_CLASS = "max-w-[67.5rem] mx-auto px-4 sm:px-6";
 const CARD_CLASS =
   "p-5 sm:p-6 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]";
@@ -396,11 +397,16 @@ export default function OrderDetailContent() {
             <ul className="m-0 p-0 list-none flex flex-col gap-4">
               {order.items.map((item) => (
                 <li key={item.id} className="flex items-center gap-3">
-                  <OrderThumb src={item.productImage} alt={item.productName} />
+                  <ProductLink product={item.product} className="shrink-0 no-underline">
+                    <OrderThumb src={item.productImage} alt={item.productName} />
+                  </ProductLink>
                   <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                    <span className="font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em] line-clamp-2">
+                    <ProductLink
+                      product={item.product}
+                      className="font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em] line-clamp-2 no-underline hover:underline"
+                    >
                       {item.productName}
-                    </span>
+                    </ProductLink>
                     <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
                       {t("itemMeta", { size: item.size, color: item.color })} · {t("quantity", { quantity: item.quantity })}
                     </span>

@@ -132,7 +132,7 @@ function LoginPromptContent({
           align-items: center;
           gap: var(--space-5);
           padding: var(--space-10) var(--space-8);
-          max-width: 380px;
+          max-width: 23.75rem;
           width: 100%;
           background: var(--bg-primary);
           border-radius: var(--radius-lg);
@@ -145,8 +145,8 @@ function LoginPromptContent({
           position: absolute;
           top: var(--space-4);
           right: var(--space-4);
-          width: 32px;
-          height: 32px;
+          width: 2rem;
+          height: 2rem;
           border-radius: 50%;
           border: none;
           background: transparent;
@@ -164,8 +164,8 @@ function LoginPromptContent({
         }
 
         .login-prompt__icon-wrap {
-          width: 48px;
-          height: 48px;
+          width: 3rem;
+          height: 3rem;
           border-radius: 50%;
           background: var(--color-champagne-cream);
           display: flex;
@@ -189,7 +189,7 @@ function LoginPromptContent({
           color: var(--text-secondary);
           letter-spacing: -0.02em;
           line-height: 140%;
-          max-width: 280px;
+          max-width: 17.5rem;
         }
 
         .login-prompt__signin {

@@ -368,7 +368,7 @@ function OrdersSection() {
    ═══════════════════════════════════════════════ */
 function AccountSkeleton() {
   return (
-    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
       <div className="max-w-[45rem] lg:max-w-[67.5rem] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_18.75rem] lg:items-start lg:gap-8">
         <div className="flex items-center gap-4 py-2 sm:gap-6 sm:py-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:flex-col lg:py-8">
           <div className="w-16 h-16 shrink-0 rounded-full bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
@@ -398,7 +398,7 @@ export default function AccountContent() {
   /* Not logged in — show inline unauthenticated state */
   if (!isAuthenticated || !user) {
     return (
-      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <UnauthenticatedState />
       </main>
     );
@@ -406,7 +406,7 @@ export default function AccountContent() {
 
   /* Logged in — full account page */
   return (
-    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
       <div className="max-w-[45rem] lg:max-w-[67.5rem] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_18.75rem] lg:items-start lg:gap-8">
         {/* Phone/tablet: profile → orders → wishlist. lg: orders + wishlist left, sticky profile card right */}
         <div className="lg:sticky lg:top-[6.5rem] lg:col-start-2 lg:row-span-2 lg:row-start-1">

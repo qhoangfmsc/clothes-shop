@@ -1,6 +1,6 @@
 # Product detail (trang chi tiết sản phẩm)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-10-19
 > **Code:** `(public)/shop/[category]/[subcategory]/[productId]/` — `page.tsx`, `_common/{reviews,use-product-reviews,use-review-votes}.ts`, `_components/{ProductDetailClient,ZoomableImage,ImageViewer,ReviewsSection,ReviewSummaryPanel,ReviewFilterBar,ReviewItem,HelpfulButton,WriteReviewBar,ShippingAccordion,SizeGuideModal,ShareButtons}.tsx`; dùng chung `_components/{ProductRating,StarRating,ReviewContent,ReviewAvatar,ReviewImageGrid}.tsx`
 > **i18n:** `public.product` (`meta`, `detail`, `reviews`, `shipping`, `sizeGuideModal`, `share`), `shared.reviews` (kể cả `form`, `toast`, `deadline` của form viết đánh giá), `common.productBadge`
 
@@ -32,7 +32,7 @@ Giúp khách quyết định mua: xem rõ sản phẩm, chọn đúng biến th�
 
 ### 4.1 Server (`page.tsx`)
 
-- `getProductWithRelated(id)` (→ `GET /api/products/:id?relatedLimit=5` trả `data` + `related`) và `getSubcategory(cat, sub)`; thiếu một trong hai → `notFound()`. Chừa 80 px phía trên cho header cố định.
+- `getProductWithRelated(id)` (→ `GET /api/products/:id?relatedLimit=5` trả `data` + `related`; BE trả 400 nếu `relatedLimit` ngoài 1–20 hoặc không nguyên nên hàm thử lại một lần không kèm `relatedLimit` — BE mặc định 4 — rồi mới coi là không tìm thấy; lưới liên quan hiện đúng những gì BE trả, không cắt thêm) và `getSubcategory(cat, sub)`; thiếu một trong hai → `notFound()`. Chừa 80 px phía trên cho header cố định.
 - `generateStaticParams` từ `getAllProducts()` (số sản phẩm theo mặc định của BE).
 - Metadata: title `public.product.meta.title` (tên sản phẩm), description = `product.description`, ảnh chia sẻ = `images[0]`. Không tìm thấy sản phẩm → title `withBrand(common.notFound)`.
 - JSON-LD: `productJsonLd` + `breadcrumbJsonLd` (Home › Shop › Category › Subcategory › Product).
@@ -76,3 +76,6 @@ Hai cột ≥ `lg`: trái (tối đa 55%, `sticky top-20`, cao cố định `lg:
 - Sản phẩm badge `custom_order` không hiện giá: dòng giá chính và giá ở "sản phẩm liên quan" hiện `common.priceOnRequest` (`hasPublicPrice`); JSON-LD không có `Offer` cho sản phẩm này. Giá chính, giá gốc gạch ngang (khi `originalPriceVnd` không `null`) và giá sản phẩm liên quan hiện theo ngôn ngữ qua `useMoney`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+- **Link sản phẩm:** dựng bằng `productPath(product)` (`src/lib/product-url.ts`) từ `product.category.slug` và `product.subcategory.slug` có sẵn trong response (sản phẩm đầy đủ luôn có cả hai); thiếu một trong hai thì `/shop`.
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.

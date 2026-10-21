@@ -41,7 +41,7 @@ import ShippingForm from "./_components/ShippingForm";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[6rem] sm:pt-[6.5rem] pb-8 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-(--page-min-h) pt-[6rem] sm:pt-[6.5rem] pb-8 bg-[var(--bg-primary)]";
 
 export default function CheckoutContent() {
   const t = useTranslations("private.checkout");

@@ -147,7 +147,7 @@ export default function UnauthenticatedState() {
           align-items: center;
           gap: var(--space-5);
           padding: var(--space-10) var(--space-8);
-          max-width: 420px;
+          max-width: 26.25rem;
           width: 100%;
           background: var(--bg-primary);
           border-radius: var(--radius-lg);
@@ -157,8 +157,8 @@ export default function UnauthenticatedState() {
         }
 
         .unauth-modal__icon-wrap {
-          width: 56px;
-          height: 56px;
+          width: 3.5rem;
+          height: 3.5rem;
           border-radius: 50%;
           background: var(--color-champagne-cream);
           display: flex;
@@ -182,7 +182,7 @@ export default function UnauthenticatedState() {
           color: var(--text-secondary);
           letter-spacing: -0.02em;
           line-height: 140%;
-          max-width: 320px;
+          max-width: 20rem;
         }
 
         .unauth-modal__divider {
@@ -211,7 +211,7 @@ export default function UnauthenticatedState() {
           display: inline-flex;
           align-items: center;
           gap: var(--space-2);
-          padding: 10px 24px;
+          padding: 0.625rem 1.5rem;
           border-radius: var(--radius-pill);
           border: 1px solid var(--border-light);
           background: transparent;

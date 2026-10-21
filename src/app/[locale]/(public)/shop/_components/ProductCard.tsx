@@ -23,6 +23,7 @@ import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
 import ProductRating from "@/src/app/[locale]/_components/ProductRating";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
+import { productPath } from "@/src/lib/product-url";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -102,7 +103,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     [requireAuth, openQuickAdd, product]
   );
 
-  const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+  const productUrl = productPath(product) ?? "/shop";
 
   return (
     <div>

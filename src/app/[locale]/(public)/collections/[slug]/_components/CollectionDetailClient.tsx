@@ -15,6 +15,7 @@ import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
 import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
+import { productPath } from "@/src/lib/product-url";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -269,7 +270,7 @@ export default function CollectionDetailClient({
 
         <div ref={editorialRef} className="mx-auto flex w-full max-w-[96rem] flex-col gap-4 px-4 sm:gap-6 sm:px-6 lg:gap-8 lg:px-8">
           {editorialProducts.map((product, idx) => {
-            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+            const productUrl = productPath(product) ?? "/shop";
             /* Alternate: large left, small right, then reversed */
             const isOdd = idx % 2 !== 0;
 
@@ -375,7 +376,7 @@ export default function CollectionDetailClient({
           className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3 sm:gap-5 sm:px-6 lg:grid-cols-4 lg:gap-6 lg:px-8 xl:grid-cols-5"
         >
           {gridProducts.map((product) => {
-            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+            const productUrl = productPath(product) ?? "/shop";
 
             return (
               <Link

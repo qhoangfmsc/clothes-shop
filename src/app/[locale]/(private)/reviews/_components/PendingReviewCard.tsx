@@ -3,6 +3,7 @@
 import { Clock, PenLine } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
+import ProductLink from "@/src/app/[locale]/_components/ProductLink";
 import OrderThumb from "@/src/app/[locale]/(private)/orders/_components/OrderThumb";
 import type { PendingReviewItem } from "@/src/types/review";
 import { daysUntil } from "../_common/constants";
@@ -22,11 +23,16 @@ export default function PendingReviewCard({ item, onReview }: PendingReviewCardP
   return (
     <li className="flex flex-col gap-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-4 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center sm:p-5">
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <OrderThumb src={item.productImage} alt={item.productName} />
+        <ProductLink product={item.product} className="shrink-0 no-underline">
+          <OrderThumb src={item.productImage} alt={item.productName} />
+        </ProductLink>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className="line-clamp-2 font-primary text-sm font-medium tracking-[-0.02em] text-[var(--text-primary)]">
+          <ProductLink
+            product={item.product}
+            className="line-clamp-2 font-primary text-sm font-medium tracking-[-0.02em] text-[var(--text-primary)] no-underline hover:underline"
+          >
             {item.productName}
-          </span>
+          </ProductLink>
           <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
             {[item.size, item.color].filter(Boolean).join(" · ")}
             {item.quantity > 1 && ` · ${t("quantity", { quantity: item.quantity })}`}

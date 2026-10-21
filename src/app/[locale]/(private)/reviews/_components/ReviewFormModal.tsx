@@ -9,6 +9,7 @@ import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { ApiError } from "@/src/lib/api";
 import { toMediaUrl } from "@/src/lib/media-url";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import ProductLink from "@/src/app/[locale]/_components/ProductLink";
 import { REVIEW_FITS, REVIEW_LIMITS, type AuthorReview, type ReviewFit } from "@/src/types/review";
 import {
   REVIEW_IMAGE_MAX_BYTES,
@@ -275,6 +276,7 @@ export default function ReviewFormModal({ target, onClose, onSaved, onAlreadyRev
   if (!mounted) return null;
 
   const productName = target.mode === "create" ? target.item.productName : (target.review.product?.name ?? "");
+  const productSummary = target.mode === "create" ? target.item.product : target.review.product;
   const productImage = target.mode === "create" ? target.item.productImage : (target.review.product?.image ?? "");
   const variant =
     target.mode === "create" ? [target.item.size, target.item.color] : [target.review.size, target.review.color];
@@ -311,9 +313,14 @@ export default function ReviewFormModal({ target, onClose, onSaved, onAlreadyRev
                 <img src={toMediaUrl(productImage)} alt="" className="h-16 w-12 shrink-0 rounded-sm object-cover" />
               )}
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="line-clamp-2 font-primary text-sm font-medium tracking-[-0.02em] text-[var(--text-primary)]">
+                {/* New tab: what the customer has typed stays in this form */}
+                <ProductLink
+                  product={productSummary}
+                  newTab
+                  className="line-clamp-2 font-primary text-sm font-medium tracking-[-0.02em] text-[var(--text-primary)] no-underline hover:underline"
+                >
                   {productName}
-                </span>
+                </ProductLink>
                 <span className="font-primary text-xs text-[var(--text-muted)]">{variant.filter(Boolean).join(" · ")}</span>
               </div>
             </div>

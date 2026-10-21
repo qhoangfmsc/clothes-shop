@@ -86,7 +86,7 @@ export default async function LegalPage({ locale, docs: docKeys }: LegalPageProp
   const otherDocs = LEGAL_DOCS.filter((d) => !docKeys.includes(d.key));
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] pt-[7.5rem] pb-20">
+    <main className="min-h-(--page-min-h) bg-[var(--bg-primary)] pt-[7.5rem] pb-20">
       <div className="mx-auto max-w-[65rem] px-4 sm:px-6">
         <header className="mb-10 flex flex-col gap-3 lg:mb-14">
           <p className="m-0 font-primary text-xs font-medium uppercase tracking-[0.12em] text-[var(--accent-primary)]">

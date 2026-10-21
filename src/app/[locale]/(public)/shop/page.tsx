@@ -42,7 +42,7 @@ export default async function ShopPage({ params }: ShopPageProps) {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "var(--page-min-h)",
         background: "var(--bg-primary)",
       }}
     >

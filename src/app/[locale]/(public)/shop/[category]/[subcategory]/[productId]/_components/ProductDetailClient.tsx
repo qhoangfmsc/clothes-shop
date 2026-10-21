@@ -31,6 +31,7 @@ const loadImageViewer = () => import("./ImageViewer");
 const ImageViewer = dynamic(loadImageViewer, { ssr: false });
 import { PRODUCT_DETAIL_BADGE_STYLES } from "@/src/lib/product-badge";
 import { buildOrderInquiryHref, getPurchaseMode, hasPublicPrice } from "@/src/lib/product-purchase";
+import { productPath } from "@/src/lib/product-url";
 import { RELATED_PRODUCTS_LIMIT } from "../../../../_common/constants";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -550,7 +551,7 @@ export default function ProductDetailClient({
                 type="button"
                 className="w-14 h-14 rounded-full border border-[var(--border-light)] bg-transparent flex items-center justify-center cursor-pointer text-[var(--text-muted)] shrink-0 transition-all duration-[150ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] hover:bg-[rgba(201,169,110,0.06)]"
                 onClick={async () => {
-                  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/${locale}/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+                  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/${locale}${productPath(product) ?? "/shop"}`;
                   if (typeof navigator !== "undefined" && navigator.share) {
                     try {
                       await navigator.share({
@@ -630,10 +631,10 @@ export default function ProductDetailClient({
             </h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 px-4 sm:px-6 lg:px-0 pt-2">
-            {relatedProducts.slice(0, RELATED_PRODUCTS_LIMIT).map((rp, index) => (
+            {relatedProducts.map((rp, index) => (
               <Link
                 key={rp.id}
-                href={`/shop/${rp.category?.slug ?? ""}/${rp.subcategory?.slug ?? ""}/${rp.id}`}
+                href={productPath(rp) ?? "/shop"}
                 className={`group flex-col gap-2 no-underline text-inherit ${index === RELATED_PRODUCTS_LIMIT - 1 ? "hidden lg:flex" : "flex"}`}
               >
                 <div className="relative aspect-[2/3] rounded-md overflow-hidden bg-[var(--bg-elevated)]">

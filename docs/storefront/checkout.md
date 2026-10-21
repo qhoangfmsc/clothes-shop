@@ -1,6 +1,6 @@
 # Checkout (thanh toán / đặt hàng)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/checkout`, `/[locale]/checkout/payment/[orderId]` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/checkout`, `/[locale]/checkout/payment/[orderId]` · **Cập nhật:** 2026-10-19
 > **Code:** `(private)/checkout/` — `page.tsx`, `layout.tsx`, `CheckoutContent.tsx`, `_common/{checkout.ts,payment.ts,use-payment-session.ts,use-order-quote.ts}`, `_components/{OptionList,ShippingMethodSection,ShippingForm,PaymentMethodSection,OrderSummary,DetailRow,PaymentAmountBlock,PaymentCountdown}.tsx`, `payment/[orderId]/{page.tsx,PaymentContent.tsx}`
 > **i18n:** `private.checkout` (`page`, `delivery`, `form`, `method`, `note`, `summary`, `toast`, `empty`, `payment`), `common.addressField` (nhãn trường địa chỉ)
 
@@ -98,3 +98,4 @@ Layout: màn `pending` rộng `max-w-[880px]` và gọn để vừa một màn h
 Giỏ: [cart](./cart.md). Định dạng tiền `vnd`: [i18n](../platform/i18n.md). Đơn sau khi tạo: [customer-orders](./customer-orders.md), quản trị: [admin/orders](../admin/orders.md). Sự kiện: [analytics](../admin/analytics.md).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.

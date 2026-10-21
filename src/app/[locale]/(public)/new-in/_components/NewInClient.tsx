@@ -15,6 +15,7 @@ import BannerFade from "@/src/app/[locale]/_components/BannerFade";
 import { CarouselDots } from "@/src/app/[locale]/_components/CarouselControls";
 import { useBannerRotation } from "@/src/hooks/use-banner-rotation";
 import type { BannerItem } from "@/src/types/site-config";
+import { productPath } from "@/src/lib/product-url";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,7 +34,7 @@ function buildSpotlights(
     desc: p.description,
     price: formatPrice(p),
     image: p.images[0],
-    href: `/shop/${p.category?.slug ?? ""}/${p.subcategory?.slug ?? ""}/${p.id}`,
+    href: productPath(p) ?? "/shop",
     bgColor: SPOTLIGHT_BGS[idx] ?? "var(--bg-section-2)",
   }));
 }

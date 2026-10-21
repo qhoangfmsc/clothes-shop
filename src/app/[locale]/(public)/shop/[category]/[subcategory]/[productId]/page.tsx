@@ -71,7 +71,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "var(--page-min-h)",
         background: "var(--bg-primary)",
       }}
     >

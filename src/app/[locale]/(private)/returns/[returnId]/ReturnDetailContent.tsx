@@ -21,7 +21,7 @@ import ReturnStatusBadge from "../_components/ReturnStatusBadge";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
 const WRAP_CLASS = "max-w-[45rem] mx-auto px-4 sm:px-6";
 const CARD_CLASS =
   "p-5 sm:p-6 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]";

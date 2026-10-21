@@ -33,7 +33,7 @@ const SECONDARY_LINK =
 
 function Shell({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
   return (
-    <main className="min-h-screen pt-[6.5rem] sm:pt-[7.5rem] pb-10 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[6.5rem] sm:pt-[7.5rem] pb-10 bg-[var(--bg-primary)]">
       <div
         className={`${wide ? "max-w-[55rem]" : "max-w-[40rem]"} mx-auto px-4 sm:px-6 flex flex-col gap-6`}
       >

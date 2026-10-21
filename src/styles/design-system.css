@@ -205,6 +205,9 @@
      (percentages resolve against the viewport width of the property that uses it). */
   --page-max-w: 1920px;
   --page-edge: max(0px, calc((100% - var(--page-max-w)) / 2));
+  /* Minimum height of a content page's <main>: the viewport, but never taller than 64rem, so a short page does not stretch to a
+     very tall (zoomed-out) window; the footer then follows the content instead of sitting a screen away */
+  --page-min-h: min(100dvh, 64rem);
 
   /* ─────────────────────────────────────────────────────────
      9. BORDER RADIUS

@@ -662,7 +662,7 @@ function DataTableInner<T extends { id?: string | number }>(
       )}
 
       {/* ── Table ── */}
-      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden flex-1 min-h-0 flex flex-col">
+      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden flex-initial min-h-0 flex flex-col">
         {loading && (
           <div className="absolute inset-0 bg-[rgba(251,248,241,0.5)] flex items-center justify-center z-10 rounded-2xl">
             <span className="text-sm text-[var(--text-muted)] font-primary">{t("loading")}</span>

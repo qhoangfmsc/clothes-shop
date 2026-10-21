@@ -1,6 +1,6 @@
 # Design system (token, font, style toàn cục)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-19
 > **Code:** `src/styles/design-system.css` · `src/app/globals.css` · `src/assets/fonts/` · `postcss.config.mjs` · `DESIGN.md` (gốc repo) · `public/`
 > **Quy tắc dùng:** `.agent/rules/design-system.md`, `.agent/skills/03-tailwind-styling.md`
 
@@ -37,6 +37,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Motion**: `--ease-default/out-cubic/in-out/luxury`, `--duration-fast 150 / base 300 / slow 600 / slower 1000 / cinematic 1200`.
 - **z-index**: `base 0, panel 10, overlay 12, fixed 20, cursor 50, modal 100, toast 200`.
 - **Khung rộng trang**: `--page-max-w: 1920px` (giá trị max-width duy nhất của site) và `--page-edge: max(0px, calc((100% - var(--page-max-w)) / 2))` — khoảng cách từ mép viewport tới cột nội dung, dùng cho phần tử `fixed` (xem 4.3, 4.4).
+- **Chiều cao tối thiểu trang**: `--page-min-h: min(100dvh, 64rem)` — `min-height` của `<main>` các trang nội dung (trang private, contact, legal, danh sách shop, trang chi tiết sản phẩm, wishlist); cửa sổ cao hơn 64 rem (rất cao khi thu nhỏ trình duyệt) không kéo trang ngắn dài theo, và dưới ngưỡng đó hành vi như `100dvh`.
 - Breakpoint: mặc định của Tailwind v4 (không ghi đè): `sm 640`, `md 768`, `lg 1024`, `xl 1280`, `2xl 1536` — xem 4.4.
 
 ### 4.2 Font

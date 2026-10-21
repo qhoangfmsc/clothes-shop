@@ -400,7 +400,7 @@ export default function CartContent() {
   /* Loading */
   if (isLoading) {
     return (
-      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <div className="max-w-[51.25rem] mx-auto px-4 sm:px-6">
           <div className="h-[3.75rem] rounded-md bg-[var(--color-champagne-cream)] mb-8 animate-[cart-shimmer_1.5s_ease_infinite]" />
           <div className="h-[7.5rem] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
@@ -413,14 +413,14 @@ export default function CartContent() {
   /* Not authenticated */
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <UnauthenticatedState />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
       <div className="max-w-[51.25rem] mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div

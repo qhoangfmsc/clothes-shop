@@ -1,6 +1,6 @@
 # Collections (bộ sưu tập — danh sách & chi tiết)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/collections`, `/[locale]/collections/[slug]` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/collections`, `/[locale]/collections/[slug]` · **Cập nhật:** 2026-10-19
 > **Code:** `(public)/collections/` — `page.tsx`, `loading.tsx`, `_components/CollectionsClient.tsx`, `[slug]/page.tsx`, `[slug]/loading.tsx`, `[slug]/_components/CollectionDetailClient.tsx`
 > **i18n:** `public.collections` (`meta`, `detailMeta`, `list`, `detail`)
 > Quản trị: [admin/collections](../admin/collections.md)
@@ -50,3 +50,5 @@ Dẫn khách vào từng chiến dịch/chủ đề thay vì duyệt theo danh m
 - Nút tim ở lưới sản phẩm của trang chi tiết chỉ bật/tắt state cục bộ `likedMap` + hiện toast; **không** gọi store/BE wishlist như `ProductCard` ở [shop](./shop.md).
 - Không có dữ liệu → các khối tương ứng không hiển thị nội dung; hero danh sách vẫn dùng màu nền `--bg-section-3` khi chưa có banner.
 - Sản phẩm badge `custom_order` không hiện giá: khối lookbook và thẻ "Shop the collection" hiện `common.priceOnRequest` (`hasPublicPrice`).
+
+- **Link sản phẩm:** dựng bằng `productPath(product)` (`src/lib/product-url.ts`) từ `product.category.slug` và `product.subcategory.slug` có sẵn trong response (sản phẩm đầy đủ luôn có cả hai); thiếu một trong hai thì `/shop`.

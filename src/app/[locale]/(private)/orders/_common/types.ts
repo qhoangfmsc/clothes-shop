@@ -1,8 +1,13 @@
+import type { ProductSummary } from "@/src/types/product";
+
 export interface OrderItem {
   id: string;
+  /** Snapshot taken when the order was placed */
   productId: string | null;
   productName: string;
   productImage: string;
+  /** The product as it is now (to link to it); `null` once it was deleted */
+  product: ProductSummary | null;
   quantity: number;
   /** Unit price at order time (the BE sends no line total) */
   priceVnd: number;

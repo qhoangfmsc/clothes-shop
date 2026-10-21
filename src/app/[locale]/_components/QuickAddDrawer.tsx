@@ -25,6 +25,7 @@ import { moneyProp, trackEvent } from "@/src/lib/analytics";
 import { moneyOf } from "@/src/lib/money";
 import { isPurchasable } from "@/src/lib/product-purchase";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
+import { productPath } from "@/src/lib/product-url";
 
 /* ═══════════════════════════════════════════════════════════
    QUICK ADD DRAWER — Bottom sheet for quick product add
@@ -159,7 +160,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
     t,
   ]);
 
-  const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+  const productUrl = productPath(product) ?? "/shop";
 
   /* Size guide row helper */
   const getRowValue = (row: Record<string, string | undefined>, col: string): string => {

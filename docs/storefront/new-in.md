@@ -1,6 +1,6 @@
 # New In (hàng mới về)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/new-in` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/new-in` · **Cập nhật:** 2026-10-19
 > **Code:** `(public)/new-in/` — `page.tsx`, `loading.tsx`, `_components/NewInClient.tsx`
 > **i18n:** `public.newIn`
 
@@ -33,3 +33,5 @@ Giới thiệu những sản phẩm gắn badge `new` để khách quay lại th
 - Sản phẩm badge `custom_order` không hiện giá: giá ở Spotlight (và thẻ trong lưới, qua `ProductCard`) hiện `common.priceOnRequest`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+- **Link sản phẩm:** dựng bằng `productPath(product)` (`src/lib/product-url.ts`) từ `product.category.slug` và `product.subcategory.slug` có sẵn trong response (sản phẩm đầy đủ luôn có cả hai); thiếu một trong hai thì `/shop`.

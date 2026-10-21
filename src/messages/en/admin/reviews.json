@@ -55,7 +55,8 @@
     "title": "Review",
     "product": {
       "section": "Product",
-      "allReviews": "All reviews of this product"
+      "allReviews": "All reviews of this product",
+      "viewOnStore": "View product on the storefront"
     },
     "review": {
       "section": "Review",

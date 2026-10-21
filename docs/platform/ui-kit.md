@@ -1,6 +1,6 @@
 # UI kit (component & hook dùng chung)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-19
 > **Code:** `src/app/[locale]/_components/` · `src/hooks/` · `src/lib/product-badge.ts` · `src/lib/product-purchase.ts`
 > **Quy tắc dùng:** `.agent/rules/components.md`
 
@@ -27,7 +27,7 @@ Bộ khối giao diện và hook được ≥ 2 module dùng chung: bảng dữ 
 | Carousel | `Carousel`, `CarouselDots`, `CarouselArrow`, `useAutoAdvance` | `Carousel.tsx`, `CarouselControls.tsx`, `src/hooks/use-auto-advance.ts` |
 | Banner | `ResponsiveBannerImage`, `BannerFade`, `useBannerRotation` | cùng tên |
 | Đánh giá | `StarRating`, `ProductRating`, `ReviewContent`, `ReviewAvatar`, `ReviewImageGrid`, `ReviewImageViewer` | cùng tên (xem 4.9) |
-| Khác | `Checkbox`, `JsonLd`, `SocialIcons`, `Logo`, `OrderDetailPanel`, `OrderPaymentBadge`, `CopyButton`, `ProductBagButton` | cùng tên |
+| Khác | `ProductLink`, `Checkbox`, `JsonLd`, `SocialIcons`, `Logo`, `OrderDetailPanel`, `OrderPaymentBadge`, `CopyButton`, `ProductBagButton` | cùng tên |
 | Hook | `useSortOptions`, `useDebounce`, `useBreakpoint`, `useAutoAdvance`, `useBannerRotation`, `useAuthAction` | `src/hooks/` |
 | Helper sản phẩm | `getPurchaseMode`, `isPurchasable`, `buildOrderInquiryHref`, style badge | `src/lib/product-purchase.ts`, `product-badge.ts` |
 
@@ -44,7 +44,7 @@ Props: `columns` (`key, header, width, align, hideBelow: sm|md|lg, render`), `se
 
 Hành vi: ô tìm kiếm debounce 350 ms; phân trang có dấu "…" (giữ trang đầu, cuối và ±1) và chỉ hiện khi `total > pageSize`; chọn nhiều có checkbox tổng ba trạng thái và giữ lại chỉ các dòng còn hiện sau khi đổi trang/lọc/xóa; kéo thả (`@dnd-kit`) chỉ bật khi đang sắp xếp theo `reorder.sortValue`, không lọc/tìm, và toàn bộ danh sách nằm trên một trang — hàm `onReorder(rows)` nhận danh sách đầy đủ theo thứ tự mới và **ném lỗi để bảng khôi phục**. Cột có thể ẩn theo breakpoint. Trên thiết bị cảm ứng (`pointer-coarse:`) các điều khiển lớn lên cho vừa ngón tay: ô tìm kiếm, ô lọc/sắp xếp cao 44 px và chữ 16 px (iOS không tự phóng khi focus), nút phân trang 44 × 44 px, nút xóa tìm/lọc 36 px, checkbox 20 px; ô tìm kiếm rộng tối thiểu `min(100%, 14rem)` nên chiếm cả hàng trên điện thoại; thanh phân trang và thanh chọn nhiều (số dòng đã chọn + `renderBulkActions`) tự xuống dòng. Bảng cuộn trong khung của nó. Chuỗi nằm ở `admin.components.dataTable`.
 
-Quy ước: sort theo BE (`field` / `-field`); không thêm hành vi riêng của một bảng vào `DataTable` — thêm prop tùy chọn tổng quát.
+Khung bảng (`rounded-2xl`) cao theo nội dung (`flex-initial`), không giãn hết chiều cao trang: bảng ít dòng thì phân trang nằm ngay dưới bảng; bảng dài thì khung co lại tới chiều cao còn lại và cuộn bên trong. Quy ước: sort theo BE (`field` / `-field`); không thêm hành vi riêng của một bảng vào `DataTable` — thêm prop tùy chọn tổng quát.
 
 ### 4.2 `AdminFormKit`
 
@@ -92,7 +92,7 @@ Chuỗi nằm ở `shared.reviews` (`starsAria`, `productRating`, `edited`, `sto
 - `Checkbox({ checked, onCheckedChange, indeterminate? })`: input thật được phủ trong suốt lên ô vẽ; phải có `<label>` bọc hoặc `aria-label`.
 - `JsonLd({ data })`: nhúng `<script type="application/ld+json">`.
 - `SocialIcons({ linkClassName, iconSize, className })`: dựng từ `CONTACT_LINKS` (`src/lib/socials.tsx`): icon Email (`mailto:contact@doovan.vn`, mở cùng tab) rồi tới `SOCIALS` (Instagram `doovan.vn`, Facebook `doovan.vn`, mở tab mới). `SOCIALS` giữ riêng vì còn dùng cho `sameAs` của JSON-LD.
-- `OrderDetailPanel({ order, loading, onClose, paymentTab?, notice? })`: nội dung chi tiết đơn (trạng thái, trạng thái thanh toán, ngày, sản phẩm với đơn giá `MoneyText` × số lượng, vận chuyển + địa chỉ, thanh toán với tạm tính / phí ship / tổng bằng `MoneyText`, ghi chú). Khi truyền `paymentTab` (nội dung tab "Thanh toán") panel hiện thanh tab Chi tiết / Thanh toán (`FormTabs`); không truyền thì không có tab. `notice` là khối thông báo đặt ngay dưới tiêu đề, trên cả hai tab (Orders dùng cho banner hoàn tiền). Dùng trong Orders (có tab, khi user có `PAYMENT_ADMIN_VIEW`) và Users (không tab). Chuỗi: `admin.components.orderDetailPanel`.
+- `OrderDetailPanel({ order, loading, onClose, paymentTab?, notice? })` (tên mỗi dòng hàng là `ProductLink newTab` tới trang cửa hàng; dòng có `product` `null` không có link): nội dung chi tiết đơn (trạng thái, trạng thái thanh toán, ngày, sản phẩm với đơn giá `MoneyText` × số lượng, vận chuyển + địa chỉ, thanh toán với tạm tính / phí ship / tổng bằng `MoneyText`, ghi chú). Khi truyền `paymentTab` (nội dung tab "Thanh toán") panel hiện thanh tab Chi tiết / Thanh toán (`FormTabs`); không truyền thì không có tab. `notice` là khối thông báo đặt ngay dưới tiêu đề, trên cả hai tab (Orders dùng cho banner hoàn tiền). Dùng trong Orders (có tab, khi user có `PAYMENT_ADMIN_VIEW`) và Users (không tab). Chuỗi: `admin.components.orderDetailPanel`.
 - `PendingActionNotice({ count, title, includes, excludes?, how, note?, active, viewLabel, viewAllLabel?, onToggle, keepWhenDone?, extra? })`: khung "việc cần xử lý" ở đầu trang admin: tiêu đề kèm số, giải thích đếm gì / không đếm gì, "Cách xử lý", nút bật/tắt bộ lọc (`active` → nhãn đổi thành `viewAllLabel`, mặc định "Xem tất cả"). Vàng nhạt, không phải màu cảnh báo. `count` là `undefined` (thiếu quyền) hoặc 0 thì ẩn; với `keepWhenDone` và `active`, ở 0 còn lại một dòng "Đã xử lý hết" kèm nút quay lại (dùng cho bộ lọc admin tự bật ở Orders và Payments). Chuỗi: `admin.components.pendingNotice`, còn nội dung từng trang nằm ở `pending.*` của namespace trang đó.
 - `CopyButton({ value, label })`: icon sao chép nhỏ (ô 28 px, vùng bấm ≈ 44 px): ghi `value` vào clipboard, toast `shared.feedback.copy.copied` / `failed`, đổi sang dấu tick 1,5 s; `label` chỉ dùng cho `aria-label`/`title` ("Sao chép <label>"). Dùng ở checkout (`DetailRow`) và admin (mã chuyển khoản, mã giao dịch).
 - `OrderPaymentBadge({ status })`: pill "Chưa thanh toán" / "Đã thanh toán" / "Đã hoàn tiền" của đơn (`unpaid` / `paid` / `refunded`), nhãn qua `useOrderPaymentStatusLabel` (`common.orderPaymentStatus`); dùng ở bảng đơn, panel đơn và bảng đối soát.
@@ -107,3 +107,4 @@ Chuỗi nằm ở `shared.reviews` (`starsAria`, `productRating`, `edited`, `sto
 - `hasPublicPrice(badge)` (`src/lib/product-purchase.ts`): `false` cho `custom_order`; mọi nơi hiện giá sản phẩm ở storefront dùng nó và hiện `common.priceOnRequest` ("Liên hệ để báo giá" / "Price on request") thay giá.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](./design-system.md) 4.3).
+- `ProductLink({ product, newTab?, className, children })`: link tới trang sản phẩm dựng bằng `productPath(product)` ([data-layer](./data-layer.md) 4.3b) cho `ProductSummary` của dòng đơn / đánh giá; `product` `null` (đã xóa) hoặc thiếu slug → children nằm trong `<span>`, không có link. `newTab` thêm `target="_blank" rel="noopener noreferrer"`: dùng ở nơi rời trang sẽ mất dữ liệu đang nhập (form đánh giá) hoặc rời khu admin (`OrderDetailPanel`).

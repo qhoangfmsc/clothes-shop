@@ -1,6 +1,6 @@
 # Customer returns (trả hàng của khách)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-19
 > **Code:** `(private)/returns/` — `layout.tsx`, `page.tsx`, `ReturnsContent.tsx`, `[returnId]/{page.tsx,ReturnDetailContent.tsx}`, `new/{page.tsx,NewReturnContent.tsx}`, `_common/{types,constants,use-return-eligibility}.ts`, `_components/{ReturnStatusBadge,ReturnProgress,OrderReturnCard}.tsx`
 > **i18n:** `private.returns` (`meta`, `status`, `reason`, `ineligible`, `orderCard`, `list`, `detail`, `form`), `shared.errors.byCode` (1801, 1803, 1804)
 
@@ -47,3 +47,4 @@ Cho khách biết đơn nào còn trả được (và đến hạn nào), trả 
 Đơn giao xong mới trả được; admin xử lý ở [admin/returns](../admin/returns.md); khoản hoàn hiện cả ở thẻ "Hoàn tiền" của chi tiết đơn (`reason = RETURN` ghi "Hoàn tiền do trả hàng", có link sang yêu cầu).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.

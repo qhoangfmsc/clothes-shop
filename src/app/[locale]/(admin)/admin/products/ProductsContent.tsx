@@ -328,7 +328,7 @@ export default function ProductsContent() {
       originalPriceVnd: p.originalPriceVnd !== null ? maskVndInput(String(p.originalPriceVnd)) : "",
       images: [...p.images],
       categoryId: p.category?.id ?? "",
-      subcategoryId: p.subcategory?.id ? String(p.subcategory.id) : "",
+      subcategoryId: p.subcategory?.id ?? "",
       badge: p.badge,
       status: p.status,
       description: p.description,

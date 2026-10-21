@@ -179,7 +179,7 @@ export default function CategoriesContent() {
       ...p,
       subcategories: [
         ...p.subcategories,
-        { id: 0, slug: "", label: "", description: "", count: 0 },
+        { slug: "", label: "", description: "", count: 0 },
       ],
     }));
 

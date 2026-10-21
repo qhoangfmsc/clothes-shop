@@ -8,7 +8,7 @@
 import useSWR from "swr";
 import { authApi } from "@/src/lib/auth-api";
 import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
-import type { Product } from "@/src/types/product";
+import type { Product, ProductSummary } from "@/src/types/product";
 import type { Category } from "@/src/types/category";
 import type { Collection } from "@/src/types/collection";
 import type {
@@ -216,6 +216,8 @@ export interface AdminOrderItem {
   productId: string | null;
   productName: string;
   productImage: string;
+  /** The product as it is now (to link to it); `null` once it was deleted */
+  product: ProductSummary | null;
   /** Unit price at order time (the BE sends no line total) */
   priceVnd: number;
   priceUsd: number;

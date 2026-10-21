@@ -9,6 +9,7 @@ import type { AdminOrder } from "@/src/hooks/use-admin-api";
 import { useAddressFieldLabel, useOrderStatusLabel } from "@/src/i18n/use-labels";
 import { useShippingMethodName } from "@/src/hooks/use-api";
 import MoneyText from "./MoneyText";
+import ProductLink from "./ProductLink";
 import OrderPaymentBadge from "./OrderPaymentBadge";
 import { FormTabs } from "./AdminFormKit";
 
@@ -123,7 +124,12 @@ export default function OrderDetailPanel({ order, loading, onClose, paymentTab, 
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[var(--text-primary)]">{item.productName}</p>
+                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                  {/* Admin panel: the storefront page opens in a new tab so the panel stays where it is */}
+                  <ProductLink product={item.product} newTab className="text-inherit no-underline hover:underline">
+                    {item.productName}
+                  </ProductLink>
+                </p>
                 <p className="text-xs text-[var(--text-muted)]">
                   {item.size && t("size", { size: item.size })}
                   {item.size && item.color && " / "}

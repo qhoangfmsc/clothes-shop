@@ -9,7 +9,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import type { Product } from "@/src/types/product";
+import type { Product, ProductSummary } from "@/src/types/product";
 import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
@@ -21,6 +21,7 @@ import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ProductListParams, ProductListResponse } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
 import { mapMediaUrls } from "@/src/lib/media-url";
 import { useRouter } from "@/src/i18n/navigation";
+import { buildProductPath } from "@/src/lib/product-url";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -252,15 +253,11 @@ export function useBannerConfig(key: string) {
 
 /* ═══ Autocomplete — debounced search for nav dropdown ═══ */
 
-export interface AutocompleteItem {
-  id: string;
-  name: string;
-  slug: string;
+/** A `ProductSummary` plus its price (`badge`: `custom_order` products show no price in the search dropdown).
+ *  Entries kept in the search history before the BE sent `category` / `subcategory` lack them (read as `null`). */
+export interface AutocompleteItem extends ProductSummary {
   priceVnd: number;
   priceUsd: number;
-  image: string;
-  /** `custom_order` products show no price in the search dropdown. */
-  badge: ProductBadge | null;
 }
 
 export interface AutocompleteResponse {
@@ -376,17 +373,18 @@ export async function getProductUrl(id: string): Promise<string | null> {
 }
 
 /**
- * Link props for a product that was saved with only its id and category / sub-category slugs (cart line,
- * wishlist item). The cart and wishlist APIs do not load the product's category, so the slugs can be empty;
- * then `href` is `/shop` and a click looks the real URL up (`getProductUrl`) before navigating.
+ * Link props for a product kept as an id plus its category / sub-category slugs (cart line, wishlist item). The
+ * slugs come from the BE's `product.category` / `product.subcategory`; items saved in `localStorage` before the BE
+ * sent them have none: then `href` is `/shop` and a click looks the real URL up (`getProductUrl`) before navigating.
  */
 export function useProductLink() {
   const router = useRouter();
   return useCallback(
     (item: { productId: string; category?: string; subcategory?: string }) => {
-      const complete = Boolean(item.category && item.subcategory);
+      const path = buildProductPath(item.productId, item.category, item.subcategory);
+      const complete = path !== null;
       return {
-        href: complete ? `/shop/${item.category}/${item.subcategory}/${item.productId}` : "/shop",
+        href: path ?? "/shop",
         onClick: complete
           ? undefined
           : async (e: React.MouseEvent) => {

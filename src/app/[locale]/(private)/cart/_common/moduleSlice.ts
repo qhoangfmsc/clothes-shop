@@ -54,8 +54,8 @@ interface ServerCart {
         name: string;
         badge?: ProductBadge | null;
         images?: string[];
-        category?: { slug?: string } | string;
-        subcategory?: { slug?: string } | string;
+        category?: { slug: string } | null;
+        subcategory?: { slug: string } | null;
         colors?: { name: string; hex: string }[];
       };
       size: string;
@@ -64,9 +64,6 @@ interface ServerCart {
     }>;
   };
 }
-
-const slugOf = (value: { slug?: string } | string | undefined) =>
-  typeof value === "string" ? value : (value?.slug ?? "");
 
 function mapServerCart(res: ServerCart): CartItem[] {
   return (res.data?.items ?? []).map((si) => {
@@ -84,8 +81,8 @@ function mapServerCart(res: ServerCart): CartItem[] {
       color: si.color,
       colorHex: matchedColor?.hex ?? si.color,
       quantity: si.quantity,
-      category: slugOf(si.product?.category),
-      subcategory: slugOf(si.product?.subcategory),
+      category: si.product?.category?.slug ?? "",
+      subcategory: si.product?.subcategory?.slug ?? "",
       badge: si.product?.badge ?? null,
     };
   });
@@ -335,14 +332,7 @@ const cartSlice = createSlice({
           state.pendingAddKeys.includes(cartItemKey(i)) &&
           !serverKeys.has(cartItemKey(i))
       );
-      /* `GET /api/cart` does not load the product's category / sub-category (they come back empty): keep the slugs
-         the line was saved with so its link keeps working */
-      const slugsOf = new Map(state.items.map((i) => [i.productId, i]));
-      const merged = action.payload.map((i) => {
-        const local = slugsOf.get(i.productId);
-        return { ...i, category: i.category || local?.category || "", subcategory: i.subcategory || local?.subcategory || "" };
-      });
-      state.items = [...merged, ...inFlight];
+      state.items = [...action.payload, ...inFlight];
       pruneDeselected(state);
       state.isSyncing = false;
     });

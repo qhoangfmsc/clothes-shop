@@ -1,6 +1,6 @@
 # Categories (danh mục & danh mục con)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/categories` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/categories` · **Cập nhật:** 2026-10-19
 > **Code:** `(admin)/admin/categories/` — `CategoriesContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.categories`, `admin.components.crud`
 > **Redux slice:** `state.categories`
@@ -43,7 +43,7 @@ Giữ cấu trúc catalog: mỗi sản phẩm thuộc một danh mục và (nế
 
 ### 4.3 Kiểu dữ liệu
 
-`Category { id, slug, title, description, heroImage | null, priority (duy nhất, 1 = đầu), subcategories: SubCategory[], createdAt, updatedAt }`, `SubCategory { id: number, slug, label, description, count }`. Module: `CategoryListParams = ListParams`, `CategoryFormData`, `CategoryListResult`.
+`Category { id, slug, title, description, heroImage | null, priority (duy nhất, 1 = đầu), subcategories: SubCategory[], createdAt, updatedAt }`, `SubCategory { id (chuỗi), slug, label, description, count }`. Module: `CategoryListParams = ListParams`, `CategoryFormData`, `CategoryListResult`.
 
 ### 4.4 Liên quan
 
