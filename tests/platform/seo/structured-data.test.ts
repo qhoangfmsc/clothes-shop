@@ -119,8 +119,10 @@ describe("SEO-4E products with less data", () => {
     expect(productJsonLd("vi", product({ badge }), "/p")).toHaveProperty("offers");
   });
 
-  it("a sold-out product is still advertised as in stock (the public API has no stock levels)", () => {
-    expect(productJsonLd("vi", product({ badge: "sold_out" }), "/p").offers).toMatchObject({ availability: "https://schema.org/InStock" });
+  it("advertises a sold-out product as out of stock, and any other badge as in stock", () => {
+    expect(productJsonLd("vi", product({ badge: "sold_out" }), "/p").offers).toMatchObject({ availability: "https://schema.org/OutOfStock" });
+    expect(productJsonLd("vi", product({ badge: "new" }), "/p").offers).toMatchObject({ availability: "https://schema.org/InStock" });
+    expect(productJsonLd("vi", product({ badge: null }), "/p").offers).toMatchObject({ availability: "https://schema.org/InStock" });
   });
 
   it("leaves out category, material and colour when the product has none", () => {

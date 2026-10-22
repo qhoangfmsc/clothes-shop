@@ -1,6 +1,6 @@
 # Data layer — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
 > **Doc:** [platform/data-layer](../../docs/platform/data-layer.md) · **Test:** `tests/platform/data-layer/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -26,7 +26,7 @@ Mọi dữ liệu của FE đi qua module này: client HTTP, hợp đồng danh 
 
 **URL sản phẩm.** `buildProductPath(id, cat, sub)` → `/shop/<cat>/<sub>/<id>` hoặc `null` khi thiếu một slug; `productPath(product)` đọc slug từ `category`/`subcategory` (cho phép `null`).
 
-**Hook công khai (`use-api.ts`).** `fetcher`: lỗi HTTP → `Error("API error: <status>")`, thành công → JSON qua `mapMediaUrls`. `useProducts` trả `products`, `total`, `page`, `limit` (mặc định `[]`, 0, 1, 24), `isLoading`, `isError`; các hook còn lại trả giá trị mặc định rỗng khi chưa có dữ liệu hoặc lỗi. `useBannerConfig` không bao giờ báo lỗi: lỗi, JSON hỏng hoặc không phải mảng → `banners = []`. `useShippingMethodName()(id)` → tên phương thức hoặc `undefined`. `useRefreshShipping()` làm mới cache của `useShipping`. `useAutocomplete(limit)`: bỏ qua truy vấn ngắn hơn 2 ký tự (sau `trim`), chờ 300 ms, gửi `q` đã `trim` và `limit`, hủy request cũ, lỗi → kết quả rỗng. `getProductUrl(id)` → đường dẫn hoặc `null` (lỗi, thiếu slug). `useProductLink()` → `{ href, onClick? }`: đủ hai slug thì `href` là đường dẫn, không có `onClick`; thiếu thì `href = "/shop"` và `onClick` tra URL thật rồi điều hướng (không tra được thì `/shop`).
+**Hook công khai (`use-api.ts`).** `fetcher`: lỗi HTTP → `Error("API error: <status>")`, thành công → JSON qua `mapMediaUrls`. `useProducts` trả `products`, `total`, `page`, `limit` (mặc định `[]`, 0, 1, `LIST_DEFAULT_LIMIT` = 25), `isLoading`, `isError`; các hook còn lại trả giá trị mặc định rỗng khi chưa có dữ liệu hoặc lỗi. `useBannerConfig` không bao giờ báo lỗi: lỗi, JSON hỏng hoặc không phải mảng → `banners = []`. `useShippingMethodName()(id)` → tên phương thức hoặc `undefined`. `useRefreshShipping()` làm mới cache của `useShipping`. `useAutocomplete(limit)`: bỏ qua truy vấn ngắn hơn 2 ký tự (sau `trim`), chờ 300 ms, gửi `q` đã `trim` và `limit`, hủy request cũ, lỗi → kết quả rỗng. `getProductUrl(id)` → đường dẫn hoặc `null` (lỗi, thiếu slug). `useProductLink()` → `{ href, onClick? }`: đủ hai slug thì `href` là đường dẫn, không có `onClick`; thiếu thì `href = "/shop"` và `onClick` tra URL thật rồi điều hướng (không tra được thì `/shop`).
 
 **Hook admin (`use-admin-api.ts`).** Gọi `authApi` (có token, refresh khi 401). Trả danh sách rỗng và `isError` khi lỗi; các hàm ghi gọi API rồi `mutate()`; lỗi từ API (401 sau refresh thất bại, 403 thiếu quyền) làm `isError = true`. 401 xóa phiên và phát sự kiện hết phiên; 403 giữ nguyên phiên. FE không tự kiểm quyền: BE quyết định.
 
@@ -133,7 +133,6 @@ Các điểm đáng ngờ (test khóa hành vi hiện tại, không đổi; ch�
 
 | Phát hiện | Hành vi hiện tại |
 |---|---|
-| `useProducts` mặc định `limit` là 24 trong khi `LIST_DEFAULT_LIMIT` là 25 | Giá trị 24 chỉ hiện trước khi dữ liệu về |
 | Hook công khai và fetcher server ném `Error` thuần | Mất `status` và `errorCode`; không dịch được lỗi theo mã |
 | `baseCrudReducers` không nơi nào dispatch | Chết nhưng được trải vào 11 slice |
 | Proxy `/media` chỉ chuyển `Range`, đọc `MEDIA_STORAGE_ORIGIN` lúc nạp module | Upstream trả 304 thì thành 502 (hiện không xảy ra vì không chuyển `If-None-Match`); đổi biến môi trường cần khởi động lại |
@@ -150,3 +149,4 @@ Thay đổi nhìn thấy được: không. Thay đổi nội bộ: các kiểu v
 - 2026-10-21 · Phủ test toàn module (204 test, 14 file) và kiểm thử đột biến 46/46 (2 đột biến tương đương đã loại: `getProductUrl` bắt `TypeError` nên `||`/`&&` cho cùng kết quả; `fetch` coi 206 là `ok`). Chuyển `ProductListParams`, `ProductListResponse`, `buildProductQS` sang `src/lib/product-list.ts` (hook không còn import từ `src/app`, hết hàm chép đôi); `server-fetchers.ts` export lại các kiểu.
 - 2026-10-22 · Tách `makeStore` và `attachPersistence` khỏi singleton `store`, `StoreProvider` nhận `store` tùy chọn: harness test (batch 2) cần store sạch cho mỗi lần render. Singleton và hành vi lưu trữ giữ nguyên.
 - 2026-10-22 · `toApiError` không còn điền `API error: <status>` khi BE không gửi `message`: để rỗng, nên toast và màn lỗi dùng chữ dịch thay vì chữ kỹ thuật. Hook công khai (`fetcher` của SWR) giữ `Error("API error: <status>")` vì chỉ dùng cờ `isError`.
+- 2026-10-23 · Sửa: `useProducts` mặc định `limit` = `LIST_DEFAULT_LIMIT` (25) thay vì 24 chép tay.

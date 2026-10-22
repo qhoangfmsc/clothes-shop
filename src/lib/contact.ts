@@ -14,7 +14,7 @@ export const CONTACT_ADDRESS_PARTS = {
   addressCountry: "VN",
 } as const;
 
-/** Public "Share" link of the DOOVAN Google Business Profile; `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` overrides it. */
+/** Public "Share" link of the DOOVAN Google Business Profile. */
 export const GOOGLE_BUSINESS_URL = "https://share.google/IW85rWWlr0HKopGIX";
 
 /** Where every "address" link goes (opens the Maps app on phones): the business profile. */

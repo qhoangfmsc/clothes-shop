@@ -314,5 +314,11 @@
       "tests/platform/data-layer/store-factory.test.tsx",
       "tests/platform/data-layer/store.test.tsx"
     ]
+  },
+  {
+    "name": "use-api: the default page size is not the list default",
+    "file": "src/hooks/use-api.ts",
+    "find": "limit: data?.limit ?? LIST_DEFAULT_LIMIT,",
+    "replace": "limit: data?.limit ?? 24,"
   }
 ]

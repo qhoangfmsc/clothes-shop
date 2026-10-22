@@ -1,6 +1,6 @@
 # SEO — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
 > **Doc:** [platform/seo](../../docs/platform/seo.md) · **Test:** `tests/platform/seo/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -23,7 +23,7 @@ Công cụ tìm kiếm chỉ thấy những gì `robots.txt`, `sitemap.xml` và 
 - **Thương hiệu**: `BRAND_NAME = "DOOVAN"`, `BRAND_ALTERNATE_NAME = "Doovan"`, `BRAND_FOUNDING_YEAR = "2026"`.
 - **robots**: sản xuất (hoặc không chạy trên Vercel): `allow /`, `disallow` `/api/` cộng `/<locale><đường dẫn riêng tư>` cho mọi locale (`/admin`, `/login`, `/cart`, `/checkout`, `/account`, `/orders`, `/returns`, `/reviews`, `/wishlist`, `/unauthorized`), `sitemap = SITE_URL/sitemap.xml`. Khi `VERCEL_ENV` có giá trị khác `production` (preview, development): chặn toàn bộ (`disallow /`) và không khai sitemap. Giá trị `VERCEL_ENV` đọc lúc nạp module.
 - **sitemap** (`revalidate = 3600`): mỗi đường dẫn có một entry cho mỗi locale, kèm `alternates.languages` (mọi locale và `x-default` trỏ locale mặc định). Đường dẫn tĩnh: trang chủ, `/shop`, `/collections`, `/new-in`, `/about`, `/contact` và ba trang pháp lý; trang hub `/legal` không có. `priority`: trang chủ 1, trang tĩnh 0.8, sản phẩm 0.9, danh mục và bộ sưu tập 0.7, danh mục con 0.6. `lastModified`: trang chủ, `/shop`, `/new-in` lấy ngày cập nhật mới nhất của sản phẩm; `/collections` của bộ sưu tập; danh mục và danh mục con theo sản phẩm mới nhất bên trong; sản phẩm và bộ sưu tập theo `updatedAt` của chính nó. Danh mục con không có sản phẩm bị bỏ (trừ khi danh sách sản phẩm bị lỗi). Sản phẩm thiếu danh mục hoặc danh mục con bị bỏ. Sản phẩm và bộ sưu tập kèm ảnh tuyệt đối. Sản phẩm lấy theo trang 200, dừng khi hết dữ liệu, khi đủ `total` hoặc sau 100 trang. Mỗi nguồn (danh mục, bộ sưu tập, sản phẩm) lỗi riêng thì chỉ mất phần của nó.
-- **structured-data**: `absoluteUrl` giữ URL tuyệt đối, thêm `SITE_URL` cho đường dẫn tương đối; `pageUrl(locale, path)`; `breadcrumbJsonLd` (vị trí từ 1, URL tuyệt đối theo locale); `siteNavigationJsonLd`; `productJsonLd`: loại `Product`, ảnh tuyệt đối, thương hiệu DOOVAN, `category`/`material`/`color` chỉ khi có, `offers` chỉ khi `hasPublicPrice(badge)` (khác `custom_order`) với `priceCurrency` và `price` theo ngôn ngữ (`vi`: VND và `priceVnd`; khác: USD và `priceUsd`), luôn `InStock` và `NewCondition`, không có `aggregateRating`; `siteJsonLd`: hai nút `WebSite` và `ClothingStore` nối bằng `@id = SITE_URL/#organization`.
+- **structured-data**: `absoluteUrl` giữ URL tuyệt đối, thêm `SITE_URL` cho đường dẫn tương đối; `pageUrl(locale, path)`; `breadcrumbJsonLd` (vị trí từ 1, URL tuyệt đối theo locale); `siteNavigationJsonLd`; `productJsonLd`: loại `Product`, ảnh tuyệt đối, thương hiệu DOOVAN, `category`/`material`/`color` chỉ khi có, `offers` chỉ khi `hasPublicPrice(badge)` (khác `custom_order`) với `priceCurrency` và `price` theo ngôn ngữ (`vi`: VND và `priceVnd`; khác: USD và `priceUsd`), `InStock` (`OutOfStock` khi `getPurchaseMode(badge)` là `soldOut`) và `NewCondition`, không có `aggregateRating`; `siteJsonLd`: hai nút `WebSite` và `ClothingStore` nối bằng `@id = SITE_URL/#organization`.
 - **`JsonLd`**: thẻ `<script type="application/ld+json">`; mọi ký tự `<` trong dữ liệu bị đổi thành `<` nên không thể đóng thẻ.
 
 ## 4. Thiết kế
@@ -90,8 +90,7 @@ Coverage: các file của module ≥ 90% dòng trong `tests/_support/coverage.js
 
 | Phát hiện | Hành vi hiện tại (test khóa) |
 |---|---|
-| `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` được doc và comment nói là ghi đè link Google Business | Không có code nào đọc biến này; `GOOGLE_BUSINESS_URL` là hằng cố định |
-| Sản phẩm `sold_out` vẫn được khai `InStock` | Theo thiết kế ghi trong code (API công khai không có tồn kho), nhưng Google có thể hiển thị sai tình trạng |
+| `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` từng được doc và comment nói là ghi đè link Google Business | Không có code đọc biến này và không cần: `GOOGLE_BUSINESS_URL` là hằng cố định, lời nhắc đã bị xóa khỏi comment và doc |
 | Sitemap duyệt sản phẩm tuần tự, tối đa 100 trang × 200 | Trên 20.000 sản phẩm sẽ bị cắt; mỗi lần dựng gọi API nhiều lần |
 | `SITE_URL` và `VERCEL_ENV` đọc lúc nạp module | Đổi biến cần khởi động lại; trên Vercel không ảnh hưởng vì mỗi bản deploy có môi trường riêng |
 | Doc ghi `LEGAL_LAST_UPDATED` là `2026-10-11` | Code là `2026-10-13`; doc được sửa |
@@ -102,3 +101,4 @@ Thay đổi nhìn thấy được: không.
 
 - 2026-10-22 · Viết spec và test khóa hành vi hiện tại (batch 1). Không đổi code.
 - 2026-10-22 · Phủ test (60 ca) và kiểm thử đột biến 34/34. Doc sửa: `LEGAL_LAST_UPDATED` và việc `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` chưa được đọc ở đâu.
+- 2026-10-23 · Sửa: sản phẩm `sold_out` khai `OutOfStock` (trước đây luôn `InStock`, Google có thể hiển thị sai tình trạng); kiểm thử đột biến 35/35.

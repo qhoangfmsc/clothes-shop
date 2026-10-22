@@ -50,7 +50,7 @@ describe("API-1 hooks return data, with sensible values before it arrives", () =
 
     const { result } = renderHook(() => useProducts({ category: "tops", sort: "-price", page: 2, limit: 12 }), { wrapper });
 
-    expect(result.current).toMatchObject({ products: [], total: 0, page: 1, limit: 24, isLoading: true, isError: false });
+    expect(result.current).toMatchObject({ products: [], total: 0, page: 1, limit: 25, isLoading: true, isError: false });
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(urls).toEqual(["/api/products?category=tops&sort=-price&page=2&limit=12"]);
     expect(result.current).toMatchObject({ products: [{ id: "p1", images: ["/media/a.jpg"] }], total: 41, page: 2, limit: 12 });

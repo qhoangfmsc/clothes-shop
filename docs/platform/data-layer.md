@@ -1,6 +1,6 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-22
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-23
 > **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/product-list.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
@@ -118,4 +118,4 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.11 Thiết kế và test
 
-Thiết kế, các điểm cần biết (hook công khai và fetcher server ném `Error` thuần, `useProducts` mặc định `limit` 24, `baseCrudReducers` không nơi nào dispatch, proxy không chuyển `Content-Range`, `uploadMediaFile` không refresh khi 401) và nợ thiết kế: [specs/platform/data-layer.md](../../specs/platform/data-layer.md). Test ở `tests/platform/data-layer/` (204 ca, Vitest + MSW): `api-error`, `api`, `list-query`, `media-url`, `product-url`, `types`, `use-debounce`, `use-api`, `use-autocomplete`, `use-admin-api`, `media-upload`, `media-proxy`, `server-fetchers`, `store`; `mutants.json` có 46 đột biến, `yarn test:mutants platform/data-layer` bắt cả 46. Hook admin được test với bốn danh tính (chưa đăng nhập: 401 rồi xóa phiên; khách hàng và admin thiếu quyền: 403 giữ phiên; admin đủ quyền).
+Thiết kế, các điểm cần biết (hook công khai và fetcher server ném `Error` thuần, `baseCrudReducers` không nơi nào dispatch, proxy không chuyển `Content-Range`, `uploadMediaFile` không refresh khi 401) và nợ thiết kế: [specs/platform/data-layer.md](../../specs/platform/data-layer.md). Test ở `tests/platform/data-layer/` (204 ca, Vitest + MSW): `api-error`, `api`, `list-query`, `media-url`, `product-url`, `types`, `use-debounce`, `use-api`, `use-autocomplete`, `use-admin-api`, `media-upload`, `media-proxy`, `server-fetchers`, `store`; `mutants.json` có 46 đột biến, `yarn test:mutants platform/data-layer` bắt cả 46. Hook admin được test với bốn danh tính (chưa đăng nhập: 401 rồi xóa phiên; khách hàng và admin thiếu quyền: 403 giữ phiên; admin đủ quyền).

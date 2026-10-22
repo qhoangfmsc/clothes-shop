@@ -4,7 +4,7 @@ import { BRAND_ALTERNATE_NAME, BRAND_FOUNDING_YEAR, BRAND_NAME } from "./brand";
 import { CONTACT_ADDRESS_PARTS, CONTACT_EMAIL, CONTACT_PHONE_E164, GOOGLE_BUSINESS_URL } from "./contact";
 import { SITE_URL } from "./site-url";
 import { currencyForLocale, moneyValue } from "./money";
-import { hasPublicPrice } from "./product-purchase";
+import { getPurchaseMode, hasPublicPrice } from "./product-purchase";
 import { SOCIALS } from "./socials";
 
 /** Schema.org needs absolute URLs; API images arrive as site-relative `/media/...` paths. */
@@ -38,7 +38,7 @@ export function breadcrumbJsonLd(locale: AppLocale, crumbs: BreadcrumbEntry[]) {
 }
 
 /** `Product` with one `Offer` (none for custom-order products), in the page language like the visible price: `priceVnd` on `vi`, `priceUsd` elsewhere.
- *  The public API returns only `active` products and no stock levels, so every listed product is advertised as in stock.
+ *  The public API has no stock levels, so a product is in stock unless its badge says `sold_out`.
  *  No `aggregateRating`: it must reflect real reviews. */
 export function productJsonLd(locale: AppLocale, product: Product, path: string) {
   const url = pageUrl(locale, path);
@@ -62,7 +62,7 @@ export function productJsonLd(locale: AppLocale, product: Product, path: string)
         url,
         priceCurrency: currencyForLocale(locale),
         price: moneyValue({ vnd: product.priceVnd, usd: product.priceUsd }, locale),
-        availability: "https://schema.org/InStock",
+        availability: `https://schema.org/${getPurchaseMode(product.badge) === "soldOut" ? "OutOfStock" : "InStock"}`,
         itemCondition: "https://schema.org/NewCondition",
       },
     }),

@@ -4,7 +4,7 @@ import type { Product, ProductSummary } from "@/src/types/product";
 import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
-import { buildListQuery, LIST_MAX_LIMIT } from "@/src/lib/list-query";
+import { buildListQuery, LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import type { Collection } from "@/src/types/collection";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
@@ -50,7 +50,7 @@ export function useProducts(params: ProductListParams = {}) {
     products: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 24,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isError: !!error,
     mutate,

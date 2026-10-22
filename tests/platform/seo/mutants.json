@@ -174,10 +174,10 @@
     "replace": "image: product.images,"
   },
   {
-    "name": "structured-data: the product is out of stock",
+    "name": "structured-data: every product is out of stock",
     "file": "src/lib/structured-data.ts",
-    "find": "availability: \"https://schema.org/InStock\"",
-    "replace": "availability: \"https://schema.org/OutOfStock\""
+    "find": "getPurchaseMode(product.badge) === \"soldOut\" ? \"OutOfStock\" : \"InStock\"",
+    "replace": "\"OutOfStock\""
   },
   {
     "name": "structured-data: the store loses its id",
@@ -202,5 +202,11 @@
     "file": "src/app/[locale]/_components/JsonLd.tsx",
     "find": ".replace(/</g, \"\\\\u003c\")",
     "replace": ""
+  },
+  {
+    "name": "structured-data: a sold-out product is in stock",
+    "file": "src/lib/structured-data.ts",
+    "find": "getPurchaseMode(product.badge) === \"soldOut\" ? \"OutOfStock\" : \"InStock\"",
+    "replace": "\"InStock\""
   }
 ]
