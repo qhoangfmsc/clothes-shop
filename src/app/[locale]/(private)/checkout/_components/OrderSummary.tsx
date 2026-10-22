@@ -24,6 +24,7 @@ interface OrderSummaryProps {
   paymentMethod: PaymentMethod;
   isSubmitting: boolean;
   onPlaceOrder: () => void;
+  onRetryQuote: () => void;
 }
 
 const LEGAL_LINK = "underline underline-offset-2 hover:text-[var(--text-primary)]";
@@ -40,6 +41,7 @@ export default function OrderSummary({
   paymentMethod,
   isSubmitting,
   onPlaceOrder,
+  onRetryQuote,
 }: OrderSummaryProps) {
   const t = useTranslations("private.checkout.summary");
   const { fmt, fmtOrNull } = useMoney();
@@ -163,6 +165,15 @@ export default function OrderSummary({
             } ${!quote || quoteFailed ? "text-xs text-[var(--text-muted)]" : ""}`}
           >
             {shippingText}
+            {quoteFailed && !quoteLoading && (
+              <button
+                type="button"
+                onClick={onRetryQuote}
+                className="ml-2 min-h-11 px-2 bg-transparent border-none cursor-pointer font-primary text-xs text-[var(--text-accent)] underline underline-offset-2"
+              >
+                {t("shipping.retry")}
+              </button>
+            )}
           </dd>
         </div>
         <div className="flex justify-between items-baseline gap-3 pt-2 border-t border-[var(--border-subtle)] text-[var(--text-heading)] font-medium">
@@ -181,7 +192,7 @@ export default function OrderSummary({
       <button
         type="button"
         onClick={onPlaceOrder}
-        disabled={isSubmitting}
+        disabled={isSubmitting || (quoteFailed && !quoteLoading)}
         className="flex items-center justify-center w-full min-h-12 py-3.5 px-6 rounded-full bg-[var(--accent-primary)] text-[var(--text-on-gold)] font-primary text-sm font-medium tracking-[-0.02em] uppercase border-none cursor-pointer shadow-[var(--shadow-gold-sm)] transition-all duration-150 enabled:hover:opacity-90 enabled:hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed motion-reduce:transition-none"
       >
         {isSubmitting ? t("placing") : paymentMethod === "vietqr" ? t("placeAndPay") : t("place")}

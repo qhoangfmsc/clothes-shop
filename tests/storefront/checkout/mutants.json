@@ -147,8 +147,8 @@
   {
     "name": "quote: a changed quantity is not asked again",
     "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
-    "find": "${cartItemKey(item)}:${item.quantity}:${item.serverItemId ?? \"\"}",
-    "replace": "${cartItemKey(item)}:${item.serverItemId ?? \"\"}",
+    "find": "${cartItemKey(item)}:${item.quantity}`",
+    "replace": "${cartItemKey(item)}`",
     "tests": [
       "tests/storefront/checkout/use-order-quote.test.tsx"
     ]
@@ -156,8 +156,8 @@
   {
     "name": "quote: a changed shipping method is not asked again",
     "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
-    "find": "[enabled, linesKey, shippingMethod, apiFetch, dispatch]",
-    "replace": "[enabled, linesKey, apiFetch, dispatch]",
+    "find": "[enabled, linesKey, shippingMethod, attempt, apiFetch, dispatch]",
+    "replace": "[enabled, linesKey, attempt, apiFetch, dispatch]",
     "tests": [
       "tests/storefront/checkout/use-order-quote.test.tsx"
     ]
@@ -167,15 +167,6 @@
     "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
     "find": "if (!enabled || !linesKey) return;",
     "replace": "if (!linesKey) return;",
-    "tests": [
-      "tests/storefront/checkout/use-order-quote.test.tsx"
-    ]
-  },
-  {
-    "name": "quote: an old error stays after a good answer",
-    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
-    "find": "        setQuote(res.data);\n        setError(null);",
-    "replace": "        setQuote(res.data);",
     "tests": [
       "tests/storefront/checkout/use-order-quote.test.tsx"
     ]
@@ -328,8 +319,8 @@
   {
     "name": "page: an empty second address line is sent as an empty text",
     "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
-    "find": "addressLine2: address.addressLine2 || undefined,",
-    "replace": "addressLine2: address.addressLine2,",
+    "find": "addressLine2: address.addressLine2.trim() || undefined,",
+    "replace": "addressLine2: address.addressLine2.trim(),",
     "tests": [
       "tests/storefront/checkout/checkout-order.test.tsx"
     ]
@@ -337,8 +328,8 @@
   {
     "name": "page: an emptied country is sent empty",
     "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
-    "find": "country: address.country || \"Vietnam\",",
-    "replace": "country: address.country,",
+    "find": "country: address.country.trim() || \"Vietnam\",",
+    "replace": "country: address.country.trim(),",
     "tests": [
       "tests/storefront/checkout/checkout-order.test.tsx"
     ]
@@ -355,8 +346,8 @@
   {
     "name": "page: an empty note is sent as an empty text",
     "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
-    "find": "note: address.notes || undefined,",
-    "replace": "note: address.notes,",
+    "find": "note: address.notes.trim() || undefined,",
+    "replace": "note: address.notes.trim(),",
     "tests": [
       "tests/storefront/checkout/checkout-order.test.tsx"
     ]
@@ -395,15 +386,6 @@
     "replace": "",
     "tests": [
       "tests/storefront/checkout/checkout-order.test.tsx"
-    ]
-  },
-  {
-    "name": "page: the price of the old method is shown for the new one",
-    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
-    "find": "const currentQuote = quote?.shippingMethod === shippingMethod ? quote : null;",
-    "replace": "const currentQuote = quote;",
-    "tests": [
-      "tests/storefront/checkout/checkout-page.test.tsx"
     ]
   },
   {
@@ -490,8 +472,8 @@
   {
     "name": "summary: the button stays open while sending",
     "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
-    "find": "disabled={isSubmitting}",
-    "replace": "disabled={false}",
+    "find": "disabled={isSubmitting || (quoteFailed && !quoteLoading)}",
+    "replace": "disabled={quoteFailed && !quoteLoading}",
     "tests": [
       "tests/storefront/checkout/checkout-order.test.tsx"
     ]
@@ -666,6 +648,99 @@
     "replace": "String(Math.floor(totalSeconds / 60))",
     "tests": [
       "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: the ids a line gets from the BE count as a new question",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "${cartItemKey(item)}:${item.quantity}`",
+    "replace": "${cartItemKey(item)}:${item.quantity}:${item.serverItemId ?? \"\"}`"
+  },
+  {
+    "name": "quote: an old price stays after asking again fails",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "        setQuote(null);\n        setError(err);",
+    "replace": "        setError(err);"
+  },
+  {
+    "name": "quote: a new question keeps the old error",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "    setIsLoading(true);\n    setError(null);",
+    "replace": "    setIsLoading(true);"
+  },
+  {
+    "name": "quote: retry does nothing",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "const retry = useCallback(() => setAttempt((n) => n + 1), []);",
+    "replace": "const retry = useCallback(() => setAttempt((n) => n), []);"
+  },
+  {
+    "name": "page: the address text is sent with its spaces",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "fullName: address.fullName.trim(),\n          phone: address.phone.trim(),\n          addressLine1: address.addressLine1.trim(),",
+    "replace": "fullName: address.fullName,\n          phone: address.phone,\n          addressLine1: address.addressLine1,"
+  },
+  {
+    "name": "page: city and optional fields keep their spaces",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "city: address.city.trim(),\n          province: address.province.trim() || undefined,\n          postalCode: address.postalCode.trim() || undefined,",
+    "replace": "city: address.city,\n          province: address.province || undefined,\n          postalCode: address.postalCode || undefined,"
+  },
+  {
+    "name": "page: a space-only note is sent",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "note: address.notes.trim() || undefined,",
+    "replace": "note: address.notes || undefined,"
+  },
+  {
+    "name": "page: a retried order saves the address again",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "savedAddressRef.current?.key === key ? savedAddressRef.current.id : undefined",
+    "replace": "undefined"
+  },
+  {
+    "name": "page: an edited address reuses the old address id",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "savedAddressRef.current?.key === key ?",
+    "replace": "savedAddressRef.current ?"
+  },
+  {
+    "name": "page: the saved address is never remembered",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "savedAddressRef.current = { key, id: addressId };",
+    "replace": ""
+  },
+  {
+    "name": "page: the retry button of the price is not wired",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "onRetryQuote={retryQuote}",
+    "replace": "onRetryQuote={() => {}}"
+  },
+  {
+    "name": "summary: the order can be placed without a price",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "disabled={isSubmitting || (quoteFailed && !quoteLoading)}",
+    "replace": "disabled={isSubmitting}"
+  },
+  {
+    "name": "summary: no way to try the price again",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "{quoteFailed && !quoteLoading && (",
+    "replace": "{false && ("
+  },
+  {
+    "name": "summary: the retry button never calls back",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "onClick={onRetryQuote}",
+    "replace": "onClick={() => {}}"
+  },
+  {
+    "name": "quote: the price of the old method is returned for the new one",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "quote: quote?.shippingMethod === shippingMethod ? quote : null,",
+    "replace": "quote,",
+    "tests": [
+      "tests/storefront/checkout"
     ]
   }
 ]

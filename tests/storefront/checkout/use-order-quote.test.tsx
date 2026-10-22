@@ -1,4 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 import type { CartItem } from "@/src/app/[locale]/(private)/cart/_common/types";
@@ -17,10 +18,14 @@ interface ProbeProps {
   enabled?: boolean;
 }
 
+const seen: { asked: string; answered: string | undefined }[] = [];
+
 function Probe({ items, method, enabled = true }: ProbeProps) {
   const result = useOrderQuote(items, method, enabled);
+  seen.push({ asked: method, answered: result.quote?.shippingMethod });
   return (
     <div>
+      <button onClick={result.retry}>retry</button>
       <p>{result.quote ? `quote ${result.quote.shippingMethod} ${result.quote.totalVnd}` : "no quote"}</p>
       <p>{result.error ? "failed" : "no error"}</p>
       <p>{result.isLoading ? "loading" : "idle"}</p>
@@ -118,6 +123,29 @@ describe("CHK-3 asking the BE for a price", () => {
     expect(calls.quotes).toHaveLength(1);
   });
 
+  it("does not ask again when the same lines get their ids, as happens after the BE cart was read", async () => {
+    const calls = backend({ cart: [A({ serverItemId: "srv-from-be" })] });
+    const view = await show([A({ serverItemId: undefined })]);
+    await screen.findByText("quote standard 380000");
+
+    view.rerender(<Probe items={[A({ serverItemId: "srv-from-be" })]} method="standard" />);
+    await new Promise((resolve) => setTimeout(resolve, 150));
+
+    expect(calls.quotes).toHaveLength(1);
+  });
+
+  it("never hands out the price of another method, not even in the render right after the method changed", async () => {
+    backend();
+    seen.length = 0;
+    const view = await show([A()]);
+    await screen.findByText("quote standard 380000");
+
+    view.rerender(<Probe items={[A()]} method="express" />);
+    expect(await screen.findByText(/^quote express/)).toBeInTheDocument();
+
+    expect(seen.filter((r) => r.answered && r.answered !== r.asked)).toEqual([]);
+  });
+
   it("drops the answer of an older question: a slow answer for the old method never shows over the new one", async () => {
     let release!: () => void;
     const open = new Promise<void>((resolve) => (release = resolve));
@@ -196,6 +224,36 @@ describe("CHK-3E ids that are out of date, and a quote that cannot be had", () =
 
     expect(await screen.findByText("quote express 410000")).toBeInTheDocument();
     expect(screen.getByText("no error")).toBeInTheDocument();
+  });
+
+  it("forgets the last price when asking again fails, so an old price is never shown for the new question", async () => {
+    let asked = 0;
+    server.use(
+      http.post(`${API}/api/orders/quote`, async ({ request }) => {
+        const { shippingMethod } = (await request.json()) as { shippingMethod: ShippingMethodId };
+        return ++asked === 1 ? HttpResponse.json({ data: quote({ shippingMethod }) }) : HttpResponse.json({ message: "boom" }, { status: 500 });
+      })
+    );
+    const view = await show([A()]);
+    expect(await screen.findByText("quote standard 380000")).toBeInTheDocument();
+
+    view.rerender(<Probe items={[A({ quantity: 2 })]} method="standard" />);
+
+    expect(await screen.findByText("failed")).toBeInTheDocument();
+    expect(screen.getByText("no quote")).toBeInTheDocument();
+  });
+
+  it("asks again on retry and shows the answer, clearing the error", async () => {
+    let asked = 0;
+    server.use(http.post(`${API}/api/orders/quote`, () => (++asked === 1 ? HttpResponse.json({ message: "boom" }, { status: 500 }) : HttpResponse.json({ data: quote() }))));
+    await show([A()]);
+    expect(await screen.findByText("failed")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: "retry" }));
+
+    expect(await screen.findByText("quote standard 380000")).toBeInTheDocument();
+    expect(screen.getByText("no error")).toBeInTheDocument();
+    expect(asked).toBe(2);
   });
 
   it("asks nothing when it is switched off", async () => {

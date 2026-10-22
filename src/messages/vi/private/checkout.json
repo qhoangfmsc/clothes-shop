@@ -58,7 +58,8 @@
       "unlocked": "🎉 Bạn đã được miễn phí vận chuyển!",
       "remaining": "Mua đủ {amount} để được miễn phí vận chuyển",
       "freeNote": "Miễn phí vận chuyển cho đơn hàng từ {amount} trở lên.",
-      "unavailable": "Không tải được phí vận chuyển"
+      "unavailable": "Không tải được phí vận chuyển",
+      "retry": "Thử lại"
     },
     "total": "Tổng thanh toán",
     "place": "Đặt hàng",

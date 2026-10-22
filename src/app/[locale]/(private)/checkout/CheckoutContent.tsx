@@ -67,17 +67,18 @@ export default function CheckoutContent() {
   /* The order exists and the page is leaving: keep the skeleton instead of flashing the empty bag */
   const [isRedirecting, setIsRedirecting] = useState(false);
   const beginTrackedRef = useRef(false);
+  /* An address already saved for this exact text is reused when an order is refused and tried again */
+  const savedAddressRef = useRef<{ key: string; id: string } | null>(null);
 
   const pickup = shippingMethod === "store-pickup";
   const { shipping, isError: shippingFailed } = useShipping();
   const selectedMethod = shipping?.methods.find((m) => m.id === shippingMethod);
   const {
-    quote,
+    quote: currentQuote,
     error: quoteError,
     isLoading: quoteLoading,
+    retry: retryQuote,
   } = useOrderQuote(items, shippingMethod, isAuthenticated);
-  /* An answer for another method is not the price of this one */
-  const currentQuote = quote?.shippingMethod === shippingMethod ? quote : null;
 
   /* The session can resolve after the first render: prefill the name only while it is still empty */
   useEffect(() => {
@@ -88,10 +89,10 @@ export default function CheckoutContent() {
 
   /* The funnel value is the BE's subtotal of the first quote, in the currency of the UI language */
   useEffect(() => {
-    if (beginTrackedRef.current || !isAuthenticated || items.length === 0 || !quote) return;
+    if (beginTrackedRef.current || !isAuthenticated || items.length === 0 || !currentQuote) return;
     beginTrackedRef.current = true;
-    trackEvent("begin_checkout", { items: totalItems, ...moneyProp(moneyOf(quote, "subtotal"), locale) });
-  }, [isAuthenticated, items.length, totalItems, quote, locale]);
+    trackEvent("begin_checkout", { items: totalItems, ...moneyProp(moneyOf(currentQuote, "subtotal"), locale) });
+  }, [isAuthenticated, items.length, totalItems, currentQuote, locale]);
 
   const updateField = useCallback((field: keyof AddressForm, value: string) => {
     setAddress((prev) => ({ ...prev, [field]: value }));
@@ -126,21 +127,24 @@ export default function CheckoutContent() {
       if (pickup) {
         recipient = { pickupContact: { fullName: address.fullName.trim(), phone: address.phone.trim() } };
       } else {
-        const addrRes = await apiFetch<{ data: { id: string } }>("/api/addresses", {
-          method: "POST",
-          body: {
-            fullName: address.fullName,
-            phone: address.phone,
-            addressLine1: address.addressLine1,
-            addressLine2: address.addressLine2 || undefined,
-            city: address.city,
-            province: address.province || undefined,
-            postalCode: address.postalCode || undefined,
-            country: address.country || "Vietnam",
-          },
-        });
-        const addressId = addrRes.data?.id;
-        if (!addressId) throw new Error(t("toast.addressFailed"));
+        const body = {
+          fullName: address.fullName.trim(),
+          phone: address.phone.trim(),
+          addressLine1: address.addressLine1.trim(),
+          addressLine2: address.addressLine2.trim() || undefined,
+          city: address.city.trim(),
+          province: address.province.trim() || undefined,
+          postalCode: address.postalCode.trim() || undefined,
+          country: address.country.trim() || "Vietnam",
+        };
+        const key = JSON.stringify(body);
+        let addressId = savedAddressRef.current?.key === key ? savedAddressRef.current.id : undefined;
+        if (!addressId) {
+          const addrRes = await apiFetch<{ data: { id: string } }>("/api/addresses", { method: "POST", body });
+          addressId = addrRes.data?.id;
+          if (!addressId) throw new Error(t("toast.addressFailed"));
+          savedAddressRef.current = { key, id: addressId };
+        }
         recipient = { addressId };
       }
 
@@ -149,7 +153,7 @@ export default function CheckoutContent() {
         body: {
           ...recipient,
           shippingMethod,
-          note: address.notes || undefined,
+          note: address.notes.trim() || undefined,
           cartItemIds,
         },
       });
@@ -260,6 +264,7 @@ export default function CheckoutContent() {
               paymentMethod={paymentMethod}
               isSubmitting={isSubmitting}
               onPlaceOrder={handlePlaceOrder}
+              onRetryQuote={retryQuote}
             />
           </div>
         </div>

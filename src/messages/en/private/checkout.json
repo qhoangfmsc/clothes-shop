@@ -58,7 +58,8 @@
       "unlocked": "🎉 You've unlocked free shipping!",
       "remaining": "Reach {amount} to get free shipping",
       "freeNote": "Free shipping on orders of {amount} or more.",
-      "unavailable": "Couldn't load the shipping fee"
+      "unavailable": "Couldn't load the shipping fee",
+      "retry": "Try again"
     },
     "total": "Total",
     "place": "Place Order",

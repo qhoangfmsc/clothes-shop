@@ -125,16 +125,38 @@ describe("CHK-9 placing an order for delivery, paid by bank transfer", () => {
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
   });
 
-  it("sends the address as typed, spaces included (the shop-pick-up contact is trimmed; see the spec, section 7)", async () => {
+  it("sends every address field without the spaces around it, like the shop-pick-up contact", async () => {
     const { calls } = await renderCheckout([A()]);
+    await userEvent.clear(input("fullName", true));
+    await userEvent.type(input("fullName", true), "  Mai Tran ");
     await userEvent.type(input("phone", true), " 0901234567 ");
-    await userEvent.type(input("addressLine1", true), "1 Le Loi");
-    await userEvent.type(input("city", true), "HCM");
+    await userEvent.type(input("addressLine1", true), "  1 Le Loi ");
+    await userEvent.type(input("city", true), " HCM ");
+    await userEvent.type(input("province"), " Q1 ");
+    await userEvent.click(screen.getByRole("button", { name: msg("private.checkout.form.moreDetails") }));
+    await userEvent.type(input("addressLine2"), " Apt 5 ");
+    await userEvent.type(input("postalCode"), " 700000 ");
+    await userEvent.type(screen.getByRole("textbox", { name: msg("private.checkout.note.title") }), "  Gate 12  ");
 
     await userEvent.click(placeOrder());
 
-    await waitFor(() => expect(calls.addresses).toHaveLength(1));
-    expect(calls.addresses[0].phone).toBe(" 0901234567 ");
+    await waitFor(() => expect(calls.orders).toHaveLength(1));
+    expect(calls.addresses[0]).toEqual({ fullName: "Mai Tran", phone: "0901234567", addressLine1: "1 Le Loi", addressLine2: "Apt 5", city: "HCM", province: "Q1", postalCode: "700000", country: "Vietnam" });
+    expect(calls.orders[0].note).toBe("Gate 12");
+  });
+
+  it("leaves a field out when it holds only spaces", async () => {
+    const { calls } = await renderCheckout([A()]);
+    await fillDelivery();
+    await userEvent.type(input("province"), "   ");
+    await userEvent.click(screen.getByRole("button", { name: msg("private.checkout.form.moreDetails") }));
+    await userEvent.type(screen.getByRole("textbox", { name: msg("private.checkout.note.title") }), "   ");
+
+    await userEvent.click(placeOrder());
+
+    await waitFor(() => expect(calls.orders).toHaveLength(1));
+    expect(calls.addresses[0]).not.toHaveProperty("province");
+    expect(calls.orders[0]).not.toHaveProperty("note");
   });
 });
 
@@ -301,15 +323,45 @@ describe("CHK-10E an order that cannot be placed", () => {
     await stillThere(calls);
   });
 
-  it("an address saved before a refused order stays saved, and the next try saves another one (see the spec, section 7)", async () => {
+  it("tries again with the address already saved: no second address, the same address id in the order", async () => {
     const { calls } = await renderCheckout([A()], { order: { status: 400, body: { message: "no", errorCode: 1303 } } });
     await fillDelivery();
 
     await userEvent.click(placeOrder());
     await screen.findByText(msg("shared.errors.byCode.1303"));
+    await waitFor(() => expect(placeOrder()).toBeEnabled());
+    await userEvent.click(placeOrder());
+
+    await waitFor(() => expect(calls.orders).toHaveLength(2));
+    expect(calls.addresses).toHaveLength(1);
+    expect(calls.orders.map((o) => o.addressId)).toEqual(["addr-1", "addr-1"]);
+  });
+
+  it("saves a new address when the shopper changed it before trying again", async () => {
+    const { calls } = await renderCheckout([A()], { order: { status: 400, body: { message: "no", errorCode: 1303 } } });
+    await fillDelivery();
+    await userEvent.click(placeOrder());
+    await screen.findByText(msg("shared.errors.byCode.1303"));
+    await waitFor(() => expect(placeOrder()).toBeEnabled());
+
+    await userEvent.type(input("city", true), " Moi");
     await userEvent.click(placeOrder());
 
     await waitFor(() => expect(calls.addresses).toHaveLength(2));
+    expect(calls.addresses[1].city).toBe("Ho Chi Minh Moi");
+  });
+
+  it("does not place the order while the price is unknown, and sends nothing", async () => {
+    const { calls } = await renderCheckout([A()], { quote: () => "error" });
+    await fillDelivery();
+    await screen.findByText(msg("private.checkout.summary.shipping.unavailable"));
+
+    await userEvent.click(placeOrder());
+    await wait(150);
+
+    expect(calls.carts).toBe(0);
+    expect(calls.addresses).toEqual([]);
+    expect(calls.orders).toEqual([]);
   });
 
   it("locks the button while the order is being sent, and a second press sends nothing more", async () => {

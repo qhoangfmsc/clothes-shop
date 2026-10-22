@@ -450,7 +450,35 @@ describe("CHK-8E a summary without a price", () => {
     expect(await within(summary).findByText(S("shipping.unavailable"))).toBeInTheDocument();
     expect(within(summary).getAllByText("…").length).toBeGreaterThanOrEqual(2);
     expect(within(summary).queryByText(/VNĐ$/, { selector: "dd" })).not.toBeInTheDocument();
+  });
+
+  it("does not let the shopper place the order while the price is unknown", async () => {
+    await renderCheckout([A()], { quote: () => "error" });
+
+    await screen.findByText(S("shipping.unavailable"));
+
+    expect(placeOrder()).toBeDisabled();
+  });
+
+  it("offers to try the price again, and opens the order button when it works", async () => {
+    let asked = 0;
+    await renderCheckout([A()], { quote: (method) => (++asked === 1 ? "error" : defaultQuote(method)) });
+    const summary = screen.getByRole("heading", { name: S("title") }).closest("aside") as HTMLElement;
+    await within(summary).findByText(S("shipping.unavailable"));
+
+    await userEvent.click(within(summary).getByRole("button", { name: S("shipping.retry") }));
+
+    expect(await within(summary).findByText("380.000 VNĐ")).toBeInTheDocument();
+    expect(within(summary).queryByRole("button", { name: S("shipping.retry") })).not.toBeInTheDocument();
     expect(placeOrder()).toBeEnabled();
+  });
+
+  it("shows no retry button while the price is fine or still coming", async () => {
+    await renderCheckout([A()]);
+    const summary = screen.getByRole("heading", { name: S("title") }).closest("aside") as HTMLElement;
+    await within(summary).findByText("380.000 VNĐ");
+
+    expect(within(summary).queryByRole("button", { name: S("shipping.retry") })).not.toBeInTheDocument();
   });
 
   it("does not show the standard price for express when the express quote fails", async () => {
@@ -486,7 +514,7 @@ describe("CHK-8E a summary without a price", () => {
     expect(await within(summary).findByText("730.000 VNĐ")).toBeInTheDocument();
   });
 
-  it("when pricing the same method again fails, says the fee cannot be loaded and still shows the last total (see the spec, section 7)", async () => {
+  it("when pricing the same method again fails, says the fee cannot be loaded and no longer shows the old total", async () => {
     let asked = 0;
     const { store } = await renderCheckout([A()], { quote: (method) => (++asked === 1 ? defaultQuote(method) : "error") });
     const summary = screen.getByRole("heading", { name: S("title") }).closest("aside") as HTMLElement;
@@ -495,7 +523,7 @@ describe("CHK-8E a summary without a price", () => {
     act(() => void store.dispatch(updateQuantity({ productId: "a", size: "M", color: "Red", quantity: 2 })));
 
     expect(await within(summary).findByText(S("shipping.unavailable"))).toBeInTheDocument();
-    expect(within(summary).getByText("380.000 VNĐ")).toBeInTheDocument();
+    expect(within(summary).queryByText("380.000 VNĐ")).not.toBeInTheDocument();
   });
 
   it("has no bar when the chosen method is free anyway (pick-up)", async () => {
