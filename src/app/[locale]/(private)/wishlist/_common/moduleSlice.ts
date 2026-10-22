@@ -25,12 +25,18 @@ export const syncAddToWishlist = createAsyncThunk<void, string>(
   }
 );
 
+/** On a refusal the list is read again, so a heart the BE still holds comes back. */
 export const syncRemoveFromWishlist = createAsyncThunk<void, string>(
   "wishlist/syncRemove",
-  async (productId) => {
-    await apiFetchStandalone(`/api/wishlist/${productId}`, {
-      method: "DELETE",
-    });
+  async (productId, { dispatch }) => {
+    try {
+      await apiFetchStandalone(`/api/wishlist/${productId}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      void dispatch(fetchWishlist());
+      throw error;
+    }
   }
 );
 
@@ -125,6 +131,10 @@ const wishlistSlice = createSlice({
   },
 
   extraReducers: (builder) => {
+    /* The BE did not take the heart: take it back so the list shows nothing the BE does not have */
+    builder.addCase(syncAddToWishlist.rejected, (state, action) => {
+      state.items = state.items.filter((i) => i.productId !== action.meta.arg);
+    });
     builder.addCase(fetchWishlist.pending, (state) => {
       state.isSyncing = true;
     });

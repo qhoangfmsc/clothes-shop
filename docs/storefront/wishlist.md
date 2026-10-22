@@ -1,6 +1,6 @@
 # Wishlist (sản phẩm yêu thích)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-22
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-23
 > **Code:** `(private)/wishlist/` — `page.tsx`, `layout.tsx`, `WishlistContent.tsx`, `_common/{moduleSlice,types}.ts`
 > **i18n:** `private.wishlist`
 > **Redux slice:** `state.wishlist`
@@ -19,7 +19,7 @@ Cho khách đánh dấu sản phẩm quan tâm từ thẻ sản phẩm, trang ch
 |---|---|
 | Thả/bỏ tim | `toggleWishlistItem` + sync BE; có ở `ProductCard`, trang chi tiết, dòng trong giỏ |
 | Trang wishlist | Lưới 2/3/4 cột: ảnh, tên, ngày thêm, nút bỏ; "Xóa tất cả"; "Tiếp tục mua sắm" |
-| Trạng thái | Skeleton khi tải phiên; `UnauthenticatedState` khi chưa đăng nhập; trạng thái trống có 3 ưu điểm gợi ý |
+| Trạng thái | Skeleton khi tải phiên; `UnauthenticatedState` khi chưa đăng nhập; trạng thái trống có 2 dòng gợi ý |
 
 ## 4. Chi tiết
 
@@ -36,9 +36,10 @@ Cho khách đánh dấu sản phẩm quan tâm từ thẻ sản phẩm, trang ch
 
 ### 4.3 Trang
 
-- `useEffect` gọi `fetchWishlist()` khi đã đăng nhập (chỉ tại trang này; `fetchWishlist.fulfilled` thay toàn bộ `items` bằng bản BE).
-- Bỏ một sản phẩm: `removeWishlistItem` + `syncRemoveFromWishlist` + toast `info`.
-- "Xóa tất cả": chỉ dispatch `clearWishlist()` (xóa local, **không** gọi BE).
+- `useEffect` gọi `fetchWishlist()` khi đã đăng nhập (`CartSync` cũng tải khi có phiên; `fetchWishlist.fulfilled` thay toàn bộ `items` bằng bản BE).
+- Bỏ một sản phẩm: `removeWishlistItem` + `syncRemoveFromWishlist` + toast `info`; BE từ chối thì toast `syncFailed` và `syncRemoveFromWishlist` đọc lại danh sách (`fetchWishlist`).
+- "Xóa tất cả": `clearWishlist()` (đổi ngay) rồi `syncRemoveFromWishlist` cho từng mục (BE chưa có endpoint xóa hết); có mục bị từ chối thì một toast `syncFailed`.
+- `syncAddToWishlist` bị từ chối thì mục vừa thêm bị gỡ khỏi danh sách ở máy.
 - Mỗi thẻ (ảnh và tên) link tới `/shop/<category>/<subcategory>/<productId>`; mục thiếu `category` hoặc `subcategory` (chỉ còn là mục lưu cục bộ từ trước khi BE gửi hai trường này, đến khi `fetchWishlist` thay) qua `useProductLink()` ([data-layer](../platform/data-layer.md)) có `href` `/shop` và khi bấm sẽ tra URL thật bằng `getProductUrl(productId)` (`GET /api/products/:id`) rồi `router.push`, không tra được thì về `/shop`; ngày thêm định dạng `short`.
 - Style của trang viết trong thẻ `<style>` riêng (class `wishlist-*`) thay vì Tailwind.
 - Metadata `private.wishlist.meta`; layout có header + footer.
@@ -49,14 +50,11 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/w
 
 Các điểm cần biết về hành vi hiện tại:
 
-- "Xóa tất cả" chỉ xóa ở máy và không gọi BE, nên lần mở trang kế tiếp `fetchWishlist` đưa các mục về.
-- Lệnh `POST`/`DELETE` bị BE từ chối (401, 500) không được báo: mục đã đổi ở máy.
-- Trang trống ghi "Nhận thông báo khi giảm giá" (`private.wishlist.empty.features.priceDrops`) trong khi chưa có tính năng thông báo nào.
 - Kiểu dáng của trang nằm trong khối `<style>` riêng của `WishlistContent.tsx`.
 
 ### 4.5 Khác với giỏ hàng
 
-Wishlist **không** được xóa khi đăng xuất (giỏ hàng thì có, qua `CartSync`); bản địa phương chỉ được thay bằng bản BE khi mở trang wishlist lúc đã đăng nhập.
+Wishlist được xóa khi đăng xuất và được tải khi đăng nhập hoặc đổi tài khoản, giống giỏ hàng (cùng `CartSync`, xem [cart](./cart.md)); trang wishlist còn tải lại mỗi lần mở.
 
 - `WishlistItem.badge` (lấy từ sản phẩm khi thêm, và từ `product.badge` khi `fetchWishlist`) quyết định có hiện giá: `custom_order` hiện `common.priceOnRequest`. Mục lưu trước khi có trường này chưa có `badge` nên vẫn hiện giá đến lần đồng bộ kế tiếp. Giá hiện theo ngôn ngữ (`fmt(item, "price")`); mục lưu trong `localStorage` từ trước khi giá là cặp VND/USD (không có `priceVnd`) bị bỏ khi nạp và được `fetchWishlist` điền lại.
 - **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.

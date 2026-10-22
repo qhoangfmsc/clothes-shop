@@ -19,6 +19,8 @@ import { useMoney } from "@/src/hooks/use-money";
 import { X, Check, ShoppingBag } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
+import { useAuthAction } from "@/src/hooks/use-auth-action";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useSizeGuide } from "@/src/hooks/use-api";
 import { useAppDispatch } from "@/src/store/hooks";
 import { moneyProp, trackEvent } from "@/src/lib/analytics";
@@ -54,6 +56,8 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
   const [addedToCart, setAddedToCart] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { toast } = useToast();
+  const toErrorMessage = useErrorMessage();
+  const { requireAuth } = useAuthAction();
   const { sizeGuide } = useSizeGuide(showSizeGuide ? (product.category?.slug ?? null) : null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -102,51 +106,56 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
 
   const handleAddToCart = useCallback(() => {
     if (addedToCart || !isSelectionComplete) return;
-    const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
-    dispatch(
-      addItem(
-        {
-          productId: product.id,
+    /* A visitor signs in first; the add runs after sign-in */
+    requireAuth(() => {
+      const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? "";
+      dispatch(
+        addItem(
+          {
+            productId: product.id,
+            name: product.name,
+            priceVnd: product.priceVnd,
+            priceUsd: product.priceUsd,
+            image: product.images[0],
+            size: selectedSize!,
+            color: colorName,
+            colorHex: selectedColor!,
+            category: product.category?.slug ?? "",
+            subcategory: product.subcategory?.slug ?? "",
+            badge: product.badge,
+          },
+          quantity
+        )
+      );
+      /* API sync in background; if the BE refuses, the line is taken back out of the bag and the shopper is told */
+      dispatch(syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity }))
+        .unwrap()
+        .catch((err: unknown) => toast.error(toErrorMessage(err, t("addFailed"))));
+      /* Unit price: the BE prices the line only once the add is answered */
+      trackEvent("add_to_cart", { productId: product.id, ...moneyProp(moneyOf(product, "price"), locale) });
+      setAddedToCart(true);
+      toast.success(
+        t.rich("toastAdded", {
           name: product.name,
-          priceVnd: product.priceVnd,
-          priceUsd: product.priceUsd,
-          image: product.images[0],
-          size: selectedSize!,
-          color: colorName,
-          colorHex: selectedColor!,
-          category: product.category?.slug ?? "",
-          subcategory: product.subcategory?.slug ?? "",
-          badge: product.badge,
-        },
-        quantity
-      )
-    );
-    /* API sync in background */
-    dispatch(
-      syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity })
-    );
-    /* Unit price: the BE prices the line only once the add is answered */
-    trackEvent("add_to_cart", { productId: product.id, ...moneyProp(moneyOf(product, "price"), locale) });
-    setAddedToCart(true);
-    toast.success(
-      t.rich("toastAdded", {
-        name: product.name,
-        details: `${selectedSize}, ${colorName}${quantity > 1 ? `, ×${quantity}` : ""}`,
-        link: (chunks) => <Link href="/cart">{chunks}</Link>,
-      })
-    );
-    setTimeout(() => {
-      onClose();
-    }, 800);
+          details: `${selectedSize}, ${colorName}${quantity > 1 ? `, ×${quantity}` : ""}`,
+          link: (chunks) => <Link href="/cart">{chunks}</Link>,
+        })
+      );
+      setTimeout(() => {
+        onClose();
+      }, 800);
+    }, "addToBag");
   }, [
     addedToCart,
     isSelectionComplete,
+    requireAuth,
     dispatch,
     product,
     selectedSize,
     selectedColor,
     quantity,
     toast,
+    toErrorMessage,
     onClose,
     locale,
     t,

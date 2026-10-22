@@ -15,7 +15,6 @@
     "browse": "Browse Shop",
     "features": {
       "save": "Save items you love",
-      "priceDrops": "Get notified on price drops",
       "quickAccess": "Quick access to favorites"
     }
   },
@@ -24,5 +23,8 @@
     "remove": "Remove {name} from wishlist",
     "removed": "{name} removed from wishlist"
   },
-  "continueShopping": "Continue Shopping"
+  "continueShopping": "Continue Shopping",
+  "toast": {
+    "syncFailed": "Couldn't update your wishlist. Please try again."
+  }
 }

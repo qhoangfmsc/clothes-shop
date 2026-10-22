@@ -169,8 +169,8 @@
   {
     "name": "page: removing a product does not tell the BE",
     "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
-    "find": "      dispatch(syncRemoveFromWishlist(productId));\n",
-    "replace": "",
+    "find": "      dispatch(syncRemoveFromWishlist(productId))\n        .unwrap()",
+    "replace": "      Promise.resolve()\n        .then(() => undefined)",
     "tests": [
       "tests/storefront/wishlist/wishlist-page.test.tsx"
     ]
@@ -187,7 +187,7 @@
   {
     "name": "page: 'clear all' does nothing",
     "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
-    "find": "onClick={() => dispatch(clearWishlist())}",
+    "find": "onClick={handleClearAll}",
     "replace": "onClick={() => {}}",
     "tests": [
       "tests/storefront/wishlist/wishlist-page.test.tsx"
@@ -234,6 +234,60 @@
     "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
     "find": "        {items.length > 0 && (\n          <motion.div\n            initial={{ opacity: 0 }}",
     "replace": "        {items.length >= 0 && (\n          <motion.div\n            initial={{ opacity: 0 }}",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "slice: a refused save keeps the heart",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "      state.items = state.items.filter((i) => i.productId !== action.meta.arg);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a refused removal does not read the list again",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "      void dispatch(fetchWishlist());\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a refused removal looks like a success",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "      throw error;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "page: 'clear all' does not tell the BE",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "productIds.map((id) => dispatch(syncRemoveFromWishlist(id)).unwrap())",
+    "replace": "[]",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a refused removal is not announced",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": ".catch(() => toast.error(t(\"toast.syncFailed\")));\n      toast.info",
+    "replace": ".catch(() => {});\n      toast.info",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a refused 'clear all' is not announced",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "if (results.some((result) => result.status === \"rejected\")) toast.error(t(\"toast.syncFailed\"));",
+    "replace": "",
     "tests": [
       "tests/storefront/wishlist/wishlist-page.test.tsx"
     ]

@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import CartContent from "@/src/app/[locale]/(private)/cart/CartContent";
 import type { OrderQuote } from "@/src/app/[locale]/(private)/checkout/_common/checkout";
 import { API } from "@/tests/_support/api";
-import { cartLine, cartState, quote, serverCart, wishlistItem, wishlistState } from "@/tests/_support/fixtures";
+import { cartLine, cartState, quote, serverCart, serverWishlist, wishlistItem, wishlistState } from "@/tests/_support/fixtures";
 import { msg, msgf } from "@/tests/_support/messages";
 import { server } from "@/tests/_support/msw-server";
 import { navigation } from "@/tests/_support/navigation";
@@ -274,7 +274,7 @@ describe("CART-13 changing a quantity", () => {
 const BEING_ADDED = { pendingSync: 1, pendingAddKeys: ["p1|M|Red"] };
 
 describe("CART-13E a quantity the BE does not hear about", () => {
-  it("a line the BE has not confirmed yet changes only here and sends nothing (see the spec, section 7)", async () => {
+  it("a line the BE has not confirmed yet changes at once here and sends nothing until the add is answered (CART-6R catches the BE up)", async () => {
     const { store, calls } = await asUser([A({ serverItemId: undefined })], { cart: BEING_ADDED });
 
     await userEvent.click(within(rowOf("Dress")).getByRole("button", { name: msg("private.cart.quantity.increase") }));
@@ -349,7 +349,7 @@ describe("CART-14E taking lines out that should stay or that the BE does not kno
     expect(screen.getAllByRole("button", { name: msg("private.cart.bulk.addToWishlist") })[0]).toBeDisabled();
   });
 
-  it("removes a line the BE has not confirmed yet only here (it will come back from the BE: see the spec, section 7)", async () => {
+  it("removes a line the BE has not confirmed yet at once here, and sends nothing until the add is answered (CART-6R catches the BE up)", async () => {
     const { store, calls } = await asUser([A({ serverItemId: undefined })], { cart: BEING_ADDED });
 
     await userEvent.click(within(rowOf("Dress")).getByRole("button", { name: msgf("private.cart.item.remove", { name: "Dress" }) }));
@@ -407,6 +407,41 @@ describe("CART-15 the wishlist", () => {
   });
 });
 
+describe("CART-15E hearts the BE does not accept", () => {
+  it("a heart the BE refuses is taken back and announced", async () => {
+    const { store } = await asUser([A()]);
+    server.use(http.post(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "boom" }, { status: 500 })));
+
+    await userEvent.click(within(rowOf("Dress")).getByRole("button", { name: msg("private.cart.item.addToWishlist") }));
+
+    expect(await screen.findByText(msg("private.cart.toast.wishlistFailed"))).toBeInTheDocument();
+    await waitFor(() => expect(store.getState().wishlist.items).toEqual([]));
+  });
+
+  it("removing a heart the BE refuses is announced, and the heart comes back from the BE", async () => {
+    const { store } = await asUser([A()], { wishlist: [wishlistItem()] });
+    server.use(
+      http.delete(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "boom" }, { status: 500 })),
+      http.get(`${API}/api/wishlist`, () => HttpResponse.json(serverWishlist([wishlistItem()])))
+    );
+
+    await userEvent.click(within(rowOf("Dress")).getByRole("button", { name: msg("private.cart.item.removeFromWishlist") }));
+
+    expect(await screen.findByText(msg("private.cart.toast.wishlistFailed"))).toBeInTheDocument();
+    await waitFor(() => expect(store.getState().wishlist.items.map((i) => i.productId)).toEqual(["p1"]));
+  });
+
+  it("the bulk heart says so once when any save is refused, and takes back only those", async () => {
+    const { store } = await asUser([A(), B()]);
+    server.use(http.post(`${API}/api/wishlist/:id`, ({ params }) => (params.id === "p2" ? HttpResponse.json({ message: "boom" }, { status: 500 }) : HttpResponse.json({}))));
+
+    await userEvent.click(screen.getAllByRole("button", { name: msg("private.cart.bulk.addToWishlist") })[0]);
+
+    expect(await screen.findAllByText(msg("private.cart.toast.wishlistFailed"))).toHaveLength(1);
+    await waitFor(() => expect(store.getState().wishlist.items.map((i) => i.productId)).toEqual(["p1"]));
+  });
+});
+
 describe("CART-15E the wishlist when there is nothing new to save", () => {
   it("says the products are already there, changes nothing and does not call the BE", async () => {
     const { store, calls } = await asUser([A(), B()], { wishlist: [wishlistItem(), wishlistItem({ productId: "p2" })] });
@@ -450,7 +485,7 @@ describe("CART-16 the bottom bar", () => {
     const { calls } = await asUser([A({ serverItemId: undefined })], { backend: { lines: [A({ serverItemId: "srv-from-be" })], quote: quote({ subtotalVnd: 555_000 }) } });
 
     expect(await screen.findByText("555.000 VNĐ")).toBeInTheDocument();
-    expect(new Set(calls.quotes.map((ids) => ids.join()))).toEqual(new Set(["srv-from-be"]));
+    expect(calls.quotes).toEqual([["srv-from-be"]]);
   });
 });
 

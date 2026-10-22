@@ -191,8 +191,8 @@
   {
     "name": "sync: a visitor loads the BE cart instead of clearing",
     "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
-    "find": "else dispatch(clearCart());",
-    "replace": "else dispatch(fetchCart());",
+    "find": "    } else {\n      dispatch(clearCart());",
+    "replace": "    } else {\n      dispatch(fetchCart());",
     "tests": [
       "tests/storefront/cart/cart-sync.test.tsx"
     ]
@@ -209,8 +209,8 @@
   {
     "name": "sync: a user clears the cart instead of loading it",
     "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
-    "find": "if (isAuthenticated) dispatch(fetchCart());",
-    "replace": "if (isAuthenticated) dispatch(clearCart());",
+    "find": "    if (isAuthenticated) {\n      dispatch(fetchCart());",
+    "replace": "    if (isAuthenticated) {\n      dispatch(clearCart());",
     "tests": [
       "tests/storefront/cart/cart-sync.test.tsx"
     ]
@@ -272,8 +272,8 @@
   {
     "name": "page: the heart adds when the product is saved and removes when it is not",
     "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
-    "find": "    if (isWishlisted) {\n      dispatch(syncRemoveFromWishlist",
-    "replace": "    if (!isWishlisted) {\n      dispatch(syncRemoveFromWishlist",
+    "find": "const sync = isWishlisted ? syncRemoveFromWishlist(item.productId) : syncAddToWishlist(item.productId);",
+    "replace": "const sync = !isWishlisted ? syncRemoveFromWishlist(item.productId) : syncAddToWishlist(item.productId);",
     "tests": [
       "tests/storefront/cart/cart-page.test.tsx"
     ]
@@ -474,6 +474,132 @@
     "replace": "const colorName = selectedColor ?? \"\";",
     "tests": [
       "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "slice: a line removed meanwhile is not removed on the BE",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "    if (!local) {\n      return mapServerCart(await apiFetchStandalone<ServerCart>(`/api/cart/items/${saved.serverItemId}`, { method: \"DELETE\" }));\n    }\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a quantity changed meanwhile is not sent to the BE",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "    if (local.quantity !== saved.quantity) return await patchQuantity(saved.serverItemId, local.quantity);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the catch-up races with another add of the same line",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "if (!saved?.serverItemId || anotherAddPending) return lines;",
+    "replace": "if (!saved?.serverItemId) return lines;",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a failed catch-up undoes the add",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "  } catch {\n    /* the BE cart is the result; the next full read puts things right */\n  }",
+    "replace": "  } catch (error) {\n    throw error;\n  }",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a refused add takes back the whole line",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "line.quantity -= action.meta.arg.quantity;",
+    "replace": "line.quantity = 0;",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a refused add keeps the old line total",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "if (line.quantity > 0) {\n        line.lineTotalVnd = null;\n        line.lineTotalUsd = null;\n      } else {",
+    "replace": "if (line.quantity > 0) {\n      } else {",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a refused add leaves the unticked key",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "state.items = state.items.filter((item) => cartItemKey(item) !== key);\n        pruneDeselected(state);",
+    "replace": "state.items = state.items.filter((item) => cartItemKey(item) !== key);",
+    "tests": [
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "quick add: a visitor adds without signing in",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "requireAuth(() => {",
+    "replace": "((run: () => void) => run())(() => {",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the sign-in prompt names the wrong action",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "}, \"addToBag\");",
+    "replace": "}, \"continue\");",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: a refused add says nothing",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": ".catch((err: unknown) => toast.error(toErrorMessage(err, t(\"addFailed\"))));",
+    "replace": ".catch(() => {});",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "sync: a visitor keeps the wishlist of the last user",
+    "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
+    "find": "      dispatch(clearWishlist());\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-sync.test.tsx"
+    ]
+  },
+  {
+    "name": "sync: a user does not load the wishlist",
+    "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
+    "find": "      dispatch(fetchWishlist());\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-sync.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a refused heart is not announced",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": ".catch(() => toast.error(tToast(\"wishlistFailed\")));",
+    "replace": ".catch(() => {});",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a refused bulk save is not announced",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "if (results.some((result) => result.status === \"rejected\")) toast.error(t(\"toast.wishlistFailed\"));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
     ]
   }
 ]

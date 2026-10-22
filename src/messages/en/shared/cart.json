@@ -16,7 +16,8 @@
     "hintColor": "Select a color",
     "added": "Added",
     "addToBag": "Add to Bag",
-    "toastAdded": "{name} ({details}) added — <link>View Bag</link>"
+    "toastAdded": "{name} ({details}) added — <link>View Bag</link>",
+    "addFailed": "Couldn't add this to your bag. Please try again."
   },
   "productAction": {
     "addToBag": "Add to Bag",

@@ -79,18 +79,43 @@ function mapServerCart(res: ServerCart): CartItem[] {
   });
 }
 
-/** Adds a line on the server. The response is the whole cart (`data.id` is the CART id, not the
- *  item id), so the new line's id is found by product + size + color, the same key the server merges on.
- *  Every cart write resolves with the server's lines: that is where the BE's line totals come from. */
+/** The part of the store a thunk reads (the full `RootState` would make the types circular). */
+interface CartSnapshot {
+  cart: { items: CartItem[]; pendingAddKeys: string[] };
+}
+
+const patchQuantity = async (serverItemId: string, quantity: number) =>
+  mapServerCart(await apiFetchStandalone<ServerCart>(`/api/cart/items/${serverItemId}`, { method: "PATCH", body: { quantity } }));
+
+/** Adds a line (the response is the whole cart; `data.id` is the CART id, so the line's id is found by product + size + color).
+ *  Then, unless another add of the same line is still on its way, the BE is told what the shopper did meanwhile:
+ *  line removed here → deleted there; quantity changed here → patched there. */
 export const syncAddToCartItem = createAsyncThunk<
   CartItem[],
   { productId: string; size: string; color: string; quantity: number }
->("cart/syncAdd", async ({ productId, size, color, quantity }) => {
+>("cart/syncAdd", async ({ productId, size, color, quantity }, { getState }) => {
   const res = await apiFetchStandalone<ServerCart>("/api/cart/items", {
     method: "POST",
     body: { productId, size, color, quantity },
   });
-  return mapServerCart(res);
+  const lines = mapServerCart(res);
+
+  const key = cartItemKey({ productId, size, color });
+  const saved = lines.find((line) => cartItemKey(line) === key);
+  const { items, pendingAddKeys } = (getState() as CartSnapshot).cart;
+  const anotherAddPending = pendingAddKeys.filter((pending) => pending === key).length > 1;
+  if (!saved?.serverItemId || anotherAddPending) return lines;
+
+  const local = items.find((line) => cartItemKey(line) === key);
+  try {
+    if (!local) {
+      return mapServerCart(await apiFetchStandalone<ServerCart>(`/api/cart/items/${saved.serverItemId}`, { method: "DELETE" }));
+    }
+    if (local.quantity !== saved.quantity) return await patchQuantity(saved.serverItemId, local.quantity);
+  } catch {
+    /* the BE cart is the result; the next full read puts things right */
+  }
+  return lines;
 });
 
 export const syncRemoveCartItem = createAsyncThunk<CartItem[], string>(
@@ -106,14 +131,7 @@ export const syncRemoveCartItem = createAsyncThunk<CartItem[], string>(
 export const syncUpdateCartItemQuantity = createAsyncThunk<
   CartItem[],
   { serverItemId: string; quantity: number }
->("cart/syncUpdateQuantity", async ({ serverItemId, quantity }) =>
-  mapServerCart(
-    await apiFetchStandalone<ServerCart>(`/api/cart/items/${serverItemId}`, {
-      method: "PATCH",
-      body: { quantity },
-    })
-  )
-);
+>("cart/syncUpdateQuantity", ({ serverItemId, quantity }) => patchQuantity(serverItemId, quantity));
 
 export const fetchCart = createAsyncThunk<CartItem[]>(
   "cart/fetch",
@@ -347,9 +365,21 @@ const cartSlice = createSlice({
       applyServerPricing(state, action.payload);
     });
     builder.addCase(syncAddToCartItem.rejected, (state, action) => {
-      const index = state.pendingAddKeys.indexOf(cartItemKey(action.meta.arg));
+      const key = cartItemKey(action.meta.arg);
+      const index = state.pendingAddKeys.indexOf(key);
       if (index >= 0) state.pendingAddKeys.splice(index, 1);
       state.pendingSync -= 1;
+      /* The server did not take it: take back what was added here so the bag shows no line the BE does not have */
+      const line = state.items.find((item) => cartItemKey(item) === key);
+      if (!line) return;
+      line.quantity -= action.meta.arg.quantity;
+      if (line.quantity > 0) {
+        line.lineTotalVnd = null;
+        line.lineTotalUsd = null;
+      } else {
+        state.items = state.items.filter((item) => cartItemKey(item) !== key);
+        pruneDeselected(state);
+      }
     });
 
     /* Quantity changes and removals: the answer carries the BE's line totals */

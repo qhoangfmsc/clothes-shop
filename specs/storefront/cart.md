@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
 > **Doc:** [storefront/cart](../../docs/storefront/cart.md) · **Test:** `tests/storefront/cart/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -31,20 +31,20 @@ Giỏ hàng là nơi tiền và tồn kho gặp nhau: dòng sai số lượng, t
 **Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu; 401 → refresh một lần rồi thử lại, refresh thất bại thì hết phiên): `fetchCart` `GET /api/cart`; `syncAddToCartItem` `POST /api/cart/items`; `syncUpdateCartItemQuantity` `PATCH /api/cart/items/:id` `{quantity}`; `syncRemoveCartItem` `DELETE /api/cart/items/:id`; `clearCartOnServer` `DELETE /api/cart/clear`. Ba lệnh ghi đều trả cả giỏ.
 - `fetchCart`: pending → `isSyncing`; fulfilled → `items` = giỏ BE + các dòng đang chờ thêm (`pendingAddKeys`) chưa có trên BE, dọn `deselectedKeys`; rejected → `isSyncing = false`, giữ nguyên dòng.
 - Map dòng BE: `colorHex` tra theo tên màu (không thấy thì dùng chính tên màu), `category/subcategory` lấy `slug`, `name` rỗng và giá 0 nếu thiếu `product`, `lineTotal*` `null` nếu BE không gửi.
-- `syncAdd`: pending thêm khóa vào `pendingAddKeys` và `pendingSync++`; fulfilled/rejected bỏ khóa và `pendingSync--`; fulfilled gán `serverItemId` bằng cách tìm theo khóa trong giỏ trả về (vì `data.id` là id giỏ). Thất bại **không** gỡ dòng ở máy.
+- `syncAdd`: pending thêm khóa vào `pendingAddKeys` và `pendingSync++`; fulfilled/rejected bỏ khóa và `pendingSync--`; fulfilled gán `serverItemId` bằng cách tìm theo khóa trong giỏ trả về (vì `data.id` là id giỏ). **Đối chiếu**: trước khi resolve, thunk so dòng vừa tạo với giỏ ở máy lúc đó, chỉ khi không còn lệnh thêm nào khác cùng khóa đang chờ: dòng đã bị xóa ở máy trong lúc chờ → gửi `DELETE` dòng vừa tạo; số lượng ở máy khác BE → gửi `PATCH` về số lượng ở máy; lỗi trong bước đối chiếu bị nuốt (giỏ BE là kết quả, lần tải kế sẽ sửa). **Thất bại** bỏ phần số lượng vừa thêm khỏi giỏ ở máy (xóa dòng nếu hết), dọn danh sách bỏ tick, trả bộ đếm.
 - `applyServerPricing` (sau mỗi lệnh ghi thành công, chỉ khi `pendingSync = 0`): lấy `priceVnd/Usd` của BE cho mọi dòng cùng khóa; `lineTotal*` chỉ nhận khi `quantity` của BE bằng của máy, ngược lại `null`.
 
-**`CartSync`** (mount trong `Providers`): chờ phiên xác định; đã đăng nhập → `fetchCart()`; chưa → `clearCart()`; chạy lại khi đổi `userId`.
+**`CartSync`** (mount trong `Providers`): chờ phiên xác định; đã đăng nhập → `fetchCart()` và `fetchWishlist()`; chưa → `clearCart()` và `clearWishlist()` (giỏ và yêu thích là dữ liệu của tài khoản, không được để lại cho người dùng sau trên cùng trình duyệt); chạy lại khi đổi `userId`.
 
 **`CartContent`.** Đang tải phiên → khung chờ; chưa đăng nhập → `UnauthenticatedState`; giỏ trống → thông báo trống và nút tới `/shop`; có dòng → tiêu đề, tổng số lượng, thanh chọn, danh sách, chân trang thanh toán.
 - Thanh chọn: "Chọn tất cả" (ba trạng thái, chỉ tính dòng mua được, khóa khi không có dòng mua được), đếm `đã chọn/mua được`, nút thêm yêu thích và nút xóa (khóa khi chưa chọn dòng nào).
 - Dòng: checkbox (khóa nếu không mua được), ảnh và tên là link, thành tiền dòng (`"…"` khi `null`, rỗng với `custom_order`), chip size và màu, đơn giá (hoặc "giá theo yêu cầu" với `custom_order`), cảnh báo `sold_out`/`custom_order` (kèm link "Đặt hàng" tới `/contact?product=` cho `custom_order`), bộ chỉnh số lượng 1–10, nút tim, nút xóa.
 - Số lượng: bấm đổi ngay ở máy; sau 500 ms không bấm nữa mới gọi `PATCH` (chỉ khi dòng đã có `serverItemId`).
 - Xóa một dòng: xác nhận → `removeItem` rồi `DELETE` nếu có `serverItemId`. Xóa hàng loạt: xác nhận → `removeItems` rồi `DELETE` từng dòng có `serverItemId`, toast `removed`.
-- Yêu thích: tim ở dòng bật/tắt theo trạng thái trước khi bấm (toast, `POST`/`DELETE` wishlist); nút hàng loạt chỉ thêm sản phẩm chưa có và mỗi sản phẩm một lần dù nhiều size (toast `addedToWishlist` hoặc `alreadyInWishlist`), không bao giờ gỡ khỏi giỏ.
+- Yêu thích: tim ở dòng bật/tắt theo trạng thái trước khi bấm (toast, `POST`/`DELETE` wishlist; BE từ chối thì toast `wishlistFailed`); nút hàng loạt chỉ thêm sản phẩm chưa có và mỗi sản phẩm một lần dù nhiều size (toast `addedToWishlist` hoặc `alreadyInWishlist`), không bao giờ gỡ khỏi giỏ.
 - Chân trang: có dòng được chọn → "Tạm tính (n sản phẩm)", số tiền là `subtotal` của báo giá BE (chỉ hỏi khi đã đăng nhập và `pendingSync = 0`; `"…"` khi chưa có hoặc đang hỏi hoặc báo giá lỗi) và link tới `/checkout`; không dòng nào → gợi ý chọn và nút khóa.
 
-**`QuickAddDrawer`** (`useQuickAdd().openQuickAdd(product)`; ném lỗi nếu dùng ngoài provider): không mở với sản phẩm không mua được. Ngăn kéo hiện tên, giá (và giá gốc nếu có); chọn size, màu, số lượng 1–10. Nút thêm chỉ bật khi đã chọn cả size lẫn màu, kèm gợi ý còn thiếu gì; sản phẩm không có màu thì không thêm được. Thêm: `addItem` (màu theo tên tìm từ mã hex) + `syncAddToCartItem` + `trackEvent("add_to_cart")`, toast có link `/cart`, nút thành "Đã thêm" (bấm tiếp bị bỏ qua), tự đóng sau 800 ms. Đóng bằng nút X, bấm nền, Esc hoặc vuốt xuống hơn 80 px; khóa cuộn trang khi mở và trả lại khi đóng. Bảng size chỉ được tải khi bấm "Bảng size".
+**`QuickAddDrawer`** (`useQuickAdd().openQuickAdd(product)`; ném lỗi nếu dùng ngoài provider): không mở với sản phẩm không mua được. Ngăn kéo hiện tên, giá (và giá gốc nếu có); chọn size, màu, số lượng 1–10. Nút thêm chỉ bật khi đã chọn cả size lẫn màu, kèm gợi ý còn thiếu gì; sản phẩm không có màu thì không thêm được. Thêm: nếu chưa đăng nhập thì mở hộp đăng nhập (`addToBag`) và chỉ thêm sau khi đăng nhập xong, như thẻ sản phẩm (`requireAuth`); đã đăng nhập: `addItem` (màu theo tên tìm từ mã hex) + `syncAddToCartItem` + `trackEvent("add_to_cart")`, toast có link `/cart`, nút thành "Đã thêm" (bấm tiếp bị bỏ qua), tự đóng sau 800 ms. Nếu BE từ chối thì dòng vừa thêm bị gỡ và có toast lỗi (`addFailed`). Đóng bằng nút X, bấm nền, Esc hoặc vuốt xuống hơn 80 px; khóa cuộn trang khi mở và trả lại khi đóng. Bảng size chỉ được tải khi bấm "Bảng size".
 
 ## 4. Thiết kế
 
@@ -69,6 +69,8 @@ Hướng phụ thuộc: component → slice → `apiFetchStandalone` → `sessio
 | **Selector có nhớ** (`createSelector`) cho dòng mua được và dòng đã chọn | Component không render lại khi mảng mới có cùng nội dung | Lọc trong component |
 | **Đếm lệnh đang bay** (`pendingSync`, `pendingAddKeys`) | Thành tiền của BE chỉ đúng khi không còn lệnh nào chờ; `fetchCart` không được làm mất dòng đang thêm | Khóa toàn giỏ khi có lệnh chờ |
 | **Debounce 500 ms** cho số lượng | Bấm liên tiếp chỉ gửi một `PATCH` | Gửi mỗi lần bấm |
+| **Đối chiếu sau lệnh thêm** (hành động bù: `DELETE` hoặc `PATCH` theo giỏ ở máy lúc BE trả lời) | Người dùng đổi số lượng hoặc xóa ngay sau khi thêm; BE phải theo kịp mà không cần khóa nút | Khóa nút khi `pendingAddKeys` có khóa đó; xếp hàng lệnh theo khóa dòng |
+| **Hoàn tác khi thêm thất bại** (bỏ phần vừa thêm) | Không để dòng "ma" mà BE không có | Giữ dòng và chờ lần tải kế |
 | **Provider + portal** cho ngăn kéo thêm nhanh | Mở được từ bất kỳ thẻ sản phẩm nào, không bị cắt bởi container cha | Mỗi thẻ có ngăn kéo riêng |
 
 ### Kiến trúc
@@ -105,11 +107,12 @@ Chữ giao diện nằm ở `private.cart` và `shared.cart.quickAdd` (i18n); ti
 | CART-5 | `fetchCart` thay giỏ bằng giỏ BE (map dòng, màu, slug), giữ dòng đang chờ thêm, dọn bỏ tick, cờ `isSyncing` | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-5E | `fetchCart` lỗi (401, 500, mạng) giữ nguyên giỏ ở máy và tắt cờ `isSyncing`; 401 thì refresh một lần rồi thử lại, refresh thất bại thì hết phiên | lỗi | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-6 | `syncAdd`: gán `serverItemId` theo khóa dòng, đếm lệnh chờ, lấy giá và thành tiền của BE khi hết lệnh chờ | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
-| CART-6E | `syncAdd` lỗi để dòng ở lại máy và trả lại bộ đếm; hai lệnh chạy chồng chỉ nhận giá khi cả hai xong; thành tiền bỏ khi số lượng lệch | lỗi | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
+| CART-6E | `syncAdd` lỗi gỡ phần số lượng vừa thêm khỏi giỏ ở máy và trả lại bộ đếm; hai lệnh chạy chồng chỉ nhận giá khi cả hai xong; thành tiền bỏ khi số lượng lệch | lỗi | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
+| CART-6R | `syncAdd` đối chiếu: số lượng đổi hoặc dòng bị xóa ở máy trong lúc chờ thì `PATCH` hoặc `DELETE` theo; không đối chiếu khi còn lệnh thêm khác cùng khóa; lỗi đối chiếu không gỡ dòng | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-7 | `syncUpdateQuantity`, `syncRemove`, `clearCartOnServer` gọi đúng endpoint, kèm Bearer, và áp giá BE | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-7E | Lệnh ghi lỗi trả lại bộ đếm, không đổi dòng; thiếu token vẫn gửi (BE từ chối) | lỗi | khách | integration | `tests/storefront/cart/cart-thunks.test.ts` |
-| CART-8 | `CartSync`: người đã đăng nhập → tải giỏ một lần, đổi tài khoản → tải lại | đúng | user | component | `tests/storefront/cart/cart-sync.test.tsx` |
-| CART-8E | `CartSync`: khách → xóa giỏ ở máy, không gọi BE; chưa biết phiên thì chưa làm gì | lỗi | khách | component | `tests/storefront/cart/cart-sync.test.tsx` |
+| CART-8 | `CartSync`: người đã đăng nhập → tải giỏ và yêu thích một lần, đổi tài khoản → tải lại cả hai | đúng | user | component | `tests/storefront/cart/cart-sync.test.tsx` |
+| CART-8E | `CartSync`: khách → xóa giỏ và yêu thích ở máy, không gọi BE; chưa biết phiên thì chưa làm gì | lỗi | khách | component | `tests/storefront/cart/cart-sync.test.tsx` |
 | CART-9 | Trang giỏ: khách thấy màn chặn đăng nhập, không thấy giỏ | đúng | khách | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-9E | Trang giỏ: đang xác định phiên chỉ có khung chờ (không lộ nội dung, không màn chặn) | lỗi | khách | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-10 | Trang giỏ trống: thông báo, nút tới cửa hàng, không có thanh chọn | đúng | user | component | `tests/storefront/cart/cart-page.test.tsx` |
@@ -117,9 +120,9 @@ Chữ giao diện nằm ở `private.cart` và `shared.cart.quickAdd` (i18n); ti
 | CART-11E | Dòng hết hàng / đặt may: checkbox khóa, cảnh báo, link đặt hàng, "giá theo yêu cầu", không tính vào số có thể chọn | lỗi | user | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-12 | Chọn dòng và "Chọn tất cả" (ba trạng thái), đếm đã chọn | đúng | user | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-13 | Chỉnh số lượng: đổi ngay, biên 1 và 10, gộp nhiều lần bấm thành một `PATCH` sau 500 ms | đúng | user | component | `tests/storefront/cart/cart-page.test.tsx` |
-| CART-13E | Dòng chưa có `serverItemId` đổi số lượng chỉ ở máy, không gọi BE (điểm đáng ngờ, mục 7); `PATCH` lỗi không làm hỏng giao diện | lỗi | user | component | `tests/storefront/cart/cart-page.test.tsx` |
+| CART-13E | Dòng chưa có `serverItemId` đổi số lượng ở máy ngay (BE được đối chiếu khi lệnh thêm xong: CART-6R); `PATCH` lỗi không làm hỏng giao diện | lỗi | user | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-14 | Xóa một dòng và xóa hàng loạt: xác nhận, xóa ở máy, `DELETE` theo `serverItemId`, toast | đúng | user | component | `tests/storefront/cart/cart-page.test.tsx` |
-| CART-14E | Từ chối xác nhận thì không xóa; nút xóa hàng loạt khóa khi chưa chọn dòng; dòng chưa có `serverItemId` chỉ xóa ở máy | lỗi | user | component | `tests/storefront/cart/cart-page.test.tsx` |
+| CART-14E | Từ chối xác nhận thì không xóa; nút xóa hàng loạt khóa khi chưa chọn dòng; dòng chưa có `serverItemId` xóa ở máy ngay (BE được đối chiếu khi lệnh thêm xong: CART-6R) | lỗi | user | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-15 | Yêu thích: tim ở dòng bật/tắt kèm toast và gọi BE; nút hàng loạt thêm mỗi sản phẩm một lần, không gỡ khỏi giỏ | đúng | user | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-15E | Nút hàng loạt khi tất cả đã có trong yêu thích báo "đã có" và không gọi BE | lỗi | user | component | `tests/storefront/cart/cart-page.test.tsx` |
 | CART-16 | Chân trang: tạm tính là `subtotal` của BE cho đúng các dòng đã chọn, link thanh toán | đúng | user | component | `tests/storefront/cart/cart-page.test.tsx` |
@@ -127,7 +130,7 @@ Chữ giao diện nằm ở `private.cart` và `shared.cart.quickAdd` (i18n); ti
 | CART-17 | Thêm nhanh: mở ngăn kéo, chọn size, màu, số lượng, thêm vào giỏ, báo giá/phân tích, toast, "Đã thêm" rồi tự đóng | đúng | user | component | `tests/storefront/cart/quick-add.test.tsx` |
 | CART-17E | Thêm nhanh: sản phẩm không mua được không mở; nút khóa và gợi ý khi thiếu size/màu; sản phẩm không có màu không thêm được; bấm hai lần chỉ thêm một lần | lỗi | user | component | `tests/storefront/cart/quick-add.test.tsx` |
 | CART-18 | Thêm nhanh: đóng bằng X, nền, Esc, vuốt xuống; khóa và trả lại cuộn trang; số lượng 1–10; bảng size chỉ tải khi bấm | đúng | user | component | `tests/storefront/cart/quick-add.test.tsx` |
-| CART-18E | Thêm nhanh khi chưa đăng nhập (đường từ lưới bộ sưu tập): dòng vào giỏ ở máy, BE từ chối, dòng ở lại cho tới khi `CartSync` dọn; dùng ngoài provider thì ném lỗi | lỗi | khách | component | `tests/storefront/cart/quick-add.test.tsx` |
+| CART-18E | Thêm nhanh khi chưa đăng nhập (đường từ lưới bộ sưu tập) mở hộp đăng nhập và không thêm gì, thêm sau khi đăng nhập; BE từ chối thì gỡ dòng vừa thêm và báo toast lỗi; dùng ngoài provider thì ném lỗi | lỗi | khách | component | `tests/storefront/cart/quick-add.test.tsx` |
 
 Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T0: tiền và tồn kho), `CartSync.tsx` 95/85/95, `CartContent.tsx` và `QuickAddDrawer.tsx` 75/65/75 (UI nhiều nhánh trình bày).
 
@@ -135,14 +138,13 @@ Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T0: tiền v�
 
 | Rủi ro | Phát hiện | Quay lui |
 |---|---|---|
-| Đổi số lượng hoặc xóa một dòng **trước khi** BE trả lời lệnh thêm: dòng chưa có `serverItemId` nên không gọi BE; `fetchCart` lần sau lấy lại số lượng/dòng cũ của BE | Test CART-13E, CART-14E khóa hành vi hiện tại | Chủ dự án quyết định: xếp hàng lệnh theo khóa dòng hoặc khóa nút khi `pendingAddKeys` có khóa đó |
-| `syncAdd` lỗi (hết hạn phiên 401, 500) để dòng ở máy mà BE không có; người dùng thấy dòng như đã thêm | Test CART-6E, CART-18E | Hiện toast lỗi và gỡ dòng, hoặc thử lại sau khi refresh token |
 | Báo giá `subtotal` lỗi chỉ hiện "…", không báo lỗi | Test CART-16E | Hiện thông báo và nút thử lại |
 | Hẹn giờ 500 ms (số lượng) và 800 ms (đóng ngăn kéo) không bị hủy khi component bị gỡ | Đọc code | Dọn trong cleanup của effect |
 | `CartContent` (570 dòng) gánh danh sách, chọn, yêu thích, thanh toán; import slice của module khác | Đọc code | Tách dòng giỏ và thanh chọn sau khi có test (phần "component quá lớn") |
 
-Không có thay đổi hành vi nhìn thấy được trong lượt này.
+Thay đổi hành vi nhìn thấy được: thêm nhanh khi chưa đăng nhập mở hộp đăng nhập thay vì để dòng "ma"; thêm thất bại gỡ dòng và báo lỗi; số lượng hoặc xóa ngay sau khi thêm tới được BE.
 
 ## 8. Lịch sử thay đổi
 
 - 2026-10-22 · Viết spec và test cho toàn module (batch 2), kiểm thử đột biến; không đổi code của module.
+- 2026-10-22 · Sửa theo quyết định của chủ dự án (giao tôi chọn): thêm nhanh đòi đăng nhập như thẻ sản phẩm; `syncAdd` đối chiếu số lượng và dòng bị xóa sau khi BE trả lời, và gỡ phần vừa thêm khi thất bại; thunk tự refresh token khi 401 (xem [auth](../platform/auth.md)). Khóa `shared.cart.quickAdd.addFailed` thêm ở cả hai ngôn ngữ.

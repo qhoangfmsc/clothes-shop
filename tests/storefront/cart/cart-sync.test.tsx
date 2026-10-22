@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import CartSync from "@/src/app/[locale]/(private)/cart/_components/CartSync";
 import { useAuth } from "@/src/contexts/auth-context";
 import { API } from "@/tests/_support/api";
-import { cartLine, cartState, serverCart } from "@/tests/_support/fixtures";
+import { cartLine, cartState, serverCart, serverWishlist, wishlistItem, wishlistState } from "@/tests/_support/fixtures";
 import { IDENTITIES } from "@/tests/_support/identities";
 import { server } from "@/tests/_support/msw-server";
 import { renderApp } from "@/tests/_support/render";
@@ -27,6 +27,7 @@ function Harness() {
 function fakeCart(byToken: Record<string, ReturnType<typeof cartLine>[]>) {
   const calls: string[] = [];
   server.use(
+    http.get(`${API}/api/wishlist`, () => HttpResponse.json(serverWishlist([]))),
     http.get(`${API}/api/cart`, ({ request }) => {
       const token = (request.headers.get("authorization") ?? "").replace("Bearer ", "");
       calls.push(token);
@@ -64,6 +65,70 @@ describe("CART-8 a signed-in user", () => {
 
     await waitFor(() => expect(store.getState().cart.items.map((l) => l.productId)).toEqual(["theirs"]));
     expect(calls).toEqual(["test-access", "second-access"]);
+  });
+});
+
+describe("WL-9 the wishlist follows the session too", () => {
+  function fakeLists(wishlist: ReturnType<typeof wishlistItem>[] = []) {
+    const asked = { wishlist: 0, cart: 0 };
+    server.use(
+      http.get(`${API}/api/wishlist`, () => {
+        asked.wishlist += 1;
+        return HttpResponse.json(serverWishlist(wishlist));
+      }),
+      http.get(`${API}/api/cart`, () => {
+        asked.cart += 1;
+        return HttpResponse.json(serverCart([]));
+      })
+    );
+    return asked;
+  }
+
+  it("loads the wishlist of a signed-in user, replacing what the browser had", async () => {
+    const asked = fakeLists([wishlistItem({ productId: "w1" })]);
+
+    const { store } = await renderApp(<Harness />, { as: "user", store: { wishlist: wishlistState([wishlistItem({ productId: "left-by-someone-else" })]) } });
+
+    await waitFor(() => expect(store.getState().wishlist.items.map((i) => i.productId)).toEqual(["w1"]));
+    expect(asked.wishlist).toBe(1);
+  });
+
+  it("empties the wishlist kept in the browser for a visitor, and does not ask the BE", async () => {
+    const asked = fakeLists([wishlistItem()]);
+
+    const { store } = await renderApp(<Harness />, { as: "guest", store: { wishlist: wishlistState([wishlistItem()]) } });
+
+    await waitFor(() => expect(store.getState().wishlist.items).toEqual([]));
+    expect(asked.wishlist).toBe(0);
+    expect(JSON.parse(localStorage.getItem("doovan-wishlist") ?? "null").state.items).toEqual([]);
+  });
+
+  it("empties it when the user signs out", async () => {
+    fakeLists([wishlistItem({ productId: "w1" })]);
+    const { store } = await renderApp(<Harness />, { as: "user" });
+    await waitFor(() => expect(store.getState().wishlist.items).toHaveLength(1));
+
+    await userEvent.click(screen.getByRole("button", { name: "sign out" }));
+
+    await waitFor(() => expect(store.getState().wishlist.items).toEqual([]));
+  });
+
+  it("does nothing to it while the session is still being worked out", async () => {
+    fakeLists([wishlistItem({ productId: "w1" })]);
+    const { store } = await renderApp(<Harness />, { as: "user", waitForAuth: false, store: { wishlist: wishlistState([wishlistItem({ productId: "kept" })]) } });
+
+    expect(store.getState().wishlist.items.map((i) => i.productId)).toEqual(["kept"]);
+    await waitFor(() => expect(store.getState().wishlist.items.map((i) => i.productId)).toEqual(["w1"]));
+  });
+
+  it("keeps the local wishlist when the BE cannot be reached", async () => {
+    server.use(http.get(`${API}/api/wishlist`, () => HttpResponse.json({ message: "boom" }, { status: 500 })), http.get(`${API}/api/cart`, () => HttpResponse.json(serverCart([]))));
+
+    const { store } = await renderApp(<Harness />, { as: "user", store: { wishlist: wishlistState([wishlistItem({ productId: "kept" })]) } });
+
+    await waitFor(() => expect(store.getState().wishlist.isSyncing).toBe(false));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    expect(store.getState().wishlist.items.map((i) => i.productId)).toEqual(["kept"]);
   });
 });
 
@@ -107,6 +172,7 @@ describe("CART-8E a visitor, or a session that is not known yet", () => {
   it("keeps the local cart when the BE cannot be reached", async () => {
     let asked = 0;
     server.use(
+      http.get(`${API}/api/wishlist`, () => HttpResponse.json(serverWishlist([]))),
       http.get(`${API}/api/cart`, () => {
         asked += 1;
         return HttpResponse.json({ message: "boom" }, { status: 500 });

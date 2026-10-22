@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it } from "vitest";
+import { waitFor } from "@testing-library/react";
 import {
   addItem,
   clearCartOnServer,
@@ -7,6 +8,8 @@ import {
   syncAddToCartItem,
   syncRemoveCartItem,
   syncUpdateCartItemQuantity,
+  removeItem,
+  updateQuantity,
 } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import { makeStore } from "@/src/store";
 import { API, seedSession } from "@/tests/_support/api";
@@ -250,7 +253,7 @@ describe("CART-6 syncAddToCartItem", () => {
 });
 
 describe("CART-6E syncAddToCartItem that goes wrong", () => {
-  it("leaves the line in the bag when the BE refuses, and gives the counters back", async () => {
+  it("takes the line back out of the bag when the BE refuses, and gives the counters back", async () => {
     server.use(http.post(`${API}/api/cart/items`, () => HttpResponse.json({ message: "Out of stock", errorCode: "OUT_OF_STOCK" }, { status: 409 })));
     const store = makeStore();
     store.dispatch(addItem(NEW_LINE(), 2));
@@ -258,9 +261,47 @@ describe("CART-6E syncAddToCartItem that goes wrong", () => {
     const result = await store.dispatch(syncAddToCartItem({ ...ADD, quantity: 2 }));
 
     expect(result.type).toBe("cart/syncAdd/rejected");
-    expect(state(store).items).toHaveLength(1);
-    expect(state(store).items[0].serverItemId).toBeUndefined();
+    expect(state(store).items).toEqual([]);
     expect(state(store)).toMatchObject({ pendingSync: 0, pendingAddKeys: [] });
+  });
+
+  it("takes back only the quantity that was refused, so an earlier add of the same line stays", async () => {
+    server.use(http.post(`${API}/api/cart/items`, () => HttpResponse.json({ message: "no" }, { status: 409 })));
+    const store = makeStore({ cart: cartState([cartLine({ quantity: 3, serverItemId: "srv-1" })]) });
+    store.dispatch(addItem(NEW_LINE(), 2));
+
+    await store.dispatch(syncAddToCartItem({ ...ADD, quantity: 2 }));
+
+    expect(state(store).items).toHaveLength(1);
+    expect(state(store).items[0]).toMatchObject({ quantity: 3, lineTotalVnd: null });
+  });
+
+  it("does not keep a line total that no longer matches the quantity left after the refusal", async () => {
+    server.use(http.post(`${API}/api/cart/items`, () => HttpResponse.json({ message: "no" }, { status: 409 })));
+    const store = makeStore({ cart: cartState([cartLine({ quantity: 3, serverItemId: "srv-1", lineTotalVnd: 1_050_000, lineTotalUsd: 40 })]) });
+
+    await store.dispatch(syncAddToCartItem({ ...ADD, quantity: 2 }));
+
+    expect(state(store).items[0]).toMatchObject({ quantity: 1, lineTotalVnd: null, lineTotalUsd: null });
+  });
+
+  it("also forgets that the refused line was unticked, so adding it again starts ticked", async () => {
+    server.use(http.post(`${API}/api/cart/items`, () => HttpResponse.json({ message: "no" }, { status: 409 })));
+    const store = makeStore({ cart: cartState([], { deselectedKeys: ["p1|M|Red"] }) });
+    store.dispatch(addItem(NEW_LINE(), 1));
+
+    await store.dispatch(syncAddToCartItem(ADD));
+
+    expect(state(store).deselectedKeys).toEqual([]);
+  });
+
+  it("leaves the cart alone when the refused line is no longer there (the cart was reloaded meanwhile)", async () => {
+    server.use(http.post(`${API}/api/cart/items`, () => HttpResponse.json({ message: "no" }, { status: 409 })));
+    const store = makeStore({ cart: cartState([cartLine({ productId: "other", serverItemId: "srv-o" })]) });
+
+    await store.dispatch(syncAddToCartItem(ADD));
+
+    expect(state(store).items.map((l) => l.productId)).toEqual(["other"]);
   });
 
   it("does not take prices while another write is still waiting, and takes them when the last one is answered", async () => {
@@ -312,6 +353,126 @@ describe("CART-6E syncAddToCartItem that goes wrong", () => {
 
     expect(state(store).items[0]).toMatchObject({ lineTotalVnd: null });
     expect(state(store).items[0].serverItemId).toBeUndefined();
+  });
+});
+
+describe("CART-6R catching up with what the shopper did while the add was on its way", () => {
+  /** A fake BE that answers the add after the test lets it, and records what it is told afterwards. */
+  function slowAdd(serverQuantity = 1) {
+    let release!: () => void;
+    const open = new Promise<void>((resolve) => (release = resolve));
+    const told = { patches: [] as { id: string; quantity: number }[], deletes: [] as string[] };
+    server.use(
+      http.post(`${API}/api/cart/items`, async () => {
+        await open;
+        return HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-new", quantity: serverQuantity })]));
+      }),
+      http.patch(`${API}/api/cart/items/:id`, async ({ request, params }) => {
+        const { quantity } = (await request.json()) as { quantity: number };
+        told.patches.push({ id: String(params.id), quantity });
+        return HttpResponse.json(serverCart([cartLine({ serverItemId: String(params.id), quantity })]));
+      }),
+      http.delete(`${API}/api/cart/items/:id`, ({ params }) => {
+        told.deletes.push(String(params.id));
+        return HttpResponse.json(serverCart([]));
+      })
+    );
+    return { release, told };
+  }
+  const change = (store: ReturnType<typeof makeStore>, quantity: number) => store.dispatch(updateQuantity({ productId: "p1", size: "M", color: "Red", quantity }));
+
+  it("tells the BE the new quantity when it changed here before the add was answered", async () => {
+    const { release, told } = slowAdd();
+    const store = makeStore();
+    store.dispatch(addItem(NEW_LINE(), 1));
+    const done = store.dispatch(syncAddToCartItem(ADD));
+    change(store, 4);
+
+    release();
+    await done;
+
+    expect(told.patches).toEqual([{ id: "srv-new", quantity: 4 }]);
+    expect(state(store).items[0]).toMatchObject({ quantity: 4, serverItemId: "srv-new", lineTotalVnd: 350_000 });
+  });
+
+  it("removes the line on the BE when it was removed here before the add was answered", async () => {
+    const { release, told } = slowAdd();
+    const store = makeStore();
+    store.dispatch(addItem(NEW_LINE(), 1));
+    const done = store.dispatch(syncAddToCartItem(ADD));
+    store.dispatch(removeItem({ productId: "p1", size: "M", color: "Red" }));
+
+    release();
+    await done;
+
+    expect(told.deletes).toEqual(["srv-new"]);
+    expect(told.patches).toEqual([]);
+    expect(state(store).items).toEqual([]);
+  });
+
+  it("sends nothing more when the bag still matches what the BE has", async () => {
+    const { release, told } = slowAdd();
+    const store = makeStore();
+    store.dispatch(addItem(NEW_LINE(), 1));
+    const done = store.dispatch(syncAddToCartItem(ADD));
+
+    release();
+    await done;
+
+    expect(told).toEqual({ patches: [], deletes: [] });
+  });
+
+  it("waits for the last of two adds of the same line before comparing, so the two do not race", async () => {
+    let calls = 0;
+    const releases: (() => void)[] = [];
+    const told = { patches: 0 };
+    server.use(
+      http.post(`${API}/api/cart/items`, async () => {
+        const mine = ++calls;
+        await new Promise<void>((resolve) => releases.push(resolve));
+        return HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-new", quantity: mine })]));
+      }),
+      http.patch(`${API}/api/cart/items/:id`, () => {
+        told.patches += 1;
+        return HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-new", quantity: 2 })]));
+      })
+    );
+    const store = makeStore();
+    store.dispatch(addItem(NEW_LINE(), 1));
+    const first = store.dispatch(syncAddToCartItem(ADD));
+    store.dispatch(addItem(NEW_LINE(), 1));
+    const second = store.dispatch(syncAddToCartItem(ADD));
+    await waitFor(() => expect(releases).toHaveLength(2));
+
+    releases[0]();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    releases[1]();
+    await Promise.all([first, second]);
+
+    expect(told.patches).toBe(0);
+    expect(state(store).items[0].quantity).toBe(2);
+  });
+
+  it("keeps the line, with the BE's answer, when the catch-up request itself fails", async () => {
+    let release!: () => void;
+    const open = new Promise<void>((resolve) => (release = resolve));
+    server.use(
+      http.post(`${API}/api/cart/items`, async () => {
+        await open;
+        return HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-new", quantity: 1 })]));
+      }),
+      http.patch(`${API}/api/cart/items/:id`, () => HttpResponse.json({ message: "boom" }, { status: 500 }))
+    );
+    const store = makeStore();
+    store.dispatch(addItem(NEW_LINE(), 1));
+    const done = store.dispatch(syncAddToCartItem(ADD));
+    change(store, 3);
+
+    release();
+    const result = await done;
+
+    expect(result.type).toBe("cart/syncAdd/fulfilled");
+    expect(state(store).items[0]).toMatchObject({ quantity: 3, serverItemId: "srv-new", lineTotalVnd: null });
   });
 });
 

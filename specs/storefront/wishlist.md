@@ -1,6 +1,6 @@
 # Wishlist (sản phẩm yêu thích) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
 > **Doc:** [storefront/wishlist](../../docs/storefront/wishlist.md) · **Test:** `tests/storefront/wishlist/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -26,12 +26,13 @@ Wishlist là danh sách sản phẩm khách "thả tim" từ thẻ sản phẩm,
 
 **Nạp khi khởi tạo.** Đọc `doovan-wishlist` (chấp nhận `{state:{items}}` và `{items}`), bỏ mục không có `priceVnd` kiểu số; JSON hỏng, không phải mảng hoặc không có `window` → rỗng.
 
-**Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu; 401 → refresh một lần rồi thử lại): `syncAddToWishlist(productId)` `POST /api/wishlist/:productId`; `syncRemoveFromWishlist(productId)` `DELETE /api/wishlist/:productId`; `fetchWishlist` `GET /api/wishlist`. Hai thunk ghi không đổi state (cả khi lỗi). `fetchWishlist`: pending → `isSyncing`; fulfilled → **thay toàn bộ** `items` bằng bản BE (map: `name` rỗng và giá 0 nếu thiếu `product`, ảnh đầu tiên, `badge` hoặc `null`, `category/subcategory` lấy `slug` hoặc rỗng, `addedAt` = `createdAt` hoặc lúc nhận nếu thiếu; `data` thiếu → danh sách rỗng); rejected → `isSyncing = false`, giữ nguyên danh sách.
+**Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu; 401 → refresh một lần rồi thử lại): `syncAddToWishlist(productId)` `POST /api/wishlist/:productId`; `syncRemoveFromWishlist(productId)` `DELETE /api/wishlist/:productId`; `fetchWishlist` `GET /api/wishlist`. Hai thunk ghi không đổi state khi thành công. Khi lỗi: `syncAdd` bị từ chối thì mục vừa thêm bị gỡ khỏi danh sách ở máy; `syncRemove` bị từ chối thì danh sách được đọc lại từ BE (thunk gọi `fetchWishlist` rồi ném lại lỗi). `fetchWishlist`: pending → `isSyncing`; fulfilled → **thay toàn bộ** `items` bằng bản BE (map: `name` rỗng và giá 0 nếu thiếu `product`, ảnh đầu tiên, `badge` hoặc `null`, `category/subcategory` lấy `slug` hoặc rỗng, `addedAt` = `createdAt` hoặc lúc nhận nếu thiếu; `data` thiếu → danh sách rỗng); rejected → `isSyncing = false`, giữ nguyên danh sách.
 
-**Trang `WishlistContent`.** Đang tải phiên → khung chờ; chưa đăng nhập → `UnauthenticatedState` và **không gọi BE**; đã đăng nhập → `fetchWishlist()` một lần khi mở. Có mục: tiêu đề, số mục, nút "Xóa tất cả", lưới thẻ **mới nhất trước**, link "Tiếp tục mua sắm". Trống: thông báo, nút tới `/shop`, ba dòng mô tả.
+**Trang `WishlistContent`.** Đang tải phiên → khung chờ; chưa đăng nhập → `UnauthenticatedState` và **không gọi BE**; đã đăng nhập → `fetchWishlist()` một lần khi mở. Có mục: tiêu đề, số mục, nút "Xóa tất cả", lưới thẻ **mới nhất trước**, link "Tiếp tục mua sắm". Trống: thông báo, nút tới `/shop`, hai dòng mô tả (lưu món yêu thích, truy cập nhanh).
 - Thẻ: ảnh và tên là link tới `/shop/<category>/<subcategory>/<productId>` (thiếu slug → `/shop`, bấm thì tra `GET /api/products/:id` rồi chuyển trang, không tra được thì về `/shop`), giá theo ngôn ngữ (`custom_order` hiện "giá theo yêu cầu"), ngày thêm theo định dạng `short` và múi giờ của site, nút xóa.
-- Bỏ một mục: `removeWishlistItem` (đổi ngay) + `DELETE` + toast `removed`; lỗi BE không được báo, mục đã mất ở máy.
-- "Xóa tất cả": chỉ `clearWishlist()`, **không** gọi BE.
+- Bỏ một mục: `removeWishlistItem` (đổi ngay) + `DELETE` + toast `removed`; BE từ chối thì toast `syncFailed` và danh sách được đọc lại từ BE.
+- "Xóa tất cả": `clearWishlist()` (đổi ngay) rồi `DELETE` từng mục (BE chưa có endpoint xóa hết); có mục nào bị từ chối thì một toast `syncFailed` và danh sách được đọc lại từ BE.
+- Theo phiên (làm bởi `CartSync`, xem [cart](./cart.md)): đã đăng nhập → `fetchWishlist()` khi có phiên và khi đổi tài khoản, nên tim hiện đúng ở mọi trang; chưa đăng nhập hoặc đăng xuất → `clearWishlist()`, để người dùng sau trên cùng trình duyệt không thấy danh sách của người trước.
 
 ## 4. Thiết kế
 
@@ -86,14 +87,16 @@ Chữ giao diện ở `private.wishlist` (i18n); tiền qua `useMoney`; toast qu
 | WL-3 | `fetchWishlist` thay danh sách bằng bản BE (map sản phẩm, slug, ảnh, badge, ngày), cờ `isSyncing`, kèm Bearer | đúng | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
 | WL-3E | `fetchWishlist` lỗi (401, 500, mạng) giữ danh sách và tắt cờ; 401 thì refresh một lần rồi thử lại; dữ liệu thiếu trường vẫn map được | lỗi | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
 | WL-4 | `syncAdd` và `syncRemove` gọi đúng `POST`/`DELETE /api/wishlist/:id` kèm Bearer và không đổi state | đúng | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
-| WL-4E | `syncAdd`/`syncRemove` bị BE từ chối (401, 500) hoặc không có token: kết quả `rejected`, danh sách ở máy giữ nguyên | lỗi | khách | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
+| WL-4E | `syncAdd` bị BE từ chối (401, 500) hoặc không có token: `rejected` và mục vừa thêm bị gỡ; `syncRemove` bị từ chối: `rejected` và danh sách được đọc lại từ BE | lỗi | khách | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
 | WL-5 | Khách thấy màn chặn đăng nhập, không thấy danh sách và không gọi BE | đúng | khách | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
 | WL-5E | Đang xác định phiên chỉ có khung chờ, chưa gọi BE | lỗi | khách | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
 | WL-6 | Mở trang: tải danh sách BE thay bản ở máy; tiêu đề, số mục, mới nhất trước, giá, ngày, link, nút tiếp tục mua sắm; tiếng Anh dùng USD | đúng | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
 | WL-6E | BE lỗi thì giữ danh sách ở máy; mục `custom_order` không hiện giá; mục thiếu slug tra URL khi bấm và về `/shop` nếu không tra được | lỗi | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
-| WL-7 | Danh sách trống: thông báo, nút tới cửa hàng, ba dòng mô tả, không có "Xóa tất cả" | đúng | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
+| WL-7 | Danh sách trống: thông báo, nút tới cửa hàng, hai dòng mô tả (không còn dòng "thông báo khi giảm giá"), không có "Xóa tất cả" | đúng | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
 | WL-8 | Bỏ một mục: biến mất ngay, `DELETE` đúng sản phẩm, toast | đúng | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
-| WL-8E | BE từ chối lệnh bỏ: mục vẫn mất ở máy, không báo lỗi; "Xóa tất cả" chỉ xóa ở máy và không gọi BE | lỗi | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
+| WL-8E | BE từ chối lệnh bỏ: toast lỗi và danh sách được đọc lại; "Xóa tất cả" gửi `DELETE` từng mục, mục bị từ chối thì toast lỗi và đọc lại danh sách | lỗi | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
+
+| WL-9 | Theo phiên: đăng nhập thì tải danh sách, đổi tài khoản thì tải lại, đăng xuất hoặc khách thì xóa danh sách ở máy mà không gọi BE | đúng | user | component | `tests/storefront/cart/cart-sync.test.tsx` |
 
 Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T1: danh sách người dùng giữ), `WishlistContent.tsx` 75/65/75.
 
@@ -101,14 +104,11 @@ Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T1: danh sác
 
 | Rủi ro | Phát hiện | Quay lui |
 |---|---|---|
-| "Xóa tất cả" chỉ xóa ở máy: lần mở trang kế tiếp `fetchWishlist` đưa các mục về | Test WL-8E | Gọi `DELETE` từng mục (BE chưa có endpoint xóa hết) hoặc bỏ nút |
-| Wishlist không bị xóa khi đăng xuất: người dùng sau trên cùng trình duyệt thấy tim sáng của người trước (giỏ hàng thì bị xóa bởi `CartSync`) | Đọc code, doc 4.4 | Xóa theo phiên như giỏ hàng |
-| Lệnh `POST`/`DELETE` lỗi không báo cho khách: tim sáng ở máy mà BE không có | Test WL-4E, WL-8E | Toast lỗi và hoàn tác |
-| Trang trống ghi "Nhận thông báo khi giảm giá": chưa có tính năng nào như vậy | Đọc `private.wishlist.empty.features` | Bỏ dòng hoặc làm tính năng |
 | Kiểu dáng bằng thẻ `<style>` riêng (khoảng 360 dòng CSS) thay vì Tailwind | Đọc code | Chuyển sang Tailwind sau khi có test (phần "component quá lớn và giao diện") |
 
-Không có thay đổi hành vi nhìn thấy được trong lượt này.
+Thay đổi hành vi nhìn thấy được: danh sách yêu thích bị xóa ở máy khi đăng xuất và được tải khi đăng nhập; "Xóa tất cả" xóa cả ở BE; lỗi đồng bộ có toast; trang trống không còn dòng "thông báo khi giảm giá".
 
 ## 8. Lịch sử thay đổi
 
 - 2026-10-22 · Viết spec và test cho toàn module (batch 2), kiểm thử đột biến; không đổi code của module.
+- 2026-10-22 · Sửa theo quyết định của chủ dự án (giao tôi chọn): xóa danh sách khi đăng xuất và tải khi đăng nhập (qua `CartSync`); "Xóa tất cả" gọi `DELETE` từng mục; lệnh ghi bị từ chối thì gỡ tim vừa thêm hoặc đọc lại danh sách, kèm toast; bỏ dòng "thông báo khi giảm giá" khỏi trang trống. Khóa `private.wishlist.toast.syncFailed` thêm ở cả hai ngôn ngữ; `empty.features.priceDrops` bị xóa.

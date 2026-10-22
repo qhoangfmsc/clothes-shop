@@ -28,7 +28,7 @@ function fakeCart(status = 200) {
   server.use(
     http.post(`${API}/api/cart/items`, async ({ request }) => {
       posted.push(await request.json());
-      return status === 200 ? HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-new" })])) : HttpResponse.json({ message: "Unauthorized" }, { status });
+      return status === 200 ? HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-new" })])) : HttpResponse.json({}, { status });
     })
   );
   return posted;
@@ -252,20 +252,61 @@ describe("CART-18 closing, scrolling and quantity", () => {
   });
 });
 
-describe("CART-18E a visitor, and using the drawer in the wrong place", () => {
-  it("a visitor can still fill the bag here; the BE refuses, and the line stays on screen until the next sync clears it", async () => {
-    const posted = fakeCart(401);
+describe("CART-18E a visitor, a refusal, and using the drawer in the wrong place", () => {
+  it("asks a visitor to sign in instead of adding, and adds nothing", async () => {
+    const posted = fakeCart();
     const { store } = await open(product(), { as: "guest" });
-
     await userEvent.click(size("M"));
     await userEvent.click(colour("Red"));
+
+    await userEvent.click(addButton());
+
+    expect(await screen.findByText(msg("shared.feedback.loginPrompt.subtitle.addToBag"))).toBeInTheDocument();
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    expect(store.getState().cart.items).toEqual([]);
+    expect(posted).toEqual([]);
+    expect(track).not.toHaveBeenCalled();
+  });
+
+  it("adds the line once the visitor has signed in (the prompt hands the add back to run after sign-in)", async () => {
+    const posted = fakeCart();
+    const { store } = await open(product(), { as: "guest" });
+    await userEvent.click(size("M"));
+    await userEvent.click(colour("Red"));
+    let handed: { onSuccess: () => void; action: string } | null = null;
+    window.addEventListener("login-prompt:open", (event) => (handed = (event as CustomEvent).detail), { once: true });
+
+    await userEvent.click(addButton());
+    expect(handed).toMatchObject({ action: "addToBag" });
+    handed!.onSuccess();
+
+    await waitFor(() => expect(store.getState().cart.items).toHaveLength(1));
+    await waitFor(() => expect(posted).toHaveLength(1));
+  });
+
+  it("takes the line back out and says so when the BE refuses", async () => {
+    const posted = fakeCart(409);
+    const { store } = await open();
+    await userEvent.click(size("M"));
+    await userEvent.click(colour("Red"));
+
     await userEvent.click(addButton());
 
     await waitFor(() => expect(posted).toHaveLength(1));
-    await waitFor(() => expect(store.getState().cart.pendingSync).toBe(0));
-    expect(store.getState().cart.items).toHaveLength(1);
-    expect(store.getState().cart.items[0].serverItemId).toBeUndefined();
-    expect(store.getState().cart.pendingAddKeys).toEqual([]);
+    await waitFor(() => expect(store.getState().cart.items).toEqual([]));
+    expect(await screen.findByText(Q("addFailed"))).toBeInTheDocument();
+    expect(store.getState().cart.pendingSync).toBe(0);
+  });
+
+  it("shows the BE's own words when it refuses with an explanation", async () => {
+    server.use(http.post(`${API}/api/cart/items`, () => HttpResponse.json({ message: "Only 2 left in stock" }, { status: 409 })));
+    await open();
+    await userEvent.click(size("M"));
+    await userEvent.click(colour("Red"));
+
+    await userEvent.click(addButton());
+
+    expect(await screen.findByText("Only 2 left in stock")).toBeInTheDocument();
   });
 
   it("adds to a line that is already in the bag instead of making a second one", async () => {

@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh, giỏ nổi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-22
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-23
 > **Code:** `(private)/cart/` — `page.tsx`, `layout.tsx`, `CartContent.tsx`, `_common/{moduleSlice,types}.ts`, `_components/CartSync.tsx` · `_components/QuickAddDrawer.tsx`, `_components/CartFAB.tsx` (dùng chung) · `src/store/index.ts` (lưu `localStorage`)
 > **i18n:** `private.cart`, `shared.cart` (`fab`, `quickAdd`, `productAction`)
 > **Redux slice:** `state.cart`
@@ -42,7 +42,7 @@ State: `items`, `deselectedKeys` (lưu các dòng **bị bỏ tick**, nên mặc
 | Thunk | API |
 |---|---|
 | `fetchCart` | `GET /api/cart` — map `data.items[]` sang `CartItem` (`colorHex` tra theo tên màu, `category/subcategory` lấy `slug`) |
-| `syncAddToCartItem({productId,size,color,quantity})` | `POST /api/cart/items`; tìm id dòng trong giỏ trả về theo sản phẩm+size+màu (vì `data.id` là id giỏ, không phải id dòng) và gán `serverItemId` |
+| `syncAddToCartItem({productId,size,color,quantity})` | `POST /api/cart/items`; tìm id dòng trong giỏ trả về theo sản phẩm+size+màu (vì `data.id` là id giỏ, không phải id dòng) và gán `serverItemId`. Sau đó, nếu không còn lệnh thêm nào khác cùng khóa đang chờ, đối chiếu với giỏ ở máy lúc đó: dòng đã bị xóa → `DELETE` dòng vừa tạo; số lượng khác → `PATCH` về số lượng ở máy (lỗi ở bước này bị nuốt). Thất bại: bỏ phần số lượng vừa thêm khỏi giỏ ở máy (xóa dòng nếu hết) |
 | `syncUpdateCartItemQuantity` | `PATCH /api/cart/items/:serverItemId` `{quantity}` |
 | `syncRemoveCartItem` | `DELETE /api/cart/items/:serverItemId` |
 | `clearCartOnServer` | `DELETE /api/cart/clear` |
@@ -53,7 +53,7 @@ Cập nhật lạc quan: UI đổi ngay, rồi gọi API. `fetchCart.fulfilled` 
 
 ### 4.4 `CartSync`
 
-Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăng nhập → `fetchCart()`; chưa → `clearCart()` (xóa bản địa phương để người dùng sau trên cùng trình duyệt không thấy giỏ của người trước). Chạy lại khi đổi `userId`.
+Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăng nhập → `fetchCart()` và `fetchWishlist()`; chưa → `clearCart()` và `clearWishlist()` (xóa bản địa phương để người dùng sau trên cùng trình duyệt không thấy giỏ hay danh sách yêu thích của người trước). Chạy lại khi đổi `userId`.
 
 ### 4.5 Trang giỏ (`CartContent`)
 
@@ -69,7 +69,7 @@ Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăn
 - Ngăn kéo từ dưới (mobile, vuốt xuống > 80 px để đóng) hoặc từ phải (≥ 640 px) qua portal; Esc đóng; khóa scroll.
 - Không mở nếu `!isPurchasable(product.badge)`.
 - Chọn size, màu và số lượng 1–10; nút thêm chỉ bật khi đã chọn **cả size lẫn màu** (khối chọn màu ẩn khi sản phẩm không có màu, nên sản phẩm như vậy không thêm được từ drawer; trang chi tiết có cùng điều kiện), bảng size thu gọn (`useSizeGuide` chỉ gọi khi bấm "Bảng size").
-- Thêm: `addItem` + `syncAddToCartItem` + `trackEvent("add_to_cart", { productId, vnd | usd })` (đơn giá theo ngôn ngữ, xem [analytics](../admin/analytics.md)) + toast có link `/cart`, nút (nhãn "Thêm vào giỏ", không kèm giá vì BE chưa tính thành tiền) đổi thành "Đã thêm" rồi đóng sau 0.8 s. Giá và giá gốc của sản phẩm hiện theo ngôn ngữ (`useMoney`). Gợi ý còn thiếu size/màu.
+- Thêm: chưa đăng nhập thì mở hộp đăng nhập (`addToBag`) và chỉ thêm sau khi đăng nhập xong (`requireAuth`); đã đăng nhập thì `addItem` + `syncAddToCartItem` (BE từ chối → dòng bị gỡ và toast `addFailed`) + `trackEvent("add_to_cart", { productId, vnd | usd })` (đơn giá theo ngôn ngữ, xem [analytics](../admin/analytics.md)) + toast có link `/cart`, nút (nhãn "Thêm vào giỏ", không kèm giá vì BE chưa tính thành tiền) đổi thành "Đã thêm" rồi đóng sau 0.8 s. Giá và giá gốc của sản phẩm hiện theo ngôn ngữ (`useMoney`). Gợi ý còn thiếu size/màu.
 - Được mở từ `ProductCard` (sau `requireAuth`) và từ lưới sản phẩm ở [collections](./collections.md) (không qua `requireAuth`).
 
 ### 4.7 Thiết kế và test
@@ -78,8 +78,7 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/c
 
 Các điểm cần biết về hành vi hiện tại:
 
-- Đổi số lượng hoặc xóa một dòng **chưa có `serverItemId`** (lệnh thêm còn đang chờ BE) chỉ đổi ở máy, không gọi BE; `fetchCart` kế tiếp lấy lại dòng và số lượng của BE.
-- `syncAddToCartItem` lỗi (401 vì phiên hết hạn, 409, 500) không gỡ dòng đã thêm ở máy; dòng ở lại tới khi `fetchCart` hoặc `CartSync` thay giỏ. Khách chưa đăng nhập thêm được dòng từ `QuickAddDrawer` theo cách này.
+- Đổi số lượng hoặc xóa một dòng **chưa có `serverItemId`** (lệnh thêm còn đang chờ BE) đổi ở máy ngay và chưa gọi BE; khi lệnh thêm xong, `syncAddToCartItem` đối chiếu và gửi `PATCH` hoặc `DELETE` theo.
 - Khi có dòng chưa có `serverItemId` mà không còn lệnh ghi nào chờ, `useOrderQuote` đọc giỏ BE (`fetchCart`), giỏ BE thay các dòng ở máy nên danh sách đổi và báo giá được gửi lần nữa với cùng các id.
 - Báo giá lỗi chỉ để tạm tính hiện "…", không có thông báo lỗi.
 - Hẹn giờ debounce số lượng (500 ms) và hẹn giờ đóng ngăn kéo (800 ms) không bị hủy khi component bị gỡ.

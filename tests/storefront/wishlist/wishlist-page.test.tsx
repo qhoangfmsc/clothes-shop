@@ -152,12 +152,13 @@ describe("WL-6E a list that is thin, stale or cannot be loaded", () => {
 });
 
 describe("WL-7 an empty list", () => {
-  it("says so, offers the shop, lists the three promises and has nothing to clear", async () => {
+  it("says so, offers the shop, lists the two promises and has nothing to clear", async () => {
     await asUser([], []);
 
     expect(await screen.findByRole("heading", { level: 2, name: msg("private.wishlist.empty.title") })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: msg("private.wishlist.empty.browse") })).toHaveAttribute("href", "/shop");
-    for (const key of ["save", "priceDrops", "quickAccess"]) expect(screen.getByText(msg(`private.wishlist.empty.features.${key}`))).toBeInTheDocument();
+    for (const key of ["save", "quickAccess"]) expect(screen.getByText(msg(`private.wishlist.empty.features.${key}`))).toBeInTheDocument();
+    expect(screen.queryByText(/giảm giá/i)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: msg("private.wishlist.header.clearAll") })).not.toBeInTheDocument();
     expect(screen.queryByText(msgf("private.wishlist.header.itemCount", { count: 0 }))).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: new RegExp(msg("private.wishlist.continueShopping")) })).not.toBeInTheDocument();
@@ -193,21 +194,20 @@ describe("WL-8 taking a product off the list", () => {
   });
 });
 
-describe("WL-8E removals the BE does not hear about", () => {
-  it("a removal the BE refuses is still removed on screen, and no error is shown (see the spec, section 7)", async () => {
+describe("WL-8E removals the BE does not accept", () => {
+  it("a removal the BE refuses is announced, and the list is read again so the product comes back", async () => {
     const { calls } = await asUser([DRESS(), SKIRT()]);
     await waitFor(() => expect(calls.fetches).toBe(1));
     server.use(http.delete(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "boom" }, { status: 500 })));
 
     await userEvent.click(screen.getByRole("button", { name: msgf("private.wishlist.card.remove", { name: "Dress" }) }));
 
-    await waitFor(() => expect(shownNames()).toEqual(["Skirt"]));
-    await wait(150);
-    expect(screen.getByRole("heading", { level: 1, name: msg("private.wishlist.header.title") })).toBeInTheDocument();
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(await screen.findByText(msg("private.wishlist.toast.syncFailed"))).toBeInTheDocument();
+    await waitFor(() => expect(shownNames()).toEqual(["Skirt", "Dress"]));
+    expect(calls.fetches).toBe(2);
   });
 
-  it("'clear all' empties the list here and does not call the BE, so the products come back the next time the page opens", async () => {
+  it("'clear all' empties the list here and asks the BE to remove each product", async () => {
     const { calls, store } = await asUser([DRESS(), SKIRT()]);
     await waitFor(() => expect(calls.fetches).toBe(1));
 
@@ -215,7 +215,18 @@ describe("WL-8E removals the BE does not hear about", () => {
 
     expect(store.getState().wishlist.items).toEqual([]);
     expect(await screen.findByRole("heading", { level: 2, name: msg("private.wishlist.empty.title") })).toBeInTheDocument();
-    await wait(200);
-    expect(calls.deletes).toEqual([]);
+    await waitFor(() => expect([...calls.deletes].sort()).toEqual(["p1", "p2"]));
+    expect(screen.queryByText(msg("private.wishlist.toast.syncFailed"))).not.toBeInTheDocument();
+  });
+
+  it("'clear all' says so once, and shows what the BE still holds, when a removal is refused", async () => {
+    const { calls } = await asUser([DRESS(), SKIRT()]);
+    await waitFor(() => expect(calls.fetches).toBe(1));
+    server.use(http.delete(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "boom" }, { status: 500 })));
+
+    await userEvent.click(screen.getByRole("button", { name: msg("private.wishlist.header.clearAll") }));
+
+    expect(await screen.findAllByText(msg("private.wishlist.toast.syncFailed"))).toHaveLength(1);
+    await waitFor(() => expect(shownNames().sort()).toEqual(["Dress", "Skirt"]));
   });
 });

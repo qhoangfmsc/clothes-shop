@@ -44,11 +44,21 @@ export default function WishlistContent() {
   const handleRemove = useCallback(
     (productId: string, name: string) => {
       dispatch(removeWishlistItem(productId));
-      dispatch(syncRemoveFromWishlist(productId));
+      dispatch(syncRemoveFromWishlist(productId))
+        .unwrap()
+        .catch(() => toast.error(t("toast.syncFailed")));
       toast.info(t("card.removed", { name }));
     },
     [dispatch, toast, t]
   );
+
+  /* The BE has no "empty the list" call: one DELETE per product */
+  const handleClearAll = useCallback(async () => {
+    const productIds = items.map((item) => item.productId);
+    dispatch(clearWishlist());
+    const results = await Promise.allSettled(productIds.map((id) => dispatch(syncRemoveFromWishlist(id)).unwrap()));
+    if (results.some((result) => result.status === "rejected")) toast.error(t("toast.syncFailed"));
+  }, [items, dispatch, toast, t]);
 
   /* Loading */
   if (isLoading) {
@@ -102,7 +112,7 @@ export default function WishlistContent() {
 
           {items.length > 0 && (
             <button
-              onClick={() => dispatch(clearWishlist())}
+              onClick={handleClearAll}
               className="wishlist-page__clear-btn"
             >
               {t("header.clearAll")}
@@ -135,10 +145,6 @@ export default function WishlistContent() {
               <div className="wishlist-empty__feature">
                 <span className="wishlist-empty__feature-dot" style={{ background: "var(--accent-rose)" }} />
                 {t("empty.features.save")}
-              </div>
-              <div className="wishlist-empty__feature">
-                <span className="wishlist-empty__feature-dot" style={{ background: "var(--accent-primary)" }} />
-                {t("empty.features.priceDrops")}
               </div>
               <div className="wishlist-empty__feature">
                 <span className="wishlist-empty__feature-dot" style={{ background: "var(--accent-sage)" }} />

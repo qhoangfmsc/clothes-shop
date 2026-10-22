@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchWishlist, syncAddToWishlist, syncRemoveFromWishlist } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
@@ -170,18 +171,55 @@ describe("WL-4 telling the BE about a heart", () => {
 });
 
 describe("WL-4E a heart the BE does not accept", () => {
-  it.each([
-    ["saving, token expired (401)", () => syncAddToWishlist("p1"), "post", 401],
-    ["saving, server error (500)", () => syncAddToWishlist("p1"), "post", 500],
-    ["removing, server error (500)", () => syncRemoveFromWishlist("p1"), "delete", 500],
-  ] as const)("%s: rejected, and the list on screen stays as it is", async (_what, thunk, verb, status) => {
-    server.use(http[verb](`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "no" }, { status })));
-    const store = makeStore({ wishlist: wishlistState([wishlistItem()]) });
+  it.each([401, 500])("saving refused with %i: rejected, and the heart just added is taken back", async (status) => {
+    server.use(http.post(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "no" }, { status })));
+    const store = makeStore({ wishlist: wishlistState([wishlistItem({ productId: "a" }), wishlistItem({ productId: "b" })]) });
 
-    const result = await store.dispatch(thunk());
+    const result = await store.dispatch(syncAddToWishlist("b"));
 
-    expect(result.type.endsWith("/rejected")).toBe(true);
-    expect(state(store).items).toEqual([wishlistItem()]);
+    expect(result.type).toBe("wishlist/syncAdd/rejected");
+    expect(state(store).items.map((i) => i.productId)).toEqual(["a"]);
+  });
+
+  it("a refused save for a product that is not on the list changes nothing", async () => {
+    server.use(http.post(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "no" }, { status: 500 })));
+    const store = makeStore({ wishlist: wishlistState([wishlistItem({ productId: "a" })]) });
+
+    await store.dispatch(syncAddToWishlist("zzz"));
+
+    expect(state(store).items.map((i) => i.productId)).toEqual(["a"]);
+  });
+
+  it("removing refused with 500: rejected, and the list is read again from the BE, which still has the product", async () => {
+    let reads = 0;
+    server.use(
+      http.delete(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "no" }, { status: 500 })),
+      http.get(`${API}/api/wishlist`, () => {
+        reads += 1;
+        return HttpResponse.json(serverWishlist([wishlistItem({ productId: "a" }), wishlistItem({ productId: "b" })]));
+      })
+    );
+    const store = makeStore({ wishlist: wishlistState([wishlistItem({ productId: "a" })]) });
+
+    const result = await store.dispatch(syncRemoveFromWishlist("b"));
+
+    expect(result.type).toBe("wishlist/syncRemove/rejected");
+    await waitFor(() => expect(state(store).items.map((i) => i.productId)).toEqual(["a", "b"]));
+    expect(reads).toBe(1);
+  });
+
+  it("removing refused and the list cannot be read either: the list stays as it is", async () => {
+    server.use(
+      http.delete(`${API}/api/wishlist/:id`, () => HttpResponse.json({ message: "no" }, { status: 500 })),
+      http.get(`${API}/api/wishlist`, () => HttpResponse.json({ message: "no" }, { status: 500 }))
+    );
+    const store = makeStore({ wishlist: wishlistState([wishlistItem({ productId: "a" })]) });
+
+    const result = await store.dispatch(syncRemoveFromWishlist("b"));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    expect(result.type).toBe("wishlist/syncRemove/rejected");
+    expect(state(store).items.map((i) => i.productId)).toEqual(["a"]);
   });
 
   it("without a stored token the request goes out with no Authorization header", async () => {

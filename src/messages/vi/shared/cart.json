@@ -16,7 +16,8 @@
     "hintColor": "Chọn màu sắc",
     "added": "Đã thêm",
     "addToBag": "Thêm vào giỏ",
-    "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>"
+    "toastAdded": "Đã thêm {name} ({details}) — <link>Xem giỏ hàng</link>",
+    "addFailed": "Không thể thêm vào giỏ hàng. Vui lòng thử lại."
   },
   "productAction": {
     "addToBag": "Thêm vào giỏ",

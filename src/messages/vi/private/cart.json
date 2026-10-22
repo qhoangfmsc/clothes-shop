@@ -46,7 +46,8 @@
   "toast": {
     "removed": "Đã bỏ {count} sản phẩm khỏi giỏ hàng",
     "addedToWishlist": "Đã thêm {count} sản phẩm vào danh sách yêu thích",
-    "alreadyInWishlist": "Các sản phẩm này đã có trong danh sách yêu thích"
+    "alreadyInWishlist": "Các sản phẩm này đã có trong danh sách yêu thích",
+    "wishlistFailed": "Không cập nhật được danh sách yêu thích. Vui lòng thử lại."
   },
   "checkout": {
     "subtotal": "Tạm tính ({count} sản phẩm)",
