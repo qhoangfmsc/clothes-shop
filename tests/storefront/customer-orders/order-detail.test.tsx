@@ -1,10 +1,14 @@
 import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it } from "vitest";
 import OrderDetailContent from "@/src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent";
 import type { Order } from "@/src/app/[locale]/(private)/orders/_common/types";
 import { CONTACT_ADDRESS, CONTACT_MAPS_URL } from "@/src/lib/contact";
 import { order, orderItem, productSummary } from "@/tests/_support/fixtures";
+import { API } from "@/tests/_support/api";
 import { dateText, msg, msgf } from "@/tests/_support/messages";
+import { server } from "@/tests/_support/msw-server";
 import { navigation } from "@/tests/_support/navigation";
 import { renderApp } from "@/tests/_support/render";
 import { ordersBackend, type OrdersBackend } from "./orders-kit";
@@ -61,11 +65,61 @@ describe("ORD-4E an order that cannot be shown", () => {
     expect(screen.queryByText(D("toast.loadFailed"))).not.toBeInTheDocument();
   });
 
-  it("says it was not found and shows the BE's error when the order cannot be loaded (see the spec, section 7)", async () => {
-    await open(500);
+  it("says it was not found, with the BE's words, when the BE answers 404", async () => {
+    await open(404);
 
     expect(await screen.findByText(D("notFound"))).toBeInTheDocument();
     expect(await screen.findByText("boom")).toBeInTheDocument();
+    expect(screen.queryByText(D("error.title"))).not.toBeInTheDocument();
+  });
+
+  it("says the order could not be loaded, not that it is missing, when the BE fails", async () => {
+    await open(500);
+
+    expect(await screen.findByText(D("error.title"))).toBeInTheDocument();
+    expect(await screen.findByText("boom")).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByText(D("notFound"))).not.toBeInTheDocument();
+  });
+
+  it("loads the order again on 'try again' and then shows it", async () => {
+    const { calls } = await open(500);
+    await screen.findByText(D("error.title"));
+    server.use(http.get(`${API}/api/orders/:id`, () => HttpResponse.json({ data: order({ status: "shipping" }) })));
+
+    await userEvent.click(screen.getByRole("button", { name: D("error.retry") }));
+
+    expect(await screen.findByRole("heading", { level: 1, name: msg("common.orderStatus.shipping") })).toBeInTheDocument();
+    expect(screen.queryByText(D("error.title"))).not.toBeInTheDocument();
+    expect(calls.details).toHaveLength(1);
+  });
+
+  it("says it was not found when 'try again' is answered with no order, not that loading failed", async () => {
+    await open(500);
+    await screen.findByText(D("error.title"));
+    server.use(http.get(`${API}/api/orders/:id`, () => HttpResponse.json({ data: null })));
+
+    await userEvent.click(screen.getByRole("button", { name: D("error.retry") }));
+
+    expect(await screen.findByText(D("notFound"))).toBeInTheDocument();
+    expect(screen.queryByText(D("error.title"))).not.toBeInTheDocument();
+  });
+
+  it("shows the error again when 'try again' fails too", async () => {
+    await open(500);
+    await screen.findByText(D("error.title"));
+
+    await userEvent.click(screen.getByRole("button", { name: D("error.retry") }));
+
+    await waitFor(() => expect(screen.getByRole("button", { name: D("error.retry") })).toBeEnabled());
+    expect(screen.queryByText(D("notFound"))).not.toBeInTheDocument();
+  });
+
+  it("speaks English in English", async () => {
+    await open(500, {}, { locale: "en" });
+
+    expect(await screen.findByText(D("error.title", "en"))).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: D("error.retry", "en") })).toBeInTheDocument();
   });
 });
 

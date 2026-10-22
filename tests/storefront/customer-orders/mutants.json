@@ -385,5 +385,86 @@
     "tests": [
       "tests/storefront/customer-orders/orders-list.test.tsx"
     ]
+  },
+  {
+    "name": "list: a failed first page shows the empty page",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "        if (nextPage === 1) setLoadError(true);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: a failed next page replaces the list with the error",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "if (nextPage === 1) setLoadError(true);",
+    "replace": "setLoadError(true);",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the error stays after a good answer",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "        if (nextPage === 1) setLoadError(false);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: 'try again' does not ask",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "    setIsLoading(true);\n    loadPage(1).finally(() => setIsLoading(false));\n  };\n\n  const handleLoadMore",
+    "replace": "    setIsLoading(true);\n    setIsLoading(false);\n  };\n\n  const handleLoadMore",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: any failure is shown as not found",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "setLoadError(!(err instanceof ApiError && err.status === 404));",
+    "replace": "setLoadError(false);",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a 404 is shown as a loading failure",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "setLoadError(!(err instanceof ApiError && err.status === 404));",
+    "replace": "setLoadError(true);",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the error stays after a good answer",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "      setOrder(res.data ?? null);\n      setLoadError(false);",
+    "replace": "      setOrder(res.data ?? null);",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: 'try again' does not ask",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "    setIsLoading(true);\n    fetchOrder();\n  };",
+    "replace": "    setIsLoading(true);\n  };",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "load failed: the button does nothing",
+    "file": "src/app/[locale]/(private)/orders/_components/LoadFailed.tsx",
+    "find": "onClick={onRetry}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
   }
 ]

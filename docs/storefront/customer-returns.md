@@ -1,7 +1,7 @@
 # Customer returns (trả hàng của khách)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-22
-> **Code:** `(private)/returns/` — `layout.tsx`, `page.tsx`, `ReturnsContent.tsx`, `[returnId]/{page.tsx,ReturnDetailContent.tsx}`, `new/{page.tsx,NewReturnContent.tsx}`, `_common/{types,constants,use-return-eligibility}.ts`, `_components/{ReturnStatusBadge,ReturnProgress,OrderReturnCard}.tsx`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-23
+> **Code:** `(private)/returns/` — `layout.tsx`, `page.tsx`, `ReturnsContent.tsx`, `[returnId]/{page.tsx,ReturnDetailContent.tsx}`, `new/{page.tsx,NewReturnContent.tsx}`, `_common/{types,constants,use-return-eligibility}.ts`, `_components/{LoadFailed,ReturnStatusBadge,ReturnProgress,OrderReturnCard}.tsx`
 > **i18n:** `private.returns` (`meta`, `status`, `reason`, `ineligible`, `orderCard`, `list`, `detail`, `form`), `shared.errors.byCode` (1801, 1803, 1804)
 
 ## 1. Tóm tắt module
@@ -18,7 +18,7 @@ Cho khách biết đơn nào còn trả được (và đến hạn nào), trả 
 |---|---|
 | `OrderReturnCard` (trong chi tiết đơn, [customer-orders](./customer-orders.md)) | Chỉ với đơn `delivered` / `completed`: gọi `GET /api/returns/eligibility/:orderId`. `eligible` → "Còn hạn đến {deadline}" + nút "Yêu cầu trả hàng" → `/returns/new?orderId=`; không → nhãn theo `reason` (`ORDER_NOT_PAID` Đơn chưa thanh toán, `ORDER_NOT_DELIVERED` Đơn chưa giao, `RETURN_WINDOW_EXPIRED` Đã hết hạn đổi trả, `NOTHING_TO_RETURN` Đã gửi yêu cầu cho toàn bộ sản phẩm), không có nút. Liệt kê các yêu cầu đã gửi của đơn (`GET /api/returns?orderId=`) kèm badge, bấm vào xem chi tiết |
 | Form `/returns/new` | Một màn hình: chọn từng dòng hàng (checkbox + số lượng 1…`returnableQuantity`, dòng hết số lượng bị khóa "đã gửi yêu cầu"), lý do (`WRONG_SIZE` Sai size, `CHANGED_MIND` Đổi ý, `DEFECTIVE` Hàng lỗi, `WRONG_ITEM` Giao sai hàng, `OTHER` Lý do khác; danh sách `OptionList`), ghi chú ≤ 500 ký tự; thẻ bên phải: chính sách đổi trả từ `GET /api/shipping` (`returnPolicy.description`, `conditions[]`), hạn "Còn hạn đến …", gợi ý "Muốn đổi size? Hãy trả hàng rồi đặt đơn mới.", nút gửi |
-| Danh sách `/returns` | Thẻ mỗi yêu cầu (badge, ngày, tối đa 2 sản phẩm, mã đơn + lý do, số tiền hoàn nếu có); `?orderId=` lọc theo đơn; "Xem thêm" phân trang 25/trang |
+| Danh sách `/returns` | Thẻ mỗi yêu cầu (badge, ngày, tối đa 2 sản phẩm, mã đơn + lý do, số tiền hoàn nếu có); `?orderId=` lọc theo đơn; "Xem thêm" phân trang 25/trang; lỗi tải trang đầu → toast và khối `LoadFailed` (`list.error.*`, nút gọi lại trang đầu) thay cho màn trống |
 | Chi tiết `/returns/[returnId]` | Trạng thái + câu giải thích, thanh tiến trình (`ReturnProgress`: Chờ duyệt → Đã duyệt, gửi hàng về → Shop đã nhận hàng → Đã hoàn tiền; `REJECTED` / `CANCELLED` không có thanh), phản hồi của shop (`adminNote`: tiêu đề "Hướng dẫn gửi hàng" khi `APPROVED`, "Lý do từ chối" khi `REJECTED`), từng dòng (tên, size, màu, số lượng trả, số lượng nhận khi đã `RECEIVED`/`REFUNDED`), lý do và ghi chú của khách, khoản hoàn, nút "Hủy yêu cầu" |
 
 ## 4. Chi tiết
@@ -30,7 +30,7 @@ Cho khách biết đơn nào còn trả được (và đến hạn nào), trả 
 | `GET /api/returns/eligibility/:orderId` | `useReturnEligibility` | `{ orderId, eligible, reason, deadline, returnWindowDays, items[{ orderItemId, quantity, returnableQuantity }] }`; `enabled = false` thì không gọi |
 | `POST /api/returns` | form | `{ orderId, reason, note?, items[{ orderItemId, quantity }] }`; thành công → toast, `router.replace` sang `/returns/<id>`. Lỗi 1802 / 1803: toast, xóa lựa chọn và tải lại eligibility để thấy số lượng thật |
 | `GET /api/returns?sort=-createdAt&page&limit&orderId` | danh sách, `OrderReturnCard` | Lọc `status` có ở BE nhưng giao diện khách không có bộ lọc |
-| `GET /api/returns/:returnId` | chi tiết | Lỗi → toast + trạng thái "không tìm thấy" (1801) |
+| `GET /api/returns/:returnId` | chi tiết | 404 (1801) hoặc rỗng → "không tìm thấy" kèm link về danh sách; lỗi khác → toast và khối `LoadFailed` (`detail.error.*`, nút gọi lại, vẫn có link về danh sách) |
 | `PATCH /api/returns/:returnId/cancel` | chi tiết | Nút chỉ hiện khi `REQUESTED` hoặc `APPROVED` (`CUSTOMER_CANCELLABLE_STATUSES`), qua `useConfirm`; response là yêu cầu đã cập nhật. Lỗi (1804: trạng thái vừa đổi) → toast và tải lại |
 
 `ReturnRequest { id, orderId, status (REQUESTED | APPROVED | RECEIVED | REFUNDED | REJECTED | CANCELLED), reason, note, adminNote, createdAt, approvedAt, receivedAt, items[{ id, orderItemId, productName, productImage, size, color, priceVnd | null, priceUsd | null, quantity, acceptedQuantity | null }], refund { amountVnd, amountUsd, status, bankReference, processedAt } | null }`. Không có tên hay id của admin.
@@ -48,7 +48,6 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/c
 
 Các điểm cần biết về hành vi hiện tại:
 
-- Danh sách hoặc chi tiết không tải được (mạng, 500) cho ra màn "chưa có yêu cầu" hoặc "không tìm thấy", kèm toast báo lỗi.
 - Chi tiết kiểm tra "chưa đăng nhập" trước "đang tải", nên khách chưa đăng nhập thấy màn chặn ngay.
 - Biểu mẫu đọc cả đơn (`GET /api/orders/:id`) để lấy danh sách dòng, dù điều kiện trả đã có `items`.
 

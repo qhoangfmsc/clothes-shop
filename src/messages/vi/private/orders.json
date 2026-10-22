@@ -23,7 +23,11 @@
     "loadMore": "Xem thêm đơn hàng",
     "loadingMore": "Đang tải...",
     "returnsLink": "Yêu cầu trả hàng",
-    "reviewsLink": "Đánh giá sản phẩm"
+    "reviewsLink": "Đánh giá sản phẩm",
+    "error": {
+      "title": "Không tải được đơn hàng của bạn.",
+      "retry": "Thử lại"
+    }
   },
   "detail": {
     "notFound": "Không tìm thấy đơn hàng.",
@@ -103,6 +107,10 @@
     },
     "review": {
       "cta": "Viết đánh giá"
+    },
+    "error": {
+      "title": "Không tải được đơn hàng này.",
+      "retry": "Thử lại"
     }
   }
 }

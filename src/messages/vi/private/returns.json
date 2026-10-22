@@ -48,6 +48,10 @@
     },
     "toast": {
       "loadFailed": "Không tải được danh sách yêu cầu trả hàng. Vui lòng thử lại."
+    },
+    "error": {
+      "title": "Không tải được danh sách yêu cầu trả hàng.",
+      "retry": "Thử lại"
     }
   },
   "detail": {
@@ -97,6 +101,10 @@
     },
     "toast": {
       "loadFailed": "Không tải được yêu cầu trả hàng này. Vui lòng thử lại."
+    },
+    "error": {
+      "title": "Không tải được yêu cầu trả hàng này.",
+      "retry": "Thử lại"
     }
   },
   "form": {

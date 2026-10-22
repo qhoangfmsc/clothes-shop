@@ -1,6 +1,6 @@
 # Customer orders (đơn hàng của tôi) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
 > **Doc:** [storefront/customer-orders](../../docs/storefront/customer-orders.md) · **Test:** `tests/storefront/customer-orders/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -22,10 +22,10 @@ Khách xem lại đơn của mình: danh sách (`OrdersContent.tsx`, 236 dòng) 
 
 **Danh sách `/orders`.** Đang tải phiên → khung chờ; chưa đăng nhập → `UnauthenticatedState` và **không gọi BE**; đã đăng nhập → `GET /api/orders?sort=-createdAt&limit=25` (trang kế thêm `page=2`…). Đầu trang: link về tài khoản, tiêu đề, link "Đánh giá sản phẩm" kèm số dòng đang chờ đánh giá (nếu > 0) và link "Yêu cầu trả hàng".
 - Mỗi đơn là một thẻ bấm được cả khối tới `/orders/<id>`: nhãn trạng thái xử lý và nhãn thanh toán, ngày (`short`), tối đa **2** dòng hàng (ảnh, tên, `size · màu`, `SL n` khi n > 1) rồi "+n sản phẩm khác", mã đơn nhỏ và tổng tiền theo ngôn ngữ (VND ở `vi`, USD ở ngôn ngữ khác).
-- Trống: thông báo và nút tới `/shop`. Lỗi tải: toast (mã BE → text BE → `toast.loadFailed`), danh sách ở lại như cũ (rỗng thì hiện màn trống).
+- Trống: thông báo và nút tới `/shop`. Lỗi tải trang đầu: toast (mã BE → text BE → `toast.loadFailed`) **và** khối lỗi riêng (`list.error.title`, nút `list.error.retry` tải lại trang đầu) thay cho màn trống — khách không bao giờ bị nói là chưa có đơn khi chưa biết; thử lại thành công thì khối lỗi biến mất. Lỗi ở "xem thêm" chỉ có toast, danh sách giữ nguyên.
 - "Xem thêm đơn hàng" chỉ hiện khi số đơn đã tải < `total`; bấm tải trang kế và nối vào cuối; đang tải thì khóa và đổi nhãn; lỗi thì toast và giữ danh sách.
 
-**Chi tiết `/orders/:orderId`.** `GET /api/orders/:orderId` khi đã đăng nhập; đang tải → khung chờ; chưa đăng nhập → màn chặn (không gọi BE); lỗi hoặc không có đơn → "Không tìm thấy đơn hàng" (lỗi còn kèm toast).
+**Chi tiết `/orders/:orderId`.** `GET /api/orders/:orderId` khi đã đăng nhập; đang tải → khung chờ; chưa đăng nhập → màn chặn (không gọi BE); BE trả 404 → "Không tìm thấy đơn hàng"; lỗi khác (mạng, 5xx, 401 không cứu được) → khối lỗi riêng (`detail.error.title`, nút `detail.error.retry` tải lại đơn) kèm toast; đơn rỗng không kèm lỗi → "không tìm thấy".
 - Thẻ trạng thái: nhãn trạng thái, nhãn thanh toán, câu giải thích theo trạng thái, ngày giờ và mã đơn. Trạng thái lạ hiện theo kiểu và câu của `pending`.
 - Thẻ thanh toán: hiện khi `canPay` (đơn `unpaid` và chưa `cancelled`: câu "đang chờ" và nút "Thanh toán ngay" → `/checkout/payment/<id>`), hoặc đơn `paid` ("Đã thanh toán"), hoặc có ít nhất một mã chuyển khoản. Mỗi mã (mới nhất trước): mã và nút sao chép, trạng thái thật (đã hết hạn màu hồng, đã trả màu xanh), số tiền, ngày trả hoặc hạn, `transactionRef` kèm nút sao chép; dòng nhắc liên hệ cửa hàng khi đơn chưa trả.
 - Thẻ giao hàng (chỉ khi `shippingAddress` có giá trị): họ tên đậm · điện thoại; địa chỉ từng dòng khi có; `city[, province] [postalCode]`; quốc gia chỉ khi khác `Vietnam`; ghi chú đơn. Nhận tại cửa hàng (`store-pickup`): tiêu đề "Người nhận tại cửa hàng", dòng "bạn sẽ nhận trực tiếp" và link bản đồ tới địa chỉ cửa hàng.
@@ -57,6 +57,8 @@ Hướng phụ thuộc: component → `useApiAuth` (có refresh token) → `sess
 | **Dòng đánh giá được hỏi BE** (`pending`), không suy từ trạng thái đơn | API đơn không cho biết dòng đã đánh giá chưa | Suy từ `delivered` |
 | **Thay đơn bằng phản hồi của lệnh hủy** | Các mã chuyển khoản chờ cũng bị BE hủy; màn hình thấy ngay | Tải lại đơn |
 | **Phân trang bằng "xem thêm" nối cuối** | Danh sách ngắn, không cần nhảy trang | Phân trang số |
+| **Lỗi tải là một trạng thái riêng** (`loadError`), tách khỏi "rỗng" và "không có" | Ba tình huống khác nhau cần ba lời khác nhau; chỉ 404 mới là "không tìm thấy" | Dùng chung màn trống |
+| **Khối lỗi nằm riêng trong module** (`_components/LoadFailed.tsx`), không import chéo từ `returns` | Giữ phụ thuộc một chiều giữa module; bản dùng chung thuộc `ui-kit` khi module đó có spec | Một component dùng chung ngay bây giờ |
 
 ### Kiến trúc
 
@@ -86,11 +88,11 @@ Chữ giao diện ở `private.orders` và `common.orderStatus`; tiền qua `use
 | ORD-1 | Khách thấy màn chặn đăng nhập ở danh sách, không gọi BE | đúng | khách | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
 | ORD-1E | Đang xác định phiên chỉ có khung chờ | lỗi | khách | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
 | ORD-2 | Danh sách: yêu cầu đúng, mỗi đơn có trạng thái, thanh toán, ngày, tối đa hai dòng và "+n", mã đơn, tổng theo ngôn ngữ, link tới chi tiết; link đánh giá kèm số chờ và link trả hàng | đúng | user | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
-| ORD-2E | Danh sách trống có nút mua sắm; tải lỗi báo toast và giữ màn trống | lỗi | user | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
+| ORD-2E | Danh sách trống có nút mua sắm; tải lỗi báo toast và hiện khối lỗi (không phải màn trống) với nút thử lại tải lại trang đầu | lỗi | user | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
 | ORD-3 | "Xem thêm" nối trang kế, ẩn khi đủ, khóa khi đang tải | đúng | user | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
 | ORD-3E | "Xem thêm" lỗi báo toast và giữ danh sách | lỗi | user | component | `tests/storefront/customer-orders/orders-list.test.tsx` |
 | ORD-4 | Khách thấy màn chặn ở chi tiết, không gọi BE; đang tải chỉ có khung chờ | đúng | khách | component | `tests/storefront/customer-orders/order-detail.test.tsx` |
-| ORD-4E | Đơn không tải được hoặc không có: "không tìm thấy", lỗi còn kèm toast | lỗi | user | component | `tests/storefront/customer-orders/order-detail.test.tsx` |
+| ORD-4E | Đơn không có (404) hoặc rỗng: "không tìm thấy"; lỗi khác: khối lỗi + toast, nút thử lại tải lại đơn | lỗi | user | component | `tests/storefront/customer-orders/order-detail.test.tsx` |
 | ORD-5 | Thẻ trạng thái: nhãn, câu giải thích theo trạng thái, nhãn thanh toán, ngày và mã đơn; tiếng Anh | đúng | user | component | `tests/storefront/customer-orders/order-detail.test.tsx` |
 | ORD-5E | Trạng thái lạ hiện như đang chờ | lỗi | user | component | `tests/storefront/customer-orders/order-detail.test.tsx` |
 | ORD-6 | Thanh toán: đơn chưa trả có nút trả tiền; đơn đã trả báo đã trả; liệt kê mọi mã chuyển khoản (trạng thái, số tiền, hạn hoặc ngày trả, mã giao dịch, sao chép) | đúng | user | component | `tests/storefront/customer-orders/order-detail.test.tsx` |
@@ -115,8 +117,8 @@ Ngưỡng coverage riêng của module (dòng/nhánh/hàm): `OrdersContent.tsx` 
 
 | Rủi ro | Phát hiện | Quay lui |
 |---|---|---|
-| Tải danh sách lỗi (mạng, 500) cho ra màn "Chưa có đơn hàng" kèm toast: khách thấy lời nói sai | Test ORD-2E | Hiện trạng thái lỗi riêng và nút thử lại |
-| Tải chi tiết lỗi (mạng, 500) cho ra "Không tìm thấy đơn hàng" kèm toast | Test ORD-4E | Phân biệt không có đơn (404) với lỗi tạm |
+| Tải danh sách lỗi (mạng, 500) từng cho ra màn "Chưa có đơn hàng": lời nói sai | Test ORD-2E | Đã chặn bằng khối lỗi riêng và nút thử lại |
+| Tải chi tiết lỗi (mạng, 500) từng cho ra "Không tìm thấy đơn hàng" | Test ORD-4E | Đã chặn: chỉ 404 mới là "không tìm thấy" |
 | Hủy đơn dựa vào `paymentStatus` ở máy; đơn vừa được trả ở tab khác vẫn có nút hủy tới lần tải sau (BE từ chối bằng `1307`) | Test ORD-9E | Tải lại đơn trước khi cho hủy |
 | `OrderDetailContent` gánh sáu thẻ, lệnh hủy, đánh giá | Đọc code | Tách từng thẻ thành thành phần sau khi có test |
 | Chi tiết đơn import thẻ của `returns` và hộp của `reviews` | Đọc code | Giữ: đây là điểm ghép màn hình, không phải vòng phụ thuộc |
@@ -125,5 +127,6 @@ Thay đổi hành vi nhìn thấy được: khách chưa đăng nhập mở chi 
 
 ## 8. Lịch sử thay đổi
 
+- 2026-10-23 · Lỗi tải danh sách/chi tiết có khối lỗi riêng với nút thử lại; chi tiết chỉ nói "không tìm thấy" khi BE trả 404.
 - 2026-10-22 · Viết spec và test cho toàn module (batch 2), kiểm thử đột biến.
 - 2026-10-22 · Sửa lỗi: khách chưa đăng nhập mở `/orders/:id` chỉ thấy khung chờ mãi mãi vì `isLoading` chỉ tắt sau khi gọi BE (mà khách không gọi); kiểm tra "chưa đăng nhập" nay đứng trước kiểm tra "đang tải đơn". Test ORD-4 tái hiện lỗi trước khi sửa.

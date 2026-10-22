@@ -161,11 +161,43 @@ describe("ORD-2E nothing to show, or a list that cannot be loaded", () => {
     expect(screen.queryByRole("button", { name: L("loadMore") })).not.toBeInTheDocument();
   });
 
-  it("tells the shopper the list could not be loaded, and then shows the 'no orders' page (see the spec, section 7)", async () => {
+  it("tells the shopper the list could not be loaded, and does not claim there are no orders", async () => {
     await open({ pages: [], failPage: 1 });
 
     expect(await screen.findByText("boom")).toBeInTheDocument();
-    expect(await screen.findByRole("heading", { level: 2, name: L("empty.title") })).toBeInTheDocument();
+    expect(await screen.findByText(L("error.title"))).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { level: 2, name: L("empty.title") })).not.toBeInTheDocument();
+  });
+
+  it("loads the first page again on 'try again', and the error goes away", async () => {
+    const { calls } = await open({ pages: [], failPage: 1 });
+    await screen.findByText(L("error.title"));
+    server.use(http.get(`${API}/api/orders`, () => HttpResponse.json({ data: [order({ id: "o-9" })], total: 1 })));
+
+    await userEvent.click(screen.getByRole("button", { name: L("error.retry") }));
+
+    expect(await screen.findByRole("link", { name: /#o-9/ })).toBeInTheDocument();
+    expect(screen.queryByText(L("error.title"))).not.toBeInTheDocument();
+    expect(calls.lists).toHaveLength(1);
+  });
+
+  it("shows the error again, not the empty page, when 'try again' fails too", async () => {
+    await open({ pages: [], failPage: 1 });
+    await screen.findByText(L("error.title"));
+
+    await userEvent.click(screen.getByRole("button", { name: L("error.retry") }));
+
+    await waitFor(() => expect(screen.getByRole("button", { name: L("error.retry") })).toBeEnabled());
+    expect(screen.getByText(L("error.title"))).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { level: 2, name: L("empty.title") })).not.toBeInTheDocument();
+  });
+
+  it("speaks English in English", async () => {
+    await open({ pages: [], failPage: 1 }, { locale: "en" });
+
+    expect(await screen.findByText(L("error.title", "en"))).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: L("error.retry", "en") })).toBeInTheDocument();
   });
 });
 
@@ -222,6 +254,7 @@ describe("ORD-3E the next page cannot be loaded", () => {
 
     expect(await screen.findByText("boom")).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /#o-\d/ })).toHaveLength(2);
+    expect(screen.queryByText(L("error.title"))).not.toBeInTheDocument();
     await waitFor(() => expect(screen.getByRole("button", { name: L("loadMore") })).toBeEnabled());
   });
 });

@@ -13,6 +13,7 @@ import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
+import LoadFailed from "./_components/LoadFailed";
 import type { ReturnRequest } from "./_common/types";
 import ReturnStatusBadge from "./_components/ReturnStatusBadge";
 
@@ -41,6 +42,7 @@ export default function ReturnsContent() {
   const [returns, setReturns] = useState<ReturnRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
 
@@ -52,7 +54,9 @@ export default function ReturnsContent() {
         setReturns((prev) => (nextPage === 1 ? (res.data ?? []) : [...prev, ...(res.data ?? [])]));
         setTotal(res.total ?? 0);
         setPage(nextPage);
+        if (nextPage === 1) setLoadError(false);
       } catch (err) {
+        if (nextPage === 1) setLoadError(true);
         toast.error(toErrorMessage(err, t("toast.loadFailed")));
       }
     },
@@ -64,6 +68,11 @@ export default function ReturnsContent() {
     setIsLoading(true);
     loadPage(1).finally(() => setIsLoading(false));
   }, [isAuthenticated, loadPage]);
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    loadPage(1).finally(() => setIsLoading(false));
+  };
 
   const handleLoadMore = async () => {
     setIsLoadingMore(true);
@@ -116,6 +125,8 @@ export default function ReturnsContent() {
             <div className={SKELETON_CLASS} />
             <div className={SKELETON_CLASS} />
           </div>
+        ) : loadError ? (
+          <LoadFailed title={t("error.title")} retryLabel={t("error.retry")} onRetry={handleRetry} />
         ) : returns.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-16 px-6 text-center bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)]">
             <PackageX size={40} style={{ color: "var(--text-disabled)" }} />

@@ -1,6 +1,6 @@
 # Customer returns (trả hàng của khách) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
 > **Doc:** [storefront/customer-returns](../../docs/storefront/customer-returns.md) · **Test:** `tests/storefront/customer-returns/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -26,9 +26,9 @@ Khách xin trả hàng cho đơn đã giao, theo dõi yêu cầu và có thể h
 
 **Nhãn và thanh tiến trình.** `ReturnStatusBadge`: màu và biểu tượng theo trạng thái, nhãn dịch; trạng thái lạ hiện nguyên giá trị với kiểu của `REQUESTED`. `ReturnProgress`: bốn bước `REQUESTED → APPROVED → RECEIVED → REFUNDED`; các bước trước hiện tại đã xong, bước hiện tại được đánh dấu (`aria-current="step"`), `REFUNDED` xong cả bốn; `REJECTED` và `CANCELLED` không có thanh.
 
-**Danh sách `/returns`.** Đang tải phiên → khung chờ; chưa đăng nhập → màn chặn, **không gọi BE**; `GET /api/returns?sort=-createdAt&limit=25` (thêm `orderId` khi URL có `?orderId=`, trang kế thêm `page`). Link về: tới đơn khi có `orderId`, ngược lại tới danh sách đơn. Mỗi yêu cầu là một thẻ bấm được tới `/returns/<id>`: nhãn trạng thái, ngày, tối đa **2** dòng ("tên · size · màu · SL n") rồi "+n sản phẩm khác", mã đơn và lý do, số tiền hoàn nếu có. Trống: thông báo và nút về đơn hàng. Lỗi tải: toast, danh sách giữ như cũ. "Xem thêm" như danh sách đơn.
+**Danh sách `/returns`.** Đang tải phiên → khung chờ; chưa đăng nhập → màn chặn, **không gọi BE**; `GET /api/returns?sort=-createdAt&limit=25` (thêm `orderId` khi URL có `?orderId=`, trang kế thêm `page`). Link về: tới đơn khi có `orderId`, ngược lại tới danh sách đơn. Mỗi yêu cầu là một thẻ bấm được tới `/returns/<id>`: nhãn trạng thái, ngày, tối đa **2** dòng ("tên · size · màu · SL n") rồi "+n sản phẩm khác", mã đơn và lý do, số tiền hoàn nếu có. Trống: thông báo và nút về đơn hàng. Lỗi tải trang đầu: toast **và** khối lỗi riêng (`list.error.title`, nút `list.error.retry` tải lại trang đầu) thay cho màn trống; thử lại thành công thì khối lỗi biến mất. "Xem thêm" như danh sách đơn (lỗi chỉ có toast, danh sách giữ nguyên).
 
-**Chi tiết `/returns/:id`.** Chưa đăng nhập → màn chặn (không gọi BE); đang tải → khung chờ; lỗi hoặc không có → "không tìm thấy" kèm link về danh sách (lỗi còn kèm toast). Thẻ trạng thái: nhãn, câu giải thích theo trạng thái, ngày giờ, mã yêu cầu và link tới đơn, thanh tiến trình. Phản hồi của shop (`adminNote`) có tiêu đề theo trạng thái (`APPROVED` hướng dẫn gửi hàng, `REJECTED` lý do từ chối, còn lại tiêu đề chung); không có ghi chú thì không có thẻ. Dòng hàng: tên, size · màu, số lượng trả, và số lượng shop nhận chỉ khi `RECEIVED`/`REFUNDED` và đã có; lý do và ghi chú của khách. Khoản hoàn: `REQUESTED` (kèm số tiền), `COMPLETED` (số tiền, mã tham chiếu có nút sao chép, thời điểm), `REJECTED`.
+**Chi tiết `/returns/:id`.** Chưa đăng nhập → màn chặn (không gọi BE); đang tải → khung chờ; BE trả 404 hoặc yêu cầu rỗng → "không tìm thấy" kèm link về danh sách; lỗi khác (mạng, 5xx) → khối lỗi riêng (`detail.error.title`, nút `detail.error.retry` tải lại) kèm toast và link về danh sách. Thẻ trạng thái: nhãn, câu giải thích theo trạng thái, ngày giờ, mã yêu cầu và link tới đơn, thanh tiến trình. Phản hồi của shop (`adminNote`) có tiêu đề theo trạng thái (`APPROVED` hướng dẫn gửi hàng, `REJECTED` lý do từ chối, còn lại tiêu đề chung); không có ghi chú thì không có thẻ. Dòng hàng: tên, size · màu, số lượng trả, và số lượng shop nhận chỉ khi `RECEIVED`/`REFUNDED` và đã có; lý do và ghi chú của khách. Khoản hoàn: `REQUESTED` (kèm số tiền), `COMPLETED` (số tiền, mã tham chiếu có nút sao chép, thời điểm), `REJECTED`.
 - Hủy: nút chỉ khi `REQUESTED` hoặc `APPROVED`; xác nhận (`danger`) → `PATCH /api/returns/:id/cancel`; yêu cầu trả về thay thẳng vào màn hình, toast `cancel.done`. Lỗi → toast theo mã BE (1804 có bản dịch) hoặc text BE, rồi **tải lại** yêu cầu để thấy trạng thái thật. Nút khóa khi đang hủy.
 
 **Biểu mẫu `/returns/new?orderId=`.** Cần đăng nhập (khách thấy màn chặn); chờ phiên, điều kiện trả và đơn xong mới hiện. Không có `orderId`, đơn không tải được, không có điều kiện hoặc không đủ điều kiện → trang "không thể trả" nêu lý do (câu theo `reason`, hoặc lỗi của điều kiện, hoặc câu mặc định) kèm link quay lại đơn.
@@ -56,6 +56,7 @@ Hướng phụ thuộc: component → hook → `useApiAuth` (có refresh token) 
 | **BE quyết định điều kiện trả và số lượng còn trả được** (`eligibility`) | FE không biết đơn đã trả một phần hay hết hạn chưa | Tính hạn trả ở FE |
 | **Dòng đã gửi yêu cầu bị khóa** (`returnableQuantity = 0`) | Tránh trả hai lần cùng một sản phẩm | Để BE từ chối khi gửi |
 | **Sau lỗi 1802/1803 xóa lựa chọn và tải lại điều kiện** | Số lượng có thể đã đổi; khách thấy số liệu thật | Giữ lựa chọn cũ |
+| **Lỗi tải là một trạng thái riêng** (`loadError`) có nút thử lại, khối nằm riêng trong module (`_components/LoadFailed.tsx`, không import chéo từ `orders`) | Ba tình huống (lỗi, rỗng, không có) cần ba lời khác nhau; bản dùng chung thuộc `ui-kit` khi module đó có spec | Dùng chung màn trống; component dùng chung ngay |
 | **Sau lỗi hủy tải lại yêu cầu** | Shop có thể đã duyệt hoặc nhận hàng trong lúc khách đang xem | Chỉ báo lỗi |
 | **Thanh tiến trình suy từ trạng thái** (không lưu bước) | Một nguồn sự thật | Lưu bước riêng |
 | **Kiểu dữ liệu phản chiếu BE** (`ReturnRequest`, `ReturnEligibility`) | Một chỗ khớp với hợp đồng API | Kiểu lẻ ở từng trang |
@@ -88,11 +89,11 @@ Chữ giao diện ở `private.returns`; tiền qua `useMoney`; ngày qua `useFo
 | RET-1 | Khách thấy màn chặn ở danh sách, không gọi BE | đúng | khách | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
 | RET-1E | Đang xác định phiên chỉ có khung chờ | lỗi | khách | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
 | RET-2 | Danh sách: yêu cầu đúng (lọc theo đơn khi có), thẻ có trạng thái, ngày, hai dòng và "+n", đơn và lý do, số tiền hoàn, link; tiếng Anh | đúng | user | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
-| RET-2E | Danh sách trống có nút về đơn hàng; tải lỗi báo toast | lỗi | user | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
+| RET-2E | Danh sách trống có nút về đơn hàng; tải lỗi báo toast và hiện khối lỗi (không phải màn trống) với nút thử lại | lỗi | user | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
 | RET-3 | "Xem thêm" nối trang kế, ẩn khi đủ, khóa khi đang tải | đúng | user | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
 | RET-3E | "Xem thêm" lỗi báo toast và giữ danh sách | lỗi | user | component | `tests/storefront/customer-returns/returns-list.test.tsx` |
 | RET-4 | Chi tiết: khách thấy màn chặn (không gọi BE), đang tải có khung chờ | đúng | khách | component | `tests/storefront/customer-returns/return-detail.test.tsx` |
-| RET-4E | Chi tiết không tải được hoặc không có: "không tìm thấy" và link về danh sách, lỗi kèm toast | lỗi | user | component | `tests/storefront/customer-returns/return-detail.test.tsx` |
+| RET-4E | Chi tiết không có (404) hoặc rỗng: "không tìm thấy" và link về danh sách; lỗi khác: khối lỗi, toast, nút thử lại và link về danh sách | lỗi | user | component | `tests/storefront/customer-returns/return-detail.test.tsx` |
 | RET-5 | Chi tiết: trạng thái và câu giải thích, thanh tiến trình theo trạng thái, tiêu đề phản hồi của shop theo trạng thái, dòng hàng và số lượng nhận, lý do, ghi chú, ba dạng khoản hoàn | đúng | user | component | `tests/storefront/customer-returns/return-detail.test.tsx` |
 | RET-5E | Bị từ chối hoặc đã hủy không có thanh; không có phản hồi thì không có thẻ; số lượng nhận chỉ khi đã nhận; khoản hoàn xong không có mã thì không hiện mã | lỗi | user | component | `tests/storefront/customer-returns/return-detail.test.tsx` |
 | RET-6 | Hủy yêu cầu đang chờ hoặc đã duyệt: hỏi, gửi, thay yêu cầu bằng phản hồi, toast | đúng | user | component | `tests/storefront/customer-returns/return-detail.test.tsx` |
@@ -116,8 +117,8 @@ Ngưỡng coverage riêng của module (dòng/nhánh/hàm): `NewReturnContent.ts
 
 | Rủi ro | Phát hiện | Quay lui |
 |---|---|---|
-| Tải danh sách lỗi cho ra màn "chưa có yêu cầu" kèm toast | Test RET-2E | Hiện trạng thái lỗi riêng và nút thử lại |
-| Tải chi tiết lỗi (mạng, 500) cho ra "không tìm thấy" kèm toast | Test RET-4E | Phân biệt không có (404) với lỗi tạm |
+| Tải danh sách lỗi từng cho ra màn "chưa có yêu cầu" | Test RET-2E | Đã chặn bằng khối lỗi riêng và nút thử lại |
+| Tải chi tiết lỗi (mạng, 500) từng cho ra "không tìm thấy" | Test RET-4E | Đã chặn: chỉ 404 mới là "không tìm thấy" |
 | Hủy lỗi tải lại yêu cầu, nên khách thấy trạng thái thật nhưng toast lỗi và dữ liệu mới xuất hiện cách nhau | Test RET-6E | Gộp thành một bước |
 | Biểu mẫu đọc cả đơn (`GET /api/orders/:id`) chỉ để lấy danh sách dòng, trong khi `eligibility` đã có `items` | Đọc code | Dùng dữ liệu của điều kiện |
 | `NewReturnContent` gánh chọn dòng, lý do, chính sách và gửi | Đọc code | Tách khối chọn dòng sau khi có test |
@@ -127,5 +128,6 @@ Thay đổi hành vi nhìn thấy được: khách chưa đăng nhập mở chi 
 
 ## 8. Lịch sử thay đổi
 
+- 2026-10-23 · Lỗi tải danh sách/chi tiết có khối lỗi riêng với nút thử lại; chi tiết chỉ nói "không tìm thấy" khi BE trả 404.
 - 2026-10-22 · Viết spec và test cho toàn module (batch 2), kiểm thử đột biến.
 - 2026-10-22 · Sửa lỗi: khách chưa đăng nhập mở `/returns/:id` chỉ thấy khung chờ mãi mãi vì `isLoading` chỉ tắt sau khi gọi BE (mà khách không gọi); kiểm tra "chưa đăng nhập" nay đứng trước kiểm tra "đang tải". Test RET-4 tái hiện lỗi trước khi sửa (cùng lỗi và cùng cách sửa với chi tiết đơn, xem [customer-orders](./customer-orders.md)).

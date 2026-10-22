@@ -70,11 +70,63 @@ describe("RET-4E a request that cannot be shown", () => {
     expect(screen.queryByText(D("toast.loadFailed"))).not.toBeInTheDocument();
   });
 
-  it("says it was not found and shows the BE's error when the request cannot be loaded (see the spec, section 7)", async () => {
-    await open(500);
+  it("says it was not found, with the BE's words and a way back, when the BE answers 404", async () => {
+    await open(404);
 
     expect(await screen.findByText(D("notFound"))).toBeInTheDocument();
     expect(await screen.findByText("boom")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: D("back") })).toHaveAttribute("href", "/returns");
+    expect(screen.queryByText(D("error.title"))).not.toBeInTheDocument();
+  });
+
+  it("says the request could not be loaded, not that it is missing, when the BE fails; the way back stays", async () => {
+    await open(500);
+
+    expect(await screen.findByText(D("error.title"))).toBeInTheDocument();
+    expect(await screen.findByText("boom")).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: D("back") })).toHaveAttribute("href", "/returns");
+    expect(screen.queryByText(D("notFound"))).not.toBeInTheDocument();
+  });
+
+  it("loads the request again on 'try again' and then shows it", async () => {
+    const { calls } = await open(500);
+    await screen.findByText(D("error.title"));
+    server.use(http.get(`${API}/api/returns/:id`, () => HttpResponse.json({ data: returnRequest({ status: "APPROVED" }) })));
+
+    await userEvent.click(screen.getByRole("button", { name: D("error.retry") }));
+
+    expect(await screen.findByText(D("hint.APPROVED"))).toBeInTheDocument();
+    expect(screen.queryByText(D("error.title"))).not.toBeInTheDocument();
+    expect(calls.ones).toHaveLength(1);
+  });
+
+  it("says it was not found when 'try again' is answered with no request, not that loading failed", async () => {
+    await open(500);
+    await screen.findByText(D("error.title"));
+    server.use(http.get(`${API}/api/returns/:id`, () => HttpResponse.json({ data: null })));
+
+    await userEvent.click(screen.getByRole("button", { name: D("error.retry") }));
+
+    expect(await screen.findByText(D("notFound"))).toBeInTheDocument();
+    expect(screen.queryByText(D("error.title"))).not.toBeInTheDocument();
+  });
+
+  it("shows the error again when 'try again' fails too", async () => {
+    await open(500);
+    await screen.findByText(D("error.title"));
+
+    await userEvent.click(screen.getByRole("button", { name: D("error.retry") }));
+
+    await waitFor(() => expect(screen.getByRole("button", { name: D("error.retry") })).toBeEnabled());
+    expect(screen.queryByText(D("notFound"))).not.toBeInTheDocument();
+  });
+
+  it("speaks English in English", async () => {
+    await open(500, {}, { locale: "en" });
+
+    expect(await screen.findByText(D("error.title", "en"))).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: D("error.retry", "en") })).toBeInTheDocument();
   });
 });
 

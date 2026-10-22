@@ -1,7 +1,7 @@
 # Customer orders (đơn hàng của tôi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-22
-> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-23
+> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{LoadFailed,OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
 > **i18n:** `private.orders` (`meta`, `list`, `detail`; `list.reviewsLink`, `detail.review`), `common.orderStatus`
 
 ## 1. Tóm tắt module
@@ -27,8 +27,8 @@ Cho khách nhìn là biết đơn đang ở đâu (chờ xử lý → xác nhậ
 
 ### 4.1 Dữ liệu
 
-- Danh sách: `GET /api/orders?sort=-createdAt&page&limit=25` (`useApiAuth().apiFetch`) → `{ data: Order[], total }`; trang đầu tải khi vào trang, nút "Xem thêm đơn hàng" (ẩn khi đã đủ `total`) tải trang kế và nối vào cuối danh sách. Lỗi tải → toast `toast.loadFailed` qua `useErrorMessage`.
-- Chi tiết: `GET /api/orders/:orderId` (id lấy từ `useParams`). Lỗi → toast; không có đơn → thông báo `notFound`.
+- Danh sách: `GET /api/orders?sort=-createdAt&page&limit=25` (`useApiAuth().apiFetch`) → `{ data: Order[], total }`; trang đầu tải khi vào trang, nút "Xem thêm đơn hàng" (ẩn khi đã đủ `total`) tải trang kế và nối vào cuối danh sách. Lỗi tải trang đầu → toast `toast.loadFailed` qua `useErrorMessage` và khối `LoadFailed` (`list.error.title`, nút `list.error.retry` gọi lại trang đầu) thay cho màn trống; lỗi ở "Xem thêm" chỉ có toast.
+- Chi tiết: `GET /api/orders/:orderId` (id lấy từ `useParams`). BE trả 404 hoặc đơn rỗng → thông báo `notFound` (404 còn kèm toast); lỗi khác → toast và khối `LoadFailed` (`detail.error.title`, nút `detail.error.retry` gọi lại).
 - `Order` (`_common/types.ts`): `id, status, subtotalVnd/Usd, shippingFeeVnd/Usd, totalVnd/Usd, shippingMethod, shippingAddress: Record<string,string>, note, createdAt, updatedAt, items[{ id, productId | null, productName, productImage, quantity, priceVnd, priceUsd, size, color, createdAt }]`.
 - Thanh toán: lấy từ chính đơn (`Order.paymentStatus` `unpaid` | `paid` | `refunded`, `paidAt`, `paymentAttempts[]`, `refunds[]`; `deliveredAt` là lúc đơn giao tới khách, mở đầu thời hạn trả hàng), không gọi thêm API. `OrderPaymentAttempt { transferCode, amountVnd, amountUsd, status (PENDING|PAID|EXPIRED|CANCELLED, trạng thái thật), createdAt, expiresAt, paidAt, transactionRef | null }`, mới nhất trước; `transferCode` là duy nhất nên dùng làm key.
 
@@ -59,7 +59,6 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/c
 
 Các điểm cần biết về hành vi hiện tại:
 
-- Danh sách hoặc chi tiết không tải được (mạng, 500) cho ra màn "Chưa có đơn hàng" hoặc "Không tìm thấy đơn hàng", kèm toast báo lỗi.
 - Trang chi tiết kiểm tra "chưa đăng nhập" trước "đang tải đơn", nên khách chưa đăng nhập thấy màn chặn ngay (không chờ gọi BE).
 
 
