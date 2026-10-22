@@ -1,0 +1,389 @@
+[
+  {
+    "name": "list: a card shows three lines",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "const PREVIEW_ITEMS = 2;",
+    "replace": "const PREVIEW_ITEMS = 3;",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: a visitor's page asks the BE for orders",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "    if (!isAuthenticated) return;\n    loadPage(1)",
+    "replace": "    loadPage(1)",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the newest order is not first",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "sort: \"-createdAt\"",
+    "replace": "sort: \"createdAt\"",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the next page replaces the first",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "setOrders((prev) => (nextPage === 1 ? (res.data ?? []) : [...prev, ...(res.data ?? [])]));",
+    "replace": "setOrders(res.data ?? []);",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: 'more' shows when everything is shown",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "{!isLoading && orders.length < total && (",
+    "replace": "{!isLoading && orders.length <= total && (",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the review link shows a count of 0",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "{pendingReviews.total > 0 && (",
+    "replace": "{pendingReviews.total >= 0 && (",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: a single piece shows its quantity",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "{item.quantity > 1 && ",
+    "replace": "{item.quantity >= 1 && ",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: a card goes to the wrong page",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "href={`/orders/${order.id}`}",
+    "replace": "href={`/order/${order.id}`}",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: '+0 more' shows",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "{hidden > 0 && (",
+    "replace": "{hidden >= 0 && (",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: 'more' stays open while loading",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "disabled={isLoadingMore}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the loading and idle labels are swapped",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "{isLoadingMore ? t(\"loadingMore\") : t(\"loadMore\")}",
+    "replace": "{isLoadingMore ? t(\"loadMore\") : t(\"loadingMore\")}",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the way back goes to the shop",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "href=\"/account\"",
+    "replace": "href=\"/shop\"",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the card shows the subtotal as the total",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "fmt(order, \"total\")",
+    "replace": "fmt(order, \"subtotal\")",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the day is written in the long format",
+    "file": "src/app/[locale]/(private)/orders/OrdersContent.tsx",
+    "find": "format.dateTime(new Date(order.createdAt), \"short\")",
+    "replace": "format.dateTime(new Date(order.createdAt), \"long\")",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: any unpaid order can be cancelled",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "const canCancel = order.paymentStatus === \"unpaid\" && order.status === \"pending\";",
+    "replace": "const canCancel = order.paymentStatus === \"unpaid\";",
+    "tests": [
+      "tests/storefront/customer-orders/order-cancel.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a shipping order has no advice to contact the shop",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": " || order.status === \"shipping\");",
+    "replace": ");",
+    "tests": [
+      "tests/storefront/customer-orders/order-cancel.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a cancelled order can be paid",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "const canPay = order.paymentStatus === \"unpaid\" && order.status !== \"cancelled\";",
+    "replace": "const canPay = order.paymentStatus === \"unpaid\";",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: every order can be reviewed",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "const reviewable = order.status === \"delivered\" || order.status === \"completed\";",
+    "replace": "const reviewable = true;",
+    "tests": [
+      "tests/storefront/customer-orders/order-extras.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the cancel question is ignored",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "    if (!ok) return;\n    setIsCancelling(true);",
+    "replace": "    setIsCancelling(true);",
+    "tests": [
+      "tests/storefront/customer-orders/order-cancel.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the cancel is sent as a different request",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{ method: \"PATCH\" }",
+    "replace": "{ method: \"POST\" }",
+    "tests": [
+      "tests/storefront/customer-orders/order-cancel.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the answer to a cancel does not replace the order",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "if (res.data) setOrder(res.data);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-orders/order-cancel.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the payment address is not made safe",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "href={`/checkout/payment/${encodeURIComponent(order.id)}`}",
+    "replace": "href={`/checkout/payment/${order.id}`}",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: free shipping shows for any fee",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "const shippingFree = order.shippingFeeVnd === 0;",
+    "replace": "const shippingFree = order.shippingFeeVnd !== 0;",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: Vietnam is named as a country",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "address.country && address.country !== \"Vietnam\" &&",
+    "replace": "address.country &&",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a shop pick-up is shown as a delivery",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "const isPickup = methodId === \"store-pickup\";",
+    "replace": "const isPickup = false;",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: an unknown shipping method shows nothing",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": ": order.shippingMethod);",
+    "replace": ": \"\");",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the reminder to call the shop shows for a paid order",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{!isPaid && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the paid and expiry notes are swapped",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{attempt.paidAt\n",
+    "replace": "{!attempt.paidAt\n",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a missing bank reference shows",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{attempt.transactionRef && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a refund's money note shows for a finished refund",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{refund.status === \"REQUESTED\" && `${fmt(refund, \"amount\")} · `}",
+    "replace": "{`${fmt(refund, \"amount\")} · `}",
+    "tests": [
+      "tests/storefront/customer-orders/order-extras.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: every refund shows a reason",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "(refund.reason === \"RETURN\" || refund.reason === \"ADMIN_CANCELLED\") &&",
+    "replace": "true &&",
+    "tests": [
+      "tests/storefront/customer-orders/order-extras.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a return refund with no id links nowhere good",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "refund.reason === \"RETURN\" && refund.returnId ?",
+    "replace": "refund.reason === \"RETURN\" ?",
+    "tests": [
+      "tests/storefront/customer-orders/order-extras.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the return address is not made safe",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "href={`/returns/${encodeURIComponent(refund.returnId)}`}",
+    "replace": "href={`/returns/${refund.returnId}`}",
+    "tests": [
+      "tests/storefront/customer-orders/order-extras.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a visitor's page loads the order",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "if (!isAuthenticated || !params.orderId) return;",
+    "replace": "if (!params.orderId) return;",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a visitor waits for ever",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "if (!authLoading && !isAuthenticated) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: an unknown status breaks the page",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "const status = (order.status in STATUS_CONFIG ? order.status : \"pending\") as OrderStatus;",
+    "replace": "const status = order.status as OrderStatus;",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: an empty note shows its label",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{order.note && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the number of items counts lines",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "order.items.reduce((sum, item) => sum + item.quantity, 0)",
+    "replace": "order.items.length",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the review button ignores the order's state",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "{reviewable && pendingReviews.byOrderItemId.has(item.id) && (",
+    "replace": "{pendingReviews.byOrderItemId.has(item.id) && (",
+    "tests": [
+      "tests/storefront/customer-orders/order-extras.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the way back goes to the shop",
+    "file": "src/app/[locale]/(private)/orders/[orderId]/OrderDetailContent.tsx",
+    "find": "<Link\n          href=\"/orders\"\n",
+    "replace": "<Link\n          href=\"/shop\"\n",
+    "tests": [
+      "tests/storefront/customer-orders/order-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "badge: an unknown status has no fallback colour",
+    "file": "src/app/[locale]/(private)/orders/_components/OrderStatusBadge.tsx",
+    "find": "STATUS_CONFIG[status as OrderStatus] ?? STATUS_CONFIG.pending",
+    "replace": "STATUS_CONFIG[status as OrderStatus] ?? STATUS_CONFIG.cancelled",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "constants: a cancelled order is not rose",
+    "file": "src/app/[locale]/(private)/orders/_common/constants.ts",
+    "find": "cancelled: { color: \"var(--color-deep-rose)\", icon: XCircle }",
+    "replace": "cancelled: { color: \"var(--accent-primary)\", icon: XCircle }",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "thumb: a missing picture is still drawn",
+    "file": "src/app/[locale]/(private)/orders/_components/OrderThumb.tsx",
+    "find": "{src ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/storefront/customer-orders/orders-list.test.tsx"
+    ]
+  }
+]

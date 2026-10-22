@@ -1,0 +1,563 @@
+[
+  {
+    "name": "list: a card shows three lines",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "const PREVIEW_ITEMS = 2;",
+    "replace": "const PREVIEW_ITEMS = 3;",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: a visitor's page asks the BE",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "    if (!isAuthenticated) return;\n    setIsLoading(true);",
+    "replace": "    setIsLoading(true);",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the newest request is not first",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "sort: \"-createdAt\"",
+    "replace": "sort: \"createdAt\"",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the order filter is dropped",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "{ orderId });",
+    "replace": "{});",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the next page replaces the first",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "setReturns((prev) => (nextPage === 1 ? (res.data ?? []) : [...prev, ...(res.data ?? [])]));",
+    "replace": "setReturns(res.data ?? []);",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: 'more' shows when everything is shown",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "{!isLoading && returns.length < total && (",
+    "replace": "{!isLoading && returns.length <= total && (",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the way back ignores the order",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "href={orderId ? `/orders/${encodeURIComponent(orderId)}` : \"/orders\"}",
+    "replace": "href=\"/orders\"",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the refund shows the wrong amount",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "fmt(request.refund, \"amount\")",
+    "replace": "fmt(request.refund, \"total\" as \"amount\")",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: 'more' stays open while loading",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "disabled={isLoadingMore}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the empty page leads to the shop",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "href=\"/orders\"\n              className=\"inline-flex items-center gap-2 min-h-11 py-3 px-6",
+    "replace": "href=\"/shop\"\n              className=\"inline-flex items-center gap-2 min-h-11 py-3 px-6",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: '+0 more' shows",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "{hidden > 0 && (",
+    "replace": "{hidden >= 0 && (",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: the day is written in the long format",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "format.dateTime(new Date(request.createdAt), \"short\")",
+    "replace": "format.dateTime(new Date(request.createdAt), \"long\")",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "list: a card address is not made safe",
+    "file": "src/app/[locale]/(private)/returns/ReturnsContent.tsx",
+    "find": "href={`/returns/${encodeURIComponent(request.id)}`}",
+    "replace": "href={`/returns/${request.id}`}",
+    "tests": [
+      "tests/storefront/customer-returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a received request can still be cancelled",
+    "file": "src/app/[locale]/(private)/returns/_common/types.ts",
+    "find": "CUSTOMER_CANCELLABLE_STATUSES: readonly ReturnStatus[] = [\"REQUESTED\", \"APPROVED\"];",
+    "replace": "CUSTOMER_CANCELLABLE_STATUSES: readonly ReturnStatus[] = [\"REQUESTED\", \"APPROVED\", \"RECEIVED\"];",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a refunded request shows no accepted count",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "const received = request.status === \"RECEIVED\" || request.status === \"REFUNDED\";",
+    "replace": "const received = request.status === \"RECEIVED\";",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a missing accepted count shows",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "received && item.acceptedQuantity !== null",
+    "replace": "received",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the shop's reply is titled for the wrong state",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "request.status === \"APPROVED\"\n      ? t(\"adminNote.approved\")",
+    "replace": "request.status === \"REJECTED\"\n      ? t(\"adminNote.approved\")",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the cancel question is ignored",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "    if (!ok) return;\n    setIsCancelling(true);",
+    "replace": "    setIsCancelling(true);",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the cancel is sent as a different request",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "method: \"PATCH\",",
+    "replace": "method: \"POST\",",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the answer to a cancel does not replace the request",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "if (res.data) setRequest(res.data);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a failed cancel does not read the request again",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "      toast.error(toErrorMessage(err, t(\"cancel.failed\")));\n      load();",
+    "replace": "      toast.error(toErrorMessage(err, t(\"cancel.failed\")));",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a visitor waits for ever",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "if (!authLoading && !isAuthenticated) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a visitor's page loads the request",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "if (isAuthenticated) load();",
+    "replace": "load();",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: an empty reply shows a card",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "{request.adminNote && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: an empty note shows a row",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "{request.note && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a missing bank reference shows",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "request.refund.status === \"COMPLETED\" && request.refund.bankReference &&",
+    "replace": "request.refund.status === \"COMPLETED\" &&",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: a missing processing time shows",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "{request.refund.processedAt && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: every request can be cancelled",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "{canCancel && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "detail: the order address is not made safe",
+    "file": "src/app/[locale]/(private)/returns/[returnId]/ReturnDetailContent.tsx",
+    "find": "href={`/orders/${encodeURIComponent(request.orderId)}`}",
+    "replace": "href={`/orders/${request.orderId}`}",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "progress: the last step is not done when refunded",
+    "file": "src/app/[locale]/(private)/returns/_components/ReturnProgress.tsx",
+    "find": "const done = index < current || status === \"REFUNDED\";",
+    "replace": "const done = index < current;",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx",
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "progress: the last step is still current when refunded",
+    "file": "src/app/[locale]/(private)/returns/_components/ReturnProgress.tsx",
+    "find": "const active = index === current && status !== \"REFUNDED\";",
+    "replace": "const active = index === current;",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx",
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "progress: a rejected request has a bar",
+    "file": "src/app/[locale]/(private)/returns/_components/ReturnProgress.tsx",
+    "find": "if (current < 0) return null;",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-returns/return-detail.test.tsx",
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "badge: an unknown state has the wrong colour",
+    "file": "src/app/[locale]/(private)/returns/_components/ReturnStatusBadge.tsx",
+    "find": "?? RETURN_STATUS_CONFIG.REQUESTED",
+    "replace": "?? RETURN_STATUS_CONFIG.CANCELLED",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "badge: an unknown state loses its words",
+    "file": "src/app/[locale]/(private)/returns/_components/ReturnStatusBadge.tsx",
+    "find": "{t.has(status as never) ? t(status as never) : status}",
+    "replace": "{t(status as never)}",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "constants: a refunded request is not green",
+    "file": "src/app/[locale]/(private)/returns/_common/constants.ts",
+    "find": "REFUNDED: { color: \"var(--accent-sage)\", icon: RotateCcw }",
+    "replace": "REFUNDED: { color: \"var(--color-deep-rose)\", icon: RotateCcw }",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: a shipping order gets a return card",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "const RETURNABLE_ORDER_STATUSES = [\"delivered\", \"completed\"];",
+    "replace": "const RETURNABLE_ORDER_STATUSES = [\"delivered\", \"completed\", \"shipping\"];",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: an empty card is drawn",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "if (!enabled || isLoading || (!eligibility && returns.length === 0)) return null;",
+    "replace": "if (!enabled || isLoading) return null;",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: a deadline shows for an order that cannot be returned",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "eligibility.eligible && eligibility.deadline",
+    "replace": "eligibility.deadline",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: the button shows for an order that cannot be returned",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "{eligibility.eligible && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: the request address is not made safe",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "href={`/returns/new?orderId=${encodeURIComponent(orderId)}`}",
+    "replace": "href={`/returns/new?orderId=${orderId}`}",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: a request address is not made safe",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "href={`/returns/${encodeURIComponent(request.id)}`}",
+    "replace": "href={`/returns/${request.id}`}",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: the list of requests ignores the order",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "{ orderId })",
+    "replace": "{})",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "card: the day is written in the long format",
+    "file": "src/app/[locale]/(private)/returns/_components/OrderReturnCard.tsx",
+    "find": "format.dateTime(new Date(request.createdAt), \"short\")",
+    "replace": "format.dateTime(new Date(request.createdAt), \"long\")",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "hook: a switched-off hook asks anyway",
+    "file": "src/app/[locale]/(private)/returns/_common/use-return-eligibility.ts",
+    "find": "if (!enabled || !orderId) {",
+    "replace": "if (!orderId) {",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "hook: it never stops loading",
+    "file": "src/app/[locale]/(private)/returns/_common/use-return-eligibility.ts",
+    "find": "    } finally {\n      setIsLoading(false);",
+    "replace": "    } finally {",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "hook: an old error stays after a good answer",
+    "file": "src/app/[locale]/(private)/returns/_common/use-return-eligibility.ts",
+    "find": "      setEligibility(res.data ?? null);\n      setError(null);",
+    "replace": "      setEligibility(res.data ?? null);",
+    "tests": [
+      "tests/storefront/customer-returns/order-return-card.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the quantity can pass what is left",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "disabled={quantity >= max}",
+    "replace": "disabled={quantity > max}",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a line already in a request can be ticked",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "disabled={max === 0}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a request with no line is sent",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "if (selectedCount === 0) found.items = t(\"errors.items\");",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a request with no reason is sent",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "if (!reason) found.reason = t(\"errors.reason\");",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the note is sent untrimmed",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "...(note.trim() ? { note: note.trim() } : {})",
+    "replace": "...(note.trim() ? { note } : {})",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: lines with a quantity of 0 are sent",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": ".filter(([, quantity]) => quantity > 0)\n            .map",
+    "replace": "\n            .map",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a request with no id goes to the new request",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "res.data?.id ? `/returns/${encodeURIComponent(res.data.id)}` : \"/returns\"",
+    "replace": "`/returns/${encodeURIComponent(res.data.id)}`",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: only 1802 resets the choice",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "if (code === 1802 || code === 1803) {",
+    "replace": "if (code === 1802) {",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the eligibility is not read again after 1802/1803",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "setQuantities({});\n        reload();",
+    "replace": "setQuantities({});",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a deadline shows when there is none",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "{eligibility.deadline && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the policy never shows",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "{policy ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the 'max' and 'already requested' words are swapped",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "{max === 0 ? t(\"items.alreadyRequested\") : t(\"items.max\", { max, total: item.quantity })}",
+    "replace": "{max !== 0 ? t(\"items.alreadyRequested\") : t(\"items.max\", { max, total: item.quantity })}",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: an order that cannot be returned shows the form",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "|| !eligibility || !eligibility.eligible)",
+    "replace": "|| !eligibility)",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a visitor's page loads the order",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "if (!isAuthenticated || !orderId) {",
+    "replace": "if (!orderId) {",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the note has no limit",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "maxLength={RETURN_NOTE_MAX}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the way back ignores the order",
+    "file": "src/app/[locale]/(private)/returns/new/NewReturnContent.tsx",
+    "find": "const backHref = orderId ? `/orders/${encodeURIComponent(orderId)}` : \"/orders\";",
+    "replace": "const backHref = \"/orders\";",
+    "tests": [
+      "tests/storefront/customer-returns/new-return.test.tsx"
+    ]
+  }
+]

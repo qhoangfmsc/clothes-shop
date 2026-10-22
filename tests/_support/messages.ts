@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+import { FORMATS, TIME_ZONE } from "@/src/i18n/formats";
 import type { Messages } from "@/src/i18n/messages";
 
 /* Every real translation of both locales, loaded once, so tests read the same text the user sees.
@@ -38,4 +39,9 @@ export function msg(path: string, locale: "vi" | "en" = "vi"): string {
 /** `msg` with simple `{name}` placeholders filled in, e.g. `msgf("private.cart.header.itemCount", { count: 3 })`. Not for plural or select forms. */
 export function msgf(path: string, values: Record<string, string | number>, locale: "vi" | "en" = "vi"): string {
   return msg(path, locale).replace(/\{(\w+)\}/g, (whole, key: string) => (key in values ? String(values[key]) : whole));
+}
+
+/** A date as the app shows it: the named format (`short`, `dateTime`, …) in the site's time zone, e.g. `dateText("2026-03-05T05:00:00Z", "short")`. */
+export function dateText(iso: string, style: keyof typeof FORMATS.dateTime, locale: "vi" | "en" = "vi"): string {
+  return new Intl.DateTimeFormat(locale, { ...FORMATS.dateTime[style], timeZone: TIME_ZONE }).format(new Date(iso));
 }

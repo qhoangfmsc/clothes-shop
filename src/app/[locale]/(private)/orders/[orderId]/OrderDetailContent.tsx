@@ -78,20 +78,21 @@ export default function OrderDetailContent() {
     fetchOrder();
   }, [isAuthenticated, params.orderId, apiFetch, t, toast, toErrorMessage]);
 
+  /* A visitor never loads the order, so the wall must not wait for it */
+  if (!authLoading && !isAuthenticated) {
+    return (
+      <main className={SHELL_CLASS}>
+        <UnauthenticatedState />
+      </main>
+    );
+  }
+
   if (authLoading || isLoading) {
     return (
       <main className={SHELL_CLASS}>
         <div className={WRAP_CLASS}>
           <div className="h-[22.5rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
         </div>
-      </main>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <main className={SHELL_CLASS}>
-        <UnauthenticatedState />
       </main>
     );
   }

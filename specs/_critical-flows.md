@@ -14,11 +14,11 @@ Danh sách những luồng mà nếu hỏng thì cửa hàng ngừng bán đư�
 | F-05 | Lỗi từ BE thành `ApiError` với thông điệp và mã đúng | P1 | platform/data-layer | `tests/platform/data-layer/api-error.test.ts` |
 | F-06 | Duyệt danh mục và xem sản phẩm | P0 | storefront/shop | — |
 | F-07 | Thêm sản phẩm vào giỏ (khách và đã đăng nhập), giỏ giữ qua lần tải lại | P0 | storefront/cart | `tests/storefront/cart/quick-add.test.tsx` `tests/storefront/cart/cart-slice.test.ts` |
-| F-08 | Checkout tạo đơn và hiển thị thanh toán | P0 | storefront/checkout | — |
+| F-08 | Checkout tạo đơn và hiển thị thanh toán | P0 | storefront/checkout | `tests/storefront/checkout/checkout-order.test.tsx` `tests/storefront/checkout/use-payment-session.test.tsx` `tests/storefront/checkout/payment-page.test.tsx` |
 | F-09 | Số tiền hiển thị đúng tiền tệ theo ngôn ngữ, không tự quy đổi ở FE | P0 | platform/currency | `tests/platform/currency/money.test.ts` `tests/platform/currency/use-money.test.tsx` |
 | F-10 | Đổi ngôn ngữ vi/en giữ nguyên trang đang xem | P1 | platform/i18n | — |
-| F-11 | Xem đơn hàng của tôi và chi tiết đơn | P1 | storefront/customer-orders | — |
-| F-12 | Yêu cầu trả hàng cho đơn đủ điều kiện | P1 | storefront/customer-returns | — |
+| F-11 | Xem đơn hàng của tôi và chi tiết đơn | P1 | storefront/customer-orders | `tests/storefront/customer-orders/orders-list.test.tsx` `tests/storefront/customer-orders/order-detail.test.tsx` `tests/storefront/customer-orders/order-cancel.test.tsx` |
+| F-12 | Yêu cầu trả hàng cho đơn đủ điều kiện | P1 | storefront/customer-returns | `tests/storefront/customer-returns/new-return.test.tsx` `tests/storefront/customer-returns/order-return-card.test.tsx` |
 | F-13 | Admin tạo/sửa/xóa sản phẩm và danh sách làm mới | P0 | admin/products | — |
 | F-14 | Admin đổi trạng thái đơn hàng | P0 | admin/orders | — |
 | F-15 | Admin xác nhận thanh toán và hoàn tiền | P0 | admin/payments | — |

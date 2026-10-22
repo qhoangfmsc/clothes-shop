@@ -1,6 +1,6 @@
 # Customer orders (đơn hàng của tôi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-22
 > **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
 > **i18n:** `private.orders` (`meta`, `list`, `detail`; `list.reviewsLink`, `detail.review`), `common.orderStatus`
 
@@ -53,7 +53,18 @@ Ngoài đường dẫn sang thanh toán và hủy đơn chưa trả, trang chỉ
 
 Danh sách dòng còn đánh giá được lấy từ `usePendingReviews()` (`GET /api/my-reviews/pending`, SWR khóa `reviews:pending`), đối chiếu `orderItemId` với `OrderItem.id`; trạng thái đơn không được dùng để suy ra dòng nào đánh giá được (API đơn không cho biết dòng đã đánh giá chưa). Nút chỉ hiện khi `order.status` là `delivered` hoặc `completed` và dòng nằm trong danh sách chờ; bấm mở `ReviewFormModal` (module [customer-reviews](./customer-reviews.md)). Lưu xong: làm mới danh sách chờ (nút biến mất) và tổng hợp ở trang sản phẩm; `1903` đưa sang `/reviews?tab=mine`; `1902` làm mới danh sách chờ. Danh sách chờ lỗi (kể cả thiếu quyền) thì không có nút nào, không báo lỗi. Danh sách đơn không có nút trên từng dòng vì cả thẻ là một link.
 
-### 4.5 Liên quan
+### 4.5 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/customer-orders.md](../../specs/storefront/customer-orders.md). Test ở `tests/storefront/customer-orders/` (`orders-list`, `order-detail`, `order-cancel`, `order-extras`; `orders-kit.tsx` là BE giả dùng chung); `mutants.json` có đột biến cho hai trang và các thành phần nhỏ.
+
+Các điểm cần biết về hành vi hiện tại:
+
+- Danh sách hoặc chi tiết không tải được (mạng, 500) cho ra màn "Chưa có đơn hàng" hoặc "Không tìm thấy đơn hàng", kèm toast báo lỗi.
+- Lệnh hủy đơn lỗi hiện nguyên văn thông điệp của BE hoặc `API error: <mã>` khi BE không gửi nội dung; chữ dịch `cancel.failed` chỉ dùng khi lỗi không có text.
+- Trang chi tiết kiểm tra "chưa đăng nhập" trước "đang tải đơn", nên khách chưa đăng nhập thấy màn chặn ngay (không chờ gọi BE).
+
+
+### 4.6 Liên quan
 
 Đơn được tạo ở [checkout](./checkout.md) (sau khi đặt, `/checkout` chuyển sang trang thanh toán VietQR hoặc `/orders/<id>`); [account](./account.md) hiện tóm tắt 3 đơn gần nhất.
 

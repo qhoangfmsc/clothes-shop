@@ -60,20 +60,21 @@ export default function ReturnDetailContent() {
     if (isAuthenticated) load();
   }, [isAuthenticated, load]);
 
+  /* A visitor never loads the request, so the wall must not wait for it */
+  if (!authLoading && !isAuthenticated) {
+    return (
+      <main className={SHELL_CLASS}>
+        <UnauthenticatedState />
+      </main>
+    );
+  }
+
   if (authLoading || isLoading) {
     return (
       <main className={SHELL_CLASS}>
         <div className={WRAP_CLASS}>
           <div className="h-[20rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none" />
         </div>
-      </main>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <main className={SHELL_CLASS}>
-        <UnauthenticatedState />
       </main>
     );
   }

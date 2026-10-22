@@ -25,7 +25,9 @@ Làm lần lượt; sau mỗi phần: chạy lại mọi cổng, commit lên nh�
 | 1 | Nhánh và commit nền | Chuyển toàn bộ code đang dở sang nhánh; tách commit: việc có sẵn từ `main`, hạ tầng test, lớp phiên auth, cổng chất lượng và quy trình | xong |
 | 2 | Quy tắc comment | `.agent/rules/comments.md`, kiểm bằng `comment-length`, baseline chỉ ngắn đi; rút gọn comment ở các file của đợt refactor | xong |
 | 3 | Rút gọn comment toàn dự án | 141 file trong `scripts/comment-baseline.json` được rút gọn, baseline rỗng; cổng docs và quality bỏ qua file chỉ đổi comment | xong |
-| 4–11 | Batch 1 đến 8 của quy trình test | Mỗi batch tối đa 5 module (`scripts/test-batches.json`, `.agent/skills/13-test-process.md`); mỗi batch là một phần | chưa |
+| 4 | Batch 1 của quy trình test | Hàm thuần và nền dữ liệu: currency, data-layer, i18n, seo, dev-tooling | xong |
+| 5 | Batch 2 | Giỏ hàng, yêu thích, thanh toán, đơn hàng và trả hàng của khách; khung test có thêm Redux store, `next/navigation`, dữ liệu mẫu | xong |
+| 6–11 | Batch 3 đến 8 của quy trình test | Mỗi batch tối đa 5 module (`scripts/test-batches.json`, `.agent/skills/13-test-process.md`); mỗi batch là một phần | chưa |
 | 12 | Nợ thiết kế đã biết | Sau khi có test: bỏ `baseCrudReducers` chết, factory cho bộ thunk, một nơi persist cho cart/wishlist, đảo hướng import của hai hook, chọn một chiến lược server-state cho admin | chưa |
 | 13 | Component quá lớn và giao diện | Tách `HamburgerMenu`, `ProductDetailClient`, `ProductsContent`; thay `style={{}}` bằng Tailwind; thẻ `<main>` trang chủ; 14 chỗ `exhaustive-deps` | chưa |
 | 14 | Kiểm tra cuối | `yarn build` (cần tắt dev server), rà CI, tổng kết | chưa |

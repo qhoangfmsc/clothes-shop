@@ -3,11 +3,12 @@ import { http, HttpResponse } from "msw";
 import { fetchCart } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import { fetchWishlist } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import { isPurchasable } from "@/src/lib/product-purchase";
+import { SHIPPING_METHOD_IDS } from "@/src/types/shipping";
 import { makeStore } from "@/src/store";
 import { API, seedSession } from "@/tests/_support/api";
-import { cartLine, cartState, product, quote, serverCart, serverWishlist, wishlistItem, wishlistState } from "@/tests/_support/fixtures";
+import { cartLine, cartState, product, eligibility, order, orderItem, paymentSession, pendingReview, quote, returnRequest, serverCart, serverWishlist, shippingInfo, wishlistItem, wishlistState } from "@/tests/_support/fixtures";
 import { media } from "@/tests/_support/media-query";
-import { msg, msgf } from "@/tests/_support/messages";
+import { dateText, msg, msgf } from "@/tests/_support/messages";
 import { server } from "@/tests/_support/msw-server";
 
 /* The shared sample data and the matchMedia stand-in (specs/platform/dev-tooling.md, flows QG-15 and QG-15E). */
@@ -77,6 +78,46 @@ describe("QG-15 sample quote and wishlist", () => {
   });
 });
 
+describe("QG-15 sample shipping and payment", () => {
+  it("shippingInfo() has the three methods the BE accepts, pick-up free, and any field can be replaced", () => {
+    const info = shippingInfo();
+
+    expect(info.methods.map((m) => m.id)).toEqual([...SHIPPING_METHOD_IDS]);
+    expect(info.methods.find((m) => m.id === "store-pickup")?.priceVnd).toBe(0);
+    expect(shippingInfo({ freeShippingThresholdVnd: null }).freeShippingThresholdVnd).toBeNull();
+  });
+
+  it("paymentSession() is a pending session that does not expire during a test, and any field can be replaced", () => {
+    const session = paymentSession();
+
+    expect(session).toMatchObject({ status: "PENDING", bankName: expect.any(String), transferContent: expect.any(String) });
+    expect(Date.parse(session.expiresAt ?? "")).toBeGreaterThan(Date.now() + 365 * 24 * 3600 * 1000);
+    expect(paymentSession({ status: "PAID", transferContent: "X" })).toMatchObject({ status: "PAID", transferContent: "X" });
+  });
+});
+
+describe("QG-15 sample orders, reviews and returns", () => {
+  it("order() is a pending, unpaid order whose totals add up, with one line, and any field can be replaced", () => {
+    const o = order();
+
+    expect(o.totalVnd).toBe(o.subtotalVnd + o.shippingFeeVnd);
+    expect(o.items).toEqual([orderItem()]);
+    expect(order({ status: "delivered", paymentStatus: "paid" })).toMatchObject({ status: "delivered", paymentStatus: "paid" });
+  });
+
+  it("pendingReview() points at the order line of orderItem()", () => {
+    expect(pendingReview().orderItemId).toBe(orderItem().id);
+    expect(pendingReview({ orderItemId: "x" }).orderItemId).toBe("x");
+  });
+
+  it("returnRequest() and eligibility() describe the same order and line", () => {
+    expect(returnRequest().orderId).toBe(order().id);
+    expect(returnRequest().items[0].orderItemId).toBe(orderItem().id);
+    expect(eligibility().items[0]).toMatchObject({ orderItemId: orderItem().id, returnableQuantity: 1 });
+    expect(eligibility({ eligible: false, reason: "RETURN_WINDOW_EXPIRED" })).toMatchObject({ eligible: false, reason: "RETURN_WINDOW_EXPIRED" });
+  });
+});
+
 describe("QG-15 msgf", () => {
   it("fills the {placeholders} of a real message, in either language", () => {
     expect(msgf("private.cart.header.itemCount", { count: 3 })).toBe("3 sản phẩm");
@@ -86,6 +127,19 @@ describe("QG-15 msgf", () => {
   it("leaves a placeholder it was not given, and throws for a key that does not exist", () => {
     expect(msgf("private.cart.item.size", {})).toContain("{size}");
     expect(() => msgf("private.cart.nope", {})).toThrow('no message "private.cart.nope" in vi');
+  });
+});
+
+describe("QG-15 dateText", () => {
+  it("writes a date in the site's time zone, so the evening of the 5th in the UTC is already the 6th in Vietnam", () => {
+    expect(dateText("2026-03-05T20:00:00.000Z", "short")).toMatch(/6/);
+    expect(dateText("2026-03-05T05:00:00.000Z", "short")).toMatch(/5/);
+  });
+
+  it("follows the named format and the language", () => {
+    expect(dateText("2026-03-05T05:30:00.000Z", "dateTime")).toMatch(/12:30/);
+    expect(dateText("2026-03-05T05:30:00.000Z", "short", "en")).toContain("Mar");
+    expect(dateText("2026-03-05T05:30:00.000Z", "long", "en")).toContain("March");
   });
 });
 

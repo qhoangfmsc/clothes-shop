@@ -22,7 +22,10 @@
     "next.config.ts",
     "src/app/[locale]/\\(private\\)/cart/**",
     "src/app/[locale]/_components/QuickAddDrawer.tsx",
-    "src/app/[locale]/\\(private\\)/wishlist/**"
+    "src/app/[locale]/\\(private\\)/wishlist/**",
+    "src/app/[locale]/\\(private\\)/checkout/**",
+    "src/app/[locale]/\\(private\\)/orders/**",
+    "src/app/[locale]/\\(private\\)/returns/**"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -330,6 +333,106 @@
     "src/app/[locale]/\\(private\\)/wishlist/WishlistContent.tsx": {
       "lines": 90,
       "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/checkout.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/payment.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/use-order-quote.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/use-payment-session.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/CheckoutContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_components/OrderSummary.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_components/ShippingForm.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/payment/[orderId]/PaymentContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_components/PaymentCountdown.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/orders/OrdersContent.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/orders/[orderId]/OrderDetailContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 70
+    },
+    "src/app/[locale]/\\(private)/orders/_components/OrderStatusBadge.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/orders/_components/OrderThumb.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/ReturnsContent.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/[returnId]/ReturnDetailContent.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/new/NewReturnContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/_components/OrderReturnCard.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 75
+    },
+    "src/app/[locale]/\\(private)/returns/_common/use-return-eligibility.ts": {
+      "lines": 90,
+      "branches": 70,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/_components/ReturnProgress.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/_components/ReturnStatusBadge.tsx": {
+      "lines": 90,
+      "branches": 90,
       "functions": 90
     }
   }

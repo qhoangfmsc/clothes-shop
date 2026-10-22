@@ -1,6 +1,6 @@
 # Customer returns (trả hàng của khách)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/returns`, `/[locale]/returns/[returnId]`, `/[locale]/returns/new?orderId=` · **Cập nhật:** 2026-10-22
 > **Code:** `(private)/returns/` — `layout.tsx`, `page.tsx`, `ReturnsContent.tsx`, `[returnId]/{page.tsx,ReturnDetailContent.tsx}`, `new/{page.tsx,NewReturnContent.tsx}`, `_common/{types,constants,use-return-eligibility}.ts`, `_components/{ReturnStatusBadge,ReturnProgress,OrderReturnCard}.tsx`
 > **i18n:** `private.returns` (`meta`, `status`, `reason`, `ineligible`, `orderCard`, `list`, `detail`, `form`), `shared.errors.byCode` (1801, 1803, 1804)
 
@@ -42,7 +42,19 @@ Cho khách biết đơn nào còn trả được (và đến hạn nào), trả 
 - Lỗi: 1801, 1803, 1804 có bản dịch; 1802 (đơn không trả được) và 1805 hiện message của BE (`useErrorMessage`).
 - `/returns` nằm trong `PRIVATE_PATHS` của `robots.ts`; liên kết "Yêu cầu trả hàng" ở đầu trang [customer-orders](./customer-orders.md).
 
-### 4.3 Liên quan
+### 4.3 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/customer-returns.md](../../specs/storefront/customer-returns.md). Test ở `tests/storefront/customer-returns/` (`returns-list`, `return-detail`, `new-return`, `order-return-card`; `returns-kit.tsx` là BE giả dùng chung); `mutants.json` có đột biến cho ba trang, thẻ trả hàng, thanh tiến trình, nhãn trạng thái và hook điều kiện.
+
+Các điểm cần biết về hành vi hiện tại:
+
+- Danh sách hoặc chi tiết không tải được (mạng, 500) cho ra màn "chưa có yêu cầu" hoặc "không tìm thấy", kèm toast báo lỗi.
+- Lỗi không có thông điệp riêng từ BE hiện nguyên văn (`API error: <mã>`, `Failed to fetch`).
+- Chi tiết kiểm tra "chưa đăng nhập" trước "đang tải", nên khách chưa đăng nhập thấy màn chặn ngay.
+- Biểu mẫu đọc cả đơn (`GET /api/orders/:id`) để lấy danh sách dòng, dù điều kiện trả đã có `items`.
+
+
+### 4.4 Liên quan
 
 Đơn giao xong mới trả được; admin xử lý ở [admin/returns](../admin/returns.md); khoản hoàn hiện cả ở thẻ "Hoàn tiền" của chi tiết đơn (`reason = RETURN` ghi "Hoàn tiền do trả hàng", có link sang yêu cầu).
 

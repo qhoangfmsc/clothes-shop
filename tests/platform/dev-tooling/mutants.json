@@ -957,7 +957,7 @@
   {
     "name": "harness: SWR keeps its data between renders",
     "file": "tests/_support/render.tsx",
-    "find": "provider: () => new Map(), ",
+    "find": "provider: () => new Map()",
     "replace": "",
     "tests": [
       "tests/platform/dev-tooling/harness-store.test.tsx"

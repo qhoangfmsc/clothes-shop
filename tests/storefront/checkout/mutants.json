@@ -1,0 +1,671 @@
+[
+  {
+    "name": "lib: a name of only spaces counts as filled",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "if (!address[field].trim()) errors[field] = true;",
+    "replace": "if (!address[field]) errors[field] = true;",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: a shop pick-up needs the whole address",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "for (const field of pickup ? PICKUP_FIELDS : REQUIRED_FIELDS)",
+    "replace": "for (const field of REQUIRED_FIELDS)",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: the city is not required",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "export const REQUIRED_FIELDS = [\"fullName\", \"phone\", \"addressLine1\", \"city\"] as const;",
+    "replace": "export const REQUIRED_FIELDS = [\"fullName\", \"phone\", \"addressLine1\"] as const;",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: the pick-up contact needs no phone",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "export const PICKUP_FIELDS: readonly AddressField[] = [\"fullName\", \"phone\"];",
+    "replace": "export const PICKUP_FIELDS: readonly AddressField[] = [\"fullName\"];",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: a missing bag line is ignored",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "return ids.length === reviewed.length ? ids : null;",
+    "replace": "return ids;",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: a BE line without an id counts",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "flatMap((line) => (line.serverItemId ? [line.serverItemId] : []))",
+    "replace": "flatMap((line) => [line.serverItemId!])",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: the country starts empty",
+    "file": "src/app/[locale]/(private)/checkout/_common/checkout.ts",
+    "find": "country: \"Vietnam\",",
+    "replace": "country: \"\",",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: payment status is case-sensitive",
+    "file": "src/app/[locale]/(private)/checkout/_common/payment.ts",
+    "find": "raw.toUpperCase()",
+    "replace": "raw",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: an unknown payment status counts as paid",
+    "file": "src/app/[locale]/(private)/checkout/_common/payment.ts",
+    "find": "?? \"PENDING\";",
+    "replace": "?? \"PAID\";",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: a plain http QR address is accepted",
+    "file": "src/app/[locale]/(private)/checkout/_common/payment.ts",
+    "find": "/^https:\\/\\//i.test(url)",
+    "replace": "/^https?:\\/\\//i.test(url)",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: a gif data image is accepted",
+    "file": "src/app/[locale]/(private)/checkout/_common/payment.ts",
+    "find": "(png|jpe?g|svg\\+xml|webp)",
+    "replace": "(png|jpe?g|gif|svg\\+xml|webp)",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts"
+    ]
+  },
+  {
+    "name": "lib: the payment is checked every 30 seconds",
+    "file": "src/app/[locale]/(private)/checkout/_common/payment.ts",
+    "find": "PAYMENT_POLL_INTERVAL_MS = 3000;",
+    "replace": "PAYMENT_POLL_INTERVAL_MS = 30000;",
+    "tests": [
+      "tests/storefront/checkout/checkout-lib.test.ts",
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: lines without an id are quoted with the ids the bag has",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "if (localIds.length === lines.length) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: any error re-reads the BE cart",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "if (!(err instanceof ApiError && err.status === 400)) throw err;",
+    "replace": "if (!(err instanceof ApiError)) throw err;",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: a line missing from the BE cart is quoted anyway",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "if (!freshIds) throw new Error(\"\");",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: the answer of an older question is used",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "        if (stale) return;\n        setQuote(res.data);",
+    "replace": "        setQuote(res.data);",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: a changed quantity is not asked again",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "${cartItemKey(item)}:${item.quantity}:${item.serverItemId ?? \"\"}",
+    "replace": "${cartItemKey(item)}:${item.serverItemId ?? \"\"}",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: a changed shipping method is not asked again",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "[enabled, linesKey, shippingMethod, apiFetch, dispatch]",
+    "replace": "[enabled, linesKey, apiFetch, dispatch]",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: it asks even when switched off",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "if (!enabled || !linesKey) return;",
+    "replace": "if (!linesKey) return;",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "quote: an old error stays after a good answer",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-order-quote.ts",
+    "find": "        setQuote(res.data);\n        setError(null);",
+    "replace": "        setQuote(res.data);",
+    "tests": [
+      "tests/storefront/checkout/use-order-quote.test.tsx"
+    ]
+  },
+  {
+    "name": "session: a 404 while waiting is treated as a lost connection",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "new Set([401, 403, 404])",
+    "replace": "new Set([401, 403])",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: a cancelled order is not recognised when the QR is refused",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "if (status === \"PAID\" || status === \"CANCELLED\") {",
+    "replace": "if (status === \"PAID\") {",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: an unpaid order never expires",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "if (hasExpired()) {\n          setPhase(\"expired\");",
+    "replace": "if (false) {\n          setPhase(\"expired\");",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: the check after the deadline waits a full interval",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "untilExpiry + 200",
+    "replace": "untilExpiry + 2000",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: a hidden tab keeps asking",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "      if (document.hidden) {\n        schedule();\n        return;\n      }",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: the connection warning never clears",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "        if (stopped) return;\n        setConnectionLost(false);",
+    "replace": "        if (stopped) return;",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: an expired code is listed even when the BE gave the same one back",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "if (old && old !== created.transferContent) {",
+    "replace": "if (old) {",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: a code can be listed twice",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "codes.includes(old) ? codes : [...codes, old]",
+    "replace": "[...codes, old]",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: the late answer of an older start is used",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "      const created = await createSession();\n      if (run !== runRef.current) return;\n      setSession(created);",
+    "replace": "      const created = await createSession();\n      setSession(created);",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: creating a new QR is never finished",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "    } finally {\n      setIsCreating(false);",
+    "replace": "    } finally {",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: a paid status shows as waiting",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "PAID: \"paid\",",
+    "replace": "PAID: \"pending\",",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "session: a payment is not recognised on the next check",
+    "file": "src/app/[locale]/(private)/checkout/_common/use-payment-session.ts",
+    "find": "if (status !== \"PENDING\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/checkout/use-payment-session.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an incomplete form is sent",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "if (Object.keys(invalid).length > 0) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx",
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the first wrong field does not get the focus",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "document.getElementById(fieldId(first))?.focus();",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an order is placed for lines the BE cart no longer has",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "if (!cartItemIds) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: pick-up saves an address and delivery does not",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "      if (pickup) {\n        recipient",
+    "replace": "      if (!pickup) {\n        recipient",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an empty second address line is sent as an empty text",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "addressLine2: address.addressLine2 || undefined,",
+    "replace": "addressLine2: address.addressLine2,",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an emptied country is sent empty",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "country: address.country || \"Vietnam\",",
+    "replace": "country: address.country,",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an address without an id still places the order",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "if (!addressId) throw new Error(t(\"toast.addressFailed\"));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an empty note is sent as an empty text",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "note: address.notes || undefined,",
+    "replace": "note: address.notes,",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: ordered lines stay in the bag",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "      dispatch(removeItems(items.map(cartItemKey)));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: paying later goes to the payment page",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "else if (paymentMethod === \"vietqr\")",
+    "replace": "else if (paymentMethod !== \"vietqr\")",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the purchase is recorded with the subtotal",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "moneyProp(moneyOf(orderRes.data, \"total\"), locale)",
+    "replace": "moneyProp(moneyOf(orderRes.data, \"subtotal\" as \"total\"), locale)",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the start of checkout is recorded every time",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "    beginTrackedRef.current = true;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the price of the old method is shown for the new one",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "const currentQuote = quote?.shippingMethod === shippingMethod ? quote : null;",
+    "replace": "const currentQuote = quote;",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a failed quote is not reported in the summary",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "quoteFailed={Boolean(quoteError) && !quoteLoading}",
+    "replace": "quoteFailed={false}",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the empty bag flashes while leaving",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "if (isLoading || isRedirecting) {",
+    "replace": "if (isLoading) {",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an empty bag shows the form",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "  if (items.length === 0) {\n    return (",
+    "replace": "  if (false) {\n    return (",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the pick-up contact is not trimmed",
+    "file": "src/app/[locale]/(private)/checkout/CheckoutContent.tsx",
+    "find": "pickupContact: { fullName: address.fullName.trim(), phone: address.phone.trim() }",
+    "replace": "pickupContact: { fullName: address.fullName, phone: address.phone }",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: a zero fee is shown as an amount",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "quote.shippingFeeVnd === 0 ? t(\"shipping.free\") : fmt(quote, \"shippingFee\")",
+    "replace": "quote.shippingFeeVnd !== 0 ? t(\"shipping.free\") : fmt(quote, \"shippingFee\")",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: the free-shipping bar shows for a free method",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "method.priceVnd > 0;",
+    "replace": "method.priceVnd >= 0;",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: the bar can go past full",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "Math.min((quote.subtotalVnd / threshold) * 100, 100)",
+    "replace": "(quote.subtotalVnd / threshold) * 100",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: free shipping is never unlocked",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "const unlocked = quote?.freeShipping ?? false;",
+    "replace": "const unlocked = false;",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: the button labels are swapped",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "paymentMethod === \"vietqr\" ? t(\"placeAndPay\") : t(\"place\")",
+    "replace": "paymentMethod !== \"vietqr\" ? t(\"placeAndPay\") : t(\"place\")",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: the button stays open while sending",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "disabled={isSubmitting}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: the list of lines cannot be opened",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "onClick={() => setShowItems((prev) => !prev)}",
+    "replace": "onClick={() => setShowItems(false)}",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: a line the BE has not priced shows 0",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "fmtOrNull(item, \"lineTotal\") ?? \"…\"",
+    "replace": "fmtOrNull(item, \"lineTotal\") ?? \"0\"",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "summary: the total shows while the quote is loading",
+    "file": "src/app/[locale]/(private)/checkout/_components/OrderSummary.tsx",
+    "find": "{quoteLoading || !quote ? \"…\" : fmt(quote, \"total\")}",
+    "replace": "{!quote ? \"…\" : fmt(quote, \"total\")}",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "form: required fields have no star",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingForm.tsx",
+    "find": "{required && \" *\"}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx",
+      "tests/storefront/checkout/checkout-order.test.tsx"
+    ]
+  },
+  {
+    "name": "form: pick-up still asks for the whole address",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingForm.tsx",
+    "find": "(pickup ? PICKUP_FIELDS.includes(name) : true)",
+    "replace": "true",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "form: the pick-up map link goes nowhere",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingForm.tsx",
+    "find": "href={CONTACT_MAPS_URL}",
+    "replace": "href=\"#\"",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "form: 'more details' cannot be folded again",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingForm.tsx",
+    "find": "onClick={() => setShowMore((prev) => !prev)}",
+    "replace": "onClick={() => setShowMore(true)}",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "form: a wrong field is not marked invalid",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingForm.tsx",
+    "find": "aria-invalid={invalid}",
+    "replace": "aria-invalid={false}",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "methods: only a zero fee shows as free",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingMethodSection.tsx",
+    "find": "const free = freeShipping || method.priceVnd === 0;",
+    "replace": "const free = method.priceVnd === 0;",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "methods: loading and failure texts are swapped",
+    "file": "src/app/[locale]/(private)/checkout/_components/ShippingMethodSection.tsx",
+    "find": "failed ? t(\"loadFailed\") : t(\"loading\")",
+    "replace": "failed ? t(\"loading\") : t(\"loadFailed\")",
+    "tests": [
+      "tests/storefront/checkout/checkout-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: an unsafe QR address is drawn",
+    "file": "src/app/[locale]/(private)/checkout/payment/[orderId]/PaymentContent.tsx",
+    "find": "isSafeQrUrl(session.qrUrl) &&",
+    "replace": "true &&",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: the placeholder ends while the QR is still loading",
+    "file": "src/app/[locale]/(private)/checkout/payment/[orderId]/PaymentContent.tsx",
+    "find": "if (authLoading || (isAuthenticated && phase === \"loading\")) {",
+    "replace": "if (authLoading) {",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: 'new QR' stays open while it is being made",
+    "file": "src/app/[locale]/(private)/checkout/payment/[orderId]/PaymentContent.tsx",
+    "find": "disabled={isCreating}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: the lost-connection warning never shows",
+    "file": "src/app/[locale]/(private)/checkout/payment/[orderId]/PaymentContent.tsx",
+    "find": "{connectionLost && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: the old-codes note always shows",
+    "file": "src/app/[locale]/(private)/checkout/payment/[orderId]/PaymentContent.tsx",
+    "find": "{previousCodes.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: the way to the order goes to the list",
+    "file": "src/app/[locale]/(private)/checkout/payment/[orderId]/PaymentContent.tsx",
+    "find": "<Link href={`/orders/${orderId}`} className={SECONDARY_LINK}>",
+    "replace": "<Link href=\"/orders\" className={SECONDARY_LINK}>",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: the countdown shows 00:00 instead of 'ended'",
+    "file": "src/app/[locale]/(private)/checkout/_components/PaymentCountdown.tsx",
+    "find": "{remainingMs > 0 ? t(\"remaining\", { time }) : t(\"ended\")}",
+    "replace": "{remainingMs >= 0 ? t(\"remaining\", { time }) : t(\"ended\")}",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: seconds are not padded",
+    "file": "src/app/[locale]/(private)/checkout/_components/PaymentCountdown.tsx",
+    "find": "String(totalSeconds % 60).padStart(2, \"0\")",
+    "replace": "String(totalSeconds % 60)",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  },
+  {
+    "name": "pay: minutes are not padded",
+    "file": "src/app/[locale]/(private)/checkout/_components/PaymentCountdown.tsx",
+    "find": "String(Math.floor(totalSeconds / 60)).padStart(2, \"0\")",
+    "replace": "String(Math.floor(totalSeconds / 60))",
+    "tests": [
+      "tests/storefront/checkout/payment-page.test.tsx"
+    ]
+  }
+]

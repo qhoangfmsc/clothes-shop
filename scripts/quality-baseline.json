@@ -27,9 +27,6 @@
     "storefront/about",
     "storefront/contact",
     "storefront/legal",
-    "storefront/checkout",
-    "storefront/customer-orders",
-    "storefront/customer-returns",
     "storefront/customer-reviews",
     "storefront/account"
   ]
