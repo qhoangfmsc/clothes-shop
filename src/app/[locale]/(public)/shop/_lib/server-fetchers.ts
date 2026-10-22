@@ -1,13 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   SERVER FETCHERS — Call real BE API (clothes-shop-api)
-
-   Used by Server Components (page.tsx) for SSR/SSG data.
-   BE runs on a separate project at NEXT_PUBLIC_API_URL.
-
-   Phase 1 (2026-07): Added search, pagination, sort, filter
-   params matching BE PublicProductQueryDto.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Product } from "@/src/types/product";
 import { RELATED_PRODUCTS_LIMIT } from "../_common/constants";
 import type { Category } from "@/src/types/category";
@@ -35,10 +25,6 @@ async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
   return mapMediaUrls(await res.json());
 }
 
-/* ═══════════════════════════════════════════════════════════
-   TYPES
-   ═══════════════════════════════════════════════════════════ */
-
 export interface CategoryListResponse {
   data: Category[];
   total: number;
@@ -52,10 +38,6 @@ export interface CollectionListResponse {
   page: number;
   limit: number;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   PRODUCTS
-   ═══════════════════════════════════════════════════════════ */
 
 export async function getProducts(category?: string, subcategory?: string): Promise<Product[]> {
   const params: ProductListParams = { category, subcategory };
@@ -106,10 +88,6 @@ export async function getProductWithRelated(id: string): Promise<{
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CATEGORIES
-   ═══════════════════════════════════════════════════════════ */
-
 export async function getCategories(): Promise<Category[]> {
   const { data } = await apiFetch<CategoryListResponse>(`/api/categories?${PUBLIC_CATEGORIES_QUERY}`);
   return data;
@@ -135,10 +113,6 @@ export async function getSubcategory(
   return { category, subcategory };
 }
 
-/* ═══════════════════════════════════════════════════════════
-   COLLECTIONS
-   ═══════════════════════════════════════════════════════════ */
-
 export async function getCollections(): Promise<Collection[]> {
   /* Every collection in one page (BE max), like the categories: the default page would cut the list at 25 */
   const { data } = await apiFetch<CollectionListResponse>(`/api/collections?limit=${LIST_MAX_LIMIT}`);
@@ -163,13 +137,7 @@ export async function getCollectionProducts(slug: string): Promise<Product[]> {
   return products;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SITE CONFIG (banners)
-
-   Decorative/replaceable content — never let a config fetch
-   failure break the page. Always falls back to [] (caller then
-   uses its own built-in default banner/copy).
-   ═══════════════════════════════════════════════════════════ */
+// Decorative content: a failed config fetch never breaks the page; it falls back to [] and the caller uses its own default.
 
 export async function getBannerConfig(key: string): Promise<BannerItem[]> {
   try {

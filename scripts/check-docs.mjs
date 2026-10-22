@@ -8,7 +8,7 @@ import { join, dirname, relative, resolve, sep, basename } from "node:path";
 const DOCS = join(ROOT, "docs");
 const posix = (p) => relative(ROOT, p).split(sep).join("/");
 
-import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf } from "./gate-env.mjs";
+import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf, isCommentOnlyAt } from "./gate-env.mjs";
 
 const REQUIRED_HEADINGS = [
   "## 1. Tóm tắt module",
@@ -152,6 +152,7 @@ if (args.includes("--changed")) {
   const touched = new Map(); // doc → files
   for (const file of changed) {
     if (isIgnored(file) || !CODE_EXT.test(file) || !(CODE_ROOTS.some((r) => file.startsWith(`${r}/`)) || CODE_FILES.includes(file))) continue;
+    if (isCommentOnlyAt(file, base)) continue;
     const doc = ownerOf(file);
     if (!doc) continue; // already reported as "no module owns"
     touched.set(doc, [...(touched.get(doc) ?? []), file]);

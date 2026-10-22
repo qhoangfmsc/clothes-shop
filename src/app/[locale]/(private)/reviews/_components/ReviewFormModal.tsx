@@ -63,16 +63,9 @@ const FIELD_LABEL_CLASS = "font-primary text-xs font-semibold uppercase tracking
 const INPUT_CLASS =
   "w-full rounded-md border border-[var(--border-light)] bg-[var(--bg-secondary)] px-3 py-2.5 font-primary text-sm text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--accent-primary)] pointer-coarse:text-base motion-reduce:transition-none";
 
-/**
- * Write a review of an order line, or make the one edit a review allows.
- * - Rating is required; title ≤ 255; text ≤ 2000 and no links (told while typing); fit optional; up to 5 photos.
- * - Picking a photo only shows a local preview (nothing is sent). On submit the new photos upload together
- *   (`POST /api/reviews/images`, `Promise.allSettled`) and only then the review request goes out with the URLs the BE
- *   answered. A form that is cancelled never spends the daily upload limit, and photos already uploaded are not
- *   uploaded again when a later step fails and the customer submits once more.
- * - Edit sends only what changed, and warns that it can happen once.
- * - Sending is locked while a request runs, so a double tap cannot create the review twice.
- */
+/** Write a review of an order line, or make the one edit a review allows. New photos upload together on submit, not on pick,
+ *  so a cancelled form never spends the daily limit and photos already uploaded are not sent again after a later failure.
+ *  Sending is locked while a request runs, so a double tap cannot create the review twice. */
 export default function ReviewFormModal({ target, onClose, onSaved, onAlreadyReviewed, onStale }: ReviewFormModalProps) {
   const t = useTranslations("shared.reviews.form");
   const tFit = useTranslations("shared.reviews.fit");
@@ -180,11 +173,8 @@ export default function ReviewFormModal({ target, onClose, onSaved, onAlreadyRev
   const nothingChanged = isEdit && !hasPendingPhotos && Object.keys(changesFor(imageUrls)).length === 0;
   const blocked = submitting || titleHasLink || contentHasLink || nothingChanged;
 
-  /**
-   * Uploads every photo that is not on the BE yet, all at once. A photo that fails stays in the form marked as failed
-   * (the next submit tries it again) and the review is not sent. Returns the final URLs in the order of the form, or
-   * `null` when something failed.
-   */
+  /** Uploads every photo not yet on the BE, all at once. A failed photo stays marked in the form (the next submit retries it)
+   *  and the review is not sent. Returns the final URLs in form order, or `null` when something failed. */
   const uploadPendingPhotos = async (): Promise<string[] | null> => {
     const pending = form.images.filter((slot) => slot.status !== "done" && slot.file);
     if (pending.length === 0) return imageUrls;

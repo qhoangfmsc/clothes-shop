@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   ORDERS MODULE TYPES
-   ═══════════════════════════════════════════════════════════ */
-
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
 import type { OrderPaymentStatus, OrderStatus } from "@/src/types/enums";
 

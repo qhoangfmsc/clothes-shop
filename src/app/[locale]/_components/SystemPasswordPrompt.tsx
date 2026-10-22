@@ -16,19 +16,8 @@ import { Lock, X } from "lucide-react";
 import { SYSTEM_PASSWORD } from "@/src/lib/system-password";
 import { markSystemUnlocked } from "@/src/lib/system-password-session";
 
-/* ═══════════════════════════════════════════════════════════
-   SYSTEM PASSWORD PROMPT — imperative admin password check
-
-   One simple, generic dialog ("Enter password to continue")
-   reused everywhere the admin password needs (re-)confirming —
-   the full admin gate and one-off actions like Users "View".
-   A correct entry unlocks the 15-minute session TTL for both.
-
-   Usage:
-     const requestPassword = useSystemPasswordPrompt();
-     const ok = await requestPassword();
-     if (!ok) return;
-   ═══════════════════════════════════════════════════════════ */
+/* One generic "enter password" dialog reused wherever the admin password needs (re-)confirming: the full admin gate and one-off actions
+   like Users "View". A correct entry unlocks the 15-minute session for both. */
 
 type SystemPasswordPromptFn = () => Promise<boolean>;
 

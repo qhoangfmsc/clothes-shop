@@ -1,7 +1,5 @@
-/* Money — the only place that formats an amount.
-   The BE stores VND (whole dong) and sends every amount as a pair `<name>Vnd` / `<name>Usd`; the USD half is
-   already converted and rounded by the BE. The FE never converts, adds, multiplies or rounds money: it picks
-   the half that matches the UI language and formats it. */
+/* Money: the only place that formats an amount. The BE sends every amount as `<name>Vnd` / `<name>Usd`, already converted and rounded;
+   the FE never converts, adds, multiplies or rounds money, it picks the half for the UI language and formats it. */
 
 export type Currency = "VND" | "USD";
 

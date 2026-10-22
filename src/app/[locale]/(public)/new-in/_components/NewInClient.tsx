@@ -250,10 +250,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           </span>
         </div>
 
-        {/* Image side: a champagne base color always shows underneath, and
-            the image (when available) sits at slightly reduced opacity on
-            top — so the brand color and the photo are both visible together.
-            No image yet → the base color alone. */}
+        {/* A champagne base colour always shows; the image (when there is one) sits on it at reduced opacity. */}
         <div
           className="flex-1 relative min-h-[25rem] lg:min-h-auto overflow-hidden"
           data-ni-hero-image

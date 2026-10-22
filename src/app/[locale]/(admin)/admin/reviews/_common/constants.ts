@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   ADMIN REVIEWS — constants
-   ═══════════════════════════════════════════════════════════ */
-
 /** BE sort whitelist: `createdAt`, `rating`, `helpfulCount` (`-` = descending). `key` = label in admin.components.crud.sort.* */
 export const REVIEW_SORT_OPTIONS = [
   { value: "-createdAt", key: "newest" },

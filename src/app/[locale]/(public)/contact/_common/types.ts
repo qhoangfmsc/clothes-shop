@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   CONTACT MODULE TYPES — custom-order request
-   Co-located with the module — NOT in src/types/.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ProductBadge } from "@/src/types/enums";
 
 /** The product a custom order is about, trimmed to what the form needs (built on the server). */

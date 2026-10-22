@@ -11,10 +11,8 @@ interface ProductLinkProps {
   children: ReactNode;
 }
 
-/**
- * Link to a product's storefront page built from its own category / sub-category slugs. Without them (product
- * deleted, or the BE sent `category: null`) there is nothing to link to: the children render in a plain `<span>`.
- */
+/** Link to a product's storefront page from its own category / sub-category slugs. Without them (deleted product, `category: null`)
+ *  the children render in a plain `<span>`. */
 export default function ProductLink({ product, newTab = false, className, children }: ProductLinkProps) {
   const href = product ? productPath(product) : null;
   if (!href) return <span className={className}>{children}</span>;

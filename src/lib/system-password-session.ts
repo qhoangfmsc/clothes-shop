@@ -1,10 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   SYSTEM PASSWORD SESSION — 15-minute TTL for the admin password
-
-   Shared by both the full admin area gate and any one-off
-   re-prompt (e.g. the Users "View" action), so entering the
-   password once covers everything for the next 15 minutes.
-   ═══════════════════════════════════════════════════════════ */
+// 15-minute TTL shared by the admin gate and one-off re-prompts (e.g. Users "View"), so one entry covers both.
 
 const STORAGE_KEY = "admin_system_unlocked_at";
 const TTL_MS = 15 * 60 * 1000;

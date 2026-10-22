@@ -50,11 +50,8 @@ async function fetchPendingCounts(): Promise<PendingCounts> {
   }
 }
 
-/**
- * Numbers of things waiting for an admin (menu badges, page notices, tab counts), from one request:
- * on entering the admin area, every minute while the tab is visible, when the tab comes back to the
- * foreground, and right after any successful admin write.
- */
+/** Numbers of things waiting for an admin (menu badges, notices, tab counts) from one request: on entering the admin area, every minute
+ *  while the tab is visible, when it returns to the foreground, and after any successful admin write. */
 export function PendingCountsProvider({ children }: { children: ReactNode }) {
   const { data, mutate } = useSWR<PendingCounts>(PENDING_COUNTS_URL, fetchPendingCounts, {
     refreshInterval: PENDING_COUNTS_REFRESH_MS,

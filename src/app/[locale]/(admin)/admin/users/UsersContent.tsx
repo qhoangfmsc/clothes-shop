@@ -37,8 +37,6 @@ import { USER_ROLES, USER_STATUSES, type UserRole, type UserStatus } from "@/src
 import type { UserListResult } from "./_common/types";
 import { authApi } from "@/src/lib/auth-api";
 
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
-
 export default function UsersContent() {
   const t = useTranslations("admin.users");
   const toErrorMessage = useErrorMessage();
@@ -295,7 +293,6 @@ export default function UsersContent() {
         sortOptions={sortOptions}
       />
 
-      {/* ═══════════════ EDIT MODAL ═══════════════ */}
       {editingUser && (
         <div
           className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-3 sm:p-6"
@@ -458,7 +455,7 @@ export default function UsersContent() {
         </div>
       )}
 
-      {/* ══════════ ORDER DETAIL MODAL (stacks on top of the Edit User modal) ══════════ */}
+      {/* Stacks on top of the edit modal */}
       {selectedOrder && (
         <div
           className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-110 p-3 sm:p-6"

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_COMMENT_LINES, findLongComments, validateCommentBaseline } from "@/scripts/comment-lib.mjs";
+import { MAX_COMMENT_LINES, findLongComments, isCommentOnlyChange, validateCommentBaseline } from "@/scripts/comment-lib.mjs";
 
 /* QG-11: comments stay short. Spec: specs/platform/dev-tooling.md. */
 
@@ -109,6 +109,20 @@ describe("QG-11 findLongComments", () => {
     expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 2, length: 4 }]);
   });
 
+  it("a JSX closing tag is not a regex: lines are counted right after it and a comment on the same line is read", () => {
+    const code = ["const a = (", "  <div>", "    <b>x</b>", "  </div>", ");", "// 1", "// 2", "// 3", "// 4"].join("\n");
+    const banner = ["const a = <i>x</i>; // ═══════ banner"].join("\n");
+
+    expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 6, length: 4 }]);
+    expect(findLongComments(banner)).toEqual([{ kind: "banner", line: 1, length: 1 }]);
+  });
+
+  it("a slash that never closes a regex does not swallow the line break", () => {
+    const code = ["const a = b + /x;", "// 1", "// 2", "// 3", "// 4"].join("\n");
+
+    expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 2, length: 4 }]);
+  });
+
   it("reports several findings in order", () => {
     const code = ["// a", "// b", "// c", "// d", "const x = 1;", "/*", "1", "2", "3", "*/"].join("\n");
 
@@ -129,5 +143,70 @@ describe("QG-11 validateCommentBaseline", () => {
 
   it("demands that a clean file leaves the baseline: the list only shrinks", () => {
     expect(validateCommentBaseline(["src/a.ts"], ["src/a.ts", "src/b.ts"]).join("\n")).toContain("src/b.ts no longer has long comments");
+  });
+});
+
+describe("GATE-10 a change that only touches comments", () => {
+  const only = (before: string, after: string, file = "src/a.ts") => isCommentOnlyChange(before, after, file);
+
+  it("accepts comments added, shortened or removed, and different spacing", () => {
+    expect(only("const a = 1;\n", "// why\nconst a = 1;\n")).toBe(true);
+    expect(only("/* one\n two\n three\n four */\nconst a = 1;\n", "// short\nconst a = 1;\n")).toBe(true);
+    expect(only("const a = 1; // trailing\n", "const a = 1;\n")).toBe(true);
+    expect(only("const a=1;\n\n\nconst b = 2;", "const a = 1;\nconst b = 2;\n")).toBe(true);
+  });
+
+  it("accepts comments in TSX, including between JSX attributes", () => {
+    const before = "export const A = () => (\n  <div // note\n    id=\"a\">x</div>\n);\n";
+    const after = "export const A = () => (\n  <div id=\"a\">x</div>\n);\n";
+
+    expect(only(before, after, "src/A.tsx")).toBe(true);
+  });
+
+  it("accepts a JSX comment line removed from between elements, which React never renders", () => {
+    const before = "export const A = () => (\n  <div>\n    {/* section */}\n    <b>x</b>\n  </div>\n);\n";
+    const after = "export const A = () => (\n  <div>\n    <b>x</b>\n  </div>\n);\n";
+    const fragment = (body: string) => `export const A = () => (\n  <>\n${body}  </>\n);\n`;
+
+    expect(only(before, after, "src/A.tsx")).toBe(true);
+    expect(only(fragment("    {/* a */}\n    <b />\n"), fragment("    <b />\n"), "src/A.tsx")).toBe(true);
+  });
+
+  it("rejects JSX changes React does render: an expression, a space inside a line, text", () => {
+    const wrap = (body: string) => `export const A = () => (\n  <div>\n${body}  </div>\n);\n`;
+
+    expect(only(wrap("    {value}\n    <b />\n"), wrap("    <b />\n"), "src/A.tsx")).toBe(false);
+    expect(only("export const A = () => <a> </a>;\n", "export const A = () => <a></a>;\n", "src/A.tsx")).toBe(false);
+    expect(only(wrap("    one\n"), wrap("    one two\n"), "src/A.tsx")).toBe(false);
+  });
+
+  it("accepts the same text in .mjs and .mts files", () => {
+    expect(only("// a\nexport const a = 1;\n", "export const a = 1;\n", "scripts/a.mjs")).toBe(true);
+    expect(only("// a\nexport const a = 1;\n", "export const a = 1;\n", "src/a.mts")).toBe(true);
+  });
+
+  it("rejects a change to code, a type, an import, a string or JSX text", () => {
+    expect(only("const a = 1;\n", "const a = 2;\n")).toBe(false);
+    expect(only("const a: number = 1;\n", "const a: string = \"x\";\n")).toBe(false);
+    expect(only("type T = { a: number };\n", "type T = { a: number; b: string };\n")).toBe(false);
+    expect(only("import { a } from \"./a\";\n", "import { b } from \"./a\";\n")).toBe(false);
+    expect(only("const s = \"http://a\";\n", "const s = \"http://b\";\n")).toBe(false);
+    expect(only("export const A = () => <b>one</b>;\n", "export const A = () => <b>two</b>;\n", "src/A.tsx")).toBe(false);
+  });
+
+  it("rejects a comment change that hides a code change", () => {
+    expect(only("// old\nconst a = 1;\n", "// new\nconst a = 2;\n")).toBe(false);
+  });
+
+  it("does not take text inside a string or a regex for a comment", () => {
+    expect(only("const a = \"// kept\";\n", "const a = \"\";\n")).toBe(false);
+    expect(only("const r = /a\\/\\/b/;\n", "const r = /a/;\n")).toBe(false);
+  });
+
+  it("rejects a new file, a deleted file and files that are not TypeScript or JavaScript", () => {
+    expect(only(null as never, "const a = 1;\n")).toBe(false);
+    expect(only("const a = 1;\n", null as never)).toBe(false);
+    expect(only("a { color: red; }\n", "/* x */\na { color: red; }\n", "src/a.css")).toBe(false);
+    expect(only("{\"a\": 1}\n", "{\"a\": 1}\n ", "src/a.json")).toBe(false);
   });
 });

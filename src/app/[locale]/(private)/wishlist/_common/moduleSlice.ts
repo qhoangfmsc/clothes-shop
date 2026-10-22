@@ -1,13 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   WISHLIST MODULE SLICE — Redux Toolkit + localStorage persistence
-
-   Instant local state via reducers, API sync via thunks.
-   Hydration from localStorage on store creation.
-
-   Usage:
-     import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-     import { selectWishlistItems, toggleWishlistItem } from "./_common/moduleSlice";
-   ═══════════════════════════════════════════════════════════ */
+// Local state via reducers, API sync via thunks, hydrated from localStorage when the store is created.
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";

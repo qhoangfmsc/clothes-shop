@@ -727,5 +727,132 @@
     "tests": [
       "tests/platform/dev-tooling/harness.test.tsx"
     ]
+  },
+  {
+    "name": "comment-lib: comments are compared too, so a trimmed comment is a change",
+    "file": "scripts/comment-lib.mjs",
+    "find": "createPrinter({ removeComments: true })",
+    "replace": "createPrinter({ removeComments: false })",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: a new or deleted file counts as comment-only",
+    "file": "scripts/comment-lib.mjs",
+    "find": "if (!kind || typeof before !== \"string\" || typeof after !== \"string\") return false;",
+    "replace": "if (!kind) return false;\n  if (typeof before !== \"string\" || typeof after !== \"string\") return true;",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: any file type can be comment-only",
+    "file": "scripts/comment-lib.mjs",
+    "find": "if (!kind || typeof before",
+    "replace": "if (typeof before",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "gate-env: a file that cannot be compared counts as comment-only",
+    "file": "scripts/gate-env.mjs",
+    "find": "\"utf8\"), file);\n  } catch {\n    return false;",
+    "replace": "\"utf8\"), file);\n  } catch {\n    return true;",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts",
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a comment-only change still needs the doc",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (isCommentOnlyAt(file, base)) continue;",
+    "replace": "if (false) continue;",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: a comment-only change still needs the spec and a test",
+    "file": "scripts/check-quality.mjs",
+    "find": " || isCommentOnlyAt(file, base)) continue;",
+    "replace": ") continue;",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: a JSX closing tag starts a regex again",
+    "file": "scripts/comment-lib.mjs",
+    "find": "\"%\", \">\", \"~\", \"^\"]",
+    "replace": "\"%\", \"<\", \">\", \"~\", \"^\"]",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: a slash that opens no regex swallows the line break",
+    "file": "scripts/comment-lib.mjs",
+    "find": "if (code[i] === \"/\") i++; // an unclosed one stops at the line end",
+    "replace": "i++;",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: a removed JSX comment line counts as a change",
+    "file": "scripts/comment-lib.mjs",
+    "find": "ts.isJsxText(child) && child.containsOnlyTriviaWhiteSpaces",
+    "replace": "false",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: a space inside a JSX line is ignored",
+    "file": "scripts/comment-lib.mjs",
+    "find": "ts.isJsxText(child) && child.containsOnlyTriviaWhiteSpaces",
+    "replace": "ts.isJsxText(child) && child.text.trim() === \"\"",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "warm-up: pages are opened all at once",
+    "file": "tests/_support/warm-up.ts",
+    "find": "await get(new URL(path, baseURL));",
+    "replace": "void get(new URL(path, baseURL));",
+    "tests": [
+      "tests/platform/dev-tooling/warm-up.test.ts"
+    ]
+  },
+  {
+    "name": "warm-up: a failing page stops the rest",
+    "file": "tests/_support/warm-up.ts",
+    "find": "} catch {\n      // an unreachable",
+    "replace": "} catch (error) {\n      throw error;\n      // an unreachable",
+    "tests": [
+      "tests/platform/dev-tooling/warm-up.test.ts"
+    ]
+  },
+  {
+    "name": "warm-up: the configured address is ignored",
+    "file": "tests/_support/warm-up.ts",
+    "find": "new URL(path, baseURL)",
+    "replace": "new URL(path, \"http://localhost:3000\")",
+    "tests": [
+      "tests/platform/dev-tooling/warm-up.test.ts"
+    ]
+  },
+  {
+    "name": "warm-up: the account page is left cold",
+    "file": "tests/_support/warm-up.ts",
+    "find": ", \"/vi/account\"]",
+    "replace": "]",
+    "tests": [
+      "tests/platform/dev-tooling/warm-up.test.ts"
+    ]
   }
 ]

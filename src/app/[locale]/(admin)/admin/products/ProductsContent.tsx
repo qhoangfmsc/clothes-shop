@@ -61,8 +61,6 @@ import { ADMIN_BADGE_STYLES } from "@/src/lib/product-badge";
 import type { Category, SubCategory } from "@/src/types/category";
 import { toMediaUrl } from "@/src/lib/media-url";
 
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -72,15 +70,11 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/* ═══════════════════════════════ Status/Badge styles ═══════════════════ */
-
 function statusStyle(s: string): string {
   return s === "active"
     ? "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]"
     : "bg-[rgba(107,101,96,0.1)] text-[var(--color-ash)]";
 }
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function ProductsContent() {
   const t = useTranslations("admin.products");
@@ -478,7 +472,6 @@ export default function ProductsContent() {
         defaultSort="-createdAt"
       />
 
-      {/* ═══════════════════════════ MODAL FORM ═══════════════════════════ */}
       {showModal && (
         <ModalShell
           title={editingId ? t("form.titleEdit") : t("form.titleCreate")}

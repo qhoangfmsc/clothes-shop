@@ -34,8 +34,6 @@ import AttemptsTable from "./_components/AttemptsTable";
 import ConfirmPaymentModal from "./_components/ConfirmPaymentModal";
 import VerificationBadge from "./_components/VerificationBadge";
 
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
-
 export default function PaymentsContent() {
   const t = useTranslations("admin.payments");
   const tVerification = useTranslations("admin.payments.verification");

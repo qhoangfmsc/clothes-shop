@@ -75,10 +75,7 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
 
   return (
     <section ref={heroRef} className="relative min-h-[26.25rem] sm:min-h-[30rem] lg:min-h-[35rem] flex flex-col justify-end overflow-hidden py-16 px-4 sm:py-16 sm:px-6 lg:py-20 lg:px-8">
-      {/* Background: a champagne base color always shows underneath, and the
-          image (when available) sits at slightly reduced opacity on top —
-          so the brand color and the photo are both visible together, not
-          just a photo blotting it out. No image yet → the base color alone. */}
+      {/* A champagne base colour always shows; the image (when there is one) sits on it at reduced opacity. */}
       <div
         data-hero-bg
         className="absolute inset-0 pointer-events-none z-0"

@@ -19,11 +19,8 @@ function section(title: string, rows: string[]): string | null {
   return filled.length ? [title, ...filled].join("\n") : null;
 }
 
-/**
- * Plain-text order request for a `mailto:` body or a chat message — a `mailto:` link cannot carry
- * HTML, so the structure comes from uppercase section headings and aligned `label: value` rows.
- * Sections without any data are left out.
- */
+/** Plain-text order request for a `mailto:` body or chat message (no HTML there): uppercase headings and aligned
+ *  `label: value` rows; sections without data are left out. */
 export function buildOrderRequest(
   t: Translate,
   { product, values, formatDate }: BuildInput

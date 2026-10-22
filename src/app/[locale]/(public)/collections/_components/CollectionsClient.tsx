@@ -190,10 +190,8 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
     return () => ctx.revert();
   }, [heroRef]);
 
-  /* ── Horizontal scroll ──
-     Desktop (wide + fine pointer): vertical scroll drives the track (pinned + scrubbed).
-     Phones / touch devices: the track is a native horizontal carousel with snap points
-     (see the `carousel:` variant in globals.css), so no pin/scrub is registered. */
+  /* Wide + fine pointer: vertical scroll drives the pinned, scrubbed track. Phones and touch: a native horizontal carousel
+     with snap points (the `carousel:` variant in globals.css), so no pin/scrub is registered. */
   useEffect(() => {
     const section = horizontalRef.current;
     const track = trackRef.current;
@@ -281,10 +279,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
         ref={heroRef}
         className="relative h-screen overflow-hidden flex items-end justify-start bg-[var(--color-noir)]"
       >
-        {/* Background: a champagne base color always shows underneath, and
-            the image (when available) sits at slightly reduced opacity on
-            top — so the brand color and the photo are both visible together.
-            No image yet → the base color alone. */}
+        {/* A champagne base colour always shows; the image (when there is one) sits on it at reduced opacity. */}
         <div
           data-hero-media
           className="absolute inset-0 z-0"

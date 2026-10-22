@@ -24,12 +24,9 @@ const BUTTON_CLASS =
 const GHOST_CLASS =
   "inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-[var(--accent-primary)] bg-transparent px-6 font-primary text-sm font-medium tracking-[-0.02em] text-[var(--text-accent)] hover:bg-[rgba(201,169,110,0.1)]";
 
-/**
- * Write or edit a review without leaving the product page. What the visitor can do comes from the BE's own lists, never
- * from guesswork: a purchased, delivered line of this product in "to review" → "Write a review"; their review of it
- * that still `canEdit` → "Edit your review"; otherwise nothing (a thank-you line when they already reviewed). Signed out: the button asks
- * for sign-in first, then decides.
- */
+/** Write or edit a review without leaving the product page. What the visitor can do comes from the BE's lists: a delivered line in
+ *  "to review" → "Write a review"; their review that still `canEdit` → "Edit your review"; otherwise nothing.
+ *  Signed out: the button asks for sign-in first. */
 export default function WriteReviewBar({ productId, ownReviews, onSaved }: WriteReviewBarProps) {
   const t = useTranslations("public.product.reviews.write");
   const { isAuthenticated } = useAuth();

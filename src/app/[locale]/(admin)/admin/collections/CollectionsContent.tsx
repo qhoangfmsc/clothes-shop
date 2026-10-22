@@ -42,8 +42,6 @@ import type { CollectionListResult } from "./_common/types";
 import type { Collection } from "@/src/types/collection";
 import { toMediaUrl } from "@/src/lib/media-url";
 
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -52,8 +50,6 @@ function slugify(text: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function CollectionsContent() {
   const t = useTranslations("admin.collections");
@@ -306,7 +302,6 @@ export default function CollectionsContent() {
         sortOptions={sortOptions}
       />
 
-      {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
         <ModalShell title={editingId ? t("form.titleEdit") : t("form.titleCreate")} onClose={closeModal}>
           <FormTabs tabs={COLLECTION_TABS} active={activeTab} onChange={setActiveTab} />

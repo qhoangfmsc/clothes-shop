@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   ADMIN API HOOKS — SWR-based data fetching for admin panel
-
-   Uses `authApi` from lib/auth-api for authenticated requests.
-   Supports BE filter / sort / pagination params.
-   ═══════════════════════════════════════════════════════════ */
-
 import useSWR from "swr";
 import { authApi } from "@/src/lib/auth-api";
 import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
@@ -28,10 +21,6 @@ const defaultConfig = {
 
 type ListResponse<T> = { data: T[]; total: number; page?: number; limit?: number };
 type SingleResponse<T> = { data: T };
-
-/* ═══════════════════════════════════════════════════════════
-   PRODUCTS — Public GET with BE filters
-   ═══════════════════════════════════════════════════════════ */
 
 export interface ProductFilters {
   category?: string;
@@ -103,10 +92,6 @@ export function useAdminProducts(filters: ProductFilters = {}) {
   };
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CATEGORIES — Admin GET with BE filters
-   ═══════════════════════════════════════════════════════════ */
-
 export interface CategoryFilters {
   search?: string;
   sort?: string; // field = ascending, -field = descending: priority | title | createdAt
@@ -152,10 +137,6 @@ export function useAdminCategories(filters: CategoryFilters = {}) {
     deleteCategory,
   };
 }
-
-/* ═══════════════════════════════════════════════════════════
-   COLLECTIONS — Admin GET with BE filters
-   ═══════════════════════════════════════════════════════════ */
 
 export interface CollectionFilters {
   search?: string;
@@ -206,10 +187,6 @@ export function useAdminCollections(filters: CollectionFilters = {}) {
     deleteCollection,
   };
 }
-
-/* ═══════════════════════════════════════════════════════════
-   ORDERS — Admin GET with BE filters + pagination
-   ═══════════════════════════════════════════════════════════ */
 
 export interface AdminOrderItem {
   id: string;
@@ -288,10 +265,6 @@ export function useAdminOrders(filters: OrderFilters = {}) {
     updateOrderStatus,
   };
 }
-
-/* ═══════════════════════════════════════════════════════════
-   USERS — Admin GET with BE filters + pagination
-   ═══════════════════════════════════════════════════════════ */
 
 export interface AdminUser {
   id: string;

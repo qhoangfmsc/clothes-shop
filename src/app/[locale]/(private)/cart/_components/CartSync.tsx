@@ -5,10 +5,8 @@ import { useAuth } from "@/src/contexts/auth-context";
 import { useAppDispatch } from "@/src/store/hooks";
 import { clearCart, fetchCart } from "../_common/moduleSlice";
 
-/** Keeps the local cart (localStorage) in step with the server cart (`GET /api/cart`).
- *  Signing in, or switching account, loads that user's cart; signing out empties the local copy so
- *  the next visitor of this browser never sees (or orders from) someone else's bag.
- *  Mounted once, inside the auth + store providers. Renders nothing. */
+/** Keeps the local cart in step with the server cart (`GET /api/cart`): sign-in loads that user's cart, sign-out empties
+ *  the local copy so the next visitor never sees someone else's bag. Mounted once, renders nothing. */
 export default function CartSync() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const dispatch = useAppDispatch();

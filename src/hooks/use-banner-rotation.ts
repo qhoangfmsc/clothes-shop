@@ -3,11 +3,8 @@ import { useAutoAdvance } from "./use-auto-advance";
 
 const DEFAULT_ROTATE_MS = 5000;
 
-/**
- * Index state + auto-advance for crossfading banner heroes (render with `BannerFade`).
- * Attach `ref` to the hero element; show `CarouselDots` wired to `index` / `goTo`.
- * Resets to the first banner whenever the `banners` array itself changes.
- */
+/** Index state + auto-advance for crossfading banner heroes (render with `BannerFade`; attach `ref` to the hero, wire `CarouselDots` to
+ *  `index` / `goTo`). Resets to the first banner whenever the `banners` array itself changes. */
 export function useBannerRotation<T extends HTMLElement>(
   banners: readonly unknown[],
   intervalMs = DEFAULT_ROTATE_MS

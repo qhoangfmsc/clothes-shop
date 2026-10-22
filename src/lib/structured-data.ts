@@ -37,10 +37,9 @@ export function breadcrumbJsonLd(locale: AppLocale, crumbs: BreadcrumbEntry[]) {
   };
 }
 
-/** `Product` with one `Offer` (none for custom-order products). The offer follows the page language like the visible
- *  price: VND (`priceVnd`) on the Vietnamese page, USD (`priceUsd`) on the others — both straight from the API.
- *  The public API only returns `active` products and has no stock levels, so every listed
- *  product is advertised as in stock. No `aggregateRating`: it must reflect real reviews. */
+/** `Product` with one `Offer` (none for custom-order products), in the page language like the visible price: `priceVnd` on `vi`, `priceUsd` elsewhere.
+ *  The public API returns only `active` products and no stock levels, so every listed product is advertised as in stock.
+ *  No `aggregateRating`: it must reflect real reviews. */
 export function productJsonLd(locale: AppLocale, product: Product, path: string) {
   const url = pageUrl(locale, path);
 

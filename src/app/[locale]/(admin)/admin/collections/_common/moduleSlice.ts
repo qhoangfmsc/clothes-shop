@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   COLLECTIONS MODULE SLICE — Redux Toolkit + BaseReducer
-   ═══════════════════════════════════════════════════════════ */
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";

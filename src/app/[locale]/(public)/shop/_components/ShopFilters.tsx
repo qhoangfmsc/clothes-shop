@@ -67,8 +67,6 @@ const PRICE_BANDS: readonly { min: number | null; max: number | null }[] = [
 /** "N stars & up" choices of the rating filter */
 const MIN_RATING_OPTIONS = [4, 3, 2, 1] as const;
 
-/* ═══════════════════════════════ ShopFilters ═══════════════════════════════ */
-
 export default function ShopFilters({
   sizes: availableSizes,
   colors: availableColors,

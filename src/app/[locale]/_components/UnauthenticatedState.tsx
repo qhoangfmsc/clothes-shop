@@ -10,14 +10,8 @@ import GoogleSignInButton from "@/src/app/[locale]/(auth)/login/_components/Goog
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/**
- * UnauthenticatedState — Non-dismissable modal shown on private pages
- * when user is not logged in.
- *
- * - Cannot be closed (no X button, backdrop doesn't dismiss)
- * - Options: Google Sign-In to login, or "Go to Home" to leave
- * - Locks body scroll while visible
- */
+/** Non-dismissable modal on private pages when signed out: no X, the backdrop does not close it. Options: Google sign-in or "Go to Home".
+ *  Locks body scroll while visible. */
 export default function UnauthenticatedState() {
   const t = useTranslations("shared.feedback.unauthenticated");
   /* Lock body scroll */

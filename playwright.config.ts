@@ -10,6 +10,7 @@ const STATE_FILE = ".auth/user.json";
 
 export default defineConfig({
   testDir: "./tests",
+  globalSetup: "./tests/_support/warm-up.ts",
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 1 : 0,

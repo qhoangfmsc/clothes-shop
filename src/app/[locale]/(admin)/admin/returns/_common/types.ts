@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   RETURNS MODULE TYPES — customer return requests (admin)
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ListParams } from "@/src/lib/list-query";
 import type { OrderPaymentStatus } from "@/src/types/enums";
 import type { RefundStatus } from "../../refunds/_common/types";

@@ -6,8 +6,6 @@ import { useTranslations } from "next-intl";
 /** `onImage`: translucent dark control for photos / dark sections. `onSurface`: for light page backgrounds. */
 export type CarouselTone = "onImage" | "onSurface";
 
-/* ═══════════════════════════════ Arrow ═══════════════════════════════ */
-
 const ARROW_TONE: Record<CarouselTone, string> = {
   onImage:
     "border-[var(--color-pearl-cream)]/20 bg-[var(--color-noir)]/50 text-[var(--color-pearl-cream)] backdrop-blur-lg hover:bg-[var(--color-noir)]/75",
@@ -45,8 +43,6 @@ export function CarouselArrow({
     </button>
   );
 }
-
-/* ═══════════════════════════════ Dots ═══════════════════════════════ */
 
 const DOT_TONE: Record<CarouselTone, string> = {
   onImage:

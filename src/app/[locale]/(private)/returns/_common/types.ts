@@ -1,6 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   CUSTOMER RETURNS TYPES — mirror the BE `/api/returns` shapes
-   ═══════════════════════════════════════════════════════════ */
+// Mirrors the BE `/api/returns` shapes.
 
 export const RETURN_STATUSES = ["REQUESTED", "APPROVED", "RECEIVED", "REFUNDED", "REJECTED", "CANCELLED"] as const;
 export type ReturnStatus = (typeof RETURN_STATUSES)[number];

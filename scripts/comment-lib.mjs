@@ -1,12 +1,15 @@
 /* Comment length rule (.agent/rules/comments.md). The scanner skips strings and regex literals. */
 
+import { createRequire } from "node:module";
+import { extname, join } from "node:path";
+
 export const MAX_COMMENT_LINES = 3;
 /** JSDoc tag lines (`@param`, `@returns`, …) are type annotations in .mjs files, so they do not count. */
 const TAG_LINE = /^\s*\*?\s*@\w+/;
 const BANNER = /═{5,}/;
 const DIRECTIVE = /^\s*(?:eslint|@ts-|conventions-ignore|quality-ignore)/;
 /** A `/` after one of these starts a regex literal, not a division. */
-const REGEX_PRECEDERS = new Set(["", "(", ",", "=", ":", "[", "!", "&", "|", "?", "{", "}", ";", "+", "-", "*", "%", "<", ">", "~", "^"]);
+const REGEX_PRECEDERS = new Set(["", "(", ",", "=", ":", "[", "!", "&", "|", "?", "{", "}", ";", "+", "-", "*", "%", ">", "~", "^"]);
 
 /** Every comment in `code`: where it starts, where it ends, its text, and whether it is alone on its line(s). */
 function scanComments(code) {
@@ -75,7 +78,7 @@ function scanComments(code) {
         else if (code[i] === "]") inClass = false;
         else if (code[i] === "/" && !inClass) break;
       }
-      i++;
+      if (code[i] === "/") i++; // an unclosed one stops at the line end
       previous = "/";
     } else {
       if (c === "{") braces++;
@@ -138,4 +141,41 @@ export function validateCommentBaseline(offenders, baseline) {
     if (!offenders.includes(file)) problems.push(`${file} no longer has long comments: remove it from scripts/comment-baseline.json`);
   }
   return problems;
+}
+
+const SCRIPT_KINDS = { ".ts": "TS", ".mts": "TS", ".tsx": "TSX", ".mjs": "JS" };
+
+/* `import.meta.url` is not always a file URL under a test runner: fall back to the working directory. */
+function loadTypescript() {
+  try {
+    return createRequire(import.meta.url)("typescript");
+  } catch {
+    return createRequire(join(process.cwd(), "package.json"))("typescript");
+  }
+}
+
+/** True when two versions of a script differ only in comments, spacing or layout: their syntax trees print the same without comments. */
+/** @param {string | null} before @param {string | null} after @param {string} file */
+export function isCommentOnlyChange(before, after, file) {
+  const kind = SCRIPT_KINDS[extname(file)];
+  if (!kind || typeof before !== "string" || typeof after !== "string") return false;
+  const ts = loadTypescript();
+  const printer = ts.createPrinter({ removeComments: true });
+  /* A removed `{/* … *\/}` line leaves a whitespace-only text with a line break, which React never renders. */
+  const insignificant = (child) => ts.isJsxText(child) && child.containsOnlyTriviaWhiteSpaces;
+  const withoutBlankChildren = (context) => (root) => {
+    const visit = (node) => {
+      const next = ts.visitEachChild(node, visit, context);
+      if (ts.isJsxElement(next)) return ts.factory.updateJsxElement(next, next.openingElement, next.children.filter((c) => !insignificant(c)), next.closingElement);
+      if (ts.isJsxFragment(next)) return ts.factory.updateJsxFragment(next, next.openingFragment, next.children.filter((c) => !insignificant(c)), next.closingFragment);
+      return next;
+    };
+    return ts.visitNode(root, visit);
+  };
+  const print = (code) => {
+    const parsed = ts.createSourceFile(file, code, ts.ScriptTarget.Latest, false, ts.ScriptKind[kind]);
+    const { transformed } = ts.transform(parsed, [withoutBlankChildren]);
+    return printer.printFile(transformed[0]);
+  };
+  return print(before) === print(after);
 }

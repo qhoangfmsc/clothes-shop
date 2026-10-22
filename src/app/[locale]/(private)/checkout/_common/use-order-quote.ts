@@ -9,11 +9,8 @@ import type { CartItem } from "@/src/app/[locale]/(private)/cart/_common/types";
 import type { ShippingMethodId } from "@/src/types/shipping";
 import { resolveCartItemIds, type OrderQuote } from "./checkout";
 
-/**
- * The BE's price of the ticked bag lines for one shipping method (`POST /api/orders/quote`: same rules as
- * placing the order, nothing is created). Asked again whenever the method or the lines change, so the
- * fee and total shown always come from the BE.
- */
+/** The BE's price of the ticked lines for one shipping method (`POST /api/orders/quote`, nothing is created); asked again
+ *  when the method or lines change, so the fee and total always come from the BE. */
 export function useOrderQuote(items: CartItem[], shippingMethod: ShippingMethodId, enabled: boolean) {
   const { apiFetch } = useApiAuth();
   const dispatch = useAppDispatch();

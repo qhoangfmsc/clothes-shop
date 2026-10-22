@@ -1,23 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   BASE REDUCER — Common CRUD state & reducers
-
-   Every module slice spreads these into its own createSlice().
-   This keeps loading/error state DRY and consistent across
-   all admin modules.
-
-   Usage in module _common/moduleSlice.ts:
-     import { baseCrudInitialState, baseCrudReducers } from "@/src/store/baseSlice";
-
-     const productsSlice = createSlice({
-       name: "products",
-       initialState: { ...baseCrudInitialState, items: [] },
-       reducers: {
-         ...baseCrudReducers,
-         // module-specific reducers here
-       },
-     });
-   ═══════════════════════════════════════════════════════════ */
-
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 /* ── State ── */

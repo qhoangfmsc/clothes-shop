@@ -44,8 +44,6 @@ import {
 import type { CategoryListResult } from "./_common/types";
 import type { Category } from "@/src/types/category";
 
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -54,8 +52,6 @@ function slugify(text: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function CategoriesContent() {
   const t = useTranslations("admin.categories");
@@ -327,7 +323,6 @@ export default function CategoriesContent() {
         reorder={{ sortValue: CATEGORY_PRIORITY_SORT, onReorder: handleReorder }}
       />
 
-      {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
         <ModalShell title={editingId ? t("form.titleEdit") : t("form.titleCreate")} onClose={closeModal}>
           <FormTabs tabs={CATEGORY_TABS} active={activeTab} onChange={setActiveTab} />

@@ -1,10 +1,5 @@
-/* ═══════════════════════════════════════════════════════════
-   ADMIN EVENTS — "an admin action just succeeded"
-
-   `authApi` calls `notifyAdminMutation()` after every successful write (POST / PUT / PATCH / DELETE) to
-   `/api/admin/…`. Things that depend on the data those writes change (the menu's "work waiting" badges)
-   subscribe here and refresh themselves, so no screen has to remember to do it.
-   ═══════════════════════════════════════════════════════════ */
+/* `authApi` calls `notifyAdminMutation()` after every successful admin write (POST / PUT / PATCH / DELETE to `/api/admin/…`).
+   Things that depend on that data (the menu's "work waiting" badges) subscribe and refresh themselves. */
 
 type Listener = () => void;
 

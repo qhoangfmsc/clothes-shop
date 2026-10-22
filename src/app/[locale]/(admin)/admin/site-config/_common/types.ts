@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   SITE CONFIG MODULE TYPES
-   Co-located with the module — NOT in src/types/.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { SiteConfig, SiteConfigType } from "@/src/types/site-config";
 
 /** A merged row: a key the BE knows about + whatever is currently saved for it (if any). */

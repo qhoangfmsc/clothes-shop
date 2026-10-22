@@ -15,11 +15,8 @@ import {
   type NullableMoneyFields,
 } from "@/src/lib/money";
 
-/**
- * Money formatting bound to the UI language (VND for `vi`, USD otherwise). Every amount on screen goes through
- * here: pass the `Money` pair, or a response object plus the field name (`fmt(order, "total")` reads
- * `totalVnd` / `totalUsd`). Nothing is converted or computed — the BE sends both halves and the UI language picks one.
- */
+/** Money formatting bound to the UI language (VND for `vi`, USD otherwise): pass a `Money` pair, or an object plus the field name
+ *  (`fmt(order, "total")` reads `totalVnd` / `totalUsd`). Nothing is converted: the BE sends both halves and the language picks one. */
 export function useMoney() {
   const locale = useLocale();
 

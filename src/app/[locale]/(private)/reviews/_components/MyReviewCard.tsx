@@ -15,10 +15,8 @@ interface MyReviewCardProps {
   onEdit: (review: AuthorReview) => void;
 }
 
-/**
- * One of the customer's own reviews: the product, the review as the public sees it, and what only the author
- * sees — "hidden by the store" with the reason, and the one allowed edit (`canEdit` / `editableUntil` decide).
- */
+/** One of the customer's own reviews: the public view plus what only the author sees ("hidden by the store" with its reason,
+ *  and the one allowed edit, decided by `canEdit` / `editableUntil`). */
 export default function MyReviewCard({ review, onEdit }: MyReviewCardProps) {
   const t = useTranslations("private.reviews.mine.card");
   const format = useFormatter();

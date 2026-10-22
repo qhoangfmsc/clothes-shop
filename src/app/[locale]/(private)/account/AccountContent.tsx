@@ -40,9 +40,6 @@ interface OrderPreview {
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/* ═══════════════════════════════════════════════
-   Profile Header
-   ═══════════════════════════════════════════════ */
 function ProfileHeader({
   user,
 }: {
@@ -82,9 +79,6 @@ function ProfileHeader({
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Wishlist Section
-   ═══════════════════════════════════════════════ */
 function WishlistSection() {
   const t = useTranslations("private.account.wishlist");
   const tCommon = useTranslations("common");
@@ -197,9 +191,6 @@ function WishlistSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Orders Section — Live Data
-   ═══════════════════════════════════════════════ */
 function OrdersSection() {
   const t = useTranslations("private.account.orders");
   const format = useFormatter();
@@ -363,9 +354,6 @@ function OrdersSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Loading Skeleton
-   ═══════════════════════════════════════════════ */
 function AccountSkeleton() {
   return (
     <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
@@ -384,9 +372,6 @@ function AccountSkeleton() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Main Account Content
-   ═══════════════════════════════════════════════ */
 export default function AccountContent() {
   const { user, isAuthenticated, isLoading } = useAuth();
 

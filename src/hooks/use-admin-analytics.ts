@@ -1,9 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   ADMIN ANALYTICS HOOK — SWR over GET /api/analytics
-
-   The endpoint is a Next.js route handler (same origin), not the backend, so the
-   URL is absolute: `authApi` then adds the bearer token and handles 401 → refresh.
-   ═══════════════════════════════════════════════════════════ */
+// The endpoint is a same-origin route handler, not the BE, so the URL is absolute: `authApi` still adds the bearer token and handles 401 → refresh.
 
 import useSWR from "swr";
 import { authApi } from "@/src/lib/auth-api";

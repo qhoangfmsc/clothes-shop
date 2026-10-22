@@ -41,13 +41,8 @@ function createBurst(): Burst {
   return { id: Date.now() + Math.random(), petals };
 }
 
-/**
- * Replaces the native OS cursor with the hand-illustrated default/pointer/text
- * artwork in /public/cursor. Mounted once near the root layout.
- *
- * No-ops entirely on touch devices (no fine pointer), so the native cursor/tap
- * behaviour is left untouched there.
- */
+/** Replaces the native cursor with the hand-illustrated artwork in /public/cursor; mounted once near the root layout.
+ *  No-op on touch devices (no fine pointer), which keep the native cursor and tap behaviour. */
 export default function CustomCursor() {
   const { isSupported, isVisible, isPressed, variant, x, y } = useCursorTracker();
   const [bursts, setBursts] = useState<Burst[]>([]);

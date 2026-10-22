@@ -36,8 +36,6 @@ const ACTION_BUTTON =
 /** "all" = no status filter */
 type StatusTab = RefundStatus | "all";
 
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
-
 export default function RefundsContent() {
   const t = useTranslations("admin.refunds");
   const tReason = useTranslations("admin.refunds.reason");

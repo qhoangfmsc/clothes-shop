@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   CART MODULE TYPES — CartItem entity
-
-   Part of cart module _common/ — private to the cart feature.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ProductBadge } from "@/src/types/enums";
 
 export interface CartItem {

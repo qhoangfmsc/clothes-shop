@@ -1,13 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   CART MODULE SLICE — Redux Toolkit + localStorage persistence
-
-   Instant local state via reducers, API sync via thunks.
-   Hydration from localStorage on store creation.
-
-   Usage:
-     import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-     import { selectCartItems, addItem, syncAddToCartItem } from "./_common/moduleSlice";
-   ═══════════════════════════════════════════════════════════ */
+// Local state via reducers, API sync via thunks, hydrated from localStorage when the store is created.
 
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";

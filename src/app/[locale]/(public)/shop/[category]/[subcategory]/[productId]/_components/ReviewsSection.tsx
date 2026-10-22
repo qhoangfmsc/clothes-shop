@@ -26,12 +26,8 @@ interface ReviewsSectionProps {
 const MORE_BUTTON_CLASS =
   "mx-auto block min-h-11 rounded-full border border-[var(--border-light)] bg-transparent px-8 py-3 font-primary text-sm font-medium uppercase tracking-[0.04em] text-[var(--text-secondary)] cursor-pointer transition-all duration-150 hover:border-[var(--accent-primary)] hover:bg-[rgba(201,169,110,0.06)] hover:text-[var(--accent-primary)] disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none";
 
-/**
- * Reviews of one product. Folded by default: the summary (average, count, star and fit distribution) is always there,
- * the review list only appears — and is only requested — when the visitor asks for it ("See all", a tap on a star bar,
- * or the rating link under the product name). Opened: filters and sort, the list with "Show more", and the "Helpful" vote.
- * Every number shown is the BE's; nothing is averaged here.
- */
+/** Reviews of one product. Folded by default: the summary is always shown, the list appears (and is requested) only on request.
+ *  Opened: filters, sort, the list with "Show more" and the "Helpful" vote. Every number shown is the BE's. */
 export default function ReviewsSection({ productId }: ReviewsSectionProps) {
   const t = useTranslations("public.product.reviews");
   const toErrorMessage = useErrorMessage();
@@ -69,10 +65,8 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
     void reloadOwn();
   }, [open, reloadList, reloadSummary, reloadOwn]);
 
-  /* "Show fewer" folds the whole list away (back to the summary), forgets the filters, and brings the top of the section into
-     view, so nobody is left mid-list. While the opened list is on screen the button floats at the bottom of the viewport, so it
-     is reachable from anywhere in it.
-     (`position: sticky` cannot do that here: `html` and `body` both hide `overflow-x`, so `body` becomes the scroll container.) */
+  /* "Show fewer" folds the list away, forgets the filters and scrolls the section top into view. While the list is open the button floats
+     at the viewport bottom; `position: sticky` cannot do that because `html` and `body` both hide `overflow-x`, so `body` scrolls. */
   const { collapse } = list;
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [listInView, setListInView] = useState(false);

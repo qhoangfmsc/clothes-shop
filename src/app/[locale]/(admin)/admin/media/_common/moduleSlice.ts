@@ -1,9 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   MEDIA MODULE SLICE — Redux Toolkit + BaseReducer
-
-   Uploads go through the shared `uploadMediaFile` (src/hooks/use-media-upload.ts):
-   product / category / collection forms upload too, so it isn't module-private.
-   ═══════════════════════════════════════════════════════════ */
+// Uploads use the shared `uploadMediaFile` (src/hooks/use-media-upload.ts), so they are not module-private.
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";

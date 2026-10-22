@@ -1,15 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   PRODUCTS MODULE SLICE — Redux Toolkit + BaseReducer
-
-   Usage in component:
-     import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-     import { createProduct, fetchProductList, productsSlice } from "./_common/moduleSlice";
-
-     const dispatch = useAppDispatch();
-     const { isCreating, error } = useAppSelector((s) => s.products);
-     await dispatch(createProduct(body)).unwrap();
-   ═══════════════════════════════════════════════════════════ */
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";

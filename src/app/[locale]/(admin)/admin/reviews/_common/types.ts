@@ -1,7 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   ADMIN REVIEWS — list params
-   The review shapes themselves are shared with the storefront: `src/types/review.ts`.
-   ═══════════════════════════════════════════════════════════ */
+// The review shapes are shared with the storefront: `src/types/review.ts`.
 
 import type { ListParams, ListResult } from "@/src/lib/list-query";
 import type { AdminReview, ReviewFit, ReviewStatus } from "@/src/types/review";

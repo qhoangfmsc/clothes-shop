@@ -212,7 +212,6 @@ export default function DashboardContent() {
         {t("title")}
       </h1>
 
-      {/* ══════ KPI Cards ══════ */}
       <div className="grid grid-cols-[repeat(auto-fill,minmax(13.75rem,1fr))] gap-[var(--space-5)]">
         <KpiCard
           icon={<DollarSign size={20} />}
@@ -261,10 +260,8 @@ export default function DashboardContent() {
         />
       </div>
 
-      {/* ══════ Storefront traffic (Vercel Web Analytics) ══════ */}
       <AnalyticsSummary orders={orders} ordersLoading={loadingOrders} />
 
-      {/* ══════ Bottom Grid ══════ */}
       <div className="grid grid-cols-[2fr_1fr] gap-[var(--space-6)]">
         {/* Recent Orders */}
         <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-[var(--space-5)]">

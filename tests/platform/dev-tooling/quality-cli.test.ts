@@ -50,8 +50,15 @@ describe("GATE-4 a consistent project", () => {
 
   it("--changed accepts a change without a test when the spec's history says why (no-test)", () => {
     project.commitAll();
-    project.write("src/m.ts", "// comment\nexport const m = 1;\n");
-    project.write("specs/g/m.md", SPEC(TODAY).replace("- 2020-01-01 · Viết spec.", "- 2020-01-01 · Viết spec.\n- 2026-10-22 · Sửa comment. no-test: chỉ sửa comment."));
+    project.write("src/m.ts", "export const m = 2;\n");
+    project.write("specs/g/m.md", SPEC(TODAY).replace("- 2020-01-01 · Viết spec.", "- 2020-01-01 · Viết spec.\n- 2026-10-22 · Đổi hằng số. no-test: hành vi không đổi."));
+
+    expect(check("--changed").status).toBe(0);
+  });
+
+  it("--changed asks for no spec and no test when only comments changed", () => {
+    project.commitAll();
+    project.write("src/m.ts", "// why\nexport const m = 1; // note\n");
 
     expect(check("--changed").status).toBe(0);
   });
@@ -171,6 +178,14 @@ describe("GATE-4E specs and plans that are wrong", () => {
 });
 
 describe("GATE-4E a module changed without its spec or tests", () => {
+  it("--changed still asks for the spec when a comment change hides a code change", () => {
+    project.write("src/m.ts", "// old\nexport const m = 1;\n");
+    project.commitAll();
+    project.write("src/m.ts", "// new\nexport const m = 2;\n");
+
+    expect(check("--changed").out).toContain("specs/g/m.md was not updated, but its module changed (src/m.ts)");
+  });
+
   it("names the module and asks for the spec first", () => {
     project.commitAll();
     project.write("src/m.ts", "export const m = 2;\n");

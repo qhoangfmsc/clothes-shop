@@ -23,11 +23,8 @@ const CHIP_IDLE = "border-[var(--border-subtle)] bg-transparent text-[var(--text
 const CHIP_ACTIVE = "border-[var(--accent-primary)] bg-[rgba(201,169,110,0.1)] text-[var(--accent-primary)]";
 const CHIP_EMPTY = "cursor-not-allowed border-[var(--border-subtle)] bg-transparent text-[var(--text-disabled)]";
 
-/**
- * The reviews summary, kept plain: the average with its stars on the left, and on the right one chip per choice —
- * All, 5 … 1 stars, With photos — each with its count from the BE. A chip is the filter itself (stars are exclusive,
- * photos can be added on top); the visitor never has to read a chart. Chips with no reviews are disabled.
- */
+/** Reviews summary: the average with stars, and one chip per choice (All, 5 … 1 stars, With photos) with the BE's count.
+ *  A chip is the filter itself (stars are exclusive, photos stack on top); chips with no reviews are disabled. */
 export default function ReviewSummaryPanel({ summary, filters, onChange, onOpen }: ReviewSummaryPanelProps) {
   const t = useTranslations("public.product.reviews.summary");
   const format = useFormatter();

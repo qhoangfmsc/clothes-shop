@@ -1,11 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   ROUTE TRANSITION — Smooth cream fade between pages
-   
-   Prevents blank flash and image pop-in:
-   - Fade in on link click
-   - Hold until new page content + images start rendering
-   - Fade out smoothly
-   ═══════════════════════════════════════════════════════════ */
+// Fades in on link click and holds until the new page and its images start rendering, so there is no blank flash or image pop-in.
 
 "use client";
 

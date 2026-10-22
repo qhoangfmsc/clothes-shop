@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   MEDIA MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 /** errorCode the BE returns while Supabase Storage isn't configured yet. */
 export const MEDIA_NOT_CONFIGURED_CODE = 1601;
 

@@ -11,8 +11,6 @@ import { fetchSiteConfigKeys, fetchSiteConfigList } from "./_common/moduleSlice"
 import type { SiteConfigRow } from "./_common/types";
 import { CONFIG_TYPE_ORDER, CONFIG_TYPE_VIEWS } from "./_types/registry";
 
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
-
 /** Site config, one tab per config type (banners, shipping & returns…). Each type owns its form and status
  *  line in `_types/<type>/`; this page only lists the keys of the chosen type and opens the right editor. */
 export default function SiteConfigContent() {

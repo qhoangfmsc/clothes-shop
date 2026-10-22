@@ -11,12 +11,8 @@ interface ReviewContentProps {
   className?: string;
 }
 
-/**
- * What a review says, the same on the product page, in "My reviews" and in the admin: stars + date, the
- * verified / edited marks, title, text, size · colour · fit, photos and the store's reply.
- * The caller adds the author line (name, avatar) and any actions around it.
- * The date is `createdAt`: `date` is free text on old sample data and is never parsed.
- */
+/** What a review says, the same on the product page, in "My reviews" and in the admin. The caller adds the author line and actions.
+ *  The date is `createdAt`: `date` is free text on old sample data and is never parsed. */
 export default function ReviewContent({ review, className = "" }: ReviewContentProps) {
   const t = useTranslations("shared.reviews");
   const format = useFormatter();

@@ -56,6 +56,16 @@ describe("GATE-3 a consistent project", () => {
     expect(check("--changed").status).toBe(0);
   });
 
+  it("--changed does not ask for a doc when only comments changed", () => {
+    project.commitAll();
+    project.write("src/m.ts", "// why\nexport const m = 1; // note\n");
+
+    const result = check("--changed");
+
+    expect(result.status).toBe(0);
+    expect(result.out).toContain("no module code changed");
+  });
+
   it("--changed ignores a change that is not code (a message file, a markdown note)", () => {
     project.commitAll();
     project.write("src/messages/vi.json", "{}");
@@ -153,6 +163,14 @@ describe("GATE-3E a module changed without its doc", () => {
 
     expect(result.status).toBe(1);
     expect(result.out).toContain("docs/g/m.md was not updated, but its module changed (src/m.ts)");
+  });
+
+  it("--changed still asks for the doc when a comment change hides a code change", () => {
+    project.write("src/m.ts", "// old\nexport const m = 1;\n");
+    project.commitAll();
+    project.write("src/m.ts", "// new\nexport const m = 2;\n");
+
+    expect(check("--changed").out).toContain("docs/g/m.md was not updated, but its module changed (src/m.ts)");
   });
 
   it("--changed also counts a new, untracked code file", () => {

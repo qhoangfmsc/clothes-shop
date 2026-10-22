@@ -11,10 +11,8 @@ export interface UploadedMedia {
   url: string;
 }
 
-/** Uploads a file to the backend's media endpoint (clothes-shop-api), which
- *  holds the Supabase service role key and returns the file's public URL.
- *  Usable from the Media library page and any catalog form (products/
- *  categories/collections) that wants to upload instead of pasting a URL. */
+/** Uploads a file to the BE media endpoint, which holds the Supabase service role key and returns the public URL.
+ *  Shared by the Media library and any catalog form that uploads instead of pasting a URL. */
 export async function uploadMediaFile(file: File): Promise<UploadedMedia> {
   const token = getAccessToken();
   const formData = new FormData();

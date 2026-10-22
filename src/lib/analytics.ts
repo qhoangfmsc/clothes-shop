@@ -1,20 +1,6 @@
-/* ═══════════════════════════════════════════════════════════
-   ANALYTICS — typed custom events for Vercel Web Analytics
-
-   Page views are collected automatically by <VercelTelemetry />.
-   These events feed the storefront funnel on /admin/analytics:
-   view_product → add_to_cart → begin_checkout → purchase.
-
-   Rules:
-   - Two properties per event at most (the Vercel Pro plan limit).
-   - Never send personal data (name, email, phone, address): ids and totals only.
-   - An amount is sent as ONE property named after its currency (`vnd` or `usd`, see `moneyProp`): the UI language
-     picks the currency and the number is the BE's own field, never converted here.
-
-   Usage:
-     import { moneyProp, trackEvent } from "@/src/lib/analytics";
-     trackEvent("add_to_cart", { productId: product.id, ...moneyProp(moneyOf(product, "price"), locale) });
-   ═══════════════════════════════════════════════════════════ */
+/* Typed custom events for Vercel Web Analytics; they feed the storefront funnel on /admin/analytics. At most two properties per event
+   (Pro plan limit); never personal data, only ids and totals. An amount is ONE property named after its currency (`vnd` / `usd`,
+   see `moneyProp`): the language picks the currency and the number is the BE's own field. */
 
 import { track } from "@vercel/analytics";
 import { currencyForLocale, type Money } from "@/src/lib/money";

@@ -1,9 +1,7 @@
 import type { ProductBadge } from "@/src/types/enums";
 
-/** How a product can be bought, decided by its badge:
- *  - `cart`        → normal product, goes into the bag
- *  - `soldOut`     → `sold_out`, cannot be bought
- *  - `customOrder` → `custom_order`, ordered through the contact page instead of the bag */
+/** How a product can be bought, decided by its badge: `cart` (normal), `soldOut` (`sold_out`, cannot be bought),
+ *  `customOrder` (`custom_order`, ordered through the contact page). */
 export type PurchaseMode = "cart" | "soldOut" | "customOrder";
 
 export function getPurchaseMode(badge: ProductBadge | null | undefined): PurchaseMode {

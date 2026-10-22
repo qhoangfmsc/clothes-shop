@@ -4,7 +4,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf } from "./gate-env.mjs";
+import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf, isCommentOnlyAt } from "./gate-env.mjs";
 import { TEST_FILE, hasWaiver, validateBaseline, validateCriticalFlows, validateSpec } from "./quality-lib.mjs";
 import { validateBatches } from "./progress-lib.mjs";
 
@@ -98,7 +98,7 @@ if (args.includes("--changed")) {
   const touched = new Map(); // doc → files
   for (const file of changed) {
     const isCode = CODE_EXT.test(file) && (CODE_ROOTS.some((r) => file.startsWith(`${r}/`)) || CODE_FILES.includes(file));
-    if (!isCode || IGNORED.some((re) => re.test(file))) continue;
+    if (!isCode || IGNORED.some((re) => re.test(file)) || isCommentOnlyAt(file, base)) continue;
     const doc = ownerOf(file);
     if (doc) touched.set(doc, [...(touched.get(doc) ?? []), file]);
   }

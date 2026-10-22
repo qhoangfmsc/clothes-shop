@@ -1,7 +1,5 @@
-/** Same-origin proxy for Supabase Storage objects: `/media/<key>` streams
- *  `<MEDIA_STORAGE_ORIGIN>/<key>`. Unlike a `rewrites()` entry it sends only
- *  an allow-list of headers, so upstream ones (e.g. `sb-project-ref`) never
- *  reach the browser. */
+/** Same-origin proxy for Supabase Storage objects: `/media/<key>` streams `<MEDIA_STORAGE_ORIGIN>/<key>`. Unlike a `rewrites()`
+ *  entry it sends only an allow-list of headers, so upstream ones (e.g. `sb-project-ref`) never reach the browser. */
 
 const MEDIA_STORAGE_ORIGIN = process.env.MEDIA_STORAGE_ORIGIN?.replace(/\/+$/, "");
 

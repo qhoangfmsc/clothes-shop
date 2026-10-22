@@ -1,6 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   CUSTOMER REVIEWS — limits and options (mirror the BE rules)
-   ═══════════════════════════════════════════════════════════ */
+// Mirrors the BE review rules.
 
 /** Largest photo the BE accepts (`413` above it) */
 export const REVIEW_IMAGE_MAX_MB = 5;

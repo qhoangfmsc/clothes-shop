@@ -1,12 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   SWR HOOKS — Client-side data fetching with caching
-
-   Calls real BE API at NEXT_PUBLIC_API_URL.
-   Uses SWR's staleWhileRevalidate pattern.
-
-   Phase 1: Updated to match BE Public API (search, pagination, filter).
-   ═══════════════════════════════════════════════════════════ */
-
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import type { Product, ProductSummary } from "@/src/types/product";
@@ -214,10 +205,8 @@ export function useShippingMethodName() {
   );
 }
 
-/* ═══ Site Config (banners) ═══
-   Decorative/replaceable content — a failed or missing config never
-   surfaces as isError to the caller; it just resolves to an empty
-   banners array so the component falls back to its own default. */
+/* Decorative content: a failed or missing config never surfaces as isError; it resolves to an empty banners array
+   so the component falls back to its own default. */
 export function useBannerConfig(key: string) {
   const { data, isLoading } = useSWR<{ data: SiteConfig | null }>(
     `${API_URL}/api/site-config?key=${key}`,
@@ -341,12 +330,8 @@ export function useAutocomplete(limit: number) {
   return { query, results, isLoading, search, clear };
 }
 
-/**
- * Resolve a product's real detail-page URL (`/shop/{category}/{subcategory}/{id}`).
- * Autocomplete results only carry id/name/slug/priceVnd/priceUsd/image — not enough to build
- * the URL — so this looks the product up by id first. Used on click, not render,
- * so it's a plain fetch rather than a hook.
- */
+/** Resolves a product's detail-page URL (`/shop/{category}/{subcategory}/{id}`). Autocomplete results lack the slugs, so this looks
+ *  the product up by id first. Used on click, not render, so it is a plain fetch rather than a hook. */
 export async function getProductUrl(id: string): Promise<string | null> {
   try {
     const res = await fetch(`${API_URL}/api/products/${id}`);
@@ -359,11 +344,8 @@ export async function getProductUrl(id: string): Promise<string | null> {
   }
 }
 
-/**
- * Link props for a product kept as an id plus its category / sub-category slugs (cart line, wishlist item). The
- * slugs come from the BE's `product.category` / `product.subcategory`; items saved in `localStorage` before the BE
- * sent them have none: then `href` is `/shop` and a click looks the real URL up (`getProductUrl`) before navigating.
- */
+/** Link props for a product kept as an id plus category / sub-category slugs (cart line, wishlist item). Items saved before the BE sent
+ *  the slugs have none: `href` is then `/shop` and a click looks the real URL up (`getProductUrl`) before navigating. */
 export function useProductLink() {
   const router = useRouter();
   return useCallback(

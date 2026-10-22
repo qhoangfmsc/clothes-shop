@@ -42,8 +42,6 @@ import {
 } from "@/src/types/enums";
 import type { OrderListResult } from "./_common/types";
 
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
 function statusStyle(s: string): string {
   const m: Record<string, string> = {
     pending: "bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]",
@@ -55,8 +53,6 @@ function statusStyle(s: string): string {
   };
   return m[s] ?? "bg-[rgba(107,101,96,0.05)] text-[var(--text-muted)]";
 }
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function OrdersContent() {
   const t = useTranslations("admin.orders");
@@ -399,7 +395,6 @@ export default function OrdersContent() {
         }}
       />
 
-      {/* ═══════════════ DETAIL / ERROR PANEL ═══════════════ */}
       {(detailOrder || detailError) && (
         <div
           className="fixed inset-0 bg-[rgba(10,10,8,0.5)] flex items-center justify-center z-100 p-3 sm:p-6"

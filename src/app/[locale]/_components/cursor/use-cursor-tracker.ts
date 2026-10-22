@@ -25,10 +25,7 @@ function resolveVariant(target: EventTarget | null): CursorVariant | "native" {
   return "default";
 }
 
-/**
- * Tracks the pointer as framer-motion values (no React re-render per mousemove) plus the
- * derived cursor variant/visibility/pressed state, which only change on meaningful events.
- */
+/** Tracks the pointer as framer-motion values (no re-render per mousemove) plus the derived variant, visibility and pressed state. */
 export function useCursorTracker() {
   const [state, setState] = useState<CursorTrackerState>({
     isSupported: false,

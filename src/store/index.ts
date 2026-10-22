@@ -1,16 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   REDUX STORE — Centralized configureStore
-
-   Imports slice reducers from each module's _common/moduleSlice.ts
-   and from the shared client slices (cart, wishlist).
-
-   Persistence: cart items and wishlist items are saved to
-   localStorage on every change.
-
-   Usage:
-     // Wrap app in StoreProvider (src/store/StoreProvider.tsx)
-     // In components: import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-   ═══════════════════════════════════════════════════════════ */
+// Persistence: cart and wishlist items are saved to localStorage on every change.
 
 import { configureStore } from "@reduxjs/toolkit";
 import { productsReducer } from "@/src/app/[locale]/(admin)/admin/products/_common/moduleSlice";

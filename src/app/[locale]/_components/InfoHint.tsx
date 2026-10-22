@@ -3,11 +3,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Info } from "lucide-react";
 
-/* ═══════════════════════════════ Info hint ═══════════════════════════════
-   Small "i" icon that reveals a short explanation, so forms stay simple to read
-   without long inline captions under every field. Mouse: hover. Keyboard: focus.
-   Touch: tap to open, tap anywhere else to close. The bubble is nudged so it never
-   leaves the screen, whatever the field's position. */
+/* Small "i" icon that reveals a short explanation so forms stay readable. Mouse: hover. Keyboard: focus. Touch: tap to open,
+   tap elsewhere to close. The bubble is nudged so it never leaves the screen. */
 
 const HINT_EDGE_PX = 8;
 

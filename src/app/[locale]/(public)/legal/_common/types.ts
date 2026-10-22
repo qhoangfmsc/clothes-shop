@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   LEGAL MODULE TYPES — a document read from the message files
-
-   Part of legal module _common/ — private to the legal pages.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { LegalDocKey } from "@/src/lib/legal";
 
 export type LegalBlock =

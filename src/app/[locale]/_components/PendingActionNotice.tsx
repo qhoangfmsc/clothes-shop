@@ -29,11 +29,8 @@ interface PendingActionNoticeProps {
   extra?: ReactNode;
 }
 
-/**
- * "Work waiting" box at the top of an admin page: the number, what it counts, how to deal with it, and one
- * button that filters the list to exactly those rows. Soft gold, not an alarm: it is a to-do, not an error.
- * Hidden at zero; with `keepWhenDone`, while the filter is on and everything got done it shrinks to a one-line "all done".
- */
+/** "Work waiting" box at the top of an admin page: the number, what it counts, how to deal with it, and a button that filters the list
+ *  to those rows. Soft gold (a to-do, not an error); hidden at zero, or with `keepWhenDone` shrinks to a one-line "all done". */
 export default function PendingActionNotice({
   count,
   title,

@@ -10,10 +10,7 @@ import { inputClass } from "./AdminFormKit";
 import { ImagePreviewLightbox } from "./ImagePreviewLightbox";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 
-/** A single image-URL input that also accepts a direct upload — the
- *  upload goes to the Supabase Storage bucket and fills the field with
- *  the resulting public URL. Used by Categories (hero image) and
- *  Collections (cover image). */
+/** Single image-URL input that also accepts an upload to the Supabase Storage bucket and fills the field with the public URL. */
 export function ImageUrlField({
   value,
   onChange,

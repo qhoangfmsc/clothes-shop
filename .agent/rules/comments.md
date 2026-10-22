@@ -13,4 +13,4 @@ trigger: always_on
 7. A single-line divider `/* ── Name ── */` is fine in a long file; no ornaments around it.
 8. English. Change or delete a comment in the same edit that makes it wrong.
 
-Enforced by `yarn conventions:check` (rule `comment-length`: a block over 3 lines, more than 3 `//` lines in a row, or a `═` banner). Files that still break it are listed in `scripts/comment-baseline.json`; trimming a file means removing it from that list, and a file may never be added. Comments in code you write or change follow this rule; shorten the long ones you touch.
+Enforced by `yarn conventions:check` (rule `comment-length`: a block over 3 lines, more than 3 `//` lines in a row, or a `═` banner). `scripts/comment-baseline.json` is empty and a file may never be added to it. Comments in code you write or change follow this rule; shorten the long ones you touch.

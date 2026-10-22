@@ -5,10 +5,8 @@ import { usePathname, useRouter } from "@/src/i18n/navigation";
 import { useSystemPasswordPrompt } from "./SystemPasswordPrompt";
 import { isSystemUnlocked } from "@/src/lib/system-password-session";
 
-/** Gates the whole admin area behind the shared system password prompt.
- *  A correct entry stays valid for 15 minutes (see system-password-session.ts);
- *  re-checked on every admin route change, so an expired session is caught
- *  on the next navigation within /admin. */
+/** Gates the whole admin area behind the shared system password prompt. A correct entry stays valid 15 minutes
+ *  (system-password-session.ts) and is re-checked on every admin route change. */
 export function AdminPasswordGate({ children }: { children: ReactNode }) {
   const requestPassword = useSystemPasswordPrompt();
   const router = useRouter();

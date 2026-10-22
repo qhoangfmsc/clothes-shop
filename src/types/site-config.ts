@@ -67,10 +67,8 @@ export interface BannerItem {
   ctaHref?: string;
 }
 
-/** Metadata for the admin UI — order to render breakpoint fields in (mobile
- *  first, ascending by viewport width — this order also drives the
- *  mobile-first CSS tiering in ResponsiveBannerImage), with human-readable
- *  labels and the viewport range each tier covers. */
+/** Admin UI metadata: the order to render breakpoint fields in (mobile first, ascending width; it also drives the tiering in
+ *  ResponsiveBannerImage) with labels and the viewport range each tier covers. */
 export const BANNER_BREAKPOINTS: { key: BannerBreakpoint; label: string; hint: string }[] = [
   { key: "mobile", label: "Mobile", hint: "Phones, < 640px" },
   { key: "tablet", label: "Tablet", hint: "iPad / tablets, ≥ 640px" },

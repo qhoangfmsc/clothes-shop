@@ -16,10 +16,8 @@ interface ReviewImageViewerProps {
   onClose: () => void;
 }
 
-/**
- * Full-screen viewer for the photos of one review (yet-another-react-lightbox: pinch / double-tap / wheel zoom,
- * swipe or arrows between photos). Loaded on demand by `ReviewImageGrid` so the library stays out of the page bundle.
- */
+/** Full-screen viewer for the photos of one review (yet-another-react-lightbox); loaded on demand by `ReviewImageGrid`
+ *  so the library stays out of the page bundle. */
 export default function ReviewImageViewer({ images, index, open, onView, onClose }: ReviewImageViewerProps) {
   const t = useTranslations("shared.reviews");
   const slides = useMemo(

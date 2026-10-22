@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   COLLECTIONS MODULE TYPES
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Collection } from "@/src/types/collection";
 
 import type { ListParams } from "@/src/lib/list-query";

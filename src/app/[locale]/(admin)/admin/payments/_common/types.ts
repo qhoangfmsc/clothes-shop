@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   PAYMENTS MODULE TYPES — bank-transfer reconciliation (admin)
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ListParams } from "@/src/lib/list-query";
 import type { OrderPaymentStatus } from "@/src/types/enums";
 

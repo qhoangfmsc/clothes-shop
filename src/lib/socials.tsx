@@ -1,13 +1,8 @@
 import type { ReactNode } from "react";
 import { buildMailto } from "@/src/lib/contact";
 
-/* ═══════════════════════════════════════════════════════════
-   SOCIAL LINKS — the one place to edit the brand's profiles
-
-   Shown as icons only (site footer + burger menu). `label` is the
-   brand name (read by screen readers), so it is never translated.
-   To add a network: add an icon below and one entry to SOCIALS.
-   ═══════════════════════════════════════════════════════════ */
+/* The one place to edit the brand's profiles, shown as icons (footer + burger menu). `label` is the brand name read by screen readers,
+   so it is never translated. To add a network: add an icon below and one entry to SOCIALS. */
 
 interface IconProps {
   size?: number;

@@ -1,14 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   API CLIENT — Public (no auth)
-
-   Simple fetch wrapper for public endpoints.
-   Callable from any component, page, or store without auth concerns.
-
-   Usage:
-     import { api } from "@/src/lib/api";
-     const data = await api.get("/api/products");
-     await api.post("/api/contact", { name, email });
-   ═══════════════════════════════════════════════════════════ */
+// Public fetch wrapper: no auth, callable from any component, page or store.
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 

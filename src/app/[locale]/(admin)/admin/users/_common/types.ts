@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   USERS MODULE TYPES
-   ═══════════════════════════════════════════════════════════ */
-
 import type { AdminUser } from "@/src/hooks/use-admin-api";
 import type { ListParams } from "@/src/lib/list-query";
 import type { UserRole, UserStatus } from "@/src/types/enums";

@@ -5,19 +5,8 @@ import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
-   IMAGE PREVIEW LIGHTBOX — shared full-screen image review
-
-   Portaled to <body> so it isn't clipped by whatever modal or
-   scroll container it's opened from. Callers supply the actual
-   image element as `children` (a plain <img> pointed at a public
-   URL) — this component only owns the overlay chrome.
-
-   Usage:
-     <ImagePreviewLightbox open={open} onClose={() => setOpen(false)} caption="...">
-       <img src={url} alt="" className="max-w-[90vw] max-h-[85vh] object-contain rounded-md" />
-     </ImagePreviewLightbox>
-   ═══════════════════════════════════════════════════════════ */
+/* Portaled to <body> so it is not clipped by the modal or scroll container it is opened from. Callers pass the image as `children`;
+   this component only owns the overlay chrome. */
 
 export function ImagePreviewLightbox({
   open,

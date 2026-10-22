@@ -37,8 +37,6 @@ interface OrderDetailPanelProps {
   notice?: ReactNode;
 }
 
-/* ═══════════════════════════════ Component ═══════════════════════════════ */
-
 export default function OrderDetailPanel({ order, loading, onClose, paymentTab, notice }: OrderDetailPanelProps) {
   const t = useTranslations("admin.components.orderDetailPanel");
   const format = useFormatter();

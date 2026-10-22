@@ -61,10 +61,8 @@ export interface Product {
   updatedAt: string;
 }
 
-/**
- * The short product the BE nests in autocomplete results and reviews (`ProductSummary`): enough to identify a
- * product and build its link. Every key is always present; `image`, `badge`, `category` and `subcategory` can be `null`.
- */
+/** The short product the BE nests in autocomplete results and reviews (`ProductSummary`): enough to identify it and build its link.
+ *  `image`, `badge`, `category` and `subcategory` can be `null`; the other keys are always present. */
 export interface ProductSummary {
   id: string;
   name: string;

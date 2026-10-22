@@ -7,10 +7,7 @@ import { SERVICES } from "../_common/constants";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/**
- * Card backgrounds — diverse tinted creams from the palette,
- * each matching a different color family for visual richness.
- */
+/** Tinted cream card backgrounds from the palette, one colour family each. */
 const CARD_STYLES = [
   {
     bg: "var(--color-rose-milk)",

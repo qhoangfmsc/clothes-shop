@@ -32,8 +32,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { useDebounce } from "@/src/hooks/use-debounce";
 import { LIST_DEFAULT_LIMIT, clampLimit } from "@/src/lib/list-query";
 
-/* ═══════════════════════════════════ Types ═══════════════════════════════════ */
-
 export interface DataTableColumn<T> {
   key: string;
   header: string;
@@ -140,8 +138,6 @@ export interface DataTableProps<T> {
   tableRef?: React.RefObject<DataTableRef | null>;
 }
 
-/* ═══════════════════════════════ Defaults ═══════════════════════════════════ */
-
 const DEBOUNCE_MS = 350;
 
 function defaultKeyExtractor<T extends { id?: string | number }>(row: T): string {
@@ -168,14 +164,10 @@ function getPageRange(current: number, total: number): (number | "...")[] {
   return range;
 }
 
-/* ═══════════════════════════════ Styles ═════════════════════════════════════ */
-
 const inputClass =
   "py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none";
 const selectClass =
   "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[8.125rem] h-9 pointer-coarse:h-11 pointer-coarse:text-base";
-
-/* ═══════════════════════════════ Sortable row ═══════════════════════════════ */
 
 interface SortableRowProps {
   id: string;
@@ -225,8 +217,6 @@ function SortableRow({ id, className, disabled, handleLabel, children }: Sortabl
     </tr>
   );
 }
-
-/* ═══════════════════════════════ Component ══════════════════════════════════ */
 
 function DataTableInner<T extends { id?: string | number }>(
   props: DataTableProps<T>,
@@ -767,8 +757,6 @@ function DataTableInner<T extends { id?: string | number }>(
     </div>
   );
 }
-
-/* ═══════════════════════════════ Forward Ref ════════════════════════════════ */
 
 export const DataTable = forwardRef(DataTableInner) as <T extends { id?: string | number }>(
   props: DataTableProps<T> & { ref?: React.Ref<DataTableRef> }

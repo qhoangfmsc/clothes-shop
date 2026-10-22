@@ -27,14 +27,6 @@ import { isPurchasable } from "@/src/lib/product-purchase";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import { productPath } from "@/src/lib/product-url";
 
-/* ═══════════════════════════════════════════════════════════
-   QUICK ADD DRAWER — Bottom sheet for quick product add
-   
-   Usage:
-     const { openQuickAdd } = useQuickAdd();
-     openQuickAdd(product);
-   ═══════════════════════════════════════════════════════════ */
-
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
 /* ── Context ── */

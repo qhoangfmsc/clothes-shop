@@ -1,15 +1,6 @@
-/* ═══════════════════════════════════════════════════════════
-   LIST QUERY — the one contract every BE list endpoint shares
-
-   Query:    ?search=&sort=&page=&limit=   (+ module filters)
-   Sort:     `field` = ascending, `-field` = descending, ONE field.
-             Never send old styles (`newest`, `price_asc`, `sorts=`) — the BE answers 400.
-   Limit:    25 by default, 200 at most (BE rejects more with 400).
-   Response: { data, total, page, limit, totalPages }
-
-   Every list thunk / SWR hook builds its URL with `buildListQuery`, so the rules
-   live in one place. See .agent/skills/05-list-pages.md.
-   ═══════════════════════════════════════════════════════════ */
+/* The one contract every BE list endpoint shares: `?search=&sort=&page=&limit=` (+ filters). Sort is ONE `field` (asc) or `-field` (desc),
+   never old styles (`newest`, `price_asc`, `sorts=`: the BE answers 400); limit is 25 by default, 200 at most.
+   Every list thunk / SWR hook builds its URL with `buildListQuery`. See .agent/skills/05-list-pages.md. */
 
 /** Records per page unless a screen has a reason to ask for more. */
 export const LIST_DEFAULT_LIMIT = 25;
@@ -43,11 +34,8 @@ export function clampLimit(limit: number | undefined): number {
 
 type FilterValue = string | number | boolean | null | undefined;
 
-/**
- * Query string (no leading `?`) for a list endpoint. Empty / undefined values are dropped,
- * `page` is omitted on page 1, and `limit` is clamped to the BE maximum.
- * Module filters go in `filters` (e.g. `{ status, category }`).
- */
+/** Query string (no leading `?`) for a list endpoint: empty values are dropped, `page` is omitted on page 1 and `limit` is clamped
+ *  to the BE maximum. Module filters go in `filters`. */
 export function buildListQuery(params: ListParams, filters: Record<string, FilterValue> = {}): string {
   const qs = new URLSearchParams();
   if (params.search) qs.set("search", params.search);

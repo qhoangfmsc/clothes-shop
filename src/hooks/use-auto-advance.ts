@@ -11,13 +11,9 @@ interface UseAutoAdvanceOptions {
   pauseOnHover?: boolean;
 }
 
-/**
- * Calls `onAdvance` every `intervalMs` — shared by every auto-playing slider (Carousel, banner rotators).
- * It stays idle while the element is off-screen, the tab is hidden, the visitor prefers reduced
- * motion, focus is inside, a mouse hovers it, or they touched / scrolled it a moment ago.
- *
- * Returns `pause()`: call it after a manual interaction (arrow, dot) to hold auto-advance briefly.
- */
+/** Calls `onAdvance` every `intervalMs`, shared by every auto-playing slider. Idle while the element is off-screen, the tab is hidden,
+ *  reduced motion is preferred, focus is inside, a mouse hovers it, or it was touched or scrolled a moment ago.
+ *  Returns `pause()` to hold auto-advance briefly after a manual interaction. */
 export function useAutoAdvance<T extends HTMLElement>(
   ref: RefObject<T | null>,
   { enabled, intervalMs, onAdvance, pauseOnHover = true }: UseAutoAdvanceOptions

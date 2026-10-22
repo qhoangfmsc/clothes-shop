@@ -11,10 +11,7 @@ interface StarPickerProps {
   invalid?: boolean;
 }
 
-/**
- * 1–5 star choice built on radio inputs, so arrow keys, focus and screen readers work for free.
- * Each star is a 44 px target; the mouse previews the star under the pointer, touch just taps.
- */
+/** 1–5 star choice on radio inputs, so arrow keys, focus and screen readers work for free; each star is a 44 px target. */
 export default function StarPicker({ value, onChange, invalid = false }: StarPickerProps) {
   const t = useTranslations("shared.reviews.form.rating");
   const [hover, setHover] = useState(0);

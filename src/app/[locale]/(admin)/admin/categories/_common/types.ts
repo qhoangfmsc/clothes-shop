@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   CATEGORIES MODULE TYPES
-   Co-located with the module — NOT in src/types/.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Category } from "@/src/types/category";
 
 import type { ListParams } from "@/src/lib/list-query";
