@@ -28,7 +28,7 @@ Giỏ hàng là nơi tiền và tồn kho gặp nhau: dòng sai số lượng, t
 
 **Nạp khi khởi tạo.** Slice đọc `doovan-cart` (chấp nhận `{state:{items}}` và `{items}`), bỏ dòng không có `priceVnd` kiểu số, và `doovan-cart-selection` (chỉ giữ chuỗi). JSON hỏng hoặc không có `window` → rỗng.
 
-**Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu, **không refresh khi 401**): `fetchCart` `GET /api/cart`; `syncAddToCartItem` `POST /api/cart/items`; `syncUpdateCartItemQuantity` `PATCH /api/cart/items/:id` `{quantity}`; `syncRemoveCartItem` `DELETE /api/cart/items/:id`; `clearCartOnServer` `DELETE /api/cart/clear`. Ba lệnh ghi đều trả cả giỏ.
+**Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu; 401 → refresh một lần rồi thử lại, refresh thất bại thì hết phiên): `fetchCart` `GET /api/cart`; `syncAddToCartItem` `POST /api/cart/items`; `syncUpdateCartItemQuantity` `PATCH /api/cart/items/:id` `{quantity}`; `syncRemoveCartItem` `DELETE /api/cart/items/:id`; `clearCartOnServer` `DELETE /api/cart/clear`. Ba lệnh ghi đều trả cả giỏ.
 - `fetchCart`: pending → `isSyncing`; fulfilled → `items` = giỏ BE + các dòng đang chờ thêm (`pendingAddKeys`) chưa có trên BE, dọn `deselectedKeys`; rejected → `isSyncing = false`, giữ nguyên dòng.
 - Map dòng BE: `colorHex` tra theo tên màu (không thấy thì dùng chính tên màu), `category/subcategory` lấy `slug`, `name` rỗng và giá 0 nếu thiếu `product`, `lineTotal*` `null` nếu BE không gửi.
 - `syncAdd`: pending thêm khóa vào `pendingAddKeys` và `pendingSync++`; fulfilled/rejected bỏ khóa và `pendingSync--`; fulfilled gán `serverItemId` bằng cách tìm theo khóa trong giỏ trả về (vì `data.id` là id giỏ). Thất bại **không** gỡ dòng ở máy.
@@ -73,7 +73,7 @@ Hướng phụ thuộc: component → slice → `apiFetchStandalone` → `sessio
 
 ### Kiến trúc
 
-State thuộc loại **client state được lưu** (Redux + `localStorage`) cộng **server state** (giỏ trên BE, nguồn sự thật khi tải). Thunk dùng `apiFetchStandalone` (không refresh token) vì chạy ngoài React; quyết định này thuộc [data-layer](../platform/data-layer.md)/[auth](../platform/auth.md). Slice nằm trong `_common/` của module (module-first).
+State thuộc loại **client state được lưu** (Redux + `localStorage`) cộng **server state** (giỏ trên BE, nguồn sự thật khi tải). Thunk dùng `apiFetchStandalone` (có refresh token) vì chạy ngoài React; quyết định này thuộc [data-layer](../platform/data-layer.md)/[auth](../platform/auth.md). Slice nằm trong `_common/` của module (module-first).
 
 ### SOLID
 
@@ -103,7 +103,7 @@ Chữ giao diện nằm ở `private.cart` và `shared.cart.quickAdd` (i18n); ti
 | CART-4 | Nạp lại giỏ và danh sách bỏ tick từ `localStorage` (hai dạng cũ/mới) khi khởi tạo | đúng | — | unit | `tests/storefront/cart/cart-slice.test.ts` |
 | CART-4E | Dữ liệu cũ không có giá VND, JSON hỏng, kiểu sai thì bỏ hoặc rỗng, không lỗi | lỗi | — | unit | `tests/storefront/cart/cart-slice.test.ts` |
 | CART-5 | `fetchCart` thay giỏ bằng giỏ BE (map dòng, màu, slug), giữ dòng đang chờ thêm, dọn bỏ tick, cờ `isSyncing` | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
-| CART-5E | `fetchCart` lỗi (401, 500, mạng) giữ nguyên giỏ ở máy và tắt cờ `isSyncing`; không refresh token | lỗi | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
+| CART-5E | `fetchCart` lỗi (401, 500, mạng) giữ nguyên giỏ ở máy và tắt cờ `isSyncing`; 401 thì refresh một lần rồi thử lại, refresh thất bại thì hết phiên | lỗi | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-6 | `syncAdd`: gán `serverItemId` theo khóa dòng, đếm lệnh chờ, lấy giá và thành tiền của BE khi hết lệnh chờ | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-6E | `syncAdd` lỗi để dòng ở lại máy và trả lại bộ đếm; hai lệnh chạy chồng chỉ nhận giá khi cả hai xong; thành tiền bỏ khi số lượng lệch | lỗi | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
 | CART-7 | `syncUpdateQuantity`, `syncRemove`, `clearCartOnServer` gọi đúng endpoint, kèm Bearer, và áp giá BE | đúng | user | integration | `tests/storefront/cart/cart-thunks.test.ts` |
@@ -137,7 +137,6 @@ Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T0: tiền v�
 |---|---|---|
 | Đổi số lượng hoặc xóa một dòng **trước khi** BE trả lời lệnh thêm: dòng chưa có `serverItemId` nên không gọi BE; `fetchCart` lần sau lấy lại số lượng/dòng cũ của BE | Test CART-13E, CART-14E khóa hành vi hiện tại | Chủ dự án quyết định: xếp hàng lệnh theo khóa dòng hoặc khóa nút khi `pendingAddKeys` có khóa đó |
 | `syncAdd` lỗi (hết hạn phiên 401, 500) để dòng ở máy mà BE không có; người dùng thấy dòng như đã thêm | Test CART-6E, CART-18E | Hiện toast lỗi và gỡ dòng, hoặc thử lại sau khi refresh token |
-| Thunk dùng `apiFetchStandalone` không refresh khi 401 | Test CART-5E | Quyết định chung với [auth](../platform/auth.md) (đã ghi ở lộ trình) |
 | Báo giá `subtotal` lỗi chỉ hiện "…", không báo lỗi | Test CART-16E | Hiện thông báo và nút thử lại |
 | Hẹn giờ 500 ms (số lượng) và 800 ms (đóng ngăn kéo) không bị hủy khi component bị gỡ | Đọc code | Dọn trong cleanup của effect |
 | `CartContent` (570 dòng) gánh danh sách, chọn, yêu thích, thanh toán; import slice của module khác | Đọc code | Tách dòng giỏ và thanh chọn sau khi có test (phần "component quá lớn") |

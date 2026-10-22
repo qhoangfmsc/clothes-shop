@@ -38,10 +38,10 @@ export class ApiError extends Error {
   }
 }
 
-/** Turns a failed BE response into an `ApiError`: its `message` and `errorCode`, or `API error: <status>` when the body has none. */
+/** Turns a failed BE response into an `ApiError`: its `message` and `errorCode`; the message is empty when the body has none, so the screen shows its own words. */
 export async function toApiError(res: Response): Promise<ApiError> {
   const body = await res.json().catch(() => ({}));
-  return new ApiError(body.message || `API error: ${res.status}`, res.status, body.errorCode);
+  return new ApiError(body.message || "", res.status, body.errorCode);
 }
 
 export const api = {

@@ -26,7 +26,7 @@ Wishlist là danh sách sản phẩm khách "thả tim" từ thẻ sản phẩm,
 
 **Nạp khi khởi tạo.** Đọc `doovan-wishlist` (chấp nhận `{state:{items}}` và `{items}`), bỏ mục không có `priceVnd` kiểu số; JSON hỏng, không phải mảng hoặc không có `window` → rỗng.
 
-**Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu, không refresh khi 401): `syncAddToWishlist(productId)` `POST /api/wishlist/:productId`; `syncRemoveFromWishlist(productId)` `DELETE /api/wishlist/:productId`; `fetchWishlist` `GET /api/wishlist`. Hai thunk ghi không đổi state (cả khi lỗi). `fetchWishlist`: pending → `isSyncing`; fulfilled → **thay toàn bộ** `items` bằng bản BE (map: `name` rỗng và giá 0 nếu thiếu `product`, ảnh đầu tiên, `badge` hoặc `null`, `category/subcategory` lấy `slug` hoặc rỗng, `addedAt` = `createdAt` hoặc lúc nhận nếu thiếu; `data` thiếu → danh sách rỗng); rejected → `isSyncing = false`, giữ nguyên danh sách.
+**Thunk** (`apiFetchStandalone`: Bearer từ token đã lưu; 401 → refresh một lần rồi thử lại): `syncAddToWishlist(productId)` `POST /api/wishlist/:productId`; `syncRemoveFromWishlist(productId)` `DELETE /api/wishlist/:productId`; `fetchWishlist` `GET /api/wishlist`. Hai thunk ghi không đổi state (cả khi lỗi). `fetchWishlist`: pending → `isSyncing`; fulfilled → **thay toàn bộ** `items` bằng bản BE (map: `name` rỗng và giá 0 nếu thiếu `product`, ảnh đầu tiên, `badge` hoặc `null`, `category/subcategory` lấy `slug` hoặc rỗng, `addedAt` = `createdAt` hoặc lúc nhận nếu thiếu; `data` thiếu → danh sách rỗng); rejected → `isSyncing = false`, giữ nguyên danh sách.
 
 **Trang `WishlistContent`.** Đang tải phiên → khung chờ; chưa đăng nhập → `UnauthenticatedState` và **không gọi BE**; đã đăng nhập → `fetchWishlist()` một lần khi mở. Có mục: tiêu đề, số mục, nút "Xóa tất cả", lưới thẻ **mới nhất trước**, link "Tiếp tục mua sắm". Trống: thông báo, nút tới `/shop`, ba dòng mô tả.
 - Thẻ: ảnh và tên là link tới `/shop/<category>/<subcategory>/<productId>` (thiếu slug → `/shop`, bấm thì tra `GET /api/products/:id` rồi chuyển trang, không tra được thì về `/shop`), giá theo ngôn ngữ (`custom_order` hiện "giá theo yêu cầu"), ngày thêm theo định dạng `short` và múi giờ của site, nút xóa.
@@ -84,7 +84,7 @@ Chữ giao diện ở `private.wishlist` (i18n); tiền qua `useMoney`; toast qu
 | WL-2 | Nạp lại danh sách từ `localStorage` (hai dạng cũ/mới) khi khởi tạo | đúng | — | unit | `tests/storefront/wishlist/wishlist-slice.test.ts` |
 | WL-2E | Mục cũ không có giá VND, JSON hỏng, kiểu sai thì bỏ hoặc rỗng, không lỗi | lỗi | — | unit | `tests/storefront/wishlist/wishlist-slice.test.ts` |
 | WL-3 | `fetchWishlist` thay danh sách bằng bản BE (map sản phẩm, slug, ảnh, badge, ngày), cờ `isSyncing`, kèm Bearer | đúng | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
-| WL-3E | `fetchWishlist` lỗi (401, 500, mạng) giữ danh sách và tắt cờ, không refresh token; dữ liệu thiếu trường vẫn map được | lỗi | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
+| WL-3E | `fetchWishlist` lỗi (401, 500, mạng) giữ danh sách và tắt cờ; 401 thì refresh một lần rồi thử lại; dữ liệu thiếu trường vẫn map được | lỗi | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
 | WL-4 | `syncAdd` và `syncRemove` gọi đúng `POST`/`DELETE /api/wishlist/:id` kèm Bearer và không đổi state | đúng | user | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
 | WL-4E | `syncAdd`/`syncRemove` bị BE từ chối (401, 500) hoặc không có token: kết quả `rejected`, danh sách ở máy giữ nguyên | lỗi | khách | integration | `tests/storefront/wishlist/wishlist-thunks.test.ts` |
 | WL-5 | Khách thấy màn chặn đăng nhập, không thấy danh sách và không gọi BE | đúng | khách | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
@@ -105,7 +105,6 @@ Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T1: danh sác
 | Wishlist không bị xóa khi đăng xuất: người dùng sau trên cùng trình duyệt thấy tim sáng của người trước (giỏ hàng thì bị xóa bởi `CartSync`) | Đọc code, doc 4.4 | Xóa theo phiên như giỏ hàng |
 | Lệnh `POST`/`DELETE` lỗi không báo cho khách: tim sáng ở máy mà BE không có | Test WL-4E, WL-8E | Toast lỗi và hoàn tác |
 | Trang trống ghi "Nhận thông báo khi giảm giá": chưa có tính năng nào như vậy | Đọc `private.wishlist.empty.features` | Bỏ dòng hoặc làm tính năng |
-| Thunk dùng `apiFetchStandalone` không refresh khi 401 | Test WL-3E | Quyết định chung với [auth](../platform/auth.md) |
 | Kiểu dáng bằng thẻ `<style>` riêng (khoảng 360 dòng CSS) thay vì Tailwind | Đọc code | Chuyển sang Tailwind sau khi có test (phần "component quá lớn và giao diện") |
 
 Không có thay đổi hành vi nhìn thấy được trong lượt này.

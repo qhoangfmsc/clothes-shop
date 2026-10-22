@@ -49,7 +49,6 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/c
 Các điểm cần biết về hành vi hiện tại:
 
 - Danh sách hoặc chi tiết không tải được (mạng, 500) cho ra màn "chưa có yêu cầu" hoặc "không tìm thấy", kèm toast báo lỗi.
-- Lỗi không có thông điệp riêng từ BE hiện nguyên văn (`API error: <mã>`, `Failed to fetch`).
 - Chi tiết kiểm tra "chưa đăng nhập" trước "đang tải", nên khách chưa đăng nhập thấy màn chặn ngay.
 - Biểu mẫu đọc cả đơn (`GET /api/orders/:id`) để lấy danh sách dòng, dù điều kiện trả đã có `items`.
 

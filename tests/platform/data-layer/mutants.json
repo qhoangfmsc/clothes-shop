@@ -270,10 +270,13 @@
     "replace": "createStart(state: BaseCrudState) {\n    state.isCreating = true;"
   },
   {
-    "name": "api: an empty message is kept",
+    "name": "api: a missing message is filled with technical text",
     "file": "src/lib/api.ts",
-    "find": "body.message || `API error: ${res.status}`",
-    "replace": "body.message ?? `API error: ${res.status}`"
+    "find": "body.message || \"\"",
+    "replace": "body.message || `API error: ${res.status}`",
+    "tests": [
+      "tests/platform/data-layer/api-error.test.ts"
+    ]
   },
   {
     "name": "store: makeStore ignores the starting state",

@@ -1,6 +1,6 @@
 # Auth (phiên đăng nhập) — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-21 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
 > **Doc:** [platform/auth](../../docs/platform/auth.md) · **Test:** `tests/platform/auth/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -25,7 +25,7 @@ Hậu quả: sửa lỗi refresh ở một nơi dễ quên nơi kia; hai bản d
 
 | Làm | Không làm (và vì sao) |
 |---|---|
-| Tạo `src/lib/session.ts` (token store + refresh có dedupe + `expireSession` + `requestWithSession`) | Cho `apiFetchStandalone` tự refresh: đây là quyết định sản phẩm (cart/wishlist sync nền có nên đẩy người dùng ra khỏi phiên?), không phải việc của refactor. Giữ nguyên "không refresh" |
+| Tạo `src/lib/session.ts` (token store + refresh có dedupe + `expireSession` + `requestWithSession`) | (Đã làm sau đó, xem lịch sử 2026-10-22) `apiFetchStandalone` cũng refresh khi 401 |
 | `authApi`, `useApiAuth`, `apiFetchStandalone` dùng `session.ts` | Đổi nơi lưu token sang cookie `httpOnly` (đổi mô hình bảo mật, cần BE) |
 | `AuthProvider` dùng hàm token của `session.ts` | Gộp `fetchMe` / `tryRefresh` / `login` của `AuthProvider` vào `session.ts`: chúng cần `user` trong phản hồi và có quy tắc xóa token khác, thuộc trách nhiệm "trạng thái danh tính" |
 | `use-media-upload.ts` lấy token từ `session.ts` | Thêm refresh cho upload (hiện không có, giữ nguyên) |
@@ -40,9 +40,9 @@ Hành vi bất biến (mỗi dòng có test ở mục 6):
 - **401 → refresh → thử lại một lần**: chỉ khi request có phiên. Refresh = `POST {API}/api/auth/refresh` body `{ refreshToken }`; thành công lưu `accessToken` mới và thử lại đúng một lần với token đó; thử lại vẫn 401 thì lỗi `ApiError("API error: 401", 401)` như mọi lỗi khác.
 - **Hết phiên**: refresh không thể (không có refresh token, `!res.ok`, lỗi mạng) → `clearTokens()` + phát `window` event `auth:session-expired` + ném `ApiError("", 401)`. `!res.ok` hay lỗi mạng khi refresh còn xóa token ngay trong lúc refresh.
 - **Dedupe**: các lần refresh chồng nhau dùng chung một request; xong thì cho phép refresh mới.
-- **`apiFetchStandalone`**: gắn token nếu có, **không** refresh, **không** phát event hết phiên.
+- **`apiFetchStandalone`**: gắn token nếu có; 401 → refresh một lần rồi thử lại một lần (qua `requestWithSession`, như `authApi` và `apiFetch`); refresh thất bại thì xóa token và phát event hết phiên.
 - **`authApi`**: `put/patch/delete/post` thành công tới đường dẫn bắt đầu `/api/admin/` gọi `notifyAdminMutation()`; `GET`, đường dẫn khác và request lỗi thì không.
-- **Lỗi BE** → `ApiError(message || "API error: <status>", status, errorCode)`.
+- **Lỗi BE** → `ApiError(message || "", status, errorCode)`: thiếu `message` thì để rỗng để UI dùng chữ dịch.
 - **Kết quả**: `authApi` trả `res.json()` nguyên; `apiFetch` và `apiFetchStandalone` trả qua `mapMediaUrls` (trừ `raw: true` ở `apiFetch`). `FormData` được gửi nguyên (không `Content-Type`).
 
 **Hành vi của phần danh tính và quyền (khóa bằng test, không đổi):**
@@ -81,7 +81,7 @@ Component / thunk / SWR
    │
    ├─ authApi.get|post|…        ┐
    ├─ useApiAuth().apiFetch     ├─►  requestWithSession(send)  ─►  fetch
-   └─ apiFetchStandalone        ┘         │   (không dùng requestWithSession: không refresh)
+   └─ apiFetchStandalone        ┘         │
                                           ▼
 AuthProvider ──► getAccessToken / saveTokens / clearTokens      session.ts  (token + refresh + hết phiên)
                                                                  api.ts      (ApiError, toApiError)
@@ -89,7 +89,7 @@ AuthProvider ──► getAccessToken / saveTokens / clearTokens      session.ts
 
 - Hướng phụ thuộc: `auth-api.ts`, `use-api-auth.ts`, `auth-context.tsx`, `use-media-upload.ts` → `session.ts` → `api.ts`. `api.ts` không import `session.ts` (không có vòng).
 - `session.ts` là module thuần TS (không React, không `"use client"`), nên gọi được từ thunk, hook, và test không cần render.
-- Mỗi client giữ phần riêng của nó: `authApi` (JSON, phát `notifyAdminMutation`), `apiFetch` (FormData, `public`, `raw`, `mapMediaUrls`), `apiFetchStandalone` (không refresh). Phần chung nằm ở `requestWithSession`.
+- Mỗi client giữ phần riêng của nó: `authApi` (JSON, phát `notifyAdminMutation`), `apiFetch` (FormData, `public`, `raw`, `mapMediaUrls`), `apiFetchStandalone` (JSON, bỏ qua `public`/`raw`/`FormData`). Phần chung nằm ở `requestWithSession`.
 - Xóa: `getToken/setToken/clearTokens/doRefresh/refreshOnce` trong `auth-api.ts` và `use-api-auth.ts`; hằng `TOKEN_KEY/REFRESH_KEY` ở cả ba file. `auth-api.ts` không còn export `getAccessToken`, `clearTokens`, `SESSION_EXPIRED_EVENT`, `expireSession` (người dùng import thẳng từ `session.ts`).
 
 ## 5. Quyết định thiết kế
@@ -142,9 +142,9 @@ Test đặc tả hành vi **chạy xanh trên code cũ trước khi refactor** v
 | SES-3 | Nhiều request 401 cùng lúc chỉ gọi refresh một lần (kể cả qua hai client khác nhau) | đúng | user | integration | `tests/platform/auth/session-dedupe.test.ts` |
 | SES-4 | Không refresh được → xóa token, phát event, `ApiError("", 401)` | lỗi | user | integration | `tests/platform/auth/auth-api.test.ts` |
 | SES-5 | `apiFetch`: `public` không gắn token và không refresh; `FormData` gửi nguyên; `raw` giữ URL; media được map | đúng | user | integration | `tests/platform/auth/use-api-auth.test.tsx` |
-| SES-6 | `apiFetchStandalone` không refresh khi 401 và không phát event | lỗi | user | integration | `tests/platform/auth/use-api-auth.test.tsx` |
+| SES-6 | `apiFetchStandalone` gắn token, 401 → refresh một lần rồi thử lại; refresh thất bại thì hết phiên và phát event | lỗi | user | integration | `tests/platform/auth/use-api-auth.test.tsx` |
 | SES-7 | `authApi` ghi thành công tới `/api/admin/` phát `notifyAdminMutation`; GET, đường dẫn khác, lỗi thì không | đúng | admin đủ quyền | integration | `tests/platform/auth/auth-api.test.ts` |
-| SES-8 | Lỗi BE → `ApiError(message, status, errorCode)`, fallback `API error: <status>` | lỗi | — | integration | `tests/platform/auth/auth-api.test.ts` |
+| SES-8 | Lỗi BE → `ApiError(message, status, errorCode)`; thiếu `message` thì rỗng | lỗi | — | integration | `tests/platform/auth/auth-api.test.ts` |
 | SES-9 | Hàm token: đọc/ghi/xóa, `window` vắng thì `null` | đúng | — | unit | `tests/platform/auth/session.test.ts` |
 | ID-1 | `AuthProvider` khôi phục phiên: `/me` ok → có `user`; không có token → khách | đúng | user | component | `tests/platform/auth/auth-context.test.tsx` |
 | ID-2 | `/me` lỗi → refresh ok → có `user`; refresh lỗi → xóa token, thành khách | lỗi | user | component | `tests/platform/auth/auth-context.test.tsx` |
@@ -213,3 +213,5 @@ Ghi chú sửa lỗi tài liệu: bản đầu của spec và comment trong `ses
 - 2026-10-21 · Đưa cả module lên chuẩn ma trận (đúng/lỗi × khách/user/admin đủ quyền/admin thiếu quyền): thêm test cho quyền, guard, popup đăng nhập, mật khẩu hệ thống, đăng xuất, nút Google, màn chặn. Phá cố ý 9 chỗ (quyền, guard, `requireAuth`, popup, mật khẩu, đăng xuất, nút Google, cổng admin): cả 9 bị test bắt. Không đổi code của các phần này. no-test: chỉ thêm test.
 - 2026-10-21 · Rút gọn comment trong `session.ts`, `auth-api.ts`, `use-api-auth.ts` theo quy tắc comment ngắn; doc ghi rõ BE không xoay vòng refresh token. Không đổi hành vi. no-test: chỉ sửa comment.
 - 2026-10-21 · Rút gọn comment của `apiFetchStandalone`; doc ghi thêm rằng nó luôn gửi JSON và bỏ qua `public`, `raw`, `FormData`. Không đổi hành vi. no-test: chỉ sửa comment.
+- 2026-10-22 · Lỗi BE không có `message` cho `ApiError` có `message` rỗng (trước đó là `API error: <status>`), theo `toApiError` của data-layer.
+- 2026-10-22 · `apiFetchStandalone` (thunk giỏ hàng và yêu thích) dùng `requestWithSession`: access token hết hạn mà refresh token còn hạn thì tự làm mới và thử lại thay vì thất bại im lặng (giỏ và yêu thích không đồng bộ được); refresh thất bại thì phiên hết hạn như ở `authApi` và `apiFetch`. Quyết định của chủ dự án (giao cho tôi chọn). Test SES-6 đổi theo.

@@ -38,7 +38,6 @@ Làm lần lượt; sau mỗi phần: chạy lại mọi cổng, commit lên nh�
 
 ## Việc ngoài từng module (làm khi tới lượt)
 
-- Quyết định sản phẩm: `apiFetchStandalone` (giỏ/wishlist) có nên tự refresh token? Hiện không (xem [auth](platform/auth.md) mục 2).
 - Quy tắc mới trong `scripts/check-conventions.mjs` khi một quy ước lặp lại bị vi phạm (cách làm đã có sẵn).
 - Mutation testing (Stryker) cho các file T0 sau khi đợt 1 xong, để kiểm tra *chất lượng* test chứ không chỉ độ phủ.
 - E2E hành trình khách (duyệt → giỏ → checkout) khi có môi trường API cho phép ghi (xem `tests/README.md`).

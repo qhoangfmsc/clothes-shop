@@ -118,7 +118,6 @@ Ngưỡng coverage riêng của module (dòng/nhánh/hàm): `NewReturnContent.ts
 |---|---|---|
 | Tải danh sách lỗi cho ra màn "chưa có yêu cầu" kèm toast | Test RET-2E | Hiện trạng thái lỗi riêng và nút thử lại |
 | Tải chi tiết lỗi (mạng, 500) cho ra "không tìm thấy" kèm toast | Test RET-4E | Phân biệt không có (404) với lỗi tạm |
-| Lỗi không có thông điệp riêng hiện nguyên văn (`API error: 500`, `Failed to fetch`) vì chữ mặc định chỉ dùng khi lỗi không có text | Test RET-9E | Dùng chữ dịch khi không có mã BE được dịch |
 | Hủy lỗi tải lại yêu cầu, nên khách thấy trạng thái thật nhưng toast lỗi và dữ liệu mới xuất hiện cách nhau | Test RET-6E | Gộp thành một bước |
 | Biểu mẫu đọc cả đơn (`GET /api/orders/:id`) chỉ để lấy danh sách dòng, trong khi `eligibility` đã có `items` | Đọc code | Dùng dữ liệu của điều kiện |
 | `NewReturnContent` gánh chọn dòng, lý do, chính sách và gửi | Đọc code | Tách khối chọn dòng sau khi có test |

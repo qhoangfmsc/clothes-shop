@@ -271,13 +271,13 @@ describe("RET-6E a cancel that is declined, refused or slow, and requests that c
     await waitFor(() => expect(screen.queryByRole("button", { name: D("cancel.action") })).not.toBeInTheDocument());
   });
 
-  it("shows the plain 'API error: 500' when the BE gives no words, and reads the request again (see the spec, section 7)", async () => {
+  it("shows the translated 'could not cancel' when the BE gives no words, and reads the request again", async () => {
     const { calls } = await open(returnRequest(), { cancel: { status: 500, body: {} } });
     await userEvent.click(await screen.findByRole("button", { name: D("cancel.action") }));
 
     await confirm();
 
-    expect(await screen.findByText("API error: 500")).toBeInTheDocument();
+    expect(await screen.findByText(D("cancel.failed"))).toBeInTheDocument();
     await waitFor(() => expect(calls.ones.length).toBe(2));
   });
 

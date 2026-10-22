@@ -54,6 +54,14 @@ describe("I18-6E errors without a known code", () => {
     expect(toText({}, "Đã có lỗi")).toBe("Đã có lỗi");
   });
 
+  it("shows the translated fallback, not the browser's own words, when the network is gone", async () => {
+    await renderApp(<Probe />);
+
+    expect(toText(new TypeError("Failed to fetch"), "Đã có lỗi")).toBe("Đã có lỗi");
+    expect(toText({ name: "TypeError", message: "Failed to fetch" }, "Đã có lỗi")).toBe("Đã có lỗi");
+    expect(toText(Object.assign(new TypeError("Failed to fetch"), { errorCode: 1303 }), "Đã có lỗi")).toBe(msg("shared.errors.byCode.1303"));
+  });
+
   it.each([null, undefined, "plain string", 42, true])("shows the fallback for %j, which is not an error object", async (thing) => {
     await renderApp(<Probe />);
 
@@ -74,6 +82,9 @@ describe("I18-6E errors without a known code", () => {
 
   it("a message that is not a string is ignored", () => {
     expect(errorText({ message: 5 })).toBe("");
+    expect(errorText(new TypeError("Failed to fetch"))).toBe("");
+    expect(errorText({ name: "TypeError", message: "Failed to fetch" })).toBe("");
+    expect(errorText(new Error("boom"))).toBe("boom");
     expect(errorText(null)).toBe("");
     expect(errorText("text")).toBe("");
   });

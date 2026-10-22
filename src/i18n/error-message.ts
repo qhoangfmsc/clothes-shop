@@ -15,9 +15,11 @@ export function errorCodeOf(err: unknown): number | undefined {
   return Number.isInteger(numeric) ? numeric : undefined;
 }
 
-/** Text of a caught error whether it is an `Error` or a plain `{ message }` (what `unwrap()` throws). */
+/** Text of a caught error whether it is an `Error` or a plain `{ message }` (what `unwrap()` throws).
+ *  A `TypeError` (also its serialized form) is the browser's own network failure ("Failed to fetch"): not words for a shopper. */
 export function errorText(err: unknown): string {
   if (typeof err !== "object" || err === null) return "";
-  const { message } = err as { message?: unknown };
+  const { message, name } = err as { message?: unknown; name?: unknown };
+  if (err instanceof TypeError || name === "TypeError") return "";
   return typeof message === "string" ? message : "";
 }

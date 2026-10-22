@@ -108,7 +108,6 @@ Các điểm cần biết về hành vi hiện tại:
 
 - Địa chỉ được lưu (`POST /api/addresses`) trước khi tạo đơn: đơn bị từ chối thì địa chỉ vẫn nằm ở BE và lần thử lại tạo thêm một địa chỉ.
 - Địa chỉ giao hàng gửi nguyên văn như đã gõ, còn họ tên và điện thoại của người nhận tại cửa hàng được cắt khoảng trắng.
-- Lỗi không có thông điệp riêng từ BE hiện nguyên văn trong toast (`API error: 500` khi BE không gửi nội dung, `Failed to fetch` khi mất mạng); chữ mặc định `toast.failed` chỉ dùng khi lỗi không có text.
 - Nút đặt hàng vẫn bật khi báo giá lỗi; phí hiện "không tải được" và tổng hiện "…".
 - Số điện thoại chỉ cần không trống.
 - Khi mọi dòng đều có `serverItemId`, báo giá dùng id ở máy; có dòng chưa có id thì `useOrderQuote` đọc giỏ BE, danh sách dòng đổi theo và báo giá được hỏi lại với cùng các id.

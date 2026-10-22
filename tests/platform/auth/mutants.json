@@ -82,5 +82,14 @@
     "file": "src/hooks/use-api-auth.ts",
     "find": "{ authenticated: !isPublic }",
     "replace": "{ authenticated: true }"
+  },
+  {
+    "name": "standalone: a 401 is not refreshed",
+    "file": "src/hooks/use-api-auth.ts",
+    "find": "  const res = await requestWithSession((token) =>\n    fetch(url, {\n      method,\n      headers: {\n        \"Content-Type\": \"application/json\",",
+    "replace": "  const res = await ((token: string | null) =>\n    fetch(url, {\n      method,\n      headers: {\n        \"Content-Type\": \"application/json\",",
+    "tests": [
+      "tests/platform/auth/use-api-auth.test.tsx"
+    ]
   }
 ]

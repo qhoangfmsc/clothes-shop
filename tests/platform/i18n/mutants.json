@@ -214,5 +214,23 @@
     "file": "scripts/i18n-lib.mjs",
     "find": "if (!(key in target)) errors.push",
     "replace": "if (false) errors.push"
+  },
+  {
+    "name": "error: a browser network failure is shown as text",
+    "file": "src/i18n/error-message.ts",
+    "find": "err instanceof TypeError || name === \"TypeError\"",
+    "replace": "false",
+    "tests": [
+      "tests/platform/i18n/error-message.test.tsx"
+    ]
+  },
+  {
+    "name": "error: a serialized network failure is shown as text",
+    "file": "src/i18n/error-message.ts",
+    "find": "err instanceof TypeError || name === \"TypeError\"",
+    "replace": "err instanceof TypeError",
+    "tests": [
+      "tests/platform/i18n/error-message.test.tsx"
+    ]
   }
 ]

@@ -34,7 +34,7 @@ Tầng truy cập dữ liệu dùng chung của FE. FE không có database riên
 ### 4.1 Hai HTTP client + `ApiError`
 
 - `api` (public): `fetch` JSON, không gửi token, ném `ApiError(message, status, errorCode)` khi `!res.ok`.
-- `toApiError(res)` (`src/lib/api.ts`) là nơi duy nhất dựng `ApiError` từ phản hồi lỗi của BE: `message` lấy từ `body.message`, thiếu hoặc rỗng (hay body không phải JSON) thì `API error: <status>`; `errorCode` lấy từ `body.errorCode`. `api`, `authApi`, `useApiAuth().apiFetch` và `apiFetchStandalone` đều dùng nó. `AuthProvider.login` và `uploadMediaFile` dựng `ApiError` riêng (message mặc định rỗng).
+- `toApiError(res)` (`src/lib/api.ts`) là nơi duy nhất dựng `ApiError` từ phản hồi lỗi của BE: `message` lấy từ `body.message`, thiếu hoặc rỗng (hay body không phải JSON) thì rỗng, để UI dùng chữ dịch; `errorCode` lấy từ `body.errorCode`. `api`, `authApi`, `useApiAuth().apiFetch` và `apiFetchStandalone` đều dùng nó. `AuthProvider.login` và `uploadMediaFile` dựng `ApiError` riêng (message mặc định rỗng).
 - `ApiError` có `status`, `errorCode` (số, BE gửi kèm) và `code` (cùng giá trị dạng chuỗi — vì serializer của Redux giữ `code`, nên lỗi từ thunk vẫn mang mã). `useErrorMessage()` dựa vào các mã này để dịch lỗi (xem [i18n](./i18n.md)).
 - `authApi`: xem [auth](./auth.md) mục 4.3.
 

@@ -175,12 +175,27 @@ describe("CART-5E fetchCart that fails", () => {
     expect(state(store).isSyncing).toBe(false);
   });
 
-  it("does not try to refresh the token on a 401 (the thunks use the plain fetch)", async () => {
+  it("tries to refresh the token on a 401, once, and gives up when the BE refuses the refresh", async () => {
+    seedSession({ access: "test-access", refresh: "test-refresh" });
     server.use(http.get(`${API}/api/cart`, () => HttpResponse.json({ message: "Unauthorized" }, { status: 401 })));
 
-    await makeStore().dispatch(fetchCart());
+    const result = await makeStore().dispatch(fetchCart());
 
-    expect(refreshCalls).toEqual([]);
+    expect(refreshCalls).toEqual(["refresh"]);
+    expect(result.type).toBe("cart/fetch/rejected");
+  });
+
+  it("asks again with the new token when the refresh works, so an expired access token does not lose the cart", async () => {
+    seedSession({ access: "stale", refresh: "test-refresh" });
+    server.use(
+      http.post(`${API}/api/auth/refresh`, () => HttpResponse.json({ accessToken: "fresh" })),
+      http.get(`${API}/api/cart`, ({ request }) => (request.headers.get("authorization") === "Bearer fresh" ? HttpResponse.json(serverCart([cartLine({ serverItemId: "srv-1" })])) : HttpResponse.json({ message: "no" }, { status: 401 })))
+    );
+    const store = makeStore();
+
+    await store.dispatch(fetchCart());
+
+    expect(state(store).items.map((l) => l.serverItemId)).toEqual(["srv-1"]);
   });
 });
 

@@ -280,23 +280,23 @@ describe("CHK-10E an order that cannot be placed", () => {
     expect(await screen.findByText("Out of stock today")).toBeInTheDocument();
   });
 
-  it("shows the plain technical text 'API error: 500' when the BE says nothing else; the translated 'order failed' is not reached (see the spec, section 7)", async () => {
+  it("shows the translated 'order failed' when the BE says nothing else", async () => {
     await renderCheckout([A()], { order: { status: 500, body: {} } });
     await fillDelivery();
 
     await userEvent.click(placeOrder());
 
-    expect(await screen.findByText("API error: 500")).toBeInTheDocument();
-    expect(screen.queryByText(T("failed"))).not.toBeInTheDocument();
+    expect(await screen.findByText(T("failed"))).toBeInTheDocument();
   });
 
-  it("shows the browser's own text when the bag cannot be read (no network), and sends nothing", async () => {
+  it("shows the translated 'order failed', not the browser's words, when the bag cannot be read (no network), and sends nothing", async () => {
     const { calls } = await renderCheckout([A()], { cartFails: true });
     await fillDelivery();
 
     await userEvent.click(placeOrder());
 
-    expect(await screen.findByText(/fetch/i)).toBeInTheDocument();
+    expect(await screen.findByText(T("failed"))).toBeInTheDocument();
+    expect(screen.queryByText(/fetch/i)).not.toBeInTheDocument();
     expect(calls.addresses).toEqual([]);
     await stillThere(calls);
   });

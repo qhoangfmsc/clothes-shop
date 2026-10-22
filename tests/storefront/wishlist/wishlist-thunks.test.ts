@@ -93,6 +93,19 @@ describe("WL-3E fetchWishlist that fails or gets thin data", () => {
     expect(result.type).toBe("wishlist/fetch/rejected");
     expect(state(store).items).toEqual([wishlistItem()]);
     expect(state(store).isSyncing).toBe(false);
+  });
+
+  it("asks again with the new token when a 401 is answered by a working refresh", async () => {
+    seedSession({ access: "stale", refresh: "test-refresh" });
+    server.use(
+      http.post(`${API}/api/auth/refresh`, () => HttpResponse.json({ accessToken: "fresh" })),
+      http.get(`${API}/api/wishlist`, ({ request }) => (request.headers.get("authorization") === "Bearer fresh" ? HttpResponse.json(serverWishlist([wishlistItem({ productId: "z" })])) : HttpResponse.json({ message: "no" }, { status: 401 })))
+    );
+    const store = makeStore();
+
+    await store.dispatch(fetchWishlist());
+
+    expect(state(store).items.map((i) => i.productId)).toEqual(["z"]);
     expect(refreshCalls).toEqual([]);
   });
 

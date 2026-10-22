@@ -1,6 +1,6 @@
 # Auth (đăng nhập, phiên, phân quyền)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-21
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-22
 > **Code:** `src/contexts/auth-context.tsx` · `src/lib/auth-api.ts` · `src/lib/session.ts` · `src/lib/admin-events.ts` · `src/lib/permissions.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-auth-action.ts` · `src/app/[locale]/(auth)/login/` · `src/app/[locale]/unauthorized/` · các component `RoleGuard`, `SignOutButton`, `LoginPromptModal`, `UnauthenticatedState`, `SystemPasswordPrompt`, `AdminPasswordGate` trong `src/app/[locale]/_components/`
 
 ## 1. Tóm tắt module
@@ -27,7 +27,7 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 | Popup đăng nhập | Modal có thể đóng, mở bằng `useLoginPrompt()` hoặc `requireAuth()`; chạy callback sau khi đăng nhập | `_components/LoginPromptModal.tsx`, `src/hooks/use-auth-action.ts` |
 | Chặn trang riêng tư | Modal không thể đóng, hiện trên trang private khi chưa đăng nhập | `_components/UnauthenticatedState.tsx` |
 | Phiên | Lưu/đọc/xóa token, refresh có dedupe, hết phiên, vòng 401 → refresh → thử lại (`requestWithSession`) | `src/lib/session.ts` |
-| HTTP client có token | `authApi` (cho thunk/SWR), `useApiAuth().apiFetch` (hook), `apiFetchStandalone` (thunk, không refresh) | `src/lib/auth-api.ts`, `src/hooks/use-api-auth.ts` |
+| HTTP client có token | `authApi` (cho thunk/SWR), `useApiAuth().apiFetch` (hook), `apiFetchStandalone` (thunk, có refresh như hai client kia) | `src/lib/auth-api.ts`, `src/hooks/use-api-auth.ts` |
 | Permission | Hằng số role/permission, helper kiểm tra | `src/lib/permissions.ts` |
 | Guard UI | `RoleGuard` (ẩn/hiện theo role/permission), `AdminGuard` (cả khu admin) | `_components/RoleGuard.tsx` |
 | Mật khẩu hệ thống | Prompt nhập mật khẩu (Promise<boolean>), cổng vào admin, TTL 15 phút | `_components/SystemPasswordPrompt.tsx`, `AdminPasswordGate.tsx`, `src/lib/system-password*.ts` |
@@ -69,7 +69,7 @@ Backend là nguồn sự thật của phiên và quyền. FE chỉ giữ token, 
 |---|---|---|---|
 | `authApi` (`get/post/put/patch/delete`) | Redux thunk admin, SWR admin, `useAdminAnalytics` | Có, qua `requestWithSession` | JSON; không map URL media; trả `res.json()` nguyên |
 | `useApiAuth().apiFetch(path, { method, body, headers, public, raw })` | Account, Checkout, Orders, Order detail, đánh giá của khách | Có, qua `requestWithSession`; `public: true` bỏ qua header Authorization và không refresh; `body` là `FormData` thì gửi nguyên (không `Content-Type`, không `JSON.stringify`) | Kết quả đi qua `mapMediaUrls`, trừ khi `raw: true` (giữ URL gốc của BE, cho form gửi lại URL như ảnh đánh giá). Hàm `apiFetch` giữ nguyên danh tính giữa các lần render |
-| `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | **Không** | Đọc token qua `getAccessToken()`; luôn gửi JSON (bỏ qua `public`, `raw` và `FormData`); không phát event hết phiên; kết quả đi qua `mapMediaUrls` |
+| `apiFetchStandalone` | Thunk của giỏ hàng và wishlist | Có, qua `requestWithSession` | Luôn gửi JSON (bỏ qua `public`, `raw` và `FormData`); refresh thất bại thì xóa token và phát event hết phiên; kết quả đi qua `mapMediaUrls` |
 
 `authApi` còn phát `notifyAdminMutation()` (`src/lib/admin-events.ts`, pub/sub tối giản: `onAdminMutation(listener)` trả hàm hủy) sau mỗi request ghi (`POST`/`PUT`/`PATCH`/`DELETE`) thành công tới đường dẫn `/api/admin/…`; nơi nào phụ thuộc dữ liệu đó (hiện là badge "việc cần xử lý" của [admin-shell](../admin/admin-shell.md)) đăng ký để tự làm mới.
 

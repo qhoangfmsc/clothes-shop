@@ -37,7 +37,7 @@ State: `items`, `deselectedKeys` (lưu các dòng **bị bỏ tick**, nên mặc
 - Selector: `selectCartItems`, `selectTotalItems`, `selectCartPendingSync`, `selectPurchasableCartItems` (lọc `isPurchasable(badge)`), `selectSelectedCartItems` (mua được **và** không bị bỏ tick), `selectSelectedTotalItems`, `selectDeselectedKeys`, `selectCartIsOpen`, `selectCartIsSyncing`.
 - Lưu trữ: `src/store/index.ts` ghi `doovan-cart` (items) và `doovan-cart-selection` (deselectedKeys) mỗi khi đổi; slice nạp lại khi khởi tạo (chấp nhận cả dạng `{state:{items}}` cũ và `{items}`).
 
-### 4.3 Đồng bộ với BE (`apiFetchStandalone`, không refresh token)
+### 4.3 Đồng bộ với BE (`apiFetchStandalone`, tự refresh token khi 401)
 
 | Thunk | API |
 |---|---|

@@ -93,7 +93,7 @@ Tiếng Anh, không UI text. Mọi danh sách dựng bằng `buildListQuery` (ru
 | ID | Luồng | Tình huống | Danh tính | Tầng | Test |
 |---|---|---|---|---|---|
 | ERR-1 | Body có `message`/`errorCode` → `ApiError` đủ trường; `code` là chuỗi | lỗi | — | unit | `tests/platform/data-layer/api-error.test.ts` |
-| ERR-2 | Body không phải JSON hoặc thiếu `message` → `API error: <status>` | lỗi | — | unit | `tests/platform/data-layer/api-error.test.ts` |
+| ERR-2 | Body không phải JSON hoặc thiếu `message` → `ApiError` với `message` rỗng, còn `status` giữ nguyên (UI dùng chữ dịch của nó) | lỗi | — | unit | `tests/platform/data-layer/api-error.test.ts` |
 | ERR-3 | `api` (công khai) không gửi token, gửi JSON, trả `res.json()` | đúng | khách | integration | `tests/platform/data-layer/api.test.ts` |
 | ERR-4 | `api` không refresh khi 401: ném `ApiError` | lỗi | khách | integration | `tests/platform/data-layer/api.test.ts` |
 | LQ-1 | `buildListQuery`: thứ tự, bỏ giá trị rỗng, bỏ `page` 1, kẹp `limit`, giữ `0` và `false`, mã hóa | đúng | — | unit | `tests/platform/data-layer/list-query.test.ts` |
@@ -149,3 +149,4 @@ Thay đổi nhìn thấy được: không. Thay đổi nội bộ: các kiểu v
 - 2026-10-21 · Viết lại spec cho toàn module (batch 1); thêm test cho mọi submodule; chuyển kiểu danh sách sản phẩm và `buildProductQS` sang `src/lib/product-list.ts`.
 - 2026-10-21 · Phủ test toàn module (204 test, 14 file) và kiểm thử đột biến 46/46 (2 đột biến tương đương đã loại: `getProductUrl` bắt `TypeError` nên `||`/`&&` cho cùng kết quả; `fetch` coi 206 là `ok`). Chuyển `ProductListParams`, `ProductListResponse`, `buildProductQS` sang `src/lib/product-list.ts` (hook không còn import từ `src/app`, hết hàm chép đôi); `server-fetchers.ts` export lại các kiểu.
 - 2026-10-22 · Tách `makeStore` và `attachPersistence` khỏi singleton `store`, `StoreProvider` nhận `store` tùy chọn: harness test (batch 2) cần store sạch cho mỗi lần render. Singleton và hành vi lưu trữ giữ nguyên.
+- 2026-10-22 · `toApiError` không còn điền `API error: <status>` khi BE không gửi `message`: để rỗng, nên toast và màn lỗi dùng chữ dịch thay vì chữ kỹ thuật. Hook công khai (`fetcher` của SWR) giữ `Error("API error: <status>")` vì chỉ dùng cờ `isError`.

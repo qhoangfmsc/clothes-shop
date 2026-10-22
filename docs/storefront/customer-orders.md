@@ -60,7 +60,6 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/c
 Các điểm cần biết về hành vi hiện tại:
 
 - Danh sách hoặc chi tiết không tải được (mạng, 500) cho ra màn "Chưa có đơn hàng" hoặc "Không tìm thấy đơn hàng", kèm toast báo lỗi.
-- Lệnh hủy đơn lỗi hiện nguyên văn thông điệp của BE hoặc `API error: <mã>` khi BE không gửi nội dung; chữ dịch `cancel.failed` chỉ dùng khi lỗi không có text.
 - Trang chi tiết kiểm tra "chưa đăng nhập" trước "đang tải đơn", nên khách chưa đăng nhập thấy màn chặn ngay (không chờ gọi BE).
 
 

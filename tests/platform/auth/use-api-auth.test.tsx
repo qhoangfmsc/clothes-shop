@@ -157,8 +157,49 @@ describe("SES-6 apiFetchStandalone", () => {
     expect(auth).toBeNull();
   });
 
-  it("does not refresh on 401, keeps the tokens and stays silent", async () => {
+  it("refreshes once on 401 and asks again with the new token", async () => {
     seedSession({ access: "old", refresh: "r1" });
+    const seen: (string | null)[] = [];
+    let refreshes = 0;
+    server.use(
+      http.post(`${API}/api/auth/refresh`, () => {
+        refreshes += 1;
+        return HttpResponse.json({ accessToken: "fresh" });
+      }),
+      http.get(`${API}/api/cart`, ({ request }) => {
+        const token = request.headers.get("authorization");
+        seen.push(token);
+        return token === "Bearer fresh" ? HttpResponse.json({ ok: true }) : HttpResponse.json({ message: "no" }, { status: 401 });
+      })
+    );
+
+    await expect(apiFetchStandalone("/api/cart")).resolves.toEqual({ ok: true });
+
+    expect(seen).toEqual(["Bearer old", "Bearer fresh"]);
+    expect(refreshes).toBe(1);
+    expect(localStorage.getItem(ACCESS_KEY)).toBe("fresh");
+  });
+
+  it("ends the session when the refresh is refused: tokens dropped, expiry announced, the 401 thrown", async () => {
+    seedSession({ access: "old", refresh: "r1" });
+    const expired = vi.fn();
+    window.addEventListener(EXPIRED_EVENT, expired);
+    server.use(
+      http.post(`${API}/api/auth/refresh`, () => HttpResponse.json({ message: "no" }, { status: 401 })),
+      http.get(`${API}/api/cart`, () => HttpResponse.json({ message: "no" }, { status: 401 }))
+    );
+
+    const error = await apiFetchStandalone("/api/cart").catch((e: unknown) => e);
+    window.removeEventListener(EXPIRED_EVENT, expired);
+
+    expect(error).toMatchObject({ status: 401 });
+    expect(localStorage.getItem(ACCESS_KEY)).toBeNull();
+    expect(localStorage.getItem(REFRESH_KEY)).toBeNull();
+    expect(expired).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not refresh when there is no refresh token, and ends the session", async () => {
+    seedSession({ access: "old" });
     const expired = vi.fn();
     window.addEventListener(EXPIRED_EVENT, expired);
     /* no refresh handler: MSW fails the test if one is attempted */
@@ -167,10 +208,8 @@ describe("SES-6 apiFetchStandalone", () => {
     const error = await apiFetchStandalone("/api/cart").catch((e: unknown) => e);
     window.removeEventListener(EXPIRED_EVENT, expired);
 
-    expect(error).toMatchObject({ status: 401, message: "no" });
-    expect(localStorage.getItem(ACCESS_KEY)).toBe("old");
-    expect(localStorage.getItem(REFRESH_KEY)).toBe("r1");
-    expect(expired).not.toHaveBeenCalled();
+    expect(error).toMatchObject({ status: 401 });
+    expect(expired).toHaveBeenCalledTimes(1);
   });
 
   it("throws an ApiError with message, status and code", async () => {

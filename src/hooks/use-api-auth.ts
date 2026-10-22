@@ -1,9 +1,9 @@
-/* Authenticated fetch: the `useApiAuth` hook (refreshes on 401) and `apiFetchStandalone` (does not). */
+/* Authenticated fetch: the `useApiAuth` hook and `apiFetchStandalone` (for thunks); both refresh on a 401. */
 
 import { useCallback } from "react";
 import { mapMediaUrls } from "@/src/lib/media-url";
 import { API_URL, toApiError } from "@/src/lib/api";
-import { getAccessToken, requestWithSession } from "@/src/lib/session";
+import { requestWithSession } from "@/src/lib/session";
 
 interface ApiFetchOptions {
   method?: string;
@@ -53,24 +53,25 @@ export function useApiAuth() {
   return { apiFetch };
 }
 
-/** `fetch` with the stored token, no refresh on 401: for Redux thunks (cart, wishlist). */
+/** `fetch` with the stored token for Redux thunks (cart, wishlist): refreshes once on a 401, like the other clients. */
 export async function apiFetchStandalone<T = unknown>(
   path: string,
   options: ApiFetchOptions = {}
 ): Promise<T> {
   const { method = "GET", body, headers = {} } = options;
-  const token = getAccessToken();
-
   const url = path.startsWith("http") ? path : `${API_URL}${path}`;
-  const res = await fetch(url, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...headers,
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+
+  const res = await requestWithSession((token) =>
+    fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    })
+  );
 
   if (!res.ok) throw await toApiError(res);
 

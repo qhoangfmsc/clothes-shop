@@ -100,14 +100,13 @@ describe("ORD-9E a cancel that is refused, declined or slow", () => {
     await waitFor(() => expect(screen.getByRole("button", { name: D("cancel.action") })).toBeEnabled());
   });
 
-  it("shows the plain 'API error: 500' when the BE gives no words (see the spec, section 7)", async () => {
+  it("shows the translated 'could not cancel' when the BE gives no words", async () => {
     await open(order(), { cancel: { status: 500, body: {} } });
 
     await userEvent.click(await cancelButton());
     await confirmCancel();
 
-    expect(await screen.findByText("API error: 500")).toBeInTheDocument();
-    expect(screen.queryByText(D("cancel.failed"))).not.toBeInTheDocument();
+    expect(await screen.findByText(D("cancel.failed"))).toBeInTheDocument();
   });
 
   it("locks the button and says it is cancelling while the BE works, and a second press sends nothing", async () => {

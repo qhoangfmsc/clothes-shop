@@ -360,7 +360,7 @@ describe("RET-9E a request the BE does not accept", () => {
 
     await userEvent.click(submit());
 
-    expect(await screen.findByText("API error: 500")).toBeInTheDocument();
+    expect(await screen.findByText(F("toast.failed"))).toBeInTheDocument();
     expect(tick("Dress")).toBeChecked();
     expect(calls.eligibility).toHaveLength(1);
     await waitFor(() => expect(submit()).toBeEnabled());

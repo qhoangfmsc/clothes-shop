@@ -229,6 +229,6 @@ describe("SES-8 errors from the API", () => {
   it("falls back to a status message when the body is not JSON", async () => {
     server.use(http.get(`${API}/api/x`, () => new HttpResponse("<html>bad gateway</html>", { status: 502 })));
 
-    await expect(authApi.get("/api/x")).rejects.toMatchObject({ message: "API error: 502", status: 502 });
+    await expect(authApi.get("/api/x")).rejects.toMatchObject({ message: "", status: 502 });
   });
 });

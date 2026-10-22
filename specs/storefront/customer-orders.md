@@ -117,7 +117,6 @@ Ngưỡng coverage riêng của module (dòng/nhánh/hàm): `OrdersContent.tsx` 
 |---|---|---|
 | Tải danh sách lỗi (mạng, 500) cho ra màn "Chưa có đơn hàng" kèm toast: khách thấy lời nói sai | Test ORD-2E | Hiện trạng thái lỗi riêng và nút thử lại |
 | Tải chi tiết lỗi (mạng, 500) cho ra "Không tìm thấy đơn hàng" kèm toast | Test ORD-4E | Phân biệt không có đơn (404) với lỗi tạm |
-| Lệnh hủy lỗi hiện nguyên text kỹ thuật khi BE không gửi nội dung (`API error: 500`) | Test ORD-9E | Dùng chữ dịch khi không có mã BE được dịch |
 | Hủy đơn dựa vào `paymentStatus` ở máy; đơn vừa được trả ở tab khác vẫn có nút hủy tới lần tải sau (BE từ chối bằng `1307`) | Test ORD-9E | Tải lại đơn trước khi cho hủy |
 | `OrderDetailContent` gánh sáu thẻ, lệnh hủy, đánh giá | Đọc code | Tách từng thẻ thành thành phần sau khi có test |
 | Chi tiết đơn import thẻ của `returns` và hộp của `reviews` | Đọc code | Giữ: đây là điểm ghép màn hình, không phải vòng phụ thuộc |

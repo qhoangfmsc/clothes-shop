@@ -23,15 +23,21 @@ describe("ERR-1 toApiError", () => {
 });
 
 describe("ERR-2 fallbacks", () => {
-  it("uses a status message when the body has no message", async () => {
-    expect((await toApiError(json({}, 500))).message).toBe("API error: 500");
+  it("leaves the message empty when the body has none, so the screen uses its own words", async () => {
+    const error = await toApiError(json({}, 500));
+
+    expect(error.message).toBe("");
+    expect(error.status).toBe(500);
   });
 
-  it("uses a status message when the body is not JSON", async () => {
-    expect((await toApiError(new Response("<html>bad gateway</html>", { status: 502 }))).message).toBe("API error: 502");
+  it("leaves the message empty when the body is not JSON", async () => {
+    const error = await toApiError(new Response("<html>bad gateway</html>", { status: 502 }));
+
+    expect(error.message).toBe("");
+    expect(error.status).toBe(502);
   });
 
   it("treats an empty message like a missing one", async () => {
-    expect((await toApiError(json({ message: "" }, 404))).message).toBe("API error: 404");
+    expect((await toApiError(json({ message: "" }, 404))).message).toBe("");
   });
 });
