@@ -52,7 +52,7 @@ export const MODULES = [
   ] },
   { doc: "platform/dev-tooling", paths: [
     "scripts/check-conventions.mjs", "scripts/check-docs.mjs", "scripts/check-quality.mjs", "scripts/quality-lib.mjs", "scripts/comment-lib.mjs", "scripts/modules.mjs",
-    "scripts/progress-lib.mjs", "scripts/test-progress.mjs", "scripts/test-mutants.mjs", "scripts/test-batches.json",
+    "scripts/gate-env.mjs", "scripts/progress-lib.mjs", "scripts/test-progress.mjs", "scripts/test-mutants.mjs", "scripts/test-batches.json",
     "next.config.ts", "vercel.json", "vitest.config.mts", "playwright.config.ts", "src/app/api/cron/",
   ] },
 

@@ -29,6 +29,7 @@
 | `scripts/progress-lib.mjs` (hàm thuần, gồm cả logic đột biến) + `scripts/test-progress.mjs` và `scripts/test-mutants.mjs` (CLI) + `scripts/test-batches.json` | Sổ ghi tiến độ viết tay: sẽ lệch khỏi repo. Tiến độ luôn *tính* từ spec, test và baseline |
 | Bộ khung render `tests/_support/{render,identities,messages,navigation}` | Khung cho Redux store và `next/navigation`: thêm ở batch đầu tiên cần tới (giỏ hàng, trang có `searchParams`), không dựng trước khi có người dùng |
 | `scripts/test-mutants.mjs` + `tests/<module>/mutants.json`: phá code cố ý để biết test có đỏ không | Kiểm thử đột biến tự động trên toàn bộ code (Stryker): chậm và nhiễu ở giai đoạn này; danh sách đột biến chọn tay theo rủi ro đủ để phát hiện test yếu |
+| Chạy mọi CLI trên dự án giả trong thư mục tạm (`scripts/gate-env.mjs`: `GATE_ROOT`, `GATE_MODULES`) | Chạy cổng trên chính repo trong test: phụ thuộc trạng thái repo, vòng tròn |
 | Skill `test-process` (`.agent/skills/13-test-process.md`) và cập nhật rule/skill liên quan | Tự động sinh test: test phải do người nghĩ ra từ hợp đồng trong spec |
 | Đưa `platform/auth` lên đủ chuẩn mới làm mẫu (spec `platform/auth`) | Chạy batch 1 trong cùng đợt: mỗi batch một phiên riêng |
 
@@ -56,6 +57,8 @@
 **Quy tắc comment** (`scripts/comment-lib.mjs`, chạy trong `yarn conventions:check` cho `src/`, `scripts/`, `tests/` và hai file cấu hình): vi phạm khi một khối `/* … */` hoặc `/** … */` dài hơn 3 dòng, khi có hơn 3 dòng `//` liền nhau, hoặc khi một dòng comment chứa dải trang trí (5 ký tự `═` liền nhau). Các chỉ thị (`eslint-…`, `@ts-…`, `conventions-ignore`) không tính. File vi phạm phải nằm trong `scripts/comment-baseline.json`; file không vi phạm mà còn trong baseline phải bị gỡ; baseline không được thêm mục (`quality:check --changed`).
 
 **`yarn test:mutants <module>`**: đọc `tests/<module>/mutants.json` (`name`, `file`, `find`, `replace`), áp từng đột biến lên file thật, chạy test của module, **khôi phục file** (cả khi Ctrl-C hoặc lỗi), báo số test đỏ cho từng đột biến. Một đột biến *bị bắt* khi có ít nhất một test đỏ. `find` không còn khớp, hoặc thay thế không đổi gì, là lỗi to chứ không phải "sống sót". Thoát 1 nếu còn đột biến sống sót hoặc danh sách rỗng.
+
+**Gốc dự án của các CLI.** `scripts/gate-env.mjs` xuất `ROOT` (biến `GATE_ROOT`, mặc định thư mục cha của `scripts/`), bản đồ module (đọc từ `GATE_MODULES` nếu có, mặc định `scripts/modules.mjs`) và `ownerOf(file)` (đường dẫn dài nhất thắng). Mọi CLI (`check-docs`, `check-quality`, `check-conventions`, `test-progress`, `test-mutants`, `i18n`) dùng nó, nên chạy được trên một dự án giả.
 
 **Dữ liệu tách khỏi cấu hình.** Tập file tính coverage và ngưỡng theo file nằm ở `tests/_support/coverage.json` (`vitest.config.mts` chỉ đọc nó). Hai baseline (`scripts/quality-baseline.json`, `scripts/comment-baseline.json`) là dữ liệu nên không thuộc module nào. Nhờ vậy hoàn thành một module (gỡ khỏi baseline, thêm ngưỡng) không buộc sửa spec và doc của `platform/dev-tooling`.
 
@@ -95,6 +98,8 @@ tests/_support/{identities,messages,navigation,render}.tsx ◄── mọi tests
 | **Fake ở biên mạng** (MSW cho `/api/auth/me`) thay vì mock `useAuth` | Component chạy qua `AuthProvider` thật, gần với production; test phát hiện được lỗi nối dây | Mock `useAuth` từng test (nhanh nhưng không kiểm tra provider) |
 | **Provider composition** trong `renderApp` mô phỏng `layout.tsx` | Một chỗ duy nhất biết thứ tự provider | Mỗi test tự bọc provider |
 | **Tách dữ liệu khỏi mã** (`coverage.json`, hai baseline) | Dữ liệu đổi theo từng module, mã cấu hình đổi hiếm; tách ra thì gate không bắt sửa spec của công cụ mỗi lần một module xong | Giữ ngưỡng trong `vitest.config.mts` (mỗi module chạm vào dev-tooling) |
+| **Dependency injection qua môi trường** (`GATE_ROOT`, `GATE_MODULES`) | CLI test được như người dùng chạy thật, không mock hệ thống file hay git | Mock `fs` và `child_process` (test gắn chặt cài đặt) |
+| **Một chỗ cho quyền sở hữu** (`gate-env.ownerOf`) | Ba CLI từng chép riêng cùng một hàm | Giữ ba bản chép |
 | **Functional core** (`quality-lib`, `progress-lib`) | Luật kiểm tra test được không cần dựng cây thư mục | Đọc file lẫn trong luật |
 
 ### Kiến trúc
@@ -117,7 +122,7 @@ Tiếng Anh cho code, thông báo lỗi của script và comment; spec và tài 
 
 ## 6. Luồng sống còn & kế hoạch test
 
-**Phạm vi:** một phần — luật cổng spec/test, tiến độ batch, token E2E, bộ khung render; chưa phủ `check-conventions.mjs`, `check-docs.mjs`, `i18n.mjs`, cron và next config
+**Phạm vi:** toàn module
 **Chiều kiểm thử:** auth = không (công cụ build/test, không có người dùng cuối) · permission = không (không có quyền nào ở tầng công cụ)
 
 | ID | Luồng | Tình huống | Danh tính | Tầng | Test |
@@ -129,13 +134,30 @@ Tiếng Anh cho code, thông báo lỗi của script và comment; spec và tài 
 | QG-10 | Đột biến: áp thay thế đầu tiên; từ chối khi `find` không khớp hoặc không đổi gì; tổng kết bắt được / sống sót; danh sách rỗng không tính là đạt | lỗi | — | unit | `tests/platform/dev-tooling/progress.test.ts` |
 | QG-11 | Quy tắc comment: khối dài hơn 3 dòng, hơn 3 dòng `//` liền nhau và dải `═` bị phát hiện (kèm số dòng); comment ngắn, chỉ thị và chuỗi chứa `//` hoặc `/*` thì không; baseline: vi phạm mới → lỗi, file đã sạch còn trong baseline → lỗi | lỗi | — | unit | `tests/platform/dev-tooling/comment-lib.test.ts` |
 | QG-12 | Cấu hình coverage: mỗi ngưỡng và mỗi mục `include` trỏ tới file có thật, ngưỡng là số trong 0–100 | lỗi | — | unit | `tests/platform/dev-tooling/coverage-config.test.ts` |
+| GATE-1 | Bản đồ module: mỗi module có đường dẫn tồn tại, doc/spec/thư mục test cùng slug, `ownerOf` chọn đường dẫn dài nhất; baseline và kế hoạch batch khớp bản đồ | đúng | — | unit | `tests/platform/dev-tooling/modules-map.test.ts` |
+| GATE-1E | File không thuộc module nào và file bị bỏ qua (`IGNORED`) | lỗi | — | unit | `tests/platform/dev-tooling/modules-map.test.ts` |
+| GATE-2 | `check-conventions`: mã sạch, mã nằm trong comment, `conventions-ignore` và các dạng hợp lệ của từng luật đều qua | đúng | — | integration | `tests/platform/dev-tooling/conventions-cli.test.ts` |
+| GATE-2E | `check-conventions`: mỗi luật (`error-message`, `money-format`, `native-dialog`, `old-sort-syntax`, `list-query`, `max-limit`, `carousel`, `auto-advance`, `toast-i18n`, `data-table`, `comment-length`) bắt đúng vi phạm kèm file:dòng và thoát 1 | lỗi | — | integration | `tests/platform/dev-tooling/conventions-cli.test.ts` |
+| GATE-3 | `check-docs`: dự án nhất quán qua; `--who` in doc sở hữu; `--changed` qua khi doc đổi cùng code | đúng | — | integration | `tests/platform/dev-tooling/docs-cli.test.ts` |
+| GATE-3E | `check-docs`: file không có chủ, doc thiếu/thừa, tiêu đề hoặc mục sai, từ kế hoạch, link và tên file hỏng, thiếu hàng README, module đổi mà doc không đổi hoặc không bump ngày | lỗi | — | integration | `tests/platform/dev-tooling/docs-cli.test.ts` |
+| GATE-4 | `check-quality`: dự án nhất quán qua; `--changed` qua khi spec, ngày và test cùng đổi; miễn trừ `no-test` và `baseline-grow` | đúng | — | integration | `tests/platform/dev-tooling/quality-cli.test.ts` |
+| GATE-4E | `check-quality`: thiếu spec/test (trừ module trong baseline), module đủ mà còn trong baseline, file lạ trong `specs/` và `tests/`, spec hỏng, kế hoạch batch hỏng, `--changed` thiếu spec hoặc test hoặc ngày, baseline tăng | lỗi | — | integration | `tests/platform/dev-tooling/quality-cli.test.ts` |
+| GATE-5 | `test-progress`: bảng tổng, bảng làm việc của batch, `--verify` thoát 0 khi batch xong, `--json` | đúng | — | integration | `tests/platform/dev-tooling/progress-cli.test.ts` |
+| GATE-5E | `test-progress`: kế hoạch hỏng, batch không tồn tại, `--verify` thoát 1 và nêu chỗ thiếu | lỗi | — | integration | `tests/platform/dev-tooling/progress-cli.test.ts` |
+| GATE-6 | `test-mutants`: đột biến bị bắt thì thoát 0 và file nguồn được khôi phục | đúng | — | integration | `tests/platform/dev-tooling/mutants-cli.test.ts` |
+| GATE-6E | `test-mutants`: đột biến sống sót thoát 1; `find` không khớp bị báo; file luôn được khôi phục; thiếu module hoặc thiếu danh sách | lỗi | — | integration | `tests/platform/dev-tooling/mutants-cli.test.ts` |
+| GATE-7 | `i18n.mjs`: `sync` ghi registry theo thư mục `en`; `check` qua khi các ngôn ngữ khớp | đúng | — | integration | `tests/platform/dev-tooling/i18n-cli.test.ts` |
+| GATE-7E | `i18n.mjs`: thiếu file, thừa file, thiếu khóa, khác placeholder, registry cũ → thoát 1; lệnh lạ | lỗi | — | integration | `tests/platform/dev-tooling/i18n-cli.test.ts` |
+| GATE-8 | Cron `/api/cron/ping`: có và không có `CRON_SECRET`, API trả ok | đúng | — | integration | `tests/platform/dev-tooling/cron-route.test.ts` |
+| GATE-8E | Cron: sai secret → 401; API không ok hoặc lỗi mạng → 502 | lỗi | — | integration | `tests/platform/dev-tooling/cron-route.test.ts` |
+| GATE-9 | `next.config`: tiêu đề không cache chỉ ở dev, các host ảnh, plugin `next-intl`; `vercel.json` trỏ đúng route cron | đúng | — | unit | `tests/platform/dev-tooling/next-config.test.ts` |
 | QG-5 | Token E2E: đọc `exp`, phân loại thiếu / hết hạn / bị từ chối / không gọi được / sắp hết; che email; nạp `.env.e2e.local` | lỗi | — | unit | `tests/platform/dev-tooling/e2e-session.test.ts` |
 | QG-6 | Ma trận: thiếu `Phạm vi` / `Chiều kiểm thử`, giá trị lạ, `không` không lý do, thiếu hàng đúng/lỗi, thiếu khách hoặc đã đăng nhập khi auth = có, thiếu có quyền hoặc thiếu quyền khi permission = có → lỗi; đủ thì qua | lỗi | — | unit | `tests/platform/dev-tooling/matrix.test.ts` |
 | QG-7 | Tiến độ: phân loại pending / partial / done, liệt kê ô còn thiếu; kế hoạch batch phải phủ đúng mọi module, mỗi batch ≤ 5; `--verify` chỉ qua khi cả batch xong | lỗi | — | unit | `tests/platform/dev-tooling/progress.test.ts` |
 | QG-8 | Khung render: bốn danh tính dựng đúng; `renderApp` chờ phiên xác định, đặt token và handler `/me`, dùng bản dịch thật vi/en, điều hướng giả ghi lại lời gọi | đúng | khách | component | `tests/platform/dev-tooling/harness.test.tsx` |
 | QG-9 | Khung render: danh tính đã đăng nhập (user, admin đủ quyền, admin thiếu quyền) nhận đúng `role` và `permissions` qua `useAuth()`; `/me` lỗi thì thành khách | đúng | admin thiếu quyền | component | `tests/platform/dev-tooling/harness.test.tsx` |
 
-Phần Playwright của `auth.setup.ts` được kiểm bằng cách chạy `yarn test:e2e` với token thiếu, hết hạn và bị từ chối; luồng đã đăng nhập với token thật chạy được khi chủ dự án cung cấp token. Phần duyệt file và git của `check-quality.mjs` và phần in của `test-progress.mjs` được kiểm bằng chính việc chạy chúng; chưa có test tự động cho phần này.
+Các CLI (cổng và công cụ) được test bằng cách chạy chúng thật trên một dự án giả trong thư mục tạm (`GATE_ROOT`, `GATE_MODULES`), kể cả `--changed` trên một kho git tạm. Phần Playwright của `auth.setup.ts` được kiểm bằng cách chạy `yarn test:e2e` với token thiếu, hết hạn và bị từ chối; luồng đã đăng nhập với token thật chạy được khi chủ dự án cung cấp token.
 
 ## 7. Rủi ro & triển khai
 
@@ -149,6 +171,13 @@ Phần Playwright của `auth.setup.ts` được kiểm bằng cách chạy `yar
 | Điều hướng giả toàn cục che lỗi tích hợp router thật | E2E phủ điều hướng thật | Test cần router thật dùng `vi.unmock` ở file đó |
 | Phiên bản công cụ đổi API (MSW 3: `onUnhandledFrame`) | Test chứng minh request thiếu handler làm test đỏ | Ghim phiên bản, đọc `.d.ts` khi nâng |
 
+Phát hiện khi phủ test:
+
+| Phát hiện | Hành vi hiện tại |
+|---|---|
+| `next.config.ts` cho phép ảnh từ bốn host, doc ghi ba | Host Supabase của dự án có trong cấu hình; doc được sửa |
+| `ownerOf` bị chép ở ba CLI | Gom vào `scripts/gate-env.mjs` (đã làm cùng đợt này, có test) |
+
 Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế hoạch batch; thêm lệnh `yarn test:progress`.
 
 ## 8. Lịch sử thay đổi
@@ -159,4 +188,6 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-21 · Thêm quy tắc comment ngắn có máy kiểm tra và baseline chỉ ngắn đi; rút gọn comment ở các file của đợt refactor này.
 - 2026-10-21 · Tách dữ liệu coverage ra `tests/_support/coverage.json` và coi hai baseline là dữ liệu không thuộc module (không còn buộc sửa spec/doc của công cụ khi một module xong).
 - 2026-10-21 · Sửa bộ quét comment: bỏ sót một ký tự sau `${…}` trong template nên hiểu sai phần còn lại của file; thêm test tái hiện. baseline-grow: baseline comment tăng từ 137 lên 142 vì 5 file cũ trước đó bị bỏ sót nay mới được phát hiện (sửa bộ phát hiện, không phải thêm vi phạm mới).
+- 2026-10-22 · Phủ toàn module (batch 1): thêm `scripts/gate-env.mjs` (gốc dự án, bản đồ module và `ownerOf` dùng chung, ghi đè được bằng `GATE_ROOT`/`GATE_MODULES`) và test chạy thật mọi CLI trên dự án giả; test cron, next config, bản đồ module. Đổi `ownerOf` từ ba bản chép thành một.
 - 2026-10-22 · `vitest.config.mts` cho Vite nạp `next-intl` (`server.deps.inline`) và import JSON với `with { type: "json" }`; `scripts/modules.mjs` thêm `scripts/i18n-lib.mjs` vào module i18n. no-test: chỉ đổi cấu hình, các test của batch 1 đang chạy qua cấu hình này.
+- 2026-10-22 · Kiểm thử đột biến 81/81 (79 ở lần chạy đầu; hai đột biến sống sót đã được vá bằng test: giới hạn 5 module của batch và việc harness chỉ chấp nhận đúng token). Phát hiện qua test và đã sửa: cổng docs không bắt từ cấm có dấu (`đề xuất`) vì `\b` của JavaScript chỉ hiểu chữ ASCII; bộ quét comment nuốt ký tự xuống dòng sau dấu nháy đơn lẻ (chữ `Don't` trong JSX). `test-mutants` nhận trường `tests` cho từng đột biến.

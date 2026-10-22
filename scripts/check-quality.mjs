@@ -4,12 +4,10 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { fileURLToPath } from "node:url";
-import { MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT } from "./modules.mjs";
+import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf } from "./gate-env.mjs";
 import { TEST_FILE, hasWaiver, validateBaseline, validateCriticalFlows, validateSpec } from "./quality-lib.mjs";
 import { validateBatches } from "./progress-lib.mjs";
 
-const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const SPECS = join(ROOT, "specs");
 const TESTS = join(ROOT, "tests");
 const BASELINE_PATH = "scripts/quality-baseline.json";
@@ -32,16 +30,6 @@ const docs = MODULES.map((m) => m.doc);
 const testFilesOf = (doc) => walk(join(TESTS, doc)).map(posix).filter((f) => TEST_FILE.test(f));
 
 /* ── Ownership (same rule as check-docs: the longest matching path wins) ── */
-const owners = MODULES.flatMap((m) => m.paths.map((p) => ({ prefix: p, doc: m.doc })));
-function ownerOf(file) {
-  let best = null;
-  for (const o of owners) {
-    const hit = o.prefix.endsWith("/") ? file.startsWith(o.prefix) : file === o.prefix;
-    if (hit && (!best || o.prefix.length > best.prefix.length)) best = o;
-  }
-  return best?.doc ?? null;
-}
-
 /* ── 1. specs/ holds the README, shared `_*.md` files and one spec per module ── */
 const specFiles = walk(SPECS).map(posix);
 const expectedSpecs = new Set(docs.map((d) => `specs/${d}.md`));

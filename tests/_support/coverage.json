@@ -16,7 +16,10 @@
     "src/i18n/{ScopedMessages,error-message,formats,messages,metadata,navigation,request,routing,use-error-message,use-labels}.{ts,tsx}",
     "src/app/{robots,sitemap}.ts",
     "src/lib/{site-url,brand,structured-data}.ts",
-    "src/app/[locale]/_components/JsonLd.tsx"
+    "src/app/[locale]/_components/JsonLd.tsx",
+    "scripts/{quality-lib,progress-lib,comment-lib}.mjs",
+    "src/app/api/cron/**",
+    "next.config.ts"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -267,6 +270,31 @@
       "functions": 95
     },
     "**/JsonLd.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "scripts/comment-lib.mjs": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "scripts/progress-lib.mjs": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "scripts/quality-lib.mjs": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/cron/**": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "next.config.ts": {
       "lines": 95,
       "branches": 90,
       "functions": 95

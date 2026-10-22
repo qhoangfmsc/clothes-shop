@@ -89,6 +89,14 @@ describe("validateBatches", () => {
     expect(validateBatches(plan([{ id: 1, modules: ["a/two", "a/three", "a/four", "x/ghost"] }], ["a/one"]), docs).join("\n")).toContain('"x/ghost" is not a module');
   });
 
+  it("accepts a batch of five modules and rejects one of six (the limit is part of the process)", () => {
+    const names = (n: number) => Array.from({ length: n }, (_, i) => `m/${i}`);
+
+    expect(validateBatches(plan([{ id: 1, modules: names(5) }]), names(5))).toEqual([]);
+    expect(validateBatches(plan([{ id: 1, modules: names(6) }]), names(6)).join("\n")).toContain("batch 1 has 6 modules (max 5)");
+    expect(MAX_BATCH_SIZE).toBe(5);
+  });
+
   it(`rejects a batch of more than ${MAX_BATCH_SIZE} modules`, () => {
     const many = Array.from({ length: MAX_BATCH_SIZE + 1 }, (_, i) => `m/${i}`);
 

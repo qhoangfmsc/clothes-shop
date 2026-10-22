@@ -3,10 +3,9 @@
    Opt out of one line: `// conventions-ignore: <rule-id> <why>` on or above it. */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { fileURLToPath } from "node:url";
 import { findLongComments, validateCommentBaseline } from "./comment-lib.mjs";
+import { ROOT } from "./gate-env.mjs";
 
-const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const SRC = join(ROOT, "src");
 const MAX_LIMIT = 200;
 

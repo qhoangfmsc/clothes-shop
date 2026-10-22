@@ -79,6 +79,36 @@ describe("QG-11 findLongComments", () => {
     expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 2, length: 4 }]);
   });
 
+  it("does not take a regex literal for a comment, even one that looks like a block or a line comment", () => {
+    const code = [
+      "const block = /\\/\\*[\\s\\S]*?\\*\\//g;",
+      "const slashes = /[/]{2}x/;",
+      "const classy = /a[^/]b/;",
+      "const call = text.replace(/\\/\\/.*$/, '');",
+      "// a short comment",
+    ].join("\n");
+
+    expect(findLongComments(code)).toEqual([]);
+  });
+
+  it("tells division from a regex, so a comment after a division is still seen", () => {
+    const code = ["const half = total / 2;", "// 1", "// 2", "// 3", "// 4"].join("\n");
+
+    expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 2, length: 4 }]);
+  });
+
+  it("handles escaped quotes inside strings and braces inside template interpolations", () => {
+    const code = ['const a = "say \\"//\\" now";', "const b = 'it\\'s /* not a comment */';", "const c = `${ { x: 1 }.x } /* still text */`;", "const d = 1;"].join("\n");
+
+    expect(findLongComments(code)).toEqual([]);
+  });
+
+  it("an apostrophe in JSX text ends at the line, so the lines after it are still read correctly", () => {
+    const code = ["const a = <p>Don't panic</p>;", "// 1", "// 2", "// 3", "// 4"].join("\n");
+
+    expect(findLongComments(code)).toEqual([{ kind: "line-run", line: 2, length: 4 }]);
+  });
+
   it("reports several findings in order", () => {
     const code = ["// a", "// b", "// c", "// d", "const x = 1;", "/*", "1", "2", "3", "*/"].join("\n");
 

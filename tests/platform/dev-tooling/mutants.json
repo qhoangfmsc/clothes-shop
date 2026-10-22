@@ -1,0 +1,731 @@
+[
+  {
+    "name": "docs: accented planning words are missed again",
+    "file": "scripts/check-docs.mjs",
+    "find": "/(?<![\\p{L}\\p{N}_])(TODO|FIXME|roadmap|kế hoạch|đề xuất)(?![\\p{L}\\p{N}_])/iu",
+    "replace": "/\\b(TODO|FIXME|roadmap|kế hoạch|đề xuất)\\b/i",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: the title line is not required",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!lines[0].startsWith(\"# \"))",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: the code line is not required",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!/> \\*\\*Code:\\*\\*/.test(header))",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a missing section is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (at < 0) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a missing README row is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (count < 1) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a doc that is no module's is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (doc !== \"docs/README.md\" && !expectedDocs.has(doc)) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a code file nobody owns is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!ownerOf(file)) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a module with no files left is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!live) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a missing doc file is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!existsSync(join(ROOT, doc))) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a file name that does not exist is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!knownNames.has(basename(token))) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a broken link is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!existsSync(resolve(dirname(join(ROOT, rel)), m[1]))) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: changed code without its doc is accepted",
+    "file": "scripts/check-docs.mjs",
+    "find": "if (!changed.has(docPath)) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: the date need not change",
+    "file": "scripts/check-docs.mjs",
+    "find": "&& docDate < today) {",
+    "replace": "&& false) {",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: a doc written today cannot be edited again today",
+    "file": "scripts/check-docs.mjs",
+    "find": "&& docDate < today) {",
+    "replace": "&& true) {",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: --who always succeeds",
+    "file": "scripts/check-docs.mjs",
+    "find": "process.exit(missing ? 1 : 0);",
+    "replace": "process.exit(0);",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "docs: --who does not find a module by its short name",
+    "file": "scripts/check-docs.mjs",
+    "find": "m.doc === target || m.doc.endsWith(`/${target}`)",
+    "replace": "m.doc === target",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: changed code without its spec is accepted",
+    "file": "scripts/check-quality.mjs",
+    "find": "if (!changed.has(spec)) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: any test file counts",
+    "file": "scripts/check-quality.mjs",
+    "find": "f.startsWith(`tests/${doc}/`) && TEST_FILE.test(f)",
+    "replace": "f.startsWith(\"tests/\") && TEST_FILE.test(f)",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: any file under the module's tests counts",
+    "file": "scripts/check-quality.mjs",
+    "find": "f.startsWith(`tests/${doc}/`) && TEST_FILE.test(f)",
+    "replace": "f.startsWith(`tests/${doc}/`)",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: the no-test waiver is ignored",
+    "file": "scripts/check-quality.mjs",
+    "find": "waived = hasWaiver(diff, \"no-test\");",
+    "replace": "waived = false;",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: the spec date need not change",
+    "file": "scripts/check-quality.mjs",
+    "find": "&& date < today) fail(",
+    "replace": "&& false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: the quality baseline may grow",
+    "file": "scripts/check-quality.mjs",
+    "find": "if (before && !growthWaived) for",
+    "replace": "if (false) for",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: the comment baseline may grow",
+    "file": "scripts/check-quality.mjs",
+    "find": "if (commentBase && !growthWaived) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: the baseline-grow waiver is ignored",
+    "file": "scripts/check-quality.mjs",
+    "find": "changed.has(devToolingSpec) &&",
+    "replace": "false &&",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: a stray spec is accepted",
+    "file": "scripts/check-quality.mjs",
+    "find": "if (!expectedSpecs.has(file)) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: a stray test folder is accepted",
+    "file": "scripts/check-quality.mjs",
+    "find": "if (!moduleDirs.has(parts.slice(0, 3).join(\"/\"))) fail(",
+    "replace": "if (false) fail(",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: the shared critical-flows file may be missing",
+    "file": "scripts/check-quality.mjs",
+    "find": "else fail(\"specs/_critical-flows.md is missing\");",
+    "replace": ";",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "quality: e2e journeys are refused",
+    "file": "scripts/check-quality.mjs",
+    "find": "parts[1] === \"_support\" || parts[1] === \"e2e\"",
+    "replace": "parts[1] === \"_support\"",
+    "tests": [
+      "tests/platform/dev-tooling/quality-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: the bare error helper is allowed",
+    "file": "scripts/check-conventions.mjs",
+    "find": "\\berrorMessage\\b",
+    "replace": "\\berrorMessageZ\\b",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: money formatting is allowed everywhere",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (rel !== \"src/lib/money.ts\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: toFixed is allowed",
+    "file": "scripts/check-conventions.mjs",
+    "find": "\\.toFixed\\s*\\(",
+    "replace": "\\.toFixedZ\\s*\\(",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: a method named confirm is flagged",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (!windowPrefix && /[.\\w$]/.test(code[m.index - 1] ?? \"\")) continue; // a method like `x.confirm(`",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: confirm is flagged even when it comes from useConfirm",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (!windowPrefix && name === \"confirm\" && /\\buseConfirm\\b/.test(code)) continue;",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: rating sorts are not recognised",
+    "file": "scripts/check-conventions.mjs",
+    "find": "(?:price|name|title|rating)_(?:asc|desc)",
+    "replace": "(?:price|name|title)_(?:asc|desc)",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: hand-built list URLs are allowed everywhere",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (rel !== \"src/lib/list-query.ts\") {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: limits above the maximum are allowed",
+    "file": "scripts/check-conventions.mjs",
+    "find": "Number(m[1]) > MAX_LIMIT",
+    "replace": "Number(m[1]) > 5000",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: hand-rolled carousels are allowed everywhere",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (!rel.endsWith(\"/Carousel.tsx\")) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: setInterval is allowed everywhere",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (rel !== \"src/hooks/use-auto-advance.ts\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: toast.warning with a literal is allowed",
+    "file": "scripts/check-conventions.mjs",
+    "find": "toast\\.(?:success|error|info|warning)",
+    "replace": "toast\\.(?:success|error|info)",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: a server table without sort options is allowed",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (!/\\bsortOptions=/.test(block)) report",
+    "replace": "if (false) report",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: a static table is checked like a server one",
+    "file": "scripts/check-conventions.mjs",
+    "find": "if (!/\\bfetchData=/.test(block)) continue; // static mode",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: an opt-out for another rule also works",
+    "file": "scripts/check-conventions.mjs",
+    "find": "l?.includes(`conventions-ignore: ${rule}`)",
+    "replace": "l?.includes(\"conventions-ignore:\")",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "conventions: scripts and tests are not checked for long comments",
+    "file": "scripts/check-conventions.mjs",
+    "find": "const COMMENT_ROOTS = [\"src\", \"scripts\", \"tests\"];",
+    "replace": "const COMMENT_ROOTS = [\"src\"];",
+    "tests": [
+      "tests/platform/dev-tooling/conventions-cli.test.ts"
+    ]
+  },
+  {
+    "name": "progress: admin modules get no hint",
+    "file": "scripts/test-progress.mjs",
+    "find": "if (doc.startsWith(\"admin/\"))",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/progress-cli.test.ts"
+    ]
+  },
+  {
+    "name": "progress: --verify always passes",
+    "file": "scripts/test-progress.mjs",
+    "find": "process.exit(report.ok ? 0 : 1);",
+    "replace": "process.exit(0);",
+    "tests": [
+      "tests/platform/dev-tooling/progress-cli.test.ts"
+    ]
+  },
+  {
+    "name": "progress: a broken plan is accepted",
+    "file": "scripts/test-progress.mjs",
+    "find": "if (planProblems.length) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/progress-cli.test.ts"
+    ]
+  },
+  {
+    "name": "progress: the next batch is the last one",
+    "file": "scripts/test-progress.mjs",
+    "find": "board.batches.find((b) => b.done < b.total)",
+    "replace": "board.batches.find((b) => b.done <= b.total)",
+    "tests": [
+      "tests/platform/dev-tooling/progress-cli.test.ts"
+    ]
+  },
+  {
+    "name": "mutants: a survivor does not fail the run",
+    "file": "scripts/test-mutants.mjs",
+    "find": "process.exit(summary.ok ? 0 : 1);",
+    "replace": "process.exit(0);",
+    "tests": [
+      "tests/platform/dev-tooling/mutants-cli.test.ts"
+    ]
+  },
+  {
+    "name": "mutants: the file is not restored after each mutant",
+    "file": "scripts/test-mutants.mjs",
+    "find": "restoreNow();\n\n  let failing;",
+    "replace": "\n  let failing;",
+    "tests": [
+      "tests/platform/dev-tooling/mutants-cli.test.ts"
+    ]
+  },
+  {
+    "name": "mutants: the number of failing tests is not read",
+    "file": "scripts/test-mutants.mjs",
+    "find": ".numFailedTests;",
+    "replace": ".numFailedTests * 0;",
+    "tests": [
+      "tests/platform/dev-tooling/mutants-cli.test.ts"
+    ]
+  },
+  {
+    "name": "mutants: the tests named by a mutant are ignored",
+    "file": "scripts/test-mutants.mjs",
+    "find": "...(mutant.tests ?? [`tests/${doc}`])",
+    "replace": "...[`tests/${doc}`]",
+    "tests": [
+      "tests/platform/dev-tooling/mutants-cli.test.ts"
+    ]
+  },
+  {
+    "name": "mutants: a missing module name is accepted",
+    "file": "scripts/test-mutants.mjs",
+    "find": "if (!doc) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/mutants-cli.test.ts"
+    ]
+  },
+  {
+    "name": "mutants: a missing list is accepted",
+    "file": "scripts/test-mutants.mjs",
+    "find": "if (!existsSync(listPath)) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/mutants-cli.test.ts"
+    ]
+  },
+  {
+    "name": "i18n: an unreadable locale list is accepted",
+    "file": "scripts/i18n.mjs",
+    "find": "if (!match) throw new Error(",
+    "replace": "if (false) throw new Error(",
+    "tests": [
+      "tests/platform/dev-tooling/i18n-cli.test.ts"
+    ]
+  },
+  {
+    "name": "i18n: sync rewrites an unchanged registry",
+    "file": "scripts/i18n.mjs",
+    "find": "if (next !== prev) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/platform/dev-tooling/i18n-cli.test.ts"
+    ]
+  },
+  {
+    "name": "i18n: an out-of-date registry is accepted",
+    "file": "scripts/i18n.mjs",
+    "find": "if (registry !== renderRegistry(sourceFiles)) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/i18n-cli.test.ts"
+    ]
+  },
+  {
+    "name": "i18n: a file only a translation has is accepted",
+    "file": "scripts/i18n.mjs",
+    "find": "for (const extra of files.filter((f) => !sourceFiles.includes(f))) {",
+    "replace": "for (const extra of []) {",
+    "tests": [
+      "tests/platform/dev-tooling/i18n-cli.test.ts"
+    ]
+  },
+  {
+    "name": "i18n: a missing translated file is not reported",
+    "file": "scripts/i18n.mjs",
+    "find": "if (!files.includes(file)) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/i18n-cli.test.ts"
+    ]
+  },
+  {
+    "name": "gate-env: a path owns files that merely start with it",
+    "file": "scripts/gate-env.mjs",
+    "find": "o.prefix.endsWith(\"/\") ? file.startsWith(o.prefix) : file === o.prefix",
+    "replace": "file.startsWith(o.prefix)",
+    "tests": [
+      "tests/platform/dev-tooling/modules-map.test.ts"
+    ]
+  },
+  {
+    "name": "gate-env: the shortest path wins",
+    "file": "scripts/gate-env.mjs",
+    "find": "o.prefix.length > best.prefix.length",
+    "replace": "o.prefix.length < best.prefix.length",
+    "tests": [
+      "tests/platform/dev-tooling/modules-map.test.ts"
+    ]
+  },
+  {
+    "name": "gate-env: the project root cannot be changed",
+    "file": "scripts/gate-env.mjs",
+    "find": "process.env.GATE_ROOT ??",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/docs-cli.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: the limit is five lines",
+    "file": "scripts/comment-lib.mjs",
+    "find": "export const MAX_COMMENT_LINES = 3;",
+    "replace": "export const MAX_COMMENT_LINES = 5;",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: banners are allowed",
+    "file": "scripts/comment-lib.mjs",
+    "find": "if (BANNER.test(c.text))",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "comment-lib: runs of // lines are allowed",
+    "file": "scripts/comment-lib.mjs",
+    "find": "if (run.length > MAX_COMMENT_LINES)",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/comment-lib.test.ts"
+    ]
+  },
+  {
+    "name": "quality-lib: a waiver needs no reason",
+    "file": "scripts/quality-lib.mjs",
+    "find": "${tag}:\\\\s*\\\\S",
+    "replace": "${tag}:",
+    "tests": [
+      "tests/platform/dev-tooling/quality-lib.test.ts"
+    ]
+  },
+  {
+    "name": "quality-lib: a permission flow does not need a denied admin",
+    "file": "scripts/quality-lib.mjs",
+    "find": "for (const identity of [\"admin đủ quyền\", \"admin thiếu quyền\"])",
+    "replace": "for (const identity of [\"admin đủ quyền\"])",
+    "tests": [
+      "tests/platform/dev-tooling/matrix.test.ts"
+    ]
+  },
+  {
+    "name": "quality-lib: a guest flow is not needed with auth",
+    "file": "scripts/quality-lib.mjs",
+    "find": "if (!has(\"identity\", \"khách\"))",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/matrix.test.ts"
+    ]
+  },
+  {
+    "name": "progress-lib: a batch may hold six modules",
+    "file": "scripts/progress-lib.mjs",
+    "find": "export const MAX_BATCH_SIZE = 5;",
+    "replace": "export const MAX_BATCH_SIZE = 6;",
+    "tests": [
+      "tests/platform/dev-tooling/progress.test.ts"
+    ]
+  },
+  {
+    "name": "progress-lib: fewer tests than flows is accepted",
+    "file": "scripts/progress-lib.mjs",
+    "find": "if (hasTests && testCount < spec.flowCount)",
+    "replace": "if (false)",
+    "tests": [
+      "tests/platform/dev-tooling/progress.test.ts"
+    ]
+  },
+  {
+    "name": "cron: anyone may call it with a secret set",
+    "file": "src/app/api/cron/ping/route.ts",
+    "find": "if (secret && request.headers.get(\"authorization\") !== `Bearer ${secret}`) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/dev-tooling/cron-route.test.ts"
+    ]
+  },
+  {
+    "name": "cron: a failing API still answers 200",
+    "file": "src/app/api/cron/ping/route.ts",
+    "find": "{ status: res.ok ? 200 : 502 }",
+    "replace": "{ status: 200 }",
+    "tests": [
+      "tests/platform/dev-tooling/cron-route.test.ts"
+    ]
+  },
+  {
+    "name": "cron: the ping is cached",
+    "file": "src/app/api/cron/ping/route.ts",
+    "find": "cache: \"no-store\",",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/cron-route.test.ts"
+    ]
+  },
+  {
+    "name": "cron: a network failure answers 500",
+    "file": "src/app/api/cron/ping/route.ts",
+    "find": "        durationMs: Date.now() - startedAt,\n      },\n      { status: 502 },",
+    "replace": "        durationMs: Date.now() - startedAt,\n      },\n      { status: 500 },",
+    "tests": [
+      "tests/platform/dev-tooling/cron-route.test.ts"
+    ]
+  },
+  {
+    "name": "next-config: media files are cached in development",
+    "file": "next.config.ts",
+    "find": "if (!isDev) return [];",
+    "replace": "return [];",
+    "tests": [
+      "tests/platform/dev-tooling/next-config.test.ts"
+    ]
+  },
+  {
+    "name": "next-config: the Google avatar host is dropped",
+    "file": "next.config.ts",
+    "find": "hostname: \"lh3.googleusercontent.com\",",
+    "replace": "hostname: \"lh3.example.com\",",
+    "tests": [
+      "tests/platform/dev-tooling/next-config.test.ts"
+    ]
+  },
+  {
+    "name": "e2e-session: the warning comes too late",
+    "file": "tests/_support/e2e-session.ts",
+    "find": "export const WARN_DAYS_LEFT = 5;",
+    "replace": "export const WARN_DAYS_LEFT = 1;",
+    "tests": [
+      "tests/platform/dev-tooling/e2e-session.test.ts"
+    ]
+  },
+  {
+    "name": "e2e-session: an expired token is only found by the API",
+    "file": "tests/_support/e2e-session.ts",
+    "find": "expiresAt.getTime() <= now",
+    "replace": "false",
+    "tests": [
+      "tests/platform/dev-tooling/e2e-session.test.ts"
+    ]
+  },
+  {
+    "name": "e2e-session: a real environment variable loses to the file",
+    "file": "tests/_support/e2e-session.ts",
+    "find": "!process.env[key]) process.env[key] = value",
+    "replace": "true) process.env[key] = value",
+    "tests": [
+      "tests/platform/dev-tooling/e2e-session.test.ts"
+    ]
+  },
+  {
+    "name": "e2e-session: the whole email is shown",
+    "file": "tests/_support/e2e-session.ts",
+    "find": "return `${name.slice(0, 1)}${\"*\".repeat(Math.max(name.length - 1, 1))}@${domain}`;",
+    "replace": "return email;",
+    "tests": [
+      "tests/platform/dev-tooling/e2e-session.test.ts"
+    ]
+  },
+  {
+    "name": "harness: the fake API accepts any token",
+    "file": "tests/_support/identities.ts",
+    "find": "request.headers.get(\"authorization\") === \"Bearer test-access\"",
+    "replace": "true",
+    "tests": [
+      "tests/platform/dev-tooling/harness.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a guest keeps the earlier session",
+    "file": "tests/_support/identities.ts",
+    "find": "localStorage.removeItem(ACCESS_KEY);\n    localStorage.removeItem(REFRESH_KEY);\n    return null;",
+    "replace": "return null;",
+    "tests": [
+      "tests/platform/dev-tooling/harness.test.tsx"
+    ]
+  }
+]

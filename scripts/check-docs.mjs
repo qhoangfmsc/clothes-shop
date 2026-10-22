@@ -4,13 +4,11 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, dirname, relative, resolve, sep, basename } from "node:path";
-import { fileURLToPath } from "node:url";
 
-const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const DOCS = join(ROOT, "docs");
 const posix = (p) => relative(ROOT, p).split(sep).join("/");
 
-import { MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT } from "./modules.mjs";
+import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf } from "./gate-env.mjs";
 
 const REQUIRED_HEADINGS = [
   "## 1. Tóm tắt module",
@@ -18,23 +16,12 @@ const REQUIRED_HEADINGS = [
   "## 3. Submodule & chức năng hiện có",
   "## 4. Chi tiết",
 ];
-const BANNED = /\b(TODO|FIXME|roadmap|kế hoạch|đề xuất)\b/i;
+const BANNED = /(?<![\p{L}\p{N}_])(TODO|FIXME|roadmap|kế hoạch|đề xuất)(?![\p{L}\p{N}_])/iu;
 
 const errors = [];
 const fail = (msg) => errors.push(msg);
 
 /* ── Ownership ── */
-const owners = MODULES.flatMap((m) => m.paths.map((p) => ({ prefix: p, doc: m.doc })));
-
-function ownerOf(file) {
-  let best = null;
-  for (const o of owners) {
-    const hit = o.prefix.endsWith("/") ? file.startsWith(o.prefix) : file === o.prefix;
-    if (hit && (!best || o.prefix.length > best.prefix.length)) best = o;
-  }
-  return best?.doc ?? null;
-}
-
 const isIgnored = (file) => IGNORED.some((re) => re.test(file));
 
 function walk(dir) {

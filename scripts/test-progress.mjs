@@ -3,12 +3,10 @@
    Rules: .agent/skills/13-test-process.md. */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { fileURLToPath } from "node:url";
-import { MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT } from "./modules.mjs";
+import { ROOT, MODULES, IGNORED, CODE_ROOTS, CODE_FILES, CODE_EXT, ownerOf } from "./gate-env.mjs";
 import { TEST_FILE, parseSpec, validateMatrix } from "./quality-lib.mjs";
 import { batchReport, classifyModule, scoreboard, validateBatches } from "./progress-lib.mjs";
 
-const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const posix = (p) => relative(ROOT, p).split(sep).join("/");
 const read = (rel) => readFileSync(join(ROOT, rel), "utf8");
 const exists = (rel) => existsSync(join(ROOT, rel));
@@ -25,16 +23,6 @@ function walk(dir) {
 const docs = MODULES.map((m) => m.doc);
 const plan = JSON.parse(read("scripts/test-batches.json"));
 const pending = JSON.parse(read("scripts/quality-baseline.json")).pending ?? [];
-
-const owners = MODULES.flatMap((m) => m.paths.map((p) => ({ prefix: p, doc: m.doc })));
-function ownerOf(file) {
-  let best = null;
-  for (const o of owners) {
-    const hit = o.prefix.endsWith("/") ? file.startsWith(o.prefix) : file === o.prefix;
-    if (hit && (!best || o.prefix.length > best.prefix.length)) best = o;
-  }
-  return best?.doc ?? null;
-}
 
 const codeFiles = [...CODE_ROOTS.flatMap((d) => walk(join(ROOT, d))).map(posix), ...CODE_FILES.filter(exists)].filter((f) => CODE_EXT.test(f) && !IGNORED.some((re) => re.test(f)));
 

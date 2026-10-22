@@ -94,14 +94,13 @@ describe("QG-8 renderApp", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("Session Expired");
   });
 
-  it("answers /api/auth/me only for the stored token, so a missing token would make the user a guest", async () => {
+  it("answers /api/auth/me only for the stored token, as the real API would", async () => {
     signInAs("user");
-    localStorage.setItem("clothes_shop_access_token", "something-else");
-    server.use(http.post(`${API}/api/auth/refresh`, () => HttpResponse.json({}, { status: 401 })));
+    const me = (token?: string) => fetch(`${API}/api/auth/me`, { headers: token ? { authorization: `Bearer ${token}` } : {} });
 
-    await renderApp(<Probe />, { as: null });
-
-    expect(probe()).toHaveTextContent("guest");
+    expect((await me("test-access")).status).toBe(200);
+    expect((await me("something-else")).status).toBe(401);
+    expect((await me()).status).toBe(401);
   });
 });
 

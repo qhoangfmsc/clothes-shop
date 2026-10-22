@@ -61,7 +61,7 @@ function scanComments(code) {
       comments.push({ type: "block", start: startLine, end: line, text: code.slice(start + 2, i - 2), alone });
     } else if (c === '"' || c === "'") {
       for (i++; i < code.length && code[i] !== c && code[i] !== "\n"; i++) if (code[i] === "\\") i++;
-      i++;
+      if (code[i] === c) i++; // an unterminated quote (an apostrophe in JSX text) stops at the line end
       previous = c;
     } else if (c === "`") {
       i++;

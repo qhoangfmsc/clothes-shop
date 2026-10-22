@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 /* Breaks the code on purpose to see whether the tests notice: `node scripts/test-mutants.mjs <group>/<module>`.
-   Reads tests/<module>/mutants.json, restores every file afterwards; exits 1 if a mutant survives. */
+   Reads tests/<module>/mutants.json (a mutant may name the `tests` that should catch it), restores every file afterwards; exits 1 if a mutant survives. */
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { applyMutation, mutationSummary } from "./progress-lib.mjs";
+import { ROOT } from "./gate-env.mjs";
 
-const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const doc = process.argv[2];
 if (!doc) {
   console.error("Usage: node scripts/test-mutants.mjs <group>/<module>   (reads tests/<group>/<module>/mutants.json)");
@@ -44,7 +43,7 @@ for (const mutant of mutants) {
   restore = { path, original };
   writeFileSync(path, mutated);
   const report = join(mkdtempSync(join(tmpdir(), "mutant-")), "report.json");
-  const run = spawnSync("yarn", ["-s", "vitest", "run", `tests/${doc}`, "--reporter=json", `--outputFile=${report}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const run = spawnSync("yarn", ["-s", "vitest", "run", ...(mutant.tests ?? [`tests/${doc}`]), "--reporter=json", `--outputFile=${report}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   restoreNow();
 
   let failing;

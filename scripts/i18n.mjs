@@ -2,10 +2,9 @@
 /* i18n tooling: `node scripts/i18n.mjs sync` regenerates src/i18n/registry.ts, `check` verifies every locale mirrors `en`. */
 import { readdirSync, readFileSync, writeFileSync, statSync, existsSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { fileURLToPath } from "node:url";
 import { compareLocale } from "./i18n-lib.mjs";
+import { ROOT } from "./gate-env.mjs";
 
-const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const MESSAGES_DIR = join(ROOT, "src/messages");
 const REGISTRY_FILE = join(ROOT, "src/i18n/registry.ts");
 const SOURCE_LOCALE = "en";
