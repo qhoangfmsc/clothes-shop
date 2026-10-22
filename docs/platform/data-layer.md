@@ -1,6 +1,6 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-21
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-22
 > **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/product-list.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
@@ -91,10 +91,10 @@ Dùng trong `page.tsx` (Server Component). `fetch` với `next.revalidate = 60` 
 
 ### 4.6 Redux store (`src/store/`)
 
-- `store/index.ts` gộp reducer của từng module: admin (`products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`, `reviews`) và client (`cart`, `wishlist`). Slice nằm trong `_common/moduleSlice.ts` của từng module (quy tắc module-first).
+- `store/index.ts` gộp reducer của từng module (`combineReducers`); `makeStore(preloadedState?)` dựng một store mới, `attachPersistence(store)` gắn bộ ghi `localStorage` vào nó (trả hàm gỡ), và `store` (singleton của app) là `makeStore()` đã gắn bộ ghi. Các reducer: admin (`products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`, `reviews`) và client (`cart`, `wishlist`). Slice nằm trong `_common/moduleSlice.ts` của từng module (quy tắc module-first).
 - `baseSlice.ts`: `BaseCrudState` (`isCreating`, `isUpdating`, `isDeleting`, `error`) + `baseCrudReducers` (`create/update/deleteStart|Success|Error`, `clearError`). Slice admin spread vào, thêm `items/total/page/limit/isListLoading` và các `extraReducers` cho thunk.
-- Hooks có kiểu: `useAppDispatch`, `useAppSelector` (`store/hooks.ts`). `StoreProvider` bọc app trong `Providers`.
-- Persist: `store.subscribe` ghi `localStorage` mỗi khi đổi `cart.items` (`doovan-cart`, dạng `{state:{items},version:0}`), `cart.deselectedKeys` (`doovan-cart-selection`) và `wishlist.items` (`doovan-wishlist`). Lỗi quota bị nuốt.
+- Hooks có kiểu: `useAppDispatch`, `useAppSelector` (`store/hooks.ts`). `StoreProvider` bọc app trong `Providers` và nhận prop `store` tùy chọn (mặc định singleton; test truyền store riêng).
+- Persist (`attachPersistence`, `store.subscribe`): ghi `localStorage` mỗi khi đổi `cart.items` (`doovan-cart`, dạng `{state:{items},version:0}`), `cart.deselectedKeys` (`doovan-cart-selection`) và `wishlist.items` (`doovan-wishlist`). Lỗi quota bị nuốt.
 - Quy ước thunk admin: `createAsyncThunk`, UI gọi `dispatch(thunk(...)).unwrap()` rồi `toast` — xem [ui-kit](./ui-kit.md).
 
 ### 4.7 Media: URL, proxy, upload

@@ -1,6 +1,6 @@
 # Data layer — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-21 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
 > **Doc:** [platform/data-layer](../../docs/platform/data-layer.md) · **Test:** `tests/platform/data-layer/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -36,7 +36,7 @@ Mọi dữ liệu của FE đi qua module này: client HTTP, hợp đồng danh 
 
 **Fetcher cho server (`server-fetchers.ts`).** `fetch` với `next.revalidate = 60`, kết quả qua `mapMediaUrls`; lỗi HTTP → `Error("API <path> failed: <status>")`. Các hàm "lấy một" (`getProductById`, `getCategoryBySlug`, `getSubcategory`, `getCollectionBySlug`) trả `undefined` khi lỗi hoặc không thấy; `getProductWithRelated` thử lại không kèm `relatedLimit` nếu lần đầu lỗi; `getBannerConfig` luôn trả mảng; `getShippingInfo` trả `null` khi lỗi; `getProducts`, `getAllProducts`, `getCategories`, `getCollections`, `getCollectionProducts` ném lỗi.
 
-**Store.** Có đủ 13 reducer (admin: `products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`, `reviews`; client: `cart`, `wishlist`). Mỗi lần `cart.items`, `cart.deselectedKeys` hoặc `wishlist.items` đổi tham chiếu thì ghi `localStorage` (`doovan-cart` và `doovan-wishlist` dạng `{ state: { items }, version: 0 }`, `doovan-cart-selection` dạng `{ deselectedKeys }`); lỗi ghi bị nuốt. `baseCrudReducers` cập nhật cờ `isCreating`/`isUpdating`/`isDeleting` và `error`.
+**Store.** Có đủ 13 reducer (admin: `products`, `categories`, `collections`, `users`, `orders`, `media`, `siteConfig`, `payments`, `refunds`, `returns`, `reviews`; client: `cart`, `wishlist`). Mỗi lần `cart.items`, `cart.deselectedKeys` hoặc `wishlist.items` đổi tham chiếu thì ghi `localStorage` (`doovan-cart` và `doovan-wishlist` dạng `{ state: { items }, version: 0 }`, `doovan-cart-selection` dạng `{ deselectedKeys }`); lỗi ghi bị nuốt. `baseCrudReducers` cập nhật cờ `isCreating`/`isUpdating`/`isDeleting` và `error`. `makeStore(preloadedState?)` dựng một store mới với đủ 13 reducer (state ban đầu tùy chọn); `attachPersistence(store)` gắn bộ ghi `localStorage` vào một store; `store` (singleton dùng trong app) là `makeStore()` đã gắn bộ ghi. `StoreProvider` nhận prop `store` tùy chọn (mặc định singleton), để test đưa vào store riêng.
 
 **Kiểu có logic.** `ORDER_STATUS_TRANSITIONS`: `pending → confirmed|cancelled`, `confirmed → shipping|cancelled`, `shipping → delivered`, `delivered → completed`, `completed` và `cancelled` là cuối. `getSelectableOrderStatuses(current)` = trạng thái hiện tại + các trạng thái kế tiếp (lạ thì chỉ chính nó). `resolveBannerImage(banner, breakpoint)`: desktop luôn `image`; mobile dùng ảnh mobile, rồi tablet, rồi `image`; tablet dùng ảnh tablet rồi `image`.
 
@@ -63,6 +63,7 @@ src/lib/product-list.ts: ProductListParams/Response + buildProductQS dùng chung
 | **Config-driven hook**: URL dựng bằng `buildListQuery` | Một hợp đồng danh sách cho thunk, SWR và server | Mỗi hook tự ghép query |
 | **Fallback an toàn cho nội dung trang trí** (`useBannerConfig`, `getBannerConfig`, `getShippingInfo`) | Banner lỗi không được làm hỏng trang | Ném lỗi lên trang |
 | **Observer** (`store.subscribe`) để lưu `localStorage` | Cart và wishlist giữ qua lần tải lại mà reducer vẫn thuần | Ghi trong từng reducer |
+| **Factory** `makeStore` + **tiêm phụ thuộc** vào `StoreProvider` | Mỗi test (và mỗi request phía server, theo khuyến nghị của Redux Toolkit cho App Router) có store riêng, không dùng chung trạng thái | Action `reset` trong từng slice (thêm mã production chỉ để phục vụ test); `vi.resetModules()` mỗi test (chậm, dễ vỡ) |
 
 ### Kiến trúc
 
@@ -119,6 +120,8 @@ Tiếng Anh, không UI text. Mọi danh sách dựng bằng `buildListQuery` (ru
 | SRV-1E | Fetcher server: ném lỗi hoặc trả `undefined` / `[]` / `null` đúng từng hàm | lỗi | khách | integration | `tests/platform/data-layer/server-fetchers.test.ts` |
 | STO-1 | Store có đủ 13 reducer; lưu `localStorage` đúng khóa và dạng khi cart/wishlist đổi | đúng | — | unit | `tests/platform/data-layer/store.test.tsx` |
 | STO-1E | Không ghi khi tham chiếu không đổi; lỗi quota bị nuốt; `baseCrudReducers` giữ cờ và lỗi | lỗi | — | unit | `tests/platform/data-layer/store.test.tsx` |
+| STO-2 | `makeStore` dựng store độc lập (mỗi lần gọi một store, đủ 13 reducer, nhận state ban đầu); `attachPersistence` ghi đúng khóa cho store được gắn; `StoreProvider` dùng store được truyền vào | đúng | — | unit | `tests/platform/data-layer/store-factory.test.tsx` |
+| STO-2E | Hai store không ảnh hưởng nhau; store chưa gắn bộ ghi không chạm `localStorage`; gỡ bộ ghi (hàm trả về) thì ngừng ghi | lỗi | — | unit | `tests/platform/data-layer/store-factory.test.tsx` |
 | ENU-1 | `ORDER_STATUS_TRANSITIONS`, `getSelectableOrderStatuses`, `resolveBannerImage` | đúng | — | unit | `tests/platform/data-layer/types.test.ts` |
 | ENU-1E | Trạng thái lạ, banner thiếu ảnh responsive | lỗi | — | unit | `tests/platform/data-layer/types.test.ts` |
 
@@ -145,3 +148,4 @@ Thay đổi nhìn thấy được: không. Thay đổi nội bộ: các kiểu v
 
 - 2026-10-21 · Viết lại spec cho toàn module (batch 1); thêm test cho mọi submodule; chuyển kiểu danh sách sản phẩm và `buildProductQS` sang `src/lib/product-list.ts`.
 - 2026-10-21 · Phủ test toàn module (204 test, 14 file) và kiểm thử đột biến 46/46 (2 đột biến tương đương đã loại: `getProductUrl` bắt `TypeError` nên `||`/`&&` cho cùng kết quả; `fetch` coi 206 là `ok`). Chuyển `ProductListParams`, `ProductListResponse`, `buildProductQS` sang `src/lib/product-list.ts` (hook không còn import từ `src/app`, hết hàm chép đôi); `server-fetchers.ts` export lại các kiểu.
+- 2026-10-22 · Tách `makeStore` và `attachPersistence` khỏi singleton `store`, `StoreProvider` nhận `store` tùy chọn: harness test (batch 2) cần store sạch cho mỗi lần render. Singleton và hành vi lưu trữ giữ nguyên.

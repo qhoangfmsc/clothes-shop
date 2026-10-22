@@ -76,7 +76,9 @@ navigation: { pathname, searchParams, router: { push, replace, back, … } }   /
 MESSAGES: { vi, en }                    // toàn bộ bản dịch thật
 ```
 
-`renderApp` bọc component trong `NextIntlClientProvider` (bản dịch thật), `AuthProvider` thật, `ToastProvider`, `ConfirmProvider`, `SystemPasswordPromptProvider`, `LoginPromptProvider` (đúng thứ tự của `app/[locale]/layout.tsx`). Mặc định chờ phiên xác định xong rồi mới hiển thị `ui` (`waitForAuth: false` để thấy trạng thái đang tải).
+Từ batch 2 `renderApp` còn nhận `store` (state ban đầu của Redux, ví dụ `{ cart: { items } }`) và trả về `store` của chính lần render đó: mỗi lần render là một store mới (`makeStore`) có bộ ghi `localStorage` như app thật, nên test đọc state qua `result.store.getState()` và không phải dọn gì. `navigation` có thêm `searchParams` (đối tượng `URLSearchParams`) và `params` (tham số động của route) cho `useSearchParams` / `useParams` của `next/navigation`, và `notFound()` ném lỗi như Next; cả hai được cài toàn cục ở `setup.ts` và `reset()` sau mỗi test.
+
+`renderApp` bọc component trong `NextIntlClientProvider` (bản dịch thật), `StoreProvider` (store riêng), `AuthProvider` thật, `ToastProvider`, `ConfirmProvider`, `SystemPasswordPromptProvider`, `LoginPromptProvider` (đúng thứ tự của `app/[locale]/layout.tsx`). Mặc định chờ phiên xác định xong rồi mới hiển thị `ui` (`waitForAuth: false` để thấy trạng thái đang tải).
 
 ## 4. Thiết kế
 
@@ -101,6 +103,7 @@ tests/_support/{identities,messages,navigation,render}.tsx ◄── mọi tests
 | **Fixture / test data builder** cho danh tính (`IDENTITIES`) | Cùng một khách/user/admin ở mọi test, đổi một chỗ khi hình dạng user đổi | Mỗi test tự dựng object user |
 | **Fake ở biên mạng** (MSW cho `/api/auth/me`) thay vì mock `useAuth` | Component chạy qua `AuthProvider` thật, gần với production; test phát hiện được lỗi nối dây | Mock `useAuth` từng test (nhanh nhưng không kiểm tra provider) |
 | **Provider composition** trong `renderApp` mô phỏng `layout.tsx` | Một chỗ duy nhất biết thứ tự provider | Mỗi test tự bọc provider |
+| **Store mới cho mỗi lần render** (`makeStore`) thay vì dùng singleton rồi dọn | Không có trạng thái rò giữa các test và không phụ thuộc thứ tự chạy; test thấy đúng store mà component dùng | Dispatch `clearCart()` ở `afterEach` (quên một slice là rò trạng thái) |
 | **Tách dữ liệu khỏi mã** (`coverage.json`, hai baseline) | Dữ liệu đổi theo từng module, mã cấu hình đổi hiếm; tách ra thì gate không bắt sửa spec của công cụ mỗi lần một module xong | Giữ ngưỡng trong `vitest.config.mts` (mỗi module chạm vào dev-tooling) |
 | **Dependency injection qua môi trường** (`GATE_ROOT`, `GATE_MODULES`) | CLI test được như người dùng chạy thật, không mock hệ thống file hay git | Mock `fs` và `child_process` (test gắn chặt cài đặt) |
 | **Một chỗ cho quyền sở hữu** (`gate-env.ownerOf`) | Ba CLI từng chép riêng cùng một hàm | Giữ ba bản chép |
@@ -160,6 +163,9 @@ Tiếng Anh cho code, thông báo lỗi của script và comment; spec và tài 
 | GATE-10E | Đổi code, kiểu, chuỗi, JSX, import; file mới; file xoá; file không phải mã TypeScript vẫn bị coi là thay đổi thật và gate vẫn đỏ | lỗi | — | integration | `tests/platform/dev-tooling/comment-lib.test.ts`, `tests/platform/dev-tooling/docs-cli.test.ts`, `tests/platform/dev-tooling/quality-cli.test.ts` |
 | GATE-11 | Làm nóng: mở đủ tám trang theo đúng thứ tự, từng trang một, từ địa chỉ gốc được cấu hình | đúng | — | unit | `tests/platform/dev-tooling/warm-up.test.ts` |
 | GATE-11E | Làm nóng: một trang lỗi mạng hoặc trả 500 không làm dừng, các trang sau vẫn được mở | lỗi | — | unit | `tests/platform/dev-tooling/warm-up.test.ts` |
+| QG-13 | Khung render: mỗi lần render có store riêng (state ban đầu được áp, hai lần render không chia sẻ state), thay đổi giỏ được ghi vào `localStorage`, `result.store` là store component đang dùng | đúng | khách | component | `tests/platform/dev-tooling/harness-store.test.tsx` |
+| QG-14 | `navigation.searchParams` / `params` đến được `useSearchParams` / `useParams`, `notFound()` ném lỗi, và `reset()` trả về trạng thái sạch sau mỗi test | đúng | — | component | `tests/platform/dev-tooling/harness-store.test.tsx` |
+| QG-14E | Component dùng `useSearchParams` mà test không đặt gì thì thấy query rỗng (không lỗi); `redirect` ghi lại đích rồi ném | lỗi | — | component | `tests/platform/dev-tooling/harness-store.test.tsx` |
 | GATE-9 | `next.config`: tiêu đề không cache chỉ ở dev, các host ảnh, plugin `next-intl`; `vercel.json` trỏ đúng route cron | đúng | — | unit | `tests/platform/dev-tooling/next-config.test.ts` |
 | QG-5 | Token E2E: đọc `exp`, phân loại thiếu / hết hạn / bị từ chối / không gọi được / sắp hết; che email; nạp `.env.e2e.local` | lỗi | — | unit | `tests/platform/dev-tooling/e2e-session.test.ts` |
 | QG-6 | Ma trận: thiếu `Phạm vi` / `Chiều kiểm thử`, giá trị lạ, `không` không lý do, thiếu hàng đúng/lỗi, thiếu khách hoặc đã đăng nhập khi auth = có, thiếu có quyền hoặc thiếu quyền khi permission = có → lỗi; đủ thì qua | lỗi | — | unit | `tests/platform/dev-tooling/matrix.test.ts` |
@@ -204,3 +210,4 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-22 · Cổng `--changed` của docs và quality bỏ qua file chỉ đổi comment (`isCommentOnlyChange`), để rút gọn comment toàn dự án không buộc từng module có doc, spec và test mới. Có test đơn vị, test CLI và đột biến.
 - 2026-10-22 · Sửa bộ quét comment lần nữa: `/` sau `<` (thẻ đóng JSX như `</div>`) bị hiểu là mở regex nên nuốt ký tự xuống dòng, làm số dòng lệch dần và bỏ sót comment cùng dòng; test tái hiện. Rút gọn xong toàn bộ comment trong baseline (141 file): `scripts/comment-baseline.json` rỗng. Không file nào ngoài baseline bị phát hiện thêm nên baseline không tăng.
 - 2026-10-22 · Thêm `tests/_support/warm-up.ts` làm `globalSetup` của Playwright: `next dev` với `.next` lạnh trả 500 khi nhiều trang private được biên dịch cùng lúc (tái hiện được trên commit trước đó), nên các trang được mở tuần tự trước khi test chạy.
+- 2026-10-22 · Khung render nhận thêm Redux store (mới cho mỗi lần render) và `next/navigation` (`useSearchParams`, `useParams`, `notFound`) cho batch 2.

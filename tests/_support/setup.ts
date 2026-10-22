@@ -5,9 +5,10 @@ import { google } from "./google";
 import { server } from "./msw-server";
 import { navigation } from "./navigation";
 
-/* Two modules that cannot run in a unit test are replaced for every test (details in each stand-in):
-   the locale-aware router and Google's sign-in popup. Real ones are exercised by the browser tests. */
+/* Modules that cannot run in a unit test are replaced for every test (details in each stand-in):
+   the locale-aware router, the `next/navigation` hooks and Google's sign-in popup. Real ones are exercised by the browser tests. */
 vi.mock("@/src/i18n/navigation", async () => (await import("./navigation")).navigationModule);
+vi.mock("next/navigation", async () => (await import("./navigation")).nextNavigationModule);
 vi.mock("@react-oauth/google", async () => (await import("./google")).googleModule);
 
 beforeAll(() => server.listen({ onUnhandledFrame: "error" }));

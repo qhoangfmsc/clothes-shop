@@ -274,5 +274,42 @@
     "file": "src/lib/api.ts",
     "find": "body.message || `API error: ${res.status}`",
     "replace": "body.message ?? `API error: ${res.status}`"
+  },
+  {
+    "name": "store: makeStore ignores the starting state",
+    "file": "src/store/index.ts",
+    "find": "configureStore({ reducer: rootReducer, preloadedState })",
+    "replace": "configureStore({ reducer: rootReducer })",
+    "tests": [
+      "tests/platform/data-layer/store-factory.test.tsx"
+    ]
+  },
+  {
+    "name": "store: persistence cannot be detached",
+    "file": "src/store/index.ts",
+    "find": "  return target.subscribe(() => {",
+    "replace": "  target.subscribe(() => {",
+    "tests": [
+      "tests/platform/data-layer/store-factory.test.tsx"
+    ]
+  },
+  {
+    "name": "store: StoreProvider ignores the store it is given",
+    "file": "src/store/StoreProvider.tsx",
+    "find": "<Provider store={store}>",
+    "replace": "<Provider store={appStore}>",
+    "tests": [
+      "tests/platform/data-layer/store-factory.test.tsx"
+    ]
+  },
+  {
+    "name": "store: persistence saves the wishlist under the cart key",
+    "file": "src/store/index.ts",
+    "find": "save(WISHLIST_STORAGE_KEY,",
+    "replace": "save(CART_STORAGE_KEY,",
+    "tests": [
+      "tests/platform/data-layer/store-factory.test.tsx",
+      "tests/platform/data-layer/store.test.tsx"
+    ]
   }
 ]

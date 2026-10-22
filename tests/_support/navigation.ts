@@ -1,19 +1,22 @@
 import { createElement, type AnchorHTMLAttributes, type ReactNode } from "react";
 import { vi } from "vitest";
 
-/* A stand-in for `@/src/i18n/navigation` (next-intl's locale-aware Link / useRouter / usePathname). The real one
-   needs the Next.js app router, which does not exist in unit tests. It is installed for every test in `setup.ts`.
-   Set `navigation.pathname` before rendering; read `navigation.router.push` etc. to see where the code navigated. */
+/* Stand-ins for `@/src/i18n/navigation` and the `next/navigation` hooks, which need the Next.js app router. Installed for every test
+   in `setup.ts`. Set `navigation.pathname`, `.searchParams` and `.params` before rendering; read `navigation.router.push` etc. afterwards. */
 
 const routerMethods = () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), forward: vi.fn(), refresh: vi.fn(), prefetch: vi.fn() });
 
 export const navigation = {
   pathname: "/",
+  searchParams: new URLSearchParams(),
+  params: {} as Record<string, string | string[]>,
   router: routerMethods(),
   redirects: [] as string[],
   /** Back to a clean state; `setup.ts` calls it after every test. */
   reset() {
     navigation.pathname = "/";
+    navigation.searchParams = new URLSearchParams();
+    navigation.params = {};
     navigation.router = routerMethods();
     navigation.redirects = [];
   },
@@ -31,4 +34,16 @@ export const navigationModule = {
     navigation.redirects.push(href);
     throw new Error(`NEXT_REDIRECT:${href}`);
   },
+};
+
+export const nextNavigationModule = {
+  useSearchParams: () => navigation.searchParams,
+  useParams: () => navigation.params,
+  usePathname: () => navigation.pathname,
+  useRouter: () => navigation.router,
+  /** Like Next, stops rendering by throwing. */
+  notFound: () => {
+    throw new Error("NEXT_NOT_FOUND");
+  },
+  redirect: navigationModule.redirect,
 };

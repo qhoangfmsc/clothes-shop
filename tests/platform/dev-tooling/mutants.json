@@ -854,5 +854,77 @@
     "tests": [
       "tests/platform/dev-tooling/warm-up.test.ts"
     ]
+  },
+  {
+    "name": "harness: every render shares one store",
+    "file": "tests/_support/render.tsx",
+    "find": "const store = makeStore(options.store);",
+    "replace": "const store = ((globalThis as { __s?: AppStore }).__s ??= makeStore(options.store));",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the starting store state is ignored",
+    "file": "tests/_support/render.tsx",
+    "find": "makeStore(options.store)",
+    "replace": "makeStore()",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the store does not save to localStorage",
+    "file": "tests/_support/render.tsx",
+    "find": "\n  attachPersistence(store);",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the route parameters are kept after a test",
+    "file": "tests/_support/navigation.ts",
+    "find": "navigation.params = {};\n    navigation.router",
+    "replace": "navigation.router",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the query is kept after a test",
+    "file": "tests/_support/navigation.ts",
+    "find": "navigation.searchParams = new URLSearchParams();\n    navigation.params = {};",
+    "replace": "navigation.params = {};",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: notFound does not stop rendering",
+    "file": "tests/_support/navigation.ts",
+    "find": "throw new Error(\"NEXT_NOT_FOUND\");",
+    "replace": "return undefined as never;",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: useParams never has parameters",
+    "file": "tests/_support/navigation.ts",
+    "find": "useParams: () => navigation.params",
+    "replace": "useParams: () => ({})",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: useSearchParams never has a query",
+    "file": "tests/_support/navigation.ts",
+    "find": "useSearchParams: () => navigation.searchParams",
+    "replace": "useSearchParams: () => new URLSearchParams()",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
   }
 ]
