@@ -1,7 +1,6 @@
 {
   "_comment": "Files that may keep comments longer than 3 lines until they are trimmed. Only shrinks: .agent/rules/comments.md",
   "files": [
-    "scripts/i18n.mjs",
     "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
     "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
     "src/app/[locale]/(admin)/admin/categories/_common/constants.ts",

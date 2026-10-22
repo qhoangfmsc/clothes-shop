@@ -1,15 +1,9 @@
 #!/usr/bin/env node
-/**
- * i18n tooling.
- *
- *   node scripts/i18n.mjs sync    regenerate src/i18n/registry.ts from src/messages/en/**
- *   node scripts/i18n.mjs check   verify every locale mirrors `en` (files, keys, {placeholders}, empty values)
- *
- * `sync` runs automatically before `dev` / `build`; `check` runs before `build` and in `yarn lint:i18n`.
- */
+/* i18n tooling: `node scripts/i18n.mjs sync` regenerates src/i18n/registry.ts, `check` verifies every locale mirrors `en`. */
 import { readdirSync, readFileSync, writeFileSync, statSync, existsSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { compareLocale } from "./i18n-lib.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const MESSAGES_DIR = join(ROOT, "src/messages");
@@ -74,36 +68,6 @@ function sync() {
   }
 }
 
-/** Flatten nested JSON into { "a.b.c": "text" }. */
-function flatten(obj, prefix = "", out = {}) {
-  for (const [key, value] of Object.entries(obj)) {
-    const path = prefix ? `${prefix}.${key}` : key;
-    if (value && typeof value === "object") flatten(value, path, out);
-    else out[path] = value;
-  }
-  return out;
-}
-
-/** Top-level ICU argument names: {name}, {count, plural, ...} -> name, count. Nested branches are ignored. */
-function placeholders(text) {
-  const names = new Set();
-  let depth = 0;
-  let start = -1;
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === "{") {
-      if (depth === 0) start = i + 1;
-      depth++;
-    } else if (text[i] === "}") {
-      depth--;
-      if (depth === 0 && start >= 0) {
-        names.add(text.slice(start, i).split(",")[0].trim());
-        start = -1;
-      }
-    }
-  }
-  return [...names].sort().join(",");
-}
-
 function check() {
   const locales = readLocales();
   const errors = [];
@@ -124,22 +88,8 @@ function check() {
         errors.push(`[${locale}] missing file ${file}.json`);
         continue;
       }
-      const read = (l) =>
-        flatten(JSON.parse(readFileSync(join(MESSAGES_DIR, l, `${file}.json`), "utf8")));
-      const source = read(SOURCE_LOCALE);
-      const target = read(locale);
-      for (const key of Object.keys(source)) {
-        if (!(key in target)) errors.push(`[${locale}] ${file}.json missing key "${key}"`);
-        else if (typeof target[key] !== "string" || target[key].trim() === "")
-          errors.push(`[${locale}] ${file}.json empty value at "${key}"`);
-        else if (placeholders(source[key]) !== placeholders(target[key]))
-          errors.push(
-            `[${locale}] ${file}.json "${key}" placeholders differ: {${placeholders(source[key])}} vs {${placeholders(target[key])}}`
-          );
-      }
-      for (const key of Object.keys(target)) {
-        if (!(key in source)) errors.push(`[${locale}] ${file}.json has unknown key "${key}"`);
-      }
+      const read = (l) => JSON.parse(readFileSync(join(MESSAGES_DIR, l, `${file}.json`), "utf8"));
+      errors.push(...compareLocale(file, locale, read(SOURCE_LOCALE), read(locale)));
     }
   }
 

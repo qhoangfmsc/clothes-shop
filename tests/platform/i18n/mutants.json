@@ -1,0 +1,218 @@
+[
+  {
+    "name": "routing: the default language is English",
+    "file": "src/i18n/routing.ts",
+    "find": "defaultLocale: \"vi\",",
+    "replace": "defaultLocale: \"en\","
+  },
+  {
+    "name": "routing: the locale is optional in the URL",
+    "file": "src/i18n/routing.ts",
+    "find": "localePrefix: \"always\"",
+    "replace": "localePrefix: \"as-needed\""
+  },
+  {
+    "name": "routing: the browser language is used",
+    "file": "src/i18n/routing.ts",
+    "find": "localeDetection: false",
+    "replace": "localeDetection: true"
+  },
+  {
+    "name": "routing: the Vietnamese short code changes",
+    "file": "src/i18n/routing.ts",
+    "find": "short: \"VI\"",
+    "replace": "short: \"vn\""
+  },
+  {
+    "name": "middleware: the redirect is temporary",
+    "file": "src/middleware.ts",
+    "find": "NextResponse.redirect(target, 308)",
+    "replace": "NextResponse.redirect(target, 307)"
+  },
+  {
+    "name": "middleware: any path starting with a locale counts as prefixed",
+    "file": "src/middleware.ts",
+    "find": "pathname.startsWith(`/${locale}/`)",
+    "replace": "pathname.startsWith(`/${locale}`)"
+  },
+  {
+    "name": "middleware: the query string is dropped",
+    "file": "src/middleware.ts",
+    "find": "${pathname === \"/\" ? \"\" : pathname}${search}`",
+    "replace": "${pathname === \"/\" ? \"\" : pathname}`"
+  },
+  {
+    "name": "middleware: the home page keeps a slash",
+    "file": "src/middleware.ts",
+    "find": "${pathname === \"/\" ? \"\" : pathname}",
+    "replace": "${pathname}"
+  },
+  {
+    "name": "middleware: _vercel is no longer skipped",
+    "file": "src/middleware.ts",
+    "find": "|_vercel",
+    "replace": ""
+  },
+  {
+    "name": "middleware: files are no longer skipped",
+    "file": "src/middleware.ts",
+    "find": "|.*\\\\..*",
+    "replace": ""
+  },
+  {
+    "name": "request: any locale is accepted",
+    "file": "src/i18n/request.ts",
+    "find": "hasLocale(routing.locales, requested) ? requested : routing.defaultLocale",
+    "replace": "requested"
+  },
+  {
+    "name": "request: no formats",
+    "file": "src/i18n/request.ts",
+    "find": "formats: FORMATS,",
+    "replace": ""
+  },
+  {
+    "name": "formats: the time zone changes",
+    "file": "src/i18n/formats.ts",
+    "find": "export const TIME_ZONE = \"Asia/Ho_Chi_Minh\";",
+    "replace": "export const TIME_ZONE = \"UTC\";"
+  },
+  {
+    "name": "formats: the rating shows two decimals",
+    "file": "src/i18n/formats.ts",
+    "find": "decimal1: { minimumFractionDigits: 1, maximumFractionDigits: 1 }",
+    "replace": "decimal1: { minimumFractionDigits: 2, maximumFractionDigits: 2 }"
+  },
+  {
+    "name": "metadata: x-default follows the page language",
+    "file": "src/i18n/metadata.ts",
+    "find": "\"x-default\": `/${routing.defaultLocale}${path}`",
+    "replace": "\"x-default\": `/${locale}${path}`"
+  },
+  {
+    "name": "metadata: canonical loses the path",
+    "file": "src/i18n/metadata.ts",
+    "find": "canonical: `/${locale}${path}`",
+    "replace": "canonical: `/${locale}`"
+  },
+  {
+    "name": "metadata: the brand separator changes",
+    "file": "src/i18n/metadata.ts",
+    "find": "`${title} — ${BRAND_NAME}`",
+    "replace": "`${title} - ${BRAND_NAME}`"
+  },
+  {
+    "name": "metadata: the page's own language is listed as an alternate",
+    "file": "src/i18n/metadata.ts",
+    "find": "        .filter((l) => l !== locale)\n",
+    "replace": ""
+  },
+  {
+    "name": "metadata: the brand image size changes",
+    "file": "src/i18n/metadata.ts",
+    "find": "width: 1200, height: 630",
+    "replace": "width: 600, height: 315"
+  },
+  {
+    "name": "metadata: no alt text by default",
+    "file": "src/i18n/metadata.ts",
+    "find": "alt: imageAlt ?? title }\n      : { ...DEFAULT_SHARE_IMAGE, alt: imageAlt ?? title }",
+    "replace": "alt: imageAlt ?? title }\n      : { ...DEFAULT_SHARE_IMAGE, alt: imageAlt ?? \"\" }"
+  },
+  {
+    "name": "metadata: the card type changes",
+    "file": "src/i18n/metadata.ts",
+    "find": "card: \"summary_large_image\"",
+    "replace": "card: \"summary\""
+  },
+  {
+    "name": "messages: pickMessages returns the wrong group",
+    "file": "src/i18n/messages.ts",
+    "find": "[scope, messages[scope]]",
+    "replace": "[scope, messages.common]"
+  },
+  {
+    "name": "scoped: the shared auth texts are not sent",
+    "file": "src/i18n/ScopedMessages.tsx",
+    "find": "[\"common\", \"shared\", \"auth\", scope]",
+    "replace": "[\"common\", \"shared\", scope]"
+  },
+  {
+    "name": "scoped: the admin texts leak to the storefront",
+    "file": "src/i18n/ScopedMessages.tsx",
+    "find": "[\"common\", \"shared\", \"auth\", scope]",
+    "replace": "[\"common\", \"shared\", \"auth\", \"admin\", scope]"
+  },
+  {
+    "name": "error: a string errorCode is accepted",
+    "file": "src/i18n/error-message.ts",
+    "find": "typeof errorCode === \"number\"",
+    "replace": "typeof errorCode === \"number\" || typeof errorCode === \"string\""
+  },
+  {
+    "name": "error: a decimal code is accepted",
+    "file": "src/i18n/error-message.ts",
+    "find": "Number.isInteger(numeric)",
+    "replace": "!Number.isNaN(numeric)"
+  },
+  {
+    "name": "error: text of a non-string message is used",
+    "file": "src/i18n/error-message.ts",
+    "find": "typeof message === \"string\" ? message : \"\"",
+    "replace": "String(message ?? \"\")"
+  },
+  {
+    "name": "error: the server text is never shown",
+    "file": "src/i18n/use-error-message.ts",
+    "find": "return errorText(err) || fallback;",
+    "replace": "return fallback;"
+  },
+  {
+    "name": "error: the translation by code is skipped",
+    "file": "src/i18n/use-error-message.ts",
+    "find": "if (t.has(key)) return t(key);",
+    "replace": ""
+  },
+  {
+    "name": "labels: an unknown value throws instead of showing itself",
+    "file": "src/i18n/use-labels.ts",
+    "find": "t.has(value as never) ? t(value as never) : value",
+    "replace": "t(value as never)"
+  },
+  {
+    "name": "i18n-lib: nested keys are not walked",
+    "file": "scripts/i18n-lib.mjs",
+    "find": "if (value && typeof value === \"object\") flatten",
+    "replace": "if (false) flatten"
+  },
+  {
+    "name": "i18n-lib: nested placeholders are counted",
+    "file": "scripts/i18n-lib.mjs",
+    "find": "if (depth === 0) start = i + 1;",
+    "replace": "start = i + 1;"
+  },
+  {
+    "name": "i18n-lib: placeholders are not compared",
+    "file": "scripts/i18n-lib.mjs",
+    "find": "else if (placeholders(source[key]) !== placeholders(target[key])) {",
+    "replace": "else if (false) {"
+  },
+  {
+    "name": "i18n-lib: empty values are accepted",
+    "file": "scripts/i18n-lib.mjs",
+    "find": "typeof target[key] !== \"string\" || target[key].trim() === \"\"",
+    "replace": "typeof target[key] !== \"string\""
+  },
+  {
+    "name": "i18n-lib: unknown keys are accepted",
+    "file": "scripts/i18n-lib.mjs",
+    "find": "if (!(key in source)) errors.push",
+    "replace": "if (false) errors.push"
+  },
+  {
+    "name": "i18n-lib: missing keys are accepted",
+    "file": "scripts/i18n-lib.mjs",
+    "find": "if (!(key in target)) errors.push",
+    "replace": "if (false) errors.push"
+  }
+]

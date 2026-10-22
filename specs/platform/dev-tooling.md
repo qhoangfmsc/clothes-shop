@@ -1,6 +1,6 @@
 # Tooling, cấu hình & triển khai — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-21 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-22 · **Trạng thái:** Implemented
 > **Doc:** [platform/dev-tooling](../../docs/platform/dev-tooling.md) · **Test:** `tests/platform/dev-tooling/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -159,3 +159,4 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-21 · Thêm quy tắc comment ngắn có máy kiểm tra và baseline chỉ ngắn đi; rút gọn comment ở các file của đợt refactor này.
 - 2026-10-21 · Tách dữ liệu coverage ra `tests/_support/coverage.json` và coi hai baseline là dữ liệu không thuộc module (không còn buộc sửa spec/doc của công cụ khi một module xong).
 - 2026-10-21 · Sửa bộ quét comment: bỏ sót một ký tự sau `${…}` trong template nên hiểu sai phần còn lại của file; thêm test tái hiện. baseline-grow: baseline comment tăng từ 137 lên 142 vì 5 file cũ trước đó bị bỏ sót nay mới được phát hiện (sửa bộ phát hiện, không phải thêm vi phạm mới).
+- 2026-10-22 · `vitest.config.mts` cho Vite nạp `next-intl` (`server.deps.inline`) và import JSON với `with { type: "json" }`; `scripts/modules.mjs` thêm `scripts/i18n-lib.mjs` vào module i18n. no-test: chỉ đổi cấu hình, các test của batch 1 đang chạy qua cấu hình này.

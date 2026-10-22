@@ -3,7 +3,6 @@
   "pending": [
     "platform/app-shell",
     "platform/site-chrome",
-    "platform/i18n",
     "platform/ui-kit",
     "platform/design-system",
     "platform/seo",

@@ -10,7 +10,10 @@
     "src/app/media/**",
     "src/types/enums.ts",
     "src/types/site-config.ts",
-    "**/server-fetchers.ts"
+    "**/server-fetchers.ts",
+    "src/middleware.ts",
+    "scripts/i18n-lib.mjs",
+    "src/i18n/{ScopedMessages,error-message,formats,messages,metadata,navigation,request,routing,use-error-message,use-labels}.{ts,tsx}"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -171,6 +174,66 @@
       "functions": 95
     },
     "**/server-fetchers.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/middleware.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "scripts/i18n-lib.mjs": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/ScopedMessages.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/error-message.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/formats.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/messages.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/metadata.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/navigation.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/request.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/routing.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/use-error-message.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/use-labels.ts": {
       "lines": 95,
       "branches": 90,
       "functions": 95
