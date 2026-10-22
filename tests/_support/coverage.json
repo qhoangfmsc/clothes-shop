@@ -13,7 +13,10 @@
     "**/server-fetchers.ts",
     "src/middleware.ts",
     "scripts/i18n-lib.mjs",
-    "src/i18n/{ScopedMessages,error-message,formats,messages,metadata,navigation,request,routing,use-error-message,use-labels}.{ts,tsx}"
+    "src/i18n/{ScopedMessages,error-message,formats,messages,metadata,navigation,request,routing,use-error-message,use-labels}.{ts,tsx}",
+    "src/app/{robots,sitemap}.ts",
+    "src/lib/{site-url,brand,structured-data}.ts",
+    "src/app/[locale]/_components/JsonLd.tsx"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -234,6 +237,36 @@
       "functions": 95
     },
     "src/i18n/use-labels.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/robots.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/sitemap.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/site-url.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/brand.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/structured-data.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "**/JsonLd.tsx": {
       "lines": 95,
       "branches": 90,
       "functions": 95

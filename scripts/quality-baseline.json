@@ -5,7 +5,6 @@
     "platform/site-chrome",
     "platform/ui-kit",
     "platform/design-system",
-    "platform/seo",
     "admin/admin-shell",
     "admin/dashboard",
     "admin/analytics",

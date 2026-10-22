@@ -1,0 +1,206 @@
+[
+  {
+    "name": "site-url: trailing slashes stay",
+    "file": "src/lib/site-url.ts",
+    "find": ".replace(/\\/+$/, \"\")",
+    "replace": ""
+  },
+  {
+    "name": "site-url: the fallback origin changes",
+    "file": "src/lib/site-url.ts",
+    "find": "\"http://localhost:3000\"",
+    "replace": "\"http://localhost:8080\""
+  },
+  {
+    "name": "brand: the brand is re-cased",
+    "file": "src/lib/brand.ts",
+    "find": "export const BRAND_NAME = \"DOOVAN\";",
+    "replace": "export const BRAND_NAME = \"Doovan\";"
+  },
+  {
+    "name": "robots: the account pages are crawlable",
+    "file": "src/app/robots.ts",
+    "find": "  \"/account\",\n",
+    "replace": ""
+  },
+  {
+    "name": "robots: the API is crawlable",
+    "file": "src/app/robots.ts",
+    "find": "\"/api/\",",
+    "replace": ""
+  },
+  {
+    "name": "robots: previews are crawlable",
+    "file": "src/app/robots.ts",
+    "find": "process.env.VERCEL_ENV !== \"production\"",
+    "replace": "process.env.VERCEL_ENV === \"production\""
+  },
+  {
+    "name": "robots: an unset environment is treated as a preview",
+    "file": "src/app/robots.ts",
+    "find": "Boolean(process.env.VERCEL_ENV) &&",
+    "replace": ""
+  },
+  {
+    "name": "robots: the sitemap link is lost",
+    "file": "src/app/robots.ts",
+    "find": "    sitemap: `${SITE_URL}/sitemap.xml`,\n",
+    "replace": ""
+  },
+  {
+    "name": "robots: only the first language is protected",
+    "file": "src/app/robots.ts",
+    "find": "...routing.locales.flatMap(",
+    "replace": "...routing.locales.slice(0, 1).flatMap("
+  },
+  {
+    "name": "sitemap: the contact page is missing",
+    "file": "src/app/sitemap.ts",
+    "find": "  \"/contact\",\n",
+    "replace": ""
+  },
+  {
+    "name": "sitemap: every page has priority 1",
+    "file": "src/app/sitemap.ts",
+    "find": "path === \"\" ? 1 : 0.8",
+    "replace": "1"
+  },
+  {
+    "name": "sitemap: the paging never stops at the total",
+    "file": "src/app/sitemap.ts",
+    "find": "|| products.length >= result.total",
+    "replace": ""
+  },
+  {
+    "name": "sitemap: only the first page of products is read",
+    "file": "src/app/sitemap.ts",
+    "find": "const MAX_PAGES = 100;",
+    "replace": "const MAX_PAGES = 1;"
+  },
+  {
+    "name": "sitemap: x-default points at the page's own language",
+    "file": "src/app/sitemap.ts",
+    "find": "\"x-default\": `${SITE_URL}/${routing.defaultLocale}${path}`",
+    "replace": "\"x-default\": `${SITE_URL}/en${path}`"
+  },
+  {
+    "name": "sitemap: sub-categories vanish when products fail",
+    "file": "src/app/sitemap.ts",
+    "find": "if (products.status === \"fulfilled\" && !lastModifiedByPath.has(path)) continue;",
+    "replace": "if (!lastModifiedByPath.has(path)) continue;"
+  },
+  {
+    "name": "sitemap: empty sub-categories are listed",
+    "file": "src/app/sitemap.ts",
+    "find": "if (products.status === \"fulfilled\" && !lastModifiedByPath.has(path)) continue;",
+    "replace": ""
+  },
+  {
+    "name": "sitemap: a product without a category gets a broken URL",
+    "file": "src/app/sitemap.ts",
+    "find": "for (const product of productList) {\n    if (!product.category || !product.subcategory) continue;\n",
+    "replace": "for (const product of productList) {\n    if (!product.category) continue;\n"
+  },
+  {
+    "name": "sitemap: products get the wrong priority",
+    "file": "src/app/sitemap.ts",
+    "find": "0.9,\n        product.images",
+    "replace": "0.5,\n        product.images"
+  },
+  {
+    "name": "sitemap: images are dropped",
+    "file": "src/app/sitemap.ts",
+    "find": "...(images && images.length > 0 &&",
+    "replace": "...(false &&"
+  },
+  {
+    "name": "sitemap: the oldest date is used",
+    "file": "src/app/sitemap.ts",
+    "find": ".at(-1)",
+    "replace": ".at(0)"
+  },
+  {
+    "name": "sitemap: the collections page is dated by products",
+    "file": "src/app/sitemap.ts",
+    "find": "\"/collections\": newest(collectionList.map((c) => c.updatedAt)),",
+    "replace": "\"/collections\": newestProduct,"
+  },
+  {
+    "name": "sitemap: a failing source breaks the whole sitemap",
+    "file": "src/app/sitemap.ts",
+    "find": "await Promise.allSettled([",
+    "replace": "await Promise.all(["
+  },
+  {
+    "name": "structured-data: relative URLs are not made absolute",
+    "file": "src/lib/structured-data.ts",
+    "find": "return /^https?:\\/\\//.test(url) ? url : `${SITE_URL}${url.startsWith(\"/\") ? \"\" : \"/\"}${url}`;",
+    "replace": "return url;"
+  },
+  {
+    "name": "structured-data: custom-order products get an offer",
+    "file": "src/lib/structured-data.ts",
+    "find": "...(hasPublicPrice(product.badge) && {",
+    "replace": "...(true && {"
+  },
+  {
+    "name": "structured-data: the price is always in USD",
+    "file": "src/lib/structured-data.ts",
+    "find": "priceCurrency: currencyForLocale(locale),",
+    "replace": "priceCurrency: \"USD\","
+  },
+  {
+    "name": "structured-data: breadcrumb positions start at 0",
+    "file": "src/lib/structured-data.ts",
+    "find": "position: index + 1,\n      name: crumb.name",
+    "replace": "position: index,\n      name: crumb.name"
+  },
+  {
+    "name": "structured-data: breadcrumbs use relative paths",
+    "file": "src/lib/structured-data.ts",
+    "find": "item: pageUrl(locale, crumb.path),",
+    "replace": "item: crumb.path,"
+  },
+  {
+    "name": "structured-data: navigation links are relative",
+    "file": "src/lib/structured-data.ts",
+    "find": "url: pageUrl(locale, entry.path),",
+    "replace": "url: entry.path,"
+  },
+  {
+    "name": "structured-data: images stay relative",
+    "file": "src/lib/structured-data.ts",
+    "find": "image: product.images.map(absoluteUrl),",
+    "replace": "image: product.images,"
+  },
+  {
+    "name": "structured-data: the product is out of stock",
+    "file": "src/lib/structured-data.ts",
+    "find": "availability: \"https://schema.org/InStock\"",
+    "replace": "availability: \"https://schema.org/OutOfStock\""
+  },
+  {
+    "name": "structured-data: the store loses its id",
+    "file": "src/lib/structured-data.ts",
+    "find": "\"@id\": ORGANIZATION_ID,",
+    "replace": ""
+  },
+  {
+    "name": "structured-data: the business profile is not linked",
+    "file": "src/lib/structured-data.ts",
+    "find": "sameAs: [...SOCIALS.map((social) => social.href), GOOGLE_BUSINESS_URL],",
+    "replace": "sameAs: [...SOCIALS.map((social) => social.href)],"
+  },
+  {
+    "name": "structured-data: a rating is claimed",
+    "file": "src/lib/structured-data.ts",
+    "find": "brand: { \"@type\": \"Brand\", name: BRAND_NAME },",
+    "replace": "brand: { \"@type\": \"Brand\", name: BRAND_NAME },\n    aggregateRating: { \"@type\": \"AggregateRating\", ratingValue: 5, reviewCount: 1 },"
+  },
+  {
+    "name": "json-ld: < is not escaped",
+    "file": "src/app/[locale]/_components/JsonLd.tsx",
+    "find": ".replace(/</g, \"\\\\u003c\")",
+    "replace": ""
+  }
+]

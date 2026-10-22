@@ -1,6 +1,6 @@
 # SEO (metadata, sitemap, robots, dữ liệu có cấu trúc)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-17
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-22
 > **Code:** `src/app/robots.ts` · `src/app/sitemap.ts` · `src/lib/structured-data.ts` · `src/lib/site-url.ts` · `src/lib/brand.ts` · `src/lib/legal.ts` · `src/i18n/metadata.ts` · `src/app/[locale]/_components/JsonLd.tsx` · `src/app/[locale]/layout.tsx`
 
 ## 1. Tóm tắt module
@@ -60,10 +60,14 @@ Mọi thứ giúp công cụ tìm kiếm và mạng xã hội hiểu site: metad
 
 ### 4.5 Pháp lý (`src/lib/legal.ts`)
 
-`LEGAL_DOCS` (`terms`, `privacy`, `shippingReturns` → `/terms`, `/privacy`, `/shipping-returns`), `LEGAL_HUB_PATH = "/legal"`, `LEGAL_LAST_UPDATED = "2026-10-11"`, `LEGAL_CONTACT` (`email` = `CONTACT_EMAIL` `contact@doovan.vn`; `phone` = `CONTACT_PHONE`, `address` = `CONTACT_ADDRESS`, đều ở `src/lib/contact.ts`). Xem [legal](../storefront/legal.md).
+`LEGAL_DOCS` (`terms`, `privacy`, `shippingReturns` → `/terms`, `/privacy`, `/shipping-returns`), `LEGAL_HUB_PATH = "/legal"`, `LEGAL_LAST_UPDATED = "2026-10-13"`, `LEGAL_CONTACT` (`email` = `CONTACT_EMAIL` `contact@doovan.vn`; `phone` = `CONTACT_PHONE`, `address` = `CONTACT_ADDRESS`, đều ở `src/lib/contact.ts`). Xem [legal](../storefront/legal.md).
 
 ### 4.6 Biến môi trường
 
-`NEXT_PUBLIC_SITE_URL` (không có dấu `/` cuối), `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (mã xác minh Search Console, tùy chọn), `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` (ghi đè link chia sẻ Google Business Profile; mặc định `https://share.google/IW85rWWlr0HKopGIX` trong `src/lib/contact.ts`), `VERCEL_ENV`.
+`NEXT_PUBLIC_SITE_URL` (không có dấu `/` cuối), `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (mã xác minh Search Console, tùy chọn), `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` (được nhắc trong comment của `src/lib/contact.ts` nhưng hiện không có code nào đọc; `GOOGLE_BUSINESS_URL` là hằng `https://share.google/IW85rWWlr0HKopGIX`), `VERCEL_ENV`.
 
 - `productJsonLd` bỏ `offers` khi sản phẩm có badge `custom_order` (`hasPublicPrice`).
+
+### 4.7 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết (sản phẩm `sold_out` vẫn khai `InStock`, sitemap duyệt tuần tự tối đa 100 trang × 200 sản phẩm, `SITE_URL` và `VERCEL_ENV` đọc lúc nạp module): [specs/platform/seo.md](../../specs/platform/seo.md). Test ở `tests/platform/seo/` (60 ca): `site-url`, `robots`, `structured-data`, `json-ld`, `sitemap`; `mutants.json` có 34 đột biến, `yarn test:mutants platform/seo` bắt cả 34.
