@@ -1,6 +1,6 @@
 # Wishlist (sản phẩm yêu thích)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-22
 > **Code:** `(private)/wishlist/` — `page.tsx`, `layout.tsx`, `WishlistContent.tsx`, `_common/{moduleSlice,types}.ts`
 > **i18n:** `private.wishlist`
 > **Redux slice:** `state.wishlist`
@@ -43,7 +43,18 @@ Cho khách đánh dấu sản phẩm quan tâm từ thẻ sản phẩm, trang ch
 - Style của trang viết trong thẻ `<style>` riêng (class `wishlist-*`) thay vì Tailwind.
 - Metadata `private.wishlist.meta`; layout có header + footer.
 
-### 4.4 Khác với giỏ hàng
+### 4.4 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/wishlist.md](../../specs/storefront/wishlist.md). Test ở `tests/storefront/wishlist/` (`wishlist-slice`, `wishlist-thunks`, `wishlist-page`); `mutants.json` có đột biến cho slice và trang.
+
+Các điểm cần biết về hành vi hiện tại:
+
+- "Xóa tất cả" chỉ xóa ở máy và không gọi BE, nên lần mở trang kế tiếp `fetchWishlist` đưa các mục về.
+- Lệnh `POST`/`DELETE` bị BE từ chối (401, 500) không được báo: mục đã đổi ở máy.
+- Trang trống ghi "Nhận thông báo khi giảm giá" (`private.wishlist.empty.features.priceDrops`) trong khi chưa có tính năng thông báo nào.
+- Kiểu dáng của trang nằm trong khối `<style>` riêng của `WishlistContent.tsx`.
+
+### 4.5 Khác với giỏ hàng
 
 Wishlist **không** được xóa khi đăng xuất (giỏ hàng thì có, qua `CartSync`); bản địa phương chỉ được thay bằng bản BE khi mở trang wishlist lúc đã đăng nhập.
 

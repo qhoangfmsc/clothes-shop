@@ -926,5 +926,41 @@
     "tests": [
       "tests/platform/dev-tooling/harness-store.test.tsx"
     ]
+  },
+  {
+    "name": "fixtures: matchMedia ignores the test's answer",
+    "file": "tests/_support/media-query.ts",
+    "find": "matches: media.matching(query),",
+    "replace": "matches: false,",
+    "tests": [
+      "tests/platform/dev-tooling/harness-fixtures.test.tsx"
+    ]
+  },
+  {
+    "name": "fixtures: matchMedia is not reset after a test",
+    "file": "tests/_support/setup.ts",
+    "find": "  media.reset();\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-fixtures.test.tsx"
+    ]
+  },
+  {
+    "name": "fixtures: serverCart replaces the id a line already has",
+    "file": "tests/_support/fixtures.ts",
+    "find": "id: line.serverItemId ?? `si-",
+    "replace": "id: `si-",
+    "tests": [
+      "tests/platform/dev-tooling/harness-fixtures.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: SWR keeps its data between renders",
+    "file": "tests/_support/render.tsx",
+    "find": "provider: () => new Map(), ",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-store.test.tsx"
+    ]
   }
 ]

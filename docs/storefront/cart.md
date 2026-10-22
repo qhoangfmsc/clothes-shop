@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh, giỏ nổi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-22
 > **Code:** `(private)/cart/` — `page.tsx`, `layout.tsx`, `CartContent.tsx`, `_common/{moduleSlice,types}.ts`, `_components/CartSync.tsx` · `_components/QuickAddDrawer.tsx`, `_components/CartFAB.tsx` (dùng chung) · `src/store/index.ts` (lưu `localStorage`)
 > **i18n:** `private.cart`, `shared.cart` (`fab`, `quickAdd`, `productAction`)
 > **Redux slice:** `state.cart`
@@ -72,7 +72,19 @@ Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăn
 - Thêm: `addItem` + `syncAddToCartItem` + `trackEvent("add_to_cart", { productId, vnd | usd })` (đơn giá theo ngôn ngữ, xem [analytics](../admin/analytics.md)) + toast có link `/cart`, nút (nhãn "Thêm vào giỏ", không kèm giá vì BE chưa tính thành tiền) đổi thành "Đã thêm" rồi đóng sau 0.8 s. Giá và giá gốc của sản phẩm hiện theo ngôn ngữ (`useMoney`). Gợi ý còn thiếu size/màu.
 - Được mở từ `ProductCard` (sau `requireAuth`) và từ lưới sản phẩm ở [collections](./collections.md) (không qua `requireAuth`).
 
-### 4.7 Liên quan
+### 4.7 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/cart.md](../../specs/storefront/cart.md). Test ở `tests/storefront/cart/` (`cart-slice`, `cart-thunks`, `cart-sync`, `cart-page`, `quick-add`); `mutants.json` có đột biến cho slice, `CartSync`, `CartContent` và `QuickAddDrawer`.
+
+Các điểm cần biết về hành vi hiện tại:
+
+- Đổi số lượng hoặc xóa một dòng **chưa có `serverItemId`** (lệnh thêm còn đang chờ BE) chỉ đổi ở máy, không gọi BE; `fetchCart` kế tiếp lấy lại dòng và số lượng của BE.
+- `syncAddToCartItem` lỗi (401 vì phiên hết hạn, 409, 500) không gỡ dòng đã thêm ở máy; dòng ở lại tới khi `fetchCart` hoặc `CartSync` thay giỏ. Khách chưa đăng nhập thêm được dòng từ `QuickAddDrawer` theo cách này.
+- Khi có dòng chưa có `serverItemId` mà không còn lệnh ghi nào chờ, `useOrderQuote` đọc giỏ BE (`fetchCart`), giỏ BE thay các dòng ở máy nên danh sách đổi và báo giá được gửi lần nữa với cùng các id.
+- Báo giá lỗi chỉ để tạm tính hiện "…", không có thông báo lỗi.
+- Hẹn giờ debounce số lượng (500 ms) và hẹn giờ đóng ngăn kéo (800 ms) không bị hủy khi component bị gỡ.
+
+### 4.8 Liên quan
 
 Luồng tiếp theo: [checkout](./checkout.md). Quy tắc mua theo badge: [ui-kit](../platform/ui-kit.md) 4.8. Wishlist: [wishlist](./wishlist.md).
 

@@ -15,8 +15,9 @@ function allFiles(dir: string): string[] {
 }
 const sourceFiles = allFiles(join(ROOT, "src")).map((f) => f.slice(ROOT.length + 1));
 
-/** Expands `a/{B,C}.tsx` and `**\/Name.tsx` to the files they could match. */
+/** Expands `a/{B,C}.tsx`, `**\/Name.tsx` and escaped brackets (`\\(private\\)`: a bare `(…)` is a glob group, not a folder name) to the files they could match. */
 function matches(pattern: string): string[] {
+  if (pattern.includes("\\")) return matches(pattern.replace(/\\([()])/g, "$1"));
   const braces = /\{([^}]+)\}/.exec(pattern);
   if (braces) return braces[1].split(",").flatMap((alt) => matches(pattern.replace(braces[0], alt)));
   if (pattern.startsWith("**/")) return sourceFiles.filter((f) => f.endsWith(`/${pattern.slice(3)}`));
@@ -37,6 +38,12 @@ describe("QG-12 coverage data", () => {
     expect(missing).toEqual([]);
   });
 
+  it("writes every folder with brackets in the data with its brackets escaped, because a bare (name) would match no folder", () => {
+    const bare = [...coverage.include, ...Object.keys(coverage.thresholds)].filter((entry) => /(^|[^\\])\((?!\.)/.test(entry.replace(/\{[^}]*\}/g, "")));
+
+    expect(bare).toEqual([]);
+  });
+
   it("every threshold is a percentage between 0 and 100", () => {
     for (const [file, limits] of Object.entries(coverage.thresholds)) {
       for (const [metric, value] of Object.entries(limits as Record<string, number>)) {
@@ -52,5 +59,7 @@ describe("QG-12 coverage data", () => {
     expect(matches("**/VndInput.tsx")).toHaveLength(1);
     expect(matches("src/lib/does-not-exist.ts")).toEqual([]);
     expect(matches("**/NoSuchFile.tsx")).toEqual([]);
+    expect(matches("src/app/[locale]/\\(private\\)/cart/**").length).toBeGreaterThan(3);
+    expect(matches("src/app/[locale]/\\(nothing\\)/**")).toEqual([]);
   });
 });

@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { notFound, redirect, useParams, useSearchParams } from "next/navigation";
+import useSWR from "swr";
 import { describe, expect, it } from "vitest";
 import { addItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
@@ -78,6 +79,25 @@ describe("QG-13 a store of its own in every render", () => {
 
     expect(user?.role).toBe("user");
     expect(store.getState().cart.items).toHaveLength(1);
+  });
+});
+
+describe("QG-13 a fresh SWR cache in every render", () => {
+  function Greeting({ fetcher }: { fetcher: () => Promise<string> }) {
+    const { data } = useSWR("greeting", fetcher);
+    return <p>{data ?? "loading"}</p>;
+  }
+
+  it("does not hand the data of an earlier render to a later one", async () => {
+    let calls = 0;
+    const fetcher = async () => `hello ${++calls}`;
+    const first = await renderApp(<Greeting fetcher={fetcher} />);
+    expect(await screen.findByText("hello 1")).toBeInTheDocument();
+    first.unmount();
+
+    await renderApp(<Greeting fetcher={fetcher} />);
+
+    expect(await screen.findByText("hello 2")).toBeInTheDocument();
   });
 });
 

@@ -34,3 +34,8 @@ export function msg(path: string, locale: "vi" | "en" = "vi"): string {
   if (typeof node !== "string") throw new Error(`message "${path}" in ${locale} is not a text`);
   return node;
 }
+
+/** `msg` with simple `{name}` placeholders filled in, e.g. `msgf("private.cart.header.itemCount", { count: 3 })`. Not for plural or select forms. */
+export function msgf(path: string, values: Record<string, string | number>, locale: "vi" | "en" = "vi"): string {
+  return msg(path, locale).replace(/\{(\w+)\}/g, (whole, key: string) => (key in values ? String(values[key]) : whole));
+}

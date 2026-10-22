@@ -5,7 +5,7 @@
     "src/contexts/**",
     "src/store/**",
     "src/app/[locale]/_components/{RoleGuard,AdminPasswordGate,SystemPasswordPrompt,LoginPromptModal,SignOutButton,UnauthenticatedState,MoneyText,VndInput}.tsx",
-    "src/app/[locale]/(auth)/login/**",
+    "src/app/[locale]/\\(auth\\)/login/**",
     "src/app/[locale]/unauthorized/**",
     "src/app/media/**",
     "src/types/enums.ts",
@@ -19,7 +19,10 @@
     "src/app/[locale]/_components/JsonLd.tsx",
     "scripts/{quality-lib,progress-lib,comment-lib}.mjs",
     "src/app/api/cron/**",
-    "next.config.ts"
+    "next.config.ts",
+    "src/app/[locale]/\\(private\\)/cart/**",
+    "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "src/app/[locale]/\\(private\\)/wishlist/**"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -298,6 +301,36 @@
       "lines": 95,
       "branches": 90,
       "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/cart/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/cart/_components/CartSync.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/cart/CartContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/QuickAddDrawer.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/wishlist/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/wishlist/WishlistContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
     }
   }
 }

@@ -13,7 +13,7 @@ Danh sách những luồng mà nếu hỏng thì cửa hàng ngừng bán đư�
 | F-04 | Trang đăng nhập hiển thị và chặn nút Google cho tới khi đồng ý điều khoản | P1 | platform/auth | `tests/platform/auth/login.e2e.ts` |
 | F-05 | Lỗi từ BE thành `ApiError` với thông điệp và mã đúng | P1 | platform/data-layer | `tests/platform/data-layer/api-error.test.ts` |
 | F-06 | Duyệt danh mục và xem sản phẩm | P0 | storefront/shop | — |
-| F-07 | Thêm sản phẩm vào giỏ (khách và đã đăng nhập), giỏ giữ qua lần tải lại | P0 | storefront/cart | — |
+| F-07 | Thêm sản phẩm vào giỏ (khách và đã đăng nhập), giỏ giữ qua lần tải lại | P0 | storefront/cart | `tests/storefront/cart/quick-add.test.tsx` `tests/storefront/cart/cart-slice.test.ts` |
 | F-08 | Checkout tạo đơn và hiển thị thanh toán | P0 | storefront/checkout | — |
 | F-09 | Số tiền hiển thị đúng tiền tệ theo ngôn ngữ, không tự quy đổi ở FE | P0 | platform/currency | `tests/platform/currency/money.test.ts` `tests/platform/currency/use-money.test.tsx` |
 | F-10 | Đổi ngôn ngữ vi/en giữ nguyên trang đang xem | P1 | platform/i18n | — |
@@ -25,3 +25,5 @@ Danh sách những luồng mà nếu hỏng thì cửa hàng ngừng bán đư�
 | F-16 | Người không đủ quyền không vào được `/admin` | P0 | platform/auth | — |
 | F-17 | Khách chưa đăng nhập vào trang riêng (tài khoản, giỏ, đơn, yêu thích) thì thấy màn chặn đăng nhập, không thấy nội dung | P0 | platform/auth | `tests/e2e/private-pages.e2e.ts` |
 | F-18 | Tài khoản test đã đăng nhập vào được trang riêng, giữ phiên sau khi tải lại, access token cũ tự làm mới | P0 | platform/auth | `tests/e2e/signed-in.auth.e2e.ts` |
+| F-19 | Giỏ hàng: đổi số lượng, xóa dòng, chọn dòng để mua và thấy tạm tính do BE báo giá; khách chỉ thấy màn chặn | P0 | storefront/cart | `tests/storefront/cart/cart-page.test.tsx` `tests/storefront/cart/cart-thunks.test.ts` `tests/storefront/cart/cart-sync.test.tsx` |
+| F-20 | Yêu thích: thả tim, xem và bỏ khỏi danh sách; khách chỉ thấy màn chặn | P1 | storefront/wishlist | `tests/storefront/wishlist/wishlist-page.test.tsx` `tests/storefront/wishlist/wishlist-thunks.test.ts` |

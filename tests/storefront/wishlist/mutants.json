@@ -1,0 +1,241 @@
+[
+  {
+    "name": "slice: a saved product stays saved when toggled again",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "if (idx >= 0) {",
+    "replace": "if (idx > 0) {",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a saved product has no time",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "state.items.push({ ...item, addedAt: new Date().toISOString() });",
+    "replace": "state.items.push({ ...item, addedAt: \"\" });",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: removing by id removes everything else",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "(i) => i.productId !== action.payload",
+    "replace": "(i) => i.productId === action.payload",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: clearing the list does nothing",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "clearWishlist(state) {\n      state.items = [];",
+    "replace": "clearWishlist(state) {",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: products saved without a VND price are kept",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "items.filter((i) => typeof i?.priceVnd === \"number\")",
+    "replace": "items",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the BE list does not replace the local one",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "state.items = action.payload;\n      state.isSyncing = false;",
+    "replace": "state.isSyncing = false;",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a failed fetch stays 'syncing'",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "builder.addCase(fetchWishlist.rejected, (state) => {\n      state.isSyncing = false;",
+    "replace": "builder.addCase(fetchWishlist.rejected, (state) => {\n      state.isSyncing = true;",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the picture is not the first one",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "si.product?.images?.[0] ?? \"\"",
+    "replace": "si.product?.images?.[1] ?? \"\"",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the BE's saved time is ignored",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "si.createdAt ?? new Date().toISOString()",
+    "replace": "new Date().toISOString()",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the category slug is read from the sub-category",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "category: si.product?.category?.slug ?? \"\",",
+    "replace": "category: si.product?.subcategory?.slug ?? \"\",",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: an answer with no list is an error",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "(res.data ?? [])",
+    "replace": "(res.data as NonNullable<typeof res.data>)",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: saving calls the BE with PUT",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "method: \"POST\",",
+    "replace": "method: \"PUT\",",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: removing calls the BE with POST",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "method: \"DELETE\",",
+    "replace": "method: \"POST\",",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: every product counts as saved",
+    "file": "src/app/[locale]/(private)/wishlist/_common/moduleSlice.ts",
+    "find": "state.wishlist.items.some((i) => i.productId === productId)",
+    "replace": "state.wishlist.items.some(() => true)",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-slice.test.ts",
+      "tests/storefront/wishlist/wishlist-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "page: a visitor's page asks the BE for the list",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "    if (isAuthenticated) {\n      dispatch(fetchWishlist());\n    }",
+    "replace": "    dispatch(fetchWishlist());",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the oldest product comes first",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "[...items].reverse().map",
+    "replace": "[...items].map",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a custom-order product shows its price",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "hasPublicPrice(item.badge) ? fmt(item",
+    "replace": "true ? fmt(item",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: removing a product does not tell the BE",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "      dispatch(syncRemoveFromWishlist(productId));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: removing a product says nothing",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "toast.info(t(\"card.removed\", { name }));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: 'clear all' does nothing",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "onClick={() => dispatch(clearWishlist())}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: 'clear all' shows on an empty list",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "          {items.length > 0 && (\n            <button",
+    "replace": "          {items.length >= 0 && (\n            <button",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an empty list shows a count of 0",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "            {items.length > 0 && (\n              <span className=\"wishlist-page__count\">",
+    "replace": "            {items.length >= 0 && (\n              <span className=\"wishlist-page__count\">",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the back link goes to the cart",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "<Link href=\"/account\"",
+    "replace": "<Link href=\"/cart\"",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the day is shown in the long format",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "format.dateTime(new Date(item.addedAt), \"short\")",
+    "replace": "format.dateTime(new Date(item.addedAt), \"long\")",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: 'keep shopping' shows on an empty list",
+    "file": "src/app/[locale]/(private)/wishlist/WishlistContent.tsx",
+    "find": "        {items.length > 0 && (\n          <motion.div\n            initial={{ opacity: 0 }}",
+    "replace": "        {items.length >= 0 && (\n          <motion.div\n            initial={{ opacity: 0 }}",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-page.test.tsx"
+    ]
+  }
+]

@@ -1,0 +1,479 @@
+[
+  {
+    "name": "slice: adding the same line replaces its quantity",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "existing.quantity += quantity;",
+    "replace": "existing.quantity = quantity;",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the line key ignores the colour",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "`${item.productId}|${item.size}|${item.color}`",
+    "replace": "`${item.productId}|${item.size}`",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a quantity of 0 keeps the line",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "if (quantity <= 0) {",
+    "replace": "if (quantity < 0) {",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: removing a line keeps its unticked key",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "      pruneDeselected(state);\n    },\n\n    /** Bulk remove",
+    "replace": "    },\n\n    /** Bulk remove",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: every line counts as buyable",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "items.filter((i) => isPurchasable(i.badge))",
+    "replace": "items.filter(() => true)",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the ticked lines are the unticked ones",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "items.filter((i) => !deselectedKeys.includes(cartItemKey(i)))",
+    "replace": "items.filter((i) => deselectedKeys.includes(cartItemKey(i)))",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: lines saved without a VND price are kept",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "items.filter((i) => typeof i?.priceVnd === \"number\")",
+    "replace": "items",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: prices are taken while a write is still waiting",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "  if (state.pendingSync > 0) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a line total is kept when the quantity differs",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "const sameQuantity = server.quantity === line.quantity;",
+    "replace": "const sameQuantity = true;",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a finished add does not give back the counter",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "      state.pendingSync -= 1;\n      const serverId",
+    "replace": "      const serverId",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a failed add does not give back the counter",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "if (index >= 0) state.pendingAddKeys.splice(index, 1);\n      state.pendingSync -= 1;",
+    "replace": "if (index >= 0) state.pendingAddKeys.splice(index, 1);",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: fetching the cart drops lines still being added",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "state.items = [...action.payload, ...inFlight];",
+    "replace": "state.items = action.payload;",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: a failed fetch stays 'syncing'",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "builder.addCase(fetchCart.rejected, (state) => {\n      state.isSyncing = false;",
+    "replace": "builder.addCase(fetchCart.rejected, (state) => {\n      state.isSyncing = true;",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the line never learns its server id",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "if (line && serverId) line.serverItemId = serverId;",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: an unknown colour has no fallback code",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "matchedColor?.hex ?? si.color",
+    "replace": "matchedColor?.hex ?? \"\"",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: clearing the cart keeps the unticked keys",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "state.items = [];\n      state.deselectedKeys = [];",
+    "replace": "state.items = [];",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: 'select all' and 'select none' are swapped",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "action.payload ? [] : state.items.map(cartItemKey)",
+    "replace": "action.payload ? state.items.map(cartItemKey) : []",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "slice: the in-flight add is not marked on the line key",
+    "file": "src/app/[locale]/(private)/cart/_common/moduleSlice.ts",
+    "find": "state.pendingAddKeys.push(cartItemKey(action.meta.arg));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-slice.test.ts",
+      "tests/storefront/cart/cart-thunks.test.ts"
+    ]
+  },
+  {
+    "name": "sync: the cart is cleared while the session is unknown",
+    "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
+    "find": "    if (isLoading) return; // session not resolved yet — \"signed out\" would be a false reading\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-sync.test.tsx"
+    ]
+  },
+  {
+    "name": "sync: a visitor loads the BE cart instead of clearing",
+    "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
+    "find": "else dispatch(clearCart());",
+    "replace": "else dispatch(fetchCart());",
+    "tests": [
+      "tests/storefront/cart/cart-sync.test.tsx"
+    ]
+  },
+  {
+    "name": "sync: a change of account does not reload the cart",
+    "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
+    "find": "[isLoading, isAuthenticated, userId, dispatch]",
+    "replace": "[isLoading, isAuthenticated, dispatch]",
+    "tests": [
+      "tests/storefront/cart/cart-sync.test.tsx"
+    ]
+  },
+  {
+    "name": "sync: a user clears the cart instead of loading it",
+    "file": "src/app/[locale]/(private)/cart/_components/CartSync.tsx",
+    "find": "if (isAuthenticated) dispatch(fetchCart());",
+    "replace": "if (isAuthenticated) dispatch(clearCart());",
+    "tests": [
+      "tests/storefront/cart/cart-sync.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the quantity can pass 10",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "disabled={item.quantity >= 10}",
+    "replace": "disabled={item.quantity > 10}",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the quantity can go below 1",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "disabled={item.quantity <= 1}",
+    "replace": "disabled={item.quantity < 1}",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: every click sends its own PATCH",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "}, 500);",
+    "replace": "}, 0);",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a line without a server id still sends a PATCH",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "      if (item.serverItemId) {\n        debounceRef.current",
+    "replace": "      if (true) {\n        debounceRef.current",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: removing a line ignores 'no'",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "    if (!confirmed) return;\n    dispatch(removeItem(",
+    "replace": "    dispatch(removeItem(",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: removing a line without a server id still sends a DELETE",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "    if (item.serverItemId) {\n      dispatch(syncRemoveCartItem(item.serverItemId));",
+    "replace": "    if (true) {\n      dispatch(syncRemoveCartItem(item.serverItemId!));",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the heart adds when the product is saved and removes when it is not",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "    if (isWishlisted) {\n      dispatch(syncRemoveFromWishlist",
+    "replace": "    if (!isWishlisted) {\n      dispatch(syncRemoveFromWishlist",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the bulk heart saves a product once per size",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "      if (saved.has(line.productId)) continue;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the bulk heart always says 'added'",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "if (added > 0) toast.success",
+    "replace": "if (added >= 0) toast.success",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: 'select all' looks ticked with nothing to buy",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "const allSelected = purchasableCount > 0 && selectedCount === purchasableCount;",
+    "replace": "const allSelected = selectedCount === purchasableCount;",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the quote is asked while a write is waiting",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "isAuthenticated && pendingSync === 0\n  );",
+    "replace": "isAuthenticated\n  );",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: an unpriced line total shows 0",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "?? \"…\")}",
+    "replace": "?? \"0\")}",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a sold-out line can be ticked",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "disabled={!purchasable}\n        onCheckedChange",
+    "replace": "disabled={false}\n        onCheckedChange",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a sold-out line looks ticked",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "checked={selected && purchasable}",
+    "replace": "checked={selected}",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the checkout link goes elsewhere",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "<Link href=\"/checkout\"",
+    "replace": "<Link href=\"/cart\"",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: a custom-order line shows its price",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "{purchaseMode === \"customOrder\" ? tCommon(\"priceOnRequest\") : fmt(item, \"price\")}",
+    "replace": "{fmt(item, \"price\")}",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "page: the bulk remove is open with nothing chosen",
+    "file": "src/app/[locale]/(private)/cart/CartContent.tsx",
+    "find": "onClick={handleRemoveSelected}\n                  disabled={selectedCount === 0}",
+    "replace": "onClick={handleRemoveSelected}\n                  disabled={false}",
+    "tests": [
+      "tests/storefront/cart/cart-page.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: a sold-out product opens the drawer",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "    if (!isPurchasable(p.badge)) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: a size alone is enough to add",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "selectedSize !== null && selectedColor !== null",
+    "replace": "selectedSize !== null || selectedColor !== null",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: pressing add twice adds twice",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "if (addedToCart || !isSelectionComplete) return;",
+    "replace": "if (!isSelectionComplete) return;",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the drawer never closes after adding",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "}, 800);",
+    "replace": "}, 800000);",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: Escape does not close",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "if (e.key === \"Escape\") onClose();",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: a short swipe closes",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "if (deltaY > 80) onClose();",
+    "replace": "if (deltaY > 10) onClose();",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the quantity can pass 10",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "disabled={quantity >= 10}",
+    "replace": "disabled={quantity >= 11}",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the quantity can reach 0",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "disabled={quantity <= 1}",
+    "replace": "disabled={quantity <= 0}",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the price is always tracked in dong",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "moneyProp(moneyOf(product, \"price\"), locale)",
+    "replace": "moneyProp(moneyOf(product, \"price\"), \"vi\")",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the size table loads as soon as the drawer opens",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "useSizeGuide(showSizeGuide ? (product.category?.slug ?? null) : null)",
+    "replace": "useSizeGuide(product.category?.slug ?? null)",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the page keeps scrolling behind the drawer",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "document.body.style.overflow = \"hidden\";",
+    "replace": "",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  },
+  {
+    "name": "quick add: the line is added with the colour code instead of its name",
+    "file": "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "find": "const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? \"\";",
+    "replace": "const colorName = selectedColor ?? \"\";",
+    "tests": [
+      "tests/storefront/cart/quick-add.test.tsx"
+    ]
+  }
+]

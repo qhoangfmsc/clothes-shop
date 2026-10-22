@@ -1,5 +1,6 @@
 import { render, waitFor, type RenderResult } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
+import { SWRConfig } from "swr";
 import { useEffect, type ReactElement, type ReactNode } from "react";
 import { expect } from "vitest";
 import { AuthProvider, useAuth, type AuthUser } from "@/src/contexts/auth-context";
@@ -14,7 +15,7 @@ import { MESSAGES } from "./messages";
 import { signInAs, type IdentityName } from "./identities";
 
 /* Renders a component the way the app does: real translations, the real AuthProvider answered by MSW, and the
-   same provider order as app/[locale]/layout.tsx, and a Redux store of its own with the same localStorage saving.
+   same provider order as app/[locale]/layout.tsx, a Redux store of its own with the same localStorage saving, and a fresh SWR cache.
    Navigation (including the `next/navigation` hooks) and Google are stand-ins installed in setup.ts. */
 
 interface RenderAppOptions {
@@ -48,17 +49,19 @@ export async function renderApp(ui: ReactElement, options: RenderAppOptions = {}
 
   const tree = (children: ReactElement) => (
     <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]} timeZone={TIME_ZONE} formats={FORMATS}>
-      <StoreProvider store={store}>
-        <AuthProvider>
-          <ToastProvider position="bottom-center">
-            <ConfirmProvider>
-              <SystemPasswordPromptProvider>
-                <LoginPromptProvider>{waitForAuth ? <AuthReady>{children}</AuthReady> : children}</LoginPromptProvider>
-              </SystemPasswordPromptProvider>
-            </ConfirmProvider>
-          </ToastProvider>
-        </AuthProvider>
-      </StoreProvider>
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <StoreProvider store={store}>
+          <AuthProvider>
+            <ToastProvider position="bottom-center">
+              <ConfirmProvider>
+                <SystemPasswordPromptProvider>
+                  <LoginPromptProvider>{waitForAuth ? <AuthReady>{children}</AuthReady> : children}</LoginPromptProvider>
+                </SystemPasswordPromptProvider>
+              </ConfirmProvider>
+            </ToastProvider>
+          </AuthProvider>
+        </StoreProvider>
+      </SWRConfig>
     </NextIntlClientProvider>
   );
 

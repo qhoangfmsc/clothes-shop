@@ -2,6 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { google } from "./google";
+import { installMatchMedia, media } from "./media-query";
 import { server } from "./msw-server";
 import { navigation } from "./navigation";
 
@@ -11,7 +12,10 @@ vi.mock("@/src/i18n/navigation", async () => (await import("./navigation")).navi
 vi.mock("next/navigation", async () => (await import("./navigation")).nextNavigationModule);
 vi.mock("@react-oauth/google", async () => (await import("./google")).googleModule);
 
-beforeAll(() => server.listen({ onUnhandledFrame: "error" }));
+beforeAll(() => {
+  server.listen({ onUnhandledFrame: "error" });
+  installMatchMedia();
+});
 
 afterEach(() => {
   cleanup();
@@ -20,6 +24,7 @@ afterEach(() => {
   sessionStorage.clear();
   navigation.reset();
   google.reset();
+  media.reset();
 });
 
 afterAll(() => server.close());
