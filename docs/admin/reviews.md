@@ -1,6 +1,6 @@
 # Reviews (kiểm duyệt đánh giá)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-19
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-24
 > **Code:** `(admin)/admin/reviews/` — `page.tsx`, `ReviewsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{ReviewStatusBadge,ReviewDetailPanel,HideReviewModal,ReviewReplyForm}.tsx`; dùng chung `_components/{ReviewContent,ReviewAvatar,StarRating}.tsx`
 > **i18n:** `admin.reviews`, `shared.reviews`, `shared.errors.byCode` (1901, 1906), `admin.components.crud.sort` (`ratingDesc`, `ratingAsc`, `helpfulDesc`), `admin.shell.nav.pending.reviews`
 > **Redux slice:** `state.reviews`
@@ -42,7 +42,7 @@ Mỗi thao tác trả đánh giá sau khi đổi (góc nhìn admin); panel thay 
 
 ### 4.2 Lỗi
 
-Toast qua `useErrorMessage` với fallback `toast.failed` / `saveFailed` / `deleteFailed`. `1906` (đã ở trạng thái đó): tải lại chi tiết đánh giá và đóng modal ẩn; `1901` (không còn): đóng panel và làm mới bảng. Modal ẩn giữ nguyên chữ khi lỗi.
+Toast qua `useErrorMessage` với fallback `toast.failed` / `saveFailed` / `deleteFailed`. `1906` (đã ở trạng thái đó): tải lại chi tiết đánh giá và đóng modal ẩn; `1901` (không còn): đóng panel và làm mới bảng. Mã được đọc bằng `errorCodeOf` (lỗi từ `unwrap()` là object thường, không phải `ApiError`). Modal ẩn giữ nguyên chữ khi lỗi.
 
 ### 4.3 Badge menu
 
@@ -53,3 +53,11 @@ Toast qua `useErrorMessage` với fallback `toast.failed` / `saveFailed` / `dele
 Hình dạng dữ liệu `AdminReview` ở `src/types/review.ts` (dùng chung với storefront); phía khách ở [customer-reviews](../storefront/customer-reviews.md), hiển thị công khai ở [product-detail](../storefront/product-detail.md). Điểm trung bình và số đánh giá của sản phẩm hiện ở cột Rating của [products](./products.md).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.5 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/reviews.md](../../specs/admin/reviews.md). Test ở `tests/admin/reviews/` (`reviews-list`, `review-detail`, `review-forms`, `reviews-slice`; `reviews-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.6 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/reviews.md](../../specs/admin/reviews.md). Test ở `tests/admin/reviews/` (`reviews-list`, `review-detail`, `review-forms`, `reviews-slice`; `reviews-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

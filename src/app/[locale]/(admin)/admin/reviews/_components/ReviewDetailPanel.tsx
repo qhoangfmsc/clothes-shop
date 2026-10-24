@@ -9,8 +9,8 @@ import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import ReviewContent from "@/src/app/[locale]/_components/ReviewContent";
 import ReviewAvatar from "@/src/app/[locale]/_components/ReviewAvatar";
+import { errorCodeOf } from "@/src/i18n/error-message";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
-import { ApiError } from "@/src/lib/api";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { toMediaUrl } from "@/src/lib/media-url";
 import { productPath } from "@/src/lib/product-url";
@@ -62,7 +62,7 @@ export default function ReviewDetailPanel({ review, onClose, onChanged, onGone }
 
   /** After a failed action: 1906 (already in that state) → show the row as it is now; 1901 → it is gone */
   const refreshAfterError = async (err: unknown) => {
-    const code = err instanceof ApiError ? err.errorCode : undefined;
+    const code = errorCodeOf(err);
     if (code === CODE_NOT_FOUND) {
       onGone();
     } else if (code === CODE_INVALID_STATE) {

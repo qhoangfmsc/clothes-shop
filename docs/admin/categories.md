@@ -1,6 +1,6 @@
 # Categories (danh mục & danh mục con)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/categories` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/categories` · **Cập nhật:** 2026-10-24
 > **Code:** `(admin)/admin/categories/` — `CategoriesContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.categories`, `admin.components.crud`
 > **Redux slice:** `state.categories`
@@ -35,8 +35,8 @@ Giữ cấu trúc catalog: mỗi sản phẩm thuộc một danh mục và (nế
 
 ### 4.2 Form
 
-- **Info**: Title* (gõ tên sinh `slug`), Priority (readonly, disabled; khi sửa hiện priority hiện tại, khi tạo hiện `nextPriority`), Description, Hero image (`ImageUrlField`).
-- **Subcategories**: thêm/xóa nhiều dòng, mỗi dòng có Label (sinh `slug`) và Description. Dòng mới có `id: 0`.
+- **Info**: Title* (gõ tên sinh `slug`: chữ thường, `đ` thành `d`, bỏ dấu, ký tự lạ thành `-`, bỏ `-` hai đầu), Priority (readonly, disabled; khi sửa hiện priority hiện tại, khi tạo hiện `nextPriority`), Description, Hero image (`ImageUrlField`).
+- **Subcategories**: thêm/xóa nhiều dòng, mỗi dòng có Label (sinh `slug`) và Description. Dòng mới là `{ slug: "", label: "", description: "", count: 0 }` (không có `id`).
 - `nextPriority` lấy bằng thunk `fetchNextCategoryPriority` = `GET /api/admin/categories?sort=-priority&limit=1` → `priority + 1` (chỉ để hiển thị; BE tự cấp thứ hạng thật khi tạo).
 - Body gửi đi: `{ slug, title, description, heroImage (trim, rỗng → null), subcategories }`; mỗi danh mục con bị bỏ `id`, `count`, `createdAt`, `updatedAt` trước khi gửi. Không gửi `priority`.
 - API: `POST /api/admin/categories`, `PATCH /api/admin/categories/:id`, `DELETE /api/admin/categories/:id`, `GET /api/admin/categories?…`.
@@ -51,3 +51,7 @@ Giữ cấu trúc catalog: mỗi sản phẩm thuộc một danh mục và (nế
 - Dropdown danh mục của [products](./products.md) lấy từ `useAdminCategories`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.5 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/categories.md](../../specs/admin/categories.md). Test ở `tests/admin/categories/` (`categories-list`, `category-form`, `categories-slice`; `categories-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

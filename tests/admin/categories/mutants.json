@@ -1,0 +1,864 @@
+[
+  {
+    "name": "categories: the search is not sent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "        search: params.search || undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the sort is not sent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "        sort: params.sort,\n        page: params.page,",
+    "replace": "        page: params.page,",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the table opens on another sort",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "defaultSort={CATEGORY_PRIORITY_SORT}",
+    "replace": "defaultSort=\"-createdAt\"",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the table is paged",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "pageSize={CATEGORY_PAGE_SIZE}",
+    "replace": "pageSize={25}",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: dragging is on under any sort",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "reorder={{ sortValue: CATEGORY_PRIORITY_SORT, onReorder: handleReorder }}",
+    "replace": "reorder={{ sortValue: \"title\", onReorder: handleReorder }}",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the rank is hidden",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "<span className=\"text-[var(--text-muted)] tabular-nums\">{c.priority}</span>",
+    "replace": "<span className=\"text-[var(--text-muted)] tabular-nums\"></span>",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: sub-categories show without checking",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "{c.subcategories && c.subcategories.length > 0 ? (",
+    "replace": "{c.subcategories.length > 0 ? (",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: an empty list shows chips",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "{c.subcategories && c.subcategories.length > 0 ? (",
+    "replace": "{c.subcategories ? (",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a long description is not cut",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "? c.description.slice(0, 50) + \"...\"",
+    "replace": "? c.description",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a description is cut at forty nine",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "c.description.length > 50",
+    "replace": "c.description.length > 49",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a description is cut late",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "c.description.length > 50",
+    "replace": "c.description.length > 51",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a description is cut short",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "c.description.slice(0, 50)",
+    "replace": "c.description.slice(0, 49)",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: an empty description has no dash",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "              : \"—\"}\n          </span>",
+    "replace": "              : \"\"}\n          </span>",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: edit needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.CATEGORY_UPDATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.CATEGORY_VIEW}>",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: delete needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.CATEGORY_DELETE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.CATEGORY_VIEW}>",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: add needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.CATEGORY_CREATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.CATEGORY_VIEW}>",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the edit button deletes",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "onClick={() => openEdit(c)}",
+    "replace": "onClick={() => handleDelete(c.id, c.title)}",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx",
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the reorder sends titles",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "reorderCategories(rows.map((r) => r.id))",
+    "replace": "reorderCategories(rows.map((r) => r.title))",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a reorder is silent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.success(t(\"toast.reordered\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a reorder does not reload the table",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      toast.success(t(\"toast.reordered\"));\n      tableRef.current?.refresh();",
+    "replace": "      toast.success(t(\"toast.reordered\"));",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a failed reorder is silent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.reorderFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a failed reorder does not reload",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      toast.error(toErrorMessage(err, t(\"toast.reorderFailed\")));\n      tableRef.current?.refresh();\n      throw err;",
+    "replace": "      toast.error(toErrorMessage(err, t(\"toast.reorderFailed\")));\n      throw err;",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a failed reorder keeps the moved rows",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      throw err;\n    }\n  };\n\n  const handleDelete",
+    "replace": "    }\n  };\n\n  const handleDelete",
+    "tests": [
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: opening a form does not ask for the rank",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    dispatch(fetchNextCategoryPriority())\n      .unwrap()\n      .then(setNextPriority)\n      .catch(() => {});",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the old rank stays",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    setNextPriority(null);\n    dispatch(fetchNextCategoryPriority())",
+    "replace": "    dispatch(fetchNextCategoryPriority())",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a form for a change opens on the old tab",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    setActiveTab(CATEGORY_TABS[0].id);\n    setShowModal(true);\n  };\n\n  const closeModal",
+    "replace": "    setShowModal(true);\n  };\n\n  const closeModal",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a change form hides the saved hero",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "heroImage: c.heroImage ?? \"\",",
+    "replace": "heroImage: \"\",",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a change form hides the saved rank",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      priority: c.priority,\n",
+    "replace": "      priority: null,\n",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a change form hides the saved sub-categories",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "subcategories: c.subcategories?.map((s) => ({ ...s })) ?? [],",
+    "replace": "subcategories: [],",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug does not follow the title",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "setForm((p) => ({ ...p, title: v, slug: slugify(v) }));",
+    "replace": "setForm((p) => ({ ...p, title: v }));",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps the accents",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    .normalize(\"NFD\")\n    .replace(/[̀-ͯ]/g, \"\")\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps đ",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    .replace(/đ/g, \"d\")\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps capitals",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    .toLowerCase()\n    .replace(/đ/g",
+    "replace": "    .replace(/đ/g",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps symbols",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    .replace(/[^a-z0-9]+/g, \"-\")\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps edge dashes",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    .replace(/^-+|-+$/g, \"\");",
+    "replace": "    ;",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps a leading dash",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": ".replace(/^-+|-+$/g, \"\")",
+    "replace": ".replace(/-+$/g, \"\")",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the slug keeps a trailing dash",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": ".replace(/^-+|-+$/g, \"\")",
+    "replace": ".replace(/^-+/g, \"\")",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the title is not needed",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "                      placeholder={t(\"form.placeholders.title\")}\n                      required",
+    "replace": "                      placeholder={t(\"form.placeholders.title\")}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the description is not kept",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the hero image is not kept",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "onChange={(url) => setForm((p) => ({ ...p, heroImage: url }))}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the hero image is not trimmed",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "heroImage: form.heroImage.trim() || null,",
+    "replace": "heroImage: form.heroImage || null,",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: an empty hero image is sent as empty",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "heroImage: form.heroImage.trim() || null,",
+    "replace": "heroImage: form.heroImage.trim(),",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the sub-category id is sent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "            id: _id,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the sub-category count is sent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "            count: _c,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a saved category is created again",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      if (editingId) {",
+    "replace": "      if (false) {",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a change is not told",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.success(t(\"toast.updated\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a creation is not told",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.success(t(\"toast.created\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a save does not reload the table",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      tableRef.current?.refresh();\n      closeModal();",
+    "replace": "      closeModal();",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a save does not close the form",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      tableRef.current?.refresh();\n      closeModal();",
+    "replace": "      tableRef.current?.refresh();",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a failed save is silent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a failed save closes the form",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));\n      closeModal();",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the rank shows the saved one while adding",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "value={(editingId ? form.priority : nextPriority) ?? \"\"}",
+    "replace": "value={(editingId ? nextPriority : form.priority) ?? \"\"}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the rank can be typed",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "                      readOnly\n                      disabled",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a sub-category is added twice",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "        ...p.subcategories,\n        { slug: \"\", label: \"\", description: \"\", count: 0 },",
+    "replace": "        ...p.subcategories,\n        { slug: \"\", label: \"\", description: \"\", count: 0 },\n        { slug: \"\", label: \"\", description: \"\", count: 0 },",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a sub-category name does not make its slug",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "                          updSub(i, \"slug\", slugify(v));\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a sub-category name is not kept",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "                          updSub(i, \"label\", v);\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a sub-category description is not kept",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "onChange={(e) => updSub(i, \"description\", e.target.value)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: removing takes the wrong one",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "subcategories: p.subcategories.filter((_, j) => j !== i)",
+    "replace": "subcategories: p.subcategories.filter((_, j) => j !== 0)",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: removing takes all but one",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "subcategories: p.subcategories.filter((_, j) => j !== i)",
+    "replace": "subcategories: p.subcategories.filter((_, j) => j === i)",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the empty note always shows",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "{form.subcategories.length === 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the sub-category heading is not counted",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "t(\"subcategories.heading\", { count: form.subcategories.length })",
+    "replace": "t(\"subcategories.heading\", { count: 0 })",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: sub-categories are numbered from zero",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "t(\"subcategories.item\", { index: i + 1 })",
+    "replace": "t(\"subcategories.item\", { index: i })",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the saving label is not shown",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "isSaving={isSaving}",
+    "replace": "isSaving={false}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: only creating blocks the button",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "const isSaving = isCreating || isUpdating;",
+    "replace": "const isSaving = isUpdating;",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the form title is always new",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "title={editingId ? t(\"form.titleEdit\") : t(\"form.titleCreate\")}",
+    "replace": "title={t(\"form.titleCreate\")}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the button label is always create",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "submitLabel={editingId ? t(\"form.submitUpdate\") : t(\"form.submitCreate\")}",
+    "replace": "submitLabel={t(\"form.submitCreate\")}",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the info tab shows on the sub-category tab",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "{activeTab === \"info\" && (",
+    "replace": "{(activeTab === \"info\" || activeTab === \"subcategories\") && (",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: delete needs no question",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "    if (!ok) return;\n    try {\n      await dispatch(deleteCategory(id)).unwrap();",
+    "replace": "    try {\n      await dispatch(deleteCategory(id)).unwrap();",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the delete question is not a warning",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      confirmLabel: tCrud(\"delete\"),\n      danger: true,",
+    "replace": "      confirmLabel: tCrud(\"delete\"),",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the delete question does not name the category",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "t(\"confirmDelete.message\", { title })",
+    "replace": "t(\"confirmDelete.message\", { title: \"\" })",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a delete is silent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.success(t(\"toast.deleted\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a delete does not reload",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "      toast.success(t(\"toast.deleted\"));\n      tableRef.current?.refresh();",
+    "replace": "      toast.success(t(\"toast.deleted\"));",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a failed delete is silent",
+    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the rank question asks for the first",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "\"/api/admin/categories?sort=-priority&limit=1\"",
+    "replace": "\"/api/admin/categories?sort=priority&limit=1\"",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts",
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the next rank is the last",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "(res.data[0]?.priority ?? 0) + 1",
+    "replace": "(res.data[0]?.priority ?? 0)",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts",
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the next rank starts at zero",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "(res.data[0]?.priority ?? 0) + 1",
+    "replace": "(res.data[0]?.priority ?? -1) + 1",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts",
+      "tests/admin/categories/category-form.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: reorder sends another name",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "{ ids }",
+    "replace": "{ order: ids }",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts",
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(fetchCategoryList.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchCategoryList.pending, (state) => {",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts",
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: a reorder is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(reorderCategories.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": ".addCase(reorderCategories.pending, (state) => {",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a reorder stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(reorderCategories.fulfilled, (state) => {\n        state.isUpdating = false;\n      })",
+    "replace": ".addCase(reorderCategories.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a refused reorder stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = false;\n        state.error = action.error.message ?? \"Failed to reorder\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to reorder\";",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a create is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(createCategory.pending, (state) => {\n        state.isCreating = true;",
+    "replace": ".addCase(createCategory.pending, (state) => {",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a create stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(createCategory.fulfilled, (state) => {\n        state.isCreating = false;\n      })",
+    "replace": ".addCase(createCategory.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a refused create stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "        state.isCreating = false;\n        state.error = action.error.message ?? \"Failed to create\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to create\";",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: an update is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(updateCategory.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": ".addCase(updateCategory.pending, (state) => {",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: an update stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(updateCategory.fulfilled, (state) => {\n        state.isUpdating = false;\n      })",
+    "replace": ".addCase(updateCategory.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a refused update stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = false;\n        state.error = action.error.message ?? \"Failed to update\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to update\";",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a delete is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(deleteCategory.pending, (state) => {\n        state.isDeleting = true;",
+    "replace": ".addCase(deleteCategory.pending, (state) => {",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": ".addCase(deleteCategory.fulfilled, (state) => {\n        state.isDeleting = false;\n      })",
+    "replace": ".addCase(deleteCategory.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a refused delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "        state.isDeleting = false;\n        state.error = action.error.message ?? \"Failed to delete\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to delete\";",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a write keeps the old error",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/moduleSlice.ts",
+    "find": "      .addCase(createCategory.pending, (state) => {\n        state.isCreating = true;\n        state.error = null;",
+    "replace": "      .addCase(createCategory.pending, (state) => {\n        state.isCreating = true;",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/constants.ts",
+    "find": "  { value: \"-createdAt\", key: \"newest\" },\n  { value: \"createdAt\", key: \"oldest\" },",
+    "replace": "  { value: \"createdAt\", key: \"oldest\" },\n  { value: \"-createdAt\", key: \"newest\" },",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts",
+      "tests/admin/categories/categories-list.test.tsx"
+    ]
+  },
+  {
+    "name": "categories: the page size shrinks",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/constants.ts",
+    "find": "export const CATEGORY_PAGE_SIZE = LIST_MAX_LIMIT;",
+    "replace": "export const CATEGORY_PAGE_SIZE = 100;",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  },
+  {
+    "name": "categories: a new form starts with a rank",
+    "file": "src/app/[locale]/(admin)/admin/categories/_common/constants.ts",
+    "find": "  priority: null,",
+    "replace": "  priority: 0,",
+    "tests": [
+      "tests/admin/categories/categories-slice.test.ts"
+    ]
+  }
+]

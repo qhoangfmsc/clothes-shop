@@ -47,6 +47,7 @@ import type { Category } from "@/src/types/category";
 function slugify(text: string): string {
   return text
     .toLowerCase()
+    .replace(/đ/g, "d")
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-")

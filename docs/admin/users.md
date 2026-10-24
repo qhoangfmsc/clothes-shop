@@ -1,6 +1,6 @@
 # Users (quản lý người dùng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/users` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/users` · **Cập nhật:** 2026-10-24
 > **Code:** `(admin)/admin/users/` — `UsersContent.tsx`, `_common/{moduleSlice,types,constants}.ts` · dùng `_components/OrderDetailPanel.tsx`, `SystemPasswordPrompt.tsx`
 > **i18n:** `admin.users`, `common.role`, `common.status`
 > **Redux slice:** `state.users`
@@ -56,3 +56,7 @@ Select `USER_ROLES`; nút "Lưu" chỉ bật khi role đã đổi và không đa
 - Hai khung modal (sửa user `z-100`, chi tiết đơn `z-110`) tự dựng, không dùng `ModalShell`: overlay `p-3` → `sm:p-6`, chiều cao tối đa `calc(100dvh - 1.5rem)` (từ `sm`: `85dvh`).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.7 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/users.md](../../specs/admin/users.md). Test ở `tests/admin/users/` (`users-list`, `user-modal`, `users-slice`; `users-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

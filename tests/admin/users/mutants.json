@@ -1,0 +1,562 @@
+[
+  {
+    "name": "users: the role filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "        role: (params.filters.role || undefined) as UserRole | undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the state filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "        status: (params.filters.status || undefined) as UserStatus | undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the search is not sent",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "        search: params.search || undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: an initial shows even with a picture",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{u.image ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a picture is always tried",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{u.image ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the initial comes from the email first",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{(u.name ?? u.email).charAt(0).toUpperCase()}",
+    "replace": "{u.email.charAt(0).toUpperCase()}",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the initial is not capital",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{(u.name ?? u.email).charAt(0).toUpperCase()}",
+    "replace": "{(u.name ?? u.email).charAt(0)}",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a missing name has no dash",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "<span className=\"font-semibold\">{u.name ?? \"—\"}</span>",
+    "replace": "<span className=\"font-semibold\">{u.name}</span>",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: every role looks like an admin",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "u.role === \"admin\"\n                ? \"bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]\"",
+    "replace": "true\n                ? \"bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]\"",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: every state looks active",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "u.status === \"active\"\n                ? \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\"",
+    "replace": "true\n                ? \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\"",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the View button needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.USER_ADMIN_UPDATE}>\n            <button",
+    "replace": "<RoleGuard permission={PERMISSIONS.USER_ADMIN_VIEW}>\n            <button",
+    "tests": [
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the password is not asked",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    const ok = await requestPassword();\n    if (!ok) return;\n    openEdit(user);",
+    "replace": "    openEdit(user);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a refused password still opens",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    if (!ok) return;\n    openEdit(user);",
+    "replace": "    openEdit(user);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the window opens on the role tab",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    setActiveTab(\"orders\");\n    setSelectedRole(user.role);",
+    "replace": "    setActiveTab(\"role\");\n    setSelectedRole(user.role);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the role choice starts on user",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    setSelectedRole(user.role);\n    setUserOrders([]);",
+    "replace": "    setSelectedRole(\"user\");\n    setUserOrders([]);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the old orders stay when another user opens",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    setUserOrders([]);\n    setOrdersTotal(0);\n    setOrdersPage(1);\n    setSelectedOrder(null);",
+    "replace": "    setOrdersTotal(0);\n    setSelectedOrder(null);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the old page stays when another user opens",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    setOrdersPage(1);\n    setSelectedOrder(null);\n    fetchUserOrders(user.id, 1);",
+    "replace": "    setSelectedOrder(null);\n    fetchUserOrders(user.id, 1);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the orders are not asked",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    fetchUserOrders(user.id, 1);\n  };",
+    "replace": "  };",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the orders of everybody are asked",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "buildListQuery({ page, limit: ORDERS_PAGE_SIZE }, { userId })",
+    "replace": "buildListQuery({ page, limit: ORDERS_PAGE_SIZE }, {})",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the orders come in another size",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "const ORDERS_PAGE_SIZE = 5;",
+    "replace": "const ORDERS_PAGE_SIZE = 10;",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the orders stay loading",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    } finally {\n      setOrdersLoading(false);\n    }\n  };\n\n  const openEdit",
+    "replace": "    } finally {\n    }\n  };\n\n  const openEdit",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the loading line never shows",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    setOrdersLoading(true);\n    try {\n      const qs = buildListQuery",
+    "replace": "    try {\n      const qs = buildListQuery",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the order count is hidden",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{t(\"orders.summary\", { count: ordersTotal })}",
+    "replace": "{t(\"orders.summary\", { count: 0 })}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the page note shows for one page",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{ordersTotal > ORDERS_PAGE_SIZE && (\n                    <span",
+    "replace": "{ordersTotal > 0 && (\n                    <span",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the pager shows for one page",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{ordersTotal > ORDERS_PAGE_SIZE && (\n                      <div",
+    "replace": "{ordersTotal > 0 && (\n                      <div",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the page count rounds down",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "t(\"orders.pager\", { page: ordersPage, total: Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) })",
+    "replace": "t(\"orders.pager\", { page: ordersPage, total: Math.floor(ordersTotal / ORDERS_PAGE_SIZE) })",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the item count is not shown",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{t(\"orders.itemCount\", { count: order.items?.length ?? 0 })}",
+    "replace": "{t(\"orders.itemCount\", { count: 0 })}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: an order without lines breaks the list",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "order.items?.length ?? 0",
+    "replace": "order.items.length",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the money is not the order total",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "money={moneyOf(order, \"total\")}",
+    "replace": "money={moneyOf(order, \"subtotal\")}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the previous button never turns off",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "disabled={ordersPage <= 1 || ordersLoading}",
+    "replace": "disabled={ordersLoading}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the previous button turns off a page late",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "disabled={ordersPage <= 1 || ordersLoading}",
+    "replace": "disabled={ordersPage <= 0 || ordersLoading}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the previous button goes forward",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "const prev = ordersPage - 1;",
+    "replace": "const prev = ordersPage + 1;",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the previous button does not fetch",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "fetchUserOrders(editingUser.id, prev);",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the next button never turns off",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "ordersPage >= Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) || ordersLoading",
+    "replace": "ordersLoading",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the next button turns off a page late",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "ordersPage >= Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) || ordersLoading",
+    "replace": "ordersPage > Math.ceil(ordersTotal / ORDERS_PAGE_SIZE) || ordersLoading",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the next button does not fetch",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "fetchUserOrders(editingUser.id, next);",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the order does not open",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    setSelectedOrder(order);\n    setLoadingOrderDetail(true);",
+    "replace": "    setLoadingOrderDetail(true);",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the order is asked without the user",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "qs.set(\"userId\", editingUser?.id ?? \"\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a failed full order drops the order",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "    } catch {\n      /* keep cached order data */\n    } finally {",
+    "replace": "    } catch {\n      setSelectedOrder(null);\n    } finally {",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the order cannot be closed by the dark area",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "          onClick={() => setSelectedOrder(null)}\n        >",
+    "replace": "          onClick={() => {}}\n        >",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a click inside the order closes it",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "            className=\"bg-[var(--bg-primary)] rounded-2xl w-full max-w-150 max-h-[calc(100dvh-1.5rem)] sm:max-h-[85dvh] overflow-auto shadow-xl\"\n            onClick={(e) => e.stopPropagation()}",
+    "replace": "            className=\"bg-[var(--bg-primary)] rounded-2xl w-full max-w-150 max-h-[calc(100dvh-1.5rem)] sm:max-h-[85dvh] overflow-auto shadow-xl\"",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the window cannot be closed by the dark area",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "          onClick={closeEdit}\n        >\n          <div",
+    "replace": "          onClick={() => {}}\n        >\n          <div",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a click inside the window closes it",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "            className=\"bg-[var(--bg-primary)] rounded-2xl w-full max-w-160 max-h-[calc(100dvh-1.5rem)] sm:max-h-[85dvh] overflow-hidden shadow-xl flex flex-col\"\n            onClick={(e) => e.stopPropagation()}",
+    "replace": "            className=\"bg-[var(--bg-primary)] rounded-2xl w-full max-w-160 max-h-[calc(100dvh-1.5rem)] sm:max-h-[85dvh] overflow-hidden shadow-xl flex flex-col\"",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the window X does not close",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "                onClick={closeEdit}\n                aria-label={t(\"modal.close\")}",
+    "replace": "                onClick={() => {}}\n                aria-label={t(\"modal.close\")}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: Save is on when unchanged",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "disabled={isUpdating || selectedRole === editingUser.role}",
+    "replace": "disabled={isUpdating}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: Save stays on while busy",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "disabled={isUpdating || selectedRole === editingUser.role}",
+    "replace": "disabled={selectedRole === editingUser.role}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the saving label never shows",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{isUpdating ? t(\"role.saving\") : t(\"role.save\")}",
+    "replace": "{t(\"role.save\")}",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the role is sent under another name",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "updateUser({ id: editingUser.id, body: { role: selectedRole } })",
+    "replace": "updateUser({ id: editingUser.id, body: { status: selectedRole as never } })",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the new role is not kept in the window",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "      setEditingUser((u) => (u ? { ...u, role: selectedRole } : u));\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the table is not reloaded after a change",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "      setEditingUser((u) => (u ? { ...u, role: selectedRole } : u));\n      tableRef.current?.refresh();",
+    "replace": "      setEditingUser((u) => (u ? { ...u, role: selectedRole } : u));",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a role change is silent",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "toast.success(t(\"toast.roleUpdated\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a failed role change is silent",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.roleFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the role list is cut",
+    "file": "src/app/[locale]/(admin)/admin/users/UsersContent.tsx",
+    "find": "{USER_ROLES.map((r) => (\n                        <option",
+    "replace": "{USER_ROLES.slice(0, 1).map((r) => (\n                        <option",
+    "tests": [
+      "tests/admin/users/user-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "users: the list drops the role",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": "{ role: params.role, status: params.status }",
+    "replace": "{ status: params.status }",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: the list drops the state",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": "{ role: params.role, status: params.status }",
+    "replace": "{ role: params.role }",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": ".addCase(fetchUserList.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchUserList.pending, (state) => {",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts",
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  },
+  {
+    "name": "users: a change is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = true;\n        state.error = null;",
+    "replace": "        state.error = null;",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: a change keeps the old error",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = true;\n        state.error = null;",
+    "replace": "        state.isUpdating = true;",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: a change stays busy",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": ".addCase(updateUser.fulfilled, (state) => {\n        state.isUpdating = false;\n      })",
+    "replace": ".addCase(updateUser.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: a refused change stays busy",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = false;\n        state.error = action.error.message ?? \"Failed to update\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to update\";",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts"
+    ]
+  },
+  {
+    "name": "users: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/users/_common/constants.ts",
+    "find": "  { value: \"name\", key: \"nameAsc\" },\n  { value: \"-name\", key: \"nameDesc\" },",
+    "replace": "  { value: \"-name\", key: \"nameDesc\" },\n  { value: \"name\", key: \"nameAsc\" },",
+    "tests": [
+      "tests/admin/users/users-slice.test.ts",
+      "tests/admin/users/users-list.test.tsx"
+    ]
+  }
+]

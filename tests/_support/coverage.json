@@ -31,7 +31,12 @@
     "src/app/[locale]/_components/PendingCountsProvider.tsx",
     "src/app/[locale]/\\(admin\\)/admin/orders/**",
     "src/app/[locale]/\\(admin\\)/admin/products/**",
-    "src/app/[locale]/\\(admin\\)/admin/payments/**"
+    "src/app/[locale]/\\(admin\\)/admin/payments/**",
+    "src/app/[locale]/\\(admin\\)/admin/refunds/**",
+    "src/app/[locale]/\\(admin\\)/admin/returns/**",
+    "src/app/[locale]/\\(admin\\)/admin/reviews/**",
+    "src/app/[locale]/\\(admin\\)/admin/users/**",
+    "src/app/[locale]/\\(admin\\)/admin/categories/**"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -679,6 +684,126 @@
     "src/app/[locale]/\\(admin\\)/admin/payments/_common/moduleSlice.ts": {
       "lines": 95,
       "branches": 65,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/RefundsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/CompleteRefundModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/RejectRefundModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/OrderRefundBanner.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/RefundPaymentSource.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/RefundBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/ReturnsContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ReturnDetailPanel.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 80
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ApproveReturnModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/RejectReturnModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ReceiveReturnModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ReturnBadge.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/ReviewsContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/ReviewDetailPanel.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/HideReviewModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/ReviewReplyForm.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/ReviewStatusBadge.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/users/UsersContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/users/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/categories/CategoriesContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/categories/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
       "functions": 90
     }
   }
