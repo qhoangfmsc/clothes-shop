@@ -2,7 +2,9 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { google } from "./google";
+import { installBrowserApis, resetBrowserApis } from "./browser-apis";
 import { installMatchMedia, media } from "./media-query";
+import { installPointerEvent } from "./pointer-event";
 import { server } from "./msw-server";
 import { navigation } from "./navigation";
 
@@ -15,6 +17,8 @@ vi.mock("@react-oauth/google", async () => (await import("./google")).googleModu
 beforeAll(() => {
   server.listen({ onUnhandledFrame: "error" });
   installMatchMedia();
+  installPointerEvent();
+  installBrowserApis();
 });
 
 afterEach(() => {
@@ -25,6 +29,7 @@ afterEach(() => {
   navigation.reset();
   google.reset();
   media.reset();
+  resetBrowserApis();
 });
 
 afterAll(() => server.close());

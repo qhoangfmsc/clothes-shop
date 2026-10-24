@@ -1,6 +1,6 @@
 # Admin shell (layout, sidebar, cổng vào)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/*` · **Cập nhật:** 2026-10-23
 > **Code:** `src/app/[locale]/(admin)/layout.tsx` · `(admin)/AdminLayoutClient.tsx` · `(admin)/admin/page.tsx` · `src/app/[locale]/_components/PendingCountsProvider.tsx`
 
 ## 1. Tóm tắt module
@@ -80,3 +80,7 @@ Khung chung của toàn bộ khu quản trị: kiểm tra quyền vào khu admin
 `admin.shell` (`meta`, `nav`, `badge`, `logout`, `menu`, `closeMenu`, `denied`, `breadcrumb`), `admin.components.guards`, `common.role`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.6 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết (mục menu đang xem so khớp `startsWith(href)` không có dấu `/`; Analytics và Media không kiểm quyền ở khung; ngăn kéo không giữ focus): [specs/admin/admin-shell.md](../../specs/admin/admin-shell.md). Test ở `tests/admin/admin-shell/` (`shell` cho khung với bốn danh tính, `layout` cho phần máy chủ và bộ đếm ngoài provider; `shell-kit.tsx` là BE giả của số đếm và hàm render dùng chung); `mutants.json` có đột biến cho cả ba file.

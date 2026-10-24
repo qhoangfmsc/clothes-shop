@@ -31,5 +31,9 @@
   "reorder": {
     "handle": "Kéo để sắp xếp",
     "disabled": "Chỉ sắp xếp được khi sắp theo độ ưu tiên và không tìm kiếm"
+  },
+  "error": {
+    "message": "Không tải được dữ liệu.",
+    "retry": "Thử lại"
   }
 }

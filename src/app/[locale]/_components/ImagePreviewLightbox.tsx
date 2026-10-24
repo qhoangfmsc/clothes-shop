@@ -32,7 +32,10 @@ export function ImagePreviewLightbox({
     >
       <button
         className="absolute top-6 right-6 flex items-center justify-center w-9 h-9 rounded-full bg-white/10 border-0 text-white cursor-pointer"
-        onClick={onClose}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
         aria-label={t("close")}
       >
         <X size={18} />

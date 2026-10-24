@@ -1,3 +1,4 @@
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { http, HttpResponse } from "msw";
 import { fetchCart } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
@@ -140,6 +141,29 @@ describe("QG-15 dateText", () => {
     expect(dateText("2026-03-05T05:30:00.000Z", "dateTime")).toMatch(/12:30/);
     expect(dateText("2026-03-05T05:30:00.000Z", "short", "en")).toContain("Mar");
     expect(dateText("2026-03-05T05:30:00.000Z", "long", "en")).toContain("March");
+  });
+});
+
+describe("QG-16 pointer events", () => {
+  it("carry the pointer type and id the test gives them (jsdom has no PointerEvent of its own)", () => {
+    const seen: { type: string; id: number; button: number }[] = [];
+    const el = document.createElement("div");
+    el.addEventListener("pointerdown", (e) => seen.push({ type: (e as PointerEvent).pointerType, id: (e as PointerEvent).pointerId, button: e.button }));
+
+    el.dispatchEvent(new PointerEvent("pointerdown", { pointerType: "touch", pointerId: 7, button: 2 }));
+    el.dispatchEvent(new PointerEvent("pointerdown"));
+
+    expect(seen).toEqual([{ type: "touch", id: 7, button: 2 }, { type: "", id: 0, button: 0 }]);
+  });
+
+  it("reach a React handler through fireEvent with their pointer type", () => {
+    const types: string[] = [];
+    render(<button onPointerDown={(e) => types.push(e.pointerType)}>tap</button>);
+
+    fireEvent.pointerDown(screen.getByRole("button"), { pointerType: "mouse" });
+    fireEvent.pointerDown(screen.getByRole("button"), { pointerType: "touch" });
+
+    expect(types).toEqual(["mouse", "touch"]);
   });
 });
 

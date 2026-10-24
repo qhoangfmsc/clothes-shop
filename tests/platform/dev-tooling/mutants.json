@@ -962,5 +962,203 @@
     "tests": [
       "tests/platform/dev-tooling/harness-store.test.tsx"
     ]
+  },
+  {
+    "name": "harness: a resize observer forgets what it watches",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "this.observed.push(element);\n  }\n  unobserve() {}\n  disconnect() {\n    this.disconnected = true;\n  }\n  trigger() {",
+    "replace": "this.observed.push(element);\n  }\n  unobserve() {}\n  disconnect() {}\n  trigger() {",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a resize observer never answers",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "this.callback([], this as unknown as ResizeObserver);",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: an intersection observer always says on screen",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "this.callback([{ isIntersecting }",
+    "replace": "this.callback([{ isIntersecting: true }",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: scrollTo does not move",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "this.scrollLeft = left;\n    this.dispatchEvent",
+    "replace": "this.dispatchEvent",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: scrollTo is silent",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "this.dispatchEvent(new Event(\"scroll\"));",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: scrollTo is not written down",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "scrolls.push({ element: this, left, behavior: typeof options === \"object\" ? options.behavior : undefined });",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a number is not a scroll position",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "(options ?? this.scrollLeft)",
+    "replace": "this.scrollLeft",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: reset keeps the observers",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "observers.resize = [];\n    observers.intersection = [];",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: reset keeps the scrolls",
+    "file": "tests/_support/browser-apis.ts",
+    "find": "scrolls.length = 0;",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the gap between slides is ignored",
+    "file": "tests/_support/carousel-layout.ts",
+    "find": "* (slideWidth + gap)",
+    "replace": "* slideWidth",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the track has no width",
+    "file": "tests/_support/carousel-layout.ts",
+    "find": "(isTrack(el) ? trackWidth : 0)",
+    "replace": "0",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a slide is as wide as the track",
+    "file": "tests/_support/carousel-layout.ts",
+    "find": "(isSlide(el) ? slideWidth : 0)",
+    "replace": "trackWidth",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: layout is never restored",
+    "file": "tests/_support/carousel-layout.ts",
+    "find": "if (descriptor) Object.defineProperty(proto, name, descriptor);\n      else delete (proto as unknown as Record<string, unknown>)[name];",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-browser.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a pointer event forgets its type",
+    "file": "tests/_support/pointer-event.ts",
+    "find": "this.pointerType = init.pointerType ?? \"\";",
+    "replace": "this.pointerType = \"\";",
+    "tests": [
+      "tests/platform/dev-tooling/harness-fixtures.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a pointer event forgets its id",
+    "file": "tests/_support/pointer-event.ts",
+    "find": "this.pointerId = init.pointerId ?? 0;",
+    "replace": "this.pointerId = 0;",
+    "tests": [
+      "tests/platform/dev-tooling/harness-fixtures.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: an admin with permissions has more of them",
+    "file": "tests/_support/identities.ts",
+    "find": "name: \"Staff\", permissions };",
+    "replace": "name: \"Staff\" };",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: an admin with permissions is another role",
+    "file": "tests/_support/identities.ts",
+    "find": "return { ...IDENTITIES.adminFull!, id: \"a-3\"",
+    "replace": "return { ...IDENTITIES.user!, id: \"a-3\"",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the unlock ignores its age",
+    "file": "tests/_support/admin.ts",
+    "find": "String(Date.now() - ageMs)",
+    "replace": "String(Date.now())",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: the counts are not counted",
+    "file": "tests/_support/admin.ts",
+    "find": "calls.counts += 1;",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a failing counts answer is a success",
+    "file": "tests/_support/admin.ts",
+    "find": "if (\"status\" in answer && typeof answer.status === \"number\") return HttpResponse.json({ message: \"no\" }, { status: answer.status });",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: a lost connection answers",
+    "file": "tests/_support/admin.ts",
+    "find": "if (answer === \"network\") return HttpResponse.error();",
+    "replace": "",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
+  },
+  {
+    "name": "harness: an admin order has no account",
+    "file": "tests/_support/fixtures.ts",
+    "find": "userId: \"u-1\", items:",
+    "replace": "items:",
+    "tests": [
+      "tests/platform/dev-tooling/harness-admin.test.tsx"
+    ]
   }
 ]

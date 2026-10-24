@@ -1,0 +1,470 @@
+[
+  {
+    "name": "admin-shell: the route permission is not checked",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "const routeAllowed = !requiredPermission || hasPermission(user, requiredPermission);",
+    "replace": "const routeAllowed = true;",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: a route is matched without its slash",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "pathname.startsWith(`${item.href}/`)",
+    "replace": "pathname.startsWith(item.href)",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: only the exact route needs the permission",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "(item) => pathname === item.href || pathname.startsWith(`${item.href}/`)",
+    "replace": "(item) => pathname === item.href",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the password gate comes first",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "{routeAllowed ? (\n        <AdminPasswordGate>",
+    "replace": "{true ? (\n        <AdminPasswordGate>",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: items need no permission",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "items: group.items.filter((item) => !item.permission || hasPermission(user, item.permission)),",
+    "replace": "items: group.items,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: empty groups are shown",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "})).filter((group) => group.items.length > 0);",
+    "replace": "}));",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the dashboard is always active",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "pathname === \"/admin\"\n                      ? \"text-[var(--accent-primary)]",
+    "replace": "true\n                      ? \"text-[var(--accent-primary)]",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: an item is active only on its exact page",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "const isActive = pathname === item.href || pathname.startsWith(item.href);",
+    "replace": "const isActive = pathname === item.href;",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: logout does not go to login",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "router.replace(\"/login\");",
+    "replace": "router.replace(\"/\");",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: logout does not sign out",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "    logout();\n    router.replace(\"/login\");",
+    "replace": "    router.replace(\"/login\");",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the name falls back wrongly",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "{user?.name ?? user?.email}",
+    "replace": "{user?.email}",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the drawer opens for every page",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "const menuOpen = menuPath === pathname;",
+    "replace": "const menuOpen = menuPath !== null;",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: closing does not return the focus",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "setMenuPath(null);\n    menuButtonRef.current?.focus();\n  };",
+    "replace": "setMenuPath(null);\n  };",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: opening does not move the focus",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "closeButtonRef.current?.focus();\n    const onKeyDown",
+    "replace": "const onKeyDown",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: Escape does not close the drawer",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "if (e.key === \"Escape\") {",
+    "replace": "if (e.key === \"Enter\") {",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: Escape does not return the focus",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "setMenuPath(null);\n        menuButtonRef.current?.focus();\n      }",
+    "replace": "setMenuPath(null);\n      }",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the dark area does not close the drawer",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "aria-hidden=\"true\"\n              onClick={closeMenu}",
+    "replace": "aria-hidden=\"true\"",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the closed drawer can be tabbed to",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "\"max-lg:-translate-x-full max-lg:invisible\"",
+    "replace": "\"max-lg:-translate-x-full\"",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the menu button does not say it is open",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "aria-expanded={menuOpen}",
+    "replace": "aria-expanded={false}",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the menu button opens the wrong page",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "onClick={() => setMenuPath(pathname)}",
+    "replace": "onClick={() => setMenuPath(\"/\")}",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: unknown breadcrumb parts are hidden",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": ": seg}",
+    "replace": "  : \"\"}",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the last crumb is not marked",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "isLast\n                                ? \"text-[var(--text-primary)] font-semibold capitalize\"",
+    "replace": "false\n                                ? \"text-[var(--text-primary)] font-semibold capitalize\"",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the badge shows zero",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "if (!count) return null;\n  const text = t(pendingKey, { count });",
+    "replace": "const text = t(pendingKey, { count });",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the badge never says 99+",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "{count > 99 ? t(\"overflow\") : count}",
+    "replace": "{count}",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the badge has no text for screen readers",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "<span className=\"sr-only\">{text}</span>",
+    "replace": "",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the badge has no hover text",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "title={text}",
+    "replace": "",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the dot shows without work",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "const waiting = Object.values(counts).some((count) => count > 0);",
+    "replace": "const waiting = true;",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the dot has no words",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "<span className=\"sr-only\">{t(\"pendingDot\")}</span>",
+    "replace": "",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the denied screen has no way back",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "{t(\"backToStore\")}",
+    "replace": "",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the admin-needed screen shows the route message",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "title={t(\"denied.adminRequired.title\")}",
+    "replace": "title={t(\"denied.route.title\")}",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: a member of staff is shown as a customer",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "user?.role === \"admin\"\n                        ? \"bg-[rgba(201,169,110,0.2)]",
+    "replace": "false\n                        ? \"bg-[rgba(201,169,110,0.2)]",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: orders need the wrong permission",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "permission: PERMISSIONS.ORDER_ADMIN_VIEW,",
+    "replace": "permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: products need no permission",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "permission: PERMISSIONS.PRODUCT_VIEW,\n      },",
+    "replace": "},",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: refunds show no badge",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,\n        pending: \"refunds\",",
+    "replace": "permission: PERMISSIONS.PAYMENT_ADMIN_VIEW,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: analytics needs a permission",
+    "file": "src/app/[locale]/(admin)/AdminLayoutClient.tsx",
+    "find": "href: \"/admin/analytics\",\n        key: \"analytics\",\n        icon: BarChart3,",
+    "replace": "href: \"/admin/analytics\",\n        key: \"analytics\",\n        icon: BarChart3,\n        permission: PERMISSIONS.USER_ADMIN_VIEW,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the 60 second refresh is off",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "refreshInterval: PENDING_COUNTS_REFRESH_MS,",
+    "replace": "refreshInterval: 0,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: hidden tabs keep asking",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "refreshWhenHidden: false,",
+    "replace": "refreshWhenHidden: true,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: a 403 is an error",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "if (err instanceof ApiError && err.status === 403) return {};",
+    "replace": "",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: every error is a 403",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "if (err instanceof ApiError && err.status === 403) return {};",
+    "replace": "return {};",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: a failed request is tried again",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "shouldRetryOnError: false,",
+    "replace": "shouldRetryOnError: true,",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: writes do not refresh the numbers",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "const unsubscribe = onAdminMutation(refresh);",
+    "replace": "const unsubscribe = () => {};",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: writes refresh without waiting",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "const REFRESH_DEBOUNCE_MS = 300;",
+    "replace": "const REFRESH_DEBOUNCE_MS = 0;",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: a burst of writes is not merged",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "    clearTimeout(timerRef.current);\n    timerRef.current = setTimeout(() => {",
+    "replace": "    timerRef.current = setTimeout(() => {",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: negative numbers are accepted",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "Number.isFinite(value) && value >= 0",
+    "replace": "Number.isFinite(value)",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: unknown keys are kept",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "for (const key of PENDING_COUNT_KEYS) {",
+    "replace": "for (const key of Object.keys(raw as object) as PendingCountKey[]) {",
+    "tests": [
+      "tests/admin/admin-shell/shell.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the default refresh throws",
+    "file": "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "find": "createContext<PendingCountsContextValue>({ counts: {}, refresh: () => {} })",
+    "replace": "createContext<PendingCountsContextValue>({ counts: {}, refresh: () => { throw new Error(\"x\"); } })",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the title has no brand",
+    "file": "src/app/[locale]/(admin)/layout.tsx",
+    "find": "title: withBrand(t(\"title\")),",
+    "replace": "title: t(\"title\"),",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: search engines may index the admin",
+    "file": "src/app/[locale]/(admin)/layout.tsx",
+    "find": "robots: { index: false, follow: false },",
+    "replace": "robots: { index: true, follow: true },",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the metadata ignores a bad language",
+    "file": "src/app/[locale]/(admin)/layout.tsx",
+    "find": "  if (!hasLocale(routing.locales, locale)) notFound();\n  const t = await getTranslations",
+    "replace": "  const t = await getTranslations",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the layout ignores a bad language",
+    "file": "src/app/[locale]/(admin)/layout.tsx",
+    "find": "  if (!hasLocale(routing.locales, locale)) notFound();\n  setRequestLocale(locale);",
+    "replace": "  setRequestLocale(locale);",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the request language is not set",
+    "file": "src/app/[locale]/(admin)/layout.tsx",
+    "find": "setRequestLocale(locale);",
+    "replace": "",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  },
+  {
+    "name": "admin-shell: the admin texts are not sent",
+    "file": "src/app/[locale]/(admin)/layout.tsx",
+    "find": "<ScopedMessages scope=\"admin\">",
+    "replace": "<ScopedMessages scope=\"public\">",
+    "tests": [
+      "tests/admin/admin-shell/layout.test.tsx"
+    ]
+  }
+]

@@ -76,6 +76,14 @@ function ConfirmPortal({
   const t = useTranslations("common.actions");
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!pending) return;
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onSettle(false);
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [pending, onSettle]);
+
   if (!mounted) return null;
 
   return createPortal(

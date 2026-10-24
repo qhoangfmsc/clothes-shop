@@ -25,7 +25,13 @@
     "src/app/[locale]/\\(private\\)/wishlist/**",
     "src/app/[locale]/\\(private\\)/checkout/**",
     "src/app/[locale]/\\(private\\)/orders/**",
-    "src/app/[locale]/\\(private\\)/returns/**"
+    "src/app/[locale]/\\(private\\)/returns/**",
+    "src/app/[locale]/_components/{DataTable,AdminFormKit,InfoHint,Toast,ConfirmDialog,Carousel,CarouselControls,ImageUrlField,ImageListField,ImagePreviewLightbox,ResponsiveBannerImage,StarRating,ProductRating,ProductLink,ReviewContent,ReviewAvatar,ReviewImageGrid,ReviewImageViewer,BannerFade,Checkbox,CopyButton,PendingActionNotice,OrderDetailPanel,OrderPaymentBadge,ProductBagButton}.tsx",
+    "src/app/[locale]/\\(admin\\)/{layout.tsx,AdminLayoutClient.tsx}",
+    "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "src/app/[locale]/\\(admin\\)/admin/orders/**",
+    "src/app/[locale]/\\(admin\\)/admin/products/**",
+    "src/app/[locale]/\\(admin\\)/admin/payments/**"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -433,6 +439,246 @@
     "src/app/[locale]/\\(private)/returns/_components/ReturnStatusBadge.tsx": {
       "lines": 90,
       "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/DataTable.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/AdminFormKit.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/InfoHint.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/Toast.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ConfirmDialog.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/Carousel.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/CarouselControls.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ImageUrlField.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ImageListField.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ImagePreviewLightbox.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ResponsiveBannerImage.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/StarRating.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ProductRating.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ProductLink.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewContent.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewAvatar.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewImageGrid.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewImageViewer.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/BannerFade.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/Checkbox.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/CopyButton.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/PendingActionNotice.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/OrderDetailPanel.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/OrderPaymentBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ProductBagButton.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/useMediaQuery.ts": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/hooks/use-sort-options.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-auto-advance.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-banner-rotation.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-badge.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-purchase.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/AdminLayoutClient.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/layout.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/PendingCountsProvider.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/orders/OrdersContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/orders/_common/moduleSlice.ts": {
+      "lines": 90,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/products/ProductsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/products/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/PaymentsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/AttemptsTable.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/ConfirmPaymentModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/OrderPaymentTab.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/OrderPicker.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/AdminQrPanel.tsx": {
+      "lines": 92,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/QrPresentation.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/AttemptBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/VerificationBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 65,
       "functions": 90
     }
   }

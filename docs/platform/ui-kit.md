@@ -1,6 +1,6 @@
 # UI kit (component & hook dùng chung)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-19
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-23
 > **Code:** `src/app/[locale]/_components/` · `src/hooks/` · `src/lib/product-badge.ts` · `src/lib/product-purchase.ts`
 > **Quy tắc dùng:** `.agent/rules/components.md`
 
@@ -40,9 +40,11 @@ Hai chế độ:
 - **Server mode** (`fetchData`): gọi khi mount và mỗi khi đổi search/filter/sort/page. `fetchData(params: { search, filters, sort, page, limit }) => Promise<{ data, total }>`. Có "in-flight guard" chống gọi trùng (StrictMode, đổi tham số nhanh); đổi tham số khi đang gọi thì xếp hàng gọi lại với tham số mới.
 - **Static mode** (`rows`, `loading`): không fetch/search/filter/sort, chỉ dùng khung bảng (Dashboard "Recent orders").
 
+Khi `fetchData` lỗi, bảng xóa dòng và phần chọn, gọi `onError` và hiện trong ô thông báo "không tải được dữ liệu" (`error.message`, `role="alert"`) cùng nút "Thử lại" (`error.retry`) hỏi lại với tham số đang dùng; hỏi thành công thì thông báo biến mất.
+
 Props: `columns` (`key, header, width, align, hideBelow: sm|md|lg, render`), `searchable` (mặc định true), `searchPlaceholder`, `filters` (`key, label, options, defaultValue`), `sortOptions` (`value, label`), `defaultSort` (mặc định `-createdAt`), `pageSize` (mặc định 25, kẹp tối đa 200), `reorder`, `keyExtractor` (mặc định `row.id`), `selectable` + `renderBulkActions({ keys, rows, clear })`, `onError`, `emptyMessage` (chuỗi hoặc hàm theo `hasActiveFilters`), `tableRef` (`refresh()`, `reset()`).
 
-Hành vi: ô tìm kiếm debounce 350 ms; phân trang có dấu "…" (giữ trang đầu, cuối và ±1) và chỉ hiện khi `total > pageSize`; chọn nhiều có checkbox tổng ba trạng thái và giữ lại chỉ các dòng còn hiện sau khi đổi trang/lọc/xóa; kéo thả (`@dnd-kit`) chỉ bật khi đang sắp xếp theo `reorder.sortValue`, không lọc/tìm, và toàn bộ danh sách nằm trên một trang — hàm `onReorder(rows)` nhận danh sách đầy đủ theo thứ tự mới và **ném lỗi để bảng khôi phục**. Cột có thể ẩn theo breakpoint. Trên thiết bị cảm ứng (`pointer-coarse:`) các điều khiển lớn lên cho vừa ngón tay: ô tìm kiếm, ô lọc/sắp xếp cao 44 px và chữ 16 px (iOS không tự phóng khi focus), nút phân trang 44 × 44 px, nút xóa tìm/lọc 36 px, checkbox 20 px; ô tìm kiếm rộng tối thiểu `min(100%, 14rem)` nên chiếm cả hàng trên điện thoại; thanh phân trang và thanh chọn nhiều (số dòng đã chọn + `renderBulkActions`) tự xuống dòng. Bảng cuộn trong khung của nó. Chuỗi nằm ở `admin.components.dataTable`.
+Hành vi: ô tìm kiếm debounce 350 ms, và tìm kiếm mới luôn hỏi trang 1 (một yêu cầu, không hỏi trang cũ với từ khóa mới); phân trang có dấu "…" (giữ trang đầu, cuối và ±1) và chỉ hiện khi `total > pageSize`; chọn nhiều có checkbox tổng ba trạng thái và giữ lại chỉ các dòng còn hiện sau khi đổi trang/lọc/xóa; kéo thả (`@dnd-kit`) chỉ bật khi đang sắp xếp theo `reorder.sortValue`, không lọc/tìm, và toàn bộ danh sách nằm trên một trang — hàm `onReorder(rows)` nhận danh sách đầy đủ theo thứ tự mới và **ném lỗi để bảng khôi phục**. Cột có thể ẩn theo breakpoint. Trên thiết bị cảm ứng (`pointer-coarse:`) các điều khiển lớn lên cho vừa ngón tay: ô tìm kiếm, ô lọc/sắp xếp cao 44 px và chữ 16 px (iOS không tự phóng khi focus), nút phân trang 44 × 44 px, nút xóa tìm/lọc 36 px, checkbox 20 px; ô tìm kiếm rộng tối thiểu `min(100%, 14rem)` nên chiếm cả hàng trên điện thoại; thanh phân trang và thanh chọn nhiều (số dòng đã chọn + `renderBulkActions`) tự xuống dòng. Bảng cuộn trong khung của nó. Chuỗi nằm ở `admin.components.dataTable`.
 
 Khung bảng (`rounded-2xl`) cao theo nội dung (`flex-initial`), không giãn hết chiều cao trang: bảng ít dòng thì phân trang nằm ngay dưới bảng; bảng dài thì khung co lại tới chiều cao còn lại và cuộn bên trong. Quy ước: sort theo BE (`field` / `-field`); không thêm hành vi riêng của một bảng vào `DataTable` — thêm prop tùy chọn tổng quát.
 
@@ -56,13 +58,13 @@ Khung bảng (`rounded-2xl`) cao theo nội dung (`flex-initial`), không giãn 
 ### 4.3 Toast, Confirm
 
 - `useToast().toast` → `success | error | info | warning (message, duration=3000)`, `dismiss(id)`, `dismissAll()`. Provider gắn ở root với `position="bottom-center"`, `maxToasts = 5` (vượt thì bỏ cái cũ nhất). `message` là `ReactNode` nên dùng được `t.rich(...)`. Text phải đến từ i18n (luật `toast-i18n`).
-- `useConfirm()` → `confirm({ title?, message, confirmLabel?, cancelLabel?, danger? }) => Promise<boolean>`; thay cho `window.confirm`. Layer `z-200`, đệm `p-4` → `sm:p-6`, hai nút cao tối thiểu 44 px trên cảm ứng. Cách dùng toast/confirm/lỗi chuẩn: `.agent/skills/06-errors-and-toasts.md`.
+- `useConfirm()` → `confirm({ title?, message, confirmLabel?, cancelLabel?, danger? }) => Promise<boolean>`; thay cho `window.confirm`. Escape trả `false` như nút Hủy. Layer `z-200`, đệm `p-4` → `sm:p-6`, hai nút cao tối thiểu 44 px trên cảm ứng. Cách dùng toast/confirm/lỗi chuẩn: `.agent/skills/06-errors-and-toasts.md`.
 
 ### 4.4 Ảnh
 
 - `ImageUrlField({ value, onChange, placeholder? })`: ô nhập URL + nút upload (`uploadMediaFile`) + xem trước (lightbox); lỗi preview được bắt. Dùng ở Categories (hero), Collections (ảnh bìa), Site config (ảnh banner).
-- `ImageListField({ value: string[], onChange })`: lưới ảnh + ô "+" upload nhiều file + nhập URL tay; ảnh đầu tiên là thumbnail chính. Dùng ở Products.
-- `ImagePreviewLightbox({ open, onClose, caption?, children })`: overlay toàn màn hình qua portal; caller truyền thẻ `<img>`.
+- `ImageListField({ value: string[], onChange })`: lưới ảnh + ô "+" upload nhiều file + nhập URL tay (cắt khoảng trắng, bỏ địa chỉ trống, Enter không gửi form); ảnh đầu tiên là thumbnail chính; nút xóa hiện khi rê chuột, khi có focus và luôn hiện trên thiết bị cảm ứng. Dùng ở Products.
+- `ImagePreviewLightbox({ open, onClose, caption?, children })`: overlay toàn màn hình qua portal; caller truyền thẻ `<img>`; nút đóng gọi `onClose` một lần.
 - Chuỗi: `admin.components.imageFields`.
 
 ### 4.5 Carousel
@@ -108,3 +110,7 @@ Chuỗi nằm ở `shared.reviews` (`starsAria`, `productRating`, `edited`, `sto
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](./design-system.md) 4.3).
 - `ProductLink({ product, newTab?, className, children })`: link tới trang sản phẩm dựng bằng `productPath(product)` ([data-layer](./data-layer.md) 4.3b) cho `ProductSummary` của dòng đơn / đánh giá; `product` `null` (đã xóa) hoặc thiếu slug → children nằm trong `<span>`, không có link. `newTab` thêm `target="_blank" rel="noopener noreferrer"`: dùng ở nơi rời trang sẽ mất dữ liệu đang nhập (form đánh giá) hoặc rời khu admin (`OrderDetailPanel`).
+
+### 4.10 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết (bảng tĩnh vẫn vẽ ô tìm kiếm nhưng không lọc; popup chưa đóng bằng Escape): [specs/platform/ui-kit.md](../../specs/platform/ui-kit.md). Test ở `tests/platform/ui-kit/` (`data-table`, `data-table-reorder`, `feedback`, `form-kit`, `image-fields`, `auto-advance`, `carousel`, `banner`, `reviews`, `small-parts`, `order-detail-panel`); `mutants.json` có đột biến cho từng thành phần. Test dùng các hạ tầng giả trong `tests/_support/`: `browser-apis.ts` (`ResizeObserver`, `IntersectionObserver`, `scrollTo`), `carousel-layout.ts` (hình học của slide), `pointer-event.ts` (`PointerEvent`).

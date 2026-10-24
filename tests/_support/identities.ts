@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import type { AuthUser } from "@/src/contexts/auth-context";
-import { PERMISSIONS } from "@/src/lib/permissions";
+import { PERMISSIONS, type Permission } from "@/src/lib/permissions";
 import { ACCESS_KEY, API, REFRESH_KEY, seedSession } from "./api";
 import { server } from "./msw-server";
 
@@ -31,6 +31,11 @@ export const IDENTITIES: Record<IdentityName, AuthUser | null> = {
   adminFull: { ...BASE, id: "a-1", email: "admin@example.com", name: "Admin", role: "admin" },
   adminLimited: { ...BASE, id: "a-2", email: "staff@example.com", name: "Staff", role: "admin", permissions: LIMITED_PERMISSIONS },
 };
+
+/** An admin who has exactly these permissions: for tests of a button that needs one permission (`adminLimited` has only `ORDER_ADMIN_VIEW`). */
+export function adminWith(...permissions: Permission[]): AuthUser {
+  return { ...IDENTITIES.adminFull!, id: "a-3", email: "staff2@example.com", name: "Staff", permissions };
+}
 
 /** Makes the app believe `identity` is signed in (token + `/me`); `guest` clears any session. */
 export function signInAs(identity: IdentityName | AuthUser | null = "guest"): AuthUser | null {

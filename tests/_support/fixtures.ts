@@ -8,6 +8,7 @@ import type { ReturnEligibility, ReturnRequest } from "@/src/app/[locale]/(priva
 import type { Product, ProductSummary } from "@/src/types/product";
 import type { PendingReviewItem } from "@/src/types/review";
 import type { ShippingInfo } from "@/src/types/shipping";
+import type { AdminOrder } from "@/src/hooks/use-admin-api";
 
 /* Sample data shared by the component tests. A test replaces only the fields it cares about. */
 
@@ -220,6 +221,12 @@ export function order(over: Partial<Order> = {}): Order {
     items: [orderItem()],
     ...over,
   };
+}
+
+/** An order as the admin API lists it: the customer's order plus who placed it. */
+export function adminOrder(over: Partial<AdminOrder> = {}): AdminOrder {
+  const { items, ...rest } = order();
+  return { ...rest, userId: "u-1", items: items.map((item) => ({ ...item, productId: item.productId })), ...over } as AdminOrder;
 }
 
 /** A line the customer can still review. */

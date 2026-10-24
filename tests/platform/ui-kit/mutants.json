@@ -1,0 +1,1892 @@
+[
+  {
+    "name": "ui-kit: the page size is not capped",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "const pageSize = clampLimit(requestedPageSize);",
+    "replace": "const pageSize = requestedPageSize;",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the default sort is another",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "defaultSort = \"-createdAt\"",
+    "replace": "defaultSort = \"createdAt\"",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a search is sent at every key",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "const DEBOUNCE_MS = 350;",
+    "replace": "const DEBOUNCE_MS = 0;",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a new search keeps the old page",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "if (page !== 1) {\n        setPage(1);\n        return;",
+    "replace": "if (false) {\n        setPage(1);\n        return;",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a new filter keeps the old page",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setActiveFilters((prev) => ({ ...prev, [key]: value }));\n    setPage(1);",
+    "replace": "setActiveFilters((prev) => ({ ...prev, [key]: value }));",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a new sort keeps the old page",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setSort(e.target.value);\n                    setPage(1);",
+    "replace": "setSort(e.target.value);",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: ticked rows that left the page stay ticked",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setSelectedKeys((prev) => new Set([...prev].filter((k) => visibleKeys.has(k))));",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an emptied last page is shown as it is",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "if (result.data.length === 0 && result.total > 0 && params.page > 1) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a refused request is not reported",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "onError?.(err);",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the old rows stay after a refused request",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setData([]);\n        setTotal(0);",
+    "replace": "setTotal(0);",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a changed question during a request is forgotten",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "if (paramsKey !== activeParamsRef.current) {\n          pendingRef.current = true;\n        }",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: overlapping requests are all sent",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "if (fetchingRef.current) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the queued question is never asked",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "loadRef.current?.();",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: any ticked row ticks the top box",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "const allSelected = data.length > 0 && data.every(",
+    "replace": "const allSelected = data.length > 0 && data.some(",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a partial selection is not shown",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "const someSelected = selectedKeys.size > 0 && !allSelected;",
+    "replace": "const someSelected = false;",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the top box cannot untick",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setSelectedKeys(allSelected ? new Set() : new Set(data.map(keyExtractor)));",
+    "replace": "setSelectedKeys(new Set(data.map(keyExtractor)));",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the top box works without rows",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "disabled={data.length === 0}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: rows can be dragged while filtered",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "sort === reorder.sortValue &&\n    !hasActiveFilters &&",
+    "replace": "sort === reorder.sortValue &&",
+    "tests": [
+      "tests/platform/ui-kit/data-table-reorder.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: rows can be dragged over several pages",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "totalPages === 1 &&",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table-reorder.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: rows can be dragged in a static table",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "!!reorder &&\n    !isStatic &&",
+    "replace": "!!reorder &&",
+    "tests": [
+      "tests/platform/ui-kit/data-table-reorder.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: rows are not put back after a refusal",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setData(previous);",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table-reorder.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the old order is sent as the new one",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "await reorder.onReorder(next);",
+    "replace": "await reorder.onReorder(previous);",
+    "tests": [
+      "tests/platform/ui-kit/data-table-reorder.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a row dropped on itself is saved",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "if (!reorder || !over || active.id === over.id) return;",
+    "replace": "if (!reorder || !over) return;",
+    "tests": [
+      "tests/platform/ui-kit/data-table-reorder.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the page window is one page wide",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "Math.abs(i - current) <= 1",
+    "replace": "Math.abs(i - current) <= 0",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: gaps repeat their dots",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "range[range.length - 1] !== \"...\"",
+    "replace": "true",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: page controls show for one page",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "{totalPages > 1 && (",
+    "replace": "{totalPages > 0 && (",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the last page counts past the total",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "to: Math.min(page * pageSize, total),",
+    "replace": "to: page * pageSize,",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: previous works on the first page",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "disabled={page <= 1}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: next works on the last page",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "disabled={page >= totalPages}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a filtered empty table says there is no data",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "t(hasActiveFilters ? \"empty.filtered\" : \"empty.none\")",
+    "replace": "t(\"empty.none\")",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a search is not a filter",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "debouncedSearch !== \"\" ||",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the loading note never shows",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "{loading && (\n          <div className=\"absolute inset-0 bg-[rgba(251,248,241,0.5)]",
+    "replace": "{false && (\n          <div className=\"absolute inset-0 bg-[rgba(251,248,241,0.5)]",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a static table ignores the parent loading",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "const loading = isStatic ? !!externalLoading : fetching;",
+    "replace": "const loading = isStatic ? false : fetching;",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a column is not hidden on small screens",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "${col.hideBelow ? HIDE_BELOW_CLASS[col.hideBelow] : \"\"}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: right alignment is ignored",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "col.align === \"right\" ? \"text-right\" : \"\"",
+    "replace": "\"\"",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a default filter looks changed",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "const isActive = val !== (fil.defaultValue ?? \"\");",
+    "replace": "const isActive = val !== \"\";",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the sort reset shows always",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "{sort !== defaultSort && (",
+    "replace": "{sort !== \"\" && (",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: reset keeps the filters",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setActiveFilters(initFilters());\n      setSort(defaultSort);",
+    "replace": "setSort(defaultSort);",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: refresh does nothing",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "refresh: () => load(),",
+    "replace": "refresh: () => {},",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: bulk actions get every row",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "rows: data.filter((row) => selectedKeys.has(keyExtractor(row))),",
+    "replace": "rows: data,",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the page size sent is fixed",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "limit: pageSize,",
+    "replace": "limit: 25,",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the empty message spans one column",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "colSpan={columns.length + (selectable ? 1 : 0) + (reorder ? 1 : 0)}",
+    "replace": "colSpan={columns.length}",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: toasts are kept up to fifty",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "maxToasts = 5,",
+    "replace": "maxToasts = 50,",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a toast stays ten times longer",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "duration: number = 3000",
+    "replace": "duration: number = 30000",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the top-right corner is the left",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "\"top-right\": \"top-6 right-4 items-end\",",
+    "replace": "\"top-right\": \"top-6 left-4 items-end\",",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: messages are not announced",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "aria-live=\"polite\"",
+    "replace": "aria-live=\"off\"",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: dismiss-all keeps the toasts",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "const dismissAll = useCallback(() => {\n    setToasts([]);",
+    "replace": "const dismissAll = useCallback(() => {",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: dismissing one keeps it",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "setToasts((prev) => prev.filter((t) => t.id !== id));",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the oldest toast is never pushed out",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "if (next.length > maxToasts) {",
+    "replace": "if (next.length > maxToasts + 100) {",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the close button of a toast does nothing",
+    "file": "src/app/[locale]/_components/Toast.tsx",
+    "find": "onClick={() => onDismiss(item.id)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the dark area confirms",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "transition={{ duration: 0.15 }}\n          onClick={() => onSettle(false)}",
+    "replace": "transition={{ duration: 0.15 }}\n          onClick={() => onSettle(true)}",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a click in the box closes it",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "onClick={(e) => e.stopPropagation()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: Escape confirms",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "e.key === \"Escape\" && onSettle(false)",
+    "replace": "e.key === \"Escape\" && onSettle(true)",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: Escape does nothing",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "const onKeyDown = (e: KeyboardEvent) => e.key === \"Escape\" && onSettle(false);",
+    "replace": "const onKeyDown = (e: KeyboardEvent) => e.key === \"Enter\" && onSettle(false);",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a dangerous question is not rose",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "pending.danger\n                    ? \"bg-[var(--accent-rose)] text-[var(--color-noir)]\"",
+    "replace": "false\n                    ? \"bg-[var(--accent-rose)] text-[var(--color-noir)]\"",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the confirm button is not focused",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "autoFocus\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the cancel label is not default",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "pending.cancelLabel ?? t(\"cancel\")",
+    "replace": "t(\"cancel\")",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an empty title is drawn",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "{pending.title && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the answer is turned round",
+    "file": "src/app/[locale]/_components/ConfirmDialog.tsx",
+    "find": "pending?.resolve(result);",
+    "replace": "pending?.resolve(!result);",
+    "tests": [
+      "tests/platform/ui-kit/feedback.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the dark area does not close the popup",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "z-100 p-3 sm:p-6\"\n      onClick={onClose}",
+    "replace": "z-100 p-3 sm:p-6\"\n      onClick={() => {}}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a click in the popup closes it",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "onClick={(e) => e.stopPropagation()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the popup width is another",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "maxWidthClass = \"max-w-160\"",
+    "replace": "maxWidthClass = \"max-w-lg\"",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a required field has no star",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "{required && <span",
+    "replace": "{false && <span",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a field hint is not drawn",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "{info && <InfoHint text={info} />}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: saving shows the normal label",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "{isSaving ? (savingLabel ?? t(\"saving\")) : submitLabel}",
+    "replace": "{submitLabel}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: saving does not lock the button",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "disabled={isSaving}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the open tab looks closed",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "active === t.id",
+    "replace": "active !== t.id",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a section has no legend",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "{title && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: cancel submits the form",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "<button\n        type=\"button\"\n        className=\"py-2 px-4 pointer-coarse:min-h-11 bg-[var(--bg-elevated)]",
+    "replace": "<button\n        type=\"submit\"\n        className=\"py-2 px-4 pointer-coarse:min-h-11 bg-[var(--bg-elevated)]",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the close button does nothing",
+    "file": "src/app/[locale]/_components/AdminFormKit.tsx",
+    "find": "onClick={onClose}\n            aria-label={t(\"close\")}",
+    "replace": "onClick={() => {}}\n            aria-label={t(\"close\")}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the hint opens for a finger passing over",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "e.pointerType === \"mouse\" && setOpen(true)",
+    "replace": "e.pointerType === \"touch\" && setOpen(true)",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the hint stays open after the mouse leaves",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "onPointerLeave={(e) => e.pointerType === \"mouse\" && setOpen(false)}",
+    "replace": "onPointerLeave={() => {}}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a mouse click toggles the hint",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "if (pointerRef.current !== \"mouse\") setOpen((o) => !o);",
+    "replace": "setOpen((o) => !o);",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a touch inside closes the hint",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "if (!rootRef.current?.contains(e.target as Node)) setOpen(false);",
+    "replace": "setOpen(false);",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a touch outside keeps the hint open",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "if (!rootRef.current?.contains(e.target as Node)) setOpen(false);",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the hint may leave the screen",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "const shift = left < HINT_EDGE_PX ? HINT_EDGE_PX - left : right > max ? max - right : 0;",
+    "replace": "const shift = 0;",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the hint does not say it is open",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "aria-expanded={open}",
+    "replace": "aria-expanded={false}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a click gives the hint focus-open",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "onFocus={(e) => e.currentTarget.matches(\":focus-visible\") && setOpen(true)}",
+    "replace": "onFocus={() => setOpen(true)}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the hint stays open after focus leaves",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "onBlur={() => setOpen(false)}",
+    "replace": "onBlur={() => {}}",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a big icon has a small touch area",
+    "file": "src/app/[locale]/_components/InfoHint.tsx",
+    "find": "size >= 16",
+    "replace": "size >= 1000",
+    "tests": [
+      "tests/platform/ui-kit/form-kit.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an upload keeps the broken mark",
+    "file": "src/app/[locale]/_components/ImageUrlField.tsx",
+    "find": "onChange(uploaded.url);\n      setPreviewFailed(false);",
+    "replace": "onChange(uploaded.url);",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: typing keeps the broken mark",
+    "file": "src/app/[locale]/_components/ImageUrlField.tsx",
+    "find": "onChange(e.target.value);\n            setPreviewFailed(false);",
+    "replace": "onChange(e.target.value);",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: upload does not lock its button",
+    "file": "src/app/[locale]/_components/ImageUrlField.tsx",
+    "find": "disabled={isUploading}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an upload failure is silent",
+    "file": "src/app/[locale]/_components/ImageUrlField.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.uploadFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: uploads replace the images",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "onChange([...value, ...uploaded.map((u) => u.url)]);",
+    "replace": "onChange([...uploaded.map((u) => u.url)]);",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a pasted address keeps its spaces",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "const trimmed = urlInput.trim();",
+    "replace": "const trimmed = urlInput;",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a blank address is added",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "if (!trimmed) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: Enter submits the form",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "e.preventDefault();\n      addUrl();",
+    "replace": "addUrl();",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the main mark is on the second image",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "{i === 0 && (",
+    "replace": "{i === 1 && (",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the wrong image is removed",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "onChange(value.filter((_, i) => i !== index))",
+    "replace": "onChange(value.filter((_, i) => i === index))",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the remove button needs hovering",
+    "file": "src/app/[locale]/_components/ImageListField.tsx",
+    "find": "focus-visible:opacity-100 pointer-coarse:opacity-100 pointer-coarse:w-8 pointer-coarse:h-8 ",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the larger view shows while closed",
+    "file": "src/app/[locale]/_components/ImagePreviewLightbox.tsx",
+    "find": "if (!mounted || !open) return null;",
+    "replace": "if (!mounted) return null;",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a click on the picture closes the view",
+    "file": "src/app/[locale]/_components/ImagePreviewLightbox.tsx",
+    "find": "onClick={(e) => e.stopPropagation()}\n        className=\"max-w-[90vw]",
+    "replace": "onClick={() => {}}\n        className=\"max-w-[90vw]",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the close button closes twice",
+    "file": "src/app/[locale]/_components/ImagePreviewLightbox.tsx",
+    "find": "e.stopPropagation();\n          onClose();",
+    "replace": "onClose();",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the caption is always drawn",
+    "file": "src/app/[locale]/_components/ImagePreviewLightbox.tsx",
+    "find": "{caption && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the view stays inside its form",
+    "file": "src/app/[locale]/_components/ImagePreviewLightbox.tsx",
+    "find": "    </div>,\n    document.body",
+    "replace": "    </div>,\n    document.querySelector(\"form\") ?? document.body",
+    "tests": [
+      "tests/platform/ui-kit/image-fields.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the pause after use is none",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "const RESUME_AFTER_MS = 3000;",
+    "replace": "const RESUME_AFTER_MS = 0;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the element is watched at any visibility",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "{ threshold: 0.3 }",
+    "replace": "{ threshold: 0 }",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: hovering never holds",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "hovering = pauseOnHover;",
+    "replace": "hovering = false;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: hovering always holds",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "hovering = pauseOnHover;",
+    "replace": "hovering = true;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: reduced motion is ignored",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "if (reducedMotion.matches || !inView || hovering || focused || document.hidden) return;",
+    "replace": "if (!inView || hovering || focused || document.hidden) return;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: off-screen is ignored",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "if (reducedMotion.matches || !inView || hovering || focused || document.hidden) return;",
+    "replace": "if (reducedMotion.matches || hovering || focused || document.hidden) return;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a hidden tab is ignored",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "|| focused || document.hidden) return;",
+    "replace": "|| focused) return;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: focus inside is ignored",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "|| hovering || focused ||",
+    "replace": "|| hovering ||",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: leaving does not hold",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "hovering = false;\n      pause();",
+    "replace": "hovering = false;",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the wheel does not hold",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "el.addEventListener(\"wheel\", pause, { passive: true });",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the touch does not hold",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "el.addEventListener(\"touchstart\", pause, { passive: true });",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the pointer press does not hold",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "el.addEventListener(\"pointerdown\", pause, { passive: true });",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the timer is not stopped",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "clearInterval(timer);",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the observer is not stopped",
+    "file": "src/hooks/use-auto-advance.ts",
+    "find": "observer.disconnect();",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the rotation never wraps",
+    "file": "src/hooks/use-banner-rotation.ts",
+    "find": "(i + 1) % count",
+    "replace": "i + 1",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a single banner rotates",
+    "file": "src/hooks/use-banner-rotation.ts",
+    "find": "enabled: count > 1,",
+    "replace": "enabled: count > 0,",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: banners pause under the mouse",
+    "file": "src/hooks/use-banner-rotation.ts",
+    "find": "pauseOnHover: false,",
+    "replace": "pauseOnHover: true,",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: new banners keep the old index",
+    "file": "src/hooks/use-banner-rotation.ts",
+    "find": "setIndex(0);\n  }, [banners]);",
+    "replace": "}, [banners]);",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a dot does not hold the rotation",
+    "file": "src/hooks/use-banner-rotation.ts",
+    "find": "setIndex(i);\n      pause();",
+    "replace": "setIndex(i);",
+    "tests": [
+      "tests/platform/ui-kit/auto-advance.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a small drag counts",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const DRAG_THRESHOLD_PX = 5;",
+    "replace": "const DRAG_THRESHOLD_PX = 0;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a drag never counts",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const DRAG_THRESHOLD_PX = 5;",
+    "replace": "const DRAG_THRESHOLD_PX = 5000;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the loop never jumps back",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const LOOP_SETTLE_MS = 120;",
+    "replace": "const LOOP_SETTLE_MS = 120000;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the left key goes right",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "if (e.key === \"ArrowLeft\") handleArrow(-1);",
+    "replace": "if (e.key === \"ArrowLeft\") handleArrow(1);",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: keyboard control cannot be turned off",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "if (!keyboard || pageCount < 2) return;",
+    "replace": "if (pageCount < 2) return;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a finger starts a drag",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "e.pointerType !== \"mouse\" || e.button !== 0",
+    "replace": "e.button !== 0",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the right button starts a drag",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "e.pointerType !== \"mouse\" || e.button !== 0",
+    "replace": "e.pointerType !== \"mouse\"",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: dragging cannot be turned off",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "if (!draggable || !track ||",
+    "replace": "if (!track ||",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the click after a drag follows the link",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "suppressClickRef.current = true;",
+    "replace": "suppressClickRef.current = false;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: one page still plays",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "enabled: autoplay !== false && pageCount > 1,",
+    "replace": "enabled: autoplay !== false,",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: autoplay cannot be turned off",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "enabled: autoplay !== false && pageCount > 1,",
+    "replace": "enabled: pageCount > 1,",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: autoplay goes backwards",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "onAdvance: () => move(1),",
+    "replace": "onAdvance: () => move(-1),",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: everything loops",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const loopActive = loop && slideCount > maxView;",
+    "replace": "const loopActive = loop;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: looping can not be turned off",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const loopActive = loop && slideCount > maxView;",
+    "replace": "const loopActive = slideCount > maxView;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: one copy frames a group of slides",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const cloneCount = loopActive ? Math.ceil(maxView) : 0;",
+    "replace": "const cloneCount = loopActive ? 1 : 0;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: copies are visible to screen readers",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "aria-hidden={clone || undefined}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: copies can be tabbed to",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "inert={clone || undefined}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: reduced motion still glides",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches ? \"auto\" : \"smooth\"",
+    "replace": "\"smooth\"",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the dots are always overlaid",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "const dotsOverlay = dots === \"overlay\";",
+    "replace": "const dotsOverlay = true;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the page change is not reported",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "onPageChange?.(page);",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an arrow does not hold autoplay",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "pause();\n    move(direction);",
+    "replace": "move(direction);",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a dot does not hold autoplay",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "pause();\n    scrollToPage(target);",
+    "replace": "scrollToPage(target);",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the grab hand shows for one page",
+    "file": "src/app/[locale]/_components/Carousel.tsx",
+    "find": "draggable && multiplePages ?",
+    "replace": "draggable ?",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a dot count of one is drawn",
+    "file": "src/app/[locale]/_components/CarouselControls.tsx",
+    "find": "if (count < 2) return null;",
+    "replace": "if (count < 1) return null;",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the current dot is not marked",
+    "file": "src/app/[locale]/_components/CarouselControls.tsx",
+    "find": "aria-current={i === index}",
+    "replace": "aria-current={false}",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a disabled arrow stays enabled",
+    "file": "src/app/[locale]/_components/CarouselControls.tsx",
+    "find": "disabled={disabled}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/carousel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a phone picture is always added",
+    "file": "src/app/[locale]/_components/ResponsiveBannerImage.tsx",
+    "find": "if (mobileSrc !== tabletSrc) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a tablet picture is always added",
+    "file": "src/app/[locale]/_components/ResponsiveBannerImage.tsx",
+    "find": "if (tabletSrc !== desktopSrc) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the phone limit is 640",
+    "file": "src/app/[locale]/_components/ResponsiveBannerImage.tsx",
+    "find": "\"(max-width: 639px)\"",
+    "replace": "\"(max-width: 640px)\"",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the tablet limit is 1024",
+    "file": "src/app/[locale]/_components/ResponsiveBannerImage.tsx",
+    "find": "\"(max-width: 1023px)\"",
+    "replace": "\"(max-width: 1024px)\"",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the banner has a default alt text",
+    "file": "src/app/[locale]/_components/ResponsiveBannerImage.tsx",
+    "find": "alt = \"\",",
+    "replace": "alt = \"banner\",",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: no banners crash the fade",
+    "file": "src/app/[locale]/_components/BannerFade.tsx",
+    "find": "if (banners.length === 0) return null;",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the fade is opaque by default",
+    "file": "src/app/[locale]/_components/BannerFade.tsx",
+    "find": "imageOpacity = 0.85,",
+    "replace": "imageOpacity = 1,",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a single banner fades in",
+    "file": "src/app/[locale]/_components/BannerFade.tsx",
+    "find": "initial={{ opacity: banners.length > 1 ? 0 : 1 }}",
+    "replace": "initial={{ opacity: 0 }}",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the banner is lazy by default",
+    "file": "src/app/[locale]/_components/BannerFade.tsx",
+    "find": "priority = true,",
+    "replace": "priority = false,",
+    "tests": [
+      "tests/platform/ui-kit/banner.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: stars round down",
+    "file": "src/app/[locale]/_components/StarRating.tsx",
+    "find": "const filled = Math.round(rating);",
+    "replace": "const filled = Math.floor(rating);",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: stars are announced one by one",
+    "file": "src/app/[locale]/_components/StarRating.tsx",
+    "find": "role=\"img\" aria-label={t(\"starsAria\", { rating })}",
+    "replace": "aria-label={t(\"starsAria\", { rating })}",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a negative count shows a rating",
+    "file": "src/app/[locale]/_components/ProductRating.tsx",
+    "find": "if (average == null || !count || count <= 0) return null;",
+    "replace": "if (average == null || !count) return null;",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: no average shows a rating",
+    "file": "src/app/[locale]/_components/ProductRating.tsx",
+    "find": "if (average == null || !count || count <= 0) return null;",
+    "replace": "if (!count || count <= 0) return null;",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the full variant is the card one",
+    "file": "src/app/[locale]/_components/ProductRating.tsx",
+    "find": "if (variant === \"full\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an edited mark is always shown",
+    "file": "src/app/[locale]/_components/ReviewContent.tsx",
+    "find": "{review.edited && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the shop reply is always drawn",
+    "file": "src/app/[locale]/_components/ReviewContent.tsx",
+    "find": "{review.reply && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the purchased variant is joined badly",
+    "file": "src/app/[locale]/_components/ReviewContent.tsx",
+    "find": ".filter(Boolean).join(\" · \")",
+    "replace": ".join(\" · \")",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a title is always drawn",
+    "file": "src/app/[locale]/_components/ReviewContent.tsx",
+    "find": "{review.title && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the review date is the free text",
+    "file": "src/app/[locale]/_components/ReviewContent.tsx",
+    "find": "format.dateTime(new Date(review.createdAt), \"short\")",
+    "replace": "review.date",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an avatar name is not trimmed",
+    "file": "src/app/[locale]/_components/ReviewAvatar.tsx",
+    "find": "author.trim().charAt(0).toUpperCase()",
+    "replace": "author.charAt(0).toUpperCase()",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a site path is not a picture",
+    "file": "src/app/[locale]/_components/ReviewAvatar.tsx",
+    "find": "|| avatar.startsWith(\"/\")",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: no photos draw an empty list",
+    "file": "src/app/[locale]/_components/ReviewImageGrid.tsx",
+    "find": "if (images.length === 0) return null;",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a photo opens the first one",
+    "file": "src/app/[locale]/_components/ReviewImageGrid.tsx",
+    "find": "setViewer({ open: true, index: i })",
+    "replace": "setViewer({ open: true, index: 0 })",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a single photo has arrows",
+    "file": "src/app/[locale]/_components/ReviewImageViewer.tsx",
+    "find": "render={images.length < 2 ? { buttonPrev: () => null, buttonNext: () => null } : undefined}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a checkbox reports the old value",
+    "file": "src/app/[locale]/_components/Checkbox.tsx",
+    "find": "onCheckedChange(e.target.checked)",
+    "replace": "onCheckedChange(!e.target.checked)",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a mixed checkbox looks empty",
+    "file": "src/app/[locale]/_components/Checkbox.tsx",
+    "find": "const filled = checked || indeterminate;",
+    "replace": "const filled = checked;",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the mixed state is not set",
+    "file": "src/app/[locale]/_components/Checkbox.tsx",
+    "find": "inputRef.current.indeterminate = indeterminate;",
+    "replace": "inputRef.current.indeterminate = false;",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the tick goes away too soon",
+    "file": "src/app/[locale]/_components/CopyButton.tsx",
+    "find": "setTimeout(() => setCopied(false), 1500)",
+    "replace": "setTimeout(() => setCopied(false), 15)",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the tick stays",
+    "file": "src/app/[locale]/_components/CopyButton.tsx",
+    "find": "setTimeout(() => setCopied(false), 1500)",
+    "replace": "setTimeout(() => setCopied(false), 150000)",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: another text is copied",
+    "file": "src/app/[locale]/_components/CopyButton.tsx",
+    "find": "navigator.clipboard.writeText(value)",
+    "replace": "navigator.clipboard.writeText(\"\")",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a refused copy says it worked",
+    "file": "src/app/[locale]/_components/CopyButton.tsx",
+    "find": "toast.error(t(\"failed\"));",
+    "replace": "toast.success(t(\"copied\"));",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: structured data can close the script",
+    "file": "src/app/[locale]/_components/JsonLd.tsx",
+    "find": ".replace(/</g, \"\\\\u003c\")",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a missing count still shows the box",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "if (count === undefined) return null;",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a finished list shows without being asked",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "if (!active || !keepWhenDone) return null;",
+    "replace": "if (!active) return null;",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a finished list shows with the filter off",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "if (!active || !keepWhenDone) return null;",
+    "replace": "if (!keepWhenDone) return null;",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the button does not say it is pressed",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "aria-pressed={active}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the filter note is always there",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "{active && <p className=\"m-0 text-xs font-medium text-[var(--text-accent)]\">{t(\"filtering\")}</p>}",
+    "replace": "<p className=\"m-0 text-xs font-medium text-[var(--text-accent)]\">{t(\"filtering\")}</p>",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the active button keeps its label",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "button(active ? (viewAllLabel ?? t(\"viewAll\")) : viewLabel)",
+    "replace": "button(viewLabel)",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the exclusion is always drawn",
+    "file": "src/app/[locale]/_components/PendingActionNotice.tsx",
+    "find": "{excludes && <p",
+    "replace": "{true && <p",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: paid looks unpaid",
+    "file": "src/app/[locale]/_components/OrderPaymentBadge.tsx",
+    "find": "paid: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",",
+    "replace": "paid: \"bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]\",",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an unknown status has no fallback colour",
+    "file": "src/app/[locale]/_components/OrderPaymentBadge.tsx",
+    "find": "STYLES[status] ?? \"bg-[rgba(107,101,96,0.05)] text-[var(--text-muted)]\"",
+    "replace": "STYLES[status] ?? \"\"",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a sold-out button works",
+    "file": "src/app/[locale]/_components/ProductBagButton.tsx",
+    "find": "disabled={soldOut}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a custom order goes nowhere",
+    "file": "src/app/[locale]/_components/ProductBagButton.tsx",
+    "find": "if (mode === \"customOrder\") router.push(buildOrderInquiryHref(product.id));",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a card link opens after the click",
+    "file": "src/app/[locale]/_components/ProductBagButton.tsx",
+    "find": "e.stopPropagation();",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a card link opens by default action",
+    "file": "src/app/[locale]/_components/ProductBagButton.tsx",
+    "find": "e.preventDefault();\n    e.stopPropagation();",
+    "replace": "e.stopPropagation();",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the icon form has no name",
+    "file": "src/app/[locale]/_components/ProductBagButton.tsx",
+    "find": "aria-label={variant === \"icon\" ? ariaLabel : undefined}",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a new tab link is unsafe",
+    "file": "src/app/[locale]/_components/ProductLink.tsx",
+    "find": "{...(newTab ? { target: \"_blank\", rel: \"noopener noreferrer\" } : {})}",
+    "replace": "{...(newTab ? { target: \"_blank\" } : {})}",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: every link opens a new tab",
+    "file": "src/app/[locale]/_components/ProductLink.tsx",
+    "find": "{...(newTab ? { target: \"_blank\", rel: \"noopener noreferrer\" } : {})}",
+    "replace": "target=\"_blank\" rel=\"noopener noreferrer\"",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the tablet begins at 641",
+    "file": "src/hooks/useMediaQuery.ts",
+    "find": "tablet: 640,",
+    "replace": "tablet: 641,",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the desktop begins at 1025",
+    "file": "src/hooks/useMediaQuery.ts",
+    "find": "desktop: 1024,",
+    "replace": "desktop: 1025,",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the window resize is not followed",
+    "file": "src/hooks/useMediaQuery.ts",
+    "find": "window.addEventListener(\"resize\", handleResize);",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: sold out can be bought",
+    "file": "src/lib/product-purchase.ts",
+    "find": "if (badge === \"sold_out\") return \"soldOut\";",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: custom order has a public price",
+    "file": "src/lib/product-purchase.ts",
+    "find": "getPurchaseMode(badge) !== \"customOrder\"",
+    "replace": "true",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the inquiry link keeps the id raw",
+    "file": "src/lib/product-purchase.ts",
+    "find": "encodeURIComponent(productId)",
+    "replace": "productId",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: sort labels are the keys",
+    "file": "src/hooks/use-sort-options.ts",
+    "find": "label: t(def.key as Parameters<typeof t>[0]),",
+    "replace": "label: def.key,",
+    "tests": [
+      "tests/platform/ui-kit/small-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the payment line shows without a status",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{order.paymentStatus && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a line shows a picture without one",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{item.productImage && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the note box is always there",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{order.note && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: tabs show without a payment tab",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{paymentTab && (\n        <FormTabs",
+    "replace": "{true && (\n        <FormTabs",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the payment tab never shows",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{paymentTab && tab === \"payment\" ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the method is the raw id",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "(shippingMethodName(order.shippingMethod) ?? order.shippingMethod)",
+    "replace": "order.shippingMethod",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: an empty method has no dash",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "|| \"—\"}",
+    "replace": "}",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the size slash shows alone",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{item.size && item.color && \" / \"}",
+    "replace": "{\" / \"}",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the notice is not shown",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "{notice}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the product link opens in this tab",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "<ProductLink product={item.product} newTab className",
+    "replace": "<ProductLink product={item.product} className",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the count is the picture count",
+    "file": "src/app/[locale]/_components/OrderDetailPanel.tsx",
+    "find": "t(\"items\", { count: order.items?.length ?? 0 })",
+    "replace": "t(\"items\", { count: 0 })",
+    "tests": [
+      "tests/platform/ui-kit/order-detail-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: a refused request is shown as no data",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "{failed ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the failure mark stays after a good answer",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "setTotal(result.total);\n        setFailed(false);",
+    "replace": "setTotal(result.total);",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  },
+  {
+    "name": "ui-kit: the retry button does nothing",
+    "file": "src/app/[locale]/_components/DataTable.tsx",
+    "find": "onClick={() => load()}\n                    className=\"py-1.5",
+    "replace": "onClick={() => {}}\n                    className=\"py-1.5",
+    "tests": [
+      "tests/platform/ui-kit/data-table.test.tsx"
+    ]
+  }
+]

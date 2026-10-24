@@ -262,6 +262,7 @@ function DataTableInner<T extends { id?: string | number }>(
   const [fetchedData, setData] = useState<T[]>([]);
   const [fetchedTotal, setTotal] = useState(0);
   const [fetching, setLoading] = useState(!!fetchData);
+  const [failed, setFailed] = useState(false);
 
   const isStatic = !fetchData;
   const data = isStatic ? (rows ?? []) : fetchedData;
@@ -316,6 +317,7 @@ function DataTableInner<T extends { id?: string | number }>(
         const result = await fetchData(params);
         setData(result.data);
         setTotal(result.total);
+        setFailed(false);
         /* Keep only ticked rows that are still on screen (page/filter change, deletes). */
         const visibleKeys = new Set(result.data.map(keyExtractor));
         setSelectedKeys((prev) => new Set([...prev].filter((k) => visibleKeys.has(k))));
@@ -326,6 +328,7 @@ function DataTableInner<T extends { id?: string | number }>(
       } catch (err) {
         setData([]);
         setTotal(0);
+        setFailed(true);
         setSelectedKeys(new Set());
         onError?.(err);
       } finally {
@@ -415,7 +418,16 @@ function DataTableInner<T extends { id?: string | number }>(
   }));
 
   /* ── Fetch on param change ── */
+  const askedSearchRef = useRef(debouncedSearch);
   useEffect(() => {
+    /* A new search starts from page 1; the page change then asks, so the old page is never asked with the new search */
+    if (askedSearchRef.current !== debouncedSearch) {
+      askedSearchRef.current = debouncedSearch;
+      if (page !== 1) {
+        setPage(1);
+        return;
+      }
+    }
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, activeFilters, sort, page]);
@@ -484,9 +496,22 @@ function DataTableInner<T extends { id?: string | number }>(
               colSpan={columns.length + (selectable ? 1 : 0) + (reorder ? 1 : 0)}
               className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
             >
-              {typeof emptyMessage === "function"
-                ? emptyMessage(hasActiveFilters)
-                : (emptyMessage ?? t(hasActiveFilters ? "empty.filtered" : "empty.none"))}
+              {failed ? (
+                <span role="alert" className="flex flex-col items-center gap-3">
+                  {t("error.message")}
+                  <button
+                    type="button"
+                    onClick={() => load()}
+                    className="py-1.5 px-4 pointer-coarse:min-h-11 rounded-sm border border-[var(--border-light)] bg-transparent cursor-pointer text-xs font-semibold font-primary text-[var(--text-accent)]"
+                  >
+                    {t("error.retry")}
+                  </button>
+                </span>
+              ) : typeof emptyMessage === "function" ? (
+                emptyMessage(hasActiveFilters)
+              ) : (
+                (emptyMessage ?? t(hasActiveFilters ? "empty.filtered" : "empty.none"))
+              )}
             </td>
           </tr>
         )}

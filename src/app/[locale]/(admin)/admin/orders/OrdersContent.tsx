@@ -270,9 +270,8 @@ export default function OrdersContent() {
     try {
       await dispatch(updateOrderStatus({ id: orderId, status: newStatus })).unwrap();
       toast.success(t("toast.statusChanged", { id: orderId, status: statusLabel(newStatus) }));
-      if (detailOrder?.id === orderId) {
-        setDetailOrder((p) => (p ? { ...p, status: newStatus } : null));
-      }
+      /* Updater form: this handler is kept by the memoized columns, so `detailOrder` here may be an old value */
+      setDetailOrder((p) => (p && p.id === orderId ? { ...p, status: newStatus } : p));
       tableRef.current?.refresh();
     } catch (err) {
       toast.error(toErrorMessage(err, t("toast.statusFailed")));

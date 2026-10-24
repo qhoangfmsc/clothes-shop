@@ -1,0 +1,565 @@
+[
+  {
+    "name": "products: the slug keeps the Vietnamese d-bar",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": ".replace(/đ/g, \"d\")\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the slug keeps accents",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": ".normalize(\"NFD\")\n    .replace(/[̀-ͯ]/g, \"\")",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the slug keeps edges",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": ".replace(/^-+|-+$/g, \"\")",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the add button needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PRODUCT_CREATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.PRODUCT_VIEW}>",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the edit button needs the wrong permission",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PRODUCT_UPDATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.PRODUCT_VIEW}>",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the delete button needs the wrong permission",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PRODUCT_DELETE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.PRODUCT_VIEW}>",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the struck price shows when there is none",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "{p.originalPriceVnd !== null && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the rating shows with no reviews",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "p.ratingAverage != null && p.ratingCount > 0 ?",
+    "replace": "p.ratingAverage != null ?",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the rating column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "        hideBelow: \"md\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a missing category is not a dash",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "{p.category?.slug ?? \"—\"}",
+    "replace": "{p.category?.slug}",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the min rating is sent as text",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "minRating: params.filters.minRating ? Number(params.filters.minRating) : undefined,",
+    "replace": "minRating: undefined,",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the status filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "status: (params.filters.status || undefined) as ProductStatus | undefined,",
+    "replace": "status: undefined,",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: categories are not sorted",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": ".sort((a, b) => a.label.localeCompare(b.label)),",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the default sort is another",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "defaultSort=\"-createdAt\"",
+    "replace": "defaultSort=\"createdAt\"",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a missing sub-category is let through",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (subcategoryOptions.length > 0 && !form.subcategoryId) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a zero price is let through",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "priceVnd < MIN_PRICE_VND ||",
+    "replace": "false ||",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a huge price is let through",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "priceVnd > MAX_PRICE_VND;",
+    "replace": "false;",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a huge struck price is let through",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "originalPriceVnd > MAX_PRICE_VND ||",
+    "replace": "false ||",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a struck price below the price is let through",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "(priceVnd !== null && originalPriceVnd < priceVnd)",
+    "replace": "false",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a struck price equal to the price is refused",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "originalPriceVnd < priceVnd",
+    "replace": "originalPriceVnd <= priceVnd",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a price error does not return to the first tab",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "      setPriceErrors({ price: priceInvalid, originalPrice: originalInvalid });\n      setActiveTab(PRODUCT_TABS[0].id);",
+    "replace": "      setPriceErrors({ price: priceInvalid, originalPrice: originalInvalid });",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the price error does not go away when typing",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "setPriceErrors((prev) => ({ ...prev, price: false }));\n                        }}",
+    "replace": "}}",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a decimal price is not refused",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "onReject={() => setPriceErrors((prev) => ({ ...prev, price: true }))}",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: an empty struck price is sent as zero",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "const originalPriceVnd = form.originalPriceVnd ? parseVndInput(form.originalPriceVnd) : null;",
+    "replace": "const originalPriceVnd = form.originalPriceVnd ? parseVndInput(form.originalPriceVnd) : 0;",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: an empty sub-category is sent as empty text",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "subcategoryId: form.subcategoryId || null,",
+    "replace": "subcategoryId: form.subcategoryId,",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the form is not closed after a save",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "      tableRef.current?.refresh();\n      closeModal();",
+    "replace": "      tableRef.current?.refresh();",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the table is not refreshed after a save",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "      tableRef.current?.refresh();\n      closeModal();",
+    "replace": "      closeModal();",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: an update creates",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (editingId) {\n        await dispatch(updateProduct",
+    "replace": "if (false) {\n        await dispatch(updateProduct",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a save failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a category change keeps the sub-category",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "setForm((p) => ({ ...p, categoryId: e.target.value, subcategoryId: \"\" }))",
+    "replace": "setForm((p) => ({ ...p, categoryId: e.target.value }))",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the sub-category box is always open",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "disabled={!form.categoryId || subcategoryOptions.length === 0}",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: editing shows the price without dots",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "priceVnd: maskVndInput(String(p.priceVnd)),",
+    "replace": "priceVnd: String(p.priceVnd),",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: editing does not open the first tab",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "    setPriceErrors({});\n    setActiveTab(PRODUCT_TABS[0].id);\n    setShowModal(true);\n  };\n\n  const closeModal",
+    "replace": "    setPriceErrors({});\n    setShowModal(true);\n  };\n\n  const closeModal",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: an empty colour name is added",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "    if (!name) return;\n    if (form.colors.some",
+    "replace": "    if (form.colors.some",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a colour twice is added",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (form.colors.some((c) => c.name.toLowerCase() === name.toLowerCase())) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: colour names are compared with case",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "c.name.toLowerCase() === name.toLowerCase()",
+    "replace": "c.name === name",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a colour keeps its name box",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "    setForm((p) => ({ ...p, colors: [...p.colors, { name, hex: colorHex }] }));\n    setColorName(\"\");",
+    "replace": "    setForm((p) => ({ ...p, colors: [...p.colors, { name, hex: colorHex }] }));",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a removed colour is the wrong one",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "colors: p.colors.filter((_, j) => j !== i),",
+    "replace": "colors: p.colors.filter((_, j) => j === i),",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a size is not toggled off",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "sizes: active\n                                        ? p.sizes.filter((s) => s !== size)\n                                        : [...p.sizes, size],",
+    "replace": "sizes: [...p.sizes, size],",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: clear all keeps the sizes",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "onClick={() => setForm((p) => ({ ...p, sizes: [] }))}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a custom size keeps its case",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": ".value.trim().toUpperCase();",
+    "replace": ".value.trim();",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a custom size twice is added",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (v && !form.sizes.includes(v)) {\n                              setForm((p) => ({ ...p, sizes: [...p.sizes, v] }));",
+    "replace": "if (v) {\n                              setForm((p) => ({ ...p, sizes: [...p.sizes, v] }));",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a custom size submits the form",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (e.key === \"Enter\") {\n                            e.preventDefault();\n                            const v = (e.target",
+    "replace": "if (e.key === \"Enter\") {\n                            const v = (e.target",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a custom tag keeps its case",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "const v = tagInput.trim().toLowerCase();",
+    "replace": "const v = tagInput.trim();",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a tag twice is added",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (v && !form.tags.includes(v)) {\n                              setForm((p) => ({ ...p, tags: [...p.tags, v] }));",
+    "replace": "if (v) {\n                              setForm((p) => ({ ...p, tags: [...p.tags, v] }));",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a suggested tag stays offered",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "TAG_SUGGESTIONS.filter((suggestion) => !form.tags.includes(suggestion))",
+    "replace": "TAG_SUGGESTIONS",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a removed tag is the wrong one",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "tags: p.tags.filter((x) => x !== tag)",
+    "replace": "tags: p.tags.filter((x) => x === tag)",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the delete question is not dangerous",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "confirmLabel: tCrud(\"delete\"),\n      danger: true,",
+    "replace": "confirmLabel: tCrud(\"delete\"),\n      danger: false,",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: backing out still deletes",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "if (!ok) return;\n    try {\n      await dispatch(deleteProduct",
+    "replace": "try {\n      await dispatch(deleteProduct",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a deleted product is not refreshed",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "toast.success(t(\"toast.deleted\"));\n      tableRef.current?.refresh();",
+    "replace": "toast.success(t(\"toast.deleted\"));",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a delete failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the count is not shown",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "t(\"page.count\", { count: total })",
+    "replace": "t(\"page.count\", { count: 0 })",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the category filter lists nothing",
+    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
+    "find": "catList\n        .map((c) => ({ value: c.slug, label: c.slug }))",
+    "replace": "[]\n        .map((c: { slug: string }) => ({ value: c.slug, label: c.slug }))",
+    "tests": [
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the filter is sent as text",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/moduleSlice.ts",
+    "find": "const qs = buildListQuery(params, { category: params.category, badge: params.badge, status: params.status, minRating: params.minRating });",
+    "replace": "const qs = buildListQuery(params, {});",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts",
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a create is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/moduleSlice.ts",
+    "find": ".addCase(createProduct.pending, (state) => {\n        state.isCreating = true;",
+    "replace": ".addCase(createProduct.pending, (state) => {",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts"
+    ]
+  },
+  {
+    "name": "products: an update is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/moduleSlice.ts",
+    "find": ".addCase(updateProduct.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": ".addCase(updateProduct.pending, (state) => {",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts"
+    ]
+  },
+  {
+    "name": "products: a delete is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/moduleSlice.ts",
+    "find": ".addCase(deleteProduct.pending, (state) => {\n        state.isDeleting = true;",
+    "replace": ".addCase(deleteProduct.pending, (state) => {",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts"
+    ]
+  },
+  {
+    "name": "products: a delete does not return the id",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/moduleSlice.ts",
+    "find": "    await authApi.delete(`/api/admin/products/${id}`);\n    return id;",
+    "replace": "    await authApi.delete(`/api/admin/products/${id}`);\n    return \"\";",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts"
+    ]
+  },
+  {
+    "name": "products: the price limit is raised",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/constants.ts",
+    "find": "export const MAX_PRICE_VND = 1_000_000_000;",
+    "replace": "export const MAX_PRICE_VND = 2_000_000_000;",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts",
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the lowest price is zero",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/constants.ts",
+    "find": "export const MIN_PRICE_VND = 1;",
+    "replace": "export const MIN_PRICE_VND = 0;",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts",
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: a new product starts disabled",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/constants.ts",
+    "find": "status: \"active\" as ProductStatus,",
+    "replace": "status: \"disabled\" as ProductStatus,",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts",
+      "tests/admin/products/products-form.test.tsx"
+    ]
+  },
+  {
+    "name": "products: the rating choices change",
+    "file": "src/app/[locale]/(admin)/admin/products/_common/constants.ts",
+    "find": "export const PRODUCT_MIN_RATINGS = [5, 4, 3, 2, 1] as const;",
+    "replace": "export const PRODUCT_MIN_RATINGS = [1, 2, 3, 4, 5] as const;",
+    "tests": [
+      "tests/admin/products/products-slice.test.ts",
+      "tests/admin/products/products-list.test.tsx"
+    ]
+  }
+]
