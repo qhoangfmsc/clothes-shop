@@ -25,6 +25,7 @@ import {
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { ImageUrlField } from "@/src/app/[locale]/_components/ImageUrlField";
 import { PERMISSIONS } from "@/src/lib/permissions";
+import { slugify } from "@/src/lib/slugify";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -43,16 +44,6 @@ import {
 } from "./_common/constants";
 import type { CategoryListResult } from "./_common/types";
 import type { Category } from "@/src/types/category";
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/đ/g, "d")
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 export default function CategoriesContent() {
   const t = useTranslations("admin.categories");

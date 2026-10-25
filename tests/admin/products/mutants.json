@@ -1,32 +1,5 @@
 [
   {
-    "name": "products: the slug keeps the Vietnamese d-bar",
-    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
-    "find": ".replace(/đ/g, \"d\")\n",
-    "replace": "",
-    "tests": [
-      "tests/admin/products/products-form.test.tsx"
-    ]
-  },
-  {
-    "name": "products: the slug keeps accents",
-    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
-    "find": ".normalize(\"NFD\")\n    .replace(/[̀-ͯ]/g, \"\")",
-    "replace": "",
-    "tests": [
-      "tests/admin/products/products-form.test.tsx"
-    ]
-  },
-  {
-    "name": "products: the slug keeps edges",
-    "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
-    "find": ".replace(/^-+|-+$/g, \"\")",
-    "replace": "",
-    "tests": [
-      "tests/admin/products/products-form.test.tsx"
-    ]
-  },
-  {
     "name": "products: the add button needs no permission",
     "file": "src/app/[locale]/(admin)/admin/products/ProductsContent.tsx",
     "find": "<RoleGuard permission={PERMISSIONS.PRODUCT_CREATE}>",

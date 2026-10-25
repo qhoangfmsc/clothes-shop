@@ -160,12 +160,22 @@ export default function DashboardContent() {
     products,
     total: totalProducts,
     isLoading: loadingProducts,
+    isError: productsFailed,
+    mutate: reloadProducts,
   } = useAdminProducts({ limit: LIST_MAX_LIMIT });
-  const { orders, total: totalOrders, isLoading: loadingOrders } = useAdminOrders({ limit: LIST_MAX_LIMIT });
+  const {
+    orders,
+    total: totalOrders,
+    isLoading: loadingOrders,
+    isError: ordersFailed,
+    mutate: reloadOrders,
+  } = useAdminOrders({ limit: LIST_MAX_LIMIT });
   const {
     users: _users,
     total: totalUsers,
     isLoading: loadingUsers,
+    isError: usersFailed,
+    mutate: reloadUsers,
   } = useAdminUsers({ limit: LIST_MAX_LIMIT });
 
   /* ── Computed stats ── */
@@ -205,6 +215,12 @@ export default function DashboardContent() {
   const recentOrders = orders.slice(0, 8);
 
   const loading = loadingProducts || loadingOrders || loadingUsers;
+  const anyFailed = productsFailed || ordersFailed || usersFailed;
+  /* A figure that could not be loaded is a dash, never a zero */
+  const noOrders = loading || ordersFailed;
+  const noProducts = loading || productsFailed;
+  const noUsers = loading || usersFailed;
+  const reload = () => void Promise.all([reloadProducts(), reloadOrders(), reloadUsers()]);
 
   return (
     <div className="flex flex-col gap-[var(--space-8)]">
@@ -212,37 +228,53 @@ export default function DashboardContent() {
         {t("title")}
       </h1>
 
+      {anyFailed && (
+        <div
+          role="alert"
+          className="flex flex-wrap items-center justify-between gap-[var(--space-3)] p-[var(--space-4)] border border-[var(--accent-rose)] rounded-[var(--radius-lg)]"
+        >
+          <p className="m-0 text-sm text-[var(--accent-rose)] font-primary">{t("error.message")}</p>
+          <button
+            type="button"
+            className="py-1.5 px-4 pointer-coarse:min-h-11 bg-transparent border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-sm font-primary text-[var(--text-secondary)] cursor-pointer"
+            onClick={reload}
+          >
+            {t("error.retry")}
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-[repeat(auto-fill,minmax(13.75rem,1fr))] gap-[var(--space-5)]">
         <KpiCard
           icon={<DollarSign size={20} />}
           label={t("kpi.revenue.label")}
-          value={loading ? "—" : vnd(stats.totalRevenueVnd)}
-          sub={t("kpi.revenue.sub", { count: stats.validOrders.length })}
+          value={noOrders ? "—" : vnd(stats.totalRevenueVnd)}
+          sub={noOrders ? "" : t("kpi.revenue.sub", { count: stats.validOrders.length })}
           {...KPI_ACCENTS.gold}
         />
         <KpiCard
           icon={<Clock size={20} />}
           label={t("kpi.processing.label")}
-          value={loading ? "—" : stats.pendingOrders}
+          value={noOrders ? "—" : stats.pendingOrders}
           sub={t("kpi.processing.sub")}
-          highlight={!loading && stats.pendingOrders > 0}
+          highlight={!noOrders && stats.pendingOrders > 0}
           {...KPI_ACCENTS.honey}
         />
         <KpiCard
           icon={<ShoppingBag size={20} />}
           label={t("kpi.orders.label")}
-          value={loading ? "—" : totalOrders}
+          value={noOrders ? "—" : totalOrders}
           sub={
-            loading ? "" : t("kpi.orders.sub", { count: stats.ordersByStatus["completed"] || 0 })
+            noOrders ? "" : t("kpi.orders.sub", { count: stats.ordersByStatus["completed"] || 0 })
           }
           {...KPI_ACCENTS.blue}
         />
         <KpiCard
           icon={<Shirt size={20} />}
           label={t("kpi.products.label")}
-          value={loading ? "—" : totalProducts}
+          value={noProducts ? "—" : totalProducts}
           sub={
-            loading
+            noProducts
               ? ""
               : t("kpi.products.sub", {
                   active: stats.activeProducts,
@@ -254,7 +286,7 @@ export default function DashboardContent() {
         <KpiCard
           icon={<Users size={20} />}
           label={t("kpi.users.label")}
-          value={loading ? "—" : totalUsers}
+          value={noUsers ? "—" : totalUsers}
           sub={t("kpi.users.sub")}
           {...KPI_ACCENTS.lavender}
         />
@@ -276,7 +308,7 @@ export default function DashboardContent() {
             rows={recentOrders}
             loading={loading}
             searchable={false}
-            emptyMessage={t("recentOrders.empty")}
+            emptyMessage={ordersFailed ? t("error.message") : t("recentOrders.empty")}
           />
         </div>
 
@@ -288,9 +320,9 @@ export default function DashboardContent() {
               {t("orderStatus.title")}
             </h2>
           </div>
-          {loading ? (
+          {loading || ordersFailed ? (
             <p className="text-sm text-[var(--text-muted)] font-primary py-[var(--space-6)] text-center">
-              {t("orderStatus.loading")}
+              {loading ? t("orderStatus.loading") : "—"}
             </p>
           ) : (
             <div className="flex flex-col gap-[var(--space-3)]">

@@ -1,6 +1,6 @@
 # Refunds (hoàn tiền)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/refunds` (`?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-24
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/refunds` (`?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-25
 > **Code:** `(admin)/admin/refunds/` — `page.tsx`, `RefundsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{RefundBadge,RefundPaymentSource,CompleteRefundModal,RejectRefundModal,OrderRefundBanner}.tsx`
 > **i18n:** `admin.refunds`, `shared.errors.byCode` (1711, 1713, 1714), `admin.components.crud.sort` (`processedDesc`, `processedAsc`)
 > **Redux slice:** `state.refunds`
@@ -47,5 +47,9 @@ Khoản hoàn do trả hàng (`reason = RETURN`) có `returnRequestId` nên cộ
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
 
 ### 4.3 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/refunds.md](../../specs/admin/refunds.md). Test ở `tests/admin/refunds/` (`refunds-list`, `refund-forms`, `refunds-slice`; `refunds-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module. Khi BE lỗi, bảng (`DataTable`) hiện "không tải được dữ liệu" kèm nút "Thử lại".
+
+### 4.4 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/admin/refunds.md](../../specs/admin/refunds.md). Test ở `tests/admin/refunds/` (`refunds-list`, `refund-forms`, `refunds-slice`; `refunds-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module. Khi BE lỗi, bảng (`DataTable`) hiện "không tải được dữ liệu" kèm nút "Thử lại".

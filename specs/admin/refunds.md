@@ -1,6 +1,6 @@
-# Refunds admin (hoàn tiền) — Tech spec — Tech spec
+# Refunds admin (hoàn tiền) — Tech spec
 
-> **Nhóm:** Admin · **Cập nhật:** 2026-10-24 · **Trạng thái:** Implemented
+> **Nhóm:** Admin · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
 > **Doc:** [admin/refunds](../../docs/admin/refunds.md) · **Test:** `tests/admin/refunds/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -102,4 +102,4 @@ Thay đổi nhìn thấy được: bảng báo lỗi tải thay cho "không có 
 
 ## 8. Lịch sử thay đổi
 
-- 2026-10-24 · Viết spec và test cho toàn module (batch 4), kiểm thử đột biến. Không đổi code của module (chỉ đổi `DataTable` ở ui-kit).
+- 2026-10-25 · Viết spec và test cho toàn module (batch 4), kiểm thử đột biến. Không đổi code của module (chỉ đổi `DataTable` ở ui-kit).

@@ -1,7 +1,7 @@
 # Data layer (API client, SWR, Redux, media proxy)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-23
-> **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/product-list.ts` · `src/lib/media-url.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-25
+> **Code:** `src/lib/api.ts` · `src/lib/auth-api.ts` · `src/lib/product-url.ts` · `src/lib/list-query.ts` · `src/lib/product-list.ts` · `src/lib/media-url.ts` · `src/lib/slugify.ts` · `src/hooks/use-api.ts` · `src/hooks/use-admin-api.ts` · `src/hooks/use-api-auth.ts` · `src/hooks/use-media-upload.ts` · `src/store/` · `src/app/media/[...path]/route.ts` · `src/app/[locale]/(public)/shop/_lib/server-fetchers.ts` · `src/types/`
 
 ## 1. Tóm tắt module
 
@@ -27,6 +27,7 @@ Tầng truy cập dữ liệu dùng chung của FE. FE không có database riên
 | Admin SWR hooks | Sản phẩm, danh mục, bộ sưu tập, đơn hàng, người dùng (có CRUD) | `src/hooks/use-admin-api.ts` |
 | Redux store | Cấu hình store, slice nền `baseSlice`, đồng bộ `localStorage` | `src/store/` |
 | Media | Đổi URL Supabase → `/media/<key>`, proxy, upload | `media-url.ts`, `app/media/[...path]/route.ts`, `use-media-upload.ts` |
+| Slug | `slugify(tên)`: chữ thường, `đ` thành `d`, bỏ dấu, ký tự khác chữ số và a–z thành một `-`, bỏ `-` hai đầu; dùng chung cho form sản phẩm, danh mục, bộ sưu tập | `src/lib/slugify.ts` |
 | Entity types | `Product`, `Category`, `Collection`, `Review`, `ShippingInfo`, `SizeGuide`, `SiteConfig`, enums | `src/types/` |
 
 ## 4. Chi tiết

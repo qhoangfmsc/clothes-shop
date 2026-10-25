@@ -1,6 +1,6 @@
-# Categories admin (danh mục & danh mục con) — Tech spec — Tech spec
+# Categories admin (danh mục & danh mục con) — Tech spec
 
-> **Nhóm:** Admin · **Cập nhật:** 2026-10-24 · **Trạng thái:** Implemented
+> **Nhóm:** Admin · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
 > **Doc:** [admin/categories](../../docs/admin/categories.md) · **Test:** `tests/admin/categories/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -103,4 +103,5 @@ Thay đổi nhìn thấy được: tên danh mục bắt đầu bằng `đ` gi�
 
 ## 8. Lịch sử thay đổi
 
-- 2026-10-24 · Viết spec và test cho toàn module (batch 4), kiểm thử đột biến. Sửa `slugify`: `đ` thành `d` trước khi bỏ dấu (giống đã sửa ở products).
+- 2026-10-25 · Viết spec và test cho toàn module (batch 4), kiểm thử đột biến. Sửa `slugify`: `đ` thành `d` trước khi bỏ dấu (giống đã sửa ở products); sau đó dùng `slugify` dùng chung ở `src/lib/slugify.ts`.
+- 2026-10-25 · no-test: việc chuyển `slugify` sang `src/lib/slugify.ts` không đổi hành vi; ACT-5 và `tests/platform/data-layer/slugify.test.ts` kiểm cả hai phía.

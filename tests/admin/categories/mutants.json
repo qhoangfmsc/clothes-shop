@@ -271,69 +271,6 @@
     ]
   },
   {
-    "name": "categories: the slug keeps the accents",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": "    .normalize(\"NFD\")\n    .replace(/[̀-ͯ]/g, \"\")\n",
-    "replace": "",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
-    "name": "categories: the slug keeps đ",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": "    .replace(/đ/g, \"d\")\n",
-    "replace": "",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
-    "name": "categories: the slug keeps capitals",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": "    .toLowerCase()\n    .replace(/đ/g",
-    "replace": "    .replace(/đ/g",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
-    "name": "categories: the slug keeps symbols",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": "    .replace(/[^a-z0-9]+/g, \"-\")\n",
-    "replace": "",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
-    "name": "categories: the slug keeps edge dashes",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": "    .replace(/^-+|-+$/g, \"\");",
-    "replace": "    ;",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
-    "name": "categories: the slug keeps a leading dash",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": ".replace(/^-+|-+$/g, \"\")",
-    "replace": ".replace(/-+$/g, \"\")",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
-    "name": "categories: the slug keeps a trailing dash",
-    "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
-    "find": ".replace(/^-+|-+$/g, \"\")",
-    "replace": ".replace(/^-+/g, \"\")",
-    "tests": [
-      "tests/admin/categories/category-form.test.tsx"
-    ]
-  },
-  {
     "name": "categories: the title is not needed",
     "file": "src/app/[locale]/(admin)/admin/categories/CategoriesContent.tsx",
     "find": "                      placeholder={t(\"form.placeholders.title\")}\n                      required",

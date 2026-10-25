@@ -37,16 +37,18 @@ export default function ShippingConfigModal({ configKey, title, savedValue, onCl
   const { shipping, isLoading } = useShipping();
   /* A saved value from before the return policy existed has none: take what customers currently get, so
      saving never resets it to the BE default */
+  const saved = useMemo(() => parseShippingValue(savedValue), [savedValue]);
   const initial = useMemo(() => {
     const served = shippingInfoToForm(shipping);
-    const saved = parseShippingValue(savedValue);
     if (!saved) return served;
     return saved.returnPolicy ? saved : { ...saved, returnPolicy: served?.returnPolicy ?? null };
-  }, [savedValue, shipping]);
+  }, [saved, shipping]);
+  /* The form keeps only its first `initial`, so it must not open before the policy it borrows has arrived */
+  const waiting = isLoading && saved !== null && saved.returnPolicy === null;
 
   return (
     <ModalShell title={title} onClose={onClose} maxWidthClass="max-w-180">
-      {initial ? (
+      {initial && !waiting ? (
         <ShippingConfigFormBody configKey={configKey} initial={initial} onClose={onClose} />
       ) : (
         <p className="p-6 text-sm text-[var(--text-muted)] font-primary">

@@ -1,6 +1,6 @@
-# Users admin (quản lý người dùng) — Tech spec — Tech spec
+# Users admin (quản lý người dùng) — Tech spec
 
-> **Nhóm:** Admin · **Cập nhật:** 2026-10-24 · **Trạng thái:** Implemented
+> **Nhóm:** Admin · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
 > **Doc:** [admin/users](../../docs/admin/users.md) · **Test:** `tests/admin/users/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -98,4 +98,4 @@ Thay đổi nhìn thấy được: không (không đổi hành vi nhìn thấy).
 
 ## 8. Lịch sử thay đổi
 
-- 2026-10-24 · Viết spec và test cho toàn module (batch 4), kiểm thử đột biến. Không đổi code của module.
+- 2026-10-25 · Viết spec và test cho toàn module (batch 4), kiểm thử đột biến. Không đổi code của module.

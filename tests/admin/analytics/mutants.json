@@ -1,0 +1,2038 @@
+[
+  {
+    "name": "analytics: the page starts on another range",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "useState<AnalyticsRange>(\"7d\")",
+    "replace": "useState<AnalyticsRange>(\"30d\")",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the page asks for the summary",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "useAdminAnalytics(range, \"full\")",
+    "replace": "useAdminAnalytics(range, \"summary\")",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: every range shows once the plan is known",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "(r) => !report || ANALYTICS_RANGE_DAYS[r] <= report.capabilities.maxRangeDays",
+    "replace": "(r) => true",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: no range shows before the plan is known",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "(r) => !report || ANALYTICS_RANGE_DAYS[r] <= report.capabilities.maxRangeDays",
+    "replace": "(r) => !!report && ANALYTICS_RANGE_DAYS[r] <= report.capabilities.maxRangeDays",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a range that is too long still shows",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "ANALYTICS_RANGE_DAYS[r] <= report.capabilities.maxRangeDays",
+    "replace": "ANALYTICS_RANGE_DAYS[r] < report.capabilities.maxRangeDays",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the chosen range ignores the server",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "const activeRange = report?.range ?? range;",
+    "replace": "const activeRange = range;",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the tab does not change the range",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "onClick={() => setRange(r)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the tab is not marked chosen",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "aria-selected={r === activeRange}",
+    "replace": "aria-selected={false}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the chosen tab looks the same",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "r === activeRange\n                ? \"bg-[var(--accent-primary)] border-[var(--accent-primary)] text-[var(--text-on-gold)]\"",
+    "replace": "false\n                ? \"bg-[var(--accent-primary)] border-[var(--accent-primary)] text-[var(--text-on-gold)]\"",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: Refresh does nothing",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "            onClick={refresh}\n",
+    "replace": "            onClick={() => {}}\n",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the Vercel link opens in the same tab",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "            target=\"_blank\"\n            rel=\"noopener noreferrer\"\n            className=\"inline-flex items-center gap-2 py-2 px-3 bg-transparent border border-[var(--border-default)] rounded-[var(--radius-md)] text-xs font-primary font-medium text-[var(--text-secondary)] no-underline\"",
+    "replace": "            className=\"inline-flex items-center gap-2 py-2 px-3 bg-transparent border border-[var(--border-default)] rounded-[var(--radius-md)] text-xs font-primary font-medium text-[var(--text-secondary)] no-underline\"",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the Vercel link is not safe",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "            rel=\"noopener noreferrer\"\n            className=\"inline-flex items-center gap-2 py-2 px-3 bg-transparent border border-[var(--border-default)] rounded-[var(--radius-md)] text-xs font-primary font-medium text-[var(--text-secondary)] no-underline\"",
+    "replace": "            className=\"inline-flex items-center gap-2 py-2 px-3 bg-transparent border border-[var(--border-default)] rounded-[var(--radius-md)] text-xs font-primary font-medium text-[var(--text-secondary)] no-underline\"",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: an unconfigured report shows the figures",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "{data?.status === \"not_configured\" ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the missing list is lost",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "<StatusCard kind=\"not_configured\" missing={data.missing} />",
+    "replace": "<StatusCard kind=\"not_configured\" missing={[]} />",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a reported error shows the figures",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": ") : data?.status === \"error\" ? (",
+    "replace": "  ) : false ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a reported error has no retry",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "<StatusCard kind=\"error\" reason={data.reason} onRetry={refresh} />",
+    "replace": "<StatusCard kind=\"error\" reason={data.reason} onRetry={() => {}} />",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a failure with no data shows the figures",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": ") : error && !data ? (",
+    "replace": ") : false ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a failure with data shows an error",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": ") : error && !data ? (",
+    "replace": ") : error ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a refused account is called a network problem",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "error instanceof ApiError && error.status === 403 ? \"forbidden\" : \"network\"",
+    "replace": "\"network\"",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a failed request is called forbidden",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "error instanceof ApiError && error.status === 403 ? \"forbidden\" : \"network\"",
+    "replace": "\"forbidden\"",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: any api error is called forbidden",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "error instanceof ApiError && error.status === 403",
+    "replace": "error instanceof ApiError",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the figures wait for nothing",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "<KpiRow report={report} loading={isLoading || !report} />",
+    "replace": "<KpiRow report={report} loading={false} />",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the funnel shows without steps",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "{report?.funnel && <FunnelCard steps={report.funnel} />}",
+    "replace": "{report && <FunnelCard steps={report.funnel ?? []} />}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the page list has the wrong tabs",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "tabs={BREAKDOWN_TABS.pages}",
+    "replace": "tabs={BREAKDOWN_TABS.devices}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the source tabs ignore the plan",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "(tab) => report.capabilities.utm || !(UTM_TABS as readonly string[]).includes(tab)",
+    "replace": "(tab) => true",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the source tabs never show campaigns",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "(tab) => report.capabilities.utm || !(UTM_TABS as readonly string[]).includes(tab)",
+    "replace": "(tab) => !(UTM_TABS as readonly string[]).includes(tab)",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the country list has more tabs",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "tabs={[\"countries\"]}",
+    "replace": "tabs={[\"countries\", \"devices\"]}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the device list has the wrong tabs",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "tabs={BREAKDOWN_TABS.devices}",
+    "replace": "tabs={BREAKDOWN_TABS.pages}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the update time is not shown",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "{report && (\n            <p className=\"m-0 text-xs text-[var(--text-muted)] font-primary\">",
+    "replace": "{false && (\n            <p className=\"m-0 text-xs text-[var(--text-muted)] font-primary\">",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: views per visitor divide by zero",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "const perVisitor = totals && totals.visitors > 0 ? totals.pageviews / totals.visitors : 0;",
+    "replace": "const perVisitor = totals ? totals.pageviews / totals.visitors : 0;",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: views per visitor are the other way",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "totals.pageviews / totals.visitors",
+    "replace": "totals.visitors / totals.pageviews",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the previous views per visitor divide by zero",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "previous && previous.visitors > 0 ? previous.pageviews / previous.visitors : null",
+    "replace": "previous ? previous.pageviews / previous.visitors : null",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the previous views per visitor are wrong",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "previous.pageviews / previous.visitors",
+    "replace": "previous.visitors / previous.pageviews",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: visitors compare with page views",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "percentChange(totals.visitors, previous?.visitors)",
+    "replace": "percentChange(totals.visitors, previous?.pageviews)",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: page views compare with visitors",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "percentChange(totals.pageviews, previous?.pageviews)",
+    "replace": "percentChange(totals.pageviews, previous?.visitors)",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: views per visitor show too many decimals",
+    "file": "src/app/[locale]/(admin)/admin/analytics/AnalyticsContent.tsx",
+    "find": "format.number(perVisitor, { maximumFractionDigits: 1 })",
+    "replace": "format.number(perVisitor, { maximumFractionDigits: 3 })",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a rise is shown as a fall",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "const rising = change !== null && change >= 0;",
+    "replace": "const rising = change !== null && change > 0;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a fall is shown as a rise",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "const rising = change !== null && change >= 0;",
+    "replace": "const rising = change !== null;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the change keeps its sign",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "format.number(Math.abs(change), { style: \"percent\", maximumFractionDigits: 1 })",
+    "replace": "format.number(change, { style: \"percent\", maximumFractionDigits: 1 })",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the change shows too few decimals",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "style: \"percent\", maximumFractionDigits: 1 })",
+    "replace": "style: \"percent\", maximumFractionDigits: 0 })",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a loading tile shows the figure",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "{loading ? \"—\" : value}",
+    "replace": "{value}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a loading tile shows the change",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "{!loading && percent !== null && (",
+    "replace": "{percent !== null && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the change line never shows",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "{!loading && percent !== null && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a rise is red",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "color: rising ? \"var(--text-secondary)\" : \"var(--accent-rose)\"",
+    "replace": "color: \"var(--accent-rose)\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a fall is calm",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "color: rising ? \"var(--text-secondary)\" : \"var(--accent-rose)\"",
+    "replace": "color: \"var(--text-secondary)\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the rise has no label",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "aria-label={t(rising ? \"increase\" : \"decrease\", { value: percent })}",
+    "replace": "aria-label={t(\"increase\", { value: percent })}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the fall has the rise label",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "aria-label={t(rising ? \"increase\" : \"decrease\", { value: percent })}",
+    "replace": "aria-label={t(\"decrease\", { value: percent })}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the arrow is always up",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "{rising ? <TrendingUp size={12} aria-hidden /> : <TrendingDown size={12} aria-hidden />}",
+    "replace": "<TrendingUp size={12} aria-hidden />",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hint always shows",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "<span>{!loading && percent !== null ? t(\"vsPrevious\") : hint}</span>",
+    "replace": "<span>{hint}</span>",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hint never shows",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatTile.tsx",
+    "find": "<span>{!loading && percent !== null ? t(\"vsPrevious\") : hint}</span>",
+    "replace": "<span>{t(\"vsPrevious\")}</span>",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a missing setup shows an error",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "const configured = props.kind === \"error\";",
+    "replace": "const configured = props.kind !== \"error\";",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the setup has fewer steps",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "            <li>{t(\"notConfigured.steps.redeploy\")}</li>\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the token link opens in the same tab",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "                    target=\"_blank\"\n                    rel=\"noopener noreferrer\"\n                    className=\"text-[var(--text-brand)] underline\"",
+    "replace": "                    className=\"text-[var(--text-brand)] underline\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the token link goes elsewhere",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "href={VERCEL_TOKENS_URL}",
+    "replace": "href=\"/\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the missing line always shows",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "{props.missing.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the missing line never shows",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "{props.missing.length > 0 && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the missing line lists them together",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "names: props.missing.join(\", \"),",
+    "replace": "names: props.missing.join(\" \"),",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: retry does nothing",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "            onClick={props.onRetry}\n",
+    "replace": "            onClick={() => {}}\n",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the setup has a retry button",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/StatusCard.tsx",
+    "find": "      {props.kind === \"not_configured\" ? (",
+    "replace": "      {props.kind !== \"not_configured\" ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the overall rate is the first over the last",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "t(\"overall\", { rate: percent(last / first) })",
+    "replace": "t(\"overall\", { rate: percent(first / last) })",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the overall rate shows when nothing happened",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{first > 0 && (\n          <p className=\"m-0 text-xs",
+    "replace": "{true && (\n          <p className=\"m-0 text-xs",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the overall rate is never shown",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{first > 0 && (\n          <p className=\"m-0 text-xs",
+    "replace": "{false && (\n          <p className=\"m-0 text-xs",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the empty note needs two steps",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{first === 0 ? (",
+    "replace": "{first < 0 ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the steps show when empty",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{first === 0 ? (",
+    "replace": "{first === 1 ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the share of the previous step shows for the first",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{i > 0 && previous > 0 && (",
+    "replace": "{previous >= 0 && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the share shows after a step nobody reached",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{i > 0 && previous > 0 && (",
+    "replace": "{i > 0 && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the share is of the first step",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "percent(step.count / previous)",
+    "replace": "percent(step.count / first)",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the share is the other way",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "percent(step.count / previous)",
+    "replace": "percent(previous / step.count)",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the bar can be wider than the whole",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "Math.min(100, (step.count / first) * 100)",
+    "replace": "(step.count / first) * 100",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the bar is of the previous step",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "(step.count / first) * 100",
+    "replace": "(step.count / (steps[i - 1]?.count || first)) * 100",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the bar has another colour",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "background: SERIES_COLORS.visitors,",
+    "replace": "background: SERIES_COLORS.pageviews,",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the count is hidden",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "{format.number(step.count)}",
+    "replace": "{format.number(step.visitors)}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the percent shows too few decimals",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/FunnelCard.tsx",
+    "find": "format.number(value, { style: \"percent\", maximumFractionDigits: 1 })",
+    "replace": "format.number(value, { style: \"percent\", maximumFractionDigits: 0 })",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a country code is not upper-cased for the flag",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "String.fromCodePoint(...[...code.toUpperCase()].map((c) => 0x1f1a5 + c.charCodeAt(0)))",
+    "replace": "String.fromCodePoint(...[...code].map((c) => 0x1f1a5 + c.charCodeAt(0)))",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a flag is made from anything",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "/^[A-Za-z]{2}$/.test(code)",
+    "replace": "true",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a flag is made from no letters",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "/^[A-Za-z]{2}$/.test(code)",
+    "replace": "false",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the first tab is not the start",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "useState<BreakdownKey>(tabs[0])",
+    "replace": "useState<BreakdownKey>(tabs[tabs.length - 1])",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the rows ignore the tab",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "data[tabs.includes(active) ? active : tabs[0]]",
+    "replace": "data[tabs[0]]",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the bar is of the total",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "Math.max(1, ...(rows ?? []).map((r) => r.visitors))",
+    "replace": "1",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the bar divides by zero",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "Math.max(1, ...(rows ?? []).map((r) => r.visitors))",
+    "replace": "Math.max(0, ...(rows ?? []).map((r) => r.visitors))",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: direct traffic is called unknown",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "t(key === \"referrers\" ? \"breakdown.direct\" : \"breakdown.unknown\")",
+    "replace": "t(\"breakdown.unknown\")",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: unknown is called direct traffic",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "t(key === \"referrers\" ? \"breakdown.direct\" : \"breakdown.unknown\")",
+    "replace": "t(\"breakdown.direct\")",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a country is shown as its code",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "name = regionNames.of(row.key.toUpperCase()) ?? row.key;",
+    "replace": "name = row.key;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a country has no flag",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "return `${flagOf(row.key)} ${name}`.trim();",
+    "replace": "return name;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a country with no flag keeps a space",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "return `${flagOf(row.key)} ${name}`.trim();",
+    "replace": "return `${flagOf(row.key)} ${name}`;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a bad country code breaks the card",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "      try {\n        name = regionNames.of(row.key.toUpperCase()) ?? row.key;\n      } catch {\n        /* not a region code: show it as sent */\n      }",
+    "replace": "      name = regionNames.of(row.key.toUpperCase()) ?? row.key;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a device is shown as it came",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "if (key === \"devices\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a device kind is case sensitive",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "`breakdown.deviceTypes.${row.key.toLowerCase()}`",
+    "replace": "`breakdown.deviceTypes.${row.key}`",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: an unknown device is called unknown",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "return t.has(messageKey as never) ? t(messageKey as never) : row.key;",
+    "replace": "return t.has(messageKey as never) ? t(messageKey as never) : \"\";",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hint shows another name",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "title={labelOf(active, row)}",
+    "replace": "title={row.key}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the visitors and views are swapped",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "{format.number(row.visitors)}\n              </span>\n              <span className=\"relative w-16 text-right text-[var(--text-muted)]\">\n                {format.number(row.pageviews)}",
+    "replace": "{format.number(row.pageviews)}\n              </span>\n              <span className=\"relative w-16 text-right text-[var(--text-muted)]\">\n                {format.number(row.visitors)}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: an empty list says unavailable",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "t(rows ? \"breakdown.empty\" : \"breakdown.unavailable\")",
+    "replace": "t(\"breakdown.unavailable\")",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a missing list says empty",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "t(rows ? \"breakdown.empty\" : \"breakdown.unavailable\")",
+    "replace": "t(\"breakdown.empty\")",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: an empty list shows its header",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "{!rows || rows.length === 0 ? (",
+    "replace": "{!rows ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: one tab shows a tab strip",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "{tabs.length > 1 && (",
+    "replace": "{tabs.length > 0 && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the tabs never show",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "{tabs.length > 1 && (",
+    "replace": "{tabs.length > 5 && (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a tab is not marked chosen",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "aria-selected={tab === active}",
+    "replace": "aria-selected={false}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: a tab does not change the list",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "onClick={() => setActive(tab)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the chosen tab looks the same",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "tab === active\n                    ? \"bg-[var(--accent-primary)] text-[var(--text-on-gold)]\"",
+    "replace": "false\n                    ? \"bg-[var(--accent-primary)] text-[var(--text-on-gold)]\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the bar has another colour",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/BreakdownCard.tsx",
+    "find": "background: SERIES_COLORS.visitors,",
+    "replace": "background: SERIES_COLORS.pageviews,",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: there is traffic when there are no page views",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "const hasTraffic = series.some((p) => p.pageviews > 0);",
+    "replace": "const hasTraffic = series.length > 0;",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: there is traffic when only visitors count",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "const hasTraffic = series.some((p) => p.pageviews > 0);",
+    "replace": "const hasTraffic = series.some((p) => p.visitors > 0);",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: hours are written as days",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "granularity === \"hour\"\n        ?",
+    "replace": "granularity === \"never\"\n        ?",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hour has no minute",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "{ hour: \"2-digit\", minute: \"2-digit\", ...(long && { day: \"numeric\", month: \"short\" }) }",
+    "replace": "{ hour: \"2-digit\", ...(long && { day: \"numeric\", month: \"short\" }) }",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the long hour has no date",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "...(long && { day: \"numeric\", month: \"short\" })",
+    "replace": "...(false && { day: \"numeric\", month: \"short\" })",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the long day has no year",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "...(long && { year: \"numeric\" })",
+    "replace": "...(false && { year: \"numeric\" })",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the toggle does nothing",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "onClick={() => setShowTable((v) => !v)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the toggle is not marked pressed",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "aria-pressed={showTable}",
+    "replace": "aria-pressed={false}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the toggle label never changes",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "{showTable ? t(\"viewChart\") : t(\"viewTable\")}",
+    "replace": "{t(\"viewTable\")}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the table shows first",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "useState(false)",
+    "replace": "useState(true)",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the table shows without traffic",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "      {!hasTraffic ? (",
+    "replace": "      {false ? (",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the visitors line has another colour",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "style={{ background: SERIES_COLORS[key] }}\n              />\n              {t(`series.${key}`)}",
+    "replace": "style={{ background: SERIES_COLORS.visitors }}\n              />\n              {t(`series.${key}`)}",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the table rows are in the wrong order",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "{series.map((p) => (\n                <tr",
+    "replace": "{[...series].reverse().map((p) => (\n                <tr",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the table shows page views as visitors",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "{format.number(p.visitors)}\n                  </td>",
+    "replace": "{format.number(p.pageviews)}\n                  </td>",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the chart has no label",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_components/TrafficChart.tsx",
+    "find": "role=\"img\" aria-label={t(\"ariaLabel\")}",
+    "replace": "role=\"img\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the visitors colour changes",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "visitors: \"#B08A3E\",",
+    "replace": "visitors: \"#000000\",",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the page views colour changes",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "pageviews: \"#2D6CA2\",",
+    "replace": "pageviews: \"#000000\",",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the pages tabs change",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "pages: [\"pages\", \"routes\"],",
+    "replace": "pages: [\"routes\", \"pages\"],",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx",
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the device tabs change",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "devices: [\"devices\", \"browsers\", \"systems\"],",
+    "replace": "devices: [\"devices\", \"browsers\"],",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the source tabs change",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "sources: [\"referrers\", \"utmSources\", \"utmMediums\", \"utmCampaigns\"],",
+    "replace": "sources: [\"referrers\", \"utmSources\", \"utmMediums\"],",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the campaign tab is not UTM",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "export const UTM_TABS = [\"utmSources\", \"utmMediums\", \"utmCampaigns\"] as const;",
+    "replace": "export const UTM_TABS = [\"utmSources\", \"utmMediums\"] as const;",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the Vercel link changes",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "\"https://vercel.com/qhoangfs-projects/clothes-shop/analytics?environment=all\"",
+    "replace": "\"https://vercel.com\"",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the token link changes",
+    "file": "src/app/[locale]/(admin)/admin/analytics/_common/constants.ts",
+    "find": "\"https://vercel.com/account/tokens\"",
+    "replace": "\"https://vercel.com\"",
+    "tests": [
+      "tests/admin/analytics/analytics-cards.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hook leaves out the range",
+    "file": "src/hooks/use-admin-analytics.ts",
+    "find": "/api/analytics?range=${range}&view=${view}",
+    "replace": "/api/analytics?view=${view}",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hook leaves out the view",
+    "file": "src/hooks/use-admin-analytics.ts",
+    "find": "&view=${view}`",
+    "replace": "`",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: the hook shares one cache for every range",
+    "file": "src/hooks/use-admin-analytics.ts",
+    "find": "[\"admin-analytics\", range, view]",
+    "replace": "[\"admin-analytics\", view]",
+    "tests": [
+      "tests/admin/analytics/analytics-page.test.tsx"
+    ]
+  },
+  {
+    "name": "analytics: anybody gets through",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "  if (denied) return denied;",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the answer can be cached",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "{ headers: { \"Cache-Control\": \"private, no-store\" } }",
+    "replace": "{ headers: { \"Cache-Control\": \"public, max-age=300\" } }",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: missing settings are not reported",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "if (!credentials.ok) return respond({ status: \"not_configured\", missing: credentials.missing });",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the range is not clamped",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "clampRange(parseRange(searchParams.get(\"range\")), capabilities.maxRangeDays)",
+    "replace": "parseRange(searchParams.get(\"range\"))",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the range is ignored",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "clampRange(parseRange(searchParams.get(\"range\")), capabilities.maxRangeDays)",
+    "replace": "clampRange(\"7d\", capabilities.maxRangeDays)",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the view is always full",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "searchParams.get(\"view\") === \"full\" ? \"full\" : \"summary\"",
+    "replace": "\"full\"",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the view is always the summary",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "searchParams.get(\"view\") === \"full\" ? \"full\" : \"summary\"",
+    "replace": "\"summary\"",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: an error is not turned into a reason",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "return respond({ status: \"error\", reason: toErrorReason(error) });",
+    "replace": "return respond({ status: \"error\", reason: \"unavailable\" });",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the route allows a short time",
+    "file": "src/app/api/analytics/route.ts",
+    "find": "export const maxDuration = 30;",
+    "replace": "export const maxDuration = 10;",
+    "tests": [
+      "tests/admin/analytics/analytics-route.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a missing header is let through",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "  if (!authorization?.startsWith(\"Bearer \")) {",
+    "replace": "  if (false) {",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: any scheme is let through",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "authorization?.startsWith(\"Bearer \")",
+    "replace": "authorization",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the BE is not told who asks",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "      headers: { Authorization: authorization },",
+    "replace": "      headers: {},",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: an unreachable BE is let through",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "  } catch {\n    return NextResponse.json({ message: \"Auth service unavailable\" }, { status: 502 });\n  }",
+    "replace": "  } catch {\n    return null;\n  }",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a refused token is called unavailable",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "  if (res.status === 401) return NextResponse.json({ message: \"Unauthorized\" }, { status: 401 });",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a failing BE is let through",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "  if (!res.ok) return NextResponse.json({ message: \"Auth service unavailable\" }, { status: 502 });",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: any user is let through",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "  if (body?.user?.role !== ROLES.ADMIN) {",
+    "replace": "  if (false) {",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a customer is called unauthorised",
+    "file": "src/app/api/analytics/_lib/admin-auth.ts",
+    "find": "return NextResponse.json({ message: \"Forbidden\" }, { status: 403 });",
+    "replace": "return NextResponse.json({ message: \"Forbidden\" }, { status: 401 });",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the free plan covers longer",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "hobby: { maxRangeDays: 30, customEvents: false, utm: false },",
+    "replace": "hobby: { maxRangeDays: 90, customEvents: false, utm: false },",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the free plan has events",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "hobby: { maxRangeDays: 30, customEvents: false, utm: false },",
+    "replace": "hobby: { maxRangeDays: 30, customEvents: true, utm: false },",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the pro plan has UTM",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "pro: { maxRangeDays: 365, customEvents: true, utm: false },",
+    "replace": "pro: { maxRangeDays: 365, customEvents: true, utm: true },",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the pro plan covers less",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "pro: { maxRangeDays: 365, customEvents: true, utm: false },",
+    "replace": "pro: { maxRangeDays: 90, customEvents: true, utm: false },",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the pro-plus plan has no UTM",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "\"pro-plus\": { maxRangeDays: 730, customEvents: true, utm: true },",
+    "replace": "\"pro-plus\": { maxRangeDays: 730, customEvents: true, utm: false },",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the enterprise plan has no events",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "enterprise: { maxRangeDays: 730, customEvents: true, utm: true },",
+    "replace": "enterprise: { maxRangeDays: 730, customEvents: false, utm: true },",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the plan name is case sensitive",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "?.trim().toLowerCase() ?? \"\"",
+    "replace": "?.trim() ?? \"\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the plan name is not trimmed",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": "?.trim().toLowerCase() ?? \"\"",
+    "replace": "?.toLowerCase() ?? \"\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: an unknown plan is the best plan",
+    "file": "src/app/api/analytics/_lib/plans.ts",
+    "find": ": PLAN_CAPABILITIES.hobby;",
+    "replace": ": PLAN_CAPABILITIES.enterprise;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: an unknown range is a day",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "ANALYTICS_RANGES.find((r) => r === value) ?? \"7d\"",
+    "replace": "ANALYTICS_RANGES.find((r) => r === value) ?? \"24h\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a long range is not shortened",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "  if (RANGE_DAYS[range] <= maxRangeDays) return range;",
+    "replace": "  return range;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a long range is shortened to the shortest",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "[...ANALYTICS_RANGES].reverse().find",
+    "replace": "[...ANALYTICS_RANGES].find",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a tiny window falls back to a week",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "<= maxRangeDays) ?? \"24h\"",
+    "replace": "<= maxRangeDays) ?? \"7d\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the end is not rounded",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "const now = Math.floor(nowMs / CACHE_BUCKET_MS) * CACHE_BUCKET_MS;",
+    "replace": "const now = nowMs;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the rounding is another size",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "const CACHE_BUCKET_MS = 300_000;",
+    "replace": "const CACHE_BUCKET_MS = 600_000;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a day range is counted in hours",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "const granularity = range === \"24h\" ? \"hour\" : \"day\";",
+    "replace": "const granularity = \"hour\" as const;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a day range is counted in days for 24 hours",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "const granularity = range === \"24h\" ? \"hour\" : \"day\";",
+    "replace": "const granularity = \"day\" as const;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the hours are twelve",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "granularity === \"hour\" ? 24 : RANGE_DAYS[range]",
+    "replace": "granularity === \"hour\" ? 12 : RANGE_DAYS[range]",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the days are one more",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "granularity === \"hour\" ? 24 : RANGE_DAYS[range]",
+    "replace": "granularity === \"hour\" ? 24 : RANGE_DAYS[range] + 1",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the window starts one bucket early",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "currentBucketStart - (bucketCount - 1) * bucketMs",
+    "replace": "currentBucketStart - bucketCount * bucketMs",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the window starts the current bucket",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "currentBucketStart - (bucketCount - 1) * bucketMs",
+    "replace": "currentBucketStart",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the previous period is shorter",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "previousSince: new Date(since - spanMs),",
+    "replace": "previousSince: new Date(since - spanMs / 2),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the previous period overlaps",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "previousUntil: new Date(since - 1),",
+    "replace": "previousUntil: new Date(since),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: buckets are not aligned",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "const bucket = Math.floor(time / window.bucketMs) * window.bucketMs;",
+    "replace": "const bucket = time;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: page views are read as visitors",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "      pageviews: Number(row.pageviews ?? 0),\n      visitors: Number(row.visitors ?? 0),",
+    "replace": "      pageviews: Number(row.visitors ?? 0),\n      visitors: Number(row.pageviews ?? 0),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: missing numbers are not zero",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "pageviews: value?.pageviews ?? 0,",
+    "replace": "pageviews: value?.pageviews ?? 1,",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: missing visitors are not zero",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "visitors: value?.visitors ?? 0,",
+    "replace": "visitors: value?.visitors ?? 1,",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the series has the wrong length",
+    "file": "src/app/api/analytics/_lib/range.ts",
+    "find": "Array.from({ length: window.bucketCount }",
+    "replace": "Array.from({ length: window.bucketCount - 1 }",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the token is not sent",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "headers: { Authorization: `Bearer ${credentials.token}` },",
+    "replace": "headers: {},",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the project is not sent",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "url.searchParams.set(\"projectId\", credentials.projectId);",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the team is always sent",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "if (credentials.teamId) url.searchParams.set(\"teamId\", credentials.teamId);",
+    "replace": "url.searchParams.set(\"teamId\", credentials.teamId ?? \"\");",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the team is never sent",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "if (credentials.teamId) url.searchParams.set(\"teamId\", credentials.teamId);",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a refused answer is read",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "  if (!res.ok) throw new UpstreamError(res.status);\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the answer is not unwrapped",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "return body.data;",
+    "replace": "return body as unknown as T;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the period is not sent as dates",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "since: since.toISOString(),",
+    "replace": "since: String(since.getTime()),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the grouping is not sent",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "    ...toQuery(period),\n    by,\n    limit: String(limit),\n  });\n}\n\nexport function aggregateEvents",
+    "replace": "    ...toQuery(period),\n    limit: String(limit),\n  });\n}\n\nexport function aggregateEvents",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the visits default limit changes",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "  by: string,\n  limit = 10\n) {\n  return query<AggregateRow[]>(credentials, \"visits/aggregate\"",
+    "replace": "  by: string,\n  limit = 20\n) {\n  return query<AggregateRow[]>(credentials, \"visits/aggregate\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the events default limit changes",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "  by: string,\n  limit = 10\n) {\n  return query<AggregateRow[]>(credentials, \"events/aggregate\"",
+    "replace": "  by: string,\n  limit = 20\n) {\n  return query<AggregateRow[]>(credentials, \"events/aggregate\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the events are asked from the visits address",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "\"events/aggregate\", {",
+    "replace": "\"visits/aggregate\", {",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the token is not trimmed",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "const token = process.env.WEB_ANALYTICS_TOKEN?.trim();",
+    "replace": "const token = process.env.WEB_ANALYTICS_TOKEN;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the project is not trimmed",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "const projectId = process.env.WEB_ANALYTICS_PROJECT_ID?.trim();",
+    "replace": "const projectId = process.env.WEB_ANALYTICS_PROJECT_ID;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the team is not trimmed",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "const teamId = process.env.WEB_ANALYTICS_TEAM_ID?.trim();",
+    "replace": "const teamId = process.env.WEB_ANALYTICS_TEAM_ID;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a blank team is kept",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "teamId: teamId || undefined",
+    "replace": "teamId",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the missing list is wrong",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "    !token && \"WEB_ANALYTICS_TOKEN\",\n    !projectId && \"WEB_ANALYTICS_PROJECT_ID\",",
+    "replace": "    !projectId && \"WEB_ANALYTICS_PROJECT_ID\",\n    !token && \"WEB_ANALYTICS_TOKEN\",",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: one setting is enough",
+    "file": "src/app/api/analytics/_lib/vercel-client.ts",
+    "find": "if (!token || !projectId) return { ok: false, missing };",
+    "replace": "if (!token && !projectId) return { ok: false, missing };",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the trend is not chunked",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const MAX_BUCKETS_PER_QUERY = 60;",
+    "replace": "const MAX_BUCKETS_PER_QUERY = 100;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the chunks are too small",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const MAX_BUCKETS_PER_QUERY = 60;",
+    "replace": "const MAX_BUCKETS_PER_QUERY = 30;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a chunk overlaps the next",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const end = start + MAX_BUCKETS_PER_QUERY * window.bucketMs - 1;",
+    "replace": "const end = start + MAX_BUCKETS_PER_QUERY * window.bucketMs;",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the last chunk goes past now",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "until: new Date(Math.min(end, window.until.getTime())),",
+    "replace": "until: new Date(end),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a failing number is not zero",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const num = (value: unknown) => Number(value ?? 0) || 0;",
+    "replace": "const num = (value: unknown) => Number(value ?? 0);",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a text number is not read",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const num = (value: unknown) => Number(value ?? 0) || 0;",
+    "replace": "const num = (value: unknown) => (typeof value === \"number\" ? value : 0);",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a missing key is undefined",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "key: String(row[dimension] ?? \"\"),",
+    "replace": "key: String(row[dimension]),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a failing query breaks the report",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "promise.catch(() => null)",
+    "replace": "promise",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a refused token is called unavailable",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "if ([401, 403, 404].includes(error.status)) return \"auth\";",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a missing plan is called a token problem",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "if ([402, 410].includes(error.status)) return \"plan\";",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a not-found is called a plan problem",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "[401, 403, 404].includes(error.status)",
+    "replace": "[401, 403].includes(error.status)",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a gone answer is called unavailable",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "[402, 410].includes(error.status)",
+    "replace": "[402].includes(error.status)",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: every error is a Vercel error",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "if (!(error instanceof UpstreamError)) return \"unavailable\";",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a failing list breaks the others",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const rows = await orNull(aggregateVisits(credentials, period, dimension));",
+    "replace": "const rows = await aggregateVisits(credentials, period, dimension);",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: UTM lists are asked without the plan",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "capabilities.utm ? list(dimension) : Promise.resolve(null)",
+    "replace": "list(dimension)",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: UTM lists are never asked",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "capabilities.utm ? list(dimension) : Promise.resolve(null)",
+    "replace": "Promise.resolve(null)",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the pages list asks the wrong column",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "list(\"requestPath\"),",
+    "replace": "list(\"route\"),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the countries list asks the wrong column",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "    list(\"country\"),",
+    "replace": "    list(\"deviceType\"),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the funnel counts visitors as times",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "return { event, count: num(row?.count), visitors: num(row?.visitors) };",
+    "replace": "return { event, count: num(row?.visitors), visitors: num(row?.count) };",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a missing step is not zero",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "return { event, count: num(row?.count), visitors: num(row?.visitors) };",
+    "replace": "return { event, count: num(row?.count) || 1, visitors: num(row?.visitors) };",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the funnel is built without the plan",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "view === \"full\" && capabilities.customEvents ? loadFunnel(credentials, window) : null",
+    "replace": "view === \"full\" ? loadFunnel(credentials, window) : null",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the summary builds the lists",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "view === \"full\" ? loadBreakdowns(credentials, window, capabilities) : null",
+    "replace": "loadBreakdowns(credentials, window, capabilities)",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the full report has no lists",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "view === \"full\" ? loadBreakdowns(credentials, window, capabilities) : null",
+    "replace": "null",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: both failing is not an error",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "seriesResult.status === \"rejected\" && totalsResult.status === \"rejected\"",
+    "replace": "seriesResult.status === \"rejected\" || totalsResult.status === \"rejected\"",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a lone failure is an error",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "if (seriesResult.status === \"rejected\" && totalsResult.status === \"rejected\") {\n    throw seriesResult.reason;\n  }",
+    "replace": "if (seriesResult.status === \"rejected\" && totalsResult.status === \"rejected\") {\n    throw totalsResult.reason;\n  }",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the fallback totals are not added",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "          (sum, p) => ({\n            pageviews: sum.pageviews + p.pageviews,\n            visitors: sum.visitors + p.visitors,\n          }),",
+    "replace": "          (sum, p) => ({\n            pageviews: p.pageviews,\n            visitors: p.visitors,\n          }),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the previous period is the current",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "const previous = { since: window.previousSince, until: window.previousUntil };",
+    "replace": "const previous = { since: window.since, until: window.until };",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the previous totals are lost",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "previousTotals: previousData ? toTotals(previousData) : null,",
+    "replace": "previousTotals: null,",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the since is the end",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "since: window.since.toISOString(),",
+    "replace": "since: window.until.toISOString(),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the report has no time",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "generatedAt: new Date().toISOString(),",
+    "replace": "generatedAt: window.since.toISOString(),",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the range is lost",
+    "file": "src/app/api/analytics/_lib/build-report.ts",
+    "find": "    range,\n    granularity: window.granularity,",
+    "replace": "    range: \"7d\",\n    granularity: window.granularity,",
+    "tests": [
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: a failing send breaks the page",
+    "file": "src/lib/analytics.ts",
+    "find": "  } catch {\n    /* Analytics must never break the storefront (ad blockers, offline, SSR) */\n  }",
+    "replace": "  } finally {\n  }",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the event is not sent",
+    "file": "src/lib/analytics.ts",
+    "find": "    track(name, data);",
+    "replace": "",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the language picks the wrong currency",
+    "file": "src/lib/analytics.ts",
+    "find": "return currencyForLocale(locale) === \"VND\" ? { vnd: money.vnd } : { usd: money.usd };",
+    "replace": "return currencyForLocale(locale) === \"VND\" ? { usd: money.usd } : { vnd: money.vnd };",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the funnel is in another order",
+    "file": "src/lib/analytics.ts",
+    "find": "  \"view_product\",\n  \"add_to_cart\",\n  \"begin_checkout\",\n  \"purchase\",\n] as const",
+    "replace": "  \"add_to_cart\",\n  \"view_product\",\n  \"begin_checkout\",\n  \"purchase\",\n] as const",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts",
+      "tests/admin/analytics/analytics-bff.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: there is nothing to compare for zero",
+    "file": "src/lib/percent-change.ts",
+    "find": "  if (!previous) return null;",
+    "replace": "  if (previous === undefined) return null;",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the change is the other way",
+    "file": "src/lib/percent-change.ts",
+    "find": "return (current - previous) / previous;",
+    "replace": "return (previous - current) / previous;",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts"
+    ]
+  },
+  {
+    "name": "analytics: the change is not relative",
+    "file": "src/lib/percent-change.ts",
+    "find": "return (current - previous) / previous;",
+    "replace": "return current - previous;",
+    "tests": [
+      "tests/admin/analytics/analytics-lib.test.ts"
+    ]
+  }
+]

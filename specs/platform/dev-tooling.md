@@ -1,6 +1,6 @@
 # Tooling, cấu hình & triển khai — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-24 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
 > **Doc:** [platform/dev-tooling](../../docs/platform/dev-tooling.md) · **Test:** `tests/platform/dev-tooling/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -223,3 +223,5 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-22 · Batch 2: khung render có bộ nhớ đệm SWR riêng cho mỗi lần render; `messages.ts` thêm `msgf` và `dateText`; `fixtures.ts` mở rộng cho thanh toán, đơn hàng, trả hàng; `window.scrollTo` giả. Đột biến của dev-tooling: 107/107 bị bắt.
 - 2026-10-23 · Batch 3: thêm `pointer-event.ts`, `browser-apis.ts` và `carousel-layout.ts` vào `tests/_support/` (jsdom không có `PointerEvent`, `ResizeObserver`, `IntersectionObserver`, `Element.scrollTo` và hình học).
 - 2026-10-24 · Batch 3: thêm `tests/_support/admin.ts` (`unlockSystem`, `countsApi`), `adminWith` ở `identities.ts` và `adminOrder` ở `fixtures.ts` cho test khu admin.
+- 2026-10-25 · Batch 4 và 5: thêm `src/lib/slugify.ts` vào bản đồ `MODULES` (thuộc `platform/data-layer`); khung test không đổi.
+- 2026-10-25 · no-test: chỉ thêm một đường dẫn vào bản đồ `MODULES`; hành vi của công cụ không đổi.

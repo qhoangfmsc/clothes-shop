@@ -1,0 +1,1274 @@
+[
+  {
+    "name": "media: the search is not sent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        search: params.search || undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the sort is not sent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        sort: params.sort,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the type has no capitals",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "return (mimeType.split(\"/\")[1] ?? mimeType).split(\"+\")[0].toUpperCase();",
+    "replace": "return (mimeType.split(\"/\")[1] ?? mimeType).split(\"+\")[0];",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the type keeps its suffix",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": ".split(\"+\")[0].toUpperCase()",
+    "replace": ".toUpperCase()",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a type without a slash is hidden",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "(mimeType.split(\"/\")[1] ?? mimeType)",
+    "replace": "(mimeType.split(\"/\")[1] ?? \"\")",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: zero bytes are written wrong",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (bytes === 0) return `0 ${units[0]}`;",
+    "replace": "if (bytes === 0) return `0 ${units[1]}`;",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: sizes are not divided by 1024",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "bytes / 1024 ** i",
+    "replace": "bytes / 1000 ** i",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the unit is picked by 1000",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "Math.floor(Math.log(bytes) / Math.log(1024))",
+    "replace": "Math.floor(Math.log(bytes) / Math.log(1000))",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the unit can go past gigabytes",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "Math.min(units.length - 1, Math.floor",
+    "replace": "Math.min(units.length, Math.floor",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the unit is always bytes",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)))",
+    "replace": "0",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: larger units show no decimals",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "maximumFractionDigits: i === 0 ? 0 : 1,",
+    "replace": "maximumFractionDigits: 0,",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: larger units show too many decimals",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "maximumFractionDigits: i === 0 ? 0 : 1,",
+    "replace": "maximumFractionDigits: i === 0 ? 0 : 2,",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the date is short",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "format.dateTime(new Date(iso), \"dateTime\")",
+    "replace": "format.dateTime(new Date(iso), \"short\")",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the picture is loaded at once",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "              loading=\"lazy\"\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the picture has no name",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "              alt={file.name}\n",
+    "replace": "              alt=\"\"\n",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the picture does not use the media address",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "              src={toMediaUrl(file.url)}\n              alt={file.name}",
+    "replace": "              src={file.url}\n              alt={file.name}",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the phone line always shows",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "<p className=\"sm:hidden text-xs",
+    "replace": "<p className=\"text-xs",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the type column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        hideBelow: \"md\",\n        render: (file) => (\n          <span className=\"inline-block",
+    "replace": "        render: (file) => (\n          <span className=\"inline-block",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the size column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        hideBelow: \"sm\",\n        render: (file) => (\n          <span className=\"whitespace-nowrap text-[var(--text-secondary)]\">\n            {formatBytes",
+    "replace": "        render: (file) => (\n          <span className=\"whitespace-nowrap text-[var(--text-secondary)]\">\n            {formatBytes",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the date column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        hideBelow: \"lg\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: rows cannot be chosen",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          selectable\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: an error is not noticed",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          onError={(err) =>\n            setLoadError({ message: toErrorMessage(err, \"\"), errorCode: errorCodeOf(err) })\n          }",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the error code is lost",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "setLoadError({ message: toErrorMessage(err, \"\"), errorCode: errorCodeOf(err) })",
+    "replace": "setLoadError({ message: toErrorMessage(err, \"\") })",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the error words are lost",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "setLoadError({ message: toErrorMessage(err, \"\"), errorCode: errorCodeOf(err) })",
+    "replace": "setLoadError({ message: \"\", errorCode: errorCodeOf(err) })",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the guide shows for any error",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const notConfigured = loadError?.errorCode === MEDIA_NOT_CONFIGURED_CODE;",
+    "replace": "const notConfigured = loadError !== null;",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the guide never shows",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const notConfigured = loadError?.errorCode === MEDIA_NOT_CONFIGURED_CODE;",
+    "replace": "const notConfigured = false;",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the error shows beside the guide",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "{loadError && !notConfigured && (",
+    "replace": "{loadError && (",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the error never shows",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "{loadError && !notConfigured && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the error has no fallback words",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "{toErrorMessage(loadError, t(\"errors.loadFailed\"))}",
+    "replace": "{toErrorMessage(loadError, \"\")}",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the guide retry does not retry",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "            onClick={() => setLoadError(null)}\n          >\n            <RefreshCw size={14} /> {t(\"notConfigured.retry\")}\n          </button>\n        </div>\n      )}\n\n      {/* ── Generic",
+    "replace": "            onClick={() => {}}\n          >\n            <RefreshCw size={14} /> {t(\"notConfigured.retry\")}\n          </button>\n        </div>\n      )}\n\n      {/* ── Generic",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the error retry does not retry",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          <button className={secondaryButtonClass} onClick={() => setLoadError(null)}>",
+    "replace": "          <button className={secondaryButtonClass} onClick={() => {}}>",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the header refresh does not clear an error",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClick={() => (loadError ? setLoadError(null) : tableRef.current?.refresh())}",
+    "replace": "onClick={() => tableRef.current?.refresh()}",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the header refresh does not reload",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClick={() => (loadError ? setLoadError(null) : tableRef.current?.refresh())}",
+    "replace": "onClick={() => (loadError ? setLoadError(null) : undefined)}",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the table shows beside an error",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "{!loadError && (\n        <DataTable<MediaFile>",
+    "replace": "{true && (\n        <DataTable<MediaFile>",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the upload button shows beside an error",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "{!loadError && (\n            <button\n              className=\"flex items-center gap-1.5 py-[0.625rem] px-5",
+    "replace": "{true && (\n            <button\n              className=\"flex items-center gap-1.5 py-[0.625rem] px-5",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the empty message is always the same",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "hasActiveFilters ? t(\"table.emptyFiltered\") : t(\"table.empty\")",
+    "replace": "t(\"table.empty\")",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the empty message is always the filtered one",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "hasActiveFilters ? t(\"table.emptyFiltered\") : t(\"table.empty\")",
+    "replace": "t(\"table.emptyFiltered\")",
+    "tests": [
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the chooser takes any file",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "            accept=\"image/*\"\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the chooser takes one file",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "            multiple\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the chooser is not cleared",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "              e.target.value = \"\";",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the chooser sends nothing",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (e.target.files?.length) handleUpload(Array.from(e.target.files));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the button does not open the chooser",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClick={() => uploadInputRef.current?.click()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: other files are uploaded",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const images = fileList.filter((f) => f.type.startsWith(\"image/\"));",
+    "replace": "const images = fileList;",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: no picture is not reported",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    if (images.length === 0) {\n      toast.error(t(\"toast.onlyImages\"));\n      return;\n    }",
+    "replace": "    if (images.length === 0) {\n      return;\n    }",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the busy state is never set",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    setIsUploading(true);\n    try {\n      const results",
+    "replace": "    try {\n      const results",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the busy state is never cleared",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    } finally {\n      setIsUploading(false);\n    }\n  };\n\n  const handleDownload",
+    "replace": "    } finally {\n    }\n  };\n\n  const handleDownload",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: successes are not counted",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "results.filter((r) => r.status === \"fulfilled\").length",
+    "replace": "0",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a success is not reported",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (succeeded > 0) toast.success(t(\"toast.uploaded\", { count: succeeded }));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a failure is not looked for",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const firstError = results.find((r): r is PromiseRejectedResult => r.status === \"rejected\");",
+    "replace": "const firstError = undefined as PromiseRejectedResult | undefined;",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the failed count is the whole count",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const failed = images.length - succeeded;",
+    "replace": "const failed = images.length;",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the failed count is wrong",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const failed = images.length - succeeded;",
+    "replace": "const failed = succeeded;",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the reason has no fallback",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toErrorMessage(firstError.reason, t(\"toast.uploadFailed\"))",
+    "replace": "toErrorMessage(firstError.reason, \"\")",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: one failure shows the long message",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "failed > 1 ? t(\"toast.uploadFailedMany\", { count: failed, reason }) : reason",
+    "replace": "t(\"toast.uploadFailedMany\", { count: failed, reason })",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: many failures show only the reason",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "failed > 1 ? t(\"toast.uploadFailedMany\", { count: failed, reason }) : reason",
+    "replace": "reason",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the failure message has no reason",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "t(\"toast.uploadFailedMany\", { count: failed, reason })",
+    "replace": "t(\"toast.uploadFailedMany\", { count: failed, reason: \"\" })",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the table is not sent back to page one",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        tableRef.current?.reset();\n        tableRef.current?.refresh();",
+    "replace": "        tableRef.current?.refresh();",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a failed upload reloads the table",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "      if (succeeded > 0) {\n        /* Newest first",
+    "replace": "      if (true) {\n        /* Newest first",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: files are not recognised",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "Array.from(e.dataTransfer.types).includes(\"Files\")",
+    "replace": "Array.from(e.dataTransfer.types).length > 0",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: nothing is recognised as files",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "Array.from(e.dataTransfer.types).includes(\"Files\")",
+    "replace": "false",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a drag does not show the hint",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          dragDepthRef.current += 1;\n          setIsDragging(true);",
+    "replace": "          dragDepthRef.current += 1;",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the depth is not counted up",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          dragDepthRef.current += 1;",
+    "replace": "          dragDepthRef.current = 1;",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: leaving hides the hint at once",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          if (dragDepthRef.current === 0) setIsDragging(false);",
+    "replace": "          setIsDragging(false);",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: leaving never hides the hint",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          if (dragDepthRef.current === 0) setIsDragging(false);",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a drag over does not allow the drop",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (hasFiles(e)) e.preventDefault();",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: every drag over is allowed",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (hasFiles(e)) e.preventDefault();",
+    "replace": "e.preventDefault();",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a drop of other things is taken",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "        onDrop: (e: React.DragEvent) => {\n          if (!hasFiles(e)) return;",
+    "replace": "        onDrop: (e: React.DragEvent) => {",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the depth is kept after a drop",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          dragDepthRef.current = 0;\n          setIsDragging(false);\n          if (!isUploading)",
+    "replace": "          setIsDragging(false);\n          if (!isUploading)",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the hint stays after a drop",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          setIsDragging(false);\n          if (!isUploading)",
+    "replace": "          if (!isUploading)",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a drop during an upload goes through",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          if (!isUploading) handleUpload(Array.from(e.dataTransfer.files));",
+    "replace": "          handleUpload(Array.from(e.dataTransfer.files));",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a drop uploads nothing",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "          if (!isUploading) handleUpload(Array.from(e.dataTransfer.files));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a page with an error accepts drops",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "const dropHandlers = loadError\n    ? {}",
+    "replace": "const dropHandlers = false\n    ? {}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the picture button does not open the large view",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "            onClick={() => setPreview(file)}\n            title={t(\"table.preview\")}\n          >\n            {/* eslint",
+    "replace": "            onClick={() => {}}\n            title={t(\"table.preview\")}\n          >\n            {/* eslint",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the eye button does not open the large view",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "              onClick={() => setPreview(file)}\n              title={t(\"table.preview\")}\n            >\n              <Eye",
+    "replace": "              onClick={() => {}}\n              title={t(\"table.preview\")}\n            >\n              <Eye",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the large view cannot be closed",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClose={() => setPreview(null)}",
+    "replace": "onClose={() => {}}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the large picture is not the media address",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "            src={toMediaUrl(preview.url)}\n            alt={preview.name}",
+    "replace": "            src={preview.url}\n            alt={preview.name}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the large view has no size",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "<span>{formatBytes(preview.sizeOriginal)}</span>",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the large view has no date",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "<span>{formatDate(preview.createdAt)}</span>",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the large view has no name",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "<span>{preview.name}</span>",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the large view cannot save",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClick={() => handleDownload(preview)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the row save button does not save",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClick={() => handleDownload(file)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the row save button is never busy",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "              disabled={downloadingId === file.id}",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the saving mark is never cleared",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    } finally {\n      setDownloadingId(null);\n    }",
+    "replace": "    } finally {\n    }",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the saving mark is never set",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    setDownloadingId(file.id);\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a failed save is silent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.downloadFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a failed save has no fallback words",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toErrorMessage(err, t(\"toast.downloadFailed\"))",
+    "replace": "toErrorMessage(err, \"\")",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: delete needs no question",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    if (!ok) return;\n    try {\n      await dispatch(deleteMediaFile(file.id)).unwrap();",
+    "replace": "    try {\n      await dispatch(deleteMediaFile(file.id)).unwrap();",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the delete question is not a warning",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "      message: t(\"confirm.deleteOne.message\", { name: file.name }),\n      confirmLabel: t(\"table.delete\"),\n      danger: true,",
+    "replace": "      message: t(\"confirm.deleteOne.message\", { name: file.name }),\n      confirmLabel: t(\"table.delete\"),",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the delete question does not name the file",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "t(\"confirm.deleteOne.message\", { name: file.name })",
+    "replace": "t(\"confirm.deleteOne.message\", { name: \"\" })",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a delete is silent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toast.success(t(\"toast.deleted\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a delete keeps the large view",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "      setPreview((current) => (current?.id === file.id ? null : current));\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a delete closes any large view",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "setPreview((current) => (current?.id === file.id ? null : current));",
+    "replace": "setPreview(null);",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a delete does not reload the table",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "      setPreview((current) => (current?.id === file.id ? null : current));\n      tableRef.current?.refresh();",
+    "replace": "      setPreview((current) => (current?.id === file.id ? null : current));",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a failed delete is silent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a failed delete has no fallback words",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toErrorMessage(err, t(\"toast.deleteFailed\"))",
+    "replace": "toErrorMessage(err, \"\")",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: bulk delete needs no question",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    if (!ok) return;\n    const { succeeded, failed }",
+    "replace": "    const { succeeded, failed }",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the bulk question has no count",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "t(\"confirm.deleteMany.message\", { count: ids.length })",
+    "replace": "t(\"confirm.deleteMany.message\", { count: 0 })",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the bulk question is not a warning",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "      message: t(\"confirm.deleteMany.message\", { count: ids.length }),\n      confirmLabel: t(\"table.delete\"),\n      danger: true,",
+    "replace": "      message: t(\"confirm.deleteMany.message\", { count: ids.length }),\n      confirmLabel: t(\"table.delete\"),",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: bulk successes are not reported",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (succeeded > 0) toast.success(t(\"toast.deletedMany\", { count: succeeded }));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: bulk successes are always reported",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (succeeded > 0) toast.success(t(\"toast.deletedMany\", { count: succeeded }));",
+    "replace": "toast.success(t(\"toast.deletedMany\", { count: succeeded }));",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: bulk failures are not reported",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (failed > 0) toast.error(t(\"toast.deleteFailedMany\", { count: failed }));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: bulk failures are always reported",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "if (failed > 0) toast.error(t(\"toast.deleteFailedMany\", { count: failed }));",
+    "replace": "toast.error(t(\"toast.deleteFailedMany\", { count: failed }));",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the choice is not cleared after a bulk delete",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    clearSelection();\n    tableRef.current?.refresh();",
+    "replace": "    tableRef.current?.refresh();",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the table is not reloaded after a bulk delete",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "    clearSelection();\n    tableRef.current?.refresh();",
+    "replace": "    clearSelection();",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the bulk button deletes nothing",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "onClick={() => handleBulkDelete(keys, clear)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the ping does not ask",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "await dispatch(pingMedia()).unwrap();\n      toast.success(t(\"toast.pingOk\"));",
+    "replace": "toast.success(t(\"toast.pingOk\"));",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a good ping is silent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toast.success(t(\"toast.pingOk\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a bad ping is silent",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.pingFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a bad ping has no fallback words",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "toErrorMessage(err, t(\"toast.pingFailed\"))",
+    "replace": "toErrorMessage(err, \"\")",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the ping button has no hint",
+    "file": "src/app/[locale]/(admin)/admin/media/MediaContent.tsx",
+    "find": "            title={t(\"page.pingTitle\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the list drops the sort",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "const qs = buildListQuery(params);",
+    "replace": "const qs = buildListQuery({ ...params, sort: undefined });",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts",
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(fetchMediaList.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchMediaList.pending, (state) => {",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused list stays loading",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "        state.isListLoading = false;\n        state.error = action.payload?.message || action.error.message || \"Failed to fetch\";",
+    "replace": "        state.error = action.payload?.message || action.error.message || \"Failed to fetch\";",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused list loses the words",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "state.error = action.payload?.message || action.error.message || \"Failed to fetch\";",
+    "replace": "state.error = action.error.message || \"Failed to fetch\";",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused list rejects with nothing",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "    return await authApi.get<MediaListResult>(`/api/admin/media?${qs}`);\n  } catch (err) {\n    return rejectWithValue(toMediaError(err));",
+    "replace": "    return await authApi.get<MediaListResult>(`/api/admin/media?${qs}`);\n  } catch (err) {\n    return rejectWithValue({ message: \"\" });",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: an error from the BE loses its code",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "if (err instanceof ApiError) return { message: err.message, errorCode: err.errorCode };",
+    "replace": "if (err instanceof ApiError) return { message: err.message };",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: an error from the BE loses its words",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "if (err instanceof ApiError) return { message: err.message, errorCode: err.errorCode };",
+    "replace": "if (err instanceof ApiError) return { message: \"\", errorCode: err.errorCode };",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: another error loses its text",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "return { message: err instanceof Error ? err.message : \"\" };",
+    "replace": "return { message: \"\" };",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a delete is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(deleteMediaFile.pending, (state) => {\n        state.isDeleting = true;",
+    "replace": ".addCase(deleteMediaFile.pending, (state) => {",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a delete keeps the old error",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "      .addCase(deleteMediaFile.pending, (state) => {\n        state.isDeleting = true;\n        state.error = null;",
+    "replace": "      .addCase(deleteMediaFile.pending, (state) => {\n        state.isDeleting = true;",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(deleteMediaFile.fulfilled, (state) => {\n        state.isDeleting = false;\n      })",
+    "replace": ".addCase(deleteMediaFile.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "        state.isDeleting = false;\n        state.error = action.payload?.message || action.error.message || \"Failed to delete\";",
+    "replace": "        state.error = action.payload?.message || action.error.message || \"Failed to delete\";",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused delete loses the words",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "state.error = action.payload?.message || action.error.message || \"Failed to delete\";",
+    "replace": "state.error = action.error.message || \"Failed to delete\";",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a bulk delete counts the wrong ones",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "const failed = results.filter((r) => r.status === \"rejected\").length;",
+    "replace": "const failed = results.filter((r) => r.status === \"fulfilled\").length;",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a bulk delete counts wrong successes",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "return { succeeded: ids.length - failed, failed };",
+    "replace": "return { succeeded: ids.length, failed };",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a bulk delete is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(deleteMediaFiles.pending, (state) => {\n        state.isDeleting = true;",
+    "replace": ".addCase(deleteMediaFiles.pending, (state) => {",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a bulk delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(deleteMediaFiles.fulfilled, (state) => {\n        state.isDeleting = false;\n      })",
+    "replace": ".addCase(deleteMediaFiles.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a ping is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(pingMedia.pending, (state) => {\n        state.isPinging = true;",
+    "replace": ".addCase(pingMedia.pending, (state) => {",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a ping stays busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(pingMedia.fulfilled, (state) => {\n        state.isPinging = false;\n      })",
+    "replace": ".addCase(pingMedia.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused ping stays busy",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": ".addCase(pingMedia.rejected, (state) => {\n        state.isPinging = false;\n      });",
+    "replace": ".addCase(pingMedia.rejected, () => {});",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the ping asks another address",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/moduleSlice.ts",
+    "find": "await authApi.get(\"/api/admin/media/ping\");",
+    "replace": "await authApi.get(\"/api/admin/media\");",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the picture is fetched from its stored address",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "const res = await fetch(toMediaUrl(file.url));",
+    "replace": "const res = await fetch(file.url);",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: a refused fetch is let through",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  if (!res.ok) throw new Error(\"\");\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the link has no file name",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  link.download = file.name;\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the link is not in the page when clicked",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  document.body.appendChild(link);\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the link is not removed",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  link.remove();\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the link is not clicked",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  link.click();\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the temporary address is not released",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  URL.revokeObjectURL(objectUrl);\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the link points nowhere",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/download.ts",
+    "find": "  link.href = objectUrl;\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts"
+    ]
+  },
+  {
+    "name": "media: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/constants.ts",
+    "find": "  { value: \"-size\", key: \"sizeDesc\" },\n  { value: \"size\", key: \"sizeAsc\" },",
+    "replace": "  { value: \"size\", key: \"sizeAsc\" },\n  { value: \"-size\", key: \"sizeDesc\" },",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts",
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  },
+  {
+    "name": "media: the code of missing storage changes",
+    "file": "src/app/[locale]/(admin)/admin/media/_common/constants.ts",
+    "find": "export const MEDIA_NOT_CONFIGURED_CODE = 1601;",
+    "replace": "export const MEDIA_NOT_CONFIGURED_CODE = 1602;",
+    "tests": [
+      "tests/admin/media/media-slice.test.ts",
+      "tests/admin/media/media-list.test.tsx"
+    ]
+  }
+]

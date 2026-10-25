@@ -1,6 +1,6 @@
 # Dashboard
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin` · **Cập nhật:** 2026-10-25
 > **Code:** `(admin)/admin/page.tsx` · `(admin)/admin/DashboardContent.tsx` · `(admin)/admin/_components/AnalyticsSummary.tsx`
 > **i18n:** `admin.dashboard`
 
@@ -59,9 +59,25 @@ Trong lúc tải hiện `—`. Accent màu: vàng, honey, xanh, sage, lavender.
 
 Với từng trạng thái trong `pending, confirmed, shipping, delivered, completed, cancelled`: icon, nhãn (`useOrderStatusLabel`), thanh phần trăm `count / total orders`, số lượng. Màu: pending honey, confirmed xanh, shipping lavender, delivered sage, completed vàng, cancelled hồng.
 
+### 4.5b Lỗi tải
+
+Một trong ba nguồn (sản phẩm, đơn, người dùng) lỗi thì trên đầu trang hiện một khung `role="alert"` "Không tải được số liệu tổng quan" với nút "Thử lại" (gọi `mutate` của cả ba hook). Thẻ phụ thuộc nguồn lỗi hiện `—` (kèm bỏ dòng phụ) thay cho số 0; bảng đơn gần đây hiện lời lỗi thay cho "chưa có đơn"; khối đơn theo trạng thái hiện `—`. Các nguồn còn lại vẫn hiện bình thường.
+
 ### 4.6 Hiện trạng
 
 - Trang không có kiểm tra permission riêng (mọi người vào được admin đều thấy), nhưng các API admin tương ứng do BE kiểm tra quyền.
 - Bố cục đáy cố định `grid-cols-[2fr_1fr]`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.7 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/dashboard.md](../../specs/admin/dashboard.md). Test ở `tests/admin/dashboard/` (`dashboard.test.tsx`; `dashboard-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.8 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/dashboard.md](../../specs/admin/dashboard.md). Test ở `tests/admin/dashboard/` (`dashboard.test.tsx`; `dashboard-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.9 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/dashboard.md](../../specs/admin/dashboard.md). Test ở `tests/admin/dashboard/` (`dashboard.test.tsx`; `dashboard-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

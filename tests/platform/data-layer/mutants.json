@@ -320,5 +320,53 @@
     "file": "src/hooks/use-api.ts",
     "find": "limit: data?.limit ?? LIST_DEFAULT_LIMIT,",
     "replace": "limit: data?.limit ?? 24,"
+  },
+  {
+    "name": "slugify: the Vietnamese d-bar is kept",
+    "file": "src/lib/slugify.ts",
+    "find": ".replace(/đ/g, \"d\")\n",
+    "replace": ""
+  },
+  {
+    "name": "slugify: accents are kept",
+    "file": "src/lib/slugify.ts",
+    "find": "    .normalize(\"NFD\")\n    .replace(/[̀-ͯ]/g, \"\")\n",
+    "replace": ""
+  },
+  {
+    "name": "slugify: capitals are kept",
+    "file": "src/lib/slugify.ts",
+    "find": "    .toLowerCase()\n    .replace(/đ/g",
+    "replace": "    .replace(/đ/g"
+  },
+  {
+    "name": "slugify: symbols are kept",
+    "file": "src/lib/slugify.ts",
+    "find": "    .replace(/[^a-z0-9]+/g, \"-\")\n",
+    "replace": ""
+  },
+  {
+    "name": "slugify: a symbol run becomes one dash per symbol",
+    "file": "src/lib/slugify.ts",
+    "find": "[^a-z0-9]+",
+    "replace": "[^a-z0-9]"
+  },
+  {
+    "name": "slugify: a leading dash is kept",
+    "file": "src/lib/slugify.ts",
+    "find": ".replace(/^-+|-+$/g, \"\")",
+    "replace": ".replace(/-+$/g, \"\")"
+  },
+  {
+    "name": "slugify: a trailing dash is kept",
+    "file": "src/lib/slugify.ts",
+    "find": ".replace(/^-+|-+$/g, \"\")",
+    "replace": ".replace(/^-+/g, \"\")"
+  },
+  {
+    "name": "slugify: digits are dropped",
+    "file": "src/lib/slugify.ts",
+    "find": "[^a-z0-9]+",
+    "replace": "[^a-z]+"
   }
 ]

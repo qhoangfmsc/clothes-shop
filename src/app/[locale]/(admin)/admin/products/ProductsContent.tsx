@@ -32,6 +32,7 @@ import {
   type FormTab,
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
+import { slugify } from "@/src/lib/slugify";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -60,16 +61,6 @@ import {
 import { ADMIN_BADGE_STYLES } from "@/src/lib/product-badge";
 import type { Category, SubCategory } from "@/src/types/category";
 import { toMediaUrl } from "@/src/lib/media-url";
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/đ/g, "d")
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 function statusStyle(s: string): string {
   return s === "active"

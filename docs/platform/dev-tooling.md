@@ -1,6 +1,6 @@
 # Tooling, cấu hình & triển khai
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-24
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-25
 > **Code:** `package.json` · `scripts/i18n.mjs` · `scripts/check-conventions.mjs` · `scripts/check-docs.mjs` · `scripts/check-quality.mjs` · `scripts/quality-lib.mjs` · `scripts/comment-lib.mjs` · `scripts/comment-baseline.json` · `scripts/quality-baseline.json` · `scripts/modules.mjs` · `scripts/progress-lib.mjs` · `scripts/test-progress.mjs` · `scripts/test-mutants.mjs` · `scripts/test-batches.json` · `vitest.config.mts` · `tests/_support/coverage.json` · `playwright.config.ts` · `tests/` · `specs/` · `.github/workflows/ci.yml` · `next.config.ts` · `vercel.json` · `src/app/api/cron/ping/route.ts` · `.env.local` · `.env.e2e.local` · `.env.e2e.example` (không commit `.env.*.local`) · `.agent/` · `.claude/` · `CLAUDE.md`
 
 ## 1. Tóm tắt module

@@ -1,6 +1,6 @@
 # Site config (cấu hình banner & phí vận chuyển)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/site-config` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/site-config` · **Cập nhật:** 2026-10-25
 > **Code:** `(admin)/admin/site-config/` — `SiteConfigContent.tsx`, `_common/{moduleSlice,types}.ts`, `_types/registry.tsx`, `_types/banner/{BannerConfigModal.tsx,banner-form.ts}`, `_types/shipping/{ShippingConfigModal.tsx,shipping-form.ts}` · `src/types/site-config.ts` · `src/hooks/use-api.ts` (`useBannerConfig`) · `shop/_lib/server-fetchers.ts` (`getBannerConfig`)
 > **i18n:** `admin.siteConfig`
 > **Redux slice:** `state.siteConfig`
@@ -46,7 +46,7 @@ Khi mount (một lần, có chống chạy đôi của React Strict Mode): `fetc
 
 ### 4.2b Cấu trúc theo loại (`_types/`)
 
-Mỗi loại cấu hình có thư mục riêng chứa form và logic của nó (`_types/banner/`, `_types/shipping/`); `_types/registry.tsx` là nơi duy nhất nối loại với giao diện: `CONFIG_TYPE_VIEWS[type] = { Editor, Summary? }` và `CONFIG_TYPE_ORDER` (thứ tự tab). `Editor` nhận `ConfigEditorProps { configKey, title, savedValue, onClose }` và tự lưu bằng `upsertSiteConfig`; `Summary` vẽ dòng trạng thái của thẻ. `SiteConfigContent` không biết gì về nội dung từng loại: chỉ liệt kê khóa của tab đang chọn, mở `Editor` của loại đó, và hỏi xác nhận xóa (kèm làm mới cache phí vận chuyển khi xóa khóa `SHIPPING`). Thêm loại mới = một thư mục trong `_types/` + một dòng trong registry + khóa dịch `types.<TYPE>` và `keys.<KEY>`. Loại có khóa nhưng chưa có editor (hiện là `TEXT`) không có tab.
+Mỗi loại cấu hình có thư mục riêng chứa form và logic của nó (`_types/banner/`, `_types/shipping/`); `_types/registry.tsx` là nơi duy nhất nối loại với giao diện: `CONFIG_TYPE_VIEWS[type] = { Editor, Summary? }` và `CONFIG_TYPE_ORDER` (thứ tự tab). `Editor` nhận `ConfigEditorProps { configKey, title, savedValue, onClose }` và tự lưu bằng `upsertSiteConfig`; `Summary` vẽ dòng trạng thái của thẻ. `SiteConfigContent` không biết gì về nội dung từng loại: chỉ liệt kê khóa của tab đang chọn và mở `Editor` của loại đó (trang không có chức năng xóa). Thêm loại mới = một thư mục trong `_types/` + một dòng trong registry + khóa dịch `types.<TYPE>` và `keys.<KEY>`. Loại có khóa nhưng chưa có editor (hiện là `TEXT`) không có tab.
 
 ### 4.3 Form banner (`_types/banner/BannerConfigModal.tsx`)
 
@@ -63,7 +63,7 @@ Mỗi loại cấu hình có thư mục riêng chứa form và logic của nó (
 ### 4.5 Phí vận chuyển (`SHIPPING_CONFIG`, `ShippingConfigModal`)
 
 - Thẻ của khóa hiện "Đã cấu hình" hoặc "Đang dùng giá trị mặc định" (chưa có dòng trong DB). Bấm Sửa mở `ShippingConfigModal` thay vì modal banner; nút Sửa cần `SITE_CONFIG_UPSERT`.
-- Giá trị ban đầu của form: `value` đã lưu (parse bằng `parseShippingValue`); nếu chưa lưu hoặc hỏng thì lấy cấu hình khách đang nhận từ `useShipping()` (`GET /api/shipping`, `shippingInfoToForm`) — FE không hardcode mức phí nào. Chưa tải được cả hai → thông báo lỗi tải.
+- Giá trị ban đầu của form: `value` đã lưu (parse bằng `parseShippingValue`); nếu chưa lưu hoặc hỏng thì lấy cấu hình khách đang nhận từ `useShipping()` (`GET /api/shipping`, `shippingInfoToForm`) — FE không hardcode mức phí nào. Giá trị đã lưu từ trước khi có chính sách đổi trả mượn chính sách đó từ cấu hình khách đang nhận, nên modal chờ `useShipping()` tải xong rồi mới mở form (form chỉ giữ giá trị đầu tiên của nó). Chưa tải được cả hai → thông báo lỗi tải.
 - Form (`_types/shipping/shipping-form.ts`): `freeShippingThresholdVnd` (ô VND nguyên `VndInput`; để trống = `null` = tắt miễn phí vận chuyển; có giá trị thì từ 1 đến 1.000.000.000; áp dụng cho cả 3 phương thức) và đúng 3 phương thức `standard`, `express`, `store-pickup` (`SHIPPING_METHOD_IDS` từ `src/types/shipping.ts`; không thêm/xóa, `id` chỉ đọc, hiện dạng chip). Mỗi phương thức: `name` (bắt buộc, ≤ 100), `estimatedDays` (bắt buộc, ≤ 100), `description` (≤ 255, được trống), `priceVnd` (VND nguyên từ 0 đến 1.000.000.000, 0 = miễn phí), `icon` ∈ `truck | express | store`. Số tiền là VND nguyên (`parseVndInput` từ chối số lẻ và ký tự lạ); giá USD khách thấy do BE quy đổi. Form còn có nhóm **Chính sách đổi trả** (`returnPolicy`, khớp BE): `days` (số nguyên 1–365, bắt buộc), `description` (≤ 500, được trống), `conditions` (mỗi dòng một điều kiện, tối đa 10 dòng, mỗi dòng ≤ 255). Giá trị ban đầu lấy từ `value` đã lưu; dòng lưu từ trước khi có chính sách đổi trả thì lấy theo `GET /api/shipping`, để lưu không đặt lại chính sách về mặc định của BE. `GET /api/shipping` là nơi khách đọc (trang sản phẩm).
 - Lưu: `validateShippingForm` kiểm tra các quy tắc trên (lỗi hiện dưới từng trường, toast `shipping.toast.invalid`); hợp lệ thì `serializeShippingForm` tạo đúng `{ freeShippingThresholdVnd, methods: [{ id, name, description, estimatedDays, priceVnd, icon }] }` (không field lạ; khóa cũ `freeShippingThreshold` / `price` bị BE từ chối bằng 1503) và `upsertSiteConfig` → `PUT /api/admin/site-config/SHIPPING_CONFIG` với `{ value }` (chuỗi JSON). Thành công: `useRefreshShipping()` làm mới cache, toast `toast.saved`, đóng modal. BE trả 400 mã 1503 → toast hiện nguyên `message` của BE (liệt kê từng lỗi, không có bản dịch theo mã); 403 → lỗi chung qua `useErrorMessage`.
 - Thay đổi chỉ áp dụng cho đơn tạo sau đó; đơn cũ giữ nguyên phí.
@@ -75,3 +75,19 @@ Mỗi loại cấu hình có thư mục riêng chứa form và logic của nó (
 - FE chỉ lưu giá trị này: mọi giá USD vẫn lấy từ response của BE, không dùng tỷ giá để quy đổi hay hiển thị ở trang nào khác.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.7 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/site-config.md](../../specs/admin/site-config.md). Test ở `tests/admin/site-config/` (`site-config-page`, `banner-config`, `shipping-form`, `shipping-config`, `exchange-rate`, `site-config-slice`; `site-config-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.8 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/site-config.md](../../specs/admin/site-config.md). Test ở `tests/admin/site-config/` (`site-config-page`, `banner-config`, `shipping-form`, `shipping-config`, `exchange-rate`, `site-config-slice`; `site-config-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.9 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/site-config.md](../../specs/admin/site-config.md). Test ở `tests/admin/site-config/` (`site-config-page`, `banner-config`, `shipping-form`, `shipping-config`, `exchange-rate`, `site-config-slice`; `site-config-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.10 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/site-config.md](../../specs/admin/site-config.md). Test ở `tests/admin/site-config/` (`site-config-page`, `banner-config`, `shipping-form`, `shipping-config`, `exchange-rate`, `site-config-slice`; `site-config-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

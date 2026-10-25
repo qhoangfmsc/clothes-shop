@@ -1,6 +1,6 @@
 # Products admin (quản lý sản phẩm) — Tech spec
 
-> **Nhóm:** Admin · **Cập nhật:** 2026-10-24 · **Trạng thái:** Implemented
+> **Nhóm:** Admin · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
 > **Doc:** [admin/products](../../docs/admin/products.md) · **Test:** `tests/admin/products/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -110,3 +110,5 @@ Thay đổi nhìn thấy được: slug của sản phẩm có chữ đ giờ c�
 
 - 2026-10-24 · Viết spec và test cho toàn module (batch 3), kiểm thử đột biến.
 - 2026-10-24 · Sửa: slug bỏ mất chữ đ (trước đây "Đầm Lụa" ra "am-lua"); test APR-4 tái hiện lỗi trước khi sửa.
+- 2026-10-25 · `slugify` chuyển sang `src/lib/slugify.ts` (dùng chung với danh mục và bộ sưu tập); hành vi không đổi, đột biến về slug chuyển sang `tests/platform/data-layer`.
+- 2026-10-25 · no-test: `slugify` chỉ đổi nơi chứa (`src/lib/slugify.ts`), hành vi không đổi và vẫn được kiểm bởi APR-4 cùng `tests/platform/data-layer/slugify.test.ts`.

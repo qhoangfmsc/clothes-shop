@@ -1,6 +1,6 @@
 # Data layer — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
 > **Doc:** [platform/data-layer](../../docs/platform/data-layer.md) · **Test:** `tests/platform/data-layer/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -23,6 +23,8 @@ Mọi dữ liệu của FE đi qua module này: client HTTP, hợp đồng danh 
 **Danh sách (`list-query`).** `buildListQuery(params, filters)` dựng query theo thứ tự: `search`, các filter, `sort`, `page`, `limit`. Giá trị `undefined`, `null`, `""` bị bỏ (số `0` và `false` được giữ); `page` bị bỏ khi ≤ 1; `limit` được kẹp bởi `clampLimit`: thiếu hoặc < 1 → 25, > 200 → 200, số lẻ → làm tròn xuống. `PUBLIC_CATEGORIES_QUERY` là `sort=priority&limit=200`.
 
 **URL media.** `toMediaUrl` đổi URL Supabase `https?://<host>/storage/v1/object/public/<bucket>/<key>` thành `/media/<key>`; mọi giá trị khác (kể cả `null`, `undefined`, URL khác, `data:`) giữ nguyên. `mapMediaUrls` áp dụng đệ quy cho chuỗi trong mảng và object, không đổi kiểu dữ liệu khác.
+
+**Slug (`slugify`).** `slugify(tên)` viết thường, đổi `đ` thành `d` trước khi bỏ dấu (NFD), thay mỗi chuỗi ký tự khác chữ số và a–z bằng một `-`, bỏ `-` ở hai đầu; tên chỉ có ký hiệu cho chuỗi rỗng. Dùng chung cho form sản phẩm, danh mục và bộ sưu tập (trước đây chép ở ba nơi và cùng sai chữ `đ`).
 
 **URL sản phẩm.** `buildProductPath(id, cat, sub)` → `/shop/<cat>/<sub>/<id>` hoặc `null` khi thiếu một slug; `productPath(product)` đọc slug từ `category`/`subcategory` (cho phép `null`).
 
@@ -99,6 +101,7 @@ Tiếng Anh, không UI text. Mọi danh sách dựng bằng `buildListQuery` (ru
 | LQ-1 | `buildListQuery`: thứ tự, bỏ giá trị rỗng, bỏ `page` 1, kẹp `limit`, giữ `0` và `false`, mã hóa | đúng | — | unit | `tests/platform/data-layer/list-query.test.ts` |
 | LQ-1E | `clampLimit` và `limit` bất thường (0, âm, lẻ, > 200, NaN) | lỗi | — | unit | `tests/platform/data-layer/list-query.test.ts` |
 | MED-1 | `toMediaUrl`/`mapMediaUrls`: URL Supabase thành `/media/<key>`, đệ quy mảng và object | đúng | — | unit | `tests/platform/data-layer/media-url.test.ts` |
+| SLG-1 | `slugify`: bỏ dấu, `đ` thành `d`, ký hiệu thành `-`, bỏ `-` hai đầu, tên chỉ ký hiệu cho chuỗi rỗng, áp dụng hai lần vẫn như cũ | đúng | — | unit | `tests/platform/data-layer/slugify.test.ts` |
 | MED-1E | Giá trị không phải URL Supabase, `null`, số, `data:` giữ nguyên | lỗi | — | unit | `tests/platform/data-layer/media-url.test.ts` |
 | PRD-1 | `buildProductPath`/`productPath` dựng đường dẫn; `null` khi thiếu slug | đúng | — | unit | `tests/platform/data-layer/product-url.test.ts` |
 | PRD-1E | Thiếu một slug, slug `null`, chuỗi rỗng → `null` | lỗi | — | unit | `tests/platform/data-layer/product-url.test.ts` |
@@ -150,3 +153,4 @@ Thay đổi nhìn thấy được: không. Thay đổi nội bộ: các kiểu v
 - 2026-10-22 · Tách `makeStore` và `attachPersistence` khỏi singleton `store`, `StoreProvider` nhận `store` tùy chọn: harness test (batch 2) cần store sạch cho mỗi lần render. Singleton và hành vi lưu trữ giữ nguyên.
 - 2026-10-22 · `toApiError` không còn điền `API error: <status>` khi BE không gửi `message`: để rỗng, nên toast và màn lỗi dùng chữ dịch thay vì chữ kỹ thuật. Hook công khai (`fetcher` của SWR) giữ `Error("API error: <status>")` vì chỉ dùng cờ `isError`.
 - 2026-10-23 · Sửa: `useProducts` mặc định `limit` = `LIST_DEFAULT_LIMIT` (25) thay vì 24 chép tay.
+- 2026-10-25 · Thêm `src/lib/slugify.ts` (hàm sinh slug dùng chung cho sản phẩm, danh mục, bộ sưu tập; trước đây chép ở ba nơi), test `slugify.test.ts`, 8 đột biến.

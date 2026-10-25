@@ -1,6 +1,6 @@
 # Reviews (kiểm duyệt đánh giá)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-24
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/reviews` (`?tab=all`, `?reviewId=<id>` mở chi tiết, `?product=<slug>` và `?userId=<id>` lọc) · **Cập nhật:** 2026-10-25
 > **Code:** `(admin)/admin/reviews/` — `page.tsx`, `ReviewsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{ReviewStatusBadge,ReviewDetailPanel,HideReviewModal,ReviewReplyForm}.tsx`; dùng chung `_components/{ReviewContent,ReviewAvatar,StarRating}.tsx`
 > **i18n:** `admin.reviews`, `shared.reviews`, `shared.errors.byCode` (1901, 1906), `admin.components.crud.sort` (`ratingDesc`, `ratingAsc`, `helpfulDesc`), `admin.shell.nav.pending.reviews`
 > **Redux slice:** `state.reviews`
@@ -59,5 +59,9 @@ Hình dạng dữ liệu `AdminReview` ở `src/types/review.ts` (dùng chung v�
 Thiết kế, quyết định và các điểm cần biết: [specs/admin/reviews.md](../../specs/admin/reviews.md). Test ở `tests/admin/reviews/` (`reviews-list`, `review-detail`, `review-forms`, `reviews-slice`; `reviews-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
 
 ### 4.6 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/reviews.md](../../specs/admin/reviews.md). Test ở `tests/admin/reviews/` (`reviews-list`, `review-detail`, `review-forms`, `reviews-slice`; `reviews-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.7 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/admin/reviews.md](../../specs/admin/reviews.md). Test ở `tests/admin/reviews/` (`reviews-list`, `review-detail`, `review-forms`, `reviews-slice`; `reviews-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

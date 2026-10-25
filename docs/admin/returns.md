@@ -1,6 +1,6 @@
 # Returns (trả hàng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/returns` (`?returnId=<id>` mở chi tiết, `?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-24
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/returns` (`?returnId=<id>` mở chi tiết, `?orderId=<id>` lọc theo đơn) · **Cập nhật:** 2026-10-25
 > **Code:** `(admin)/admin/returns/` — `page.tsx`, `ReturnsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `_components/{ReturnBadge,ReturnDetailPanel,ApproveReturnModal,RejectReturnModal,ReceiveReturnModal}.tsx`
 > **i18n:** `admin.returns`, `shared.errors.byCode` (1801, 1803, 1804), `admin.components.crud.sort` (`updatedDesc`, `updatedAsc`)
 > **Redux slice:** `state.returns`
@@ -54,5 +54,9 @@ Khách tạo và theo dõi yêu cầu ở [customer-returns](../storefront/custo
 Thiết kế, quyết định và các điểm cần biết: [specs/admin/returns.md](../../specs/admin/returns.md). Test ở `tests/admin/returns/` (`returns-list`, `return-detail`, `return-forms`, `returns-slice`; `returns-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
 
 ### 4.4 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/returns.md](../../specs/admin/returns.md). Test ở `tests/admin/returns/` (`returns-list`, `return-detail`, `return-forms`, `returns-slice`; `returns-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.5 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/admin/returns.md](../../specs/admin/returns.md). Test ở `tests/admin/returns/` (`returns-list`, `return-detail`, `return-forms`, `returns-slice`; `returns-kit.tsx` là dữ liệu mẫu, BE giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

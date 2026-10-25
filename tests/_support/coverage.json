@@ -36,7 +36,17 @@
     "src/app/[locale]/\\(admin\\)/admin/returns/**",
     "src/app/[locale]/\\(admin\\)/admin/reviews/**",
     "src/app/[locale]/\\(admin\\)/admin/users/**",
-    "src/app/[locale]/\\(admin\\)/admin/categories/**"
+    "src/app/[locale]/\\(admin\\)/admin/categories/**",
+    "src/app/[locale]/\\(admin\\)/admin/collections/**",
+    "src/app/[locale]/\\(admin\\)/admin/site-config/**",
+    "src/app/[locale]/\\(admin\\)/admin/DashboardContent.tsx",
+    "src/app/[locale]/\\(admin\\)/admin/_components/**",
+    "src/app/[locale]/\\(admin\\)/admin/analytics/**",
+    "src/app/api/analytics/**",
+    "src/hooks/use-admin-analytics.ts",
+    "src/lib/analytics.ts",
+    "src/lib/percent-change.ts",
+    "src/app/[locale]/\\(admin\\)/admin/media/**"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -805,6 +815,161 @@
       "lines": 95,
       "branches": 45,
       "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/collections/CollectionsContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/collections/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/SiteConfigContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/registry.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/banner/BannerConfigModal.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/banner/banner-form.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/shipping/ShippingConfigModal.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/shipping/shipping-form.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/currency/ExchangeRateModal.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/currency/exchange-rate-form.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/DashboardContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/_components/AnalyticsSummary.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/AnalyticsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/StatTile.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/StatusCard.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/FunnelCard.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/BreakdownCard.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/TrafficChart.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/api/analytics/route.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/admin-auth.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/plans.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/range.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/vercel-client.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/build-report.ts": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/hooks/use-admin-analytics.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/lib/analytics.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/lib/percent-change.ts": {
+      "lines": 100,
+      "branches": 90,
+      "functions": 100
+    },
+    "src/app/[locale]/\\(admin\\)/admin/media/MediaContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 80
+    },
+    "src/app/[locale]/\\(admin\\)/admin/media/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/media/_common/download.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
     }
   }
 }

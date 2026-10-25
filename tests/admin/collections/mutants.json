@@ -1,0 +1,825 @@
+[
+  {
+    "name": "collections: the search is not sent",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "        search: params.search || undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "        season: params.filters.season || undefined,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the sort is not sent",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "        sort: params.sort,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season list starts empty",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "useState<string[]>([...SEASONS])",
+    "replace": "useState<string[]>([])",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season list forgets what it saw",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      const next = new Set(prev);",
+    "replace": "      const next = new Set<string>(SEASONS);",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season list learns nothing",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      for (const item of items) if (item.season) next.add(item.season);",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season list learns an empty season",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "if (item.season) next.add(item.season);",
+    "replace": "next.add(item.season);",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker asks for few products",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "useAdminProducts({ limit: LIST_MAX_LIMIT })",
+    "replace": "useAdminProducts({ limit: 25 })",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a collection with no image has no placeholder",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{c.image ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picture is always shown",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{c.image ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the subtitle always shows",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{c.subtitle && <p",
+    "replace": "{true && <p",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season always shows",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "        render: (c) =>\n          c.season ? (",
+    "replace": "        render: (c) =>\n          true ? (",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the product count is zero",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "t(\"table.productCount\", { count: c.productIds?.length ?? 0 })",
+    "replace": "t(\"table.productCount\", { count: 0 })",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: edit needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.COLLECTION_UPDATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.COLLECTION_VIEW}>",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: delete needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.COLLECTION_DELETE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.COLLECTION_VIEW}>",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: add needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.COLLECTION_CREATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.COLLECTION_VIEW}>",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the edit button deletes",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "onClick={() => openEdit(c)}",
+    "replace": "onClick={() => handleDelete(c.id, c.name)}",
+    "tests": [
+      "tests/admin/collections/collections-list.test.tsx",
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the search of the last form stays",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "    setForm(EMPTY_COLLECTION_FORM);\n    setProductSearch(\"\");",
+    "replace": "    setForm(EMPTY_COLLECTION_FORM);",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form opens on the old tab",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "    setProductSearch(\"\");\n    setActiveTab(COLLECTION_TABS[0].id);\n    setShowModal(true);\n  };\n\n  const closeModal",
+    "replace": "    setProductSearch(\"\");\n    setShowModal(true);\n  };\n\n  const closeModal",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form hides the saved name",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      name: c.name,\n",
+    "replace": "      name: \"\",\n",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form hides the saved subtitle",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      subtitle: c.subtitle,\n",
+    "replace": "      subtitle: \"\",\n",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form hides the saved description",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      description: c.description,\n      image",
+    "replace": "      description: \"\",\n      image",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form hides the saved image",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      image: c.image,\n",
+    "replace": "      image: \"\",\n",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form hides the saved season",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      season: c.season,\n    });",
+    "replace": "      season: \"\",\n    });",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change form hides the saved products",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "productIds: Array.isArray(c.productIds) ? [...c.productIds] : [],",
+    "replace": "productIds: [],",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a saved collection is created again",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      if (editingId) {",
+    "replace": "      if (false) {",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a new collection is sent as a change",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      if (editingId) {",
+    "replace": "      if (true) {",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a change is not told",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "toast.success(t(\"toast.updated\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a creation is not told",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "toast.success(t(\"toast.created\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a save does not reload the table",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      tableRef.current?.refresh();\n      closeModal();",
+    "replace": "      closeModal();",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a save does not close the form",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      tableRef.current?.refresh();\n      closeModal();",
+    "replace": "      tableRef.current?.refresh();",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a failed save is silent",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a failed save closes the form",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));\n      closeModal();",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the slug does not follow the name",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "                            name: v,\n                            slug: slugify(v),",
+    "replace": "                            name: v,",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the name is not needed",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "                        required\n                      />\n                    </FormField>\n                    <FormField label={t(\"form.fields.subtitle\")}",
+    "replace": "                      />\n                    </FormField>\n                    <FormField label={t(\"form.fields.subtitle\")}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the subtitle is not kept",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season is not kept",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "onChange={(e) => setForm((p) => ({ ...p, season: e.target.value }))}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the season has no suggestions",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "list=\"season-list\"\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the suggestions are empty",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{SEASONS.map((s) => (\n                          <option key={s} value={s} />\n                        ))}",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the image is not kept",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "onChange={(url) => setForm((p) => ({ ...p, image: url }))}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the description is not kept",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the chosen count is not shown",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "t(\"products.addLabel\", { count: form.productIds.length })",
+    "replace": "t(\"products.addLabel\", { count: 0 })",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the search is not kept",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "onChange={(e) => setProductSearch(e.target.value)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker search ignores the name",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "(p) => p.name.toLowerCase().includes(s) || p.slug.toLowerCase().includes(s)",
+    "replace": "(p) => p.slug.toLowerCase().includes(s)",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker search ignores the slug",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "(p) => p.name.toLowerCase().includes(s) || p.slug.toLowerCase().includes(s)",
+    "replace": "(p) => p.name.toLowerCase().includes(s)",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker search is case sensitive",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "const s = productSearch.toLowerCase();",
+    "replace": "const s = productSearch;",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker search needs both",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "(p) => p.name.toLowerCase().includes(s) || p.slug.toLowerCase().includes(s)",
+    "replace": "(p) => p.name.toLowerCase().includes(s) && p.slug.toLowerCase().includes(s)",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker ignores the search",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "if (!productSearch) return allProducts;",
+    "replace": "return allProducts;",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker shows every product",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "filteredProducts.slice(0, 50).map",
+    "replace": "filteredProducts.map",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker shows few products",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "filteredProducts.slice(0, 50).map",
+    "replace": "filteredProducts.slice(0, 5).map",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker empty note always shows",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{filteredProducts.length === 0 ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the picker never says empty",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{filteredProducts.length === 0 ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a click only adds",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "                                  productIds: selected\n                                    ? prev.productIds.filter((id) => id !== p.id)\n                                    : [...prev.productIds, p.id],",
+    "replace": "                                  productIds: [...prev.productIds, p.id],",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a click only removes",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "                                    : [...prev.productIds, p.id],",
+    "replace": "                                    : prev.productIds,",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a chosen product is not marked",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "selected\n                                  ? \"bg-[var(--accent-sage)] text-white\"",
+    "replace": "false\n                                  ? \"bg-[var(--accent-sage)] text-white\"",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a tick shows on every product",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{selected && (\n                                <span",
+    "replace": "{true && (\n                                <span",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the chip has no name",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{prod?.name ?? pid}\n                              </span>",
+    "replace": "{pid}\n                              </span>",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the chip loses the id fallback",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{prod?.name ?? pid}\n                              </span>",
+    "replace": "{prod?.name}\n                              </span>",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the chip remove button takes another",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "productIds: p.productIds.filter((id) => id !== pid),",
+    "replace": "productIds: p.productIds.filter((id) => id === pid),",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the chip remove label has no name",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "t(\"products.removeProduct\", { name: prod?.name ?? pid })",
+    "replace": "t(\"products.removeProduct\", { name: pid })",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a product without a category has no dash",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{p.category?.slug ?? \"—\"} — {fmt(p, \"price\")}",
+    "replace": "{p.category?.slug} — {fmt(p, \"price\")}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the price is not shown",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{p.category?.slug ?? \"—\"} — {fmt(p, \"price\")}",
+    "replace": "{p.category?.slug ?? \"—\"}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the saving label is not shown",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "isSaving={isSaving}",
+    "replace": "isSaving={false}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: only creating blocks the button",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "const isSaving = isCreating || isUpdating;",
+    "replace": "const isSaving = isUpdating;",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the form title is always new",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "title={editingId ? t(\"form.titleEdit\") : t(\"form.titleCreate\")}",
+    "replace": "title={t(\"form.titleCreate\")}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the button label is always create",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "submitLabel={editingId ? t(\"form.submitUpdate\") : t(\"form.submitCreate\")}",
+    "replace": "submitLabel={t(\"form.submitCreate\")}",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the info tab shows on the products tab",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "{activeTab === \"info\" && (",
+    "replace": "{(activeTab === \"info\" || activeTab === \"products\") && (",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: delete needs no question",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "    if (!ok) return;\n    try {\n      await dispatch(deleteCollection(id)).unwrap();",
+    "replace": "    try {\n      await dispatch(deleteCollection(id)).unwrap();",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the delete question is not a warning",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      confirmLabel: tCrud(\"delete\"),\n      danger: true,",
+    "replace": "      confirmLabel: tCrud(\"delete\"),",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the delete question does not name it",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "t(\"confirmDelete.message\", { name })",
+    "replace": "t(\"confirmDelete.message\", { name: \"\" })",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a delete is silent",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "toast.success(t(\"toast.deleted\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a delete does not reload",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "      toast.success(t(\"toast.deleted\"));\n      tableRef.current?.refresh();",
+    "replace": "      toast.success(t(\"toast.deleted\"));",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a failed delete is silent",
+    "file": "src/app/[locale]/(admin)/admin/collections/CollectionsContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collection-form.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the list drops the season",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "buildListQuery(params, { season: params.season })",
+    "replace": "buildListQuery(params, {})",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: the products are not turned into ids",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "productIds: item.products?.map((p) => p.id) ?? [],",
+    "replace": "productIds: [],",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a missing product list breaks",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "productIds: item.products?.map((p) => p.id) ?? [],",
+    "replace": "productIds: item.products!.map((p) => p.id),",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts",
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(fetchCollectionList.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchCollectionList.pending, (state) => {",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a create is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(createCollection.pending, (state) => {\n        state.isCreating = true;",
+    "replace": ".addCase(createCollection.pending, (state) => {",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a create stays busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(createCollection.fulfilled, (state) => {\n        state.isCreating = false;\n      })",
+    "replace": ".addCase(createCollection.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a refused create stays busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "        state.isCreating = false;\n        state.error = action.error.message ?? \"Failed to create\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to create\";",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: an update is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(updateCollection.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": ".addCase(updateCollection.pending, (state) => {",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: an update stays busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(updateCollection.fulfilled, (state) => {\n        state.isUpdating = false;\n      })",
+    "replace": ".addCase(updateCollection.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a refused update stays busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = false;\n        state.error = action.error.message ?? \"Failed to update\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to update\";",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a delete is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(deleteCollection.pending, (state) => {\n        state.isDeleting = true;",
+    "replace": ".addCase(deleteCollection.pending, (state) => {",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": ".addCase(deleteCollection.fulfilled, (state) => {\n        state.isDeleting = false;\n      })",
+    "replace": ".addCase(deleteCollection.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a refused delete stays busy",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "        state.isDeleting = false;\n        state.error = action.error.message ?? \"Failed to delete\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to delete\";",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: a write keeps the old error",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/moduleSlice.ts",
+    "find": "      .addCase(createCollection.pending, (state) => {\n        state.isCreating = true;\n        state.error = null;",
+    "replace": "      .addCase(createCollection.pending, (state) => {\n        state.isCreating = true;",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  },
+  {
+    "name": "collections: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/constants.ts",
+    "find": "  { value: \"name\", key: \"nameAsc\" },\n  { value: \"-name\", key: \"nameDesc\" },",
+    "replace": "  { value: \"-name\", key: \"nameDesc\" },\n  { value: \"name\", key: \"nameAsc\" },",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts",
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: another season is known",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/constants.ts",
+    "find": "export const SEASONS = [\"Limited Edition\"] as const;",
+    "replace": "export const SEASONS = [\"Limited Edition\", \"Summer\"] as const;",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts",
+      "tests/admin/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a new form starts with a name",
+    "file": "src/app/[locale]/(admin)/admin/collections/_common/constants.ts",
+    "find": "  name: \"\",",
+    "replace": "  name: \"x\",",
+    "tests": [
+      "tests/admin/collections/collections-slice.test.ts"
+    ]
+  }
+]

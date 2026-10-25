@@ -1,0 +1,821 @@
+[
+  {
+    "name": "dashboard: few products are asked for",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "useAdminProducts({ limit: LIST_MAX_LIMIT })",
+    "replace": "useAdminProducts({ limit: 25 })",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: few orders are asked for",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "useAdminOrders({ limit: LIST_MAX_LIMIT })",
+    "replace": "useAdminOrders({ limit: 25 })",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: few users are asked for",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "useAdminUsers({ limit: LIST_MAX_LIMIT })",
+    "replace": "useAdminUsers({ limit: 25 })",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: only active products are counted",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "products.filter((p) => p.status === \"active\").length",
+    "replace": "products.filter((p) => p.status !== \"active\").length",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: inactive products come from the list",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const inactiveProducts = totalProducts - activeProducts;",
+    "replace": "const inactiveProducts = products.length - activeProducts;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: cancelled orders count as revenue",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "orders.filter((o) => o.status !== \"cancelled\")",
+    "replace": "orders",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: only completed orders count as revenue",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "orders.filter((o) => o.status !== \"cancelled\")",
+    "replace": "orders.filter((o) => o.status === \"completed\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: revenue is not added up",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "validOrders.reduce((sum, o) => sum + o.totalVnd, 0)",
+    "replace": "0",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: revenue is the last order",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "validOrders.reduce((sum, o) => sum + o.totalVnd, 0)",
+    "replace": "validOrders.reduce((sum, o) => o.totalVnd, 0)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: orders are counted by the wrong state",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "ordersByStatus[o.status] = (ordersByStatus[o.status] || 0) + 1;",
+    "replace": "ordersByStatus[o.status] = 1;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the pending count looks at another state",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "pendingOrders: ordersByStatus[\"pending\"] || 0,",
+    "replace": "pendingOrders: ordersByStatus[\"confirmed\"] || 0,",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: only eight recent orders become nine",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "orders.slice(0, 8)",
+    "replace": "orders.slice(0, 9)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: only eight recent orders become seven",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "orders.slice(0, 8)",
+    "replace": "orders.slice(0, 7)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the revenue card shows the list size",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "sub={noOrders ? \"\" : t(\"kpi.revenue.sub\", { count: stats.validOrders.length })}",
+    "replace": "sub={noOrders ? \"\" : t(\"kpi.revenue.sub\", { count: orders.length })}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the processing card is never highlighted",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "highlight={!noOrders && stats.pendingOrders > 0}",
+    "replace": "highlight={false}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the processing card is always highlighted",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "highlight={!noOrders && stats.pendingOrders > 0}",
+    "replace": "highlight={!noOrders}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the processing card shows the total",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "value={noOrders ? \"—\" : stats.pendingOrders}",
+    "replace": "value={noOrders ? \"—\" : totalOrders}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the orders card shows the list size",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "value={noOrders ? \"—\" : totalOrders}",
+    "replace": "value={noOrders ? \"—\" : orders.length}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the orders card counts the wrong state",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "t(\"kpi.orders.sub\", { count: stats.ordersByStatus[\"completed\"] || 0 })",
+    "replace": "t(\"kpi.orders.sub\", { count: stats.ordersByStatus[\"delivered\"] || 0 })",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the products card shows the list size",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "value={noProducts ? \"—\" : totalProducts}",
+    "replace": "value={noProducts ? \"—\" : products.length}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the products card swaps active and inactive",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "active: stats.activeProducts,\n                  inactive: stats.inactiveProducts,",
+    "replace": "active: stats.inactiveProducts,\n                  inactive: stats.activeProducts,",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the users card shows a list size",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "value={noUsers ? \"—\" : totalUsers}",
+    "replace": "value={noUsers ? \"—\" : _users.length}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the cards never show dashes while loading",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const noOrders = loading || ordersFailed;",
+    "replace": "const noOrders = ordersFailed;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed list shows zeros",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const noOrders = loading || ordersFailed;",
+    "replace": "const noOrders = loading;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed product list shows zeros",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const noProducts = loading || productsFailed;",
+    "replace": "const noProducts = loading;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed user list shows zeros",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const noUsers = loading || usersFailed;",
+    "replace": "const noUsers = loading;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the alert never shows",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{anyFailed && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the alert always shows",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{anyFailed && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed product list raises no alert",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const anyFailed = productsFailed || ordersFailed || usersFailed;",
+    "replace": "const anyFailed = ordersFailed || usersFailed;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed order list raises no alert",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const anyFailed = productsFailed || ordersFailed || usersFailed;",
+    "replace": "const anyFailed = productsFailed || usersFailed;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed user list raises no alert",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const anyFailed = productsFailed || ordersFailed || usersFailed;",
+    "replace": "const anyFailed = productsFailed || ordersFailed;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: retry does nothing",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "            onClick={reload}",
+    "replace": "            onClick={() => {}}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failed order list says no orders",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "emptyMessage={ordersFailed ? t(\"error.message\") : t(\"recentOrders.empty\")}",
+    "replace": "emptyMessage={t(\"recentOrders.empty\")}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: an empty list shows the error",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "emptyMessage={ordersFailed ? t(\"error.message\") : t(\"recentOrders.empty\")}",
+    "replace": "emptyMessage={t(\"error.message\")}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the status bars show on failure",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{loading || ordersFailed ? (",
+    "replace": "{loading ? (",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the status bars show while loading",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{loading || ordersFailed ? (",
+    "replace": "{ordersFailed ? (",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a failure says loading",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{loading ? t(\"orderStatus.loading\") : \"—\"}",
+    "replace": "{t(\"orderStatus.loading\")}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the share uses the list size",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const pct = totalOrders > 0 ? Math.round((count / totalOrders) * 100) : 0;",
+    "replace": "const pct = orders.length > 0 ? Math.round((count / orders.length) * 100) : 0;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the share is not rounded",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "Math.round((count / totalOrders) * 100)",
+    "replace": "(count / totalOrders) * 100",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the share divides by zero",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const pct = totalOrders > 0 ?",
+    "replace": "const pct = true ?",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the share is a fraction",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "Math.round((count / totalOrders) * 100)",
+    "replace": "Math.round(count / totalOrders)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a state shows another count",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "const count = stats.ordersByStatus[status] || 0;",
+    "replace": "const count = stats.ordersByStatus[\"pending\"] || 0;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the states are in another order",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "[\"pending\", \"confirmed\", \"shipping\", \"delivered\", \"completed\", \"cancelled\"].map(",
+    "replace": "[\"cancelled\", \"completed\", \"delivered\", \"shipping\", \"confirmed\", \"pending\"].map(",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a state is left out",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "[\"pending\", \"confirmed\", \"shipping\", \"delivered\", \"completed\", \"cancelled\"].map(",
+    "replace": "[\"pending\", \"confirmed\", \"shipping\", \"delivered\", \"completed\"].map(",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the number items are always zero",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{o.items?.length ?? 0}",
+    "replace": "{0}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: an order without lines breaks the row",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "{o.items?.length ?? 0}",
+    "replace": "{o.items.length}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the item column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "      key: \"items\",\n      header: headers.items,\n      hideBelow: \"sm\",",
+    "replace": "      key: \"items\",\n      header: headers.items,",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the date column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "      key: \"date\",\n      header: headers.date,\n      hideBelow: \"sm\",",
+    "replace": "      key: \"date\",\n      header: headers.date,",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the total is shown in another way",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "<MoneyText money={moneyOf(o, \"total\")}",
+    "replace": "<MoneyText money={moneyOf(o, \"subtotal\")}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the date is long",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "format.dateTime(new Date(o.createdAt), \"short\")",
+    "replace": "format.dateTime(new Date(o.createdAt), \"dateTime\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the order number has no hash",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "          #{o.id}\n",
+    "replace": "          {o.id}\n",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the search box shows",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "            searchable={false}\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: pending looks like cancelled",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  pending: \"bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]\",",
+    "replace": "  pending: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: confirmed looks like shipping",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  confirmed: \"bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]\",",
+    "replace": "  confirmed: \"bg-[rgba(184,165,200,0.15)] text-[var(--accent-lavender)]\",",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: shipping looks like confirmed",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  shipping: \"bg-[rgba(184,165,200,0.15)] text-[var(--accent-lavender)]\",",
+    "replace": "  shipping: \"bg-[rgba(143,163,180,0.15)] text-[var(--accent-blue)]\",",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: delivered looks like completed",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  delivered: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",",
+    "replace": "  delivered: \"bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]\",",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: completed looks like delivered",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  completed: \"bg-[rgba(201,169,110,0.15)] text-[var(--accent-primary)]\",\n  cancelled: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",\n};\n\nconst STATUS_COLOR",
+    "replace": "  completed: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",\n  cancelled: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",\n};\n\nconst STATUS_COLOR",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: cancelled looks like pending",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  cancelled: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",\n};\n\nconst STATUS_COLOR",
+    "replace": "  cancelled: \"bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]\",\n};\n\nconst STATUS_COLOR",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: pending bar has another colour",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  pending: \"var(--color-honey)\",",
+    "replace": "  pending: \"var(--accent-rose)\",",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: cancelled bar has another colour",
+    "file": "src/app/[locale]/(admin)/admin/DashboardContent.tsx",
+    "find": "  cancelled: \"var(--accent-rose)\",\n};\n\nconst STATUS_ICON",
+    "replace": "  cancelled: \"var(--color-honey)\",\n};\n\nconst STATUS_ICON",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the summary asks for another range",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "useAdminAnalytics(\"7d\", \"summary\")",
+    "replace": "useAdminAnalytics(\"30d\", \"summary\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the summary asks for the full report",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "useAdminAnalytics(\"7d\", \"summary\")",
+    "replace": "useAdminAnalytics(\"7d\", \"full\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: cancelled orders count for conversion",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "orders.filter((o) => o.status !== \"cancelled\" && Date.parse(o.createdAt) >= since)",
+    "replace": "orders.filter((o) => Date.parse(o.createdAt) >= since)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: old orders count for conversion",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "orders.filter((o) => o.status !== \"cancelled\" && Date.parse(o.createdAt) >= since)",
+    "replace": "orders.filter((o) => o.status !== \"cancelled\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the window start is left out of conversion",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "Date.parse(o.createdAt) >= since)",
+    "replace": "Date.parse(o.createdAt) > since)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: conversion divides the wrong way",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const conversion = visitors > 0 ? ordersInRange / visitors : null;",
+    "replace": "const conversion = visitors > 0 ? visitors / ordersInRange : null;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: conversion divides by zero",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const conversion = visitors > 0 ? ordersInRange / visitors : null;",
+    "replace": "const conversion = ordersInRange / visitors;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the figures wait for nothing",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const loading = isLoading || ordersLoading;",
+    "replace": "const loading = false;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the figures wait only for the orders",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const loading = isLoading || ordersLoading;",
+    "replace": "const loading = isLoading;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the figures wait only for the report",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const loading = isLoading || ordersLoading;",
+    "replace": "const loading = ordersLoading;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: no report still shows the figures",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "{!loading && !report ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a missing report is said to be fine",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "t(data?.status === \"not_configured\" ? \"notConfigured\" : \"unavailable\")",
+    "replace": "t(\"notConfigured\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a report is said to be missing",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "t(data?.status === \"not_configured\" ? \"notConfigured\" : \"unavailable\")",
+    "replace": "t(\"unavailable\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: visitors show the wrong figure",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "value={loading ? \"—\" : format.number(visitors)}",
+    "replace": "value={loading ? \"—\" : format.number(report?.totals.pageviews ?? 0)}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: visitors compare with the wrong period",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "percentChange(visitors, report.previousTotals?.visitors)",
+    "replace": "percentChange(visitors, report.previousTotals?.pageviews)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: page views compare with the wrong period",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "report.totals.pageviews, report.previousTotals?.pageviews",
+    "replace": "report.totals.pageviews, report.previousTotals?.visitors",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: page views show visitors",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "format.number(report?.totals.pageviews ?? 0)",
+    "replace": "format.number(visitors)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: conversion is shown as a number",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "format.number(conversion, { style: \"percent\", maximumFractionDigits: 2 })",
+    "replace": "format.number(conversion)",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the change shows no sign",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "                  signDisplay: \"exceptZero\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the change always shows a sign",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "signDisplay: \"exceptZero\",",
+    "replace": "signDisplay: \"always\",",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: a missing change shows a hint",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "(change === null || change === undefined\n            ? t(\"last7Days\")",
+    "replace": "(false\n            ? t(\"last7Days\")",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the conversion hint has no count",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "hint={t(\"conversionHint\", { count: ordersInRange })}",
+    "replace": "hint={t(\"conversionHint\", { count: 0 })}",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line needs only one point",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "if (values.length < 2) return",
+    "replace": "if (values.length < 1) return",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line is drawn from nothing",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "if (values.length < 2) return",
+    "replace": "if (values.length < 0) return",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line is not scaled to the largest day",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const max = Math.max(1, ...values);",
+    "replace": "const max = 1;",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line divides by zero on an empty week",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "const max = Math.max(1, ...values);",
+    "replace": "const max = Math.max(0, ...values);",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line is not spread across the width",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "`${(i / (values.length - 1)) * 100},${26 - (v / max) * 24}`",
+    "replace": "`${i * 10},${26 - (v / max) * 24}`",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line runs the wrong way",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "26 - (v / max) * 24",
+    "replace": "2 + (v / max) * 24",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line has no label",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "      aria-label={label}\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the line shows the wrong days",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "report?.series.map((p) => p.visitors) ?? []",
+    "replace": "report?.series.map((p) => p.pageviews) ?? []",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  },
+  {
+    "name": "dashboard: the link goes elsewhere",
+    "file": "src/app/[locale]/(admin)/admin/_components/AnalyticsSummary.tsx",
+    "find": "href=\"/admin/analytics\"",
+    "replace": "href=\"/admin\"",
+    "tests": [
+      "tests/admin/dashboard/dashboard.test.tsx"
+    ]
+  }
+]

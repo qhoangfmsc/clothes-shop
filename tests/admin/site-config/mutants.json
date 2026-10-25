@@ -1,0 +1,1706 @@
+[
+  {
+    "name": "site-config: the keys are not asked",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "    dispatch(fetchSiteConfigKeys());\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the saved configs are not asked",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "    dispatch(fetchSiteConfigList());\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a key shows no saved config",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "config: items.find((c) => c.key === k.key) ?? null",
+    "replace": "config: null",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a key shows the wrong config",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "items.find((c) => c.key === k.key)",
+    "replace": "items[0]",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a type with no keys gets a tab",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "CONFIG_TYPE_VIEWS[type] && rows.some((r) => r.type === type)",
+    "replace": "CONFIG_TYPE_VIEWS[type]",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: tabs show for one type",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "{types.length > 1 && (",
+    "replace": "{types.length > 0 && (",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: tabs never show",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "{types.length > 1 && (",
+    "replace": "{types.length > 5 && (",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the chosen type is ignored",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "chosenType && types.includes(chosenType) ? chosenType : (types[0] ?? null)",
+    "replace": "types[0] ?? null",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: every key shows in every tab",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "const activeRows = rows.filter((r) => r.type === activeType);",
+    "replace": "const activeRows = rows;",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the type description is hidden",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "{activeType && (\n            <p className=\"m-0 -mt-2",
+    "replace": "{false && (\n            <p className=\"m-0 -mt-2",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the loading line never shows",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "{isListLoading ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an unknown key has no fallback name",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "t.has(`keys.${key}.label` as never) ? t(`keys.${key}.label` as never) : key",
+    "replace": "\"\"",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an unknown key has a made-up description",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "t.has(`keys.${key}.description` as never) ? t(`keys.${key}.description` as never) : \"\"",
+    "replace": "key",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the status line is never shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "{Summary && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the dot is always grey",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "row.config ? \"bg-[var(--color-sage)]\" : \"bg-[var(--text-disabled)]\"",
+    "replace": "\"bg-[var(--text-disabled)]\"",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the dot is always green",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "row.config ? \"bg-[var(--color-sage)]\" : \"bg-[var(--text-disabled)]\"",
+    "replace": "\"bg-[var(--color-sage)]\"",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: edit needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.SITE_CONFIG_UPSERT}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.SITE_CONFIG_VIEW}>",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: edit needs the delete permission",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.SITE_CONFIG_UPSERT}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.SITE_CONFIG_DELETE}>",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the editor never opens",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "{editingRow && Editor && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the editor gets another title",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "title={keyLabel(editingRow.key)}",
+    "replace": "title={editingRow.key}",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the editor cannot be closed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/SiteConfigContent.tsx",
+    "find": "onClose={() => setEditingKey(null)}",
+    "replace": "onClose={() => {}}",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the banner status counts nothing",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "t(\"configured\", { count: parseBannerValue(config.value).length })",
+    "replace": "t(\"configured\", { count: 0 })",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a banner key with a value is called empty",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "if (!config) return <>{t(\"empty\")}</>;",
+    "replace": "if (true) return <>{t(\"empty\")}</>;",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a banner key with no value is called configured",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "if (!config) return <>{t(\"empty\")}</>;",
+    "replace": "if (false) return <>{t(\"empty\")}</>;",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: shipping is always configured",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "config ? t(\"shippingConfigured\") : t(\"shippingDefault\")",
+    "replace": "t(\"shippingConfigured\")",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: shipping is always default",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "config ? t(\"shippingConfigured\") : t(\"shippingDefault\")",
+    "replace": "t(\"shippingDefault\")",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the currency card has a status",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "  CURRENCY: { Editor: ExchangeRateModal },",
+    "replace": "  CURRENCY: { Editor: ExchangeRateModal, Summary: ShippingSummary },",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts",
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the tabs are in another order",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "[\"BANNER\", \"SHIPPING\", \"CURRENCY\"]",
+    "replace": "[\"SHIPPING\", \"BANNER\", \"CURRENCY\"]",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts",
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the shipping key opens the banner editor",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/registry.tsx",
+    "find": "  SHIPPING: { Editor: ShippingConfigModal, Summary: ShippingSummary },",
+    "replace": "  SHIPPING: { Editor: BannerConfigModal, Summary: ShippingSummary },",
+    "tests": [
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the keys are not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "      state.keys = action.payload.data;\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the list is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        state.items = action.payload.data;\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": ".addCase(fetchSiteConfigList.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchSiteConfigList.pending, (state) => {",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the list stays loading",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": ".addCase(fetchSiteConfigList.fulfilled, (state, action) => {\n        state.isListLoading = false;",
+    "replace": ".addCase(fetchSiteConfigList.fulfilled, (state, action) => {",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a failed list stays loading",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        state.isListLoading = false;\n        state.error = action.error.message ?? \"Failed to fetch\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to fetch\";",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a save is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "      .addCase(upsertSiteConfig.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": "      .addCase(upsertSiteConfig.pending, (state) => {",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a save keeps the old error",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = true;\n        state.error = null;",
+    "replace": "        state.isUpdating = true;",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a save stays busy",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "      .addCase(upsertSiteConfig.fulfilled, (state, action) => {\n        state.isUpdating = false;",
+    "replace": "      .addCase(upsertSiteConfig.fulfilled, (state, action) => {",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a saved key is added twice",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        if (idx >= 0) {\n          state.items[idx] = action.payload;",
+    "replace": "        if (false) {\n          state.items[idx] = action.payload;",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a saved key is not replaced",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        if (idx >= 0) {\n          state.items[idx] = action.payload;\n        } else {\n          state.items.push(action.payload);\n        }",
+    "replace": "        if (idx < 0) {\n          state.items.push(action.payload);\n        }",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a new key is not added",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        } else {\n          state.items.push(action.payload);\n        }",
+    "replace": "        }",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a refused save stays busy",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_common/moduleSlice.ts",
+    "find": "        state.isUpdating = false;\n        state.error = action.error.message ?? \"Failed to save\";",
+    "replace": "        state.error = action.error.message ?? \"Failed to save\";",
+    "tests": [
+      "tests/admin/site-config/site-config-slice.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a broken banner value is not caught",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/banner-form.ts",
+    "find": "  } catch {\n    return [];\n  }",
+    "replace": "  } catch {\n    return [{ image: \"x\" }];\n  }",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx",
+      "tests/admin/site-config/site-config-page.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a value that is not a list is kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/banner-form.ts",
+    "find": "return Array.isArray(parsed) ? parsed : [];",
+    "replace": "return parsed;",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a missing value gives a banner",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/banner-form.ts",
+    "find": "  if (!value) return [];",
+    "replace": "  if (!value) return [EMPTY_BANNER_ITEM];",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a new banner has a picture",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/banner-form.ts",
+    "find": "  image: \"\",",
+    "replace": "  image: \"/placeholder.jpg\",",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a new banner has a title",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/banner-form.ts",
+    "find": "  title: \"\",",
+    "replace": "  title: \"x\",",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the banners start empty",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "useState<BannerItem[]>(() => parseBannerValue(savedValue))",
+    "replace": "useState<BannerItem[]>([])",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: add puts the banner first",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "setBannerItems((p) => [...p, { ...EMPTY_BANNER_ITEM }])",
+    "replace": "setBannerItems((p) => [{ ...EMPTY_BANNER_ITEM }, ...p])",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: remove takes the wrong banner",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "setBannerItems((p) => p.filter((_, j) => j !== i))",
+    "replace": "setBannerItems((p) => p.filter((_, j) => j !== 0))",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a picture change loses the other pictures",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "responsiveImages: { ...next[i].responsiveImages, [breakpoint]: value },",
+    "replace": "responsiveImages: { [breakpoint]: value },",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: collapse opens one banner and closes none",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "      if (next.has(i)) next.delete(i);\n      else next.add(i);",
+    "replace": "      next.add(i);",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: collapse never opens again",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "      if (next.has(i)) next.delete(i);\n      else next.add(i);",
+    "replace": "      next.add(i);",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a banner starts collapsed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "useState<Set<number>>(new Set())",
+    "replace": "useState<Set<number>>(new Set([0, 1, 2]))",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the collapsed header hides the ticks",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "                      {isCollapsed && (\n                        <>",
+    "replace": "                      {false && (\n                        <>",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: every picture shows a tick",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "                                {has ? (\n                                  <Check",
+    "replace": "                                {true ? (\n                                  <Check",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the desktop tick looks at the wrong picture",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "{ label: t(\"form.images.desktop\"), has: !!b.image?.trim() }",
+    "replace": "{ label: t(\"form.images.desktop\"), has: !!b.responsiveImages?.tablet?.trim() }",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the tablet tick looks at the phone",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "has: !!b.responsiveImages?.tablet?.trim(),",
+    "replace": "has: !!b.responsiveImages?.mobile?.trim(),",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the phone tick looks at the tablet",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "has: !!b.responsiveImages?.mobile?.trim(),",
+    "replace": "has: !!b.responsiveImages?.tablet?.trim(),",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a missing picture is not dimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": ": \"text-[var(--text-disabled)] opacity-40\"",
+    "replace": ": \"text-[var(--text-secondary)]\"",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the content shows on a collapsed banner",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "{!isCollapsed && (\n                      <>",
+    "replace": "{true && (\n                      <>",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a blank desktop picture is accepted",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "if (bannerItems.some((b) => !b.image.trim())) {",
+    "replace": "if (bannerItems.some((b) => !b.image)) {",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a missing desktop picture is accepted",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "    if (bannerItems.some((b) => !b.image.trim())) {\n      toast.error(t(\"toast.desktopRequired\"));\n      return;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the desktop warning is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "toast.error(t(\"toast.desktopRequired\"));\n      return;",
+    "replace": "return;",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an invalid banner is sent anyway",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "toast.error(t(\"toast.desktopRequired\"));\n      return;",
+    "replace": "toast.error(t(\"toast.desktopRequired\"));",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: empty pictures are kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "filter(([, v]) => v?.trim())",
+    "replace": "filter(([, v]) => v !== undefined)",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: blank pictures are kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "filter(([, v]) => v?.trim())",
+    "replace": "filter(([, v]) => v)",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an empty picture list is kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "responsiveImages: Object.keys(responsiveImages).length > 0 ? responsiveImages : undefined,",
+    "replace": "responsiveImages,",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a picture list is always dropped",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "responsiveImages: Object.keys(responsiveImages).length > 0 ? responsiveImages : undefined,",
+    "replace": "responsiveImages: undefined,",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a save is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "toast.success(t(\"toast.saved\"));\n      onClose();",
+    "replace": "onClose();",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a save leaves the form open",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "toast.success(t(\"toast.saved\"));\n      onClose();",
+    "replace": "toast.success(t(\"toast.saved\"));",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a failed save is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a failed save closes the form",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));\n      onClose();",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the saving label is not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "isSaving={isUpdating}",
+    "replace": "isSaving={false}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a text field writes into another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(e) => updBanner(i, \"title\", e.target.value)}",
+    "replace": "onChange={(e) => updBanner(i, \"subtitle\", e.target.value)}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the label field is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(e) => updBanner(i, \"label\", e.target.value)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the button text is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(e) => updBanner(i, \"ctaLabel\", e.target.value)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the link is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(e) => updBanner(i, \"ctaHref\", e.target.value)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the desktop picture is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(url) => updBanner(i, \"image\", url)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the tablet picture is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(url) => updBannerResponsiveImage(i, \"tablet\", url)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the phone picture goes to the tablet",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "onChange={(url) => updBannerResponsiveImage(i, \"mobile\", url)}",
+    "replace": "onChange={(url) => updBannerResponsiveImage(i, \"tablet\", url)}",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the empty hint always shows",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "{bannerItems.length === 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the banner count is not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/banner/BannerConfigModal.tsx",
+    "find": "t(\"form.banners\", { count: bannerItems.length })",
+    "replace": "t(\"form.banners\", { count: 0 })",
+    "tests": [
+      "tests/admin/site-config/banner-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the form opens before the policy arrives",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "  const waiting = isLoading && saved !== null && saved.returnPolicy === null;",
+    "replace": "  const waiting = false;",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the form always waits",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "  const waiting = isLoading && saved !== null && saved.returnPolicy === null;",
+    "replace": "  const waiting = isLoading;",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a saved config is not used",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "    if (!saved) return served;\n",
+    "replace": "    return served;\n",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a saved config without a policy keeps none",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "return saved.returnPolicy ? saved : { ...saved, returnPolicy: served?.returnPolicy ?? null };",
+    "replace": "return saved;",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a saved policy is replaced",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "return saved.returnPolicy ? saved : { ...saved, returnPolicy: served?.returnPolicy ?? null };",
+    "replace": "return { ...saved, returnPolicy: served?.returnPolicy ?? null };",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the loading line is always the failure",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "{isLoading ? t(\"loading\") : t(\"loadFailed\")}",
+    "replace": "{t(\"loadFailed\")}",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the failure line is always the loading",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "{isLoading ? t(\"loading\") : t(\"loadFailed\")}",
+    "replace": "{t(\"loading\")}",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the threshold change is lost",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "    setForm((prev) => ({ ...prev, threshold: value }));\n    clearError(\"threshold\");",
+    "replace": "    clearError(\"threshold\");",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the threshold error stays",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "    setForm((prev) => ({ ...prev, threshold: value }));\n    clearError(\"threshold\");",
+    "replace": "    setForm((prev) => ({ ...prev, threshold: value }));",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a return field change is lost",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "setForm((prev) => (prev.returnPolicy ? { ...prev, returnPolicy: { ...prev.returnPolicy, [field]: value } } : prev));",
+    "replace": "setForm((prev) => prev);",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a return field error stays",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "    clearError(`returnPolicy.${field}`);",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a method change hits another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "methods: prev.methods.map((m, i) => (i === index ? { ...m, [field]: value } : m)),",
+    "replace": "methods: prev.methods.map((m, i) => (i === 0 ? { ...m, [field]: value } : m)),",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a method error stays",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "    clearError(`${form.methods[index].id}.${field}`);",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the clear keeps the error",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "      const next = { ...prev };\n      delete next[path];\n      return next;",
+    "replace": "      return prev;",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the too-long message has no number",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "tForm(\"errors.tooLong\", { max: error.max })",
+    "replace": "tForm(\"errors.tooLong\", { max: 0 })",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the too-big message has another number",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "tForm(\"errors.tooBig\", { max: SHIPPING_LIMITS.money })",
+    "replace": "tForm(\"errors.tooBig\", { max: 1 })",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the range message has another number",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "tForm(\"errors.range\", { max: error.max })",
+    "replace": "tForm(\"errors.range\", { max: 1 })",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the too-many message has another number",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "tForm(\"errors.tooMany\", { max: error.max })",
+    "replace": "tForm(\"errors.tooMany\", { max: 1 })",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a problem has no message",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "    if (!error) return null;",
+    "replace": "    if (error) return null;",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an invalid form is sent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "      setErrors(found);\n      toast.error(tForm(\"toast.invalid\"));\n      return;",
+    "replace": "      setErrors(found);\n      toast.error(tForm(\"toast.invalid\"));",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an invalid form gives no warning",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "toast.error(tForm(\"toast.invalid\"));",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: problems are not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "      setErrors(found);\n      toast.error",
+    "replace": "      toast.error",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a valid form with one problem passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "if (Object.keys(found).length > 0) {",
+    "replace": "if (Object.keys(found).length > 1) {",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the shipping info is not refreshed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "      await refreshShipping();\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a save is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "toast.success(t(\"toast.saved\"));\n      onClose();",
+    "replace": "onClose();",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a save leaves the form open",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "toast.success(t(\"toast.saved\"));\n      onClose();",
+    "replace": "toast.success(t(\"toast.saved\"));",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a failed save is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the saving label is not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "isSaving={isUpdating}",
+    "replace": "isSaving={false}",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the return section never shows",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "{form.returnPolicy && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the name box has no limit",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "maxLength={SHIPPING_LIMITS.name}",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the delivery time box has no limit",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "maxLength={SHIPPING_LIMITS.estimatedDays}",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the description box has no limit",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "maxLength={SHIPPING_LIMITS.description}",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the return description box has no limit",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "maxLength={SHIPPING_LIMITS.returnDescription}",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the icon list is cut",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "{SHIPPING_ICONS.map((icon) => (",
+    "replace": "{SHIPPING_ICONS.slice(0, 1).map((icon) => (",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the icon is not kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "onChange={(e) => setMethod(i, \"icon\", e.target.value as ShippingMethodForm[\"icon\"])}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the id is not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/ShippingConfigModal.tsx",
+    "find": "                {m.id}\n",
+    "replace": "                {m.name}\n",
+    "tests": [
+      "tests/admin/site-config/shipping-config.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: money is read without grouping",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "typeof value === \"number\" && Number.isSafeInteger(value) ? maskVndInput(String(value)) : \"\"",
+    "replace": "typeof value === \"number\" && Number.isSafeInteger(value) ? String(value) : \"\"",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a fractional price is read",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "typeof value === \"number\" && Number.isSafeInteger(value) ?",
+    "replace": "typeof value === \"number\" ?",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a text that is not text is kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "const text = (value: unknown) => (typeof value === \"string\" ? value : \"\");",
+    "replace": "const text = (value: unknown) => String(value ?? \"\");",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: days that are not a number are kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "days: typeof days === \"number\" && Number.isFinite(days) ? String(days) : \"\",",
+    "replace": "days: String(days ?? \"\"),",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: conditions that are not text are kept",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "conditions.filter((c): c is string => typeof c === \"string\").join(\"\\n\")",
+    "replace": "conditions.join(\"\\n\")",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a missing method is let through",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "    if (!found || !isIcon(found.icon)) return null;",
+    "replace": "    if (!found) return null;",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: an unknown icon is let through",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "    if (!found || !isIcon(found.icon)) return null;",
+    "replace": "    if (!found) return null;\n    if (false) return null;",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the methods follow the stored order",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  for (const id of SHIPPING_METHOD_IDS) {",
+    "replace": "  for (const id of [...SHIPPING_METHOD_IDS].reverse()) {",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: no served config gives a form",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  if (!info) return null;",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the served policy is not used",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "    returnPolicy: info.returnPolicy,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a bad threshold passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (form.threshold.trim()) set(\"threshold\", checkMoney(form.threshold.trim(), { allowZero: false }));",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a zero threshold passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "checkMoney(form.threshold.trim(), { allowZero: false })",
+    "replace": "checkMoney(form.threshold.trim(), { allowZero: true })",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a negative price passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (!allowZero && amount <= 0) return { kind: \"positive\" };",
+    "replace": "if (!allowZero && amount < 0) return { kind: \"positive\" };",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a price of zero is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "checkMoney(m.price.trim(), { allowZero: true })",
+    "replace": "checkMoney(m.price.trim(), { allowZero: false })",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a huge amount passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  if (amount > SHIPPING_LIMITS.money) return { kind: \"tooBig\" };",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: exactly a billion is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (amount > SHIPPING_LIMITS.money) return",
+    "replace": "if (amount >= SHIPPING_LIMITS.money) return",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a name may be empty",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "checkText(m.name, SHIPPING_LIMITS.name, { required: true })",
+    "replace": "checkText(m.name, SHIPPING_LIMITS.name, { required: false })",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a delivery time may be empty",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "checkText(m.estimatedDays, SHIPPING_LIMITS.estimatedDays, { required: true })",
+    "replace": "checkText(m.estimatedDays, SHIPPING_LIMITS.estimatedDays, { required: false })",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a description is required",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "checkText(m.description, SHIPPING_LIMITS.description, { required: false })",
+    "replace": "checkText(m.description, SHIPPING_LIMITS.description, { required: true })",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a blank name passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  const trimmed = value.trim();\n  if (required && !trimmed)",
+    "replace": "  const trimmed = value;\n  if (required && !trimmed)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a name of exactly the limit is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (trimmed.length > max) return",
+    "replace": "if (trimmed.length >= max) return",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the name limit is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  name: 100,",
+    "replace": "  name: 50,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the description limit is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  description: 255,",
+    "replace": "  description: 100,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the delivery time limit is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  estimatedDays: 100,",
+    "replace": "  estimatedDays: 50,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the day limit is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  returnDaysMax: 365,",
+    "replace": "  returnDaysMax: 100,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the return description limit is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  returnDescription: 500,",
+    "replace": "  returnDescription: 100,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the condition count is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  returnConditions: 10,",
+    "replace": "  returnConditions: 5,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the condition length is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  returnCondition: 255,",
+    "replace": "  returnCondition: 100,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the return checks are skipped",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "  if (form.returnPolicy) {\n    const { days, description, conditions } = form.returnPolicy;",
+    "replace": "  if (false) {\n    const { days, description, conditions } = form.returnPolicy!;",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: days with a decimal pass",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (!/^\\d+$/.test(days.trim())) set(\"returnPolicy.days\", { kind: \"number\" });",
+    "replace": "if (!/^[\\d.]+$/.test(days.trim())) set(\"returnPolicy.days\", { kind: \"number\" });",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: days that are not trimmed fail",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (!/^\\d+$/.test(days.trim()))",
+    "replace": "if (!/^\\d+$/.test(days))",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: zero days pass",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "else if (Number(days) < 1 || Number(days) > SHIPPING_LIMITS.returnDaysMax)",
+    "replace": "else if (Number(days) < 0 || Number(days) > SHIPPING_LIMITS.returnDaysMax)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: too many days pass",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "else if (Number(days) < 1 || Number(days) > SHIPPING_LIMITS.returnDaysMax)",
+    "replace": "else if (Number(days) < 1)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: exactly 365 days is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "Number(days) > SHIPPING_LIMITS.returnDaysMax)",
+    "replace": "Number(days) >= SHIPPING_LIMITS.returnDaysMax)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: blank condition lines are counted",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "    .map((line) => line.trim())\n    .filter(Boolean);",
+    "replace": "    .map((line) => line.trim());",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: condition lines are not trimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "    .map((line) => line.trim())\n    .filter(Boolean);",
+    "replace": "    .filter(Boolean);",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: too many conditions pass",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (lines.length > SHIPPING_LIMITS.returnConditions)",
+    "replace": "if (lines.length > 100)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: exactly ten conditions are refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "if (lines.length > SHIPPING_LIMITS.returnConditions)",
+    "replace": "if (lines.length >= SHIPPING_LIMITS.returnConditions)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a long condition passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "else if (lines.some((line) => line.length > SHIPPING_LIMITS.returnCondition))",
+    "replace": "else if (false)",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: texts are written untrimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "      name: m.name.trim(),",
+    "replace": "      name: m.name,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: descriptions are written untrimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "      description: m.description.trim(),",
+    "replace": "      description: m.description,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: delivery times are written untrimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "      estimatedDays: m.estimatedDays.trim(),",
+    "replace": "      estimatedDays: m.estimatedDays,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the price is written as text",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "      priceVnd: parseVndInput(m.price),",
+    "replace": "      priceVnd: m.price as unknown as number,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: the policy is never written",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "    ...(form.returnPolicy\n      ? {",
+    "replace": "    ...(false\n      ? {",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: days are written as text",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "            days: Number(form.returnPolicy.days),",
+    "replace": "            days: form.returnPolicy.days,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: return description is written untrimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/shipping/shipping-form.ts",
+    "find": "            description: form.returnPolicy.description.trim(),",
+    "replace": "            description: form.returnPolicy.description,",
+    "tests": [
+      "tests/admin/site-config/shipping-form.test.ts"
+    ]
+  },
+  {
+    "name": "site-config: a rate that is not a number is read",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "return typeof vndPerUsd === \"number\" && Number.isFinite(vndPerUsd) ? vndPerUsd : null;",
+    "replace": "return vndPerUsd as number;",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a missing rate gives a number",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "  if (!value) return null;",
+    "replace": "  if (!value) return 0;",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a broken rate gives a number",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "  } catch {\n    return null;\n  }",
+    "replace": "  } catch {\n    return 0;\n  }",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the smallest rate is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "{ min: 1, max: 1_000_000 }",
+    "replace": "{ min: 2, max: 1_000_000 }",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the largest rate is another",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "{ min: 1, max: 1_000_000 }",
+    "replace": "{ min: 1, max: 2_000_000 }",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a thousand separator is accepted",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "const RATE_PATTERN = /^\\d+(\\.\\d{1,2})?$/;",
+    "replace": "const RATE_PATTERN = /^[\\d.]+$/;",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: three decimals are accepted",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "\\.\\d{1,2}",
+    "replace": "\\.\\d{1,3}",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a bare number is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "(\\.\\d{1,2})?$/",
+    "replace": "(\\.\\d{1,2})$/",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a pattern that is not anchored passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "/^\\d+(\\.\\d{1,2})?$/",
+    "replace": "/\\d+(\\.\\d{1,2})?/",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: spaces are not trimmed when checking",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "  const value = text.trim();\n  if (!RATE_PATTERN",
+    "replace": "  const value = text;\n  if (!RATE_PATTERN",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a rate below the minimum passes",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "rate < EXCHANGE_RATE_LIMITS.min ||",
+    "replace": "false ||",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: exactly the minimum is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "rate < EXCHANGE_RATE_LIMITS.min",
+    "replace": "rate <= EXCHANGE_RATE_LIMITS.min",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: exactly the maximum is refused",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "rate > EXCHANGE_RATE_LIMITS.max",
+    "replace": "rate >= EXCHANGE_RATE_LIMITS.max",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the rate is written untrimmed",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/exchange-rate-form.ts",
+    "find": "JSON.stringify({ vndPerUsd: Number(text.trim()) })",
+    "replace": "JSON.stringify({ vndPerUsd: text })",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the rate starts empty",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "useState(saved === null ? \"\" : String(saved))",
+    "replace": "useState(\"\")",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a problem is not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "    if (found) {\n      setError(found);\n      return;\n    }",
+    "replace": "    if (found) {\n      return;\n    }",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: an invalid rate is sent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "      setError(found);\n      return;",
+    "replace": "      setError(found);",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: typing keeps the problem",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "                setText(e.target.value);\n                setError(null);",
+    "replace": "                setText(e.target.value);",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the rate is saved under another key",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "upsertSiteConfig({ key: configKey, value: serializeExchangeRate(text) })",
+    "replace": "upsertSiteConfig({ key: \"SHIPPING_CONFIG\", value: serializeExchangeRate(text) })",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a save is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "toast.success(t(\"toast.saved\"));\n      onClose();",
+    "replace": "onClose();",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a save leaves the form open",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "toast.success(t(\"toast.saved\"));\n      onClose();",
+    "replace": "toast.success(t(\"toast.saved\"));",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: a failed save is silent",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the saving label is not shown",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "isSaving={isUpdating}",
+    "replace": "isSaving={false}",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the box is not required",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "              aria-invalid={error !== null}\n              required",
+    "replace": "              aria-invalid={error !== null}",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  },
+  {
+    "name": "site-config: the problem is not marked",
+    "file": "src/app/[locale]/(admin)/admin/site-config/_types/currency/ExchangeRateModal.tsx",
+    "find": "aria-invalid={error !== null}",
+    "replace": "aria-invalid={false}",
+    "tests": [
+      "tests/admin/site-config/exchange-rate.test.tsx"
+    ]
+  }
+]

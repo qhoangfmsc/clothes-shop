@@ -28,7 +28,7 @@ export const MODULES = [
   ] },
   { doc: "platform/i18n", paths: ["src/i18n/", "src/middleware.ts", "scripts/i18n.mjs", "scripts/i18n-lib.mjs"] },
   { doc: "platform/data-layer", paths: [
-    "src/lib/api.ts", "src/lib/product-url.ts", "src/lib/product-list.ts", "src/lib/list-query.ts", "src/lib/media-url.ts", "src/lib/category-display.ts",
+    "src/lib/api.ts", "src/lib/product-url.ts", "src/lib/product-list.ts", "src/lib/list-query.ts", "src/lib/media-url.ts", "src/lib/slugify.ts", "src/lib/category-display.ts",
     "src/hooks/use-api.ts", "src/hooks/use-admin-api.ts", "src/hooks/use-media-upload.ts", "src/hooks/use-debounce.ts",
     "src/store/", "src/app/media/", `${PUBLIC}shop/_lib/`,
     "src/types/",
