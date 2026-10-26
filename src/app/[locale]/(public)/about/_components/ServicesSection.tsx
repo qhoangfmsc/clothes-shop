@@ -67,8 +67,10 @@ export default function ServicesSection() {
                   ease: [...ease],
                   delay: idx * 0.12,
                 }}
-                className={`bg-[${style.bg}] border border-[${style.border}] rounded-md p-[clamp(2rem,3.5vw,3rem)] flex flex-col gap-5 cursor-default`}
+                className="border rounded-md p-[clamp(2rem,3.5vw,3rem)] flex flex-col gap-5 cursor-default"
                 style={{
+                  background: style.bg,
+                  borderColor: style.border,
                   transition:
                     "transform var(--duration-base) var(--ease-default), box-shadow var(--duration-base) var(--ease-default), border-color var(--duration-base) var(--ease-default)",
                 }}

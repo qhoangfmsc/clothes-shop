@@ -3,11 +3,6 @@
   "pending": [
     "platform/app-shell",
     "platform/site-chrome",
-    "platform/design-system",
-    "storefront/about",
-    "storefront/contact",
-    "storefront/legal",
-    "storefront/customer-reviews",
-    "storefront/account"
+    "platform/design-system"
   ]
 }

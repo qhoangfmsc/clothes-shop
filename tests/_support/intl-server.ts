@@ -1,4 +1,4 @@
-import { createTranslator } from "next-intl";
+import { createFormatter, createTranslator } from "next-intl";
 import { FORMATS, TIME_ZONE } from "@/src/i18n/formats";
 import { MESSAGES } from "./messages";
 
@@ -29,5 +29,6 @@ export const intlServerModule = {
     const locale = ((typeof request === "object" && request?.locale) || state.locale) as Locale;
     return createTranslator({ locale, messages: MESSAGES[locale], namespace: namespace as never, formats: FORMATS, timeZone: TIME_ZONE });
   },
+  getFormatter: async (request?: { locale?: string }) => createFormatter({ locale: (request?.locale ?? state.locale) as Locale, formats: FORMATS, timeZone: TIME_ZONE }),
   getRequestConfig: (config: unknown) => config,
 };

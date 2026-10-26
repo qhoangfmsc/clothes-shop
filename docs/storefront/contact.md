@@ -1,6 +1,6 @@
 # Contact / Custom order (liên hệ đặt may)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-23
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-25
 > **Code:** `(public)/contact/` — `page.tsx`, `_common/{types,constants,build-order-request}.ts`, `_components/{OrderRequestForm,ProductSummaryCard}.tsx` · `src/lib/product-purchase.ts` (`CONTACT_PATH`, `buildOrderInquiryHref`) · `src/lib/contact.ts` (`CONTACT_EMAIL`, `buildMailto`) · `src/lib/socials.tsx`
 > **i18n:** `public.contact`
 
@@ -41,3 +41,7 @@ Sản phẩm gắn badge `custom_order` không vào giỏ được; nút "Đặt
 
 - **Link sản phẩm:** dựng bằng `productPath(product)` (`src/lib/product-url.ts`) từ `product.category.slug` và `product.subcategory.slug` có sẵn trong response (sản phẩm đầy đủ luôn có cả hai); thiếu một trong hai thì `/shop`.
 - **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.
+
+### 4.1 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/contact.md](../../specs/storefront/contact.md). Test ở `tests/storefront/contact/` (`contact-lib`, `contact-form`, `contact-page`; `contact-kit.tsx` là dữ liệu mẫu, API sản phẩm giả và công cụ ghi địa chỉ `mailto:`); `mutants.json` có đột biến cho mọi file của module.

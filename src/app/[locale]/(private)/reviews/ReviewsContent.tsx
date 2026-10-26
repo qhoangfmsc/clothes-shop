@@ -49,7 +49,7 @@ export default function ReviewsContent() {
 
   const pending = usePendingReviews();
   const mine = useMyReviews(statusFilter, productId);
-  const { reload: reloadMine, replace: replaceMine } = mine;
+  const { reload: reloadMine } = mine;
   const { reload: reloadPending } = pending;
 
   const setTab = (next: ReviewTab) => {
@@ -69,10 +69,9 @@ export default function ReviewsContent() {
 
   const closeForm = useCallback(() => setTarget(null), []);
 
-  const handleSaved = (review: AuthorReview) => {
-    if (target?.mode === "edit") replaceMine(review);
+  const handleSaved = () => {
     setTarget(null);
-    /* A new review leaves "to review"; either way the product summaries are stale */
+    /* A new review leaves "to review"; an edit changes "my reviews"; either way the product summaries are stale */
     void refreshReviewData();
     void reloadMine();
   };

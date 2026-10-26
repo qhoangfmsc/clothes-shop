@@ -1,0 +1,920 @@
+[
+  {
+    "name": "contact: the page does not tell the language",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the first of several products is not taken",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "(Array.isArray(param) ? param[0] : param)?.trim()",
+    "replace": "(Array.isArray(param) ? param[1] : param)?.trim()",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the id keeps its spaces",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "(Array.isArray(param) ? param[0] : param)?.trim()",
+    "replace": "(Array.isArray(param) ? param[0] : param)",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: an empty id is looked up",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "  if (!id) return null;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: an unknown product still shows a card",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "  if (!product) return null;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the product link has no category",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "const path = productPath(product) ?? \"/shop\";",
+    "replace": "const path = \"/shop\";",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the product address has no language",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "url: pageUrl(locale, path),",
+    "replace": "url: pageUrl(\"vi\", path),",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the reference is lost",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "    sku: product.sku,\n",
+    "replace": "    sku: \"\",\n",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the place is lost",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "categoryTitle: product.category?.title ?? null,",
+    "replace": "categoryTitle: null,",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the sub-category is lost",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "subcategoryLabel: product.subcategory?.label ?? null,",
+    "replace": "subcategoryLabel: null,",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the product is not given to the form",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "<OrderRequestForm product={product} />",
+    "replace": "<OrderRequestForm product={null} />",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the steps are in another order",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "const STEP_KEYS = [\"tell\", \"design\", \"confirm\"] as const;",
+    "replace": "const STEP_KEYS = [\"design\", \"tell\", \"confirm\"] as const;",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the steps start at zero",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "                  {index + 1}\n",
+    "replace": "                  {index}\n",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the email link has the wrong address",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "<a href={buildMailto()} className={channelClass}>",
+    "replace": "<a href=\"mailto:x@y.z\" className={channelClass}>",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the phone link has a spaced number",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "href={`tel:${CONTACT_PHONE_E164}`}",
+    "replace": "href={`tel:${CONTACT_PHONE}`}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a social profile opens in this tab",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "                target=\"_blank\"\n                rel=\"noopener noreferrer\"\n                className={channelClass}",
+    "replace": "                className={channelClass}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a social profile can reach the page",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "                rel=\"noopener noreferrer\"\n                className={channelClass}",
+    "replace": "                className={channelClass}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the address does not open in a new tab",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "            href={CONTACT_MAPS_URL}\n            target=\"_blank\"",
+    "replace": "            href={CONTACT_MAPS_URL}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the back link goes elsewhere",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "          href=\"/shop\"\n          className=\"self-start",
+    "replace": "          href=\"/\"\n          className=\"self-start",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the title has no description",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "    title,\n    description: t(\"description\"),\n    alternates",
+    "replace": "    title,\n    description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the address is the shop's",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "alternates: buildAlternates(locale, \"/contact\"),",
+    "replace": "alternates: buildAlternates(locale, \"/shop\"),",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the share card has another address",
+    "file": "src/app/[locale]/(public)/contact/page.tsx",
+    "find": "buildSocialMetadata({ locale, path: \"/contact\", title",
+    "replace": "buildSocialMetadata({ locale, path: \"/shop\", title",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a missing wish is accepted",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "      ...(!values.note.trim() && { note: true }),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a wish of spaces is accepted",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "!values.note.trim() && { note: true }",
+    "replace": "!values.note && { note: true }",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a missing name is accepted",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "      ...(!values.fullName.trim() && { fullName: true }),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a name of spaces is accepted",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "!values.fullName.trim() && { fullName: true }",
+    "replace": "!values.fullName && { fullName: true }",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a short phone is accepted",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "digits < MIN_PHONE_DIGITS || digits > MAX_PHONE_DIGITS",
+    "replace": "digits > MAX_PHONE_DIGITS",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a long phone is accepted",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "digits < MIN_PHONE_DIGITS || digits > MAX_PHONE_DIGITS",
+    "replace": "digits < MIN_PHONE_DIGITS",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the phone counts letters",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "values.phone.replace(/\\D/g, \"\").length",
+    "replace": "values.phone.length",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the form sends when wrong",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "    if (!validate()) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the email goes nowhere",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "    window.location.href = buildMailto(subject, body);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the email has no subject",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "buildMailto(subject, body)",
+    "replace": "buildMailto(undefined, body)",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the email has no text",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "buildMailto(subject, body)",
+    "replace": "buildMailto(subject)",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the date is written short",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "format.dateTime(new Date(`${iso}T12:00:00`), \"long\")",
+    "replace": "format.dateTime(new Date(`${iso}T12:00:00`), \"short\")",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a measurement takes letters",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "e.target.value.replace(/[^\\d.,]/g, \"\")",
+    "replace": "e.target.value",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a measurement takes more than five characters",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "                    maxLength={5}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the weight goes into a measurement",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "if (key === \"weight\") set(\"weight\", next);\n                      else setMeasurement(key, next);",
+    "replace": "setMeasurement(key as never, next);",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the minus never switches off",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "disabled={values.quantity <= 1}",
+    "replace": "disabled={values.quantity <= 0}",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the plus never switches off",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "disabled={values.quantity >= MAX_QUANTITY}",
+    "replace": "disabled={values.quantity >= MAX_QUANTITY + 1}",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the quantity counts by two",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "Math.min(MAX_QUANTITY, values.quantity + 1)",
+    "replace": "Math.min(MAX_QUANTITY, values.quantity + 2)",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a past date can be chosen",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "                min={today}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the date stays after typing",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "onChange={(e) => set(\"neededBy\", e.target.value)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the wish is not limited",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "              maxLength={MAX_NOTE_LENGTH}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the counter counts nothing",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "t(\"form.design.counter\", { count: values.note.length, max: MAX_NOTE_LENGTH })",
+    "replace": "t(\"form.design.counter\", { count: 0, max: MAX_NOTE_LENGTH })",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the name is not limited",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "                maxLength={80}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the phone is not limited",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "                maxLength={20}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a wrong field is not marked",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "${errors.note ? errorBorder : \"\"}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the error of the wish is shown for the name",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "error={errors.fullName ? t(\"form.errors.name\") : undefined}",
+    "replace": "error={errors.fullName ? t(\"form.errors.note\") : undefined}",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the error of the phone is the name's",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "error={errors.phone ? t(\"form.errors.phone\") : undefined}",
+    "replace": "error={errors.phone ? t(\"form.errors.name\") : undefined}",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the product card never shows",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "      {product && (\n        <aside",
+    "replace": "      {false && (\n        <aside",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the wish limit changes",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "export const MAX_NOTE_LENGTH = 1000;",
+    "replace": "export const MAX_NOTE_LENGTH = 500;",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the quantity limit changes",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "export const MAX_QUANTITY = 10;",
+    "replace": "export const MAX_QUANTITY = 5;",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the shortest phone changes",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "export const MIN_PHONE_DIGITS = 8;",
+    "replace": "export const MIN_PHONE_DIGITS = 9;",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the longest phone changes",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "export const MAX_PHONE_DIGITS = 15;",
+    "replace": "export const MAX_PHONE_DIGITS = 14;",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a measurement is missing",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "[\"height\", \"bust\", \"waist\", \"hips\"]",
+    "replace": "[\"height\", \"bust\", \"waist\"]",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the measurements are in another order",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "[\"height\", \"bust\", \"waist\", \"hips\"]",
+    "replace": "[\"height\", \"waist\", \"bust\", \"hips\"]",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the form starts with a quantity of two",
+    "file": "src/app/[locale]/(public)/contact/_common/constants.ts",
+    "find": "  quantity: 1,",
+    "replace": "  quantity: 2,",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the greeting is missing",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "    t(\"message.greeting\"),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the intro is missing",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "    t(\"message.intro\"),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the closing is missing the name",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "[t(\"message.closing\"), values.fullName.trim()].filter(Boolean).join(\"\\n\")",
+    "replace": "[t(\"message.closing\")].filter(Boolean).join(\"\\n\")",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the reference is always given",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "product.sku ? row(t(\"message.labels.reference\"), product.sku) : \"\",",
+    "replace": "row(t(\"message.labels.reference\"), product.sku),",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the address of the product is missing",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "            row(t(\"message.labels.link\"), product.url),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the product name is missing",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "row(t(\"message.labels.product\"), product.name),",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the wish is not indented",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.note.trim().split(\"\\n\").map((line) => `  ${line}`)",
+    "replace": "values.note.trim().split(\"\\n\")",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the wish is not trimmed",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.note.trim() ? values.note.trim().split",
+    "replace": "values.note.trim() ? values.note.split",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: a spaced wish makes a section",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.note.trim() ? values.note",
+    "replace": "values.note ? values.note",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: a blank measurement is listed",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.measurements[key].trim()).map",
+    "replace": "values.measurements[key]).map",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: measurements are not trimmed",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "${values.measurements[key].trim()}`",
+    "replace": "${values.measurements[key]}`",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: measurements are joined by commas",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "measurements.join(\" · \")",
+    "replace": "measurements.join(\", \")",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty measurements row is given",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "measurements.length ? row(t(\"message.labels.measurements\"), measurements.join(\" · \")) : \"\"",
+    "replace": "row(t(\"message.labels.measurements\"), measurements.join(\" · \"))",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty weight is given",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.weight.trim() ? row(t(\"message.labels.weight\"), values.weight.trim()) : \"\",",
+    "replace": "row(t(\"message.labels.weight\"), values.weight.trim()),",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the weight is not trimmed",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "row(t(\"message.labels.weight\"), values.weight.trim())",
+    "replace": "row(t(\"message.labels.weight\"), values.weight)",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the quantity is missing",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "      row(t(\"message.labels.quantity\"), String(values.quantity)),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty date is given",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.neededBy ? row(t(\"message.labels.neededBy\"), formatDate(values.neededBy)) : \"\",",
+    "replace": "row(t(\"message.labels.neededBy\"), formatDate(values.neededBy)),",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the date is not formatted",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "formatDate(values.neededBy)",
+    "replace": "values.neededBy",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty name is given",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.fullName.trim() ? row(t(\"message.labels.name\"), values.fullName.trim()) : \"\",",
+    "replace": "row(t(\"message.labels.name\"), values.fullName.trim()),",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty phone is given",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "values.phone.trim() ? row(t(\"message.labels.phone\"), values.phone.trim()) : \"\",",
+    "replace": "row(t(\"message.labels.phone\"), values.phone.trim()),",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the phone is not trimmed",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "row(t(\"message.labels.phone\"), values.phone.trim())",
+    "replace": "row(t(\"message.labels.phone\"), values.phone)",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the sections are not separated",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "  ].join(\"\\n\\n\");",
+    "replace": "  ].join(\"\\n\");",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: a section with no rows is kept",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "  return filled.length ? [title, ...filled].join(\"\\n\") : null;",
+    "replace": "  return [title, ...filled].join(\"\\n\");",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the subject has no product name",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "? t(\"message.subject\", { product: product.name })",
+    "replace": "? t(\"message.subject\", { product: \"\" })",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the generic subject is always used",
+    "file": "src/app/[locale]/(public)/contact/_common/build-order-request.ts",
+    "find": "  const subject = product\n    ?",
+    "replace": "  const subject = false\n    ?",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the mail address has the wrong inbox",
+    "file": "src/lib/contact.ts",
+    "find": "export const CONTACT_EMAIL = \"contact@doovan.vn\";",
+    "replace": "export const CONTACT_EMAIL = \"info@doovan.vn\";",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: a space becomes a plus",
+    "file": "src/lib/contact.ts",
+    "find": "params.toString().replace(/\\+/g, \"%20\")",
+    "replace": "params.toString()",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty subject is sent",
+    "file": "src/lib/contact.ts",
+    "find": "  if (subject) params.set(\"subject\", subject);",
+    "replace": "  params.set(\"subject\", subject ?? \"\");",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: an empty text is sent",
+    "file": "src/lib/contact.ts",
+    "find": "  if (body) params.set(\"body\", body);",
+    "replace": "  params.set(\"body\", body ?? \"\");",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: a question mark is always added",
+    "file": "src/lib/contact.ts",
+    "find": "`mailto:${CONTACT_EMAIL}${query ? `?${query}` : \"\"}`",
+    "replace": "`mailto:${CONTACT_EMAIL}?${query}`",
+    "tests": [
+      "tests/storefront/contact/contact-lib.test.ts"
+    ]
+  },
+  {
+    "name": "contact: the card shows no badge",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "        {product.badge && (\n          <span",
+    "replace": "        {false && (\n          <span",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: thumbnails show for one picture",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "        {product.images.length > 1 && (",
+    "replace": "        {product.images.length > 0 && (",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: thumbnails do nothing",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "onClick={() => setActiveImage(index)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the thumbnails do not say which is open",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "aria-pressed={index === activeImage}",
+    "replace": "aria-pressed={false}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the big picture ignores the thumbnails",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "const image = product.images[activeImage] ?? product.images[0];",
+    "replace": "const image = product.images[0];",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a card without pictures breaks",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "        {image && (",
+    "replace": "        {true && (",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a custom order shows a price",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "{showPrice ? fmt(product, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(product, \"price\")}",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: a custom order shows a discount",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "{showPrice && discount && product.originalPriceVnd && (",
+    "replace": "{discount && product.originalPriceVnd && (",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the discount is rounded down",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "Math.round((1 - product.priceVnd / product.originalPriceVnd) * 100)",
+    "replace": "Math.floor((1 - product.priceVnd / product.originalPriceVnd) * 100)",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the discount counts from the price",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "(1 - product.priceVnd / product.originalPriceVnd) * 100",
+    "replace": "(1 - product.originalPriceVnd / product.priceVnd) * 100",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the place is joined with a dash",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": ".join(\" · \")",
+    "replace": ".join(\" - \")",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the place shows when empty",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "        {eyebrow && (",
+    "replace": "        {true && (",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the description shows when empty",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "        {product.description && (",
+    "replace": "        {true && (",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the material shows when empty",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "        {product.material && (",
+    "replace": "        {true && (",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the material hint is missing",
+    "file": "src/app/[locale]/(public)/contact/_components/ProductSummaryCard.tsx",
+    "find": "              {t(\"materialHint\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/contact/contact-page.test.tsx"
+    ]
+  }
+]

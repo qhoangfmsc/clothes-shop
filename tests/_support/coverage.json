@@ -62,7 +62,17 @@
     "src/app/[locale]/\\(public\\)/new-in/page.tsx",
     "src/app/[locale]/\\(public\\)/new-in/_components/**",
     "src/app/[locale]/\\(public\\)/page.tsx",
-    "src/app/[locale]/\\(public\\)/landing-page/**"
+    "src/app/[locale]/\\(public\\)/landing-page/**",
+    "src/app/[locale]/\\(private\\)/reviews/**",
+    "src/app/[locale]/\\(private\\)/account/**",
+    "src/app/[locale]/\\(public\\)/contact/**",
+    "src/lib/contact.ts",
+    "src/app/[locale]/\\(public\\)/about/**",
+    "src/app/[locale]/\\(public\\)/legal/**",
+    "src/app/[locale]/\\(public\\)/terms/page.tsx",
+    "src/app/[locale]/\\(public\\)/privacy/page.tsx",
+    "src/app/[locale]/\\(public\\)/shipping-returns/page.tsx",
+    "src/lib/legal.ts"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -1200,6 +1210,161 @@
     "src/app/[locale]/\\(private\\)/wishlist/_common/use-product-wishlist.ts": {
       "lines": 95,
       "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/ReviewsContent.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/constants.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/upload.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/use-my-reviews.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/use-deadline-label.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/ReviewFormModal.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/ReviewImageUploader.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/StarPicker.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/MyReviewCard.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/PendingReviewCard.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/account/AccountContent.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/account/layout.tsx": {
+      "lines": 70,
+      "branches": 45,
+      "functions": 45
+    },
+    "src/app/[locale]/\\(public\\)/contact/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/contact/_components/OrderRequestForm.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/contact/_components/ProductSummaryCard.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/contact/_common/build-order-request.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/contact/_common/constants.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/lib/contact.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/_components/BrandStory.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/_components/ServicesSection.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/_components/InvitationHero.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_common/content.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_common/metadata.ts": {
+      "lines": 95,
+      "branches": 50,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_components/LegalPage.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_components/LegalToc.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/terms/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/privacy/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shipping-returns/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/lib/legal.ts": {
+      "lines": 90,
+      "branches": 80,
       "functions": 95
     }
   }

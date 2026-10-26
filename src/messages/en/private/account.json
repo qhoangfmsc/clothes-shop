@@ -23,6 +23,8 @@
     "emptyDescription": "When you place your first order, it will appear here",
     "startShopping": "Start Shopping",
     "goTo": "Go to Orders",
-    "itemCount": "{count, plural, one {# item} other {# items}}"
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "loadFailed": "We couldn't load your orders.",
+    "retry": "Try again"
   }
 }

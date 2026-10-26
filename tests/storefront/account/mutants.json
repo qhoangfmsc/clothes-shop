@@ -1,0 +1,344 @@
+[
+  {
+    "name": "account: a visitor sees the account",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "  if (!isAuthenticated || !user) {",
+    "replace": "  if (false) {",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: grey boxes never show",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "  if (isLoading) {\n    return <AccountSkeleton />;",
+    "replace": "  if (false) {\n    return <AccountSkeleton />;",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the name is not shown",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "{user.name ?? t(\"welcome\")}",
+    "replace": "{t(\"welcome\")}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a nameless customer sees nothing",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "{user.name ?? t(\"welcome\")}",
+    "replace": "{user.name}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the email is not shown",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "          {user.email}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: member since uses the short date",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "format.dateTime(new Date(user.createdAt), \"long\")",
+    "replace": "format.dateTime(new Date(user.createdAt), \"short\")",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: four orders are shown",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "(res.data ?? []).slice(0, 3)",
+    "replace": "(res.data ?? []).slice(0, 4)",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: two orders are shown",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "(res.data ?? []).slice(0, 3)",
+    "replace": "(res.data ?? []).slice(0, 2)",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a failed read shows as empty",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "      ) : error ? (",
+    "replace": "      ) : false ? (",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a failed read has no retry",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "            onClick={retry}",
+    "replace": "            onClick={() => {}}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a retry does not show the grey boxes",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "  const retry = () => {\n    setLoading(true);",
+    "replace": "  const retry = () => {",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a retry does not ask again",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "    setAttempt((n) => n + 1);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: an error stays after the second try works",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "        setOrders((res.data ?? []).slice(0, 3));\n        setError(null);",
+    "replace": "        setOrders((res.data ?? []).slice(0, 3));",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: grey boxes never show for orders",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "      {loading ? (\n        <div className=\"flex flex-col gap-3 px-6 py-4\">",
+    "replace": "      {false ? (\n        <div className=\"flex flex-col gap-3 px-6 py-4\">",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: an order links to the list",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "href={`/orders/${order.id}`}",
+    "replace": "href=\"/orders\"",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the thumbnail is the first picture even if empty",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "order.items.find((i) => i.productImage)?.productImage",
+    "replace": "order.items[0]?.productImage",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the item count is of the orders",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "t(\"itemCount\", { count: order.items.length })",
+    "replace": "t(\"itemCount\", { count: orders.length })",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the date is the long one",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "format.dateTime(new Date(order.createdAt), \"short\")",
+    "replace": "format.dateTime(new Date(order.createdAt), \"long\")",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the payment state is always shown",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "{order.paymentStatus && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the total is in the other money",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "{fmt(order, \"total\")}",
+    "replace": "{fmt(order, \"subtotal\")}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: an unknown state has no colour",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "STATUS_COLORS[order.status] ?? STATUS_COLORS.pending",
+    "replace": "STATUS_COLORS[order.status]",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: delivered looks cancelled",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "    delivered: \"var(--accent-sage)\",",
+    "replace": "    delivered: \"var(--color-deep-rose)\",",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: cancelled looks delivered",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "    cancelled: \"var(--color-deep-rose)\",",
+    "replace": "    cancelled: \"var(--accent-sage)\",",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the orders count badge is missing",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "          {orders.length > 0 && (",
+    "replace": "          {false && (",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the orders link goes elsewhere",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "          href=\"/orders\"\n          className=\"inline-flex items-center gap-1 font-primary text-xs text-[var(--text-accent)]",
+    "replace": "          href=\"/shop\"\n          className=\"inline-flex items-center gap-1 font-primary text-xs text-[var(--text-accent)]",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the empty orders point elsewhere",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "              href=\"/shop\"\n              className=\"inline-flex items-center gap-1.5 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium py-2 px-5 rounded-full border border-[var(--border-light)] transition-colors duration-150 hover:bg-[var(--color-champagne-cream)] hover:border-[var(--accent-primary)] motion-reduce:transition-none\"\n            >\n              {t(\"startShopping\")}",
+    "replace": "              href=\"/orders\"\n              className=\"inline-flex items-center gap-1.5 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium py-2 px-5 rounded-full border border-[var(--border-light)] transition-colors duration-150 hover:bg-[var(--color-champagne-cream)] hover:border-[var(--accent-primary)] motion-reduce:transition-none\"\n            >\n              {t(\"startShopping\")}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the saved products are the oldest four",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "items.slice(-4).reverse()",
+    "replace": "items.slice(0, 4)",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the saved products are oldest first",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "items.slice(-4).reverse()",
+    "replace": "items.slice(-4)",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: five saved products are shown",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "items.slice(-4).reverse()",
+    "replace": "items.slice(-5).reverse()",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a saved custom order shows a price",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "{hasPublicPrice(item.badge) ? fmt(item, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(item, \"price\")}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: a saved product with no address is not looked up",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "<Link\n                  {...productLink(item)}",
+    "replace": "<Link\n                  href={`/shop/${item.category}/${item.subcategory}/${item.productId}`}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the saved count is of the four",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "              {items.length}\n",
+    "replace": "              {latestItems.length}\n",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: view all shows with no products",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "        {items.length > 0 && (\n          <Link\n            href=\"/wishlist\"",
+    "replace": "        {true && (\n          <Link\n            href=\"/wishlist\"",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: view all goes elsewhere",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "            href=\"/wishlist\"\n            className=\"inline-flex items-center gap-1 font-primary text-xs text-[var(--text-accent)]",
+    "replace": "            href=\"/shop\"\n            className=\"inline-flex items-center gap-1 font-primary text-xs text-[var(--text-accent)]",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the empty wishlist points elsewhere",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "              href=\"/shop\"\n              className=\"inline-flex items-center gap-1.5 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium py-2 px-5 rounded-full border border-[var(--border-light)] transition-colors duration-150 hover:bg-[var(--color-champagne-cream)] hover:border-[var(--accent-primary)] motion-reduce:transition-none\"\n            >\n              {t(\"browse\")}",
+    "replace": "              href=\"/wishlist\"\n              className=\"inline-flex items-center gap-1.5 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium py-2 px-5 rounded-full border border-[var(--border-light)] transition-colors duration-150 hover:bg-[var(--color-champagne-cream)] hover:border-[var(--accent-primary)] motion-reduce:transition-none\"\n            >\n              {t(\"browse\")}",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the carousel has no name",
+    "file": "src/app/[locale]/(private)/account/AccountContent.tsx",
+    "find": "ariaLabel={t(\"carouselAria\")}",
+    "replace": "ariaLabel=\"\"",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the metadata has no description",
+    "file": "src/app/[locale]/(private)/account/layout.tsx",
+    "find": "description: t(\"description\")",
+    "replace": "description: \"\"",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  },
+  {
+    "name": "account: the metadata title changes",
+    "file": "src/app/[locale]/(private)/account/layout.tsx",
+    "find": "t(\"title\")",
+    "replace": "t(\"description\")",
+    "tests": [
+      "tests/storefront/account/account.test.tsx"
+    ]
+  }
+]

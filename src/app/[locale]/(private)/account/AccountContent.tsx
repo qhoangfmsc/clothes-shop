@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
 import { useMoney } from "@/src/hooks/use-money";
@@ -199,8 +200,12 @@ function OrdersSection() {
   const paymentLabel = useOrderPaymentStatusLabel();
   const { isAuthenticated } = useAuth();
   const { apiFetch } = useApiAuth();
+  const toErrorMessage = useErrorMessage();
   const [orders, setOrders] = useState<OrderPreview[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown>(null);
+  /* Bumped by "Try again" to read the orders once more */
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -210,14 +215,20 @@ function OrdersSection() {
           data: OrderPreview[];
         }>("/api/orders");
         setOrders((res.data ?? []).slice(0, 3));
-      } catch {
-        /* silent */
+        setError(null);
+      } catch (err) {
+        setError(err);
       } finally {
         setLoading(false);
       }
     };
     fetchOrders();
-  }, [isAuthenticated, apiFetch]);
+  }, [isAuthenticated, apiFetch, attempt]);
+
+  const retry = () => {
+    setLoading(true);
+    setAttempt((n) => n + 1);
+  };
 
   const STATUS_COLORS: Record<string, string> = {
     pending: "var(--accent-primary)",
@@ -260,6 +271,19 @@ function OrdersSection() {
         <div className="flex flex-col gap-3 px-6 py-4">
           <div className="h-[3.25rem] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
           <div className="h-[3.25rem] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+        </div>
+      ) : error ? (
+        <div role="alert" className="flex flex-col items-center gap-3 py-10 px-6 text-center">
+          <p className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%]">
+            {toErrorMessage(error, t("loadFailed"))}
+          </p>
+          <button
+            type="button"
+            onClick={retry}
+            className="inline-flex min-h-11 cursor-pointer items-center rounded-full border border-[var(--border-light)] bg-transparent px-5 font-primary text-xs font-medium uppercase tracking-[0.08em] text-[var(--text-accent)] hover:bg-[var(--color-champagne-cream)]"
+          >
+            {t("retry")}
+          </button>
         </div>
       ) : orders.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-10 px-6 text-center">

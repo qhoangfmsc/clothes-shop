@@ -53,10 +53,6 @@ export function useMyReviews(statusFilter: MyReviewStatusFilter, productId: stri
 
   const loadMore = useCallback(() => load(page + 1), [load, page]);
   const reload = useCallback(() => load(1), [load]);
-  /** Put the BE's answer for one review into the list without asking for everything again */
-  const replace = useCallback((review: AuthorReview) => {
-    setItems((prev) => prev.map((item) => (item.id === review.id ? review : item)));
-  }, []);
 
-  return { items, total, status, error, hasMore: items.length < total, loadMore, reload, replace };
+  return { items, total, status, error, hasMore: items.length < total, loadMore, reload };
 }

@@ -1,6 +1,6 @@
 # Legal (Điều khoản, Chính sách bảo mật, Vận chuyển & đổi trả)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/terms`, `/privacy`, `/shipping-returns`, `/legal` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/terms`, `/privacy`, `/shipping-returns`, `/legal` · **Cập nhật:** 2026-10-25
 > **Code:** `(public)/legal/` — `page.tsx`, `_common/{content,metadata,types}.ts`, `_components/{LegalPage,LegalToc}.tsx` · `(public)/{terms,privacy,shipping-returns}/page.tsx` · `src/lib/legal.ts`
 > **i18n:** `public.legal`, `shared.legal`
 
@@ -44,3 +44,7 @@ Footer (`SiteFooter`), burger menu, footer của landing (chỉ 2 văn bản đ�
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
 - **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.
+
+### 4.5 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/legal.md](../../specs/storefront/legal.md). Test ở `tests/storefront/legal/legal.test.tsx` (dùng `tests/_support/server-tree.tsx` để chạy các thành phần server không đồng bộ); `mutants.json` có đột biến cho mọi file của module.

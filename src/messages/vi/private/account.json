@@ -23,6 +23,8 @@
     "emptyDescription": "Khi bạn đặt đơn hàng đầu tiên, nó sẽ xuất hiện ở đây",
     "startShopping": "Bắt đầu mua sắm",
     "goTo": "Đến đơn hàng",
-    "itemCount": "{count} sản phẩm"
+    "itemCount": "{count} sản phẩm",
+    "loadFailed": "Không tải được đơn hàng của bạn.",
+    "retry": "Thử lại"
   }
 }
