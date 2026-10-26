@@ -1,6 +1,6 @@
 # App shell (layout gốc, provider, route group, trang lỗi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-25
 > **Code:** `src/app/[locale]/layout.tsx` · `src/app/[locale]/_components/Providers.tsx` · `src/middleware.ts` · `src/app/[locale]/(public|private|admin|auth)/layout.tsx` · `not-found.tsx` · `[...rest]/page.tsx` · `(public)/error.tsx` · `unauthorized/` · `RouteTransition.tsx` · `cursor/` · `VercelTelemetry.tsx`
 
 ## 1. Tóm tắt module
@@ -57,7 +57,7 @@ Metadata `title` của từng trang private đặt trong `layout.tsx` của rout
 
 ### 4.4 `RouteTransition`
 
-Lắng nghe `click` (capture) trên document; nếu là link nội bộ khác trang hiện tại (không phải `_blank`, không phím tắt, không nằm trong `button/input/select/textarea`) thì hiện lớp phủ `--bg-primary` fade-in 180 ms (`rt-in`). Khi `pathname` đổi: giữ tối thiểu 300 ms, đợi 3 `requestAnimationFrame`, rồi fade-out 350 ms (`rt-out`). Tự tắt sau 4 s nếu không đổi trang. `z-index 9999`, `aria-hidden`.
+Lắng nghe `click` (capture) trên document; nếu là link nội bộ khác trang hiện tại (so sánh sau khi bỏ tiền tố ngôn ngữ, query và hash: link mang `/vi/shop`, `usePathname()` trả `/shop`; không phải `_blank`, không phím tắt, không nằm trong `button/input/select/textarea`) thì hiện lớp phủ `--bg-primary` fade-in 180 ms (`rt-in`). Khi `pathname` đổi: giữ tối thiểu 300 ms, đợi 3 `requestAnimationFrame`, rồi fade-out 350 ms (`rt-out`). Tự tắt sau 4 s nếu không đổi trang. `z-index 9999`, `aria-hidden`.
 
 ### 4.5 `CustomCursor`
 
@@ -75,3 +75,7 @@ Lắng nghe `click` (capture) trên document; nếu là link nội bộ khác tr
 `next-intl`, `framer-motion`, `@react-oauth/google`, `@vercel/analytics`, `@vercel/speed-insights`, `react-redux`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](./design-system.md) 4.3).
+
+### 4.8 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/platform/app-shell.md](../../specs/platform/app-shell.md). Test ở `tests/platform/app-shell/` (`shell-layouts`, `shell-pages`, `route-transition`, `cursor`, `providers`); server component được chạy bằng `tests/_support/server-tree.tsx`; `mutants.json` có đột biến cho mọi file của module.

@@ -6,7 +6,6 @@ import { Link } from "@/src/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import HamburgerMenu from "./HamburgerMenu";
-import UserMenu from "./UserMenu";
 import SearchBar from "./SearchBar";
 import { useCategories } from "@/src/hooks/use-api";
 import { MAX_INLINE_CATEGORIES } from "@/src/lib/category-display";
@@ -395,15 +394,12 @@ export default function HeaderNav({
           </Link>
         </div>
 
-        {/* <UserMenu /> */}
-
         <HamburgerMenu />
 
         <style>{`
           @media (min-width: 1024px) {
             nav#header-nav { --nav-link-display: block; }
             nav#header-nav { --search-desktop-display: flex; }
-          }
           }
           .header-nav-link::after {
             content: '';

@@ -112,7 +112,7 @@ export default function SizeGuideModal({ category, isOpen, onClose }: SizeGuideM
           >
             {/* Handle bar (mobile bottom-sheet feel) */}
             <div className="flex justify-center py-2.5 sm:hidden">
-              <span className="w-9 h-1 rounded-sm" style={{ background: "var(--border-medium)" }} />
+              <span className="w-9 h-1 rounded-sm" style={{ background: "var(--border-default)" }} />
             </div>
 
             {/* Header */}

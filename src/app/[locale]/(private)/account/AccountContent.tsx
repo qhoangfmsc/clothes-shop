@@ -15,7 +15,7 @@ import { useApiAuth } from "@/src/hooks/use-api-auth";
 import { useAppSelector } from "@/src/store/hooks";
 import { selectWishlistItems } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
-import { UserAvatar } from "@/src/app/[locale]/_components/UserMenu";
+import { UserAvatar } from "@/src/app/[locale]/_components/UserAvatar";
 import SignOutButton from "@/src/app/[locale]/_components/SignOutButton";
 import Carousel from "@/src/app/[locale]/_components/Carousel";
 import { useOrderPaymentStatusLabel, useOrderStatusLabel } from "@/src/i18n/use-labels";

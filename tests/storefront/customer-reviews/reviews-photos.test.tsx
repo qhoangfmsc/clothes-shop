@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { ReviewFormTarget } from "@/src/app/[locale]/(private)/reviews/_common/types";
 import { msg } from "@/tests/_support/messages";
-import { F, form, objectUrls, pick, removeButtons, send, star, useObjectUrls, user } from "./form-kit";
+import { F, form, objectUrls, pick, removeButtons, send, star, stubObjectUrls, user } from "./form-kit";
 import { pendingReview, photo } from "./reviews-kit";
 
 /* The photos of a review: picking, refusing, removing, and sending them with the review (specs/storefront/customer-reviews.md, flows REV-10 to REV-10E). */
@@ -12,7 +12,7 @@ const MB = 1024 * 1024;
 const input = () => document.body.querySelector<HTMLInputElement>('input[type="file"]')!;
 const hint = (count: number) => `${count}/5 ảnh · tối đa 5 MB mỗi ảnh · JPEG, PNG, WebP, GIF hoặc AVIF. Ảnh chỉ được tải lên khi bạn gửi đánh giá.`;
 
-useObjectUrls();
+stubObjectUrls();
 
 describe("REV-10 picking photos", () => {
   it("shows each picked photo as a thumbnail with a button to take it away, and counts them, without sending anything yet", async () => {

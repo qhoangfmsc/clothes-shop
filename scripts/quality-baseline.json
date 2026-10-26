@@ -1,8 +1,4 @@
 {
   "_comment": "Modules that do not have a tech spec and tests yet. Can only shrink: touching a module means giving it both and removing it here. Order of work: specs/_roadmap.md",
-  "pending": [
-    "platform/app-shell",
-    "platform/site-chrome",
-    "platform/design-system"
-  ]
+  "pending": []
 }

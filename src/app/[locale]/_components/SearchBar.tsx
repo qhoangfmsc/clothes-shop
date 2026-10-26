@@ -73,16 +73,13 @@ export default function SearchBar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [expanded, clearAutocomplete]);
 
-  /* Close on click outside (if query empty, no results, or dropdown not hovered) */
+  /* Close on click outside, but only while nothing is typed and nothing is listed */
   useEffect(() => {
     if (!expanded) return;
 
     const onMouseDown = (e: MouseEvent) => {
       const target = e.target as Node;
       if (rootRef.current?.contains(target)) return;
-      // Close if dropdown exists — check for autocomplete portal
-      const dropdown = document.getElementById("search-autocomplete-dropdown");
-      if (dropdown?.contains(target)) return;
       if (!query.trim() && results.length === 0) {
         setExpanded(false);
         setHighlightIdx(-1);
@@ -266,7 +263,7 @@ export default function SearchBar() {
         </div>
       </div>
 
-      {/* Autocomplete dropdown — rendered via portal so it escapes parent overflow */}
+      {/* Autocomplete dropdown — a sibling of the clipped container, positioned with `fixed` */}
       {showDropdown && (
         <SearchDropdown
           anchorRef={containerRef}

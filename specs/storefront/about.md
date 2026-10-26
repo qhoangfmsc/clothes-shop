@@ -1,6 +1,6 @@
 # About (giới thiệu) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
 > **Doc:** [storefront/about](../../docs/storefront/about.md) · **Test:** `tests/storefront/about/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -88,3 +88,4 @@ Thay đổi nhìn thấy được: có (nhỏ): ba thẻ dịch vụ có màu n�
 
 - 2026-10-25 · Viết spec và test cho toàn module (batch 7), kiểm thử đột biến.
 - 2026-10-25 · Sửa: màu nền và viền thẻ dịch vụ bằng `style` (lớp ghép động không được Tailwind sinh); xóa `ContactCTA` và khóa `cta.text`, `cta.copyright` không dùng.
+- 2026-10-26 · no-test: kiểm bởi `tests/platform/design-system` (DSN-1). Khung ảnh của `BrandStory` dùng `--color-pearl-cream` (trước đây `--color-warm-white` chưa từng được định nghĩa nên khung trong suốt); ghi nhận trong batch 8 (design-system).

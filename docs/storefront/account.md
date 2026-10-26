@@ -1,7 +1,7 @@
 # Account (tài khoản)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-25
-> **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserMenu.tsx`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-26
+> **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserAvatar.tsx`
 > **i18n:** `private.account`
 
 ## 1. Tóm tắt module

@@ -4,8 +4,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "@/src/i18n/navigation";
+import { routing } from "@/src/i18n/routing";
 
 type Phase = "idle" | "in" | "out";
+
+const LOCALE_PREFIX = new RegExp(`^/(${routing.locales.join("|")})(?=/|$)`);
+
+/** A link to the page already open (any query or hash): the address never changes, so the overlay would never finish.
+ *  Links carry the language (`/vi/shop`), `usePathname()` does not (`/shop`). */
+const isCurrentPage = (href: string, pathname: string) => (href.split(/[?#]/)[0].replace(LOCALE_PREFIX, "") || "/") === pathname;
 
 export default function RouteTransition() {
   const pathname = usePathname();
@@ -27,7 +34,7 @@ export default function RouteTransition() {
       if (!anchor) return;
 
       const href = anchor.getAttribute("href");
-      if (!href || href.startsWith("http") || href.startsWith("#") || href === pathname) return;
+      if (!href || href.startsWith("http") || href.startsWith("#") || isCurrentPage(href, pathname)) return;
       if (anchor.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey) return;
 
       startRef.current = Date.now();

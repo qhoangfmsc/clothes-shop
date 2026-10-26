@@ -9,7 +9,7 @@ import { X, ArrowRight, User, Heart, Package, Scissors } from "lucide-react";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useCategories, useBannerConfig } from "@/src/hooks/use-api";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
-import { UserAvatar } from "./UserMenu";
+import { UserAvatar } from "./UserAvatar";
 import SignOutButton from "./SignOutButton";
 import ResponsiveBannerImage from "./ResponsiveBannerImage";
 import { CarouselDots } from "./CarouselControls";
@@ -936,7 +936,7 @@ export default function HamburgerMenu() {
                             transition: "opacity 150ms cubic-bezier(0.25, 0.1, 0.25, 1)",
                           }}
                         >
-                          {currentBanner.ctaLabel ?? "Discover"}
+                          {currentBanner.ctaLabel ?? t("drawer.discover")}
                           <ArrowRight size={12} />
                         </Link>
 

@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh, giỏ nổi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-23
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-26
 > **Code:** `(private)/cart/` — `page.tsx`, `layout.tsx`, `CartContent.tsx`, `_common/{moduleSlice,types}.ts`, `_components/CartSync.tsx` · `_components/QuickAddDrawer.tsx`, `_components/CartFAB.tsx` (dùng chung) · `src/store/index.ts` (lưu `localStorage`)
 > **i18n:** `private.cart`, `shared.cart` (`fab`, `quickAdd`, `productAction`)
 > **Redux slice:** `state.cart`
@@ -70,6 +70,7 @@ Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăn
 - Không mở nếu `!isPurchasable(product.badge)`.
 - Chọn size, màu và số lượng 1–10; nút thêm chỉ bật khi đã chọn **cả size lẫn màu** (khối chọn màu ẩn khi sản phẩm không có màu, nên sản phẩm như vậy không thêm được từ drawer; trang chi tiết có cùng điều kiện), bảng size thu gọn (`useSizeGuide` chỉ gọi khi bấm "Bảng size").
 - Thêm: chưa đăng nhập thì mở hộp đăng nhập (`addToBag`) và chỉ thêm sau khi đăng nhập xong (`requireAuth`); đã đăng nhập thì `addItem` + `syncAddToCartItem` (BE từ chối → dòng bị gỡ và toast `addFailed`) + `trackEvent("add_to_cart", { productId, vnd | usd })` (đơn giá theo ngôn ngữ, xem [analytics](../admin/analytics.md)) + toast có link `/cart`, nút (nhãn "Thêm vào giỏ", không kèm giá vì BE chưa tính thành tiền) đổi thành "Đã thêm" rồi đóng sau 0.8 s. Giá và giá gốc của sản phẩm hiện theo ngôn ngữ (`useMoney`). Gợi ý còn thiếu size/màu.
+- Thanh kéo ở đầu ngăn kéo mobile dùng `--border-default`.
 - Được mở từ `ProductCard` (sau `requireAuth`) và từ lưới sản phẩm ở [collections](./collections.md) (không qua `requireAuth`).
 
 ### 4.7 Thiết kế và test

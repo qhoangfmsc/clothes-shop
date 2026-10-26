@@ -116,7 +116,7 @@ export default function SiteFooter() {
             <div className={HEADING_ROW}>
               <h2 className={HEADING}>{t("language.title")}</h2>
             </div>
-            <LanguageSwitcher variant="footer" />
+            <LanguageSwitcher />
           </div>
         </div>
 

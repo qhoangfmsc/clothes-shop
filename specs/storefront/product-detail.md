@@ -144,3 +144,4 @@ Thay đổi nhìn thấy được: có (nhỏ): thêm vào giỏ lỗi thì báo
 - 2026-10-25 · Viết spec và test cho toàn module (batch 6), kiểm thử đột biến.
 - 2026-10-25 · Sửa: thêm vào giỏ bị BE từ chối thì báo lỗi; nhãn đơn vị bảng size qua i18n; xóa `ShareButtons` và `public.product.share` không dùng.
 - 2026-10-26 · Tim dùng hook chung `useProductWishlist` ([wishlist](./wishlist.md)); hành vi không đổi, các đột biến của tim chuyển sang module wishlist.
+- 2026-10-26 · no-test: kiểm bởi `tests/platform/design-system` (DSN-1). Thanh kéo của `SizeGuideModal` dùng `--border-default` (trước đây `--border-medium` chưa từng được định nghĩa); ghi nhận trong batch 8 (design-system).

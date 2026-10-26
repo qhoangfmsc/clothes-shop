@@ -2,14 +2,14 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { ReviewFormTarget } from "@/src/app/[locale]/(private)/reviews/_common/types";
 import { msg } from "@/tests/_support/messages";
-import { F, contentField, fit, form as formOf, pick, removeButtons, send, star, titleField, useObjectUrls, user } from "./form-kit";
+import { F, contentField, fit, form as formOf, pick, removeButtons, send, star, titleField, stubObjectUrls, user } from "./form-kit";
 import { pendingReview, photo, type RenderReviewsOptions } from "./reviews-kit";
 
 /* The review form, to write a review or make the one allowed edit (specs/storefront/customer-reviews.md, flows REV-7 to REV-12E). */
 
 const CREATE: ReviewFormTarget = { mode: "create", item: pendingReview({ orderItemId: "oi-9", productName: "Silk dress", size: "M", color: "Red" }) };
 
-useObjectUrls();
+stubObjectUrls();
 
 describe("REV-7 writing a review", () => {
   it("shows the product being reviewed: its picture, name as a link that opens in a new tab, and the size and colour", async () => {

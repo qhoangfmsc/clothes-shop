@@ -1,0 +1,2417 @@
+[
+  {
+    "name": "site-chrome: phones get 8 suggestions",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "isMobile ? 5 : isTablet ? 8 : 10",
+    "replace": "isMobile ? 8 : isTablet ? 8 : 10",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: tablets get 5 suggestions",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "isMobile ? 5 : isTablet ? 8 : 10",
+    "replace": "isMobile ? 5 : isTablet ? 5 : 10",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: desktops get 8 suggestions",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "isMobile ? 5 : isTablet ? 8 : 10",
+    "replace": "isMobile ? 5 : isTablet ? 8 : 8",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history is not matched to the words",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "history.filter((h) => h.name.toLowerCase().includes(needle))",
+    "replace": "history",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history match ignores nothing",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "h.name.toLowerCase().includes(needle)",
+    "replace": "h.name.includes(needle)",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: words are not lower-cased",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const needle = query.trim().toLowerCase();",
+    "replace": "const needle = query.trim();",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: words are not trimmed",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const needle = query.trim().toLowerCase();",
+    "replace": "const needle = query.toLowerCase();",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: suggestions repeat history",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "results.filter((r) => !historyMatches.some((h) => h.id === r.id))",
+    "replace": "results",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: suggestions come before history",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "items: [...historyMatches, ...suggestions]",
+    "replace": "items: [...suggestions, ...historyMatches]",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history count is wrong",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "historyCount: historyMatches.length",
+    "replace": "historyCount: 0",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list opens before the box has opened",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const showDropdown = expanded && settled && (",
+    "replace": "const showDropdown = expanded && (",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: one letter is enough",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "query.trim().length >= 2 || items.length > 0",
+    "replace": "query.trim().length >= 1 || items.length > 0",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list needs words",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "(query.trim().length >= 2 || items.length > 0)",
+    "replace": "(query.trim().length >= 2)",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the field is never focused",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const t = setTimeout(() => inputRef.current?.focus(), 200);",
+    "replace": "const t = setTimeout(() => {}, 200);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape does not empty the field",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "        setExpanded(false);\n        setQuery(\"\");\n        setHighlightIdx(-1);\n        clearAutocomplete();\n      }",
+    "replace": "        setExpanded(false);\n        setHighlightIdx(-1);\n        clearAutocomplete();\n      }",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape does not close",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      if (e.key === \"Escape\") {\n        setExpanded(false);",
+    "replace": "      if (e.key === \"Escape\") {",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: any key closes",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      if (e.key === \"Escape\") {\n        setExpanded(false);",
+    "replace": "      if (e.key) {\n        setExpanded(false);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape stays heard after closing",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "    window.addEventListener(\"keydown\", onKey);\n    return () => window.removeEventListener(\"keydown\", onKey);\n  }, [expanded, clearAutocomplete]);",
+    "replace": "    window.addEventListener(\"keydown\", onKey);\n  }, [expanded, clearAutocomplete]);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a click inside the box closes it",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      if (rootRef.current?.contains(target)) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: an outside click closes even with words",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "if (!query.trim() && results.length === 0) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: an outside click keeps the box open",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      if (!query.trim() && results.length === 0) {\n        setExpanded(false);\n        setHighlightIdx(-1);",
+    "replace": "      if (!query.trim() && results.length === 0) {\n        setHighlightIdx(-1);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: outside clicks stay heard",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "    document.addEventListener(\"mousedown\", onMouseDown);\n    return () => document.removeEventListener(\"mousedown\", onMouseDown);",
+    "replace": "    document.addEventListener(\"mousedown\", onMouseDown);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the light stays when the list changes",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "  useEffect(() => {\n    setHighlightIdx(-1);\n  }, [items]);",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: typing does not search",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      setQuery(value);\n      search(value);",
+    "replace": "      setQuery(value);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: typing does not show",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      setQuery(value);\n      search(value);",
+    "replace": "      search(value);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a chosen product is not remembered",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      addToHistory(item);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the box stays open after choosing",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      addToHistory(item);\n      setExpanded(false);",
+    "replace": "      addToHistory(item);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the words stay after choosing",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      setExpanded(false);\n      setQuery(\"\");\n      setHighlightIdx(-1);\n      clearAutocomplete();\n      /* The suggestion",
+    "replace": "      setExpanded(false);\n      setHighlightIdx(-1);\n      clearAutocomplete();\n      /* The suggestion",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the product page is not looked up",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "productPath(item) ?? (await getProductUrl(item.id)) ?? \"/shop\"",
+    "replace": "productPath(item) ?? \"/shop\"",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a missing page does not go to the shop",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "(await getProductUrl(item.id)) ?? \"/shop\"",
+    "replace": "(await getProductUrl(item.id)) ?? \"/\"",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the category in the suggestion is ignored",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "productPath(item) ?? (await getProductUrl(item.id))",
+    "replace": "(await getProductUrl(item.id))",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the arrow down does not wrap",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "(prev < items.length - 1 ? prev + 1 : 0)",
+    "replace": "(prev + 1)",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the arrow down goes up",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "(prev < items.length - 1 ? prev + 1 : 0)",
+    "replace": "(prev < items.length - 1 ? prev - 1 : 0)",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the arrow up does not wrap",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "(prev > 0 ? prev - 1 : items.length - 1)",
+    "replace": "(prev - 1)",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the arrow up goes down",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "(prev > 0 ? prev - 1 : items.length - 1)",
+    "replace": "(prev > 0 ? prev + 1 : items.length - 1)",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: enter opens what is not lit",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "if (highlightIdx >= 0 && highlightIdx < items.length) {",
+    "replace": "if (highlightIdx < items.length) {",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: enter opens the first",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "navigateToProduct(items[highlightIdx]);",
+    "replace": "navigateToProduct(items[0]);",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the cross keeps the words",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "  const handleClear = useCallback(() => {\n    setQuery(\"\");",
+    "replace": "  const handleClear = useCallback(() => {",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the cross keeps the suggestions",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "    setHighlightIdx(-1);\n    clearAutocomplete();\n    inputRef.current?.focus();",
+    "replace": "    setHighlightIdx(-1);\n    inputRef.current?.focus();",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the cross takes the cursor away",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "    clearAutocomplete();\n    inputRef.current?.focus();",
+    "replace": "    clearAutocomplete();",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the cross shows without words",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "          {query && (",
+    "replace": "          {true && (",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the box does not open",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "          if (!expanded) setExpanded(true);",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the box has the wrong width",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "maxWidth: expanded ? \"13.75rem\" : \"2.125rem\"",
+    "replace": "maxWidth: expanded ? \"2.125rem\" : \"2.125rem\"",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list is narrower than 320",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "width: Math.max(rect.width, 320)",
+    "replace": "width: rect.width",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list sits on the box",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "top: rect.bottom + 6",
+    "replace": "top: rect.top",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list does not follow the left edge",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "left: rect.left,",
+    "replace": "left: 0,",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list does not follow a resize",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "    window.addEventListener(\"resize\", updatePosition);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list does not follow a scroll",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "    window.addEventListener(\"scroll\", updatePosition, { passive: true });\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list follows after it goes (resize)",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      window.removeEventListener(\"resize\", updatePosition);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list follows after it goes (scroll)",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "      window.removeEventListener(\"scroll\", updatePosition);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: loading shows with a list",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const showLoading = isLoading && items.length === 0;",
+    "replace": "const showLoading = isLoading;",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: loading never shows",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const showLoading = isLoading && items.length === 0;",
+    "replace": "const showLoading = false;",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: no results shows while loading",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "const showNoResults = !isLoading && query.trim().length >= 2 && items.length === 0;",
+    "replace": "const showNoResults = query.trim().length >= 2 && items.length === 0;",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: no results shows with a list",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "!isLoading && query.trim().length >= 2 && items.length === 0;",
+    "replace": "!isLoading && query.trim().length >= 2;",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the heading shows with words",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "{isHistory && idx === 0 && !query.trim() && (",
+    "replace": "{isHistory && idx === 0 && (",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the heading shows on every row",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "{isHistory && idx === 0 && !query.trim() && (",
+    "replace": "{isHistory && !query.trim() && (",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the price shows for custom orders",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "{hasPublicPrice(item.badge) ? fmt(item, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(item, \"price\")}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the price is hidden for others",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "{hasPublicPrice(item.badge) ? fmt(item, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{tCommon(\"priceOnRequest\")}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a missing picture breaks",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "{item.image && <Image",
+    "replace": "{<Image",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the history cross takes the cursor",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "                    onMouseDown={(e) => e.preventDefault()}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the history cross opens the product",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "onClick={() => onRemoveHistory(item.id)}",
+    "replace": "onClick={() => onSelect(item)}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the history cross forgets nothing",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "onClick={() => onRemoveHistory(item.id)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the light is never shown",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "aria-selected={highlightIdx === idx}",
+    "replace": "aria-selected={false}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the lit one is not named",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "aria-activedescendant={highlightIdx >= 0 ? `search-result-${highlightIdx}` : undefined}",
+    "replace": "aria-activedescendant={`search-result-${highlightIdx}`}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list is not said to be open",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "aria-expanded={showDropdown}",
+    "replace": "aria-expanded={false}",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a row does not light under the mouse",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "onMouseEnter={() => onHover(idx)}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a row does not open",
+    "file": "src/app/[locale]/_components/SearchBar.tsx",
+    "find": "onClick={() => onSelect(item)}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history keeps six",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "SEARCH_HISTORY_MAX = 5",
+    "replace": "SEARCH_HISTORY_MAX = 6",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx",
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history keeps four",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "SEARCH_HISTORY_MAX = 5",
+    "replace": "SEARCH_HISTORY_MAX = 4",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx",
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a long stored list is read whole",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "parsed.slice(0, SEARCH_HISTORY_MAX)",
+    "replace": "parsed",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a stored non-list is read",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "Array.isArray(parsed) ? ",
+    "replace": "true ? ",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a broken store breaks",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "  } catch {\n    return [];\n  }",
+    "replace": "  } catch (e) {\n    throw e;\n  }",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a blocked store breaks",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "} catch { /* quota exceeded or storage blocked — history is best-effort */ }",
+    "replace": "} catch (e) { throw e; }",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: another key is heard",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "if (e.key === STORAGE_KEY) setHistory(read());",
+    "replace": "setHistory(read());",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: other tabs are not heard",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "    window.addEventListener(\"storage\", onStorage);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: other tabs are heard after the page goes",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "    return () => window.removeEventListener(\"storage\", onStorage);",
+    "replace": "    return () => {};",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history is not read at the start",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "    setHistory(read());\n    const onStorage",
+    "replace": "    const onStorage",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history is not written",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "    write(next);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history is not shown after a change",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "    write(next);\n    setHistory(next);",
+    "replace": "    write(next);",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history is written from stale state",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "const next = fn(read());",
+    "replace": "const next = fn([]);",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: an opened product is kept twice",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "[item, ...current.filter((h) => h.id !== item.id)]",
+    "replace": "[item, ...current]",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: an opened product goes last",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "[item, ...current.filter((h) => h.id !== item.id)]",
+    "replace": "[...current.filter((h) => h.id !== item.id), item]",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the old ones are not cut",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": ".slice(0, SEARCH_HISTORY_MAX)),\n    [update]",
+    "replace": "),\n    [update]",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: forgetting forgets nothing",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "update((current) => current.filter((h) => h.id !== id))",
+    "replace": "update((current) => current)",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: forgetting forgets all",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "update((current) => current.filter((h) => h.id !== id))",
+    "replace": "update(() => [])",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: history is kept under another name",
+    "file": "src/app/[locale]/_components/useSearchHistory.ts",
+    "find": "\"doovan-search-history\"",
+    "replace": "\"doovan-history\"",
+    "tests": [
+      "tests/platform/site-chrome/search-history.test.tsx",
+      "tests/platform/site-chrome/search-bar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: initials of three words",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": ".slice(0, 2)",
+    "replace": ".slice(0, 3)",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: initials of one letter",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": ".slice(0, 2)",
+    "replace": ".slice(0, 1)",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: initials in lower case",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "        .slice(0, 2)\n        .toUpperCase()",
+    "replace": "        .slice(0, 2)",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a missing name has no mark",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "    : \"?\";",
+    "replace": "    : \"\";",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a name is always missing",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "const initials = user.name\n",
+    "replace": "const initials = !user.name\n",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a button has no name",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": ", \"aria-label\": t(\"userMenu\") }",
+    "replace": " }",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a plain circle is a button",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "const Root = onClick ? \"button\" : \"span\";",
+    "replace": "const Root = \"button\";",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a button is a plain circle",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "const Root = onClick ? \"button\" : \"span\";",
+    "replace": "const Root = \"span\";",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a button has no hover class",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "className: `user-avatar-btn ${className ?? \"\"}`",
+    "replace": "className: `${className ?? \"\"}`",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a plain circle ignores the class",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": ": { className };",
+    "replace": ": {};",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the pointer shows on a plain circle",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "cursor: onClick ? \"pointer\" : \"default\",",
+    "replace": "cursor: \"pointer\",",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the circle has no size",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "        width: size,\n        height: size,",
+    "replace": "        width: 32,\n        height: size,",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the circle is square",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "borderRadius: \"50%\",\n        border",
+    "replace": "borderRadius: 0,\n        border",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the default size is smaller",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "size = 32,",
+    "replace": "size = 30,",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the picture is ignored",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "{user.image ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the picture has no name",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "alt={user.name ?? t(\"userFallback\")}",
+    "replace": "alt={user.name ?? \"\"}",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the picture shows the referrer",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "          referrerPolicy=\"no-referrer\"\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the picture is not cropped round",
+    "file": "src/app/[locale]/_components/UserAvatar.tsx",
+    "find": "objectFit: \"cover\",\n            borderRadius: \"50%\",",
+    "replace": "objectFit: \"cover\",",
+    "tests": [
+      "tests/platform/site-chrome/user-avatar.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bag button shows on the bag page",
+    "file": "src/app/[locale]/_components/CartFAB.tsx",
+    "find": "pathname === \"/cart\" || ",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/cart-fab.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bag button shows on checkout",
+    "file": "src/app/[locale]/_components/CartFAB.tsx",
+    "find": " || pathname.startsWith(\"/checkout\")",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/cart-fab.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bag button hides on a name that only starts like the bag",
+    "file": "src/app/[locale]/_components/CartFAB.tsx",
+    "find": "pathname === \"/cart\" ||",
+    "replace": "pathname.startsWith(\"/cart\") ||",
+    "tests": [
+      "tests/platform/site-chrome/cart-fab.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bag button shows with an empty bag",
+    "file": "src/app/[locale]/_components/CartFAB.tsx",
+    "find": "{totalItems > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/site-chrome/cart-fab.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bag button goes to the wrong place",
+    "file": "src/app/[locale]/_components/CartFAB.tsx",
+    "find": "href=\"/cart\"",
+    "replace": "href=\"/wishlist\"",
+    "tests": [
+      "tests/platform/site-chrome/cart-fab.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bag button says nothing",
+    "file": "src/app/[locale]/_components/CartFAB.tsx",
+    "find": "aria-label={t(\"viewBag\", { count: totalItems })}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/cart-fab.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: choosing the open language replaces the page",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "    if (next === locale) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the query is lost",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "router.replace(`${pathname}${window.location.search}`",
+    "replace": "router.replace(`${pathname}`",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the page scrolls to the top",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "scroll: false",
+    "replace": "scroll: true",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the language is not changed",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "{ locale: next, scroll: false }",
+    "replace": "{ scroll: false }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the open language is not marked",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "aria-current={isActive ? \"true\" : undefined}",
+    "replace": "aria-current={undefined}",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: every language is marked",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "aria-current={isActive ? \"true\" : undefined}",
+    "replace": "aria-current=\"true\"",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the open language has no tick",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "{isActive && (\n                <Check",
+    "replace": "{false && (\n                <Check",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a language is not named in its own tongue",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "              lang={code}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the list has no name",
+    "file": "src/app/[locale]/_components/LanguageSwitcher.tsx",
+    "find": "      aria-label={t(\"label\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons open in the same tab",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "external = true }",
+    "replace": "external = false }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons open without a new tab",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "{ target: \"_blank\", rel: \"noopener noreferrer\" }",
+    "replace": "{ rel: \"noopener noreferrer\" }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons give the page away",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "{ target: \"_blank\", rel: \"noopener noreferrer\" }",
+    "replace": "{ target: \"_blank\" }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons have no name",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "            aria-label={label}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons have no tooltip",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "            title={label}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons are of another size",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "iconSize = 18",
+    "replace": "iconSize = 16",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons ignore the size",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "<Icon size={iconSize} />",
+    "replace": "<Icon />",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: icons ignore the class",
+    "file": "src/app/[locale]/_components/SocialIcons.tsx",
+    "find": "className={linkClassName}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the email is a profile",
+    "file": "src/lib/socials.tsx",
+    "find": "Icon: EmailIcon, external: false }",
+    "replace": "Icon: EmailIcon }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the profiles are not listed",
+    "file": "src/lib/socials.tsx",
+    "find": "  ...SOCIALS,\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the email is not first",
+    "file": "src/lib/socials.tsx",
+    "find": "[\n  { label: \"Email\", href: buildMailto(), Icon: EmailIcon, external: false },\n  ...SOCIALS,\n]",
+    "replace": "[\n  ...SOCIALS,\n  { label: \"Email\", href: buildMailto(), Icon: EmailIcon, external: false },\n]",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: instagram goes elsewhere",
+    "file": "src/lib/socials.tsx",
+    "find": "https://www.instagram.com/doovan.vn",
+    "replace": "https://www.instagram.com/doovan",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: facebook goes elsewhere",
+    "file": "src/lib/socials.tsx",
+    "find": "https://www.facebook.com/doovan.vn",
+    "replace": "https://www.facebook.com/doovan",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: explore: shop goes elsewhere",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "{ key: \"shop\", href: \"/shop\" }",
+    "replace": "{ key: \"shop\", href: \"/\" }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: explore: new in goes elsewhere",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "{ key: \"newIn\", href: \"/new-in\" }",
+    "replace": "{ key: \"newIn\", href: \"/new\" }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: explore: collections goes elsewhere",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "{ key: \"collections\", href: \"/collections\" }",
+    "replace": "{ key: \"collections\", href: \"/shop\" }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: explore: about goes elsewhere",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "{ key: \"about\", href: \"/about\" }",
+    "replace": "{ key: \"about\", href: \"/\" }",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: explore: about is missing",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "  { key: \"about\", href: \"/about\" },\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the logo goes elsewhere",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "href=\"/\"\n                aria-label={t(\"homeAria\")}",
+    "replace": "href=\"/shop\"\n                aria-label={t(\"homeAria\")}",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the address opens in the same tab",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "                  href={CONTACT_MAPS_URL}\n                  target=\"_blank\"\n",
+    "replace": "                  href={CONTACT_MAPS_URL}\n",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the address gives the page away",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "                  rel=\"noopener noreferrer\"\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the phone is not a call",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "href={`tel:${CONTACT_PHONE_E164}`}",
+    "replace": "href={`tel:${CONTACT_PHONE}`}",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the year is old",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "year: new Date().getFullYear()",
+    "replace": "year: 2020",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the language column is missing",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "            <LanguageSwitcher />\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: shop goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "{ key: \"shop\", href: \"/shop\", hasMegaMenu: true }",
+    "replace": "{ key: \"shop\", href: \"/\", hasMegaMenu: true }",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: new in goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "{ key: \"newIn\", href: \"/new-in\", hasMegaMenu: false }",
+    "replace": "{ key: \"newIn\", href: \"/new\", hasMegaMenu: false }",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: collections goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "{ key: \"collections\", href: \"/collections\", hasMegaMenu: false }",
+    "replace": "{ key: \"collections\", href: \"/shop\", hasMegaMenu: false }",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: shop has no mega menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "onMouseEnter={link.hasMegaMenu ? handleShopEnter : undefined}",
+    "replace": "onMouseEnter={undefined}",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: every link has a mega menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "onMouseEnter={link.hasMegaMenu ? handleShopEnter : undefined}",
+    "replace": "onMouseEnter={handleShopEnter}",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: leaving shop does not count",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "onMouseLeave={link.hasMegaMenu ? handleShopLeave : undefined}",
+    "replace": "onMouseLeave={undefined}",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the custom order goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "href={CONTACT_PATH}\n            className=\"header-nav-cta\"",
+    "replace": "href=\"/\"\n            className=\"header-nav-cta\"",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the menu opens at once",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    }, 280);",
+    "replace": "    }, 0);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the menu opens late",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    }, 280);",
+    "replace": "    }, 1500);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the menu opens a little early",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    }, 280);",
+    "replace": "    }, 100);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the menu closes late",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "      }, 150);\n    }\n  }, [menuOpen]);",
+    "replace": "      }, 3000);\n    }\n  }, [menuOpen]);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the panel closes late",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    }, 120);\n  }, []);",
+    "replace": "    }, 3000);\n  }, []);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: there is no rest after closing (leave)",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "      closeTimer.current = setTimeout(() => {\n        setMenuOpen(false);\n        cooldown.current = true;",
+    "replace": "      closeTimer.current = setTimeout(() => {\n        setMenuOpen(false);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: there is no rest after closing (panel)",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    closeTimer.current = setTimeout(() => {\n      setMenuOpen(false);\n      cooldown.current = true;",
+    "replace": "    closeTimer.current = setTimeout(() => {\n      setMenuOpen(false);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: there is no rest after closing (now)",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    setMenuOpen(false);\n    cooldown.current = true;\n    setTimeout(() => {\n      cooldown.current = false;\n    }, 350);\n  }, [clearTimers]);",
+    "replace": "    setMenuOpen(false);\n  }, [clearTimers]);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the rest is short",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    setMenuOpen(false);\n    cooldown.current = true;\n    setTimeout(() => {\n      cooldown.current = false;\n    }, 350);\n  }, [clearTimers]);",
+    "replace": "    setMenuOpen(false);\n    cooldown.current = true;\n    setTimeout(() => {\n      cooldown.current = false;\n    }, 0);\n  }, [clearTimers]);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the rest is ignored",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    if (cooldown.current) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: coming back does not stop the closing",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    if (menuOpen) {\n      if (closeTimer.current) {\n        clearTimeout(closeTimer.current);\n        closeTimer.current = null;\n      }\n      return;\n    }",
+    "replace": "    if (menuOpen) {\n      return;\n    }",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: leaving early does not stop the opening",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "  const handleShopLeave = useCallback(() => {\n    if (openTimer.current) {\n      clearTimeout(openTimer.current);\n      openTimer.current = null;\n    }",
+    "replace": "  const handleShopLeave = useCallback(() => {",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: entering the panel does not stop the closing",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "  const handleDropdownEnter = useCallback(() => {\n    if (closeTimer.current) {\n      clearTimeout(closeTimer.current);\n      closeTimer.current = null;\n    }\n  }, []);",
+    "replace": "  const handleDropdownEnter = useCallback(() => {}, []);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape does not close the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "if (e.key === \"Escape\") closeNow();",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: any key closes the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "if (e.key === \"Escape\") closeNow();",
+    "replace": "closeNow();",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape stays heard",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    window.addEventListener(\"keydown\", onKey);\n    return () => window.removeEventListener(\"keydown\", onKey);\n  }, [menuOpen, closeNow]);",
+    "replace": "    window.addEventListener(\"keydown\", onKey);\n  }, [menuOpen, closeNow]);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a hidden header keeps the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    if (isHidden && menuOpen) {\n      setMenuOpen(false);\n    }",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the page is not told",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "    onMenuToggle?.(menuOpen);",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the menu opens without categories",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "{menuOpen && shopCategories.length > 0 && (",
+    "replace": "{menuOpen && (",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the menu shows every category",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "shopCategories.slice(0, MAX_INLINE_CATEGORIES).map",
+    "replace": "shopCategories.map",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: view more shows at four",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "shopCategories.length > MAX_INLINE_CATEGORIES && (",
+    "replace": "shopCategories.length >= MAX_INLINE_CATEGORIES && (",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: view more never shows",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "shopCategories.length > MAX_INLINE_CATEGORIES && (",
+    "replace": "false && (",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: view more goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "                  href=\"/shop\"\n                  onClick={closeNow}",
+    "replace": "                  href=\"/\"\n                  onClick={closeNow}",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a category goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "href: `/shop/${cat.slug}`",
+    "replace": "href: `/${cat.slug}`",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a sub-category goes elsewhere",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "href: `/shop/${cat.slug}/${sub.slug}`",
+    "replace": "href: `/shop/${sub.slug}`",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a category does not close the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "                    href={cat.href}\n                    onClick={closeNow}\n                    className=\"mega-menu-item-link\"\n                    style={{\n                      display: \"block\",",
+    "replace": "                    href={cat.href}\n                    className=\"mega-menu-item-link\"\n                    style={{\n                      display: \"block\",",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a sub-category does not close the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "                          href={item.href}\n                          onClick={closeNow}",
+    "replace": "                          href={item.href}",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the backdrop does not close the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "            onClick={closeNow}\n            style={{\n              position: \"fixed\",\n              inset: 0,",
+    "replace": "            style={{\n              position: \"fixed\",\n              inset: 0,",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the shop link does not close the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "                if (link.hasMegaMenu && menuOpen) {\n                  closeNow();\n                }",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the stray brace is back",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "          }\n          .header-nav-link::after",
+    "replace": "          }\n          }\n          .header-nav-link::after",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the background comes at once",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "setIsScrolled(latest > 60);",
+    "replace": "setIsScrolled(latest > 0);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the background comes late",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "setIsScrolled(latest > 60);",
+    "replace": "setIsScrolled(latest > 200);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar hides near the top",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "if (diff > 5 && latest > 80) {",
+    "replace": "if (diff > 5) {",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar hides for a short step",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "if (diff > 5 && latest > 80) {",
+    "replace": "if (diff > 0 && latest > 80) {",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar never hides",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "if (diff > 5 && latest > 80) {\n      setHidden(true);",
+    "replace": "if (false) {\n      setHidden(true);",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar shows for a short step",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "} else if (diff < -5) {",
+    "replace": "} else if (diff < 0) {",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar never shows again",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "} else if (diff < -5) {\n      setHidden(false);",
+    "replace": "} else if (diff < -5) {",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar does not slide far enough",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "y: hidden ? \"-9rem\" : 0",
+    "replace": "y: hidden ? \"-1rem\" : 0",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the mega menu has no background",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "opacity: (isScrolled || isMegaMenuOpen) ? 1 : 0",
+    "replace": "opacity: isScrolled ? 1 : 0",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar is not told the menu",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "onMenuToggle={setIsMegaMenuOpen}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar is not told it is hidden",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "<HeaderNav isHidden={hidden}",
+    "replace": "<HeaderNav",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar is not on top",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "zIndex: 100,\n        pointerEvents",
+    "replace": "zIndex: 1,\n        pointerEvents",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bar is not fixed",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "position: \"fixed\",\n        top: 0,",
+    "replace": "position: \"absolute\",\n        top: 0,",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the logo goes elsewhere (header)",
+    "file": "src/app/[locale]/_components/Logo.tsx",
+    "find": "href=\"/\"",
+    "replace": "href=\"/shop\"",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the logo has no name",
+    "file": "src/app/[locale]/_components/Logo.tsx",
+    "find": "aria-label={t(\"homeAria\")}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the logo spells another name",
+    "file": "src/app/[locale]/_components/Logo.tsx",
+    "find": "DOOVAN\n",
+    "replace": "DOOVAN2\n",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: custom order goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"customOrder\", href: CONTACT_PATH,",
+    "replace": "{ key: \"customOrder\", href: \"/\",",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: new in goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"newIn\", href: \"/new-in\", hasAccordion: false }",
+    "replace": "{ key: \"newIn\", href: \"/new\", hasAccordion: false }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: collections goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"collections\", href: \"/collections\", hasAccordion: false }",
+    "replace": "{ key: \"collections\", href: \"/shop\", hasAccordion: false }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: about goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"about\", href: \"/about\", hasAccordion: false }",
+    "replace": "{ key: \"about\", href: \"/\", hasAccordion: false }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the shop has no list",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"shop\", href: \"/shop\", hasAccordion: true }",
+    "replace": "{ key: \"shop\", href: \"/shop\", hasAccordion: false }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: my account goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"myAccount\", href: \"/account\", icon: User }",
+    "replace": "{ key: \"myAccount\", href: \"/\", icon: User }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: wishlist goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"wishlist\", href: \"/wishlist\", icon: Heart }",
+    "replace": "{ key: \"wishlist\", href: \"/\", icon: Heart }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: orders go elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{ key: \"orders\", href: \"/orders\", icon: Package }",
+    "replace": "{ key: \"orders\", href: \"/\", icon: Package }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer opens on click",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "const open = useCallback(() => setIsOpen(true), []);",
+    "replace": "const open = useCallback(() => {}, []);",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: closing keeps the shop list open",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "    setIsOpen(false);\n    setShopExpanded(false);",
+    "replace": "    setIsOpen(false);",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: closing keeps the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "    setIsOpen(false);\n    setShopExpanded(false);",
+    "replace": "    setShopExpanded(false);",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the page scrolls behind the drawer (html)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "    html.style.overflow = \"hidden\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the page scrolls behind the drawer (body)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "    body.style.overflow = \"hidden\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the page stays locked (html)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "      html.style.overflow = \"\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the page stays locked (body)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "      body.style.overflow = \"\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the touch listeners stay (start)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "      document.removeEventListener(\"touchstart\", handleTouchStart);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the touch listeners stay (move)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "      document.removeEventListener(\"touchmove\", handleTouchMove);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a finger on the backdrop scrolls the page",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "      if (!scroller) {\n        e.preventDefault();\n        return;\n      }",
+    "replace": "      if (!scroller) {\n        return;\n      }",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a part that cannot scroll is taken for one",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "el.scrollHeight > el.clientHeight",
+    "replace": "el.scrollHeight >= el.clientHeight",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a part that cannot scroll is taken for one (always)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "&& el.scrollHeight > el.clientHeight) {",
+    "replace": "&& true) {",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: only auto scrolls",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(overflowY === \"auto\" || overflowY === \"scroll\")",
+    "replace": "(overflowY === \"auto\")",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: only scroll scrolls",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(overflowY === \"auto\" || overflowY === \"scroll\")",
+    "replace": "(overflowY === \"scroll\")",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the search goes past the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "while (el && boundary.contains(el)) {",
+    "replace": "while (el) {",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the top bounce is not stopped",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(isAtTop && deltaY > 0) || ",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bottom bounce is not stopped",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": " || (isAtBottom && deltaY < 0)",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the top bounce is stopped going down",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(isAtTop && deltaY > 0)",
+    "replace": "(isAtTop && deltaY < 0)",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bottom bounce is stopped going up",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(isAtBottom && deltaY < 0)",
+    "replace": "(isAtBottom && deltaY > 0)",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the top is taken for the middle",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "scroller.scrollTop <= 0",
+    "replace": "scroller.scrollTop < 0",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the bottom is never reached",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1",
+    "replace": "false",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the finger does not move on",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "      lastY = currentY;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "if (e.key === \"Escape\") close();",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: any key closes the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "if (e.key === \"Escape\") close();",
+    "replace": "close();",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: escape stays heard (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "    window.addEventListener(\"keydown\", onKey);\n    return () => window.removeEventListener(\"keydown\", onKey);\n  }, [isOpen, close]);",
+    "replace": "    window.addEventListener(\"keydown\", onKey);\n  }, [isOpen, close]);",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the close button has no name",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                aria-label={t(\"drawer.close\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the open button has no name",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "        aria-label={t(\"drawer.open\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: banners turn with one",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "enabled: isOpen && featuredBanners.length > 1,",
+    "replace": "enabled: isOpen,",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: banners turn while closed",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "enabled: isOpen && featuredBanners.length > 1,",
+    "replace": "enabled: featuredBanners.length > 1,",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: banners turn every second",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "intervalMs: 4000,",
+    "replace": "intervalMs: 1000,",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: banners do not go round",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(prev + 1) % featuredBanners.length",
+    "replace": "prev + 1",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: banners go back",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "(prev + 1) % featuredBanners.length",
+    "replace": "(prev + featuredBanners.length - 1) % featuredBanners.length",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a dot does not choose",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "setFeaturedIdx(i);\n                            pauseFeatured();",
+    "replace": "pauseFeatured();",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the panel shows without banners",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{featuredBanners.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner link goes nowhere else",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "href={currentBanner.ctaHref ?? \"/shop\"}",
+    "replace": "href={currentBanner.ctaHref ?? \"/\"}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner link ignores the banner",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "href={currentBanner.ctaHref ?? \"/shop\"}",
+    "replace": "href=\"/shop\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner link is not worded",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{currentBanner.ctaLabel ?? t(\"drawer.discover\")}",
+    "replace": "{currentBanner.ctaLabel ?? \"\"}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner link ignores its words",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{currentBanner.ctaLabel ?? t(\"drawer.discover\")}",
+    "replace": "{t(\"drawer.discover\")}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner link does not close",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                          href={currentBanner.ctaHref ?? \"/shop\"}\n                          onClick={close}",
+    "replace": "                          href={currentBanner.ctaHref ?? \"/shop\"}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner title shows when missing",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{currentBanner.title && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner subtitle shows when missing",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{currentBanner.subtitle && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the banner has no description",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "alt={currentBanner.title ?? \"\"}",
+    "replace": "alt=\"\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the featured heading is missing",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{t(\"drawer.featured\")}",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the shop row never opens",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "onClick={() => setShopExpanded((prev) => !prev)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the shop row does not fold again",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "onClick={() => setShopExpanded((prev) => !prev)}",
+    "replace": "onClick={() => setShopExpanded(true)}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the first dot is another colour",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "catIdx === 0\n                                            ? \"var(--color-dusty-rose)\"",
+    "replace": "catIdx === 0\n                                            ? \"var(--color-sage)\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the second dot is another colour",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "catIdx === 1\n                                              ? \"var(--color-sage)\"",
+    "replace": "catIdx === 1\n                                              ? \"var(--color-dusty-rose)\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the third dot is another colour",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "catIdx === 2\n                                                ? \"var(--color-dusty-blue)\"",
+    "replace": "catIdx === 2\n                                                ? \"var(--color-sage)\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the count is missing",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{cat.items.length}",
+    "replace": "{0}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a category goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "href: `/shop/${cat.slug}`",
+    "replace": "href: `/${cat.slug}`",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: view all products goes elsewhere (drawer)",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                                  href=\"/shop\"\n                                  onClick={close}",
+    "replace": "                                  href=\"/\"\n                                  onClick={close}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: view all products does not close",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                                  href=\"/shop\"\n                                  onClick={close}",
+    "replace": "                                  href=\"/shop\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a category does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                                    href={cat.href}\n                                    onClick={close}",
+    "replace": "                                    href={cat.href}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a regular link does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                        href={link.href}\n                        onClick={close}\n                        className=\"drawer-nav-link\"",
+    "replace": "                        href={link.href}\n                        className=\"drawer-nav-link\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the custom order does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                        href={link.href}\n                        onClick={close}\n                        className=\"drawer-nav-featured\"",
+    "replace": "                        href={link.href}\n                        className=\"drawer-nav-featured\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: sign in goes elsewhere",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "href=\"/login\"",
+    "replace": "href=\"/\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: sign in does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "          href=\"/login\"\n          onClick={close}",
+    "replace": "          href=\"/login\"",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the session check shows a sign in",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "  if (isLoading) return null;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the name row does not open the account",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "onClick={() => setExpanded((prev) => !prev)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the name row does not say it is open",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "aria-expanded={expanded}",
+    "replace": "aria-expanded={false}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a missing name shows nothing",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "{user.name ?? t(\"userFallback\")}",
+    "replace": "{user.name}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the email is missing",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "            {user.email}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: an account link does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                    href={item.href}\n                    onClick={close}",
+    "replace": "                    href={item.href}",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: signing out does not close the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "<SignOutButton variant=\"drawer\" onSignedOut={close} />",
+    "replace": "<SignOutButton variant=\"drawer\" />",
+    "tests": [
+      "tests/platform/site-chrome/hamburger.test.tsx"
+    ]
+  }
+]

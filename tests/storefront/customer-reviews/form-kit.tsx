@@ -6,7 +6,7 @@ import type { ReviewFormTarget } from "@/src/app/[locale]/(private)/reviews/_com
 import { msg } from "@/tests/_support/messages";
 import { authorReview, renderReviews, type RenderReviewsOptions } from "./reviews-kit";
 
-/* Opens the review form over the fake BE, and finds its parts. Call `useObjectUrls()` in the test file: jsdom has no `URL.createObjectURL`. */
+/* Opens the review form over the fake BE, and finds its parts. Call `stubObjectUrls()` in the test file: jsdom has no `URL.createObjectURL`. */
 
 export const F = (key: string, locale: "vi" | "en" = "vi") => msg(`shared.reviews.form.${key}`, locale);
 /** Not filtering by `accept`, so that a test can pick a file of a kind the browser would not offer */
@@ -15,7 +15,7 @@ export const SAVED = authorReview({ id: "saved-1" });
 
 export const objectUrls = { created: [] as string[], revoked: [] as string[] };
 
-export function useObjectUrls() {
+export function stubObjectUrls() {
   beforeEach(() => {
     objectUrls.created.length = 0;
     objectUrls.revoked.length = 0;

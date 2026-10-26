@@ -227,3 +227,4 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-25 · no-test: chỉ thêm một đường dẫn vào bản đồ `MODULES`; hành vi của công cụ không đổi.
 - 2026-10-26 · Batch 6: thêm `tests/_support/intl-server.ts` (thế `next-intl/server`, cài trong `setup.ts` cùng `installMatchMedia()` lúc nạp vì ScrollTrigger đọc `matchMedia` khi import), `triggerFor` ở `browser-apis.ts` và thêm dữ liệu mẫu ở `fixtures.ts`; công cụ không đổi.
 - 2026-10-26 · Batch 7: `intl-server.ts` thêm `getFormatter`; thêm `tests/_support/server-tree.tsx` (`resolveServerTree`) để vẽ trang pháp lý gồm thành phần server không đồng bộ; công cụ không đổi.
+- 2026-10-26 · no-test: chỉ đổi tên một đường dẫn trong bản đồ module (`tests/platform/dev-tooling` đã kiểm bản đồ). `modules.mjs`: `UserMenu.tsx` của `platform/site-chrome` đổi tên thành `UserAvatar.tsx` (batch 8); `tests/_support/server-tree.tsx` và `intl-server.ts` đã mô tả trong doc.

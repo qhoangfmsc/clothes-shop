@@ -2,7 +2,7 @@ import { screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { ReviewFormTarget } from "@/src/app/[locale]/(private)/reviews/_common/types";
 import { dateText, msg } from "@/tests/_support/messages";
-import { F, contentField, fit, form, pick, removeButtons, send, star, titleField, useObjectUrls, user } from "./form-kit";
+import { F, contentField, fit, form, pick, removeButtons, send, star, titleField, stubObjectUrls, user } from "./form-kit";
 import { authorReview, photo, productSummary } from "./reviews-kit";
 
 /* The one edit a review allows (specs/storefront/customer-reviews.md, flows REV-12 to REV-12E). */
@@ -23,7 +23,7 @@ const REVIEW = authorReview({
 const EDIT: ReviewFormTarget = { mode: "edit", review: REVIEW };
 const bodyOf = (calls: { saved: { body: Record<string, unknown> }[] }) => calls.saved[0].body;
 
-useObjectUrls();
+stubObjectUrls();
 
 describe("REV-12 editing a review", () => {
   it("shows what was written, the product, the warning that it can be done once and until when", async () => {

@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
 > **Doc:** [storefront/cart](../../docs/storefront/cart.md) · **Test:** `tests/storefront/cart/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -148,3 +148,4 @@ Thay đổi hành vi nhìn thấy được: thêm nhanh khi chưa đăng nhập 
 
 - 2026-10-22 · Viết spec và test cho toàn module (batch 2), kiểm thử đột biến; không đổi code của module.
 - 2026-10-22 · Sửa theo quyết định của chủ dự án (giao tôi chọn): thêm nhanh đòi đăng nhập như thẻ sản phẩm; `syncAdd` đối chiếu số lượng và dòng bị xóa sau khi BE trả lời, và gỡ phần vừa thêm khi thất bại; thunk tự refresh token khi 401 (xem [auth](../platform/auth.md)). Khóa `shared.cart.quickAdd.addFailed` thêm ở cả hai ngôn ngữ.
+- 2026-10-26 · no-test: kiểm bởi `tests/platform/design-system` (DSN-1). Thanh kéo của `QuickAddDrawer` dùng `--border-default` (trước đây `--border-medium` chưa từng được định nghĩa nên thanh kéo vô hình); ghi nhận trong batch 8 (design-system).

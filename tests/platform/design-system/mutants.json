@@ -1,0 +1,398 @@
+[
+  {
+    "name": "design-system: the page column is narrower",
+    "file": "src/styles/design-system.css",
+    "find": "--page-max-w: 1920px;",
+    "replace": "--page-max-w: 1900px;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the page edge is worked out wrongly",
+    "file": "src/styles/design-system.css",
+    "find": "calc((100% - var(--page-max-w)) / 2)",
+    "replace": "calc((100% - var(--page-max-w)) / 3)",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the smallest text is in px",
+    "file": "src/styles/design-system.css",
+    "find": "--text-xs: 0.6875rem;",
+    "replace": "--text-xs: 11px;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the largest text is smaller",
+    "file": "src/styles/design-system.css",
+    "find": "--text-3xl: 2.625rem;",
+    "replace": "--text-3xl: 2.5rem;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the first space is in px",
+    "file": "src/styles/design-system.css",
+    "find": "--space-1: 0.25rem;",
+    "replace": "--space-1: 4px;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the pill is not round enough",
+    "file": "src/styles/design-system.css",
+    "find": "--radius-pill: 9999px;",
+    "replace": "--radius-pill: 99px;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the toast is under the modal",
+    "file": "src/styles/design-system.css",
+    "find": "--z-toast: 200;",
+    "replace": "--z-toast: 90;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the modal moves",
+    "file": "src/styles/design-system.css",
+    "find": "--z-modal: 100;",
+    "replace": "--z-modal: 90;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the fast step is slower",
+    "file": "src/styles/design-system.css",
+    "find": "--duration-fast: 150ms;",
+    "replace": "--duration-fast: 100ms;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the default ease is a line",
+    "file": "src/styles/design-system.css",
+    "find": "--ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);",
+    "replace": "--ease-default: linear;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the text font is another one",
+    "file": "src/styles/design-system.css",
+    "find": "--font-primary: var(--font-site), Georgia",
+    "replace": "--font-primary: Georgia",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the display font is another one",
+    "file": "src/styles/design-system.css",
+    "find": "--font-display: var(--font-site), Georgia",
+    "replace": "--font-display: Georgia",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a used border token is gone",
+    "file": "src/styles/design-system.css",
+    "find": "  --border-default: rgba(201, 169, 110, 0.3);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a used colour token is gone",
+    "file": "src/styles/design-system.css",
+    "find": "  --color-pearl-cream: #fbf8f1;",
+    "replace": "  --color-pearl-cream-x: #fbf8f1;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: an alias points at nothing",
+    "file": "src/styles/design-system.css",
+    "find": "--border-strong: var(--color-antique-gold);",
+    "replace": "--border-strong: var(--color-antique-golds);",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a colour is not a hex value",
+    "file": "src/styles/design-system.css",
+    "find": "--color-sand: #ddd1bc;",
+    "replace": "--color-sand: #ddd1b;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a colour is named in words",
+    "file": "src/styles/design-system.css",
+    "find": "--color-sand: #ddd1bc;",
+    "replace": "--color-sand: tan;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a token is defined twice",
+    "file": "src/styles/design-system.css",
+    "find": "--color-sand: #ddd1bc;",
+    "replace": "--color-sand: #ddd1bc;\n  --color-sand: #ddd1bd;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the dark context changes a token that does not exist",
+    "file": "src/styles/design-system.css",
+    "find": "  --bg-primary: var(--color-noir);",
+    "replace": "  --bg-primary: var(--color-noir);\n  --bg-ghost: red;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the dark page is light",
+    "file": "src/styles/design-system.css",
+    "find": "  --bg-primary: var(--color-noir);",
+    "replace": "  --bg-primary: var(--color-pearl-cream);",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the dark text is dark",
+    "file": "src/styles/design-system.css",
+    "find": "  --text-primary: var(--color-pearl-cream);",
+    "replace": "  --text-primary: var(--color-noir);",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the root size does not grow",
+    "file": "src/app/globals.css",
+    "find": "font-size: clamp(1rem, 1.0417vw, 1.25rem);",
+    "replace": "font-size: 1rem;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the root size grows too far",
+    "file": "src/app/globals.css",
+    "find": "font-size: clamp(1rem, 1.0417vw, 1.25rem);",
+    "replace": "font-size: clamp(1rem, 1.0417vw, 1.5rem);",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the sideways scroll is back",
+    "file": "src/app/globals.css",
+    "find": "html,\nbody {\n  overflow-x: hidden;",
+    "replace": "html,\nbody {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the browser fakes bold",
+    "file": "src/app/globals.css",
+    "find": "  font-synthesis: none;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the text has no font",
+    "file": "src/app/globals.css",
+    "find": "  font-family: var(--font-primary);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the page has no width limit",
+    "file": "src/app/globals.css",
+    "find": "  max-width: var(--page-max-w);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the page is not centred",
+    "file": "src/app/globals.css",
+    "find": "  margin-inline: auto;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the spinner is gone",
+    "file": "src/app/globals.css",
+    "find": "@keyframes spin {",
+    "replace": "@keyframes spinn {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the route veil comes in nowhere",
+    "file": "src/app/globals.css",
+    "find": "@keyframes rt-in {",
+    "replace": "@keyframes rt-inn {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the route veil goes nowhere",
+    "file": "src/app/globals.css",
+    "find": "@keyframes rt-out {",
+    "replace": "@keyframes rt-outt {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: images do not fade in",
+    "file": "src/app/globals.css",
+    "find": "@keyframes img-fade-in {",
+    "replace": "@keyframes img-fade {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the cart shimmer is gone",
+    "file": "src/app/globals.css",
+    "find": "@keyframes cart-shimmer {",
+    "replace": "@keyframes cart-shimmerr {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the skeleton shimmer is gone",
+    "file": "src/app/globals.css",
+    "find": "@keyframes skeleton-shimmer {",
+    "replace": "@keyframes skeleton-shimmerr {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the checkout shimmer is gone",
+    "file": "src/app/globals.css",
+    "find": "@keyframes checkout-shimmer {",
+    "replace": "@keyframes checkout-shimmerr {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the pulse is gone",
+    "file": "src/app/globals.css",
+    "find": "@keyframes ni-pulse {",
+    "replace": "@keyframes ni-pulsee {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the ticker is gone",
+    "file": "src/app/globals.css",
+    "find": "@keyframes ni-ticker-scroll {",
+    "replace": "@keyframes ni-ticker-scrolll {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: admin pictures fade",
+    "file": "src/app/globals.css",
+    "find": "img[data-admin-img] {\n  opacity: 1 !important;",
+    "replace": "img[data-admin-imgs] {\n  opacity: 1 !important;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: cursor pictures fade",
+    "file": "src/app/globals.css",
+    "find": "img[data-cursor-img] {",
+    "replace": "img[data-cursor-imgs] {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the system pointer stays",
+    "file": "src/app/globals.css",
+    "find": "  cursor: none !important;",
+    "replace": "  cursor: auto !important;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the system pointer is always hidden",
+    "file": "src/app/globals.css",
+    "find": "html.custom-cursor-active,\nhtml.custom-cursor-active * {",
+    "replace": "html,\nhtml * {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the drawer link keeps moving",
+    "file": "src/app/globals.css",
+    "find": "  .drawer-nav-link,\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the cards keep moving",
+    "file": "src/app/globals.css",
+    "find": "@media (prefers-reduced-motion: reduce) {\n  .collection-card {",
+    "replace": "@media (prefers-reduced-motion: no-preference) {\n  .collection-card {",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the avatar keeps moving",
+    "file": "src/app/globals.css",
+    "find": "@media (prefers-reduced-motion: reduce) {\n  .user-avatar-btn {\n    transition: none !important;\n  }\n}",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  }
+]

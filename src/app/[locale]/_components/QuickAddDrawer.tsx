@@ -208,7 +208,7 @@ function QuickAddContent({ product, onClose }: { product: Product; onClose: () =
       >
         {/* Handle bar */}
         <div className="flex justify-center py-3 sm:hidden shrink-0">
-          <span className="w-9 h-1 rounded-sm bg-[var(--border-medium)]" />
+          <span className="w-9 h-1 rounded-sm bg-[var(--border-default)]" />
         </div>
 
         {/* Product info row */}

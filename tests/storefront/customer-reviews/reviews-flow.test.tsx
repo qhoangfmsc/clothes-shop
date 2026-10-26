@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import ReviewsContent from "@/src/app/[locale]/(private)/reviews/ReviewsContent";
 import { msg } from "@/tests/_support/messages";
 import { navigation } from "@/tests/_support/navigation";
-import { F, send, star, useObjectUrls, user } from "./form-kit";
+import { F, send, star, stubObjectUrls, user } from "./form-kit";
 import { authorReview, pendingReview, productSummary, renderReviews, type RenderReviewsOptions } from "./reviews-kit";
 
 /* Writing and editing a review from the Reviews page, and what the page does with the answer (specs/storefront/customer-reviews.md, flows REV-17 to REV-17E). */
 
-useObjectUrls();
+stubObjectUrls();
 
 const page = (options: RenderReviewsOptions = {}) => renderReviews(<ReviewsContent />, options);
 const open = async (name: string) => user.click(await screen.findByRole("button", { name }));

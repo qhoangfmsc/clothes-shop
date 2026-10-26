@@ -43,6 +43,7 @@
   "drawer": {
     "open": "Open menu",
     "close": "Close menu",
-    "featured": "Featured"
+    "featured": "Featured",
+    "discover": "Discover"
   }
 }

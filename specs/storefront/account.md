@@ -1,6 +1,6 @@
 # Account (tài khoản) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
 > **Doc:** [storefront/account](../../docs/storefront/account.md) · **Test:** `tests/storefront/account/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -93,3 +93,4 @@ Thay đổi nhìn thấy được: có (nhỏ): đọc đơn lỗi thì có hộ
 
 - 2026-10-25 · Viết spec và test cho toàn module (batch 7), kiểm thử đột biến.
 - 2026-10-25 · Sửa: đọc đơn lỗi hiện hộp lỗi + "Thử lại" (khóa `private.account.orders.loadFailed`, `retry` ở cả hai ngôn ngữ) thay vì giả làm "chưa có đơn".
+- 2026-10-26 · no-test: chỉ đổi đường dẫn import, không đổi hành vi; `UserAvatar` có test ở `tests/platform/site-chrome`. `UserAvatar` đổi nơi định nghĩa sang `_components/UserAvatar.tsx` (trước là `UserMenu.tsx`); không đổi hành vi (batch 8, site-chrome).

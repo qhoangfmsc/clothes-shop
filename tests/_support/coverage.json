@@ -72,7 +72,17 @@
     "src/app/[locale]/\\(public\\)/terms/page.tsx",
     "src/app/[locale]/\\(public\\)/privacy/page.tsx",
     "src/app/[locale]/\\(public\\)/shipping-returns/page.tsx",
-    "src/lib/legal.ts"
+    "src/lib/legal.ts",
+    "src/app/[locale]/layout.tsx",
+    "src/app/[locale]/not-found.tsx",
+    "src/app/[locale]/\\(public\\)/layout.tsx",
+    "src/app/[locale]/\\(public\\)/error.tsx",
+    "src/app/[locale]/\\(private\\)/layout.tsx",
+    "src/app/[locale]/_components/{Providers,RouteTransition,VercelTelemetry}.tsx",
+    "src/app/[locale]/_components/cursor/**",
+    "src/app/[locale]/_components/{SiteHeader,HeaderNav,HamburgerMenu,SearchBar,UserAvatar,Logo,SiteFooter,LanguageSwitcher,SocialIcons,CartFAB}.tsx",
+    "src/app/[locale]/_components/useSearchHistory.ts",
+    "src/lib/socials.tsx"
   ],
   "thresholds": {
     "src/lib/session.ts": {
@@ -1366,6 +1376,131 @@
       "lines": 90,
       "branches": 80,
       "functions": 95
+    },
+    "src/app/[locale]/layout.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/not-found.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/layout.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/error.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/layout.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/Providers.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/RouteTransition.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/VercelTelemetry.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/cursor/CustomCursor.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/cursor/cursor-config.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/cursor/use-cursor-tracker.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/unauthorized/UnauthorizedContent.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/unauthorized/page.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/CartFAB.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 75
+    },
+    "src/app/[locale]/_components/HamburgerMenu.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/HeaderNav.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/LanguageSwitcher.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/Logo.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/SearchBar.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/SiteFooter.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/SiteHeader.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/SocialIcons.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/UserAvatar.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/useSearchHistory.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/socials.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
     }
   }
 }

@@ -1,7 +1,7 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-19
-> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserMenu.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
+> **Nhóm:** Platform · **Cập nhật:** 2026-10-26
+> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserAvatar.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
 
@@ -24,7 +24,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 | Thanh điều hướng | Link Shop/New In/Collections + nút "Đặt thiết kế" (≥ 1024 px), mega menu của Shop | `HeaderNav.tsx` |
 | Tìm kiếm | Ô tìm kiếm mở rộng, gợi ý sản phẩm, lịch sử gần đây, điều hướng bằng phím | `SearchBar.tsx`, `useSearchHistory.ts` |
 | Burger menu | Drawer toàn màn hình: nav, accordion danh mục, khu tài khoản, banner nổi bật | `HamburgerMenu.tsx` |
-| Menu người dùng | Avatar + dropdown (hiện không gắn vào header), xuất `UserAvatar` | `UserMenu.tsx` |
+| Avatar | Avatar tròn (ảnh hoặc chữ cái đầu) cho burger menu và trang Account | `UserAvatar.tsx` |
 | Footer | Thương hiệu + mạng xã hội, Explore, Policies (link pháp lý), Language, copyright | `SiteFooter.tsx` |
 | Ngôn ngữ | `LanguageSwitcher` (xem [i18n](./i18n.md)) | `LanguageSwitcher.tsx` |
 | Giỏ nổi | `CartFAB` | `CartFAB.tsx` |
@@ -41,7 +41,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 - Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 1.875 rem (30 px ở gốc 16 px), link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
 - Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Panel trượt từ trên, render qua portal vào `body`.
 - Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
-- `<UserMenu />` đang được comment trong `HeaderNav` (không hiển thị); phần tài khoản nằm trong burger menu.
+- Phần tài khoản nằm trong burger menu (header không có dropdown người dùng).
 
 ### 4.3 `SearchBar`
 
@@ -54,16 +54,16 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 - Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: **Đặt thiết kế** (đầu danh sách; không có mục Home — logo đã dẫn về trang chủ), Shop (accordion), New In, Collections, Về DOOVAN (`nav.about`, link `/about`), không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành hàng nổi bật nhẹ (class `drawer-nav-featured` trong `globals.css`): nền vàng nhạt (alpha 0,08), viền vàng, icon kéo `Scissors` màu vàng (không vòng tròn), chữ vàng, mũi tên `ArrowRight` trượt khi hover; hover/focus đậm nền và viền hơn; không animation, không bóng (transition tắt khi `prefers-reduced-motion`).
 - Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
 - `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → hàng avatar + tên + email là nút thu/mở (`aria-expanded`, mũi tên ▾ xoay 180°) một panel collapse (`#drawer-account-panel`, animation chiều cao) chứa link My account / Wishlist / Orders và nút đăng xuất `SignOutButton variant="drawer"` (hỏi xác nhận bằng `ConfirmDialog` — nằm trên drawer nhờ `z-200` — rồi `logout()` và đóng drawer; hủy thì drawer giữ nguyên; component thuộc [auth](./auth.md)). Mặc định đóng; state nằm trong component nên đóng lại mỗi khi drawer đóng.
-- Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`).
+- Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`), nhãn mặc định `drawer.discover` ("Khám phá" / "Discover").
 - Drawer không có chân trang: sau khu nav/banner là hết; đổi ngôn ngữ, mạng xã hội, link pháp lý và copyright chỉ nằm ở `SiteFooter`.
 
-### 4.5 `UserMenu`
+### 4.5 `UserAvatar`
 
-Component dropdown hover (avatar → My account, Wishlist, Orders, Sign out; khách → nút đăng nhập). Hiện **không** được render trong header. File vẫn được dùng vì xuất `UserAvatar` (avatar tròn: ảnh Google hoặc chữ cái đầu; là `<button>` chỉ khi có `onClick`, còn lại là `<span>` để dùng được bên trong nút/link khác như hàng toggle của burger menu) cho burger menu và trang Account.
+Avatar tròn: ảnh Google hoặc chữ cái đầu của hai từ đầu (`?` nếu không có tên); là `<button>` (có `aria-label` `userMenu`) chỉ khi có `onClick`, còn lại là `<span>` để dùng được bên trong nút/link khác như hàng toggle của burger menu. Dùng ở burger menu và trang Account.
 
 ### 4.6 `SiteFooter`
 
-Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Policies (tiêu đề `footer.policies.title` = "Chính sách" / "Policies", ba link `LEGAL_DOCS`: Terms, Privacy, Shipping & Returns — nhãn `shared.legal.<key>`), Language (`LanguageSwitcher variant="footer"`). Footer không còn cột tài khoản. Thanh dưới chỉ có `copyright` (năm hiện tại). Nhãn link Explore lấy từ `shared.header.nav` để khớp header; chuỗi footer ở `shared.footer`.
+Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Policies (tiêu đề `footer.policies.title` = "Chính sách" / "Policies", ba link `LEGAL_DOCS`: Terms, Privacy, Shipping & Returns — nhãn `shared.legal.<key>`), Language (`LanguageSwitcher`). Footer không còn cột tài khoản. Thanh dưới chỉ có `copyright` (năm hiện tại). Nhãn link Explore lấy từ `shared.header.nav` để khớp header; chuỗi footer ở `shared.footer`.
 
 ### 4.7 `CartFAB`
 
@@ -74,3 +74,7 @@ Nút tròn vàng góc dưới phải của cột nội dung (`z-20`, `right` = `
 `useCategories` (`GET /api/categories?sort=priority&limit=200`), `useBannerConfig("NAV_MENU_BANNERS")`, `useAutocomplete` (`GET /api/products/autocomplete?q=&limit=`). Chi tiết: [data-layer](./data-layer.md). Banner `NAV_MENU_BANNERS` cấu hình ở [site-config](../admin/site-config.md).
 
 - `AutocompleteItem` = `ProductSummary` (`{ id, name, slug, image | null, badge, category | null, subcategory | null }`) + `priceVnd, priceUsd`; dropdown tìm kiếm hiện giá theo ngôn ngữ (`useMoney`) và ẩn giá sản phẩm `custom_order` theo `badge`. BE khớp tên/slug theo "chứa" (tên bắt đầu bằng từ khóa xếp trước), chỉ sản phẩm `active`. Danh sách cuộn khi cao quá `min(60vh, 560px)`.
+
+### 4.9 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/platform/site-chrome.md](../../specs/platform/site-chrome.md). Test ở `tests/platform/site-chrome/` (`footer`, `cart-fab`, `search-history`, `search-bar`, `header-nav`, `hamburger`, `user-avatar`; `chrome-kit.tsx` là API giả cho danh mục và banner); `mutants.json` có đột biến cho mọi file của module.
