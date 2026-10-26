@@ -11,15 +11,11 @@ import { Check, ShoppingBag, Heart, Share2, MessageCircle } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import Carousel, { type CarouselHandle } from "@/src/app/[locale]/_components/Carousel";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
+import { useAppDispatch } from "@/src/store/hooks";
 import { addItem, syncAddToCartItem } from "@/src/app/[locale]/(private)/cart/_common/moduleSlice";
-import {
-  toggleWishlistItem,
-  syncAddToWishlist,
-  syncRemoveFromWishlist,
-  selectIsWishlisted,
-} from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
+import { useProductWishlist } from "@/src/app/[locale]/(private)/wishlist/_common/use-product-wishlist";
 import { useAuthAction } from "@/src/hooks/use-auth-action";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { moneyProp, trackEvent } from "@/src/lib/analytics";
 import { moneyOf } from "@/src/lib/money";
 import SizeGuideModal from "./SizeGuideModal";
@@ -64,10 +60,10 @@ export default function ProductDetailClient({
   const [quantity, setQuantity] = useState(1);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { toast } = useToast();
+  const toErrorMessage = useErrorMessage();
 
   /* Stores + auth */
   const dispatch = useAppDispatch();
-  const isWishlisted = useAppSelector(selectIsWishlisted(product.id));
   const { requireAuth } = useAuthAction();
 
   const isSelectionComplete = selectedSize !== null && selectedColor !== null;
@@ -136,15 +132,10 @@ export default function ProductDetailClient({
           quantity
         )
       );
-      /* API sync in background */
-      dispatch(
-        syncAddToCartItem({
-          productId: product.id,
-          size: selectedSize!,
-          color: colorName,
-          quantity,
-        })
-      );
+      /* API sync in background; if the BE refuses, the line is taken back out of the bag and the shopper is told */
+      dispatch(syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity }))
+        .unwrap()
+        .catch((err: unknown) => toast.error(toErrorMessage(err, t("addFailed"))));
       /* Unit price: the BE prices the line only once the add is answered */
       trackEvent("add_to_cart", {
         productId: product.id,
@@ -171,28 +162,14 @@ export default function ProductDetailClient({
     selectedColor,
     quantity,
     toast,
+    toErrorMessage,
     locale,
     t,
   ]);
 
-  const handleWishlist = useCallback(() => {
-    requireAuth(() => {
-      dispatch(
-        toggleWishlistItem({
-          productId: product.id,
-          name: product.name,
-          priceVnd: product.priceVnd,
-          priceUsd: product.priceUsd,
-          image: product.images[0],
-          category: product.category?.slug ?? "",
-          subcategory: product.subcategory?.slug ?? "",
-          badge: product.badge,
-        })
-      );
-      // Check current state after toggling — if it was just added, sync add
-      const stillWishlisted = !isWishlisted; // was not wishlisted before toggle, so now added
-      if (stillWishlisted) {
-        dispatch(syncAddToWishlist(product.id));
+  const notifyWishlist = useCallback(
+    (added: boolean) => {
+      if (added) {
         toast.info(
           t.rich("toastSaved", {
             name: product.name,
@@ -200,11 +177,12 @@ export default function ProductDetailClient({
           })
         );
       } else {
-        dispatch(syncRemoveFromWishlist(product.id));
         toast.info(t("toastRemoved", { name: product.name }));
       }
-    }, "saveToWishlist");
-  }, [requireAuth, dispatch, isWishlisted, product, toast, t]);
+    },
+    [toast, t, product.name]
+  );
+  const { isWishlisted, toggle: handleWishlist } = useProductWishlist(product, notifyWishlist);
 
   return (
     <>

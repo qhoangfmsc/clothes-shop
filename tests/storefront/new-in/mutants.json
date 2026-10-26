@@ -1,0 +1,344 @@
+[
+  {
+    "name": "new-in: the page asks for another badge",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "badge: \"new\", limit: SHOP_PAGE_SIZE",
+    "replace": "badge: \"sale\", limit: SHOP_PAGE_SIZE",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the page asks for another page size",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "limit: SHOP_PAGE_SIZE",
+    "replace": "limit: 10",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the hero asks for the wrong banners",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "SITE_CONFIG_KEYS.NEW_IN_HERO_BANNERS",
+    "replace": "SITE_CONFIG_KEYS.COLLECTIONS_HERO_BANNERS",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the page does not tell the language",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the total is lost",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "total={newProducts.total}",
+    "replace": "total={newProducts.data.length}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the hero gets no banners",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "heroBanners={heroBanners}",
+    "replace": "heroBanners={[]}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the title has no description",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "    title,\n    description: t(\"description\"),\n    alternates",
+    "replace": "    title,\n    description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the address is the shop's",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "alternates: buildAlternates(locale, \"/new-in\"),",
+    "replace": "alternates: buildAlternates(locale, \"/shop\"),",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the share card has another address",
+    "file": "src/app/[locale]/(public)/new-in/page.tsx",
+    "find": "buildSocialMetadata({ locale, path: \"/new-in\", title",
+    "replace": "buildSocialMetadata({ locale, path: \"/shop\", title",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: only one spotlight",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "products.slice(0, 2).map",
+    "replace": "products.slice(0, 1).map",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: a spotlight link goes to the shop",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "href: productPath(p) ?? \"/shop\",",
+    "replace": "href: \"/shop\",",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: a spotlight shows another picture",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "image: p.images[0],",
+    "replace": "image: p.images[1],",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: a spotlight shows the name as its text",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "desc: p.description,",
+    "replace": "desc: p.name,",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the spotlights share a tint",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "bgColor: SPOTLIGHT_BGS[idx] ?? \"var(--bg-section-2)\",",
+    "replace": "bgColor: \"var(--bg-section-2)\",",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: a custom order shows a price",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "(p) => (hasPublicPrice(p.badge) ? fmt(p, \"price\") : tCommon(\"priceOnRequest\"))",
+    "replace": "(p) => fmt(p, \"price\")",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the first tag is the second's",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "[t(\"spotlight.editorsPick\"), t(\"spotlight.mostWanted\")]",
+    "replace": "[t(\"spotlight.mostWanted\"), t(\"spotlight.editorsPick\")]",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the ticker runs once",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "{[...Array(2)].map((_, setIdx) =>",
+    "replace": "{[...Array(1)].map((_, setIdx) =>",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the ticker misses a phrase",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "[t(\"ticker.newDrop\"), t(\"ticker.limited\"), t(\"ticker.handcrafted\")]",
+    "replace": "[t(\"ticker.newDrop\"), t(\"ticker.limited\")]",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the invitation does not glide",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "    e.preventDefault();\n    target.scrollIntoView({ behavior: \"smooth\", block: \"start\" });",
+    "replace": "    target.scrollIntoView({ behavior: \"smooth\", block: \"start\" });",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the invitation jumps",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "target.scrollIntoView({ behavior: \"smooth\", block: \"start\" });",
+    "replace": "target.scrollIntoView();",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the invitation glides to the end",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "block: \"start\" });\n  }, []);",
+    "replace": "block: \"end\" });\n  }, []);",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the invitation is blocked without a grid",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "    if (!target) return;\n    e.preventDefault();",
+    "replace": "    e.preventDefault();\n    if (!target) return;",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the invitation points elsewhere",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "href=\"#new-drops\"",
+    "replace": "href=\"#top\"",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the hero shows no banner",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "            banners={heroBanners}",
+    "replace": "            banners={[]}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the hero banner has no name",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "alt={t(\"hero.alt\")}",
+    "replace": "alt=\"\"",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the hero has no dots",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "count={heroBanners.length}",
+    "replace": "count={0}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the dots do nothing",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "onSelect={goToHero}",
+    "replace": "onSelect={() => {}}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the hero motion stays after leaving",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "    }, hero);\n\n    return () => ctx.revert();",
+    "replace": "    }, hero);\n\n    return () => {};",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the grid has no heading",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "          heading={",
+    "replace": "          heading={null && ",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the grid is of another badge",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "scope={{ badge: \"new\" }}",
+    "replace": "scope={{ badge: \"sale\" }}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the grid ignores the total",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "initialTotal={total}",
+    "replace": "initialTotal={products.length}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the grid starts empty",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "initialProducts={products}",
+    "replace": "initialProducts={[]}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the grid has another anchor",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "id=\"new-drops\"",
+    "replace": "id=\"drops\"",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the second spotlight does not turn around",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "lg:flex-row-reverse min-h-[80vh]",
+    "replace": "lg:flex-row min-h-[80vh]",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the newsletter form submits",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "onSubmit={(e) => e.preventDefault()}",
+    "replace": "onSubmit={() => {}}",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the email field is not an email",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "type=\"email\"",
+    "replace": "type=\"text\"",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the email field has no name",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "aria-label={t(\"newsletter.emailAria\")}",
+    "replace": "aria-label=\"\"",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  },
+  {
+    "name": "new-in: the join button does not submit",
+    "file": "src/app/[locale]/(public)/new-in/_components/NewInClient.tsx",
+    "find": "type=\"submit\"\n            className=\"py-3 px-6",
+    "replace": "type=\"button\"\n            className=\"py-3 px-6",
+    "tests": [
+      "tests/storefront/new-in/new-in.test.tsx"
+    ]
+  }
+]

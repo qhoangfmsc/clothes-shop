@@ -5,8 +5,10 @@ import type { WishlistItem } from "@/src/app/[locale]/(private)/wishlist/_common
 import type { RootState } from "@/src/store";
 import type { Order, OrderItem } from "@/src/app/[locale]/(private)/orders/_common/types";
 import type { ReturnEligibility, ReturnRequest } from "@/src/app/[locale]/(private)/returns/_common/types";
+import type { Category, SubCategory } from "@/src/types/category";
 import type { Product, ProductSummary } from "@/src/types/product";
-import type { PendingReviewItem } from "@/src/types/review";
+import type { AuthorReview, PendingReviewItem, PublicReview, ReviewSummary } from "@/src/types/review";
+import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
 import type { AdminOrder } from "@/src/hooks/use-admin-api";
 
@@ -44,6 +46,16 @@ export function product(over: Partial<Product> = {}): Product {
     updatedAt: STAMP,
     ...over,
   };
+}
+
+/** A sub-category as the public API sends it (`Category.subcategories` item). */
+export function subcategoryOf(over: Partial<SubCategory> = {}): SubCategory {
+  return { id: "s1", slug: "shirts", label: "Shirts", description: "Shirts for every day", count: 3, ...over };
+}
+
+/** A category as `GET /api/categories` sends it: one sub-category, no hero picture. */
+export function categoryOf(over: Partial<Category> = {}): Category {
+  return { id: "c1", slug: "tops", title: "Tops", description: "Everything for the top half", heroImage: null, priority: 1, subcategories: [subcategoryOf()], createdAt: STAMP, updatedAt: STAMP, ...over };
 }
 
 /** One priced cart line: the dress in size M, colour Red. */
@@ -232,6 +244,26 @@ export function adminOrder(over: Partial<AdminOrder> = {}): AdminOrder {
 /** A line the customer can still review. */
 export function pendingReview(over: Partial<PendingReviewItem> = {}): PendingReviewItem {
   return { orderItemId: "oi-1", orderId: "o-1", productId: "p1", productName: "Dress", productImage: "/a.jpg", product: productSummary(), size: "M", color: "Red", quantity: 1, deliveredAt: STAMP, reviewDeadline: "2099-01-01T00:00:00.000Z", ...over };
+}
+
+/** A published review as the product page lists it. */
+export function publicReview(over: Partial<PublicReview> = {}): PublicReview {
+  return { id: "r1", author: "Lan", avatar: "", rating: 5, date: "", createdAt: "2026-03-05T05:00:00.000Z", title: "", content: "Lovely", verified: true, fit: null, images: [], size: "", color: "", helpfulCount: 0, edited: false, reply: null, ...over };
+}
+
+/** A review as its author sees it (`/api/my-reviews`). */
+export function authorReview(over: Partial<AuthorReview> = {}): AuthorReview {
+  return { ...publicReview(), productId: "p1", orderItemId: "oi-1", product: null, status: "PUBLISHED", moderationNote: null, editedAt: null, canEdit: false, editableUntil: null, ...over };
+}
+
+/** The totals of a product with `ratingCount` reviews spread as `distribution` (the BE's numbers, taken as they are). */
+export function reviewSummary(over: Partial<ReviewSummary> = {}): ReviewSummary {
+  return { productId: "p1", ratingCount: 3, ratingAverage: 4.3, withImages: 1, distribution: { "1": 0, "2": 0, "3": 1, "4": 0, "5": 2 }, fit: { small: 0, true_to_size: 2, large: 1, total: 3 }, ...over };
+}
+
+/** A size table for one category. */
+export function sizeGuide(over: Partial<SizeGuide> = {}): SizeGuide {
+  return { category: "tops", title: "Tops size guide", description: "How our tops fit", unit: "cm", columns: ["Size", "Bust", "Waist"], rows: [{ size: "S", bust: "86", waist: "66" }, { size: "M", bust: "90" }], tips: ["Measure over thin clothes"], ...over };
 }
 
 /** A return request waiting for the shop: one piece of the dress, wrong size. */

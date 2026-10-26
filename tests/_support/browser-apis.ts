@@ -1,5 +1,5 @@
 /* jsdom has no layout, `ResizeObserver`, `IntersectionObserver` or `Element.scrollTo`. These stand-ins let a test play the browser:
-   `observers.intersection[0].trigger(true)` says the element came into view, `observers.resize[0].trigger()` says its box changed, and
+   `observers.intersection[0].trigger(true)` says the element came into view (`triggerFor(true, [card])` names the elements), `observers.resize[0].trigger()` says its box changed, and
    `scrolls` lists the `scrollTo` calls (which also move `scrollLeft` and fire `scroll`). `setup.ts` installs them and resets them after each test. */
 
 type ResizeCallback = (entries: ResizeObserverEntry[], observer: ResizeObserver) => void;
@@ -44,6 +44,10 @@ class FakeIntersectionObserver {
   }
   trigger(isIntersecting: boolean) {
     this.callback([{ isIntersecting } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
+  }
+  /** Say each of these elements (default: every one watched) came into view or left it, one entry per element */
+  triggerFor(isIntersecting: boolean, elements: Element[] = this.observed) {
+    this.callback(elements.map((target) => ({ isIntersecting, target }) as IntersectionObserverEntry), this as unknown as IntersectionObserver);
   }
 }
 

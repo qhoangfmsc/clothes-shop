@@ -291,5 +291,170 @@
     "tests": [
       "tests/storefront/wishlist/wishlist-page.test.tsx"
     ]
+  },
+  {
+    "name": "wishlist: a heart needs no sign-in",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "    requireAuth(() => {\n      dispatch(\n        toggleWishlistItem({",
+    "replace": "    ((fn: () => void) => fn())(() => {\n      dispatch(\n        toggleWishlistItem({",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart asks for the wrong reason",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "    }, \"saveToWishlist\");",
+    "replace": "    }, \"continue\");",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves under the wrong id",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "productId: product.id,\n          name: product.name,",
+    "replace": "productId: product.slug,\n          name: product.name,",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves without the name",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "          name: product.name,\n          priceVnd",
+    "replace": "          name: \"\",\n          priceVnd",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves the wrong price",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "          priceVnd: product.priceVnd,\n          priceUsd: product.priceUsd,",
+    "replace": "          priceVnd: 0,\n          priceUsd: product.priceUsd,",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves without the dollar price",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "          priceUsd: product.priceUsd,\n          image",
+    "replace": "          priceUsd: 0,\n          image",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves the wrong picture",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "image: product.images[0],",
+    "replace": "image: product.images[1],",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves without the category",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "category: product.category?.slug ?? \"\",",
+    "replace": "category: \"\",",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves without the sub-category",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "subcategory: product.subcategory?.slug ?? \"\",",
+    "replace": "subcategory: \"\",",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a heart saves without the badge",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "badge: product.badge,\n        })",
+    "replace": "badge: null,\n        })",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a product on the list is treated as new",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "const added = !isWishlisted;",
+    "replace": "const added = isWishlisted;",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a save is not told to the BE",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "dispatch(added ? syncAddToWishlist(product.id) : syncRemoveFromWishlist(product.id));",
+    "replace": "dispatch(syncRemoveFromWishlist(product.id));",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: a removal is not told to the BE",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "dispatch(added ? syncAddToWishlist(product.id) : syncRemoveFromWishlist(product.id));",
+    "replace": "dispatch(syncAddToWishlist(product.id));",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: the page is not told what happened",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "      notify(added);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "wishlist: the page is told the opposite",
+    "file": "src/app/[locale]/(private)/wishlist/_common/use-product-wishlist.ts",
+    "find": "      notify(added);",
+    "replace": "      notify(!added);",
+    "tests": [
+      "tests/storefront/wishlist/wishlist-toggle.test.tsx",
+      "tests/storefront/shop/shop-card.test.tsx",
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
   }
 ]

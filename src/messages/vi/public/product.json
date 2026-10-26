@@ -36,6 +36,7 @@
     "hintBoth": "Chọn kích cỡ và màu sắc để thêm vào giỏ",
     "hintSize": "Chọn kích cỡ",
     "hintColor": "Chọn màu sắc",
+    "addFailed": "Không thể thêm vào giỏ hàng. Vui lòng thử lại.",
     "addedToBag": "Đã thêm vào giỏ",
     "addToBag": "Thêm vào giỏ",
     "addToWishlist": "Thêm vào yêu thích",
@@ -124,16 +125,8 @@
     "title": "Bảng size",
     "close": "Đóng bảng size",
     "loading": "Đang tải bảng size…",
+    "unit": "Số đo tính bằng {unit}",
     "fitTips": "Gợi ý chọn size",
     "unavailable": "Chưa có bảng size cho danh mục này."
-  },
-  "share": {
-    "label": "Chia sẻ",
-    "copyLink": "Sao chép liên kết",
-    "copied": "Đã sao chép liên kết",
-    "copyFailed": "Không thể sao chép liên kết",
-    "shareOnX": "Chia sẻ lên X",
-    "shareOnPinterest": "Chia sẻ lên Pinterest",
-    "text": "Xem {name} từ DOOVAN"
   }
 }

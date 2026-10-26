@@ -1,6 +1,6 @@
 # Shop (danh mục, danh mục con, lưới sản phẩm)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop`, `/shop/[category]`, `/shop/[category]/[subcategory]` · **Cập nhật:** 2026-10-19
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop`, `/shop/[category]`, `/shop/[category]/[subcategory]` · **Cập nhật:** 2026-10-26
 > **Code:** `(public)/shop/` — `page.tsx`, `[category]/page.tsx`, `[category]/[subcategory]/page.tsx`, `_components/{ShopHero,BreadcrumbNav,CategoryGrid,SubcategoryChips,ShopProductsClient,ShopFilters,ProductGrid,ProductCard}.tsx`, `_common/constants.ts`, `_lib/server-fetchers.ts`
 > **i18n:** `public.shop` (`pages.index|category|subcategory`, `components.*`), `common.productBadge`
 > Trang chi tiết sản phẩm: [product-detail](./product-detail.md)
@@ -55,7 +55,7 @@ Giúp khách tìm sản phẩm: xem các danh mục, lọc theo giá/size/màu, 
 ### 4.3 Thẻ sản phẩm (`ProductCard`)
 
 - Ảnh `aspect 2/3` (`images[0]`), badge (`PRODUCT_CARD_BADGE_STYLES`, nhãn `common.productBadge`), tên, giá theo ngôn ngữ (+ giá gốc gạch ngang khi `originalPriceVnd` không `null`), rồi `ProductRating compact` (sao + "4,5 (12)" từ `ratingAverage` / `ratingCount` của sản phẩm, không gọi thêm API; ẩn khi chưa có đánh giá). Toàn thẻ là link tới `/shop/<cat>/<sub>/<id>` dựng bằng `productPath(product)` (`src/lib/product-url.ts`) từ `category.slug` / `subcategory.slug` của sản phẩm.
-- Wishlist: nút tim → `requireAuth(…, "saveToWishlist")` rồi `toggleWishlistItem` (Redux) + `syncAddToWishlist` / `syncRemoveFromWishlist` (BE) + toast `info`. Trạng thái tim được đồng bộ với store sau khi mount (tránh hydration mismatch).
+- Wishlist: nút tim → hook `useProductWishlist` của [wishlist](./wishlist.md) (`requireAuth(…, "saveToWishlist")` rồi `toggleWishlistItem` (Redux) + `syncAddToWishlist` / `syncRemoveFromWishlist` (BE)); thẻ chỉ đưa vào toast `info`. Trạng thái tim được đồng bộ với store sau khi mount (tránh hydration mismatch).
 - Nút giỏ (`ProductBagButton`): dưới 640 px là nút icon cạnh nút tim (chỉ render khi `!useBreakpoint().isDesktop`, và `sm:hidden`); từ 640 px là nút chữ hiện ở đáy ảnh khi hover. Bấm → `requireAuth(…, "addToBag")` → `openQuickAdd(product)` (xem [cart](./cart.md)). Sản phẩm `sold_out` khóa nút; `custom_order` dẫn tới [contact](./contact.md).
 - Sản phẩm không có `category`/`subcategory` có URL chứa phân đoạn rỗng (dữ liệu BE luôn kèm quan hệ này).
 
@@ -71,3 +71,11 @@ Redux `wishlist`, `useQuickAdd`, `useAuthAction`, `Carousel`, `BannerFade`, `Jso
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
 - **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.
+
+### 4.6 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/shop.md](../../specs/storefront/shop.md). Test ở `tests/storefront/shop/` (`shop-pages`, `shop-card`, `shop-grid`, `shop-parts`, `shop-products`; `shop-kit.tsx` là dữ liệu mẫu, API công khai giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+### 4.7 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/shop.md](../../specs/storefront/shop.md). Test ở `tests/storefront/shop/` (`shop-pages`, `shop-card`, `shop-grid`, `shop-parts`, `shop-products`; `shop-kit.tsx` là dữ liệu mẫu, API công khai giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.

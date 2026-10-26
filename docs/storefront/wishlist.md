@@ -1,7 +1,7 @@
 # Wishlist (sản phẩm yêu thích)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-23
-> **Code:** `(private)/wishlist/` — `page.tsx`, `layout.tsx`, `WishlistContent.tsx`, `_common/{moduleSlice,types}.ts`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/wishlist` · **Cập nhật:** 2026-10-26
+> **Code:** `(private)/wishlist/` — `page.tsx`, `layout.tsx`, `WishlistContent.tsx`, `_common/{moduleSlice,types,use-product-wishlist}.ts`
 > **i18n:** `private.wishlist`
 > **Redux slice:** `state.wishlist`
 
@@ -17,7 +17,7 @@ Cho khách đánh dấu sản phẩm quan tâm từ thẻ sản phẩm, trang ch
 
 | Chức năng | Mô tả |
 |---|---|
-| Thả/bỏ tim | `toggleWishlistItem` + sync BE; có ở `ProductCard`, trang chi tiết, dòng trong giỏ |
+| Thả/bỏ tim | Hook `useProductWishlist(product, notify)` (`requireAuth("saveToWishlist")` + `toggleWishlistItem` + sync BE + báo kết quả): dùng ở `ProductCard`, trang chi tiết sản phẩm và lưới của trang chi tiết bộ sưu tập; dòng trong giỏ dùng `toggleWishlistItem` trực tiếp |
 | Trang wishlist | Lưới 2/3/4 cột: ảnh, tên, ngày thêm, nút bỏ; "Xóa tất cả"; "Tiếp tục mua sắm" |
 | Trạng thái | Skeleton khi tải phiên; `UnauthenticatedState` khi chưa đăng nhập; trạng thái trống có 2 dòng gợi ý |
 

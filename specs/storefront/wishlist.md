@@ -1,6 +1,6 @@
 # Wishlist (sản phẩm yêu thích) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-23 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
 > **Doc:** [storefront/wishlist](../../docs/storefront/wishlist.md) · **Test:** `tests/storefront/wishlist/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -37,7 +37,8 @@ Wishlist là danh sách sản phẩm khách "thả tim" từ thẻ sản phẩm,
 ## 4. Thiết kế
 
 ```
-ProductCard / trang chi tiết / CartContent ─► toggleWishlistItem + syncAdd|syncRemove ─► state.wishlist ─► store.subscribe ─► localStorage
+ProductCard / trang chi tiết / lưới bộ sưu tập ─► useProductWishlist ─┐
+CartContent ───────────────────────────────────────────────┴► toggleWishlistItem + syncAdd|syncRemove ─► state.wishlist ─► store.subscribe ─► localStorage
 WishlistContent ─► fetchWishlist ─► GET /api/wishlist ─► thay toàn bộ items
                 └► removeWishlistItem + syncRemove | clearWishlist (chỉ ở máy)
 ```
@@ -52,6 +53,7 @@ Hướng phụ thuộc: component → slice → `apiFetchStandalone` → `sessio
 |---|---|---|
 | **Cập nhật lạc quan**: reducer đổi state ngay, thunk gọi BE sau | Tim phản hồi tức thì kể cả khi mạng chậm | Chờ BE rồi mới đổi tim |
 | **Toggle** theo `productId` (một reducer cho thêm và bỏ) | Nút tim ở nhiều nơi dùng cùng một lệnh | Hai reducer; mỗi nơi tự kiểm tra |
+| **Một hook cho nút tim** (`useProductWishlist`) | Thẻ sản phẩm, trang sản phẩm và lưới bộ sưu tập từng tự viết luồng đăng nhập → lưu → báo BE (ba bản, một bản còn sót lỗi: không lưu thật). Hook giữ luồng; nơi gọi chỉ đưa vào lời báo kết quả (`notify`) vì chữ khác nhau | Chép luồng ở từng nơi; truyền cả bản dịch vào hook |
 | **BE là nguồn sự thật khi tải trang**: `fetchWishlist` thay toàn bộ | Đồng bộ giữa thiết bị | Gộp hai danh sách (cần quy tắc xử lý xung đột) |
 | **Lưu `localStorage`** qua subscriber của store | Mục hiện ngay khi mở lại trình duyệt | Chỉ lấy từ BE (nhấp nháy rỗng) |
 
@@ -96,9 +98,12 @@ Chữ giao diện ở `private.wishlist` (i18n); tiền qua `useMoney`; toast qu
 | WL-8 | Bỏ một mục: biến mất ngay, `DELETE` đúng sản phẩm, toast | đúng | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
 | WL-8E | BE từ chối lệnh bỏ: toast lỗi và danh sách được đọc lại; "Xóa tất cả" gửi `DELETE` từng mục, mục bị từ chối thì toast lỗi và đọc lại danh sách | lỗi | user | component | `tests/storefront/wishlist/wishlist-page.test.tsx` |
 
+| WL-10G | Nút tim chung `useProductWishlist`, khách: hộp đăng nhập nói rõ lý do, chưa lưu, chưa báo BE, chưa báo kết quả | đúng | khách | component | `tests/storefront/wishlist/wishlist-toggle.test.tsx` |
+| WL-10 | Nút tim chung, đã đăng nhập: lưu đủ trường (tên, giá, ảnh đầu, danh mục, badge), báo BE, báo kết quả; bấm lần hai bỏ ra; tim đã đầy; thiếu danh mục thì slug rỗng | đúng | user | component | `tests/storefront/wishlist/wishlist-toggle.test.tsx` |
+| WL-10E | BE từ chối lưu: tim trở lại | lỗi | user | component | `tests/storefront/wishlist/wishlist-toggle.test.tsx` |
 | WL-9 | Theo phiên: đăng nhập thì tải danh sách, đổi tài khoản thì tải lại, đăng xuất hoặc khách thì xóa danh sách ở máy mà không gọi BE | đúng | user | component | `tests/storefront/cart/cart-sync.test.tsx` |
 
-Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T1: danh sách người dùng giữ), `WishlistContent.tsx` 75/65/75.
+Ngưỡng coverage riêng của module: `moduleSlice.ts` 95/85/95 (T1: danh sách người dùng giữ), `WishlistContent.tsx` 75/65/75, `use-product-wishlist.ts` 95/85/95.
 
 ## 7. Rủi ro & triển khai
 
@@ -112,3 +117,4 @@ Thay đổi hành vi nhìn thấy được: danh sách yêu thích bị xóa ở
 
 - 2026-10-22 · Viết spec và test cho toàn module (batch 2), kiểm thử đột biến; không đổi code của module.
 - 2026-10-22 · Sửa theo quyết định của chủ dự án (giao tôi chọn): xóa danh sách khi đăng xuất và tải khi đăng nhập (qua `CartSync`); "Xóa tất cả" gọi `DELETE` từng mục; lệnh ghi bị từ chối thì gỡ tim vừa thêm hoặc đọc lại danh sách, kèm toast; bỏ dòng "thông báo khi giảm giá" khỏi trang trống. Khóa `private.wishlist.toast.syncFailed` thêm ở cả hai ngôn ngữ; `empty.features.priceDrops` bị xóa.
+- 2026-10-26 · Thêm hook `useProductWishlist` (rút luồng tim lặp ở `ProductCard`, trang chi tiết sản phẩm và lưới bộ sưu tập) kèm test WL-10 và đột biến; hành vi của thẻ sản phẩm và trang sản phẩm không đổi.

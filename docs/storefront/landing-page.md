@@ -1,6 +1,6 @@
 # Landing page (trang chủ)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]` · **Cập nhật:** 2026-10-25
 > **Code:** `(public)/page.tsx` · `(public)/landing-page/` — `page.tsx`, `_common/constants.ts`, `_components/{VideoContainer,Caption,ProductInfo,ViewButton,OutroSection,Footer,CollectionShowcase}.tsx`
 > **i18n:** `public.landing`
 
@@ -50,3 +50,7 @@ Hai thẻ `<video muted>` xếp chồng, chuyển bằng `opacity` (`FADE_MS = 6
 - Không có dữ liệu bộ sưu tập thì lưới trống (không có nội dung dự phòng).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.5 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/landing-page.md](../../specs/storefront/landing-page.md). Test ở `tests/storefront/landing-page/` (`landing-page`, `landing-showcase`, `landing-parts`; `landing-showcase` dùng `collections-kit.tsx` của collections); `mutants.json` có đột biến cho mọi file của module.

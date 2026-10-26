@@ -36,6 +36,7 @@
     "hintBoth": "Select size & color to add to bag",
     "hintSize": "Select a size",
     "hintColor": "Select a color",
+    "addFailed": "Couldn't add this to your bag. Please try again.",
     "addedToBag": "Added to Bag",
     "addToBag": "Add to Bag",
     "addToWishlist": "Add to wishlist",
@@ -124,16 +125,8 @@
     "title": "Size Guide",
     "close": "Close size guide",
     "loading": "Loading size guide…",
+    "unit": "Measurements in {unit}",
     "fitTips": "Fit Tips",
     "unavailable": "Size guide not available for this category."
-  },
-  "share": {
-    "label": "Share",
-    "copyLink": "Copy link",
-    "copied": "Link copied to clipboard",
-    "copyFailed": "Failed to copy link",
-    "shareOnX": "Share on X",
-    "shareOnPinterest": "Share on Pinterest",
-    "text": "Check out {name} from DOOVAN"
   }
 }

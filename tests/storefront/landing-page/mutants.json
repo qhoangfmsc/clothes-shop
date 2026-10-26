@@ -1,0 +1,677 @@
+[
+  {
+    "name": "landing-page: the home page does not tell the language",
+    "file": "src/app/[locale]/(public)/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the description and identity swap",
+    "file": "src/app/[locale]/(public)/page.tsx",
+    "find": "siteJsonLd(locale, tSite(\"meta.description\"), tSite(\"identity\"))",
+    "replace": "siteJsonLd(locale, tSite(\"identity\"), tSite(\"meta.description\"))",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the sections miss new in",
+    "file": "src/app/[locale]/(public)/page.tsx",
+    "find": "          { name: tNav(\"newIn\"), path: \"/new-in\" },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the custom order section points elsewhere",
+    "file": "src/app/[locale]/(public)/page.tsx",
+    "find": "path: CONTACT_PATH",
+    "replace": "path: \"/about\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the heading is seen by everyone",
+    "file": "src/app/[locale]/(public)/page.tsx",
+    "find": "<h1 className=\"sr-only\">",
+    "replace": "<h1>",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the heading is the caption",
+    "file": "src/app/[locale]/(public)/page.tsx",
+    "find": "{tLanding(\"heading\")}",
+    "replace": "{tLanding(\"caption\")}",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the panel starts late",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "start: \"top top\",",
+    "replace": "start: \"top bottom\",",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the panel ends late",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "end: \"100vh top\",",
+    "replace": "end: \"200vh top\",",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the panel does not follow the scroll",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "            scrub: true,\n          },\n        }\n      );\n    });",
+    "replace": "            scrub: false,\n          },\n        }\n      );\n    });",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the panel stays after leaving",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "    });\n\n    return () => ctx.revert();\n  }, []);\n\n  /* ── RAF loop",
+    "replace": "    });\n\n    return () => {};\n  }, []);\n\n  /* ── RAF loop",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the height has one ending screen",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "${vh + maxScroll + 2 * vh}px",
+    "replace": "${vh + maxScroll + vh}px",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the scroll can go negative",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "maxScroll = Math.max(0, wrapH - vh);",
+    "replace": "maxScroll = wrapH - vh;",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a resize is not heard",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "    window.addEventListener(\"resize\", recalc);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a resize is heard after leaving",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "      window.removeEventListener(\"resize\", recalc);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: frames go on after leaving",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "      cancelAnimationFrame(rafId);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the symbol changes at 80 ms exactly",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "now - lastSymbolTime > 80",
+    "replace": "now - lastSymbolTime >= 80",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the symbol changes too often",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "now - lastSymbolTime > 80",
+    "replace": "now - lastSymbolTime > 40",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the symbol is always the first",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]",
+    "replace": "SYMBOLS[0]",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the video hides at the end of the first screen",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "scrollY > vh ? \"hidden\" : \"visible\"",
+    "replace": "scrollY >= vh ? \"hidden\" : \"visible\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the cards scroll at the end of the first screen",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "      if (scrollY > vh) {\n        wrap.style.transform",
+    "replace": "      if (scrollY >= vh) {\n        wrap.style.transform",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the cards scroll by the whole scroll",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "translateY(${-(scrollY - vh)}px)",
+    "replace": "translateY(${-scrollY}px)",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card out of the screen can have a negative size",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "        if (bottom <= 0 || top >= vh) {",
+    "replace": "        if (false) {",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card grows over half the screen",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "(vh - top) / (vh * 0.6)",
+    "replace": "(vh - top) / (vh * 0.5)",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card shrinks over half the screen",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "bottom / (vh * 0.4)",
+    "replace": "bottom / (vh * 0.5)",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card takes the larger scale",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "const scale = Math.min(enter, exit);",
+    "replace": "const scale = Math.max(enter, exit);",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the ending starts late",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "const outroStart = vh + maxScroll;",
+    "replace": "const outroStart = vh + maxScroll + 50;",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the ending is slower",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "(scrollY - outroStart) / (vh - 100)",
+    "replace": "(scrollY - outroStart) / vh",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the label moves by 150 by default",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": ": 160;",
+    "replace": ": 150;",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the label moves by the whole offset",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "-(offset - 80) * progress",
+    "replace": "-offset * progress",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the button is always full size",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "outroBuy.style.transform = `scale(${progress})`;",
+    "replace": "outroBuy.style.transform = \"scale(1)\";",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer is always shown",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "if (outroFooter) outroFooter.style.opacity = String(progress);",
+    "replace": "if (outroFooter) outroFooter.style.opacity = \"1\";",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the overlay is not faded",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "if (outroOverlay) outroOverlay.style.opacity = String(progress);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the button shows before the ending",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "if (outroBuy) outroBuy.style.transform = \"scale(0)\";",
+    "replace": "if (outroBuy) outroBuy.style.transform = \"scale(1)\";",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the label stays moved before the ending",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "if (outroInfo) outroInfo.style.transform = \"translateY(0)\";",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer shows before the ending",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "if (outroFooter) outroFooter.style.opacity = \"0\";",
+    "replace": "if (outroFooter) outroFooter.style.opacity = \"1\";",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the frames stop",
+    "file": "src/app/[locale]/(public)/landing-page/page.tsx",
+    "find": "      rafId = requestAnimationFrame(tick);\n    };",
+    "replace": "    };",
+    "tests": [
+      "tests/storefront/landing-page/landing-page.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: cards sit two to a row on wide screens",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "r % (cols >= 5 ? 2 : 3) === 0",
+    "replace": "r % 3 === 0",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: cards sit two to a row on four columns",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "r % (cols >= 5 ? 2 : 3) === 0",
+    "replace": "r % (cols >= 4 ? 2 : 3) === 0",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the second card is placed too near",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "let b = (a + 2) % cols;",
+    "replace": "let b = (a + 1) % cols;",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: two cards can share a cell",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "      if (b === a) b = (a + 1) % cols;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the cards run straight down",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "const a = (r * 2 + (r % 2)) % cols;",
+    "replace": "const a = (r * 2) % cols;",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the middle column grows from the right",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "const isLeftHalf = c < cols / 2;",
+    "replace": "const isLeftHalf = c <= cols / 2;",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card is full size at the start",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "transform: \"scale(0)\",",
+    "replace": "transform: \"scale(1)\",",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card links to the list",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "href={`/collections/${galleryItem.slug}`}",
+    "replace": "href=\"/collections\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card has no picture name",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "alt={galleryItem.name}",
+    "replace": "alt=\"\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a card shows the slug",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "                  {galleryItem.name}\n",
+    "replace": "                  {galleryItem.slug}\n",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a resize is sent with nothing to show",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "if (GALLERY_ITEMS.length > 0) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the resize is sent very late",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "}, 50);",
+    "replace": "}, 5000);",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the wide layout has four columns",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "buildLayout(GALLERY_ITEMS.length, 5)",
+    "replace": "buildLayout(GALLERY_ITEMS.length, 4)",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the tablet layout has two columns",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "buildLayout(GALLERY_ITEMS.length, 3)",
+    "replace": "buildLayout(GALLERY_ITEMS.length, 2)",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the cards start too high",
+    "file": "src/app/[locale]/(public)/landing-page/_components/CollectionShowcase.tsx",
+    "find": "paddingTop: \"40vh\",",
+    "replace": "paddingTop: \"10vh\",",
+    "tests": [
+      "tests/storefront/landing-page/landing-showcase.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the video never shows without a load",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    }, 2000);",
+    "replace": "    }, 200000);",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the left video does not start",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    left.play().catch(() => {});\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the next video does not start at the beginning",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "      incoming.currentTime = 0;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the next video does not play",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "      incoming.play().catch(() => {});\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the fade ends at once",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "      }, fadeDuration);",
+    "replace": "      }, 0);",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the left video ends into itself",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "const onLeftEnd = () => crossfadeTo(right, left);",
+    "replace": "const onLeftEnd = () => crossfadeTo(left, right);",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the end of the left video is not heard",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    left.addEventListener(\"ended\", onLeftEnd);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the end of the right video is not heard",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    right.addEventListener(\"ended\", onRightEnd);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the end of the left video is heard after leaving",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "      left.removeEventListener(\"ended\", onLeftEnd);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the end of the right video is heard after leaving",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "      right.removeEventListener(\"ended\", onRightEnd);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: a fade timer outlives the page",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "      clearTimeout(fadeTimer);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: reduced motion still waits",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "const fadeDuration = prefersReduced ? 0 : FADE_MS;",
+    "replace": "const fadeDuration = FADE_MS;",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: reduced motion still fades",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    const transitionValue = prefersReduced\n      ? \"none\"",
+    "replace": "    const transitionValue = false\n      ? \"none\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the right video starts in front",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    left.style.zIndex = \"2\";",
+    "replace": "    left.style.zIndex = \"1\";",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the left video starts hidden",
+    "file": "src/app/[locale]/(public)/landing-page/_components/VideoContainer.tsx",
+    "find": "    left.style.opacity = \"1\";",
+    "replace": "    left.style.opacity = \"0\";",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the label offset changes",
+    "file": "src/app/[locale]/(public)/landing-page/_components/ProductInfo.tsx",
+    "find": "data-outro-offset=\"166\"",
+    "replace": "data-outro-offset=\"100\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the label has no symbol",
+    "file": "src/app/[locale]/(public)/landing-page/_components/ProductInfo.tsx",
+    "find": "            id=\"circle-symbol\"",
+    "replace": "            id=\"symbol\"",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the button goes elsewhere",
+    "file": "src/app/[locale]/(public)/landing-page/_components/ViewButton.tsx",
+    "find": "router.push(\"/shop\")",
+    "replace": "router.push(\"/\")",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer shows only one document",
+    "file": "src/app/[locale]/(public)/landing-page/_components/Footer.tsx",
+    "find": "LEGAL_DOCS.slice(0, 2)",
+    "replace": "LEGAL_DOCS.slice(0, 1)",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer shows all documents",
+    "file": "src/app/[locale]/(public)/landing-page/_components/Footer.tsx",
+    "find": "LEGAL_DOCS.slice(0, 2)",
+    "replace": "LEGAL_DOCS",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer shows a fixed year",
+    "file": "src/app/[locale]/(public)/landing-page/_components/Footer.tsx",
+    "find": "new Date().getFullYear()",
+    "replace": "2020",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer blocks its links",
+    "file": "src/app/[locale]/(public)/landing-page/_components/Footer.tsx",
+    "find": "style={{ pointerEvents: \"auto\" }}",
+    "replace": "style={{ pointerEvents: \"none\" }}",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the footer is shown at the start",
+    "file": "src/app/[locale]/(public)/landing-page/_components/Footer.tsx",
+    "find": "        opacity: 0,\n",
+    "replace": "        opacity: 1,\n",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "landing-page: the ending is shown at the start",
+    "file": "src/app/[locale]/(public)/landing-page/_components/OutroSection.tsx",
+    "find": "        opacity: 0,\n",
+    "replace": "        opacity: 1,\n",
+    "tests": [
+      "tests/storefront/landing-page/landing-parts.test.tsx"
+    ]
+  }
+]

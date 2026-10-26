@@ -10,13 +10,7 @@ import { Heart } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useQuickAdd } from "@/src/app/[locale]/_components/QuickAddDrawer";
-import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
-import {
-  toggleWishlistItem,
-  syncAddToWishlist,
-  syncRemoveFromWishlist,
-  selectIsWishlisted,
-} from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
+import { useProductWishlist } from "@/src/app/[locale]/(private)/wishlist/_common/use-product-wishlist";
 import { useAuthAction } from "@/src/hooks/use-auth-action";
 import { useBreakpoint } from "@/src/hooks/useMediaQuery";
 import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
@@ -44,8 +38,26 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   /* Wishlist — defer to client to avoid hydration mismatch.
      Server always renders false; after mount we sync with the real store. */
-  const dispatch = useAppDispatch();
-  const storeIsWishlisted = useAppSelector(selectIsWishlisted(product.id));
+  const notifyWishlist = useCallback(
+    (added: boolean) => {
+      if (added) {
+        toast.info(
+          t.rich("saved", {
+            name: product.name,
+            link: (chunks) => (
+              <Link href="/wishlist" onClick={(ev) => ev.stopPropagation()}>
+                {chunks}
+              </Link>
+            ),
+          })
+        );
+      } else {
+        toast.info(t("removed", { name: product.name }));
+      }
+    },
+    [toast, t, product.name]
+  );
+  const { isWishlisted: storeIsWishlisted, toggle: toggleWishlist } = useProductWishlist(product, notifyWishlist);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   useEffect(() => {
@@ -56,40 +68,9 @@ export default function ProductCard({ product }: ProductCardProps) {
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      requireAuth(() => {
-        dispatch(
-          toggleWishlistItem({
-            productId: product.id,
-            name: product.name,
-            priceVnd: product.priceVnd,
-            priceUsd: product.priceUsd,
-            image: product.images[0],
-            category: product.category?.slug ?? "",
-            subcategory: product.subcategory?.slug ?? "",
-            badge: product.badge,
-          })
-        );
-        // isWishlisted is still the old value before the dispatch re-render
-        const added = !storeIsWishlisted;
-        if (added) {
-          dispatch(syncAddToWishlist(product.id));
-          toast.info(
-            t.rich("saved", {
-              name: product.name,
-              link: (chunks) => (
-                <Link href="/wishlist" onClick={(ev) => ev.stopPropagation()}>
-                  {chunks}
-                </Link>
-              ),
-            })
-          );
-        } else {
-          dispatch(syncRemoveFromWishlist(product.id));
-          toast.info(t("removed", { name: product.name }));
-        }
-      }, "saveToWishlist");
+      toggleWishlist();
     },
-    [requireAuth, dispatch, storeIsWishlisted, product, toast, t]
+    [toggleWishlist]
   );
 
   const handleAddToCart = useCallback(

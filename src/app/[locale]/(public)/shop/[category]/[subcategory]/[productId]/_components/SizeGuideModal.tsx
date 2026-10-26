@@ -177,7 +177,7 @@ export default function SizeGuideModal({ category, isOpen, onClose }: SizeGuideM
                       background: "var(--bg-elevated)",
                     }}
                   >
-                    Measurements in {sizeGuide.unit}
+                    {t("unit", { unit: sizeGuide.unit })}
                   </span>
 
                   {/* Table */}

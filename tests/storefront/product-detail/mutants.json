@@ -1,0 +1,2369 @@
+[
+  {
+    "name": "product-detail: static params use the wrong id",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "productId: p.id,",
+    "replace": "productId: p.slug,",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: static params skip the category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "category: p.category?.slug ?? \"\",",
+    "replace": "category: \"\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: static params skip the sub-category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "subcategory: p.subcategory?.slug ?? \"\",",
+    "replace": "subcategory: \"\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a product with no category page still renders",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "if (!productResult || !catResult) {",
+    "replace": "if (!productResult) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a missing product still renders",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "if (!productResult || !catResult) {",
+    "replace": "if (!catResult) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a missing product has no \"not found\" title",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "if (!result) return { title: withBrand(tCommon(\"notFound\")) };",
+    "replace": "if (!result) return { title: \"\" };",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the description is not the product's",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "description: result.product.description,\n    alternates",
+    "replace": "description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the address leaves out the product",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "const path = `/shop/${category}/${subcategory}/${productId}`;",
+    "replace": "const path = `/shop/${category}/${subcategory}`;",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share picture is not the first",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "image: result.product.images[0],",
+    "replace": "image: result.product.images[1],",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share picture has no name",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "imageAlt: result.product.name,",
+    "replace": "imageAlt: \"\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the page does not tell the language",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "  setRequestLocale(locale);\n\n  const tNav",
+    "replace": "\n  const tNav",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the breadcrumb misses the category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "            { name: category.title, path: `/shop/${catSlug}` },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the breadcrumb ends at the wrong address",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "{ name: product.name, path: productPath },",
+    "replace": "{ name: product.name, path: \"/shop\" },",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the product is described for another address",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "productJsonLd(locale, product, productPath),",
+    "replace": "productJsonLd(locale, product, \"/shop\"),",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the sub-category label is the category title",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "subcategoryLabel={subcategory.label}",
+    "replace": "subcategoryLabel={category.title}",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the related products are dropped",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "find": "relatedProducts={related}",
+    "replace": "relatedProducts={[]}",
+    "tests": [
+      "tests/storefront/product-detail/detail-page.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer chunk is not fetched while idle",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "if (typeof window.requestIdleCallback === \"function\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the idle fetch is not cancelled",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "return () => window.cancelIdleCallback(id);",
+    "replace": "return () => {};",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a view is counted for the wrong product",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "    trackEvent(\"view_product\", {\n      productId: product.id,",
+    "replace": "    trackEvent(\"view_product\", {\n      productId: \"\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a view is counted in the wrong currency",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "...moneyProp({ vnd: product.priceVnd, usd: product.priceUsd }, locale),",
+    "replace": "...moneyProp({ vnd: product.priceVnd, usd: product.priceUsd }, \"vi\"),",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a view is counted at every redraw",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "  }, [product.id, product.priceVnd, product.priceUsd, locale]);",
+    "replace": "  });",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a view is not counted",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "trackEvent(\"view_product\", {",
+    "replace": "((..._a: unknown[]) => {})(\"view_product\", {",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the left arrow moves forward",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "if (e.key === \"ArrowLeft\") galleryRef.current?.prev();",
+    "replace": "if (e.key === \"ArrowLeft\") galleryRef.current?.next();",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the right arrow moves back",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "if (e.key === \"ArrowRight\") galleryRef.current?.next();",
+    "replace": "if (e.key === \"ArrowRight\") galleryRef.current?.prev();",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the arrow keys are never heard",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "window.addEventListener(\"keydown\", handleKeyDown);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the arrow keys are still heard after leaving",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "return () => window.removeEventListener(\"keydown\", handleKeyDown);",
+    "replace": "return () => {};",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag accepts a second tap while it says added",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "if (purchaseMode !== \"cart\" || addedToCart || !isSelectionComplete) return;",
+    "replace": "if (purchaseMode !== \"cart\" || !isSelectionComplete) return;",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag needs no sign-in",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "    requireAuth(() => {\n      const colorName",
+    "replace": "    ((fn: () => void) => fn())(() => {\n      const colorName",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag asks for the wrong reason",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "    }, \"addToBag\");",
+    "replace": "    }, \"continue\");",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag line carries the colour's code as its name",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? \"\";",
+    "replace": "const colorName = selectedColor ?? \"\";",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag line has the wrong picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "            image: product.images[0],\n            size: selectedSize!,",
+    "replace": "            image: product.images[1],\n            size: selectedSize!,",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag line has no size",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "            size: selectedSize!,\n            color: colorName,\n            colorHex: selectedColor!,",
+    "replace": "            size: \"\",\n            color: colorName,\n            colorHex: selectedColor!,",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag line has the wrong colour code",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "            colorHex: selectedColor!,",
+    "replace": "            colorHex: colorName,",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag line has no category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "            category: product.category?.slug ?? \"\",\n            subcategory: product.subcategory?.slug ?? \"\",\n            badge: product.badge,\n          },\n          quantity",
+    "replace": "            category: \"\",\n            subcategory: \"\",\n            badge: product.badge,\n          },\n          quantity",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the bag line is always one piece",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "          },\n          quantity\n        )\n      );",
+    "replace": "          },\n          1\n        )\n      );",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the BE is told one piece",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity })",
+    "replace": "syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity: 1 })",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a refused add says nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": ".catch((err: unknown) => toast.error(toErrorMessage(err, t(\"addFailed\"))));",
+    "replace": ".catch(() => {});",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the add is counted in the wrong currency",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "...moneyProp(moneyOf(product, \"price\"), locale),\n      });\n      setAddedToCart(true);",
+    "replace": "...moneyProp(moneyOf(product, \"price\"), \"vi\"),\n      });\n      setAddedToCart(true);",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the add is not counted",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "trackEvent(\"add_to_cart\", {",
+    "replace": "((..._a: unknown[]) => {})(\"add_to_cart\", {",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the add toast hides the quantity",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "${quantity > 1 ? `, ×${quantity}` : \"\"}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the add toast links elsewhere",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "link: (chunks) => <Link href=\"/cart\">{chunks}</Link>,",
+    "replace": "link: (chunks) => <Link href=\"/shop\">{chunks}</Link>,",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the button never goes back from added",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "      setTimeout(() => setAddedToCart(false), 2200);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the button never says added",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "      setAddedToCart(true);\n      toast.success(",
+    "replace": "      toast.success(",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the saved note links elsewhere",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "link: (chunks) => <Link href=\"/wishlist\">{chunks}</Link>,",
+    "replace": "link: (chunks) => <Link href=\"/shop\">{chunks}</Link>,",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the removed note has no name",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "t(\"toastRemoved\", { name: product.name })",
+    "replace": "t(\"toastRemoved\", { name: \"\" })",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the heart label is always add",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "aria-label={isWishlisted ? t(\"removeFromWishlist\") : t(\"addToWishlist\")}",
+    "replace": "aria-label={t(\"addToWishlist\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share sheet is never used",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "if (typeof navigator !== \"undefined\" && navigator.share) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share address has no language",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "/${locale}${productPath(product) ?? \"/shop\"}`;",
+    "replace": "${productPath(product) ?? \"/shop\"}`;",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share address has no fallback",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "${productPath(product) ?? \"/shop\"}`;",
+    "replace": "${productPath(product) ?? \"\"}`;",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share has no line of text",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "text: t(\"shareText\", { name: product.name }),",
+    "replace": "text: \"\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the share has no title",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "title: product.name,\n                        text:",
+    "replace": "title: \"\",\n                        text:",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the copy is not announced",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "toast.success(t(\"linkCopied\"));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the copy writes nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "await navigator.clipboard.writeText(url);",
+    "replace": "await navigator.clipboard.writeText(\"\");",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a custom order goes elsewhere",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "router.push(buildOrderInquiryHref(product.id))",
+    "replace": "router.push(\"/contact\")",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a custom order shows the pickers",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "const showVariantPickers = purchaseMode !== \"customOrder\";",
+    "replace": "const showVariantPickers = true;",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a sold-out product can be pressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "purchaseMode === \"soldOut\" || (purchaseMode === \"cart\" && !isSelectionComplete)",
+    "replace": "(purchaseMode === \"cart\" && !isSelectionComplete)",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a half-chosen product can be pressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "purchaseMode === \"soldOut\" || (purchaseMode === \"cart\" && !isSelectionComplete)",
+    "replace": "purchaseMode === \"soldOut\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the hint for the size is the colour's",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": ": !selectedSize\n                    ? t(\"hintSize\")",
+    "replace": ": !selectedSize\n                    ? t(\"hintColor\")",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the hints are never shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{purchaseMode === \"cart\" && !isSelectionComplete && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the sold-out hint is the custom-order one",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{purchaseMode === \"soldOut\" ? t(\"soldOutHint\") : t(\"customOrderHint\")}",
+    "replace": "{t(\"customOrderHint\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a custom order shows a price",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{showPrice ? fmt(product, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(product, \"price\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a custom order shows an old price",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{showPrice && product.originalPriceVnd && (",
+    "replace": "{product.originalPriceVnd && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the rating shows without a count",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "product.ratingAverage != null && product.ratingCount > 0 &&",
+    "replace": "product.ratingAverage != null &&",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the rating link opens nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "onClick={() => window.dispatchEvent(new Event(\"reviews:open\"))}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the rating link goes elsewhere",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "href=\"#reviews\"\n                onClick",
+    "replace": "href=\"#top\"\n                onClick",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the badge is never shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{product.badge && (\n              <span",
+    "replace": "{false && (\n              <span",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the breadcrumb category link is the shop",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "<Link href={`/shop/${product.category?.slug ?? \"\"}`}>",
+    "replace": "<Link href=\"/shop\">",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the breadcrumb sub-category link is the shop",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "<Link href={`/shop/${product.category?.slug ?? \"\"}/${product.subcategory?.slug ?? \"\"}`}>",
+    "replace": "<Link href=\"/shop\">",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a custom order calls its material the plain one",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{showVariantPickers ? t(\"material\") : t(\"materialCustomOrder\")}",
+    "replace": "{t(\"material\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a custom order has a care line",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{showVariantPickers && (\n              <div className=\"flex justify-between items-baseline",
+    "replace": "{true && (\n              <div className=\"flex justify-between items-baseline",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the category line leaves out the sub-category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{categoryTitle} — {subcategoryLabel}\n",
+    "replace": "{categoryTitle}\n",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the minus never switches off",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "disabled={quantity <= 1}",
+    "replace": "disabled={quantity <= 0}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the plus never switches off",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "disabled={quantity >= 10}",
+    "replace": "disabled={quantity >= 11}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a product without colours asks for one",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{showVariantPickers && product.colors.length > 0 && (",
+    "replace": "{showVariantPickers && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the chosen size is not named",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{selectedSize && (\n                  <span className=\"text-[var(--text-heading)]\">— {selectedSize}</span>",
+    "replace": "{false && (\n                  <span className=\"text-[var(--text-heading)]\">— {selectedSize}</span>",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the chosen colour is not named",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{selectedColor && (\n                  <span className=\"text-[var(--text-heading)]\">",
+    "replace": "{false && (\n                  <span className=\"text-[var(--text-heading)]\">",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the size guide link does nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "onClick={() => setShowSizeGuide(true)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the size guide is for no category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "category={product.category?.slug ?? \"\"}\n        isOpen",
+    "replace": "category=\"\"\n        isOpen",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: thumbnails do nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "onClick={() => selectImage(idx)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the gallery does not move to a thumbnail",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "    galleryRef.current?.scrollToPage(index);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: no thumbnail is current",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "activeImage === idx ? \"border-[var(--accent-primary)]\"",
+    "replace": "false ? \"border-[var(--accent-primary)]\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the thumbnails ignore the gallery",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "onPageChange={setActiveImage}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer opens on the first picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "setViewer({ open: true, index: idx });",
+    "replace": "setViewer({ open: true, index: 0 });",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the gallery stays where it was after the viewer",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "            selectImage(viewerIndexRef.current);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer reports the first picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "          onView={(i) => {\n            viewerIndexRef.current = i;",
+    "replace": "          onView={(i) => {\n            viewerIndexRef.current = 0;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer never closes",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "setViewer((v) => v && { ...v, open: false });",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the related block shows when empty",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{relatedProducts.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the fifth related product shows on small screens",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "index === RELATED_PRODUCTS_LIMIT - 1 ? \"hidden lg:flex\" : \"flex\"",
+    "replace": "\"flex\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a related custom order shows a price",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "{hasPublicPrice(rp.badge) ? fmt(rp, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(rp, \"price\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a related product links to the shop",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "href={productPath(rp) ?? \"/shop\"}",
+    "replace": "href=\"/shop\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the reviews are of no product",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "find": "<ReviewsSection productId={product.id} />",
+    "replace": "<ReviewsSection productId=\"\" />",
+    "tests": [
+      "tests/storefront/product-detail/detail-buy.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom is stronger",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "const ZOOM_SCALE = 2;",
+    "replace": "const ZOOM_SCALE = 3;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom comes at once",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "const ZOOM_INTENT_MS = 150;",
+    "replace": "const ZOOM_INTENT_MS = 0;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom waits longer",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "const ZOOM_INTENT_MS = 150;",
+    "replace": "const ZOOM_INTENT_MS = 400;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a finger zooms",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "if (!frame || e.pointerType === \"touch\") return;",
+    "replace": "if (!frame) return;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a press does not stop the zoom",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    if (pressedRef.current) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom follows the wrong side",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "const x = ((e.clientX - rect.left) / rect.width) * 100;",
+    "replace": "const x = ((e.clientX - rect.left) / rect.height) * 100;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom follows the wrong height",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "const y = ((e.clientY - rect.top) / rect.height) * 100;",
+    "replace": "const y = ((e.clientY - rect.top) / rect.width) * 100;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom does not follow the mouse",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    frame.style.setProperty(\"--zoom-origin\", `${x}% ${y}%`);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: leaving keeps the zoom",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "onPointerLeave={() => setZoom(false)}",
+    "replace": "onPointerLeave={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: pressing keeps the zoom",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    pressedRef.current = true;\n    setZoom(false);",
+    "replace": "    pressedRef.current = true;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a touch counts as a press",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    if (e.pointerType === \"touch\") return;\n    pressedRef.current = true;",
+    "replace": "    pressedRef.current = true;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: letting go is not noticed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    window.addEventListener(\"pointerup\", release);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a cancelled press is not noticed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    window.addEventListener(\"pointercancel\", release);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the press is never let go",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "      pressedRef.current = false;\n      window.removeEventListener",
+    "replace": "      window.removeEventListener",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a zoom never asks for a sharper picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    if (next) setArmed(true);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a click does not open the viewer",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "      onClick={onOpen}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a timer outlives the picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "  useEffect(() => cancelIntent, []);",
+    "replace": "  useEffect(() => {}, []);",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the wait is never cancelled",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "    if (intentRef.current) clearTimeout(intentRef.current);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the hint stays when zoomed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx",
+    "find": "zoomed ? \"opacity-0\" : \"opacity-100\"",
+    "replace": "zoomed ? \"opacity-100\" : \"opacity-100\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a single picture has arrows",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "...(single && { buttonPrev: () => null, buttonNext: () => null }),",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: two pictures have no arrows",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "const single = images.length < 2;",
+    "replace": "const single = images.length < 3;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer numbers pictures from zero",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "index: i + 1 })",
+    "replace": "index: i })",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer does not say where it is",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "on={{ view: ({ index: shown }) => onView(shown) }}",
+    "replace": "on={{}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer cannot be closed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "close={onClose}",
+    "replace": "close={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer opens on the first picture always",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "      index={index}\n",
+    "replace": "      index={0}\n",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer has English close",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "Close: t(\"viewer.close\"),",
+    "replace": "Close: \"Close\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the viewer has an English name",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "Lightbox: t(\"viewer.lightbox\"),",
+    "replace": "Lightbox: \"Lightbox\",",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom reads in fractions",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "{Math.round(zoom * 100)}%",
+    "replace": "{Math.round(zoom)}%",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the zoom reset has an English name",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "aria-label={resetLabel}",
+    "replace": "aria-label=\"reset\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the reset is on at fit",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "        aria-label={resetLabel}\n        disabled={disabled || atFit}",
+    "replace": "        aria-label={resetLabel}\n        disabled={disabled}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: zooming out is on at fit",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "renderIcon={() => <ZoomOut className=\"yarl__icon\" />}\n        disabled={disabled || atFit}",
+    "replace": "renderIcon={() => <ZoomOut className=\"yarl__icon\" />}\n        disabled={disabled}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: fit is never recognised",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx",
+    "find": "const atFit = zoom <= minZoom + ZOOM_EPSILON;",
+    "replace": "const atFit = zoom < minZoom;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the size table is asked for before it is opened",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "useSizeGuide(isOpen ? category : null)",
+    "replace": "useSizeGuide(category)",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: any key closes the size table",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "if (e.key === \"Escape\") onClose();",
+    "replace": "onClose();",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: Escape does not close the size table",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "if (e.key === \"Escape\") onClose();",
+    "replace": "if (e.key === \"Enter\") onClose();",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the page scrolls behind the size table",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "      document.body.style.overflow = \"hidden\";\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the page never scrolls again",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "    return () => {\n      document.removeEventListener(\"keydown\", handleKeyDown);\n      document.body.style.overflow = \"\";\n    };",
+    "replace": "    return () => {\n      document.removeEventListener(\"keydown\", handleKeyDown);\n    };",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: Escape is heard after leaving",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "      document.removeEventListener(\"keydown\", handleKeyDown);\n      document.body.style.overflow = \"\";",
+    "replace": "      document.body.style.overflow = \"\";",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a click beside the table does not close it",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "          transition={{ duration: 0.25 }}\n          onClick={onClose}",
+    "replace": "          transition={{ duration: 0.25 }}\n          onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a click on the table closes it",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "onClick={(e) => e.stopPropagation()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the close button does nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "                onClick={onClose}\n                aria-label={t(\"close\")}",
+    "replace": "                onClick={() => {}}\n                aria-label={t(\"close\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the table has no title of its own",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "{sizeGuide?.title ?? t(\"title\")}",
+    "replace": "{t(\"title\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the unit is bare",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "{t(\"unit\", { unit: sizeGuide.unit })}",
+    "replace": "{sizeGuide.unit}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a style column is not the size",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "style: \"size\"",
+    "replace": "style: \"style\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a ring size column is not the size",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "ringsize: \"size\"",
+    "replace": "ringsize: \"ringsize\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: column names keep their spaces",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "col.toLowerCase().replace(/\\s+/g, \"\")",
+    "replace": "col.toLowerCase()",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a missing measure is blank",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "row[mapping[key] ?? key] ?? \"—\"",
+    "replace": "row[mapping[key] ?? key] ?? \"\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the tips box shows when empty",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "{sizeGuide.tips.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the table never says it is loading",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "{isLoading ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a missing table is not noticed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": ") : sizeGuide ? (",
+    "replace": ") : true ? (",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a phone is a larger screen",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "setIsMobile(window.innerWidth < 640)",
+    "replace": "setIsMobile(window.innerWidth < 400)",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a tablet is a phone",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "setIsMobile(window.innerWidth < 640)",
+    "replace": "setIsMobile(window.innerWidth < 1100)",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a resize is not noticed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx",
+    "find": "    window.addEventListener(\"resize\", checkMobile);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the shipping note starts open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "useState(false)",
+    "replace": "useState(true)",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the shipping note cannot be folded",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "setIsOpen((prev) => !prev)",
+    "replace": "setIsOpen(true)",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the shipping note does not say it is open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "aria-expanded={isOpen}",
+    "replace": "aria-expanded={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the shipping note breaks without details",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "if (isLoading || !shipping) return null;",
+    "replace": "if (isLoading) return null;",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: free shipping is always announced",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "{freeOver !== null && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: free shipping has no amount",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "t(\"freeOver\", { amount: freeOver })",
+    "replace": "t(\"freeOver\", { amount: \"\" })",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a free method has a price",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "method.priceVnd === 0 ? t(\"free\") : fmt(method, \"price\")",
+    "replace": "fmt(method, \"price\")",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the return policy is blank",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "{shipping.returnPolicy.description}",
+    "replace": "{\"\"}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an unknown picture shows nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx",
+    "find": "{Icon ? <Icon /> : <Truck size={18} />}",
+    "replace": "{Icon ? <Icon /> : null}",
+    "tests": [
+      "tests/storefront/product-detail/detail-media.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the list is open at the start",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "const [open, setOpen] = useState(false);",
+    "replace": "const [open, setOpen] = useState(true);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the rating link does not open the list",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    window.addEventListener(\"reviews:open\", openList);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an address with #reviews does not open the list",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    if (window.location.hash === \"#reviews\") openList();\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: any change of address opens the list",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "const onHashChange = () => window.location.hash === \"#reviews\" && openList();",
+    "replace": "const onHashChange = () => openList();",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a change of address is not noticed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    window.addEventListener(\"hashchange\", onHashChange);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the sign to open is heard after leaving",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "      window.removeEventListener(\"reviews:open\", openList);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the change of address is heard after leaving",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "      window.removeEventListener(\"hashchange\", onHashChange);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a vanished review does not refresh the totals",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    if (open) void reloadList();\n    void reloadSummary();\n  }, [open, reloadList, reloadSummary]);",
+    "replace": "    if (open) void reloadList();\n  }, [open, reloadList, reloadSummary]);",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved review reloads a closed list",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    if (open) void reloadList();\n    void reloadSummary();\n    void reloadOwn();",
+    "replace": "    void reloadList();\n    void reloadSummary();\n    void reloadOwn();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved review does not refresh the totals",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    void reloadSummary();\n    void reloadOwn();",
+    "replace": "    void reloadOwn();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved review does not refresh own reviews",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    void reloadSummary();\n    void reloadOwn();",
+    "replace": "    void reloadSummary();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved review does not refresh the open list",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    if (open) void reloadList();\n    void reloadSummary();\n    void reloadOwn();",
+    "replace": "    void reloadSummary();\n    void reloadOwn();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a chip does not open the list",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    setFilters(next);\n    setOpen(true);",
+    "replace": "    setFilters(next);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: folding keeps the filters",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    setFilters(EMPTY_REVIEW_FILTERS);\n    const reduceMotion",
+    "replace": "    const reduceMotion",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: folding leaves the list open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    collapse();\n    setOpen(false);",
+    "replace": "    collapse();",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: folding does not scroll",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "    document.getElementById(\"reviews\")?.scrollIntoView({ behavior: reduceMotion ? \"auto\" : \"smooth\", block: \"start\" });\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: folding glides for someone who wants no motion",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "behavior: reduceMotion ? \"auto\" : \"smooth\"",
+    "replace": "behavior: \"smooth\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: folding scrolls to the end",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "block: \"start\" });",
+    "replace": "block: \"end\" });",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the fold button shows when the list is out of view",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "{mounted && open && listInView &&",
+    "replace": "{mounted && open &&",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the fold button stays after folding",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "{mounted && open && listInView &&",
+    "replace": "{mounted && listInView &&",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the totals never show grey boxes",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "const initialLoading = summaryLoading;",
+    "replace": "const initialLoading = false;",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a missing count is not \"no reviews\"",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "const hasReviews = (summary?.ratingCount ?? 0) > 0;",
+    "replace": "const hasReviews = (summary?.ratingCount ?? 0) >= 0;",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the open button stays when open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "onOpen={open ? undefined : () => setOpen(true)}",
+    "replace": "onOpen={() => setOpen(true)}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a failed next page hides what is shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "list.status === \"error\" && list.items.length === 0 ?",
+    "replace": "list.status === \"error\" ?",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the first page never shows grey boxes",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "list.status === \"loading\" && list.items.length === 0 && !list.error",
+    "replace": "false",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an empty filter says \"no reviews\"",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "{filtered ? t(\"list.noMatch\") : t(\"empty.title\")}",
+    "replace": "{t(\"empty.title\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an empty list says \"no match\"",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "{filtered ? t(\"list.noMatch\") : t(\"empty.title\")}",
+    "replace": "{t(\"list.noMatch\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the more button can be pressed twice",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "disabled={list.status === \"loadingMore\"}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a failed next page offers \"more\" again",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "                      : list.status === \"error\"\n                        ? t(\"list.retry\")",
+    "replace": "                      : list.status === \"error\"\n                        ? t(\"list.loadMore\")",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the retry button does nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "onClick={() => void list.reload()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the list ignores the BE counts",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "helpfulCount={votes.counts[review.id]}",
+    "replace": "helpfulCount={undefined}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the list ignores the marks",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "voted={votes.votedIds.has(review.id)}",
+    "replace": "voted={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the list ignores a running vote",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "busy={votes.busyIds.has(review.id)}",
+    "replace": "busy={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the list ignores own reviews",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "own={votes.ownIds.has(review.id)}",
+    "replace": "own={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the write bar knows no own reviews",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "ownReviews={votes.ownReviews}",
+    "replace": "ownReviews={[]}",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the write bar does not refresh the page",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "onSaved={onReviewSaved}",
+    "replace": "onSaved={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: \"all\" keeps the photo filter",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "onChange({ ...filters, rating: null, hasImages: false })",
+    "replace": "onChange({ ...filters, rating: null })",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: \"all\" is lit with a photo filter",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "const allActive = filters.rating === null && !filters.hasImages;",
+    "replace": "const allActive = filters.rating === null;",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a star chip cannot be unpressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "onChange({ ...filters, rating: active ? null : stars })",
+    "replace": "onChange({ ...filters, rating: stars })",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an empty star chip can be pressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "disabled={count === 0}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the photo chip cannot be unpressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "onChange({ ...filters, hasImages: !filters.hasImages })",
+    "replace": "onChange({ ...filters, hasImages: true })",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an empty photo chip can be pressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "disabled={withImages === 0}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the average is not formatted",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "format.number(ratingAverage, \"decimal1\")",
+    "replace": "ratingAverage",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: no average still shows stars",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "{ratingAverage !== null && <StarRating",
+    "replace": "{true && <StarRating",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: every star chip counts the fives",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "distribution[String(stars) as \"1\"] ?? 0",
+    "replace": "distribution[\"5\"] ?? 0",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the review count is zero",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "t(\"count\", { count: ratingCount })",
+    "replace": "t(\"count\", { count: 0 })",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a chip never looks pressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx",
+    "find": "aria-pressed={active}",
+    "replace": "aria-pressed={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the fit filter is never set",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewFilterBar.tsx",
+    "find": "fit: (e.target.value || null) as ReviewFit | null",
+    "replace": "fit: null",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the fit shows nothing chosen",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewFilterBar.tsx",
+    "find": "value={filters.fit ?? \"\"}",
+    "replace": "value=\"\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the sorting is never set",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewFilterBar.tsx",
+    "find": "sort: e.target.value as ReviewSort",
+    "replace": "sort: filters.sort",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: \"clear filters\" is always there",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewFilterBar.tsx",
+    "find": "{hasActiveReviewFilters(filters) && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: fit is not a filter",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts",
+    "find": "filters.rating !== null || filters.fit !== null || filters.hasImages",
+    "replace": "filters.rating !== null || filters.hasImages",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the sorting is a filter",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts",
+    "find": "filters.rating !== null || filters.fit !== null || filters.hasImages",
+    "replace": "filters.rating !== null || filters.fit !== null || filters.hasImages || filters.sort !== DEFAULT_REVIEW_SORT",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the page size changes",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts",
+    "find": "export const REVIEW_PAGE_SIZE = 5;",
+    "replace": "export const REVIEW_PAGE_SIZE = 10;",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the default sorting is not the newest",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts",
+    "find": "export const DEFAULT_REVIEW_SORT: ReviewSort = \"-createdAt\";",
+    "replace": "export const DEFAULT_REVIEW_SORT: ReviewSort = \"-rating\";",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the high-rating sorting is wrong",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts",
+    "find": "{ value: \"-rating\", key: \"ratingHigh\" }",
+    "replace": "{ value: \"rating\", key: \"ratingHigh\" }",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the helpful sorting is wrong",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts",
+    "find": "{ value: \"-helpfulCount\", key: \"helpful\" }",
+    "replace": "{ value: \"helpfulCount\", key: \"helpful\" }",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the list asks while switched off",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "    if (!enabled) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the BE's code is lost",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "throw new ApiError(body.message ?? \"\", res.status, body.errorCode);",
+    "replace": "throw new ApiError(body.message ?? \"\", res.status);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an older answer replaces a newer",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "      .then((res) => {\n        if (mine !== generation.current) return;",
+    "replace": "      .then((res) => {",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: shown fewer, it asks again",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "if (visible + REVIEW_PAGE_SIZE <= have || have >= total) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the next page is the wrong one",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "page: Math.floor(have / REVIEW_PAGE_SIZE) + 1",
+    "replace": "page: Math.floor(have / REVIEW_PAGE_SIZE) + 2",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the next page replaces what is shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "setLoaded((prev) => [...prev, ...res.data]);",
+    "replace": "setLoaded(res.data);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the next page shows one more",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "setVisible((v) => v + REVIEW_PAGE_SIZE);\n      setError(null);",
+    "replace": "setVisible((v) => v + 1);\n      setError(null);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a failed next page is not an error",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "      if (mine !== generation.current) return;\n      setError(err);\n      setStatus(\"error\");\n    }\n  }, [request, visible, total]);",
+    "replace": "      if (mine !== generation.current) return;\n      setError(err);\n    }\n  }, [request, visible, total]);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: folding shows ten",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "const collapse = useCallback(() => setVisible(REVIEW_PAGE_SIZE), []);",
+    "replace": "const collapse = useCallback(() => setVisible(10), []);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a reload asks for nothing before anything is loaded",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "Math.min(Math.max(loadedCount.current, REVIEW_PAGE_SIZE), LIST_MAX_LIMIT)",
+    "replace": "Math.min(loadedCount.current, LIST_MAX_LIMIT)",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a reload asks for five only",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "Math.min(Math.max(loadedCount.current, REVIEW_PAGE_SIZE), LIST_MAX_LIMIT)",
+    "replace": "REVIEW_PAGE_SIZE",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a reload keeps the old error",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "      setTotal(res.total);\n      setError(null);\n      setStatus(\"ready\");\n    } catch (err) {\n      if (mine !== generation.current) return;\n      setError(err);\n      setStatus(\"error\");\n    }\n  }, [request]);",
+    "replace": "      setTotal(res.total);\n      setStatus(\"ready\");\n    } catch (err) {\n      if (mine !== generation.current) return;\n      setError(err);\n      setStatus(\"error\");\n    }\n  }, [request]);",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: \"more\" stays when everything is shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "hasMore: visible < total,",
+    "replace": "hasMore: visible <= total,",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a photo filter of \"no\" is sent",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts",
+    "find": "hasImages: hasImages ? true : undefined",
+    "replace": "hasImages",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: own reviews are asked for in fives",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "buildListQuery({ limit: LIST_MAX_LIMIT }, { productId })",
+    "replace": "buildListQuery({ limit: 5 }, { productId })",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a mark is always added",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "method: wasVoted ? \"DELETE\" : \"POST\"",
+    "replace": "method: \"POST\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a vote shows no count",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "          setCounts((prev) => ({ ...prev, [reviewId]: res.data.helpfulCount }));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a mark is never taken back here",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "            if (res.data.voted) next.add(reviewId);\n            else next.delete(reviewId);",
+    "replace": "            next.add(reviewId);",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: one's own review is not recognised",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "if (code === CODE_VOTE_OWN) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: one's own review is forgotten after a refusal",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "            setRefusedIds((prev) => new Set(prev).add(reviewId));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a vanished review is not noticed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "            if (code === CODE_REVIEW_NOT_FOUND) onReviewGone();\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the code of a vanished review changes",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "const CODE_REVIEW_NOT_FOUND = 1901;",
+    "replace": "const CODE_REVIEW_NOT_FOUND = 1900;",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the code of one's own review changes",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "const CODE_VOTE_OWN = 1907;",
+    "replace": "const CODE_VOTE_OWN = 1900;",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a failed vote says nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "            toast.error(toErrorMessage(err, t(\"toast.voteFailed\")));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a running vote is not marked",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "        setBusyIds((prev) => new Set(prev).add(reviewId));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a vote asks for the wrong reason",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "      }, \"continue\");",
+    "replace": "      }, \"addToBag\");",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a vote needs no sign-in",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "      requireAuth(async () => {",
+    "replace": "      ((fn: () => void) => fn())(async () => {",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a mark is not remembered",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "        const wasVoted = votedRef.current.has(reviewId);",
+    "replace": "        const wasVoted = false;",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: own reviews are not counted",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "[...ownReviews.map((review) => review.id), ...refusedIds]",
+    "replace": "[...refusedIds]",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a refusal is not counted",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "[...ownReviews.map((review) => review.id), ...refusedIds]",
+    "replace": "[...ownReviews.map((review) => review.id)]",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a guest is asked about marks",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts",
+    "find": "    if (!isAuthenticated) {\n      setVotedIds(new Set());\n      setOwnReviews([]);\n      return;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the button ignores the BE's count",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewItem.tsx",
+    "find": "count={helpfulCount ?? review.helpfulCount}",
+    "replace": "count={review.helpfulCount}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the button votes for no review",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewItem.tsx",
+    "find": "onToggle={() => onToggleHelpful(review.id)}",
+    "replace": "onToggle={() => onToggleHelpful(\"\")}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: one's own review has a button",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/HelpfulButton.tsx",
+    "find": "  if (own) {",
+    "replace": "  if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a running vote can be sent twice",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/HelpfulButton.tsx",
+    "find": "disabled={busy}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the button never looks pressed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/HelpfulButton.tsx",
+    "find": "aria-pressed={voted}",
+    "replace": "aria-pressed={false}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the button does nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/HelpfulButton.tsx",
+    "find": "onClick={onToggle}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-votes.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a guest is offered nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "  if (!isAuthenticated) {",
+    "replace": "  if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a guest's button does nothing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "const handleSignIn = () => requireAuth(() => {}, \"continue\");",
+    "replace": "const handleSignIn = () => {};",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the furthest deadline is offered",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": ".sort((a, b) => new Date(a.reviewDeadline).getTime() - new Date(b.reviewDeadline).getTime())[0]",
+    "replace": ".sort((a, b) => new Date(b.reviewDeadline).getTime() - new Date(a.reviewDeadline).getTime())[0]",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: other products' lines are offered",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": ".filter((item) => item.productId === productId)",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a hidden review can be edited",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "review.canEdit && review.status === \"PUBLISHED\"",
+    "replace": "review.canEdit",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a review that cannot be edited can be",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "review.canEdit && review.status === \"PUBLISHED\"",
+    "replace": "review.status === \"PUBLISHED\"",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an edit does not open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "    else if (editable) setTarget({ mode: \"edit\", review: editable });\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a reviewed product gets no thanks",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "} else if (ownReviews.length > 0) {",
+    "replace": "} else if (false) {",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved form stays open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "  const handleSaved = () => {\n    setTarget(null);",
+    "replace": "  const handleSaved = () => {",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved form does not refresh what is left to review",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "    void refreshReviewData();\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a saved form does not refresh the page",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "    void refreshReviewData();\n    onSaved();",
+    "replace": "    void refreshReviewData();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the form cannot be closed",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "onClose={() => setTarget(null)}",
+    "replace": "onClose={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: an already reviewed line does not refresh",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "onAlreadyReviewed={handleSaved}",
+    "replace": "onAlreadyReviewed={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a stale line does not refresh what is left to review",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "            void pending.reload();\n            onSaved();",
+    "replace": "            onSaved();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a stale line does not refresh the page",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "            void pending.reload();\n            onSaved();",
+    "replace": "            void pending.reload();",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: the deadline is not shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx",
+    "find": "{deadlineLabel(reviewable.reviewDeadline)}",
+    "replace": "{\"\"}",
+    "tests": [
+      "tests/storefront/product-detail/detail-write.test.tsx"
+    ]
+  }
+]
