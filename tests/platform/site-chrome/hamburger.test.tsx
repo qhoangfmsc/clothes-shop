@@ -102,7 +102,7 @@ describe("CHR-21 the links", () => {
       expect(link).toHaveAttribute("href", href);
       expect(within(link).getByText(H(`navDescription.${key}`))).toBeInTheDocument();
     }
-    const order = Array.from(dialogNav().children).map((row) => row.textContent ?? "");
+    const order = Array.from(dialogNav().children).filter((row) => row.tagName !== "FORM").map((row) => row.textContent ?? "");
     expect(order.findIndex((t) => t.includes(H("nav.customOrder")))).toBe(0);
     expect(order.findIndex((t) => t.includes(H("nav.shop")))).toBe(1);
   });

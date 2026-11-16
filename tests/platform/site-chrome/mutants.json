@@ -2494,5 +2494,158 @@
     "tests": [
       "tests/platform/site-chrome/header-nav.test.tsx"
     ]
+  },
+  {
+    "name": "site-chrome: the drawer search asks for eight",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "const SUGGESTIONS = 5;",
+    "replace": "const SUGGESTIONS = 8;",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search asks for one letter",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "query.trim().length >= 2",
+    "replace": "query.trim().length >= 1",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search is not trimmed",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "query.trim().length >= 2",
+    "replace": "query.length >= 2",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search says searching over a list",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "asked && isLoading && results.length === 0",
+    "replace": "asked && isLoading",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search never says searching",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "asked && isLoading && results.length === 0",
+    "replace": "false",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search says nothing matched while searching",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "asked && !isLoading && results.length === 0",
+    "replace": "asked && results.length === 0",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search says nothing matched with a list",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "asked && !isLoading && results.length === 0",
+    "replace": "asked && !isLoading",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search never says nothing matched",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "asked && !isLoading && results.length === 0",
+    "replace": "false",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search goes nowhere for a missing category",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "productPath(item) ?? \"/shop\"",
+    "replace": "productPath(item) ?? \"/\"",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search keeps the menu open",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "onClick={close} ",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search shows prices of custom orders",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "{hasPublicPrice(item.badge) ? fmt(item, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(item, \"price\")}",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search hides prices",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "{hasPublicPrice(item.badge) ? fmt(item, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{tCommon(\"priceOnRequest\")}",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search draws a picture that is not there",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "{item.image && <Image",
+    "replace": "{<Image",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search is on wide screens too",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": " lg:hidden",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search reloads the page",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "onSubmit={(e) => e.preventDefault()}",
+    "replace": "onSubmit={() => {}}",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search does not search",
+    "file": "src/app/[locale]/_components/DrawerSearch.tsx",
+    "find": "            search(e.target.value);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the drawer search is not in the drawer",
+    "file": "src/app/[locale]/_components/HamburgerMenu.tsx",
+    "find": "                <DrawerSearch close={close} />\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/drawer-search.test.tsx"
+    ]
   }
 ]

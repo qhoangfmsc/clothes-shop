@@ -10,6 +10,7 @@ import { useAuth } from "@/src/contexts/auth-context";
 import { useCategories, useBannerConfig } from "@/src/hooks/use-api";
 import { SITE_CONFIG_KEYS } from "@/src/types/site-config";
 import { UserAvatar } from "./UserAvatar";
+import DrawerSearch from "./DrawerSearch";
 import SignOutButton from "./SignOutButton";
 import ResponsiveBannerImage from "./ResponsiveBannerImage";
 import { CarouselDots } from "./CarouselControls";
@@ -505,6 +506,7 @@ export default function HamburgerMenu() {
                 }}
                 className="sm:!px-[2.5rem] sm:!py-[2.5rem]"
               >
+                <DrawerSearch close={close} />
                 {NAV_LINKS.map((link, idx) => (
                   <motion.div
                     key={link.key}

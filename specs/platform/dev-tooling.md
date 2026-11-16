@@ -229,3 +229,4 @@ Thay đổi nhìn thấy được: `yarn build` kiểm thêm ma trận và kế 
 - 2026-10-26 · Batch 7: `intl-server.ts` thêm `getFormatter`; thêm `tests/_support/server-tree.tsx` (`resolveServerTree`) để vẽ trang pháp lý gồm thành phần server không đồng bộ; công cụ không đổi.
 - 2026-10-26 · no-test: chỉ đổi tên một đường dẫn trong bản đồ module (`tests/platform/dev-tooling` đã kiểm bản đồ). `modules.mjs`: `UserMenu.tsx` của `platform/site-chrome` đổi tên thành `UserAvatar.tsx` (batch 8); `tests/_support/server-tree.tsx` và `intl-server.ts` đã mô tả trong doc.
 - 2026-11-17 · no-test: bỏ đường dẫn `(auth)/layout.tsx` (không có file) khỏi `MODULES`.
+- 2026-11-17 · no-test: `modules.mjs` gets the new file `DrawerSearch.tsx` under `platform/site-chrome`.

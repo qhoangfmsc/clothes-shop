@@ -1,7 +1,7 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
 > **Nhóm:** Platform · **Cập nhật:** 2026-11-17
-> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserAvatar.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
+> **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `DrawerSearch.tsx`, `SearchBar.tsx`, `UserAvatar.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
 
@@ -37,7 +37,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.2 `HeaderNav`
 
-- `NAV_LINKS`: Shop (có mega menu), New In, Collections (trang About không nằm trên thanh nav, chỉ có trong drawer và footer); chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
+- `NAV_LINKS`: Shop (có mega menu), New In, Collections (trang About không nằm trên thanh nav, chỉ có trong drawer và footer); chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; dưới 1024 px tìm kiếm nằm trong burger menu (`DrawerSearch`, mục 4.4).
 - Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 1.875 rem (30 px ở gốc 16 px), link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
 - Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Trên thiết bị không có hover (`(hover: none)`) lần chạm đầu vào Shop mở menu, lần chạm thứ hai đóng menu và đi tới `/shop` (đường chạm của mega menu). Panel trượt từ trên, render qua portal vào `body`.
 - Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
@@ -51,7 +51,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.4 `HamburgerMenu`
 
-- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Link: **Đặt thiết kế** (đầu danh sách; không có mục Home — logo đã dẫn về trang chủ), Shop (accordion), New In, Collections, Về DOOVAN (`nav.about`, link `/about`), không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành hàng nổi bật nhẹ (class `drawer-nav-featured` trong `globals.css`): nền vàng nhạt (alpha 0,08), viền vàng, icon kéo `Scissors` màu vàng (không vòng tròn), chữ vàng, mũi tên `ArrowRight` trượt khi hover; hover/focus đậm nền và viền hơn; không animation, không bóng (transition tắt khi `prefers-reduced-motion`).
+- Nút mở (`drawer.open`) và drawer qua portal; khóa scroll khi mở. Đầu danh sách link có ô tìm kiếm `DrawerSearch` (chỉ dưới 1024 px, `lg:hidden`, vì từ 1024 px header đã có `SearchBar`): `useAutocomplete(5)` từ 2 ký tự, liệt kê tại chỗ (ảnh, tên, giá hoặc "giá theo yêu cầu") bằng link tới `productPath(item)` (thiếu danh mục → `/shop`), chọn một mục thì đóng drawer; "đang tìm" / "không có kết quả" dùng chuỗi `shared.header.search`; không có lịch sử gần đây. Link: **Đặt thiết kế** (đầu danh sách; không có mục Home — logo đã dẫn về trang chủ), Shop (accordion), New In, Collections, Về DOOVAN (`nav.about`, link `/about`), không đánh số thứ tự; mỗi mục có mô tả `navDescription.<key>`. Mục Đặt thiết kế (`customOrder`, link `CONTACT_PATH`, đánh dấu `featured` trong `NAV_LINKS`) vẽ thành hàng nổi bật nhẹ (class `drawer-nav-featured` trong `globals.css`): nền vàng nhạt (alpha 0,08), viền vàng, icon kéo `Scissors` màu vàng (không vòng tròn), chữ vàng, mũi tên `ArrowRight` trượt khi hover; hover/focus đậm nền và viền hơn; không animation, không bóng (transition tắt khi `prefers-reduced-motion`).
 - Accordion Shop liệt kê danh mục (`useCategories`) và danh mục con.
 - `AuthDrawerSection`: chưa đăng nhập → nút "Sign in" tới `/login`; đã đăng nhập → hàng avatar + tên + email là nút thu/mở (`aria-expanded`, mũi tên ▾ xoay 180°) một panel collapse (`#drawer-account-panel`, animation chiều cao) chứa link My account / Wishlist / Orders và nút đăng xuất `SignOutButton variant="drawer"` (hỏi xác nhận bằng `ConfirmDialog` — nằm trên drawer nhờ `z-200` — rồi `logout()` và đóng drawer; hủy thì drawer giữ nguyên; component thuộc [auth](./auth.md)). Mặc định đóng; state nằm trong component nên đóng lại mỗi khi drawer đóng.
 - Panel nổi bật (featured) dùng banner từ site config `NAV_MENU_BANNERS` (`useBannerConfig`); không có banner thì không hiển thị. CTA mở `ctaHref` (mặc định `/shop`), nhãn mặc định `drawer.discover` ("Khám phá" / "Discover").

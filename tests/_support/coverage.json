@@ -80,7 +80,7 @@
     "src/app/[locale]/\\(private\\)/layout.tsx",
     "src/app/[locale]/_components/{Providers,RouteTransition,VercelTelemetry}.tsx",
     "src/app/[locale]/_components/cursor/**",
-    "src/app/[locale]/_components/{SiteHeader,HeaderNav,HamburgerMenu,SearchBar,UserAvatar,Logo,SiteFooter,LanguageSwitcher,SocialIcons,CartFAB}.tsx",
+    "src/app/[locale]/_components/{SiteHeader,HeaderNav,HamburgerMenu,DrawerSearch,SearchBar,UserAvatar,Logo,SiteFooter,LanguageSwitcher,SocialIcons,CartFAB}.tsx",
     "src/app/[locale]/_components/useSearchHistory.ts",
     "src/lib/socials.tsx"
   ],
@@ -1500,6 +1500,11 @@
     "src/lib/socials.tsx": {
       "lines": 95,
       "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/DrawerSearch.tsx": {
+      "lines": 95,
+      "branches": 85,
       "functions": 90
     }
   }

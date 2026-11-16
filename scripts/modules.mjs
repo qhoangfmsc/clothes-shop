@@ -15,7 +15,7 @@ export const MODULES = [
     `${COMP}Providers.tsx`, `${COMP}RouteTransition.tsx`, `${COMP}VercelTelemetry.tsx`, `${COMP}cursor/`,
   ] },
   { doc: "platform/site-chrome", paths: [
-    `${COMP}SiteHeader.tsx`, `${COMP}HeaderNav.tsx`, `${COMP}HamburgerMenu.tsx`, `${COMP}SearchBar.tsx`,
+    `${COMP}SiteHeader.tsx`, `${COMP}HeaderNav.tsx`, `${COMP}HamburgerMenu.tsx`, `${COMP}DrawerSearch.tsx`, `${COMP}SearchBar.tsx`,
     `${COMP}UserAvatar.tsx`, `${COMP}Logo.tsx`, `${COMP}SiteFooter.tsx`, `${COMP}LanguageSwitcher.tsx`,
     `${COMP}SocialIcons.tsx`, `${COMP}CartFAB.tsx`, `${COMP}useSearchHistory.ts`, "src/lib/socials.tsx",
   ] },
