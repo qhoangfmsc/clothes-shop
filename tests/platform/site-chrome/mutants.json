@@ -2449,5 +2449,50 @@
     "tests": [
       "tests/platform/site-chrome/footer.test.tsx"
     ]
+  },
+  {
+    "name": "site-chrome: a tap opens the menu but goes on to the shop",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "                  e.preventDefault();\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a mouse click opens the menu instead of going",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "window.matchMedia(\"(hover: none)\").matches",
+    "replace": "true",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a tap never opens the menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "window.matchMedia(\"(hover: none)\").matches",
+    "replace": "false",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a tap opens an empty menu",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "else if (shopCategories.length > 0 && window.matchMedia",
+    "replace": "else if (window.matchMedia",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: a tap on another link is held back",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "                if (!link.hasMegaMenu) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
   }
 ]

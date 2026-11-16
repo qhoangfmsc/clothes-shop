@@ -6,6 +6,7 @@ import Logo from "@/src/app/[locale]/_components/Logo";
 import SiteHeader from "@/src/app/[locale]/_components/SiteHeader";
 import { CONTACT_PATH } from "@/src/lib/product-purchase";
 import { msg } from "@/tests/_support/messages";
+import { media } from "@/tests/_support/media-query";
 import { renderApp } from "@/tests/_support/render";
 import { categories, chromeApi, type ChromeApiOptions } from "./chrome-kit";
 
@@ -90,6 +91,55 @@ describe("CHR-16 the mega menu", () => {
     expect(screen.getByRole("link", { name: "Sub 2B" })).toHaveAttribute("href", "/shop/cat-2/sub-2b");
     expect(screen.getAllByRole("link", { name: H("megaMenu.viewAll") })).toHaveLength(2);
     expect(screen.queryByRole("link", { name: H("megaMenu.viewMore") })).not.toBeInTheDocument();
+  });
+
+  describe("on a screen that cannot hover (a tablet held wide)", () => {
+    const noHover = () => (media.matching = (query) => query.includes("hover: none"));
+    /** Clicks, and says whether the header held the click back from going to the link (the test's own click guard comes after the body) */
+    const tap = (element: HTMLElement) => {
+      let heldBack = false;
+      const watch = (e: Event) => void (heldBack = e.defaultPrevented);
+      document.body.addEventListener("click", watch);
+      fireEvent.click(element);
+      document.body.removeEventListener("click", watch);
+      return heldBack;
+    };
+
+    it("opens at the first tap on 'Shop' without going to the shop page, and goes there at the second tap", async () => {
+      noHover();
+      const onMenuToggle = vi.fn();
+      await nav({ onMenuToggle });
+
+      const first = tap(shopLink());
+      await opened();
+      expect(first).toBe(true);
+      expect(onMenuToggle).toHaveBeenLastCalledWith(true);
+
+      const second = tap(shopLink());
+      expect(second).toBe(false);
+      await closed();
+    });
+
+    it("lets the tap through when there is no menu to show", async () => {
+      noHover();
+      await nav({ categories: [] });
+
+      expect(tap(shopLink())).toBe(false);
+    });
+
+    it("does not hold back the other links", async () => {
+      noHover();
+      await nav();
+
+      expect(tap(screen.getByRole("link", { name: H("nav.newIn") }))).toBe(false);
+    });
+
+    it("lets a click with a mouse go through to the shop page", async () => {
+      await nav();
+
+      expect(tap(shopLink())).toBe(false);
+      expect(panel()).not.toBeInTheDocument();
+    });
   });
 
   it("does not open when the mouse leaves before the pause is over", async () => {

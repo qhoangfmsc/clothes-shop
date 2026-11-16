@@ -39,7 +39,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 - `NAV_LINKS`: Shop (có mega menu), New In, Collections (trang About không nằm trên thanh nav, chỉ có trong drawer và footer); chỉ hiện ≥ 1024 px (`--nav-link-display`). `SearchBar` chỉ hiện ≥ 1024 px; trên mobile việc tìm kiếm không có ở thanh nav.
 - Nút "Đặt thiết kế" (`nav.customOrder`): sau các link, viền bo tròn `currentColor`, cao 1.875 rem (30 px ở gốc 16 px), link tới `CONTACT_PATH` (`/contact`, không kèm sản phẩm); cùng điều kiện hiển thị ≥ 1024 px (`--nav-link-display`), hover/focus giảm opacity. Dưới 1024 px mục này nằm trong burger menu.
-- Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Panel trượt từ trên, render qua portal vào `body`.
+- Mega menu: mở sau 280 ms hover (hover-intent), đóng sau 150 ms rời link / 120 ms rời panel, cooldown 350 ms sau khi đóng, đóng bằng Esc/backdrop/khi header bị ẩn/khi bấm link. Trên thiết bị không có hover (`(hover: none)`) lần chạm đầu vào Shop mở menu, lần chạm thứ hai đóng menu và đi tới `/shop` (đường chạm của mega menu). Panel trượt từ trên, render qua portal vào `body`.
 - Dữ liệu: `useCategories()` → mỗi danh mục hiện tiêu đề (link `/shop/<cat>`), các danh mục con (`/shop/<cat>/<sub>`), "Xem tất cả". Chỉ hiện `MAX_INLINE_CATEGORIES = 4` cột; nhiều hơn thì thêm link "Xem thêm" tới `/shop`.
 - Phần tài khoản nằm trong burger menu (header không có dropdown người dùng).
 

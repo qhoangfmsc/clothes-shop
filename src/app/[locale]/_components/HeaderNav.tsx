@@ -358,9 +358,15 @@ export default function HeaderNav({
                 position: "relative",
                 paddingBottom: 2,
               }}
-              onClick={() => {
-                if (link.hasMegaMenu && menuOpen) {
+              onClick={(e) => {
+                if (!link.hasMegaMenu) return;
+                if (menuOpen) {
                   closeNow();
+                } else if (shopCategories.length > 0 && window.matchMedia("(hover: none)").matches) {
+                  /* No hover to open the menu with: the first tap opens it, the next one follows the link */
+                  e.preventDefault();
+                  clearTimers();
+                  setMenuOpen(true);
                 }
               }}
             >
