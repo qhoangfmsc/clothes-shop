@@ -1,7 +1,7 @@
 # Product detail (trang chi tiết sản phẩm)
 
 > **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop/[category]/[subcategory]/[productId]` · **Cập nhật:** 2026-11-17
-> **Code:** `(public)/shop/[category]/[subcategory]/[productId]/` — `page.tsx`, `_common/{reviews,use-product-reviews,use-review-votes}.ts`, `_components/{ProductDetailClient,ZoomableImage,ImageViewer,ReviewsSection,ReviewSummaryPanel,ReviewFilterBar,ReviewItem,HelpfulButton,WriteReviewBar,ShippingAccordion,SizeGuideModal}.tsx`; dùng chung `_components/{ProductRating,StarRating,ReviewContent,ReviewAvatar,ReviewImageGrid}.tsx`
+> **Code:** `(public)/shop/[category]/[subcategory]/[productId]/` — `page.tsx`, `_common/{reviews,use-product-reviews,use-review-votes,use-product-selection}.ts`, `_common/use-add-to-bag.tsx`, `_components/{ProductDetailClient,ProductGallery,VariantPickers,PurchaseActions,ProductSpecs,RelatedProducts,ZoomableImage,ImageViewer,ReviewsSection,ReviewSummaryPanel,ReviewFilterBar,ReviewItem,HelpfulButton,WriteReviewBar,ShippingAccordion,SizeGuideModal}.tsx`; dùng chung `_components/{ProductRating,StarRating,ReviewContent,ReviewAvatar,ReviewImageGrid}.tsx`
 > **i18n:** `public.product` (`meta`, `detail`, `reviews`, `shipping`, `sizeGuideModal`), `shared.reviews` (kể cả `form`, `toast`, `deadline` của form viết đánh giá), `common.productBadge`
 
 ## 1. Tóm tắt module
@@ -37,7 +37,9 @@ Giúp khách quyết định mua: xem rõ sản phẩm, chọn đúng biến th�
 - Metadata: title `public.product.meta.title` (tên sản phẩm), description = `product.description`, ảnh chia sẻ = `images[0]`. Không tìm thấy sản phẩm → title `withBrand(common.notFound)`.
 - JSON-LD: `productJsonLd` + `breadcrumbJsonLd` (Home › Shop › Category › Subcategory › Product).
 
-### 4.2 Hành vi mua (`ProductDetailClient`)
+### 4.2 Hành vi mua (`ProductDetailClient` ghép các phần)
+
+`ProductDetailClient` giữ bảng size và tiêu đề / giá / mô tả, gọi `useProductSelection` (size, màu, số lượng) và `useAddToBag` (thêm giỏ + đồng bộ BE, cờ `addedToCart` 2,2 s) rồi dựng `ProductGallery` (ảnh, thumbnail, phím ←/→, trình xem), `VariantPickers`, `PurchaseActions` (nút mua / đặt may / hết hàng, yêu thích, chia sẻ), `ProductSpecs`, `ReviewsSection`, `RelatedProducts`.
 
 - `purchaseMode = getPurchaseMode(product.badge)`:
   - `cart`: cần chọn đủ size **và** màu mới bật nút; gợi ý còn thiếu gì (`hintBoth|hintSize|hintColor`). Bấm → `requireAuth(...,"addToBag")` rồi `addItem(item, quantity)` (Redux) + `syncAddToCartItem` (BE, nền) + `trackEvent("add_to_cart")` + toast có link tới `/cart`; nút hiện "Đã thêm" 2.2 s. BE từ chối thêm thì dòng bị rút khỏi giỏ và hiện toast lỗi (`detail.addFailed`, hoặc lời của mã lỗi).

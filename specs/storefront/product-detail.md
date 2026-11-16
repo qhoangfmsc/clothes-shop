@@ -31,8 +31,9 @@ Trang một sản phẩm là nơi khách quyết định mua: xem ảnh, chọn 
 
 ```
 page.tsx (server) ─► server-fetchers (data-layer) ─► BE
-  └─ ProductDetailClient ─► Carousel · ZoomableImage ─► ImageViewer (lazy)
-       ├─ cart / wishlist store (requireAuth) · trackEvent
+  └─ ProductDetailClient ─► useProductSelection · useAddToBag (cart store, requireAuth, trackEvent)
+       ├─ ProductGallery ─► Carousel · ZoomableImage ─► ImageViewer (lazy)
+       ├─ VariantPickers · PurchaseActions (giỏ, đặt may, yêu thích, chia sẻ) · ProductSpecs · RelatedProducts
        ├─ SizeGuideModal ─► useSizeGuide · ShippingAccordion ─► useShipping
        └─ ReviewsSection ─► useReviewSummary · useReviewList · useReviewVotes
             └─ ReviewSummaryPanel · ReviewFilterBar · ReviewItem ─► HelpfulButton · WriteReviewBar ─► ReviewFormModal (customer-reviews)
@@ -51,6 +52,7 @@ page.tsx (server) ─► server-fetchers (data-layer) ─► BE
 | **Danh sách chỉ được hỏi khi mở** | Phần lớn khách không mở đánh giá; tổng hợp đã đủ để quyết định | Tải sẵn mọi đánh giá |
 | **Khả năng viết / sửa đánh giá lấy từ danh sách của BE** | Không đoán từ trạng thái đơn: BE biết hạn 30 ngày và quyền sửa một lần | Suy ra ở FE |
 | **Trình xem ảnh nạp lười + tải trước khi rảnh** (`next/dynamic`, `requestIdleCallback`) | Thư viện nặng nằm ngoài bundle đầu nhưng lần bấm đầu không phải chờ | Nhúng thẳng |
+| **Tách `ProductDetailClient` theo vai** (`ProductGallery`, `VariantPickers`, `PurchaseActions`, `ProductSpecs`, `RelatedProducts`; hook `useProductSelection`, `useAddToBag`) | Mỗi mảnh đổi vì một lý do (ảnh, lựa chọn, mua, thông số); luật thêm giỏ nằm ở hook nên đọc và thử riêng; thành phần cha chỉ ghép và giữ trạng thái bảng size | Một file 660 dòng |
 | **Hành động cần đăng nhập đi qua `requireAuth`** | Khách thấy lý do và việc đang làm tiếp tục sau khi đăng nhập | Ẩn nút với khách |
 
 ### Kiến trúc
@@ -61,7 +63,7 @@ Trang (server) phụ thuộc xuống data layer; thành phần client phụ thu�
 
 | Nguyên tắc | Áp dụng thế nào ở module này |
 |---|---|
-| S | Mỗi file một việc: phóng to, trình xem, bảng size, vận chuyển, tổng hợp, bộ lọc, một đánh giá, nút hữu ích, thanh viết; hook riêng cho tổng hợp, danh sách và vote. Ngoại lệ đã ghi: `ProductDetailClient` |
+| S | Mỗi file một việc: phóng to, trình xem, bảng size, vận chuyển, tổng hợp, bộ lọc, một đánh giá, nút hữu ích, thanh viết; hook riêng cho tổng hợp, danh sách và vote; `ProductDetailClient` chỉ ghép (lựa chọn và thêm giỏ nằm ở hai hook, ảnh / bộ chọn / nút mua / thông số / sản phẩm liên quan ở năm thành phần). |
 | O | Thêm kiểu sắp xếp hay bộ lọc = thêm vào `reviews.ts` và bản dịch |
 | L | `ReviewItem` và `HelpfulButton` nhận dữ liệu qua props nên dùng được cho danh sách đã lọc hay không |
 | I | `ReviewFilterBar` chỉ nhận bộ lọc, hàm đổi và hàm xóa; `ImageViewer` chỉ nhận ảnh, chỉ số và hai hàm |
@@ -134,7 +136,7 @@ Coverage: ngưỡng riêng cho các file của module trong `tests/_support/cove
 | "Thu gọn đánh giá" đóng cả danh sách nên mở lại là hỏi lại 5 đánh giá đầu; việc giữ các trang đã tải chỉ có ở lớp hook | Hành vi hiện tại (PD-23, PD-24) |
 | Nhãn "ngày cuối" của hạn đánh giá chỉ hiện khi hạn đã qua (làm tròn lên thành "còn 1 ngày") | Thuộc [customer-reviews](./customer-reviews.md); test ở đây chỉ khóa "còn N ngày" (PD-28) |
 | Thu phóng tối đa của trình xem và dừng autoplay lúc xem ảnh không kiểm được bằng jsdom | Không có test; kiểm tay trên trình duyệt thật |
-| `ProductDetailClient` gần 700 dòng, còn gom nhiều việc | Test khóa hành vi để tách an toàn ở đợt sau |
+| `ProductDetailClient` từng gần 700 dòng | Đã tách (còn khoảng 170 dòng); test hành vi không đổi |
 | Sản phẩm thiếu danh mục hoặc danh mục con thì link và địa chỉ chia sẻ rơi về `/shop` | BE luôn kèm quan hệ này; trang vẫn dùng được (PD-10, PD-12) |
 
 Thay đổi nhìn thấy được: có (nhỏ): thêm vào giỏ lỗi thì báo; "Số đo tính bằng …" theo ngôn ngữ; bỏ file `ShareButtons` chưa dùng.
@@ -146,3 +148,4 @@ Thay đổi nhìn thấy được: có (nhỏ): thêm vào giỏ lỗi thì báo
 - 2026-10-26 · Tim dùng hook chung `useProductWishlist` ([wishlist](./wishlist.md)); hành vi không đổi, các đột biến của tim chuyển sang module wishlist.
 - 2026-10-26 · no-test: kiểm bởi `tests/platform/design-system` (DSN-1). Thanh kéo của `SizeGuideModal` dùng `--border-default` (trước đây `--border-medium` chưa từng được định nghĩa); ghi nhận trong batch 8 (design-system).
 - 2026-11-17 · Khi không tải được tổng quan đánh giá, mục đánh giá hiện lỗi `reviews.summary.loadFailed` kèm nút thử lại thay vì "chưa có đánh giá"; khóa thêm ở cả hai ngôn ngữ; test mới (REV-3E).
+- 2026-11-17 · no-test: tách mã, hành vi không đổi, các test cũ khóa hành vi và chạy nguyên. Tách `ProductDetailClient` (664 → 174 dòng) thành `ProductGallery`, `VariantPickers`, `PurchaseActions`, `ProductSpecs`, `RelatedProducts` và hai hook `useProductSelection`, `useAddToBag`; hành vi không đổi (262 test cũ chạy nguyên), đột biến trỏ lại file mới.

@@ -145,7 +145,7 @@
   },
   {
     "name": "product-detail: the viewer chunk is not fetched while idle",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "if (typeof window.requestIdleCallback === \"function\") {",
     "replace": "if (false) {",
     "tests": [
@@ -154,7 +154,7 @@
   },
   {
     "name": "product-detail: the idle fetch is not cancelled",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "return () => window.cancelIdleCallback(id);",
     "replace": "return () => {};",
     "tests": [
@@ -199,7 +199,7 @@
   },
   {
     "name": "product-detail: the left arrow moves forward",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "if (e.key === \"ArrowLeft\") galleryRef.current?.prev();",
     "replace": "if (e.key === \"ArrowLeft\") galleryRef.current?.next();",
     "tests": [
@@ -208,7 +208,7 @@
   },
   {
     "name": "product-detail: the right arrow moves back",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "if (e.key === \"ArrowRight\") galleryRef.current?.next();",
     "replace": "if (e.key === \"ArrowRight\") galleryRef.current?.prev();",
     "tests": [
@@ -217,7 +217,7 @@
   },
   {
     "name": "product-detail: the arrow keys are never heard",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "window.addEventListener(\"keydown\", handleKeyDown);",
     "replace": "",
     "tests": [
@@ -226,7 +226,7 @@
   },
   {
     "name": "product-detail: the arrow keys are still heard after leaving",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "return () => window.removeEventListener(\"keydown\", handleKeyDown);",
     "replace": "return () => {};",
     "tests": [
@@ -235,7 +235,7 @@
   },
   {
     "name": "product-detail: the bag accepts a second tap while it says added",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "if (purchaseMode !== \"cart\" || addedToCart || !isSelectionComplete) return;",
     "replace": "if (purchaseMode !== \"cart\" || !isSelectionComplete) return;",
     "tests": [
@@ -244,7 +244,7 @@
   },
   {
     "name": "product-detail: the bag needs no sign-in",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "    requireAuth(() => {\n      const colorName",
     "replace": "    ((fn: () => void) => fn())(() => {\n      const colorName",
     "tests": [
@@ -253,7 +253,7 @@
   },
   {
     "name": "product-detail: the bag asks for the wrong reason",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "    }, \"addToBag\");",
     "replace": "    }, \"continue\");",
     "tests": [
@@ -262,7 +262,7 @@
   },
   {
     "name": "product-detail: the bag line carries the colour's code as its name",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "const colorName = product.colors.find((c) => c.hex === selectedColor)?.name ?? \"\";",
     "replace": "const colorName = selectedColor ?? \"\";",
     "tests": [
@@ -271,7 +271,7 @@
   },
   {
     "name": "product-detail: the bag line has the wrong picture",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "            image: product.images[0],\n            size: selectedSize!,",
     "replace": "            image: product.images[1],\n            size: selectedSize!,",
     "tests": [
@@ -280,7 +280,7 @@
   },
   {
     "name": "product-detail: the bag line has no size",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "            size: selectedSize!,\n            color: colorName,\n            colorHex: selectedColor!,",
     "replace": "            size: \"\",\n            color: colorName,\n            colorHex: selectedColor!,",
     "tests": [
@@ -289,7 +289,7 @@
   },
   {
     "name": "product-detail: the bag line has the wrong colour code",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "            colorHex: selectedColor!,",
     "replace": "            colorHex: colorName,",
     "tests": [
@@ -298,7 +298,7 @@
   },
   {
     "name": "product-detail: the bag line has no category",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "            category: product.category?.slug ?? \"\",\n            subcategory: product.subcategory?.slug ?? \"\",\n            badge: product.badge,\n          },\n          quantity",
     "replace": "            category: \"\",\n            subcategory: \"\",\n            badge: product.badge,\n          },\n          quantity",
     "tests": [
@@ -307,7 +307,7 @@
   },
   {
     "name": "product-detail: the bag line is always one piece",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "          },\n          quantity\n        )\n      );",
     "replace": "          },\n          1\n        )\n      );",
     "tests": [
@@ -316,7 +316,7 @@
   },
   {
     "name": "product-detail: the BE is told one piece",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity })",
     "replace": "syncAddToCartItem({ productId: product.id, size: selectedSize!, color: colorName, quantity: 1 })",
     "tests": [
@@ -325,7 +325,7 @@
   },
   {
     "name": "product-detail: a refused add says nothing",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": ".catch((err: unknown) => toast.error(toErrorMessage(err, t(\"addFailed\"))));",
     "replace": ".catch(() => {});",
     "tests": [
@@ -334,7 +334,7 @@
   },
   {
     "name": "product-detail: the add is counted in the wrong currency",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "...moneyProp(moneyOf(product, \"price\"), locale),\n      });\n      setAddedToCart(true);",
     "replace": "...moneyProp(moneyOf(product, \"price\"), \"vi\"),\n      });\n      setAddedToCart(true);",
     "tests": [
@@ -343,7 +343,7 @@
   },
   {
     "name": "product-detail: the add is not counted",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "trackEvent(\"add_to_cart\", {",
     "replace": "((..._a: unknown[]) => {})(\"add_to_cart\", {",
     "tests": [
@@ -352,7 +352,7 @@
   },
   {
     "name": "product-detail: the add toast hides the quantity",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "${quantity > 1 ? `, ×${quantity}` : \"\"}",
     "replace": "",
     "tests": [
@@ -361,7 +361,7 @@
   },
   {
     "name": "product-detail: the add toast links elsewhere",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "link: (chunks) => <Link href=\"/cart\">{chunks}</Link>,",
     "replace": "link: (chunks) => <Link href=\"/shop\">{chunks}</Link>,",
     "tests": [
@@ -370,7 +370,7 @@
   },
   {
     "name": "product-detail: the button never goes back from added",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "      setTimeout(() => setAddedToCart(false), 2200);\n",
     "replace": "",
     "tests": [
@@ -379,7 +379,7 @@
   },
   {
     "name": "product-detail: the button never says added",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx",
     "find": "      setAddedToCart(true);\n      toast.success(",
     "replace": "      toast.success(",
     "tests": [
@@ -388,7 +388,7 @@
   },
   {
     "name": "product-detail: the saved note links elsewhere",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "link: (chunks) => <Link href=\"/wishlist\">{chunks}</Link>,",
     "replace": "link: (chunks) => <Link href=\"/shop\">{chunks}</Link>,",
     "tests": [
@@ -397,7 +397,7 @@
   },
   {
     "name": "product-detail: the removed note has no name",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "t(\"toastRemoved\", { name: product.name })",
     "replace": "t(\"toastRemoved\", { name: \"\" })",
     "tests": [
@@ -406,7 +406,7 @@
   },
   {
     "name": "product-detail: the heart label is always add",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "aria-label={isWishlisted ? t(\"removeFromWishlist\") : t(\"addToWishlist\")}",
     "replace": "aria-label={t(\"addToWishlist\")}",
     "tests": [
@@ -415,7 +415,7 @@
   },
   {
     "name": "product-detail: the share sheet is never used",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "if (typeof navigator !== \"undefined\" && navigator.share) {",
     "replace": "if (false) {",
     "tests": [
@@ -424,7 +424,7 @@
   },
   {
     "name": "product-detail: the share address has no language",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "/${locale}${productPath(product) ?? \"/shop\"}`;",
     "replace": "${productPath(product) ?? \"/shop\"}`;",
     "tests": [
@@ -433,7 +433,7 @@
   },
   {
     "name": "product-detail: the share address has no fallback",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "${productPath(product) ?? \"/shop\"}`;",
     "replace": "${productPath(product) ?? \"\"}`;",
     "tests": [
@@ -442,7 +442,7 @@
   },
   {
     "name": "product-detail: the share has no line of text",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "text: t(\"shareText\", { name: product.name }),",
     "replace": "text: \"\",",
     "tests": [
@@ -451,16 +451,16 @@
   },
   {
     "name": "product-detail: the share has no title",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "title: product.name,\n                        text:",
-    "replace": "title: \"\",\n                        text:",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
+    "find": "title: product.name,\n                  text:",
+    "replace": "title: \"\",\n                  text:",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
     ]
   },
   {
     "name": "product-detail: the copy is not announced",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "toast.success(t(\"linkCopied\"));",
     "replace": "",
     "tests": [
@@ -469,7 +469,7 @@
   },
   {
     "name": "product-detail: the copy writes nothing",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "await navigator.clipboard.writeText(url);",
     "replace": "await navigator.clipboard.writeText(\"\");",
     "tests": [
@@ -478,7 +478,7 @@
   },
   {
     "name": "product-detail: a custom order goes elsewhere",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "router.push(buildOrderInquiryHref(product.id))",
     "replace": "router.push(\"/contact\")",
     "tests": [
@@ -496,7 +496,7 @@
   },
   {
     "name": "product-detail: a sold-out product can be pressed",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "purchaseMode === \"soldOut\" || (purchaseMode === \"cart\" && !isSelectionComplete)",
     "replace": "(purchaseMode === \"cart\" && !isSelectionComplete)",
     "tests": [
@@ -505,7 +505,7 @@
   },
   {
     "name": "product-detail: a half-chosen product can be pressed",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "purchaseMode === \"soldOut\" || (purchaseMode === \"cart\" && !isSelectionComplete)",
     "replace": "purchaseMode === \"soldOut\"",
     "tests": [
@@ -514,16 +514,16 @@
   },
   {
     "name": "product-detail: the hint for the size is the colour's",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": ": !selectedSize\n                    ? t(\"hintSize\")",
-    "replace": ": !selectedSize\n                    ? t(\"hintColor\")",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
+    "find": ": !selectedSize\n              ? t(\"hintSize\")",
+    "replace": ": !selectedSize\n              ? t(\"hintColor\")",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
     ]
   },
   {
     "name": "product-detail: the hints are never shown",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "{purchaseMode === \"cart\" && !isSelectionComplete && (",
     "replace": "{false && (",
     "tests": [
@@ -532,7 +532,7 @@
   },
   {
     "name": "product-detail: the sold-out hint is the custom-order one",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx",
     "find": "{purchaseMode === \"soldOut\" ? t(\"soldOutHint\") : t(\"customOrderHint\")}",
     "replace": "{t(\"customOrderHint\")}",
     "tests": [
@@ -613,7 +613,7 @@
   },
   {
     "name": "product-detail: a custom order calls its material the plain one",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductSpecs.tsx",
     "find": "{showVariantPickers ? t(\"material\") : t(\"materialCustomOrder\")}",
     "replace": "{t(\"material\")}",
     "tests": [
@@ -622,16 +622,16 @@
   },
   {
     "name": "product-detail: a custom order has a care line",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "{showVariantPickers && (\n              <div className=\"flex justify-between items-baseline",
-    "replace": "{true && (\n              <div className=\"flex justify-between items-baseline",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductSpecs.tsx",
+    "find": "{showVariantPickers && (\n        <div className=\"flex justify-between items-baseline",
+    "replace": "{true && (\n        <div className=\"flex justify-between items-baseline",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
     ]
   },
   {
     "name": "product-detail: the category line leaves out the sub-category",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductSpecs.tsx",
     "find": "{categoryTitle} — {subcategoryLabel}\n",
     "replace": "{categoryTitle}\n",
     "tests": [
@@ -640,7 +640,7 @@
   },
   {
     "name": "product-detail: the minus never switches off",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx",
     "find": "disabled={quantity <= 1}",
     "replace": "disabled={quantity <= 0}",
     "tests": [
@@ -649,7 +649,7 @@
   },
   {
     "name": "product-detail: the plus never switches off",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx",
     "find": "disabled={quantity >= 10}",
     "replace": "disabled={quantity >= 11}",
     "tests": [
@@ -658,35 +658,35 @@
   },
   {
     "name": "product-detail: a product without colours asks for one",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "{showVariantPickers && product.colors.length > 0 && (",
-    "replace": "{showVariantPickers && (",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx",
+    "find": "{product.colors.length > 0 && (",
+    "replace": "{true && (",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
     ]
   },
   {
     "name": "product-detail: the chosen size is not named",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "{selectedSize && (\n                  <span className=\"text-[var(--text-heading)]\">— {selectedSize}</span>",
-    "replace": "{false && (\n                  <span className=\"text-[var(--text-heading)]\">— {selectedSize}</span>",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx",
+    "find": "{selectedSize && (\n            <span className=\"text-[var(--text-heading)]\">— {selectedSize}</span>",
+    "replace": "{false && (\n            <span className=\"text-[var(--text-heading)]\">— {selectedSize}</span>",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
     ]
   },
   {
     "name": "product-detail: the chosen colour is not named",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "{selectedColor && (\n                  <span className=\"text-[var(--text-heading)]\">",
-    "replace": "{false && (\n                  <span className=\"text-[var(--text-heading)]\">",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx",
+    "find": "{selectedColor && (\n              <span className=\"text-[var(--text-heading)]\">",
+    "replace": "{false && (\n              <span className=\"text-[var(--text-heading)]\">",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
     ]
   },
   {
     "name": "product-detail: the size guide link does nothing",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "onClick={() => setShowSizeGuide(true)}",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx",
+    "find": "onClick={() => onOpenSizeGuide()}",
     "replace": "onClick={() => {}}",
     "tests": [
       "tests/storefront/product-detail/detail-media.test.tsx"
@@ -703,7 +703,7 @@
   },
   {
     "name": "product-detail: thumbnails do nothing",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "onClick={() => selectImage(idx)}",
     "replace": "onClick={() => {}}",
     "tests": [
@@ -712,7 +712,7 @@
   },
   {
     "name": "product-detail: the gallery does not move to a thumbnail",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "    galleryRef.current?.scrollToPage(index);\n",
     "replace": "",
     "tests": [
@@ -721,7 +721,7 @@
   },
   {
     "name": "product-detail: no thumbnail is current",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "activeImage === idx ? \"border-[var(--accent-primary)]\"",
     "replace": "false ? \"border-[var(--accent-primary)]\"",
     "tests": [
@@ -730,7 +730,7 @@
   },
   {
     "name": "product-detail: the thumbnails ignore the gallery",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "onPageChange={setActiveImage}",
     "replace": "",
     "tests": [
@@ -739,7 +739,7 @@
   },
   {
     "name": "product-detail: the viewer opens on the first picture",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "setViewer({ open: true, index: idx });",
     "replace": "setViewer({ open: true, index: 0 });",
     "tests": [
@@ -748,7 +748,7 @@
   },
   {
     "name": "product-detail: the gallery stays where it was after the viewer",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "            selectImage(viewerIndexRef.current);\n",
     "replace": "",
     "tests": [
@@ -757,7 +757,7 @@
   },
   {
     "name": "product-detail: the viewer reports the first picture",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "          onView={(i) => {\n            viewerIndexRef.current = i;",
     "replace": "          onView={(i) => {\n            viewerIndexRef.current = 0;",
     "tests": [
@@ -766,7 +766,7 @@
   },
   {
     "name": "product-detail: the viewer never closes",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx",
     "find": "setViewer((v) => v && { ...v, open: false });",
     "replace": "",
     "tests": [
@@ -775,8 +775,8 @@
   },
   {
     "name": "product-detail: the related block shows when empty",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
-    "find": "{relatedProducts.length > 0 && (",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/RelatedProducts.tsx",
+    "find": "{products.length > 0 && (",
     "replace": "{true && (",
     "tests": [
       "tests/storefront/product-detail/detail-buy.test.tsx"
@@ -784,7 +784,7 @@
   },
   {
     "name": "product-detail: the fifth related product shows on small screens",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/RelatedProducts.tsx",
     "find": "index === RELATED_PRODUCTS_LIMIT - 1 ? \"hidden lg:flex\" : \"flex\"",
     "replace": "\"flex\"",
     "tests": [
@@ -793,7 +793,7 @@
   },
   {
     "name": "product-detail: a related custom order shows a price",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/RelatedProducts.tsx",
     "find": "{hasPublicPrice(rp.badge) ? fmt(rp, \"price\") : tCommon(\"priceOnRequest\")}",
     "replace": "{fmt(rp, \"price\")}",
     "tests": [
@@ -802,7 +802,7 @@
   },
   {
     "name": "product-detail: a related product links to the shop",
-    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/RelatedProducts.tsx",
     "find": "href={productPath(rp) ?? \"/shop\"}",
     "replace": "href=\"/shop\"",
     "tests": [

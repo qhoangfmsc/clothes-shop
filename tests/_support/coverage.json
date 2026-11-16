@@ -1506,6 +1506,41 @@
       "lines": 95,
       "branches": 85,
       "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/use-product-selection.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ProductSpecs.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/RelatedProducts.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
     }
   }
 }
