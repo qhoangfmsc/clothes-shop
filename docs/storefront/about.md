@@ -1,6 +1,6 @@
 # About (giới thiệu thương hiệu)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/about` · **Cập nhật:** 2026-10-26
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/about` · **Cập nhật:** 2026-11-17
 > **Code:** `(public)/about/` — `page.tsx`, `_common/constants.ts`, `_components/{InvitationHero,BrandStory,ServicesSection}.tsx`
 > **i18n:** `public.about`
 
@@ -33,3 +33,5 @@ Kể câu chuyện DOOVAN và các dịch vụ (tuyển chọn, may đo, tư v�
 ### 4.1 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/storefront/about.md](../../specs/storefront/about.md). Test ở `tests/storefront/about/about.test.tsx`; `mutants.json` có đột biến cho mọi file của module.
+
+- **Màn rộng hơn 1920 px:** hero và `ServicesSection` dùng `.bleed` (xem [design-system](../platform/design-system.md) 4.3): nền phủ hết chiều ngang, nội dung vẫn trong cột.

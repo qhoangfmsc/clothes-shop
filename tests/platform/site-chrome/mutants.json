@@ -2413,5 +2413,41 @@
     "tests": [
       "tests/platform/site-chrome/hamburger.test.tsx"
     ]
+  },
+  {
+    "name": "site-chrome: the header is as wide as the column",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "        left: 0,\n        right: 0,",
+    "replace": "        left: \"var(--page-edge)\",\n        right: \"var(--page-edge)\",",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the header content is not inset",
+    "file": "src/app/[locale]/_components/SiteHeader.tsx",
+    "find": "          marginInline: \"var(--page-edge)\",\n",
+    "replace": "          width: \"100%\",\n",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the mega menu panel is as wide as the column",
+    "file": "src/app/[locale]/_components/HeaderNav.tsx",
+    "find": "              left: 0,\n              right: 0,",
+    "replace": "              left: \"var(--page-edge)\",\n              right: \"var(--page-edge)\",",
+    "tests": [
+      "tests/platform/site-chrome/header-nav.test.tsx"
+    ]
+  },
+  {
+    "name": "site-chrome: the footer stops at the column",
+    "file": "src/app/[locale]/_components/SiteFooter.tsx",
+    "find": "<footer className=\"bleed relative",
+    "replace": "<footer className=\"relative",
+    "tests": [
+      "tests/platform/site-chrome/footer.test.tsx"
+    ]
   }
 ]

@@ -301,7 +301,7 @@ export default function CollectionDetailClient({
       {/* ═══ 1. HERO — Split-screen cinematic ═══ */}
       <section
         ref={heroRef}
-        className="cd-hero relative h-screen min-h-[35rem] overflow-hidden flex items-end bg-[var(--color-noir)]"
+        className="bleed cd-hero relative h-screen min-h-[35rem] overflow-hidden flex items-end bg-[var(--color-noir)]"
       >
         <div className="cd-hero__media absolute inset-0">
           <Image
@@ -427,7 +427,7 @@ export default function CollectionDetailClient({
       </section>
 
       {/* ═══ 3. DIVIDER QUOTE ═══ */}
-      <section className="py-20 px-4 flex flex-col items-center text-center gap-5 bg-[var(--bg-section-5)] border-t border-b border-[var(--border-subtle)] sm:px-12">
+      <section className="bleed [--bleed-px:1rem] sm:[--bleed-px:3rem] py-20 flex flex-col items-center text-center gap-5 bg-[var(--bg-section-5)] border-t border-b border-[var(--border-subtle)]">
         <blockquote className="[font-family:var(--font-display)] text-[clamp(1.25rem,4vw,2rem)] text-[var(--text-heading)] tracking-[-0.03em] leading-[140%] max-w-[42.5rem] italic">
           “{collection.description}”
         </blockquote>
@@ -463,7 +463,7 @@ export default function CollectionDetailClient({
       </section>
 
       {/* ═══ 5. BACK TO COLLECTIONS CTA ═══ */}
-      <section className="bg-[var(--bg-section-3)] border-t border-[var(--border-subtle)] py-16 px-4 flex items-center justify-center sm:py-20 sm:px-6">
+      <section className="bleed [--bleed-px:1rem] sm:[--bleed-px:1.5rem] bg-[var(--bg-section-3)] border-t border-[var(--border-subtle)] py-16 flex items-center justify-center sm:py-20">
         <div className="text-center flex flex-col items-center gap-4">
           <Link
             href="/collections"

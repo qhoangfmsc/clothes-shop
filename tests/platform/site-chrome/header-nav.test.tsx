@@ -150,6 +150,17 @@ describe("CHR-16 the mega menu", () => {
     expect(screen.getByRole("link", { name: H("megaMenu.viewMore") })).toHaveAttribute("href", "/shop");
   });
 
+  it("draws the panel across the whole screen, with the columns in the middle", async () => {
+    await nav();
+
+    await hoverShop();
+    await opened();
+
+    const panelBox = panel()!.closest("div[style*='z-index: 15']") as HTMLElement;
+    expect(panelBox.style.left).toBe("0px");
+    expect(panelBox.style.right).toBe("0px");
+  });
+
   it("shows no 'view more' with exactly four categories", async () => {
     await nav({ categories: categories(4) });
 
@@ -406,6 +417,15 @@ describe("CHR-19 the bar while scrolling", () => {
     expect(bar.style.position).toBe("fixed");
     expect(bar.style.zIndex).toBe("100");
     expect(glass().style.opacity).toBe("0");
+  });
+
+  it("is as wide as the screen, with the logo and the links inset to the page column", async () => {
+    const { bar } = await header();
+
+    expect(bar.style.left).toBe("0px");
+    expect(bar.style.right).toBe("0px");
+    const content = bar.children[1] as HTMLElement;
+    expect(content.style.marginInline).toBe("var(--page-edge)");
   });
 
   it("gets a background once the page is scrolled past 60 px, and loses it back at the top", async () => {

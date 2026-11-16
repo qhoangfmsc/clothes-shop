@@ -1,6 +1,6 @@
 # Shop (danh mục, danh mục con, lưới sản phẩm) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [storefront/shop](../../docs/storefront/shop.md) · **Test:** `tests/storefront/shop/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -118,3 +118,4 @@ Thay đổi nhìn thấy được: không (không đổi hành vi nhìn thấy).
 
 - 2026-10-25 · Viết spec và test cho toàn module (batch 6), kiểm thử đột biến. Không đổi code của module.
 - 2026-10-26 · Tim của `ProductCard` dùng hook chung `useProductWishlist` (module [wishlist](./wishlist.md)); hành vi không đổi, các đột biến của tim chuyển sang module wishlist.
+- 2026-11-17 · no-test: kiểm bởi `tests/platform/design-system` (DSN-7). Các dải nền (xem doc) dùng `.bleed` để phủ hết chiều ngang trên màn rộng hơn 1920 px; nội dung không đổi.

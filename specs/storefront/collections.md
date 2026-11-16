@@ -1,6 +1,6 @@
 # Collections (danh sách và chi tiết bộ sưu tập) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [storefront/collections](../../docs/storefront/collections.md) · **Test:** `tests/storefront/collections/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -105,3 +105,4 @@ Thay đổi nhìn thấy được: có (nhỏ): tim ở trang chi tiết bộ s�
 
 - 2026-10-25 · Viết spec và test cho toàn module (batch 6), kiểm thử đột biến.
 - 2026-10-25 · Sửa: tim ở lưới sản phẩm của trang chi tiết dùng hook chung `useProductWishlist` (lưu vào store và BE, khách phải đăng nhập); tách `ShopCard`.
+- 2026-11-17 · no-test: kiểm bởi `tests/platform/design-system` (DSN-7). Các dải nền (xem doc) dùng `.bleed` để phủ hết chiều ngang trên màn rộng hơn 1920 px; nội dung không đổi.

@@ -35,6 +35,12 @@ describe("CHR-1 the footer", () => {
     expect(screen.getByText(`${F("hotline")}:`)).toBeInTheDocument();
   });
 
+  it("fills the screen above the page column, with its content kept inside it", async () => {
+    const { container } = await renderApp(<SiteFooter />);
+
+    expect(container.querySelector("footer")).toHaveClass("bleed");
+  });
+
   it("lists the four places to explore, in order, with the names of the header", async () => {
     await renderApp(<SiteFooter />);
 

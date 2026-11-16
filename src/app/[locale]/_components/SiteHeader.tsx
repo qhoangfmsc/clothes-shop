@@ -38,8 +38,8 @@ export default function SiteHeader() {
       style={{
         position: "fixed",
         top: 0,
-        left: "var(--page-edge)",
-        right: "var(--page-edge)",
+        left: 0,
+        right: 0,
         zIndex: 100,
         pointerEvents: "none",
       }}
@@ -69,7 +69,7 @@ export default function SiteHeader() {
           color: "var(--color-noir)",
           transition: "opacity 400ms var(--ease-default)",
           position: "relative",
-          width: "100%",
+          marginInline: "var(--page-edge)",
           height: "100%",
         }}
       >

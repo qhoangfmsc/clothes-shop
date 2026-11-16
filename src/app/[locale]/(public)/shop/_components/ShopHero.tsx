@@ -74,7 +74,7 @@ export default function ShopHero({ label, title, description, banners }: ShopHer
   }, [heroRef]);
 
   return (
-    <section ref={heroRef} className="relative min-h-[26.25rem] sm:min-h-[30rem] lg:min-h-[35rem] flex flex-col justify-end overflow-hidden py-16 px-4 sm:py-16 sm:px-6 lg:py-20 lg:px-8">
+    <section ref={heroRef} className="bleed [--bleed-px:1rem] sm:[--bleed-px:1.5rem] lg:[--bleed-px:2rem] relative min-h-[26.25rem] sm:min-h-[30rem] lg:min-h-[35rem] flex flex-col justify-end overflow-hidden py-16 sm:py-16 lg:py-20">
       {/* A champagne base colour always shows; the image (when there is one) sits on it at reduced opacity. */}
       <div
         data-hero-bg

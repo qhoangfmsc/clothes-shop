@@ -1,6 +1,6 @@
 # Shop (danh mục, danh mục con, lưới sản phẩm)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop`, `/shop/[category]`, `/shop/[category]/[subcategory]` · **Cập nhật:** 2026-10-26
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/shop`, `/shop/[category]`, `/shop/[category]/[subcategory]` · **Cập nhật:** 2026-11-17
 > **Code:** `(public)/shop/` — `page.tsx`, `[category]/page.tsx`, `[category]/[subcategory]/page.tsx`, `_components/{ShopHero,BreadcrumbNav,CategoryGrid,SubcategoryChips,ShopProductsClient,ShopFilters,ProductGrid,ProductCard}.tsx`, `_common/constants.ts`, `_lib/server-fetchers.ts`
 > **i18n:** `public.shop` (`pages.index|category|subcategory`, `components.*`), `common.productBadge`
 > Trang chi tiết sản phẩm: [product-detail](./product-detail.md)
@@ -79,3 +79,5 @@ Thiết kế, quyết định và các điểm cần biết: [specs/storefront/s
 ### 4.7 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/storefront/shop.md](../../specs/storefront/shop.md). Test ở `tests/storefront/shop/` (`shop-pages`, `shop-card`, `shop-grid`, `shop-parts`, `shop-products`; `shop-kit.tsx` là dữ liệu mẫu, API công khai giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+- **Màn rộng hơn 1920 px:** `ShopHero` và dải "tất cả sản phẩm" dùng `.bleed` (xem [design-system](../platform/design-system.md) 4.3): nền phủ hết chiều ngang, nội dung vẫn trong cột.

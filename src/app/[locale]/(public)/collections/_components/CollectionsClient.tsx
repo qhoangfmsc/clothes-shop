@@ -200,7 +200,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px) and (pointer: fine)", () => {
-      const totalWidth = track.scrollWidth - window.innerWidth;
+      const totalWidth = track.scrollWidth - section.clientWidth;
 
       gsap.to(track, {
         x: -totalWidth,
@@ -277,7 +277,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
       {/* ═══ 1. HERO — Full-bleed cinematic ═══ */}
       <section
         ref={heroRef}
-        className="relative h-screen overflow-hidden flex items-end justify-start bg-[var(--color-noir)]"
+        className="bleed relative h-screen overflow-hidden flex items-end justify-start bg-[var(--color-noir)]"
       >
         {/* A champagne base colour always shows; the image (when there is one) sits on it at reduced opacity. */}
         <div
@@ -338,7 +338,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
       </section>
 
       {/* ═══ 2. MARQUEE — Running text strip ═══ */}
-      <div className="overflow-hidden py-10 bg-[var(--color-noir)] border-t border-b border-[rgba(201,169,110,0.1)]">
+      <div className="bleed overflow-hidden py-10 bg-[var(--color-noir)] border-t border-b border-[rgba(201,169,110,0.1)]">
         <div className="flex whitespace-nowrap will-change-transform animate-[col-marquee-scroll_25s_linear_infinite] motion-reduce:animate-none motion-reduce:will-change-auto">
           {[...Array(4)].map((_, i) => (
             <span
@@ -354,37 +354,39 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
       {/* ═══ 3. COLLECTION CARDS ═══
           Desktop (wide + fine pointer): vertical scroll drives a pinned horizontal track (GSAP).
           Phones / touch devices: a swipeable, auto-advancing Carousel (no pin / scrub). */}
+      <div className="bleed bg-[var(--color-noir)]">
       <div ref={horizontalRef} className="relative overflow-hidden bg-[var(--color-noir)]">
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center carousel:hidden">
-          <SectionLabel
-            exploreLabel={t("exploreLabel")}
-            allCollections={t("allCollections")}
-            className="absolute top-8 left-8 z-2"
-          />
-          <div ref={trackRef} className="flex gap-6 px-8 w-max will-change-transform motion-reduce:will-change-auto">
-            {/* Spacer for the label */}
-            <div className="w-75 shrink-0" />
-            {HORIZONTAL_CARDS.map((col, idx) => (
-              <CollectionCard key={col.title} card={col} index={idx} className="w-95 lg:w-105" />
-            ))}
-            {/* End spacer */}
-            <div className="w-25 shrink-0" />
+          <div className="sticky top-0 h-screen overflow-hidden flex items-center carousel:hidden">
+            <SectionLabel
+              exploreLabel={t("exploreLabel")}
+              allCollections={t("allCollections")}
+              className="absolute top-8 left-8 z-2"
+            />
+            <div ref={trackRef} className="flex gap-6 px-8 w-max will-change-transform motion-reduce:will-change-auto">
+              {/* Spacer for the label */}
+              <div className="w-75 shrink-0" />
+              {HORIZONTAL_CARDS.map((col, idx) => (
+                <CollectionCard key={col.title} card={col} index={idx} className="w-95 lg:w-105" />
+              ))}
+              {/* End spacer */}
+              <div className="w-25 shrink-0" />
+            </div>
           </div>
-        </div>
 
-        <div className="hidden carousel:flex flex-col gap-6 py-12 px-4 sm:px-8">
-          <SectionLabel exploreLabel={t("exploreLabel")} allCollections={t("allCollections")} />
-          <Carousel
-            ariaLabel={t("carouselAria")}
-            slidesPerView={{ base: 1.25, sm: 2.5, lg: 3 }}
-            gap={{ base: 4, sm: 6 }}
-            autoplay={AUTOPLAY_MS}
-            dotsTone="onImage"
-          >
-            {HORIZONTAL_CARDS.map((col, idx) => (
-              <CollectionCard key={col.title} card={col} index={idx} />
-            ))}
-          </Carousel>
+          <div className="hidden carousel:flex flex-col gap-6 py-12 px-4 sm:px-8">
+            <SectionLabel exploreLabel={t("exploreLabel")} allCollections={t("allCollections")} />
+            <Carousel
+              ariaLabel={t("carouselAria")}
+              slidesPerView={{ base: 1.25, sm: 2.5, lg: 3 }}
+              gap={{ base: 4, sm: 6 }}
+              autoplay={AUTOPLAY_MS}
+              dotsTone="onImage"
+            >
+              {HORIZONTAL_CARDS.map((col, idx) => (
+                <CollectionCard key={col.title} card={col} index={idx} />
+              ))}
+            </Carousel>
+          </div>
         </div>
       </div>
 
@@ -395,7 +397,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           ref={(el) => {
             spreadRefs.current[idx] = el;
           }}
-          className={`flex flex-col min-h-screen overflow-hidden lg:flex-row ${idx % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
+          className={`bleed flex flex-col min-h-screen overflow-hidden lg:flex-row ${idx % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
           style={{ background: section.bgColor }}
         >
           {/* Text side */}
@@ -437,7 +439,7 @@ export default function CollectionsClient({ collections, heroBanners }: Collecti
           {/* Image side */}
           <div
             data-spread-image
-            className="flex-1 relative min-h-100 lg:min-h-auto overflow-hidden"
+            className={`${idx % 2 === 1 ? "bleed-l" : "bleed-r"} flex-1 relative min-h-100 lg:min-h-auto overflow-hidden`}
           >
             <Image
               src={section.image}

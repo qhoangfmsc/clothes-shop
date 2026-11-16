@@ -1,6 +1,6 @@
 # Design system (token, font, style toàn cục) — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [platform/design-system](../../docs/platform/design-system.md) · **Test:** `tests/platform/design-system/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -22,6 +22,7 @@ Design system là hai file CSS mà mọi component dựa vào: bảng token (`sr
 
 - **Token.** Mọi `var(--x)` không có giá trị dự phòng đều có định nghĩa ở bảng token, ở `globals.css`, hoặc do component đặt (`style={{ "--x": … }}`, `[--x:…]`); riêng `--font-site` do `next/font` đặt lúc chạy. Alias trong bảng token trỏ tới token có trong `:root`. Không token nào định nghĩa hai lần trong `:root`. Mọi `--color-*` là hex 6 chữ số.
 - **Giá trị.** `--page-max-w: 1920px`; `--page-edge` tính từ nó; cỡ chữ `--text-xs … 3xl` bằng rem (0,6875 … 2,625); lưới khoảng cách 4 px (rem); `--radius-pill: 9999px`; một typeface (`--font-primary` và `--font-display` cùng trỏ `--font-site`); z-index 0 / 10 / 12 / 20 / 50 / 100 / 200; chuyển động 150 / 300 / 600 / 1000 / 1200 ms; không có `--breakpoint-*` hay `@theme` trong `src/`.
+- **Dải tràn màn hình.** `--page-bleed` tính từ `100vw`; `.bleed` có margin âm và padding bù (cộng `--bleed-px`); `.bleed-l` / `.bleed-r` đẩy một bên của con ra mép; từ 1921 px `body` có `overflow-x: visible`.
 - **Dark context.** `[data-theme="dark"]` và `.dark-context` chỉ ghi đè token có trong `:root`; nền chuyển sang noir, chữ sang kem.
 - **Thang trang.** `html { font-size: clamp(1rem, 1.0417vw, 1.25rem) }`; `body` rộng tối đa `--page-max-w`, căn giữa; `html, body` ẩn cuộn ngang, lấy chữ từ token, không giả in đậm.
 - **Animation.** Mọi tên animation dùng trong CSS hoặc class `animate-[…]` đều có `@keyframes`; các keyframes của vỏ ứng dụng, giỏ, danh sách có mặt; `prefers-reduced-motion` tắt chuyển động của drawer, mega menu, avatar và thẻ bộ sưu tập; ảnh admin và ảnh con trỏ không bị fade.
@@ -73,6 +74,7 @@ Test đọc file bằng `node:fs` từ gốc repo; các biểu thức chính quy
 | DSN-3 | Dark context chỉ đổi token có thật; nền noir, chữ kem | đúng | — | unit | `tests/platform/design-system/design-tokens.test.ts` |
 | DSN-4 | Thang trang: clamp của `html`, cột trang, ẩn cuộn ngang, không giả in đậm | đúng | — | unit | `tests/platform/design-system/design-tokens.test.ts` |
 | DSN-5 | Animation: mọi tên đều có keyframes, `prefers-reduced-motion`, ảnh không fade | đúng | — | unit | `tests/platform/design-system/design-tokens.test.ts` |
+| DSN-7 | Dải tràn màn hình: `--page-bleed` theo `100vw`, `.bleed` margin âm + padding bù, `.bleed-l` / `.bleed-r`, `body` không cắt dải từ 1921 px | đúng | — | unit | `tests/platform/design-system/design-tokens.test.ts` |
 | DSN-6 | Con trỏ chỉ ẩn khi bật, file font và ảnh con trỏ có mặt | đúng | — | unit | `tests/platform/design-system/design-tokens.test.ts` |
 
 Coverage: ngưỡng riêng cho các file của module trong `tests/_support/coverage.json`.
@@ -91,3 +93,4 @@ Thay đổi nhìn thấy được: thanh kéo của `QuickAddDrawer` / `SizeGuid
 ## 8. Lịch sử thay đổi
 
 - 2026-10-26 · Viết spec và test cho toàn module (batch 8): kiểm token đọc từ nguồn, kiểm thử đột biến trên hai file CSS; sửa hai token chưa định nghĩa (`--border-medium`, `--color-warm-white`).
+- 2026-11-17 · Thêm dải tràn màn hình (`--page-bleed`, `.bleed`, `.bleed-l`, `.bleed-r`): trên màn rộng hơn 1920 px nội dung vẫn nằm trong cột nhưng nền header, footer và các dải màu phủ hết chiều ngang; test DSN-7 và đột biến.

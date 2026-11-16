@@ -1,6 +1,6 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-26
+> **Nhóm:** Platform · **Cập nhật:** 2026-11-17
 > **Code:** `src/app/[locale]/_components/` — `SiteHeader.tsx`, `HeaderNav.tsx`, `HamburgerMenu.tsx`, `SearchBar.tsx`, `UserAvatar.tsx`, `Logo.tsx`, `SiteFooter.tsx`, `LanguageSwitcher.tsx`, `SocialIcons.tsx`, `CartFAB.tsx`, `useSearchHistory.ts`
 
 ## 1. Tóm tắt module
@@ -33,7 +33,7 @@ Khung điều hướng của storefront: header cố định (logo, mega menu da
 
 ### 4.1 `SiteHeader`
 
-`position: fixed`, `z-index 100`, `pointer-events: none` (con tự bật). Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 5 rem (<1024) / 5.625 rem (≥1024) (80 / 90 px ở gốc 16 px, lớn theo thang màn rộng); ẩn dịch lên `-9rem`. Kích thước trong style inline của header, mega menu, tìm kiếm, burger menu viết bằng `rem` để theo thang này. Chứa `Logo` và `HeaderNav`. `left`/`right` = `var(--page-edge)` nên header nằm trong cột `--page-max-w` của `body` (xem [design-system](./design-system.md) 4.3); panel mega menu của `HeaderNav` căn cùng cách.
+`position: fixed` rộng hết viewport (`left: 0; right: 0`), `z-index 100`, `pointer-events: none` (con tự bật); lớp nền kính phủ hết chiều ngang, còn lớp nội dung (logo, link) thụt vào theo `margin-inline: var(--page-edge)` nên nằm trong cột 1920 px. Theo `useScroll`: `isScrolled` khi `scrollY > 60` (hiện nền `rgba(251,248,241,.95)` + blur + viền vàng mờ); ẩn (`y: -140`) khi cuộn xuống > 5 px và `scrollY > 80`, hiện khi cuộn lên > 5 px. Nền cũng hiện khi mega menu mở. Biến CSS `--header-bg-height` = 5 rem (<1024) / 5.625 rem (≥1024) (80 / 90 px ở gốc 16 px, lớn theo thang màn rộng); ẩn dịch lên `-9rem`. Kích thước trong style inline của header, mega menu, tìm kiếm, burger menu viết bằng `rem` để theo thang này. Chứa `Logo` và `HeaderNav`. Panel mega menu của `HeaderNav` cũng rộng hết viewport (`left: 0; right: 0`) với lưới danh mục căn giữa (xem [design-system](./design-system.md) 4.3).
 
 ### 4.2 `HeaderNav`
 
@@ -63,7 +63,7 @@ Avatar tròn: ảnh Google hoặc chữ cái đầu của hai từ đầu (`?` n
 
 ### 4.6 `SiteFooter`
 
-Nền `--bg-dark`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Policies (tiêu đề `footer.policies.title` = "Chính sách" / "Policies", ba link `LEGAL_DOCS`: Terms, Privacy, Shipping & Returns — nhãn `shared.legal.<key>`), Language (`LanguageSwitcher`). Footer không còn cột tài khoản. Thanh dưới chỉ có `copyright` (năm hiện tại). Nhãn link Explore lấy từ `shared.header.nav` để khớp header; chuỗi footer ở `shared.footer`.
+Nền `--bg-dark` phủ hết chiều ngang (class `bleed`), nội dung trong khung `max-w-[80rem]`. Cột: Brand (wordmark, `tagline`, khối `<address>` gồm hai dòng có nhãn (`footer.address`, `footer.hotline`): địa chỉ `CONTACT_ADDRESS` — link `CONTACT_MAPS_URL` — và hotline `CONTACT_PHONE` — link `tel:` —, `SocialIcons`), Explore (Shop, New In, Collections, Về DOOVAN), Policies (tiêu đề `footer.policies.title` = "Chính sách" / "Policies", ba link `LEGAL_DOCS`: Terms, Privacy, Shipping & Returns — nhãn `shared.legal.<key>`), Language (`LanguageSwitcher`). Footer không còn cột tài khoản. Thanh dưới chỉ có `copyright` (năm hiện tại). Nhãn link Explore lấy từ `shared.header.nav` để khớp header; chuỗi footer ở `shared.footer`.
 
 ### 4.7 `CartFAB`
 

@@ -1,6 +1,6 @@
 # Site chrome (header, menu, tìm kiếm, footer, nút giỏ nổi) — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [platform/site-chrome](../../docs/platform/site-chrome.md) · **Test:** `tests/platform/site-chrome/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -22,11 +22,11 @@ Site chrome là khung điều hướng mà khách thấy ở mọi trang công k
 
 - **Thanh link.** Shop, New In, Collections và nút "Đặt thiết kế" (tới `CONTACT_PATH`); ô tìm kiếm và burger. Từ 1024 px mới thấy link và ô tìm kiếm (CSS); dưới đó chỉ có burger.
 - **Mega menu.** Rê chuột vào Shop 280 ms thì mở (rời trước đó thì hủy); có danh mục thì mới mở; hiện tối đa 4 danh mục, mỗi cái kèm danh mục con và "xem tất cả", nhiều hơn 4 thì có "xem thêm" tới `/shop`. Đóng: 150 ms sau khi rời Shop (trừ khi chuột vào panel), 120 ms sau khi rời panel, Esc, bấm nền tối, bấm link, header bị ẩn. Sau khi đóng nghỉ 350 ms rồi mới mở lại được. Báo cho header (`onMenuToggle`) để hiện nền kính.
-- **Header.** Cố định, `z-index 100`. Cuộn quá 60 px thì có nền; cuộn xuống quá 5 px khi đã quá 80 px thì trượt lên (ẩn); cuộn lên quá 5 px thì hiện lại. Mở mega menu cũng có nền.
+- **Header.** Cố định rộng hết viewport (nền kính và panel mega menu tràn màn hình, logo và link thụt vào cột 1920 px), `z-index 100`. Cuộn quá 60 px thì có nền; cuộn xuống quá 5 px khi đã quá 80 px thì trượt lên (ẩn); cuộn lên quá 5 px thì hiện lại. Mở mega menu cũng có nền.
 - **Tìm kiếm.** Bấm thì mở ra (con trỏ vào ô sau 200 ms), Esc hoặc bấm ra ngoài khi chưa gõ gì thì thu lại. Từ 2 ký tự hỏi gợi ý (5 / 8 / 10 theo điện thoại / tablet / máy tính). Danh sách hiện sau khi ô đã mở xong: lịch sử khớp trước, gợi ý không trùng sau; ô trống thì chỉ lịch sử kèm tiêu đề; có chữ thì lọc lịch sử theo tên (không phân biệt hoa thường). ↑ ↓ đi vòng, Enter mở mục sáng, Esc bỏ sáng và đóng. Chọn một mục: ghi vào lịch sử, đóng, đi tới `/shop/<danh mục>/<danh mục con>/<id>`; mục thiếu danh mục thì tra URL theo id, không có thì `/shop`. Gợi ý lỗi hoặc không có thì báo "không có kết quả".
 - **Lịch sử.** Tối đa 5 sản phẩm đã mở, mới nhất trước, không trùng, ở `localStorage` (`doovan-search-history`); đọc sau khi mount, theo dõi tab khác, mỗi lần ghi đọc lại trước; storage hỏng hoặc bị chặn thì rỗng / chỉ nhớ trong phiên.
 - **Burger menu.** Mở bằng nút, đóng bằng nút X, Esc, nền tối hoặc chọn link; khi mở khóa cuộn trang (html và body) và chặn cuộn nền bằng ngón tay (chỉ cho cuộn phần có thể cuộn, chặn nảy ở đầu / cuối). Link: Đặt thiết kế (hàng nổi bật), Shop (xổ danh mục kèm số danh mục con và "xem tất cả"; đóng drawer thì gập lại), New In, Collections, About. Khách thấy nút đăng nhập; đang kiểm tra phiên thì chưa hiện gì; khách hàng thấy hàng tên + email bấm để mở tài khoản / yêu thích / đơn hàng / đăng xuất (hỏi xác nhận, đồng ý thì đăng xuất và đóng drawer). Banner nổi bật: chỉ khi site config có; hiện tiêu đề, phụ đề, nút (nhãn mặc định `drawer.discover`, đích mặc định `/shop`), chấm chọn khi có nhiều hơn 1; tự chuyển mỗi 4 s khi đang thấy, không bị rê chuột / chạm / vừa bấm chấm.
-- **Footer.** Tên thương hiệu về trang chủ, địa chỉ (mở bản đồ tab mới) và hotline (`tel:`), hàng icon (email, rồi từng mạng xã hội, tab mới trừ email), Explore (4 link), Chính sách (3 tài liệu), Ngôn ngữ, năm hiện tại.
+- **Footer.** Nền phủ hết chiều ngang (`bleed`), nội dung trong khung. Tên thương hiệu về trang chủ, địa chỉ (mở bản đồ tab mới) và hotline (`tel:`), hàng icon (email, rồi từng mạng xã hội, tab mới trừ email), Explore (4 link), Chính sách (3 tài liệu), Ngôn ngữ, năm hiện tại.
 - **Đổi ngôn ngữ.** Giữ đường dẫn và query, không cuộn lên đầu; chọn ngôn ngữ đang mở thì không làm gì.
 - **Nút giỏ nổi.** Chỉ khi giỏ có hàng; số là tổng số lượng (không phải số dòng); tới `/cart`; ẩn ở `/cart` và mọi đường dẫn bắt đầu bằng `/checkout`.
 - **`UserAvatar`.** Chữ cái đầu của hai từ đầu (hoa), `?` nếu không có tên; ảnh khi có; là nút (có tên truy cập) chỉ khi có hành động.
@@ -123,3 +123,4 @@ Thay đổi nhìn thấy được: nhãn mặc định của nút banner nổi b
 ## 8. Lịch sử thay đổi
 
 - 2026-10-26 · Viết spec và test cho toàn module (batch 8), kiểm thử đột biến; sửa dấu `}` thừa trong `HeaderNav`, nhãn "Discover" viết cứng, xóa `UserMenu` và biến thể `drawer` không dùng (đổi tên `UserMenu.tsx` → `UserAvatar.tsx`).
+- 2026-11-17 · Header, panel mega menu và footer phủ hết chiều ngang trên màn rộng hơn 1920 px (nội dung vẫn trong cột); test ở `header-nav` và `footer`, đột biến.

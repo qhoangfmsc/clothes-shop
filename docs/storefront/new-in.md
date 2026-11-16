@@ -1,6 +1,6 @@
 # New In (hàng mới về)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/new-in` · **Cập nhật:** 2026-10-25
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/new-in` · **Cập nhật:** 2026-11-17
 > **Code:** `(public)/new-in/` — `page.tsx`, `loading.tsx`, `_components/NewInClient.tsx`
 > **i18n:** `public.newIn`
 
@@ -39,3 +39,5 @@ Giới thiệu những sản phẩm gắn badge `new` để khách quay lại th
 ### 4.1 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/storefront/new-in.md](../../specs/storefront/new-in.md). Test ở `tests/storefront/new-in/` (`new-in.test.tsx`, dùng `shop-kit.tsx` của shop); `mutants.json` có đột biến cho mọi file của module.
+
+- **Màn rộng hơn 1920 px:** hero, ba section, thanh chạy chữ và dải đăng ký dùng `.bleed` (xem [design-system](../platform/design-system.md) 4.3): nền phủ hết chiều ngang, nội dung vẫn trong cột.

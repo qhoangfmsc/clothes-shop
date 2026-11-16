@@ -394,5 +394,68 @@
     "tests": [
       "tests/platform/design-system/design-tokens.test.ts"
     ]
+  },
+  {
+    "name": "design-system: the bleed is worked out from the column",
+    "file": "src/styles/design-system.css",
+    "find": "calc((100vw - var(--page-max-w)) / 2));\n",
+    "replace": "calc((100% - var(--page-max-w)) / 2));\n",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a band keeps its margin",
+    "file": "src/app/globals.css",
+    "find": "  margin-inline: calc(var(--page-bleed) * -1);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a band does not give the space back",
+    "file": "src/app/globals.css",
+    "find": "  padding-inline: calc(var(--page-bleed) + var(--bleed-px, 0px));",
+    "replace": "  padding-inline: var(--bleed-px, 0px);",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: a band forgets its own padding",
+    "file": "src/app/globals.css",
+    "find": "padding-inline: calc(var(--page-bleed) + var(--bleed-px, 0px));",
+    "replace": "padding-inline: var(--page-bleed);",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the left picture stops at the column",
+    "file": "src/app/globals.css",
+    "find": "  margin-left: calc(var(--page-bleed) * -1);",
+    "replace": "  margin-left: 0;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the right picture stops at the column",
+    "file": "src/app/globals.css",
+    "find": "  margin-right: calc(var(--page-bleed) * -1);",
+    "replace": "  margin-right: 0;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
+  },
+  {
+    "name": "design-system: the body clips the bands",
+    "file": "src/app/globals.css",
+    "find": "  body {\n    overflow-x: visible;",
+    "replace": "  body {\n    overflow-x: hidden;",
+    "tests": [
+      "tests/platform/design-system/design-tokens.test.ts"
+    ]
   }
 ]

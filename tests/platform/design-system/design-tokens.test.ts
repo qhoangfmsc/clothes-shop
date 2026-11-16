@@ -168,6 +168,30 @@ describe("DSN-4 the page scale", () => {
   });
 });
 
+describe("DSN-7 bands that fill the screen above the column", () => {
+  it("works the bleed out from the viewport width, not from the column", () => {
+    expect(value("--page-bleed")).toBe("max(0px, calc((100vw - var(--page-max-w)) / 2))");
+  });
+
+  it("gives a band the space it takes (negative margin) back as padding, keeping its own side padding", () => {
+    const band = block(GLOBALS, ".bleed");
+
+    expect(band).toContain("margin-inline: calc(var(--page-bleed) * -1)");
+    expect(band).toContain("padding-inline: calc(var(--page-bleed) + var(--bleed-px, 0px))");
+  });
+
+  it("lets one side of a child (the picture of a split section) go on to the screen edge", () => {
+    expect(block(GLOBALS, ".bleed-l")).toContain("margin-left: calc(var(--page-bleed) * -1)");
+    expect(block(GLOBALS, ".bleed-r")).toContain("margin-right: calc(var(--page-bleed) * -1)");
+  });
+
+  it("stops the page body from clipping a band, only above the column", () => {
+    const wide = mediaBlocks(GLOBALS, "min-width: 1921px").join("\n");
+
+    expect(wide).toContain("overflow-x: visible");
+  });
+});
+
 describe("DSN-5 the animations", () => {
   const keyframes = new Set(names(/@keyframes\s+([\w-]+)/g, [GLOBALS, ...FILES.map((f) => f.text)].join("\n")));
   const used = unique(

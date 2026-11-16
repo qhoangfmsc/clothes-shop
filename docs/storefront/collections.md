@@ -1,6 +1,6 @@
 # Collections (bộ sưu tập — danh sách & chi tiết)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/collections`, `/[locale]/collections/[slug]` · **Cập nhật:** 2026-10-25
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/collections`, `/[locale]/collections/[slug]` · **Cập nhật:** 2026-11-17
 > **Code:** `(public)/collections/` — `page.tsx`, `loading.tsx`, `_components/CollectionsClient.tsx`, `[slug]/page.tsx`, `[slug]/loading.tsx`, `[slug]/_components/CollectionDetailClient.tsx`
 > **i18n:** `public.collections` (`meta`, `detailMeta`, `list`, `detail`)
 > Quản trị: [admin/collections](../admin/collections.md)
@@ -56,3 +56,5 @@ Dẫn khách vào từng chiến dịch/chủ đề thay vì duyệt theo danh m
 ### 4.5 Spec và test
 
 Thiết kế, quyết định và các điểm cần biết: [specs/storefront/collections.md](../../specs/storefront/collections.md). Test ở `tests/storefront/collections/` (`collections-pages`, `collections-list`, `collections-detail`; `collections-kit.tsx` là API công khai giả và hàm render dùng chung); `mutants.json` có đột biến cho mọi file của module.
+
+- **Màn rộng hơn 1920 px:** hero, thanh chạy chữ, thư viện ngang, các section biên tập dùng `.bleed` (xem [design-system](../platform/design-system.md) 4.3): nền phủ hết chiều ngang, nội dung vẫn trong cột.

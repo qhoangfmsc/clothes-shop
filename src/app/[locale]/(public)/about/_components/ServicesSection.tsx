@@ -29,7 +29,7 @@ const CARD_STYLES = [
 export default function ServicesSection() {
   const t = useTranslations("public.about");
   return (
-    <section className="bg-[var(--bg-secondary)] py-20 px-10">
+    <section className="bleed [--bleed-px:2.5rem] bg-[var(--bg-secondary)] py-20">
       <div className="max-w-[75rem] mx-auto">
         {/* Section header */}
         <motion.span
