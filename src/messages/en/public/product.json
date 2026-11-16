@@ -76,7 +76,8 @@
         "stars": "{stars} Star ({count})",
         "photos": "With photos ({count})"
       },
-      "openAll": "See all reviews"
+      "openAll": "See all reviews",
+      "loadFailed": "Could not load the review summary."
     },
     "filters": {
       "fit": "Fit",

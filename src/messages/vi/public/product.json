@@ -76,7 +76,8 @@
         "stars": "{stars} sao ({count})",
         "photos": "Có hình ảnh ({count})"
       },
-      "openAll": "Xem tất cả đánh giá"
+      "openAll": "Xem tất cả đánh giá",
+      "loadFailed": "Không tải được tổng quan đánh giá."
     },
     "filters": {
       "fit": "Form dáng",

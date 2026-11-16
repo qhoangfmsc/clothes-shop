@@ -98,11 +98,23 @@ describe("PD-18 the totals", () => {
     expect(await screen.findByText(R("empty.title"))).toBeInTheDocument();
   });
 
-  it("shows the same empty state when the totals cannot be read", async () => {
+  it("says the totals could not be read, instead of saying there are no reviews, and tries again on request", async () => {
     await section({ summary: 500 });
 
-    expect(await screen.findByText(R("empty.title"))).toBeInTheDocument();
+    expect(await screen.findByText(R("summary.loadFailed"))).toBeInTheDocument();
+    expect(screen.queryByText(R("empty.title"))).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: R("summary.openAll") })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: R("list.retry") })).toBeInTheDocument();
+  });
+
+  it("asks for the totals again when the retry button is pressed", async () => {
+    const view = await section({ summary: 500 });
+    await screen.findByText(R("summary.loadFailed"));
+    const before = view.calls.summary;
+
+    await userEvent.click(screen.getByRole("button", { name: R("list.retry") }));
+
+    await waitFor(() => expect(view.calls.summary).toBeGreaterThan(before));
   });
 
   it("has a title, an explanation of who may review, and the anchor the rating link goes to", async () => {

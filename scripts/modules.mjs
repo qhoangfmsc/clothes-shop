@@ -10,7 +10,7 @@ const COMP = `${L}_components/`;
 export const MODULES = [
   /* ── Platform ── */
   { doc: "platform/app-shell", paths: [
-    `${L}layout.tsx`, `${L}not-found.tsx`, `${L}[...rest]/`, `${L}unauthorized/`, `${L}(auth)/layout.tsx`,
+    `${L}layout.tsx`, `${L}not-found.tsx`, `${L}[...rest]/`, `${L}unauthorized/`,
     `${PUBLIC}layout.tsx`, `${PUBLIC}error.tsx`, `${PRIVATE}layout.tsx`,
     `${COMP}Providers.tsx`, `${COMP}RouteTransition.tsx`, `${COMP}VercelTelemetry.tsx`, `${COMP}cursor/`,
   ] },

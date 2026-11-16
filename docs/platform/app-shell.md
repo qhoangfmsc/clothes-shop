@@ -1,7 +1,7 @@
 # App shell (layout gốc, provider, route group, trang lỗi)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-25
-> **Code:** `src/app/[locale]/layout.tsx` · `src/app/[locale]/_components/Providers.tsx` · `src/middleware.ts` · `src/app/[locale]/(public|private|admin|auth)/layout.tsx` · `not-found.tsx` · `[...rest]/page.tsx` · `(public)/error.tsx` · `unauthorized/` · `RouteTransition.tsx` · `cursor/` · `VercelTelemetry.tsx`
+> **Nhóm:** Platform · **Cập nhật:** 2026-11-17
+> **Code:** `src/app/[locale]/layout.tsx` · `src/app/[locale]/_components/Providers.tsx` · `src/middleware.ts` · `src/app/[locale]/(public|private|admin)/layout.tsx` · `not-found.tsx` · `[...rest]/page.tsx` · `(public)/error.tsx` · `unauthorized/` · `RouteTransition.tsx` · `cursor/` · `VercelTelemetry.tsx`
 
 ## 1. Tóm tắt module
 

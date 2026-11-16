@@ -916,5 +916,32 @@
     "tests": [
       "tests/storefront/contact/contact-page.test.tsx"
     ]
+  },
+  {
+    "name": "contact: today is the UTC day",
+    "file": "src/app/[locale]/(public)/contact/_components/OrderRequestForm.tsx",
+    "find": "localDateValue(new Date())",
+    "replace": "new Date().toISOString().slice(0, 10)",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the month is counted from zero",
+    "file": "src/app/[locale]/(public)/contact/_common/local-date.ts",
+    "find": "date.getMonth() + 1",
+    "replace": "date.getMonth()",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
+  },
+  {
+    "name": "contact: the day is not padded",
+    "file": "src/app/[locale]/(public)/contact/_common/local-date.ts",
+    "find": "pad(date.getDate())",
+    "replace": "date.getDate()",
+    "tests": [
+      "tests/storefront/contact/contact-form.test.tsx"
+    ]
   }
 ]

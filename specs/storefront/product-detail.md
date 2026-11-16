@@ -1,6 +1,6 @@
 # Product detail (trang chi tiết sản phẩm) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-26 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [storefront/product-detail](../../docs/storefront/product-detail.md) · **Test:** `tests/storefront/product-detail/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -145,3 +145,4 @@ Thay đổi nhìn thấy được: có (nhỏ): thêm vào giỏ lỗi thì báo
 - 2026-10-25 · Sửa: thêm vào giỏ bị BE từ chối thì báo lỗi; nhãn đơn vị bảng size qua i18n; xóa `ShareButtons` và `public.product.share` không dùng.
 - 2026-10-26 · Tim dùng hook chung `useProductWishlist` ([wishlist](./wishlist.md)); hành vi không đổi, các đột biến của tim chuyển sang module wishlist.
 - 2026-10-26 · no-test: kiểm bởi `tests/platform/design-system` (DSN-1). Thanh kéo của `SizeGuideModal` dùng `--border-default` (trước đây `--border-medium` chưa từng được định nghĩa); ghi nhận trong batch 8 (design-system).
+- 2026-11-17 · Khi không tải được tổng quan đánh giá, mục đánh giá hiện lỗi `reviews.summary.loadFailed` kèm nút thử lại thay vì "chưa có đánh giá"; khóa thêm ở cả hai ngôn ngữ; test mới (REV-3E).

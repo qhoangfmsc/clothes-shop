@@ -1,6 +1,6 @@
 # App shell (layout gốc, provider, route group, trang lỗi) — Tech spec
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
+> **Nhóm:** Platform · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [platform/app-shell](../../docs/platform/app-shell.md) · **Test:** `tests/platform/app-shell/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -103,7 +103,6 @@ Coverage: ngưỡng riêng cho các file của module trong `tests/_support/cove
 | Phát hiện | Hành vi hiện tại (test khóa) |
 |---|---|
 | Link tới trang đang mở: trước đây lớp phủ hiện và chỉ tắt sau 4 s vì `pathname` không đổi (link có `/vi/…`, `usePathname()` không) | Đã sửa: `isCurrentPage` bỏ tiền tố ngôn ngữ (SHL-10) |
-| `(auth)/layout.tsx` có trong danh sách file của module nhưng không tồn tại; `/login` dùng layout gốc | Không đổi; trang đăng nhập thuộc [auth](./auth.md) |
 | Nút Back / Forward không hiện lớp phủ | Hành vi hiện tại (SHL-11) |
 | Lớp phủ chỉ biết `pathname`; đổi chỉ query (cùng trang) không bao giờ hiện | Có chủ đích: địa chỉ không đổi thì lớp phủ không tắt được |
 
@@ -112,3 +111,4 @@ Thay đổi nhìn thấy được: lớp phủ chuyển trang không còn hiện
 ## 8. Lịch sử thay đổi
 
 - 2026-10-25 · Viết spec và test cho toàn module (batch 8), kiểm thử đột biến; sửa `RouteTransition` nhận ra link tới trang đang mở khi link có tiền tố ngôn ngữ.
+- 2026-11-17 · no-test: bỏ đường dẫn `(auth)/layout.tsx` (file không tồn tại) khỏi `MODULES`; `/login` dùng layout gốc, thuộc [auth](../../docs/platform/auth.md).

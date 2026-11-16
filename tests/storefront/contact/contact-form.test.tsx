@@ -1,6 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import OrderRequestForm from "@/src/app/[locale]/(public)/contact/_components/OrderRequestForm";
 import { dateText, msg } from "@/tests/_support/messages";
 import { orderProduct, readMailto, recordNavigation, renderContact } from "./contact-kit";
@@ -109,7 +109,24 @@ describe("CT-4 measurements, weight, quantity and date", () => {
 
     const min = container.querySelector<HTMLInputElement>('input[type="date"]')!.min;
 
-    expect(min).toBe(new Date().toISOString().slice(0, 10));
+    const now = new Date();
+    expect(min).toBe(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`);
+  });
+
+  it("counts today by the visitor's clock: just after midnight in Vietnam it is already the new day", async () => {
+    const zone = process.env.TZ;
+    process.env.TZ = "Asia/Ho_Chi_Minh";
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-03-05T20:00:00Z"));
+    try {
+      const { container } = await form();
+
+      expect(container.querySelector<HTMLInputElement>('input[type="date"]')!.min).toBe("2026-03-06");
+    } finally {
+      vi.useRealTimers();
+      if (zone === undefined) delete process.env.TZ;
+      else process.env.TZ = zone;
+    }
   });
 
   it("counts the letters of the wish against the limit", async () => {

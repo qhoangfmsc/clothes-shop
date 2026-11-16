@@ -2365,5 +2365,23 @@
     "tests": [
       "tests/storefront/product-detail/detail-write.test.tsx"
     ]
+  },
+  {
+    "name": "product-detail: a failed summary says there are no reviews",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "summaryFailed && !summary ? (",
+    "replace": "false ? (",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
+  },
+  {
+    "name": "product-detail: a failed summary cannot be retried",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx",
+    "find": "onClick={() => void reloadSummary()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/product-detail/detail-reviews.test.tsx"
+    ]
   }
 ]

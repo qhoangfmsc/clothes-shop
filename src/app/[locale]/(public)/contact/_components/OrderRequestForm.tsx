@@ -20,6 +20,7 @@ import type {
   OrderRequestValues,
 } from "../_common/types";
 import ProductSummaryCard from "./ProductSummaryCard";
+import { localDateValue } from "../_common/local-date";
 
 const inputClass =
   "w-full rounded-md border border-[var(--border-light)] bg-[var(--bg-primary)] px-4 py-2.5 font-primary text-sm tracking-[-0.02em] text-[var(--text-primary)] outline-none transition-colors duration-150 placeholder:text-[var(--text-disabled)] focus:border-[var(--accent-primary)] focus:shadow-[0_0_0_3px_rgba(201,169,110,0.15)] motion-reduce:transition-none";
@@ -116,7 +117,7 @@ export default function OrderRequestForm({ product }: OrderRequestFormProps) {
     window.location.href = buildMailto(subject, body);
   };
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDateValue(new Date());
 
   return (
     <div

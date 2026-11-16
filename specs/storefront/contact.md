@@ -1,6 +1,6 @@
 # Contact (đặt thiết kế riêng) — Tech spec
 
-> **Nhóm:** Storefront · **Cập nhật:** 2026-10-25 · **Trạng thái:** Implemented
+> **Nhóm:** Storefront · **Cập nhật:** 2026-11-17 · **Trạng thái:** Implemented
 > **Doc:** [storefront/contact](../../docs/storefront/contact.md) · **Test:** `tests/storefront/contact/`
 
 ## 1. Bối cảnh & mục tiêu
@@ -83,7 +83,7 @@ Coverage: ngưỡng riêng cho các file của module trong `tests/_support/cove
 
 | Phát hiện | Hành vi hiện tại (test khóa) |
 |---|---|
-| Ngày nhỏ nhất của ô ngày tính theo UTC (`toISOString`), nên gần nửa đêm giờ Việt Nam có thể cho chọn hôm qua | Hành vi hiện tại (CT-4); ô không chặn gõ tay ngày đã qua |
+| Ô ngày chặn gõ tay ngày đã qua? Không: `min` chỉ chặn bộ chọn | Hành vi hiện tại (CT-4) |
 | Không biết thư đã gửi hay chưa: `mailto:` chỉ mở hộp thư | Thiết kế có chủ đích; không có phản hồi trên trang |
 | Số điện thoại chỉ kiểm số chữ số, không kiểm đầu số | Đủ cho thư gửi tay (CT-4E) |
 | Trình duyệt không có ứng dụng thư thì `mailto:` không làm gì | Các kênh khác (điện thoại, Instagram, Facebook) có sẵn trên trang |
@@ -93,3 +93,4 @@ Thay đổi nhìn thấy được: không (không đổi hành vi nhìn thấy).
 ## 8. Lịch sử thay đổi
 
 - 2026-10-25 · Viết spec và test cho toàn module (batch 7), kiểm thử đột biến. Không đổi code của module.
+- 2026-11-17 · Ô ngày tính "hôm nay" theo ngày của máy khách (`localDateValue`) thay vì ngày UTC; test mới (CT-4) đặt múi giờ Việt Nam.

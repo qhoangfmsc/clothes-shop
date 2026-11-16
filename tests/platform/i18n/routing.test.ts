@@ -15,10 +15,10 @@ describe("I18-1 routing", () => {
     expect(routing.localeDetection).toBe(false);
   });
 
-  it("labels every language in its own words, with a short code and an Open Graph locale", () => {
+  it("labels every language in its own words, with an Open Graph locale", () => {
     expect(Object.keys(LOCALE_LABELS).sort()).toEqual([...routing.locales].sort());
-    expect(LOCALE_LABELS.vi).toEqual({ name: "Tiếng Việt", short: "VI", ogLocale: "vi_VN" });
-    expect(LOCALE_LABELS.en).toEqual({ name: "English", short: "EN", ogLocale: "en_US" });
+    expect(LOCALE_LABELS.vi).toEqual({ name: "Tiếng Việt", ogLocale: "vi_VN" });
+    expect(LOCALE_LABELS.en).toEqual({ name: "English", ogLocale: "en_US" });
   });
 });
 

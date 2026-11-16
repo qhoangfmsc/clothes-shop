@@ -32,7 +32,7 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
   const t = useTranslations("public.product.reviews");
   const toErrorMessage = useErrorMessage();
   const [filters, setFilters] = useState<ReviewFilters>(EMPTY_REVIEW_FILTERS);
-  const { summary, isLoading: summaryLoading, reload: reloadSummary } = useReviewSummary(productId);
+  const { summary, isLoading: summaryLoading, isError: summaryFailed, reload: reloadSummary } = useReviewSummary(productId);
   const [open, setOpen] = useState(false);
   const list = useReviewList(productId, filters, open);
   const { reload: reloadList } = list;
@@ -121,6 +121,13 @@ export default function ReviewsSection({ productId }: ReviewsSectionProps) {
           <div className="flex flex-col gap-4" aria-busy="true">
             <div className="h-24 rounded-md bg-[var(--bg-elevated)] animate-pulse motion-reduce:animate-none" />
             <div className="h-40 rounded-md bg-[var(--bg-elevated)] animate-pulse motion-reduce:animate-none" />
+          </div>
+        ) : summaryFailed && !summary ? (
+          <div role="alert" className="flex flex-col items-center gap-3 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-6 py-10 text-center">
+            <p className="m-0 font-primary text-sm text-[var(--text-muted)]">{t("summary.loadFailed")}</p>
+            <button type="button" onClick={() => void reloadSummary()} className={MORE_BUTTON_CLASS}>
+              {t("list.retry")}
+            </button>
           </div>
         ) : !summary || !hasReviews ? (
           <div className="flex flex-col items-center gap-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-primary)] px-6 py-12 text-center">
