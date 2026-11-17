@@ -4,16 +4,9 @@ import { useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { errorCodeOf, errorText } from "./error-message";
 
-/**
- * Message for a caught error, best first:
- *  1. a translation for the BE `errorCode` (`shared.errors.byCode.<code>`),
- *  2. the server's own text,
- *  3. the translated `fallback`.
- * Works for real `Error`s (direct fetches) and for plain objects thrown by `dispatch(thunk).unwrap()`.
- *
- * The returned function is stable between renders (changes only with the locale), so it is safe
- * in `useEffect` / `useCallback` dependency lists.
- */
+/** Message for a caught error, best first: the translation of the BE `errorCode` (`shared.errors.byCode.<code>`), the server's own text,
+ *  the translated `fallback`. Works for real `Error`s and for plain objects thrown by `dispatch(thunk).unwrap()`.
+ *  The function is stable between renders (changes with the locale), so it is safe in dependency lists. */
 export function useErrorMessage() {
   const t = useTranslations("shared.errors");
   return useCallback(

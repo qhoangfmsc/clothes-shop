@@ -14,15 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { TriangleAlert } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
-   CONFIRM DIALOG — Global imperative confirm popup
-
-   Replaces window.confirm() with a themed modal.
-   Usage:
-     const confirm = useConfirm();
-     const ok = await confirm({ title: "Delete item", message: "...", danger: true });
-     if (!ok) return;
-   ═══════════════════════════════════════════════════════════ */
+// Themed replacement for window.confirm().
 
 interface ConfirmOptions {
   title?: string;
@@ -84,6 +76,14 @@ function ConfirmPortal({
   const t = useTranslations("common.actions");
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!pending) return;
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onSettle(false);
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [pending, onSettle]);
+
   if (!mounted) return null;
 
   return createPortal(

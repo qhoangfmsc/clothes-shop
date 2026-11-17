@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   PRODUCTS MODULE TYPES — Form data, list params, filters
-
-   Co-located with the module — NOT in src/types/.
-   src/types/product.ts only has the Product entity.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Product } from "@/src/types/product";
 import type { ProductBadge, ProductStatus } from "@/src/types/enums";
 

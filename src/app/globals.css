@@ -40,6 +40,29 @@ body {
   margin-inline: auto;
 }
 
+/* A band that fills the viewport while its content stays in the capped column: the background reaches the screen edges,
+   the padding gives back the space it took, so in-flow content does not move. Set `--bleed-px` for the band's own side padding.
+   Above the column body must not clip it; below 1920px `--page-bleed` is 0 and nothing changes. */
+.bleed {
+  margin-inline: calc(var(--page-bleed) * -1);
+  padding-inline: calc(var(--page-bleed) + var(--bleed-px, 0px));
+}
+
+/* One side of a band's child (the picture half of a split section) goes on to the screen edge */
+.bleed-l {
+  margin-left: calc(var(--page-bleed) * -1);
+}
+
+.bleed-r {
+  margin-right: calc(var(--page-bleed) * -1);
+}
+
+@media (min-width: 1921px) {
+  body {
+    overflow-x: visible;
+  }
+}
+
 /* ─── Global Image Fade-In ───
    All images appear with a smooth fade instead of popping in.
    Prevents a jarring "pop-in" effect when navigating to pages with images. */
@@ -278,7 +301,7 @@ html.custom-cursor-active * {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   USER MENU STYLES
+   USER AVATAR STYLES
    ═══════════════════════════════════════════════════════════ */
 
 .user-avatar-btn:hover {
@@ -286,14 +309,8 @@ html.custom-cursor-active * {
   box-shadow: var(--shadow-gold-sm) !important;
 }
 
-.user-menu-item:hover {
-  background: var(--color-champagne-cream) !important;
-  color: var(--accent-primary) !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .user-avatar-btn,
-  .user-menu-item {
+  .user-avatar-btn {
     transition: none !important;
   }
 }

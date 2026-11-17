@@ -49,8 +49,6 @@ export const SHIPPING_LIMITS = {
   returnCondition: 255,
 } as const;
 
-const isMethodId = (value: unknown): value is ShippingMethodId =>
-  SHIPPING_METHOD_IDS.some((id) => id === value);
 const isIcon = (value: unknown): value is ShippingIcon => SHIPPING_ICONS.some((icon) => icon === value);
 const text = (value: unknown) => (typeof value === "string" ? value : "");
 const money = (value: unknown) =>

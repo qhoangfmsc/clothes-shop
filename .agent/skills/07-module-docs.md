@@ -10,7 +10,7 @@ Every task that touches a module is one closed loop: **read the module's doc →
 | `yarn docs:check` | Structure + coverage: every code file has an owner, every module has a well-formed doc and a README row, links and referenced files exist, no planning words. Runs in `yarn build`. |
 | `yarn docs:check --changed` | All of the above **plus**: every module whose code changed (vs `HEAD`, or `--base=<ref>`, including untracked files) must have its doc edited, with a new `Cập nhật` date. This is the finish line. |
 
-The ownership map is `MODULES` in `scripts/check-docs.mjs` (longest matching path wins). Translations (`src/messages/**`) and generated files are deliberately unowned: the module doc names its i18n namespaces.
+The ownership map is `MODULES` in `scripts/modules.mjs` (shared by `check-docs.mjs` and `check-quality.mjs`) (longest matching path wins). Translations (`src/messages/**`) and generated files are deliberately unowned: the module doc names its i18n namespaces.
 
 ## 1. Phase A — Read (before the first edit)
 
@@ -36,7 +36,7 @@ Implement with the usual rules and skills (`coding.md`, `components.md`, `design
 
 **Creating a module** (new route folder, new platform concern):
 
-1. Add an entry to `MODULES` in `scripts/check-docs.mjs` (doc slug + the paths it owns).
+1. Add an entry to `MODULES` in `scripts/modules.mjs` (doc slug + the paths it owns).
 2. Create `docs/<platform|admin|storefront>/<slug>.md` from the template below, filled from the code you wrote/read.
 3. Add a row to `docs/README.md` (module, route, link).
 

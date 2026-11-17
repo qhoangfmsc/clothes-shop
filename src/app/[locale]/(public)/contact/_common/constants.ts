@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   CONTACT MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Measurements, MeasurementKey, OrderRequestValues } from "./types";
 
 export const MEASUREMENT_KEYS: MeasurementKey[] = ["height", "bust", "waist", "hips"];

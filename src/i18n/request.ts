@@ -1,6 +1,7 @@
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { loadMessages } from "./messages";
+import { FORMATS, TIME_ZONE } from "./formats";
 import { routing } from "./routing";
 
 export default getRequestConfig(async ({ requestLocale }) => {
@@ -10,25 +11,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   return {
     locale,
     messages: await loadMessages(locale),
-    /* One fixed zone so server and client render the same date text (no hydration mismatch) */
-    timeZone: "Asia/Ho_Chi_Minh",
-    /* Named formats: `format.number(v, "decimal1")` / `format.dateTime(d, "short")`. Money never goes through here: use `useMoney()` (src/hooks/use-money.ts) */
-    formats: {
-      number: {
-        decimal1: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
-      },
-      dateTime: {
-        short: { year: "numeric", month: "short", day: "numeric" },
-        long: { year: "numeric", month: "long", day: "numeric" },
-        dateTime: {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        },
-        monthYear: { year: "numeric", month: "long" },
-      },
-    },
+    timeZone: TIME_ZONE,
+    formats: FORMATS,
   };
 });

@@ -10,10 +10,8 @@ import type { MyReviewsResult } from "./types";
 
 type Status = "loading" | "loadingMore" | "ready" | "error";
 
-/**
- * The customer's own reviews (`GET /api/my-reviews`, newest first), hidden ones included, appended page by page.
- * Photo URLs are fetched with `raw` so an edit sends back exactly what the BE gave (display goes through `toMediaUrl`).
- */
+/** The customer's own reviews (`GET /api/my-reviews`, newest first, hidden ones included), appended page by page.
+ *  Photo URLs are fetched `raw` so an edit sends back exactly what the BE gave. */
 export function useMyReviews(statusFilter: MyReviewStatusFilter, productId: string | undefined) {
   const { isAuthenticated } = useAuth();
   const { apiFetch } = useApiAuth();
@@ -55,10 +53,6 @@ export function useMyReviews(statusFilter: MyReviewStatusFilter, productId: stri
 
   const loadMore = useCallback(() => load(page + 1), [load, page]);
   const reload = useCallback(() => load(1), [load]);
-  /** Put the BE's answer for one review into the list without asking for everything again */
-  const replace = useCallback((review: AuthorReview) => {
-    setItems((prev) => prev.map((item) => (item.id === review.id ? review : item)));
-  }, []);
 
-  return { items, total, status, error, hasMore: items.length < total, loadMore, reload, replace };
+  return { items, total, status, error, hasMore: items.length < total, loadMore, reload };
 }

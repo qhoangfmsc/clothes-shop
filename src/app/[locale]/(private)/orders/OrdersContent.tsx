@@ -12,6 +12,7 @@ import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { buildListQuery, LIST_DEFAULT_LIMIT } from "@/src/lib/list-query";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
+import LoadFailed from "./_components/LoadFailed";
 import type { Order } from "./_common/types";
 import OrderStatusBadge from "./_components/OrderStatusBadge";
 import OrderThumb from "./_components/OrderThumb";
@@ -23,7 +24,7 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 /** Lines shown on a card; the rest collapse into "+n more" */
 const PREVIEW_ITEMS = 2;
 
-const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
 const WRAP_CLASS = "max-w-[45rem] mx-auto px-4 sm:px-6";
 const SKELETON_CLASS =
   "h-[11.25rem] rounded-lg bg-[var(--color-champagne-cream)] animate-[checkout-shimmer_1.5s_ease_infinite] motion-reduce:animate-none";
@@ -39,6 +40,7 @@ export default function OrdersContent() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const pendingReviews = usePendingReviews();
@@ -52,7 +54,9 @@ export default function OrdersContent() {
         setOrders((prev) => (nextPage === 1 ? (res.data ?? []) : [...prev, ...(res.data ?? [])]));
         setTotal(res.total ?? 0);
         setPage(nextPage);
+        if (nextPage === 1) setLoadError(false);
       } catch (err) {
+        if (nextPage === 1) setLoadError(true);
         toast.error(toErrorMessage(err, t("toast.loadFailed")));
       }
     },
@@ -63,6 +67,11 @@ export default function OrdersContent() {
     if (!isAuthenticated) return;
     loadPage(1).finally(() => setIsLoading(false));
   }, [isAuthenticated, loadPage]);
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    loadPage(1).finally(() => setIsLoading(false));
+  };
 
   const handleLoadMore = async () => {
     setIsLoadingMore(true);
@@ -136,6 +145,8 @@ export default function OrdersContent() {
             <div className={SKELETON_CLASS} />
             <div className={SKELETON_CLASS} />
           </div>
+        ) : loadError ? (
+          <LoadFailed title={t("error.title")} retryLabel={t("error.retry")} onRetry={handleRetry} />
         ) : orders.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-16 px-6 text-center bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-subtle)]">
             <ShoppingBag size={40} style={{ color: "var(--text-disabled)" }} />

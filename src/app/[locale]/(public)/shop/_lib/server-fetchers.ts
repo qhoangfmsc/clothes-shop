@@ -1,23 +1,15 @@
-/* ═══════════════════════════════════════════════════════════
-   SERVER FETCHERS — Call real BE API (clothes-shop-api)
-
-   Used by Server Components (page.tsx) for SSR/SSG data.
-   BE runs on a separate project at NEXT_PUBLIC_API_URL.
-
-   Phase 1 (2026-07): Added search, pagination, sort, filter
-   params matching BE PublicProductQueryDto.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Product } from "@/src/types/product";
 import { RELATED_PRODUCTS_LIMIT } from "../_common/constants";
-import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
 import type { Collection } from "@/src/types/collection";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
 import type { ShippingInfo } from "@/src/types/shipping";
 import { mapMediaUrls } from "@/src/lib/media-url";
-import { buildListQuery, LIST_MAX_LIMIT } from "@/src/lib/list-query";
+import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
+import { buildProductQS, type ProductListParams, type ProductListResponse } from "@/src/lib/product-list";
+
+export type { ProductListParams, ProductListResponse };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -33,44 +25,6 @@ async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
   return mapMediaUrls(await res.json());
 }
 
-/* ═══════════════════════════════════════════════════════════
-   TYPES
-   ═══════════════════════════════════════════════════════════ */
-
-export interface ProductListParams {
-  search?: string;
-  category?: string;
-  subcategory?: string;
-  badge?: ProductBadge;
-  /** `field` = ascending, `-field` = descending (BE whitelist). */
-  sort?:
-    | "price"
-    | "-price"
-    | "name"
-    | "-name"
-    | "createdAt"
-    | "-createdAt"
-    | "ratingAverage"
-    | "-ratingAverage"
-    | "-ratingCount";
-  /** 1–5: only products whose average is at least this (products without a review are left out) */
-  minRating?: number;
-  /** Whole VND: the BE filters and sorts prices in VND only */
-  minPrice?: number;
-  maxPrice?: number;
-  sizes?: string;   // "S,M,L"
-  colors?: string;  // "Red,Blue"
-  page?: number;
-  limit?: number;
-}
-
-export interface ProductListResponse {
-  data: Product[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
 export interface CategoryListResponse {
   data: Category[];
   total: number;
@@ -83,23 +37,6 @@ export interface CollectionListResponse {
   total: number;
   page: number;
   limit: number;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   PRODUCTS
-   ═══════════════════════════════════════════════════════════ */
-
-function buildProductQS(params: ProductListParams): string {
-  return buildListQuery(params, {
-    category: params.category,
-    subcategory: params.subcategory,
-    badge: params.badge,
-    minPrice: params.minPrice,
-    maxPrice: params.maxPrice,
-    minRating: params.minRating,
-    sizes: params.sizes,
-    colors: params.colors,
-  });
 }
 
 export async function getProducts(category?: string, subcategory?: string): Promise<Product[]> {
@@ -140,13 +77,16 @@ export async function getProductWithRelated(id: string): Promise<{
     );
     return { product: result.data, related: result.related };
   } catch {
-    return undefined;
+    /* The BE answers 400 to a `relatedLimit` it rejects (outside 1–20, not an integer): the page must still render,
+       so ask again without it (the BE then sends its default of 4); a missing product fails again and ends as 404. */
+    try {
+      const result = await apiFetch<{ data: Product; related: Product[] }>(`/api/products/${id}`);
+      return { product: result.data, related: result.related };
+    } catch {
+      return undefined;
+    }
   }
 }
-
-/* ═══════════════════════════════════════════════════════════
-   CATEGORIES
-   ═══════════════════════════════════════════════════════════ */
 
 export async function getCategories(): Promise<Category[]> {
   const { data } = await apiFetch<CategoryListResponse>(`/api/categories?${PUBLIC_CATEGORIES_QUERY}`);
@@ -173,10 +113,6 @@ export async function getSubcategory(
   return { category, subcategory };
 }
 
-/* ═══════════════════════════════════════════════════════════
-   COLLECTIONS
-   ═══════════════════════════════════════════════════════════ */
-
 export async function getCollections(): Promise<Collection[]> {
   /* Every collection in one page (BE max), like the categories: the default page would cut the list at 25 */
   const { data } = await apiFetch<CollectionListResponse>(`/api/collections?limit=${LIST_MAX_LIMIT}`);
@@ -201,13 +137,7 @@ export async function getCollectionProducts(slug: string): Promise<Product[]> {
   return products;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SITE CONFIG (banners)
-
-   Decorative/replaceable content — never let a config fetch
-   failure break the page. Always falls back to [] (caller then
-   uses its own built-in default banner/copy).
-   ═══════════════════════════════════════════════════════════ */
+// Decorative content: a failed config fetch never breaks the page; it falls back to [] and the caller uses its own default.
 
 export async function getBannerConfig(key: string): Promise<BannerItem[]> {
   try {

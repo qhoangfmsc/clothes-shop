@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   WISHLIST MODULE TYPES — WishlistItem entity
-
-   Part of wishlist module _common/ — private to the wishlist feature.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ProductBadge } from "@/src/types/enums";
 
 export interface WishlistItem {

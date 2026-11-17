@@ -18,9 +18,8 @@ import { useTranslations } from "next-intl";
 import { useAutoAdvance } from "@/src/hooks/use-auto-advance";
 import { CarouselArrow, CarouselDots, type CarouselTone } from "./CarouselControls";
 
-/* ═══════════════════════════════ Layout tokens ═══════════════════════════════
-   Tailwind only emits classes it can read as literal strings, so every supported
-   value has an explicit entry here. Add a value to the union AND the table. */
+/* Tailwind only emits classes it can read as literal strings, so every supported value has an explicit entry here.
+   Add a value to the union AND the table. */
 
 type Breakpoint = "base" | "sm" | "lg";
 type BreakpointClasses = Record<Breakpoint, string>;
@@ -90,8 +89,6 @@ function loopPageNear(v: number, n: number, pv: number): number {
   return Math.abs(loopPageStart(k + 1, n, pv) - v) < Math.abs(loopPageStart(k, n, pv) - v) ? k + 1 : k;
 }
 
-/* ═══════════════════════════════ Types ═══════════════════════════════ */
-
 /** Imperative control — pass a ref via `carouselRef` (e.g. thumbnails that jump to a slide). */
 export interface CarouselHandle {
   next: () => void;
@@ -135,8 +132,6 @@ export interface CarouselProps {
   /** Fires when the visible page changes (scroll, arrows, dots, drag). */
   onPageChange?: (page: number) => void;
 }
-
-/* ═══════════════════════════════ Component ═══════════════════════════════ */
 
 export const DEFAULT_AUTOPLAY_MS = 5000;
 /** After the scroll settles inside the cloned slides, jump (invisibly) to the identical real position. */
@@ -185,10 +180,8 @@ export default function Carousel({
   const slides = Children.toArray(children);
   const slideCount = slides.length;
 
-  /* ── Infinite loop: the real slides are framed by clones of the first / last few, so a swipe
-        past either end keeps scrolling. Once the scroll settles inside a clone, we jump to its
-        identical real twin. The leading clones are added after mount (hydration-safe): the
-        server markup then starts on the first real slide, with no jump to hide. ── */
+  /* Infinite loop: the real slides are framed by clones of the first / last few; once the scroll settles inside a clone we jump
+       to its real twin. Leading clones are added after mount (hydration-safe), so the server markup has no jump to hide. */
   const maxView = maxSlidesPerView(slidesPerView);
   const loopActive = loop && slideCount > maxView;
   const cloneCount = loopActive ? Math.ceil(maxView) : 0;

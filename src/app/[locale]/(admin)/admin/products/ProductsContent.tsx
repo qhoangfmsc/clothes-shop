@@ -32,6 +32,7 @@ import {
   type FormTab,
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
+import { slugify } from "@/src/lib/slugify";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -61,26 +62,11 @@ import { ADMIN_BADGE_STYLES } from "@/src/lib/product-badge";
 import type { Category, SubCategory } from "@/src/types/category";
 import { toMediaUrl } from "@/src/lib/media-url";
 
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-/* ═══════════════════════════════ Status/Badge styles ═══════════════════ */
-
 function statusStyle(s: string): string {
   return s === "active"
     ? "bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]"
     : "bg-[rgba(107,101,96,0.1)] text-[var(--color-ash)]";
 }
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function ProductsContent() {
   const t = useTranslations("admin.products");
@@ -328,7 +314,7 @@ export default function ProductsContent() {
       originalPriceVnd: p.originalPriceVnd !== null ? maskVndInput(String(p.originalPriceVnd)) : "",
       images: [...p.images],
       categoryId: p.category?.id ?? "",
-      subcategoryId: p.subcategory?.id ? String(p.subcategory.id) : "",
+      subcategoryId: p.subcategory?.id ?? "",
       badge: p.badge,
       status: p.status,
       description: p.description,
@@ -478,7 +464,6 @@ export default function ProductsContent() {
         defaultSort="-createdAt"
       />
 
-      {/* ═══════════════════════════ MODAL FORM ═══════════════════════════ */}
       {showModal && (
         <ModalShell
           title={editingId ? t("form.titleEdit") : t("form.titleCreate")}

@@ -1,14 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   API CLIENT — Public (no auth)
-
-   Simple fetch wrapper for public endpoints.
-   Callable from any component, page, or store without auth concerns.
-
-   Usage:
-     import { api } from "@/src/lib/api";
-     const data = await api.get("/api/products");
-     await api.post("/api/contact", { name, email });
-   ═══════════════════════════════════════════════════════════ */
+// Public fetch wrapper: no auth, callable from any component, page or store.
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -28,10 +18,7 @@ async function request<T = unknown>(path: string, options: FetchOptions = {}): P
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new ApiError(errBody.message || `API error: ${res.status}`, res.status, errBody.errorCode);
-  }
+  if (!res.ok) throw await toApiError(res);
 
   return res.json();
 }
@@ -49,6 +36,12 @@ export class ApiError extends Error {
     this.code = errorCode !== undefined ? String(errorCode) : undefined;
     this.name = "ApiError";
   }
+}
+
+/** Turns a failed BE response into an `ApiError`: its `message` and `errorCode`; the message is empty when the body has none, so the screen shows its own words. */
+export async function toApiError(res: Response): Promise<ApiError> {
+  const body = await res.json().catch(() => ({}));
+  return new ApiError(body.message || "", res.status, body.errorCode);
 }
 
 export const api = {

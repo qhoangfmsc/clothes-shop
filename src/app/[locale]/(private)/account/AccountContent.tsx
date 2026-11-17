@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
 import { useMoney } from "@/src/hooks/use-money";
@@ -14,7 +15,7 @@ import { useApiAuth } from "@/src/hooks/use-api-auth";
 import { useAppSelector } from "@/src/store/hooks";
 import { selectWishlistItems } from "@/src/app/[locale]/(private)/wishlist/_common/moduleSlice";
 import UnauthenticatedState from "@/src/app/[locale]/_components/UnauthenticatedState";
-import { UserAvatar } from "@/src/app/[locale]/_components/UserMenu";
+import { UserAvatar } from "@/src/app/[locale]/_components/UserAvatar";
 import SignOutButton from "@/src/app/[locale]/_components/SignOutButton";
 import Carousel from "@/src/app/[locale]/_components/Carousel";
 import { useOrderPaymentStatusLabel, useOrderStatusLabel } from "@/src/i18n/use-labels";
@@ -40,9 +41,6 @@ interface OrderPreview {
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/* ═══════════════════════════════════════════════
-   Profile Header
-   ═══════════════════════════════════════════════ */
 function ProfileHeader({
   user,
 }: {
@@ -82,9 +80,6 @@ function ProfileHeader({
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Wishlist Section
-   ═══════════════════════════════════════════════ */
 function WishlistSection() {
   const t = useTranslations("private.account.wishlist");
   const tCommon = useTranslations("common");
@@ -197,9 +192,6 @@ function WishlistSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Orders Section — Live Data
-   ═══════════════════════════════════════════════ */
 function OrdersSection() {
   const t = useTranslations("private.account.orders");
   const format = useFormatter();
@@ -208,8 +200,12 @@ function OrdersSection() {
   const paymentLabel = useOrderPaymentStatusLabel();
   const { isAuthenticated } = useAuth();
   const { apiFetch } = useApiAuth();
+  const toErrorMessage = useErrorMessage();
   const [orders, setOrders] = useState<OrderPreview[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown>(null);
+  /* Bumped by "Try again" to read the orders once more */
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -219,14 +215,20 @@ function OrdersSection() {
           data: OrderPreview[];
         }>("/api/orders");
         setOrders((res.data ?? []).slice(0, 3));
-      } catch {
-        /* silent */
+        setError(null);
+      } catch (err) {
+        setError(err);
       } finally {
         setLoading(false);
       }
     };
     fetchOrders();
-  }, [isAuthenticated, apiFetch]);
+  }, [isAuthenticated, apiFetch, attempt]);
+
+  const retry = () => {
+    setLoading(true);
+    setAttempt((n) => n + 1);
+  };
 
   const STATUS_COLORS: Record<string, string> = {
     pending: "var(--accent-primary)",
@@ -269,6 +271,19 @@ function OrdersSection() {
         <div className="flex flex-col gap-3 px-6 py-4">
           <div className="h-[3.25rem] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
           <div className="h-[3.25rem] rounded-md bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
+        </div>
+      ) : error ? (
+        <div role="alert" className="flex flex-col items-center gap-3 py-10 px-6 text-center">
+          <p className="font-primary text-sm text-[var(--text-muted)] tracking-[-0.02em] leading-[140%]">
+            {toErrorMessage(error, t("loadFailed"))}
+          </p>
+          <button
+            type="button"
+            onClick={retry}
+            className="inline-flex min-h-11 cursor-pointer items-center rounded-full border border-[var(--border-light)] bg-transparent px-5 font-primary text-xs font-medium uppercase tracking-[0.08em] text-[var(--text-accent)] hover:bg-[var(--color-champagne-cream)]"
+          >
+            {t("retry")}
+          </button>
         </div>
       ) : orders.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-10 px-6 text-center">
@@ -363,12 +378,9 @@ function OrdersSection() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Loading Skeleton
-   ═══════════════════════════════════════════════ */
 function AccountSkeleton() {
   return (
-    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
       <div className="max-w-[45rem] lg:max-w-[67.5rem] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_18.75rem] lg:items-start lg:gap-8">
         <div className="flex items-center gap-4 py-2 sm:gap-6 sm:py-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:flex-col lg:py-8">
           <div className="w-16 h-16 shrink-0 rounded-full bg-[var(--color-champagne-cream)] animate-[skeleton-shimmer_1.5s_ease_infinite] motion-reduce:animate-none motion-reduce:opacity-40" />
@@ -384,9 +396,6 @@ function AccountSkeleton() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Main Account Content
-   ═══════════════════════════════════════════════ */
 export default function AccountContent() {
   const { user, isAuthenticated, isLoading } = useAuth();
 
@@ -398,7 +407,7 @@ export default function AccountContent() {
   /* Not logged in — show inline unauthenticated state */
   if (!isAuthenticated || !user) {
     return (
-      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <UnauthenticatedState />
       </main>
     );
@@ -406,7 +415,7 @@ export default function AccountContent() {
 
   /* Logged in — full account page */
   return (
-    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
       <div className="max-w-[45rem] lg:max-w-[67.5rem] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_18.75rem] lg:items-start lg:gap-8">
         {/* Phone/tablet: profile → orders → wishlist. lg: orders + wishlist left, sticky profile card right */}
         <div className="lg:sticky lg:top-[6.5rem] lg:col-start-2 lg:row-span-2 lg:row-start-1">

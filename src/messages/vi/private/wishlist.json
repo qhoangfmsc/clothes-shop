@@ -15,7 +15,6 @@
     "browse": "Xem cửa hàng",
     "features": {
       "save": "Lưu những món đồ bạn yêu thích",
-      "priceDrops": "Nhận thông báo khi giảm giá",
       "quickAccess": "Truy cập nhanh các món yêu thích"
     }
   },
@@ -24,5 +23,8 @@
     "remove": "Xóa {name} khỏi danh sách yêu thích",
     "removed": "Đã xóa {name} khỏi danh sách yêu thích"
   },
-  "continueShopping": "Tiếp tục mua sắm"
+  "continueShopping": "Tiếp tục mua sắm",
+  "toast": {
+    "syncFailed": "Không đồng bộ được danh sách yêu thích. Vui lòng thử lại."
+  }
 }

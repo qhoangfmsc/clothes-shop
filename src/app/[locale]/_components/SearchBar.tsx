@@ -8,6 +8,7 @@ import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import { History, Search, X } from "lucide-react";
 import { useAutocomplete, getProductUrl, type AutocompleteItem } from "@/src/hooks/use-api";
+import { productPath } from "@/src/lib/product-url";
 import { useBreakpoint } from "@/src/hooks/useMediaQuery";
 import { useSearchHistory } from "./useSearchHistory";
 
@@ -72,16 +73,13 @@ export default function SearchBar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [expanded, clearAutocomplete]);
 
-  /* Close on click outside (if query empty, no results, or dropdown not hovered) */
+  /* Close on click outside, but only while nothing is typed and nothing is listed */
   useEffect(() => {
     if (!expanded) return;
 
     const onMouseDown = (e: MouseEvent) => {
       const target = e.target as Node;
       if (rootRef.current?.contains(target)) return;
-      // Close if dropdown exists — check for autocomplete portal
-      const dropdown = document.getElementById("search-autocomplete-dropdown");
-      if (dropdown?.contains(target)) return;
       if (!query.trim() && results.length === 0) {
         setExpanded(false);
         setHighlightIdx(-1);
@@ -112,8 +110,8 @@ export default function SearchBar() {
       setQuery("");
       setHighlightIdx(-1);
       clearAutocomplete();
-      const url = await getProductUrl(item.id);
-      router.push(url ?? "/shop");
+      /* The suggestion carries its category / sub-category: no lookup needed (history entries saved before that have none) */
+      router.push(productPath(item) ?? (await getProductUrl(item.id)) ?? "/shop");
     },
     [router, clearAutocomplete, addToHistory]
   );
@@ -265,7 +263,7 @@ export default function SearchBar() {
         </div>
       </div>
 
-      {/* Autocomplete dropdown — rendered via portal so it escapes parent overflow */}
+      {/* Autocomplete dropdown — a sibling of the clipped container, positioned with `fixed` */}
       {showDropdown && (
         <SearchDropdown
           anchorRef={containerRef}
@@ -457,7 +455,7 @@ function SearchDropdown({
                       position: "relative",
                     }}
                   >
-                    <Image src={item.image} alt="" fill sizes="42px" style={{ objectFit: "cover" }} />
+                    {item.image && <Image src={item.image} alt="" fill sizes="42px" style={{ objectFit: "cover" }} />}
                   </div>
 
                   {/* Name + price */}

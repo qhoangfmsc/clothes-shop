@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   MEDIA MODULE TYPES
-   Co-located with the module — NOT in src/types/.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ListParams } from "@/src/lib/list-query";
 export interface MediaFile {
   id: string;

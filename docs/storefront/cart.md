@@ -1,6 +1,6 @@
 # Cart (giỏ hàng, thêm nhanh, giỏ nổi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/cart` · **Cập nhật:** 2026-10-26
 > **Code:** `(private)/cart/` — `page.tsx`, `layout.tsx`, `CartContent.tsx`, `_common/{moduleSlice,types}.ts`, `_components/CartSync.tsx` · `_components/QuickAddDrawer.tsx`, `_components/CartFAB.tsx` (dùng chung) · `src/store/index.ts` (lưu `localStorage`)
 > **i18n:** `private.cart`, `shared.cart` (`fab`, `quickAdd`, `productAction`)
 > **Redux slice:** `state.cart`
@@ -37,12 +37,12 @@ State: `items`, `deselectedKeys` (lưu các dòng **bị bỏ tick**, nên mặc
 - Selector: `selectCartItems`, `selectTotalItems`, `selectCartPendingSync`, `selectPurchasableCartItems` (lọc `isPurchasable(badge)`), `selectSelectedCartItems` (mua được **và** không bị bỏ tick), `selectSelectedTotalItems`, `selectDeselectedKeys`, `selectCartIsOpen`, `selectCartIsSyncing`.
 - Lưu trữ: `src/store/index.ts` ghi `doovan-cart` (items) và `doovan-cart-selection` (deselectedKeys) mỗi khi đổi; slice nạp lại khi khởi tạo (chấp nhận cả dạng `{state:{items}}` cũ và `{items}`).
 
-### 4.3 Đồng bộ với BE (`apiFetchStandalone`, không refresh token)
+### 4.3 Đồng bộ với BE (`apiFetchStandalone`, tự refresh token khi 401)
 
 | Thunk | API |
 |---|---|
 | `fetchCart` | `GET /api/cart` — map `data.items[]` sang `CartItem` (`colorHex` tra theo tên màu, `category/subcategory` lấy `slug`) |
-| `syncAddToCartItem({productId,size,color,quantity})` | `POST /api/cart/items`; tìm id dòng trong giỏ trả về theo sản phẩm+size+màu (vì `data.id` là id giỏ, không phải id dòng) và gán `serverItemId` |
+| `syncAddToCartItem({productId,size,color,quantity})` | `POST /api/cart/items`; tìm id dòng trong giỏ trả về theo sản phẩm+size+màu (vì `data.id` là id giỏ, không phải id dòng) và gán `serverItemId`. Sau đó, nếu không còn lệnh thêm nào khác cùng khóa đang chờ, đối chiếu với giỏ ở máy lúc đó: dòng đã bị xóa → `DELETE` dòng vừa tạo; số lượng khác → `PATCH` về số lượng ở máy (lỗi ở bước này bị nuốt). Thất bại: bỏ phần số lượng vừa thêm khỏi giỏ ở máy (xóa dòng nếu hết) |
 | `syncUpdateCartItemQuantity` | `PATCH /api/cart/items/:serverItemId` `{quantity}` |
 | `syncRemoveCartItem` | `DELETE /api/cart/items/:serverItemId` |
 | `clearCartOnServer` | `DELETE /api/cart/clear` |
@@ -53,14 +53,14 @@ Cập nhật lạc quan: UI đổi ngay, rồi gọi API. `fetchCart.fulfilled` 
 
 ### 4.4 `CartSync`
 
-Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăng nhập → `fetchCart()`; chưa → `clearCart()` (xóa bản địa phương để người dùng sau trên cùng trình duyệt không thấy giỏ của người trước). Chạy lại khi đổi `userId`.
+Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăng nhập → `fetchCart()` và `fetchWishlist()`; chưa → `clearCart()` và `clearWishlist()` (xóa bản địa phương để người dùng sau trên cùng trình duyệt không thấy giỏ hay danh sách yêu thích của người trước). Chạy lại khi đổi `userId`.
 
 ### 4.5 Trang giỏ (`CartContent`)
 
 - Chưa đăng nhập → `UnauthenticatedState`; đang tải phiên → skeleton.
 - Header: link "Tiếp tục mua sắm", tiêu đề, tổng số lượng (`selectTotalItems`). Giỏ trống: thông báo + nút tới `/shop`.
 - Thanh chọn: checkbox "Chọn tất cả" (3 trạng thái, chỉ tính dòng mua được), đếm đã chọn/tổng, hai nút icon: **thêm vào wishlist** (các dòng đã chọn; toast số lượng thêm hoặc "đã có") và **xóa** (xác nhận `danger`, toast `removed`, xóa local rồi `syncRemoveCartItem` từng dòng).
-- Mỗi dòng (`CartItemRow`, `<li>`): checkbox (khóa nếu không mua được), ảnh 80×107 px (104×139 từ `sm`, mờ đi khi không mua được), ảnh và tên (link sản phẩm qua `useProductLink()`: `GET /api/cart` không nạp category/subcategory của sản phẩm nên slug có thể rỗng, khi đó bấm sẽ tra URL thật bằng `getProductUrl`; `fetchCart.fulfilled` giữ slug đã lưu cục bộ của cùng `productId`) và thành tiền dòng (`lineTotal`, theo ngôn ngữ; "…" khi BE chưa tính) cùng hàng, chip size + chip màu + đơn giá (`price`), hàng cuối: `QuantityControl` (1–10) bên trái, nút tim (wishlist + sync) và nút xóa (xác nhận) bên phải (viền chỉ hiện khi hover/được bật). Dòng `sold_out`/`custom_order` hiện cảnh báo; riêng `custom_order` có link "Đặt may" tới `/contact?product=…`.
+- Mỗi dòng (`CartItemRow`, `<li>`): checkbox (khóa nếu không mua được), ảnh 80×107 px (104×139 từ `sm`, mờ đi khi không mua được), ảnh và tên (link sản phẩm qua `useProductLink()`: slug lấy từ `product.category.slug` / `product.subcategory.slug` của `GET /api/cart`; dòng thiếu slug — chỉ còn là dòng lưu cục bộ từ trước khi BE gửi hai trường này — bấm sẽ tra URL thật bằng `getProductUrl`) và thành tiền dòng (`lineTotal`, theo ngôn ngữ; "…" khi BE chưa tính) cùng hàng, chip size + chip màu + đơn giá (`price`), hàng cuối: `QuantityControl` (1–10) bên trái, nút tim (wishlist + sync) và nút xóa (xác nhận) bên phải (viền chỉ hiện khi hover/được bật). Dòng `sold_out`/`custom_order` hiện cảnh báo; riêng `custom_order` có link "Đặt may" tới `/contact?product=…`.
 - Bố cục một cột `max-w-[820px]`: header, rồi **một thẻ duy nhất** gồm ba phần liền nhau: thanh chọn (nền champagne: "Chọn tất cả" + đếm, icon yêu thích / xóa hàng loạt), danh sách dòng (`<ul>` ngăn bằng đường kẻ mảnh, không có khung riêng cho từng dòng) và chân thẻ thanh toán (`sticky bottom-0`, luôn ghim cuối màn hình khi danh sách dài, chừa `safe-area-inset-bottom`). Chân thẻ hiện "Tạm tính (n sản phẩm)" + số tiền của các dòng **đã chọn**: `subtotal` của báo giá BE (`useOrderQuote(selectedItems, "standard", đã đăng nhập và pendingSync = 0)` từ [checkout](./checkout.md), không tạo gì; hiện "…" khi đang hỏi) và `selectSelectedTotalItems` cho số lượng và nút **Tiến hành thanh toán** → `/checkout`; chưa chọn dòng nào thì thay số tiền bằng gợi ý `checkout.selectToCheckout` và khóa nút. Không có khối tóm tắt, vận chuyển hay thanh miễn phí vận chuyển: các thông tin đó nằm ở [checkout](./checkout.md) 4.4.
 - Metadata: `private.cart.meta`; layout có header + footer; `robots noindex` (từ layout `(private)`).
 
@@ -69,10 +69,22 @@ Mount trong `Providers`. Khi phiên đã xác định (`!isLoading`): đã đăn
 - Ngăn kéo từ dưới (mobile, vuốt xuống > 80 px để đóng) hoặc từ phải (≥ 640 px) qua portal; Esc đóng; khóa scroll.
 - Không mở nếu `!isPurchasable(product.badge)`.
 - Chọn size, màu và số lượng 1–10; nút thêm chỉ bật khi đã chọn **cả size lẫn màu** (khối chọn màu ẩn khi sản phẩm không có màu, nên sản phẩm như vậy không thêm được từ drawer; trang chi tiết có cùng điều kiện), bảng size thu gọn (`useSizeGuide` chỉ gọi khi bấm "Bảng size").
-- Thêm: `addItem` + `syncAddToCartItem` + `trackEvent("add_to_cart", { productId, vnd | usd })` (đơn giá theo ngôn ngữ, xem [analytics](../admin/analytics.md)) + toast có link `/cart`, nút (nhãn "Thêm vào giỏ", không kèm giá vì BE chưa tính thành tiền) đổi thành "Đã thêm" rồi đóng sau 0.8 s. Giá và giá gốc của sản phẩm hiện theo ngôn ngữ (`useMoney`). Gợi ý còn thiếu size/màu.
+- Thêm: chưa đăng nhập thì mở hộp đăng nhập (`addToBag`) và chỉ thêm sau khi đăng nhập xong (`requireAuth`); đã đăng nhập thì `addItem` + `syncAddToCartItem` (BE từ chối → dòng bị gỡ và toast `addFailed`) + `trackEvent("add_to_cart", { productId, vnd | usd })` (đơn giá theo ngôn ngữ, xem [analytics](../admin/analytics.md)) + toast có link `/cart`, nút (nhãn "Thêm vào giỏ", không kèm giá vì BE chưa tính thành tiền) đổi thành "Đã thêm" rồi đóng sau 0.8 s. Giá và giá gốc của sản phẩm hiện theo ngôn ngữ (`useMoney`). Gợi ý còn thiếu size/màu.
+- Thanh kéo ở đầu ngăn kéo mobile dùng `--border-default`.
 - Được mở từ `ProductCard` (sau `requireAuth`) và từ lưới sản phẩm ở [collections](./collections.md) (không qua `requireAuth`).
 
-### 4.7 Liên quan
+### 4.7 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/cart.md](../../specs/storefront/cart.md). Test ở `tests/storefront/cart/` (`cart-slice`, `cart-thunks`, `cart-sync`, `cart-page`, `quick-add`); `mutants.json` có đột biến cho slice, `CartSync`, `CartContent` và `QuickAddDrawer`.
+
+Các điểm cần biết về hành vi hiện tại:
+
+- Đổi số lượng hoặc xóa một dòng **chưa có `serverItemId`** (lệnh thêm còn đang chờ BE) đổi ở máy ngay và chưa gọi BE; khi lệnh thêm xong, `syncAddToCartItem` đối chiếu và gửi `PATCH` hoặc `DELETE` theo.
+- Khi có dòng chưa có `serverItemId` mà không còn lệnh ghi nào chờ, `useOrderQuote` đọc giỏ BE (`fetchCart`), giỏ BE thay các dòng ở máy nên danh sách đổi và báo giá được gửi lần nữa với cùng các id.
+- Báo giá lỗi chỉ để tạm tính hiện "…", không có thông báo lỗi.
+- Hẹn giờ debounce số lượng (500 ms) và hẹn giờ đóng ngăn kéo (800 ms) không bị hủy khi component bị gỡ.
+
+### 4.8 Liên quan
 
 Luồng tiếp theo: [checkout](./checkout.md). Quy tắc mua theo badge: [ui-kit](../platform/ui-kit.md) 4.8. Wishlist: [wishlist](./wishlist.md).
 
@@ -80,3 +92,4 @@ Luồng tiếp theo: [checkout](./checkout.md). Quy tắc mua theo badge: [ui-ki
 - Tiền hiện qua `useMoney` ([currency](../platform/currency.md)): `vi` → VND, ngôn ngữ khác → USD, luôn lấy nửa cặp BE đã trả.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.

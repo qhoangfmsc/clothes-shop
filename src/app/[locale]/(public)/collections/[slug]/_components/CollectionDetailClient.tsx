@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Link } from "@/src/i18n/navigation";
 import gsap from "gsap";
@@ -15,6 +15,8 @@ import { useMoney } from "@/src/hooks/use-money";
 import { hasPublicPrice } from "@/src/lib/product-purchase";
 import ProductBagButton from "@/src/app/[locale]/_components/ProductBagButton";
 import { PRODUCT_CARD_BADGE_STYLES } from "@/src/lib/product-badge";
+import { productPath } from "@/src/lib/product-url";
+import { useProductWishlist } from "@/src/app/[locale]/(private)/wishlist/_common/use-product-wishlist";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,37 +25,19 @@ interface CollectionDetailClientProps {
   products: Product[];
 }
 
-export default function CollectionDetailClient({
-  collection,
-  products,
-}: CollectionDetailClientProps) {
+/* One product of the "Shop the collection" grid: the card with its heart and bag button */
+function ShopCard({ product }: { product: Product }) {
   const t = useTranslations("public.collections.detail");
   const tBadge = useTranslations("common.productBadge");
   const tCommon = useTranslations("common");
   const { fmt, fmtOrNull } = useMoney();
-  const heroRef = useRef<HTMLElement>(null);
-  const editorialRef = useRef<HTMLDivElement>(null);
-  const shopAllRef = useRef<HTMLDivElement>(null);
-  const { openQuickAdd } = useQuickAdd();
   const { toast } = useToast();
-  const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
+  const { openQuickAdd } = useQuickAdd();
+  const productUrl = productPath(product) ?? "/shop";
 
-  const handleQuickAdd = useCallback(
-    (product: Product, e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openQuickAdd(product);
-    },
-    [openQuickAdd]
-  );
-
-  const handleLike = useCallback(
-    (product: Product, e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const next = !likedMap[product.id];
-      setLikedMap((prev) => ({ ...prev, [product.id]: next }));
-      if (next) {
+  const notifyWishlist = useCallback(
+    (added: boolean) => {
+      if (added) {
         toast.info(
           t.rich("saved", {
             name: product.name,
@@ -68,8 +52,106 @@ export default function CollectionDetailClient({
         toast.info(t("removed", { name: product.name }));
       }
     },
-    [likedMap, toast, t]
+    [toast, t, product.name]
   );
+  const { isWishlisted, toggle } = useProductWishlist(product, notifyWishlist);
+
+  const handleLike = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggle();
+    },
+    [toggle]
+  );
+
+  const handleQuickAdd = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openQuickAdd(product);
+    },
+    [openQuickAdd, product]
+  );
+
+  return (
+    <Link
+      href={productUrl}
+      className="cd-shop-card group flex flex-col cursor-pointer no-underline text-inherit"
+    >
+      <div className="relative aspect-2/3 overflow-hidden rounded-[var(--radius-lg)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)] transition-shadow duration-[var(--duration-base)] [transition-timing-function:var(--ease-default)] group-hover:shadow-[var(--shadow-gold-md)]">
+        <Image
+          src={product.images[0]}
+          alt={product.name}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          style={{ objectFit: "cover" }}
+          className="transition-transform duration-[var(--duration-slow)] [transition-timing-function:var(--ease-luxury)] group-hover:scale-105 motion-reduce:transition-none"
+        />
+        {product.badge && (
+          <span
+            className={`absolute top-3 left-3 py-1 px-3 rounded-full font-primary text-xs font-medium tracking-[0.08em] uppercase z-2 backdrop-blur-lg ${
+              PRODUCT_CARD_BADGE_STYLES[product.badge] ?? ""
+            }`}
+          >
+            {tBadge(product.badge)}
+          </span>
+        )}
+        {/* ── Top-right icons: Wishlist + Bag (stacked) ── */}
+        <div className="absolute bottom-3 right-3 z-3 flex flex-row gap-2 opacity-100 sm:opacity-0 sm:-translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 sm:transition-all sm:duration-300 sm:[&:has(.liked)]:opacity-100 sm:[&:has(.liked)]:translate-y-0">
+          <button
+            type="button"
+            className={`w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 hover:text-[var(--color-dusty-rose)] hover:bg-[rgba(255,255,255,0.95)] ${
+              isWishlisted ? "!text-[var(--color-dusty-rose)] liked" : ""
+            }`}
+            onClick={handleLike}
+            aria-label={isWishlisted ? t("removeFromWishlist") : t("addToWishlist")}
+          >
+            <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />
+          </button>
+          <ProductBagButton
+            product={product}
+            variant="icon"
+            onAddToBag={handleQuickAdd}
+            className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90"
+            enabledClassName="hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)]"
+          />
+        </div>
+        {/* Desktop hover overlay */}
+        <div className="hidden sm:flex absolute inset-x-0 bottom-0 justify-center p-3 pt-10 z-2 bg-[linear-gradient(to_top,rgba(10,10,8,0.4)_0%,transparent_100%)] rounded-b-[var(--radius-lg)] sm:opacity-0 sm:translate-y-2 sm:transition-all sm:duration-[var(--duration-base)] sm:[transition-timing-function:var(--ease-default)] sm:group-hover:opacity-100 sm:group-hover:translate-y-0">
+          <ProductBagButton
+            product={product}
+            variant="text"
+            iconSize={13}
+            onAddToBag={handleQuickAdd}
+            className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150"
+            enabledClassName="hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-1 pt-3 px-1">
+        <span className="text-[var(--text-primary)] [font-family:var(--font-primary)] text-[0.8125rem] tracking-[-0.02em] leading-[140%] transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] group-hover:text-[var(--text-heading)] motion-reduce:transition-none">
+          {product.name}
+        </span>
+        <span className="text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[0.75rem] tracking-[-0.02em]">
+          {hasPublicPrice(product.badge) ? fmt(product, "price") : tCommon("priceOnRequest")}
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+export default function CollectionDetailClient({
+  collection,
+  products,
+}: CollectionDetailClientProps) {
+  const t = useTranslations("public.collections.detail");
+  const tBadge = useTranslations("common.productBadge");
+  const tCommon = useTranslations("common");
+  const { fmt, fmtOrNull } = useMoney();
+  const heroRef = useRef<HTMLElement>(null);
+  const editorialRef = useRef<HTMLDivElement>(null);
+  const shopAllRef = useRef<HTMLDivElement>(null);
 
   /* ── Hero reveal ── */
   useEffect(() => {
@@ -219,7 +301,7 @@ export default function CollectionDetailClient({
       {/* ═══ 1. HERO — Split-screen cinematic ═══ */}
       <section
         ref={heroRef}
-        className="cd-hero relative h-screen min-h-[35rem] overflow-hidden flex items-end bg-[var(--color-noir)]"
+        className="bleed cd-hero relative h-screen min-h-[35rem] overflow-hidden flex items-end bg-[var(--color-noir)]"
       >
         <div className="cd-hero__media absolute inset-0">
           <Image
@@ -269,7 +351,7 @@ export default function CollectionDetailClient({
 
         <div ref={editorialRef} className="mx-auto flex w-full max-w-[96rem] flex-col gap-4 px-4 sm:gap-6 sm:px-6 lg:gap-8 lg:px-8">
           {editorialProducts.map((product, idx) => {
-            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+            const productUrl = productPath(product) ?? "/shop";
             /* Alternate: large left, small right, then reversed */
             const isOdd = idx % 2 !== 0;
 
@@ -345,7 +427,7 @@ export default function CollectionDetailClient({
       </section>
 
       {/* ═══ 3. DIVIDER QUOTE ═══ */}
-      <section className="py-20 px-4 flex flex-col items-center text-center gap-5 bg-[var(--bg-section-5)] border-t border-b border-[var(--border-subtle)] sm:px-12">
+      <section className="bleed [--bleed-px:1rem] sm:[--bleed-px:3rem] py-20 flex flex-col items-center text-center gap-5 bg-[var(--bg-section-5)] border-t border-b border-[var(--border-subtle)]">
         <blockquote className="[font-family:var(--font-display)] text-[clamp(1.25rem,4vw,2rem)] text-[var(--text-heading)] tracking-[-0.03em] leading-[140%] max-w-[42.5rem] italic">
           “{collection.description}”
         </blockquote>
@@ -374,81 +456,14 @@ export default function CollectionDetailClient({
           ref={shopAllRef}
           className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3 sm:gap-5 sm:px-6 lg:grid-cols-4 lg:gap-6 lg:px-8 xl:grid-cols-5"
         >
-          {gridProducts.map((product) => {
-            const productUrl = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
-
-            return (
-              <Link
-                key={product.id}
-                href={productUrl}
-                className="cd-shop-card group flex flex-col cursor-pointer no-underline text-inherit"
-              >
-                <div className="relative aspect-2/3 overflow-hidden rounded-[var(--radius-lg)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)] transition-shadow duration-[var(--duration-base)] [transition-timing-function:var(--ease-default)] group-hover:shadow-[var(--shadow-gold-md)]">
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                    className="transition-transform duration-[var(--duration-slow)] [transition-timing-function:var(--ease-luxury)] group-hover:scale-105 motion-reduce:transition-none"
-                  />
-                  {product.badge && (
-                    <span
-                      className={`absolute top-3 left-3 py-1 px-3 rounded-full font-primary text-xs font-medium tracking-[0.08em] uppercase z-2 backdrop-blur-lg ${
-                        PRODUCT_CARD_BADGE_STYLES[product.badge] ?? ""
-                      }`}
-                    >
-                      {tBadge(product.badge)}
-                    </span>
-                  )}
-                  {/* ── Top-right icons: Wishlist + Bag (stacked) ── */}
-                  <div className="absolute bottom-3 right-3 z-3 flex flex-row gap-2 opacity-100 sm:opacity-0 sm:-translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 sm:transition-all sm:duration-300 sm:[&:has(.liked)]:opacity-100 sm:[&:has(.liked)]:translate-y-0">
-                    <button
-                      type="button"
-                      className={`w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90 hover:text-[var(--color-dusty-rose)] hover:bg-[rgba(255,255,255,0.95)] ${
-                        likedMap[product.id] ? "!text-[var(--color-dusty-rose)] liked" : ""
-                      }`}
-                      onClick={(e) => handleLike(product, e)}
-                      aria-label={likedMap[product.id] ? t("removeFromWishlist") : t("addToWishlist")}
-                    >
-                      <Heart size={18} fill={likedMap[product.id] ? "currentColor" : "none"} />
-                    </button>
-                    <ProductBagButton
-                      product={product}
-                      variant="icon"
-                      onAddToBag={(e) => handleQuickAdd(product, e)}
-                      className="w-9 h-9 rounded-full border-none bg-[rgba(251,248,241,0.88)] backdrop-blur-lg flex items-center justify-center cursor-pointer text-[var(--color-slate)] shadow-[0_2px_8px_rgba(58,49,42,0.1)] transition-all duration-150 active:scale-90"
-                      enabledClassName="hover:text-[var(--accent-primary)] hover:bg-[rgba(255,255,255,0.95)] active:!bg-[var(--accent-primary)] active:!text-[var(--text-on-gold)]"
-                    />
-                  </div>
-                  {/* Desktop hover overlay */}
-                  <div className="hidden sm:flex absolute inset-x-0 bottom-0 justify-center p-3 pt-10 z-2 bg-[linear-gradient(to_top,rgba(10,10,8,0.4)_0%,transparent_100%)] rounded-b-[var(--radius-lg)] sm:opacity-0 sm:translate-y-2 sm:transition-all sm:duration-[var(--duration-base)] sm:[transition-timing-function:var(--ease-default)] sm:group-hover:opacity-100 sm:group-hover:translate-y-0">
-                    <ProductBagButton
-                      product={product}
-                      variant="text"
-                      iconSize={13}
-                      onAddToBag={(e) => handleQuickAdd(product, e)}
-                      className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border-none bg-[rgba(251,248,241,0.92)] backdrop-blur-[12px] text-[var(--color-obsidian)] font-primary text-xs font-medium tracking-[0.06em] uppercase cursor-pointer shadow-[0_2px_12px_rgba(58,49,42,0.15)] transition-all duration-150"
-                      enabledClassName="hover:bg-[var(--accent-primary)] hover:text-[var(--text-on-gold)] hover:scale-[1.03] hover:shadow-[var(--shadow-gold-md)]"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1 pt-3 px-1">
-                  <span className="text-[var(--text-primary)] [font-family:var(--font-primary)] text-[0.8125rem] tracking-[-0.02em] leading-[140%] transition-colors duration-[var(--duration-fast)] [transition-timing-function:var(--ease-default)] group-hover:text-[var(--text-heading)] motion-reduce:transition-none">
-                    {product.name}
-                  </span>
-                  <span className="text-[var(--text-secondary)] [font-family:var(--font-primary)] text-[0.75rem] tracking-[-0.02em]">
-                    {hasPublicPrice(product.badge) ? fmt(product, "price") : tCommon("priceOnRequest")}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+          {gridProducts.map((product) => (
+            <ShopCard key={product.id} product={product} />
+          ))}
         </div>
       </section>
 
       {/* ═══ 5. BACK TO COLLECTIONS CTA ═══ */}
-      <section className="bg-[var(--bg-section-3)] border-t border-[var(--border-subtle)] py-16 px-4 flex items-center justify-center sm:py-20 sm:px-6">
+      <section className="bleed [--bleed-px:1rem] sm:[--bleed-px:1.5rem] bg-[var(--bg-section-3)] border-t border-[var(--border-subtle)] py-16 flex items-center justify-center sm:py-20">
         <div className="text-center flex flex-col items-center gap-4">
           <Link
             href="/collections"

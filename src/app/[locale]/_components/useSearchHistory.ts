@@ -22,10 +22,7 @@ function write(items: AutocompleteItem[]) {
   } catch { /* quota exceeded or storage blocked — history is best-effort */ }
 }
 
-/**
- * Recently opened search results, newest first, persisted in localStorage.
- * Loaded after mount (server render is always empty) and kept in sync across tabs.
- */
+/** Recently opened search results, newest first, persisted in localStorage; loaded after mount (the server render is empty) and synced across tabs. */
 export function useSearchHistory() {
   const [history, setHistory] = useState<AutocompleteItem[]>([]);
 

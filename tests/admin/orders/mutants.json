@@ -1,0 +1,441 @@
+[
+  {
+    "name": "orders: everyone gets a status menu",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "permission={PERMISSIONS.ORDER_ADMIN_UPDATE_STATUS}\n            fallback",
+    "replace": "permission={PERMISSIONS.ORDER_ADMIN_VIEW}\n            fallback",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: everyone can tick orders",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "selectable={canUpdateStatus}",
+    "replace": "selectable={true}",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: anyone sees the payment tab",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "const canViewPayment = hasPermission(user, PERMISSIONS.PAYMENT_ADMIN_VIEW);",
+    "replace": "const canViewPayment = hasPermission(user, PERMISSIONS.ORDER_ADMIN_VIEW);",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a payment tab for nobody",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "const canViewPayment = hasPermission(user, PERMISSIONS.PAYMENT_ADMIN_VIEW);",
+    "replace": "const canViewPayment = false;",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: every cancel asks",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "if (newStatus === \"cancelled\" && paymentStatus === \"paid\") {",
+    "replace": "if (newStatus === \"cancelled\") {",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a paid cancel does not ask",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "if (newStatus === \"cancelled\" && paymentStatus === \"paid\") {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: backing out still cancels",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "if (!proceed) return;\n    }\n    try {",
+    "replace": "}\n    try {",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the cancel question is not dangerous",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "confirmLabel: t(\"confirmCancelPaid.confirm\"),\n        danger: true,",
+    "replace": "confirmLabel: t(\"confirmCancelPaid.confirm\"),\n        danger: false,",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the open panel shows another order status",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "(p && p.id === orderId ? { ...p, status: newStatus } : p)",
+    "replace": "(p ? { ...p, status: newStatus } : p)",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the table is not refreshed after a change",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "setDetailOrder((p) => (p && p.id === orderId ? { ...p, status: newStatus } : p));\n      tableRef.current?.refresh();",
+    "replace": "setDetailOrder((p) => (p && p.id === orderId ? { ...p, status: newStatus } : p));",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a refusal says nothing",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.statusFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a skipped order is changed",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "const eligible = rows.filter((o) => ORDER_STATUS_TRANSITIONS[o.status as OrderStatus]?.includes(newStatus));",
+    "replace": "const eligible = rows;",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: skipped orders are not mentioned",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "skipped > 0 ? t(\"bulk.confirm.skipped\", { count: skipped }) : \"\",",
+    "replace": "\"\",",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: refunds are always mentioned",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "const refunds = newStatus === \"cancelled\" ? eligible.filter((o) => o.paymentStatus === \"paid\").length : 0;",
+    "replace": "const refunds = eligible.filter((o) => o.paymentStatus === \"paid\").length;",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: every bulk change is dangerous",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "danger: newStatus === \"cancelled\",",
+    "replace": "danger: true,",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: declining a bulk change still sends it",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "if (!proceed) return;\n    const { succeededIds",
+    "replace": "const { succeededIds",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the successes are not reported",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "if (succeededIds.length > 0) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the failures are not reported",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "if (failed > 0) toast.error",
+    "replace": "if (false) toast.error",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the ticks stay after a bulk change",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "    clearSelection();\n    tableRef.current?.refresh();",
+    "replace": "    tableRef.current?.refresh();",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the bulk menu offers steps no order can take",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "rows.some((o) => ORDER_STATUS_TRANSITIONS[o.status as OrderStatus]?.includes(s))",
+    "replace": "rows.every((o) => ORDER_STATUS_TRANSITIONS[o.status as OrderStatus]?.includes(s))",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the bulk menu is never locked for lack of steps",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "disabled={isUpdating || targets.length === 0}",
+    "replace": "disabled={isUpdating}",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: opening does not name the order in the address",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "router.push(urlWith({ orderId: order.id }), { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: closing does not take the order from the address",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "router.push(urlWith({ orderId: null }), { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: other filters are lost from the address",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "const qs = new URLSearchParams(searchParams.toString());",
+    "replace": "const qs = new URLSearchParams();",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx",
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a missing order is not reported",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": ".catch(() => setDetailError(t(\"detail.notFoundMessage\", { id: urlOrderId })))",
+    "replace": ".catch(() => {})",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the cached order is dropped on a failed reload",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "    } catch {\n      /* keep cached order data */\n    } finally {",
+    "replace": "    } catch {\n      setDetailOrder(null);\n    } finally {",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the panel stays after the address loses its order",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "  if (!urlOrderId) {\n      hasAutoOpened.current = false;\n      setDetailOrder(null);\n      setDetailError(null);\n    }",
+    "replace": "",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the payment tab does not reload the order",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "dispatch(fetchOrderDetail(detailOrder.id))\n        .unwrap()\n        .then((fresh) => setDetailOrder(fresh))",
+    "replace": "Promise.resolve()",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the payment tab does not refresh the table",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "    tableRef.current?.refresh();\n  };\n\n  return (",
+    "replace": "  };\n\n  return (",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: every cancelled order shows the refund warning",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "canViewPayment && detailOrder.status === \"cancelled\" && detailOrder.paymentStatus === \"paid\"",
+    "replace": "canViewPayment && detailOrder.status === \"cancelled\"",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the refund warning ignores the permission",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "canViewPayment && detailOrder.status === \"cancelled\" && detailOrder.paymentStatus === \"paid\"",
+    "replace": "detailOrder.status === \"cancelled\" && detailOrder.paymentStatus === \"paid\"",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a created refund does not refresh the table",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "onCreated={() => tableRef.current?.refresh()}",
+    "replace": "onCreated={() => {}}",
+    "tests": [
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the filter is never sent",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "        needsAction,\n        sort: params.sort,",
+    "replace": "        needsAction: false,\n        sort: params.sort,",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the notice cannot turn the filter off",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "needsAction ? null : \"true\"",
+    "replace": "\"true\"",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the table keeps its state when the filter changes",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "key={needsAction ? \"needs-action\" : \"all\"}",
+    "replace": "key=\"all\"",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the customer has no fallback",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "(o.shippingAddress?.fullName as String) || o.userId",
+    "replace": "(o.shippingAddress?.fullName as String) || \"\"",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the payment column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "        hideBelow: \"sm\",\n        render: (o) => <OrderPaymentBadge",
+    "replace": "        render: (o) => <OrderPaymentBadge",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the item count ignores the items",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "t(\"table.itemCount\", { count: o.items?.length ?? 0 })",
+    "replace": "t(\"table.itemCount\", { count: 0 })",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the notice always counts as active",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "active={needsAction}",
+    "replace": "active={true}",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the notice never stays when done",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "        keepWhenDone\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the header counts nothing",
+    "file": "src/app/[locale]/(admin)/admin/orders/OrdersContent.tsx",
+    "find": "t(\"page.total\", { count: total })",
+    "replace": "t(\"page.total\", { count: 0 })",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the filter is sent as false",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/moduleSlice.ts",
+    "find": "needsAction: params.needsAction ? \"true\" : undefined,",
+    "replace": "needsAction: params.needsAction ? \"true\" : \"false\",",
+    "tests": [
+      "tests/admin/orders/orders-slice.test.ts",
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: every bulk change counts as done",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/moduleSlice.ts",
+    "find": "const succeededIds = ids.filter((_, i) => results[i].status === \"fulfilled\");",
+    "replace": "const succeededIds = ids;",
+    "tests": [
+      "tests/admin/orders/orders-slice.test.ts",
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: no bulk failure is counted",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/moduleSlice.ts",
+    "find": "return { succeededIds, failed: ids.length - succeededIds.length };",
+    "replace": "return { succeededIds, failed: 0 };",
+    "tests": [
+      "tests/admin/orders/orders-slice.test.ts",
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a change is not marked as busy",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/moduleSlice.ts",
+    "find": ".addCase(updateOrderStatus.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": ".addCase(updateOrderStatus.pending, (state) => {",
+    "tests": [
+      "tests/admin/orders/orders-slice.test.ts",
+      "tests/admin/orders/orders-actions.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/moduleSlice.ts",
+    "find": ".addCase(fetchOrderList.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchOrderList.pending, (state) => {",
+    "tests": [
+      "tests/admin/orders/orders-slice.test.ts"
+    ]
+  },
+  {
+    "name": "orders: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/orders/orders-slice.test.ts",
+      "tests/admin/orders/orders-list.test.tsx"
+    ]
+  },
+  {
+    "name": "orders: the oldest sort comes first",
+    "file": "src/app/[locale]/(admin)/admin/orders/_common/constants.ts",
+    "find": "{ value: \"-createdAt\", key: \"newest\" },\n  { value: \"createdAt\", key: \"oldest\" },",
+    "replace": "{ value: \"createdAt\", key: \"oldest\" },\n  { value: \"-createdAt\", key: \"newest\" },",
+    "tests": [
+      "tests/admin/orders/orders-list.test.tsx",
+      "tests/admin/orders/orders-slice.test.ts"
+    ]
+  }
+]

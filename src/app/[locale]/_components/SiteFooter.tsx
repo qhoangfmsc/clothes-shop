@@ -35,7 +35,7 @@ export default function SiteFooter() {
   const tLegal = useTranslations("shared.legal");
 
   return (
-    <footer className="relative overflow-hidden border-t border-[var(--ft-line)] bg-[var(--bg-dark)] text-[var(--text-on-dark)] [--ft-line:color-mix(in_srgb,var(--text-on-dark)_14%,transparent)] [--ft-muted:color-mix(in_srgb,var(--text-on-dark)_60%,transparent)]">
+    <footer className="bleed relative overflow-hidden border-t border-[var(--ft-line)] bg-[var(--bg-dark)] text-[var(--text-on-dark)] [--ft-line:color-mix(in_srgb,var(--text-on-dark)_14%,transparent)] [--ft-muted:color-mix(in_srgb,var(--text-on-dark)_60%,transparent)]">
       <div className="mx-auto max-w-[80rem] px-4 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-20">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-10">
           {/* Brand */}
@@ -116,7 +116,7 @@ export default function SiteFooter() {
             <div className={HEADING_ROW}>
               <h2 className={HEADING}>{t("language.title")}</h2>
             </div>
-            <LanguageSwitcher variant="footer" />
+            <LanguageSwitcher />
           </div>
         </div>
 

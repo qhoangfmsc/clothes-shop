@@ -1,0 +1,610 @@
+[
+  {
+    "name": "refunds: the queue opens on all refunds",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "statusParam === \"all\" || REFUND_STATUSES.some((s) => s === statusParam) ? (statusParam as StatusTab) : \"REQUESTED\";",
+    "replace": "statusParam === \"all\" || REFUND_STATUSES.some((s) => s === statusParam) ? (statusParam as StatusTab) : \"all\";",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a made-up status is accepted",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "statusParam === \"all\" || REFUND_STATUSES.some((s) => s === statusParam) ?",
+    "replace": "statusParam ?",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the waiting tab keeps its status in the address",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "if (next === \"REQUESTED\") qs.delete(\"status\");",
+    "replace": "if (false) qs.delete(\"status\");",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: another tab drops the other filters",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "const qs = new URLSearchParams(searchParams.toString());",
+    "replace": "const qs = new URLSearchParams();",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the address loses the bare page",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "router.replace(text ? `/admin/refunds?${text}` : \"/admin/refunds\", { scroll: false });",
+    "replace": "router.replace(`/admin/refunds?${text}`, { scroll: false });",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: all tabs ask for a status",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "status: status === \"all\" ? undefined : status,",
+    "replace": "status: status === \"all\" ? \"REQUESTED\" : status,",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the order filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "        orderId,\n        sort: params.sort,",
+    "replace": "        sort: params.sort,",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the table keeps its state when the tab changes",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "key={`${status}:${orderId ?? \"\"}`}",
+    "replace": "key=\"x\"",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the notice is active on every tab",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "active={status === \"REQUESTED\"}",
+    "replace": "active={true}",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the notice cannot leave the waiting tab",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "onToggle={() => setStatus(status === \"REQUESTED\" ? \"all\" : \"REQUESTED\")}",
+    "replace": "onToggle={() => setStatus(\"all\")}",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the tab shows no count",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "t(\"tabs.REQUESTED\", { count: counts.refunds ?? 0 })",
+    "replace": "t(\"tabs.REQUESTED\", { count: 0 })",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the buttons show for handled refunds",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "if (r.status !== \"REQUESTED\") return null;",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the buttons need no refund permission",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_REFUND}>\n              <div className=\"flex flex-col items-end gap-1.5\">",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_VIEW}>\n              <div className=\"flex flex-col items-end gap-1.5\">",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a handled refund does not refresh the table",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "    setRejecting(null);\n    /* The menu badge and this tab's count refresh by themselves after the write */\n    tableRef.current?.refresh();",
+    "replace": "    setRejecting(null);",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a handled refund keeps the form open",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "    setCompleting(null);\n    setRejecting(null);",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a return refund has no link",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "{r.returnRequestId ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the return link id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "href={`/admin/returns?returnId=${encodeURIComponent(r.returnRequestId)}`}",
+    "replace": "href={`/admin/returns?returnId=${r.returnRequestId}`}",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the customer has no dash",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": ".filter(Boolean).join(\" · \") || \"—\"}",
+    "replace": ".filter(Boolean).join(\" · \")}",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the processed time always shows",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "{r.processedAt && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the bank reference always shows",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "{r.bankReference && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the note always shows",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "{r.note && <span",
+    "replace": "{true && <span",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the source column shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "        hideBelow: \"lg\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the order chip shows without an order",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "{orderId && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the filtered empty message is the tab one",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "filtered ? t(\"table.empty.filtered\") : status === \"all\"",
+    "replace": "false ? t(\"table.empty.filtered\") : status === \"all\"",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the all tab says the waiting one",
+    "file": "src/app/[locale]/(admin)/admin/refunds/RefundsContent.tsx",
+    "find": "status === \"all\" ? t(\"table.empty.all\") : t(`table.empty.${status}`)",
+    "replace": "t(`table.empty.${status === \"all\" ? \"REQUESTED\" : status}`)",
+    "tests": [
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the reference is not required",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "if (!reference.trim()) found.reference = t(\"errors.reference\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the note is not required",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "if (!note.trim()) found.note = t(\"errors.note\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a blank note is accepted",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "if (!note.trim()) found.note",
+    "replace": "if (!note) found.note",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a form with errors is sent",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "if (Object.keys(found).length > 0) return;",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the reference keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "reference: reference.trim(), note: note.trim()",
+    "replace": "reference, note: note.trim()",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the note keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "reference: reference.trim(), note: note.trim()",
+    "replace": "reference: reference.trim(), note",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a done refund does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "toast.success(t(\"toast.done\", { id: refund.orderId }));\n      onDone();",
+    "replace": "toast.success(t(\"toast.done\", { id: refund.orderId }));",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the reference has no length limit",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "maxLength={REFUND_REFERENCE_MAX}",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the note has no length limit",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": "maxLength={REFUND_NOTE_MAX}",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the customer has no dash in the form",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/CompleteRefundModal.tsx",
+    "find": ".filter(Boolean).join(\" · \") || \"—\"}",
+    "replace": ".filter(Boolean).join(\" · \")}",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the rejection note is not required",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "if (!note.trim()) {\n      setError(t(\"errors.note\"));\n      return;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a blank rejection note is accepted",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "if (!note.trim()) {",
+    "replace": "if (!note) {",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the rejection error stays",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "    setError(null);\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the rejection note keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "note: note.trim() })",
+    "replace": "note })",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a rejected refund does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "toast.success(t(\"toast.done\", { id: refund.orderId }));\n      onDone();",
+    "replace": "toast.success(t(\"toast.done\", { id: refund.orderId }));",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a rejection failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the rejection warning has no amount",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RejectRefundModal.tsx",
+    "find": "amount: formatMoney(moneyOf(refund, \"amount\"))",
+    "replace": "amount: \"\"",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the banner offers a request when the count is unknown",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "{openCount === 0 && (",
+    "replace": "{openCount !== 1 && (",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the banner offers a request when some wait",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "{openCount === 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the banner needs no refund permission",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_REFUND}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_VIEW}>",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the banner says nothing is waiting when some are",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "{openCount ? t(\"waiting\") : t(\"missing\")}",
+    "replace": "{t(\"missing\")}",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the banner id in the link is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "href={`/admin/refunds?orderId=${encodeURIComponent(orderId)}`}",
+    "replace": "href={`/admin/refunds?orderId=${orderId}`}",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a created request does not count again",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "      toast.success(t(\"created\", { id: orderId }));\n      load();",
+    "replace": "      toast.success(t(\"created\", { id: orderId }));",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a created request does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "      load();\n      onCreated?.();",
+    "replace": "      load();",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a failed request is silent",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"createFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a failed count is left as zero",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/OrderRefundBanner.tsx",
+    "find": ".catch(() => setOpenCount(null));",
+    "replace": ".catch(() => setOpenCount(0));",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the source shows no code copy",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RefundPaymentSource.tsx",
+    "find": "<CopyButton value={payment.transferCode} label={t(\"transferCode\")} />",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the source always shows a reference",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RefundPaymentSource.tsx",
+    "find": "{payment.transactionRef && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the source always shows the content",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RefundPaymentSource.tsx",
+    "find": "{payment.transferContent && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the source shows empty parts",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RefundPaymentSource.tsx",
+    "find": ".filter(Boolean)\n          .join(\" · \")",
+    "replace": ".join(\" · \")",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: a handled refund looks waiting",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RefundBadge.tsx",
+    "find": "COMPLETED: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",",
+    "replace": "COMPLETED: \"bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]\",",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: an unknown state has no fallback",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_components/RefundBadge.tsx",
+    "find": "STYLES[status] ?? STYLES.REJECTED",
+    "replace": "STYLES[status] ?? \"\"",
+    "tests": [
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the open count asks for more than one row",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "buildListQuery({ limit: 1 }, { status: \"REQUESTED\", orderId })",
+    "replace": "buildListQuery({ limit: 25 }, { status: \"REQUESTED\", orderId })",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts",
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the open count asks for any status",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "{ status: \"REQUESTED\", orderId }",
+    "replace": "{ orderId }",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts",
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the open count is not the total",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "  return res.total;",
+    "replace": "  return res.data.length;",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts",
+      "tests/admin/refunds/refund-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the refund id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "`/api/admin/refunds/${encodeURIComponent(refundId)}/complete`",
+    "replace": "`/api/admin/refunds/${refundId}/complete`",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts"
+    ]
+  },
+  {
+    "name": "refunds: the rejection id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "`/api/admin/refunds/${encodeURIComponent(refundId)}/reject`",
+    "replace": "`/api/admin/refunds/${refundId}/reject`",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts"
+    ]
+  },
+  {
+    "name": "refunds: a write is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "        .addCase(thunk.pending, (state) => {\n          state.isUpdating = true;",
+    "replace": "        .addCase(thunk.pending, (state) => {",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts"
+    ]
+  },
+  {
+    "name": "refunds: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": ".addCase(fetchRefunds.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchRefunds.pending, (state) => {",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts"
+    ]
+  },
+  {
+    "name": "refunds: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts",
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  },
+  {
+    "name": "refunds: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/refunds/_common/constants.ts",
+    "find": "  { value: \"-createdAt\", key: \"newest\" },\n  { value: \"createdAt\", key: \"oldest\" },",
+    "replace": "  { value: \"createdAt\", key: \"oldest\" },\n  { value: \"-createdAt\", key: \"newest\" },",
+    "tests": [
+      "tests/admin/refunds/refunds-slice.test.ts",
+      "tests/admin/refunds/refunds-list.test.tsx"
+    ]
+  }
+]

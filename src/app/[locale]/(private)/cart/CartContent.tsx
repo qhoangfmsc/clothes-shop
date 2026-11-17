@@ -164,6 +164,7 @@ function CartItemRow({
   const tCommon = useTranslations("common");
   const { fmt, fmtOrNull } = useMoney();
   const tBulk = useTranslations("private.cart.bulk.confirmRemove");
+  const tToast = useTranslations("private.cart.toast");
   const dispatch = useAppDispatch();
   const confirm = useConfirm();
   const { toast } = useToast();
@@ -183,14 +184,12 @@ function CartItemRow({
       })
     );
     /* The state before the dispatch decides which way it went */
-    if (isWishlisted) {
-      dispatch(syncRemoveFromWishlist(item.productId));
-      toast.info(t("wishlistRemoved", { name: item.name }));
-    } else {
-      dispatch(syncAddToWishlist(item.productId));
-      toast.info(t("wishlistAdded", { name: item.name }));
-    }
-  }, [item, isWishlisted, dispatch, toast, t]);
+    const sync = isWishlisted ? syncRemoveFromWishlist(item.productId) : syncAddToWishlist(item.productId);
+    dispatch(sync)
+      .unwrap()
+      .catch(() => toast.error(tToast("wishlistFailed")));
+    toast.info(isWishlisted ? t("wishlistRemoved", { name: item.name }) : t("wishlistAdded", { name: item.name }));
+  }, [item, isWishlisted, dispatch, toast, t, tToast]);
 
   const handleRemove = useCallback(async () => {
     const confirmed = await confirm({
@@ -373,6 +372,7 @@ export default function CartContent() {
     /* A product can sit in the bag in several sizes — save it once, and never un-save one
        that is already on the wishlist (the toggle action would remove it) */
     const saved = new Set(wishlistItems.map((w) => w.productId));
+    const syncs: Promise<unknown>[] = [];
     let added = 0;
     for (const line of selectedItems) {
       if (saved.has(line.productId)) continue;
@@ -390,8 +390,11 @@ export default function CartContent() {
           badge: line.badge,
         })
       );
-      dispatch(syncAddToWishlist(line.productId));
+      syncs.push(dispatch(syncAddToWishlist(line.productId)).unwrap());
     }
+    void Promise.allSettled(syncs).then((results) => {
+      if (results.some((result) => result.status === "rejected")) toast.error(t("toast.wishlistFailed"));
+    });
     /* Saving to the wishlist never takes anything out of the bag */
     if (added > 0) toast.success(t("toast.addedToWishlist", { count: added }));
     else toast.info(t("toast.alreadyInWishlist"));
@@ -400,7 +403,7 @@ export default function CartContent() {
   /* Loading */
   if (isLoading) {
     return (
-      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <div className="max-w-[51.25rem] mx-auto px-4 sm:px-6">
           <div className="h-[3.75rem] rounded-md bg-[var(--color-champagne-cream)] mb-8 animate-[cart-shimmer_1.5s_ease_infinite]" />
           <div className="h-[7.5rem] rounded-md bg-[var(--color-champagne-cream)] mb-4 animate-[cart-shimmer_1.5s_ease_infinite]" />
@@ -413,14 +416,14 @@ export default function CartContent() {
   /* Not authenticated */
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+      <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
         <UnauthenticatedState />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
+    <main className="min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]">
       <div className="max-w-[51.25rem] mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div

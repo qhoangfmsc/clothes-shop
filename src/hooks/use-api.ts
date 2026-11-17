@@ -1,26 +1,18 @@
-/* ═══════════════════════════════════════════════════════════
-   SWR HOOKS — Client-side data fetching with caching
-
-   Calls real BE API at NEXT_PUBLIC_API_URL.
-   Uses SWR's staleWhileRevalidate pattern.
-
-   Phase 1: Updated to match BE Public API (search, pagination, filter).
-   ═══════════════════════════════════════════════════════════ */
-
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import type { Product } from "@/src/types/product";
+import type { Product, ProductSummary } from "@/src/types/product";
 import type { ProductBadge } from "@/src/types/enums";
 import type { Category } from "@/src/types/category";
 import { PUBLIC_CATEGORIES_QUERY } from "@/src/lib/category-display";
-import { buildListQuery, LIST_MAX_LIMIT } from "@/src/lib/list-query";
+import { buildListQuery, LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import type { Collection } from "@/src/types/collection";
 import type { SizeGuide } from "@/src/types/size-guide";
 import type { ShippingInfo } from "@/src/types/shipping";
 import type { BannerItem, SiteConfig } from "@/src/types/site-config";
-import type { ProductListParams, ProductListResponse } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
+import { buildProductQS, type ProductListParams, type ProductListResponse } from "@/src/lib/product-list";
 import { mapMediaUrls } from "@/src/lib/media-url";
 import { useRouter } from "@/src/i18n/navigation";
+import { buildProductPath } from "@/src/lib/product-url";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7001";
 
@@ -38,19 +30,6 @@ const defaultConfig = {
 };
 
 /* ═══ Products ═══ */
-
-function buildProductQS(params: ProductListParams): string {
-  return buildListQuery(params, {
-    category: params.category,
-    subcategory: params.subcategory,
-    badge: params.badge,
-    minPrice: params.minPrice,
-    maxPrice: params.maxPrice,
-    minRating: params.minRating,
-    sizes: params.sizes,
-    colors: params.colors,
-  });
-}
 
 /** One page of products, for lists that append pages themselves (the shop grids) */
 export function fetchProductPage(params: ProductListParams): Promise<ProductListResponse> {
@@ -71,7 +50,7 @@ export function useProducts(params: ProductListParams = {}) {
     products: data?.data ?? [],
     total: data?.total ?? 0,
     page: data?.page ?? 1,
-    limit: data?.limit ?? 24,
+    limit: data?.limit ?? LIST_DEFAULT_LIMIT,
     isLoading,
     isError: !!error,
     mutate,
@@ -226,10 +205,8 @@ export function useShippingMethodName() {
   );
 }
 
-/* ═══ Site Config (banners) ═══
-   Decorative/replaceable content — a failed or missing config never
-   surfaces as isError to the caller; it just resolves to an empty
-   banners array so the component falls back to its own default. */
+/* Decorative content: a failed or missing config never surfaces as isError; it resolves to an empty banners array
+   so the component falls back to its own default. */
 export function useBannerConfig(key: string) {
   const { data, isLoading } = useSWR<{ data: SiteConfig | null }>(
     `${API_URL}/api/site-config?key=${key}`,
@@ -252,15 +229,11 @@ export function useBannerConfig(key: string) {
 
 /* ═══ Autocomplete — debounced search for nav dropdown ═══ */
 
-export interface AutocompleteItem {
-  id: string;
-  name: string;
-  slug: string;
+/** A `ProductSummary` plus its price (`badge`: `custom_order` products show no price in the search dropdown).
+ *  Entries kept in the search history before the BE sent `category` / `subcategory` lack them (read as `null`). */
+export interface AutocompleteItem extends ProductSummary {
   priceVnd: number;
   priceUsd: number;
-  image: string;
-  /** `custom_order` products show no price in the search dropdown. */
-  badge: ProductBadge | null;
 }
 
 export interface AutocompleteResponse {
@@ -357,12 +330,8 @@ export function useAutocomplete(limit: number) {
   return { query, results, isLoading, search, clear };
 }
 
-/**
- * Resolve a product's real detail-page URL (`/shop/{category}/{subcategory}/{id}`).
- * Autocomplete results only carry id/name/slug/priceVnd/priceUsd/image — not enough to build
- * the URL — so this looks the product up by id first. Used on click, not render,
- * so it's a plain fetch rather than a hook.
- */
+/** Resolves a product's detail-page URL (`/shop/{category}/{subcategory}/{id}`). Autocomplete results lack the slugs, so this looks
+ *  the product up by id first. Used on click, not render, so it is a plain fetch rather than a hook. */
 export async function getProductUrl(id: string): Promise<string | null> {
   try {
     const res = await fetch(`${API_URL}/api/products/${id}`);
@@ -375,18 +344,16 @@ export async function getProductUrl(id: string): Promise<string | null> {
   }
 }
 
-/**
- * Link props for a product that was saved with only its id and category / sub-category slugs (cart line,
- * wishlist item). The cart and wishlist APIs do not load the product's category, so the slugs can be empty;
- * then `href` is `/shop` and a click looks the real URL up (`getProductUrl`) before navigating.
- */
+/** Link props for a product kept as an id plus category / sub-category slugs (cart line, wishlist item). Items saved before the BE sent
+ *  the slugs have none: `href` is then `/shop` and a click looks the real URL up (`getProductUrl`) before navigating. */
 export function useProductLink() {
   const router = useRouter();
   return useCallback(
     (item: { productId: string; category?: string; subcategory?: string }) => {
-      const complete = Boolean(item.category && item.subcategory);
+      const path = buildProductPath(item.productId, item.category, item.subcategory);
+      const complete = path !== null;
       return {
-        href: complete ? `/shop/${item.category}/${item.subcategory}/${item.productId}` : "/shop",
+        href: path ?? "/shop",
         onClick: complete
           ? undefined
           : async (e: React.MouseEvent) => {

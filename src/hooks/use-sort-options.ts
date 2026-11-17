@@ -7,10 +7,7 @@ export interface SortOptionDef<K extends string = string> {
   key: K;
 }
 
-/**
- * Turns a module's `{ value, key }` sort constants into DataTable `sortOptions`,
- * with labels from the shared `admin.components.crud.sort` namespace.
- */
+/** Turns a module's `{ value, key }` sort constants into DataTable `sortOptions`, labelled from `admin.components.crud.sort`. */
 export function useSortOptions(defs: readonly SortOptionDef[]) {
   const t = useTranslations("admin.components.crud.sort");
   return defs.map((def) => ({

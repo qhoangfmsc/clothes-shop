@@ -1,7 +1,7 @@
 # Account (tài khoản)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-18
-> **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserMenu.tsx`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/account` · **Cập nhật:** 2026-10-26
+> **Code:** `(private)/account/` — `page.tsx`, `layout.tsx`, `AccountContent.tsx` · dùng `UserAvatar` từ `_components/UserAvatar.tsx`
 > **i18n:** `private.account`
 
 ## 1. Tóm tắt module
@@ -26,10 +26,15 @@ Là điểm vào của khu "của tôi": từ đây khách nhảy sang Wishlist 
 - **Bố cục** (`AccountContent`): dưới `lg` một cột rộng tối đa 720 px theo thứ tự hồ sơ → `OrdersSection` → `WishlistSection`; từ `lg` khung rộng tối đa 1080 px, lưới `minmax(0,1fr) 300px` giống trang chi tiết đơn: đơn hàng rồi yêu thích ở cột trái, thẻ hồ sơ + đăng xuất ở cột phải (`sticky`, `top-[104px]`). `AccountSkeleton` dùng cùng lưới.
 
 - `WishlistSection` đọc trực tiếp store (`selectWishlistItems`), không gọi API; dữ liệu có thể là bản cục bộ (xem [wishlist](./wishlist.md)). Mỗi thẻ link tới `/shop/<category>/<subcategory>/<productId>` qua `useProductLink()` (thiếu slug thì tra URL khi bấm, xem [wishlist](./wishlist.md)).
-- `OrdersSection` dùng `useApiAuth().apiFetch("/api/orders")` rồi cắt 3 đơn; lỗi được bỏ qua âm thầm (hiện như chưa có đơn). Màu trạng thái được khai báo riêng trong component (`STATUS_COLORS`), nhãn qua `useOrderStatusLabel`.
+- `OrdersSection` dùng `useApiAuth().apiFetch("/api/orders")` rồi cắt 3 đơn; đọc lỗi thì hiện hộp lỗi (`role="alert"`, `orders.loadFailed` hoặc lời của mã lỗi) kèm nút "Thử lại" (`orders.retry`) đọc lại, không giả làm "chưa có đơn". Màu trạng thái được khai báo riêng trong component (`STATUS_COLORS`), nhãn qua `useOrderStatusLabel`.
 - Đăng xuất chỉ xóa token và `user` phía FE (`logout()` của `AuthProvider`), không điều hướng; khi `isAuthenticated` thành `false` trang chuyển sang `UnauthenticatedState`, và `CartSync` xóa giỏ cục bộ.
 - Metadata `private.account.meta`; layout có header + footer; `noindex`.
 - Là nơi đích của link "Back" ở các trang Wishlist và Orders.
 - Mục wishlist trong tài khoản ẩn giá của sản phẩm `custom_order` (hiện `common.priceOnRequest`) theo `WishlistItem.badge`.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.
+
+### 4.1 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/account.md](../../specs/storefront/account.md). Test ở `tests/storefront/account/account.test.tsx`; `mutants.json` có đột biến cho mọi file của module.

@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   CATEGORIES MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 import { LIST_MAX_LIMIT } from "@/src/lib/list-query";
 import type { CategoryFormData } from "./types";
 

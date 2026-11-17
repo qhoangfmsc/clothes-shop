@@ -33,11 +33,8 @@ function Line({ label, value, copyable = false }: { label: string; value: string
   );
 }
 
-/**
- * Full-screen view for the customer standing at the counter: only the QR, the amount and the transfer details,
- * on an opaque layer that hides the admin screen behind it. It enters the browser's full screen when it can
- * (no tabs or address bar), and Esc or the small close button leave it. Nothing else of the order or the admin shows.
- */
+/** Full-screen view for the customer at the counter: only the QR, the amount and the transfer details, on an opaque layer.
+ *  Enters browser full screen when it can; Esc or the close button leaves it. */
 export default function QrPresentation({ qr, paid, onClose }: QrPresentationProps) {
   const t = useTranslations("admin.payments.orderTab.qr.present");
   const format = useFormatter();

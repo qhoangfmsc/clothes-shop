@@ -1,8 +1,5 @@
-/* ── Shared enums — mirror the BE values exactly (case-sensitive) ──
-   BE source of truth: clothes-shop-api `src/common/constants/enum-values.constant.ts`.
-   Site-config enums live in `site-config.ts`.
-   Display labels are NOT here — they come from the i18n messages
-   (`common.productBadge`, `common.status`, `common.role`, `common.orderStatus`). */
+/* Shared enums: mirror the BE values exactly (case-sensitive); source of truth is clothes-shop-api `src/common/constants/enum-values.constant.ts`.
+   Display labels are not here, they come from the i18n messages (`common.productBadge`, `.status`, `.role`, `.orderStatus`). */
 
 /* ── Product ── */
 

@@ -49,5 +49,9 @@
     "sparkline": "Visitors per day, last 7 days",
     "notConfigured": "Connect Vercel Web Analytics to see storefront traffic here.",
     "unavailable": "Traffic numbers are unavailable right now."
+  },
+  "error": {
+    "message": "Could not load the dashboard figures.",
+    "retry": "Try again"
   }
 }

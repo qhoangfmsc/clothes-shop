@@ -12,36 +12,6 @@ import {
   type Permission,
 } from "@/src/lib/permissions";
 
-/* ═══════════════════════════════════════════════════════════
-   ROLE GUARD — Declarative authorization wrapper
-
-   Usage:
-     // By role
-     <RoleGuard role="admin">
-       <AdminContent />
-     </RoleGuard>
-
-     // By single permission
-     <RoleGuard permission="products:write">
-       <EditProductForm />
-     </RoleGuard>
-
-     // By multiple permissions (ALL required)
-     <RoleGuard permissions={["products:write", "products:read"]}>
-       <ProductManager />
-     </RoleGuard>
-
-     // By multiple permissions (ANY sufficient)
-     <RoleGuard anyPermission={["orders:read", "users:read"]}>
-       <DataViewer />
-     </RoleGuard>
-
-     // Custom fallback
-     <RoleGuard permission="products:delete" fallback={<p>No delete access</p>}>
-       <DeleteButton />
-     </RoleGuard>
-   ═══════════════════════════════════════════════════════════ */
-
 interface RoleGuardProps {
   children: ReactNode;
 
@@ -108,10 +78,6 @@ export function RoleGuard({
   return <>{children}</>;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ADMIN GUARD — Convenience wrapper for full admin access
-   ═══════════════════════════════════════════════════════════ */
-
 interface AdminGuardProps {
   children: ReactNode;
   fallback?: ReactNode;
@@ -130,10 +96,6 @@ export function AdminGuard({ children, fallback }: AdminGuardProps) {
 
   return <>{children}</>;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   Internal: Default states
-   ═══════════════════════════════════════════════════════════ */
 
 function DefaultLoading() {
   const t = useTranslations("admin.components.guards");

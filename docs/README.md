@@ -9,7 +9,7 @@ Thư mục này là bản mô tả **hiện trạng thật** của từng module
 
 Chỉ ghi những gì **đã có trong code**. Không viết kế hoạch, chuẩn hóa, bàn luận hay việc cần làm ở đây.
 
-**Vòng lặp bắt buộc:** đọc doc của module (`yarn docs:who <đường dẫn>`) → hiểu module → làm feature → cập nhật doc → `yarn docs:check --changed` phải pass. Doc là điểm bắt đầu và điểm kết thúc của mọi task trên module. Quy trình: `.agent/rules/module-docs.md` (luôn bật) và `.agent/skills/07-module-docs.md` (skill `module-docs`); bản đồ "file nào thuộc doc nào" nằm ở `MODULES` trong `scripts/check-docs.mjs`.
+**Vòng lặp bắt buộc:** đọc doc của module (`yarn docs:who <đường dẫn>`) → hiểu module → làm feature → cập nhật doc → `yarn docs:check --changed` phải pass. Doc là điểm bắt đầu và điểm kết thúc của mọi task trên module. Quy trình: `.agent/rules/module-docs.md` (luôn bật) và `.agent/skills/07-module-docs.md` (skill `module-docs`); bản đồ "file nào thuộc doc nào" nằm ở `MODULES` trong `scripts/modules.mjs`.
 
 ## Platform — hạ tầng dùng chung
 

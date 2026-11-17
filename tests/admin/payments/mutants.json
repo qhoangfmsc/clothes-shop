@@ -1,0 +1,993 @@
+[
+  {
+    "name": "payments: the page opens on the transactions",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "useState<\"codes\" | \"transactions\">(\"codes\")",
+    "replace": "useState<\"codes\" | \"transactions\">(\"transactions\")",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the review filter does not open the transactions",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "const view = needsReview ? \"transactions\" : chosenView;",
+    "replace": "const view = chosenView;",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: turning the filter on stays on the codes",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "if (on) setChosenView(\"transactions\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the filter is not turned off",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "router.replace(on ? \"/admin/payments?needsReview=true\" : \"/admin/payments\", { scroll: false });",
+    "replace": "router.replace(\"/admin/payments?needsReview=true\", { scroll: false });",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: leaving the transactions keeps the filter",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "if (needsReview) router.replace(\"/admin/payments\", { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: every tab change drops the address",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "if (needsReview) router.replace(\"/admin/payments\", { scroll: false });",
+    "replace": "router.replace(\"/admin/payments\", { scroll: false });",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the review filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "        needsReview,\n        sort: params.sort,",
+    "replace": "        needsReview: false,\n        sort: params.sort,",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx",
+      "tests/admin/payments/payments-slice.test.ts"
+    ]
+  },
+  {
+    "name": "payments: the table is not restarted when the filter changes",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "key={needsReview ? \"needs-review\" : \"all\"}",
+    "replace": "key=\"all\"",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the default sort is the creation date",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "defaultSort={PAYMENT_SORT_OPTIONS[0].value}",
+    "replace": "defaultSort=\"-createdAt\"",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the attach button shows for any result",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "CONFIRMABLE_VERIFICATION_STATUSES.includes(tx.verificationStatus) &&\n            tx.paymentAttempt?.order?.paymentStatus !== \"paid\";",
+    "replace": "true;",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the attach button shows for a paid order",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "&&\n            tx.paymentAttempt?.order?.paymentStatus !== \"paid\";",
+    "replace": ";",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the attach button needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>\n              <button\n                type=\"button\"\n                className=\"py-1 px-3 pointer-coarse:min-h-11 text-xs font-semibold font-primary bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm cursor-pointer whitespace-nowrap hover:opacity-90\"\n                onClick={() => setConfirming({ transaction: tx })}",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_VIEW}>\n              <button\n                type=\"button\"\n                className=\"py-1 px-3 pointer-coarse:min-h-11 text-xs font-semibold font-primary bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm cursor-pointer whitespace-nowrap hover:opacity-90\"\n                onClick={() => setConfirming({ transaction: tx })}",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the manual button needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>\n          <button\n            type=\"button\"\n            className=\"inline-flex",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_VIEW}>\n          <button\n            type=\"button\"\n            className=\"inline-flex",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the header counts the wrong list",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "view === \"codes\" ? t(\"lookup.total\", { count: attemptsTotal }) : t(\"page.total\", { count: total })",
+    "replace": "view === \"codes\" ? t(\"page.total\", { count: total }) : t(\"lookup.total\", { count: attemptsTotal })",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a transaction without a code shows a link",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "if (!tx.paymentAttempt) return <span className=\"text-xs text-[var(--text-disabled)]\">—</span>;",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a confirmed transaction does not refresh the table",
+    "file": "src/app/[locale]/(admin)/admin/payments/PaymentsContent.tsx",
+    "find": "            setConfirming(null);\n            tableRef.current?.refresh();",
+    "replace": "            setConfirming(null);",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: codes are sorted by transaction time",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "const sortOptions = useSortOptions(ATTEMPT_SORT_OPTIONS);",
+    "replace": "const sortOptions = useSortOptions(ATTEMPT_SORT_OPTIONS.slice(0, 2));",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the creator is always the customer",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "a.createdBy ? t(\"createdBy.admin\") : t(\"createdBy.customer\")",
+    "replace": "t(\"createdBy.customer\")",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a paid code shows its expiry",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "{a.paidAt\n                ? t(\"paidAt\"",
+    "replace": "{false\n                ? t(\"paidAt\"",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the confirm button shows for a paid order",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "if (a.order.paymentStatus !== \"unpaid\" || a.order.status === \"cancelled\") return null;",
+    "replace": "if (a.order.status === \"cancelled\") return null;",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the confirm button shows for a cancelled order",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "if (a.order.paymentStatus !== \"unpaid\" || a.order.status === \"cancelled\") return null;",
+    "replace": "if (a.order.paymentStatus !== \"unpaid\") return null;",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the confirm button needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>\n              <button\n                type=\"button\"\n                className=\"py-1 px-3 pointer-coarse:min-h-11 text-xs font-semibold font-primary bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm cursor-pointer whitespace-nowrap hover:opacity-90\"\n                onClick={() => setConfirming(a)}",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_VIEW}>\n              <button\n                type=\"button\"\n                className=\"py-1 px-3 pointer-coarse:min-h-11 text-xs font-semibold font-primary bg-[var(--accent-primary)] text-[var(--text-on-gold)] border-0 rounded-sm cursor-pointer whitespace-nowrap hover:opacity-90\"\n                onClick={() => setConfirming(a)}",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the confirm form does not lock the code",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "lockedTransferCode={confirming.transferCode}",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the confirm form does not suggest the amount",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "defaultAmountVnd={confirming.amountVnd}",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the customer is not shown",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptsTable.tsx",
+    "find": "[a.order.customer?.fullName, a.order.customer?.phone].filter(Boolean).join(\" · \") || \"—\"",
+    "replace": "\"—\"",
+    "tests": [
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the order is not required",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!orderId) found.order = t(\"errors.order\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the reason is not required",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!note.trim()) found.note = t(\"errors.note\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a blank reason is accepted",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!note.trim()) found.note",
+    "replace": "if (!note) found.note",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the code is not required",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!transferCode.trim()) found.transferCode = t(\"errors.transferCode\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a zero amount is accepted",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!(parseVndInput(amount) || 0)) found.amount = t(\"errors.amount\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an attached transaction needs a code too",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!transaction) {\n      if (!transferCode.trim())",
+    "replace": "if (true) {\n      if (!transferCode.trim())",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the form is sent even with errors",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (Object.keys(found).length > 0) return;",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the code is sent as typed",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "transferCode: transferCode.trim().toUpperCase(),",
+    "replace": "transferCode: transferCode,",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the reason is sent with its spaces",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "note: note.trim(),",
+    "replace": "note,",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an empty reference is sent",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "...(reference.trim() ? { reference: reference.trim() } : {}),",
+    "replace": "reference: reference.trim(),",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an empty source is sent",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "...(provider ? { provider } : {}),",
+    "replace": "provider,",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an empty statement text is sent",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "...(transferContent.trim() ? { transferContent: transferContent.trim() } : {}),",
+    "replace": "transferContent: transferContent.trim(),",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an attached transaction sends its code",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (transaction) return { ...common, transactionId: transaction.id };",
+    "replace": "if (transaction) return { ...common, transactionId: transaction.id, transferCode };",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a mismatch is always accepted",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!acceptAmountMismatch && isAmountMismatch(err)) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a mismatch is asked again after being accepted",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (!acceptAmountMismatch && isAmountMismatch(err)) {",
+    "replace": "if (isAmountMismatch(err)) {",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: declining a mismatch still sends it",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "if (proceed) await submit(true);",
+    "replace": "await submit(true);",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the mismatch question is not dangerous",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "confirmLabel: t(\"mismatch.confirm\"),\n          danger: true,",
+    "replace": "confirmLabel: t(\"mismatch.confirm\"),\n          danger: false,",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the mismatch is found by the wrong code",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "return code === String(AMOUNT_MISMATCH_CODE) || errorCode === AMOUNT_MISMATCH_CODE;",
+    "replace": "return false;",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a confirmed payment does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "      toast.success(t(\"toast.confirmed\", { id: orderId as string }));\n      onConfirmed();",
+    "replace": "      toast.success(t(\"toast.confirmed\", { id: orderId as string }));",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the more fields are always shown",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "{showMore && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the more button does not toggle",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "onClick={() => setShowMore((prev) => !prev)}",
+    "replace": "onClick={() => setShowMore(true)}",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a known order has a picker",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "{fixedOrderId ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the amount of a code is not filled in",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "useState(defaultAmountVnd ? maskVndInput(String(defaultAmountVnd)) : \"\")",
+    "replace": "useState(\"\")",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the code of a row is not filled in",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "useState(lockedTransferCode ?? \"\")",
+    "replace": "useState(\"\")",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a locked code can be edited",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "readOnly={Boolean(lockedTransferCode)}",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the note has no length limit",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "maxLength={CONFIRM_NOTE_MAX}",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the reference has no length limit",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/ConfirmPaymentModal.tsx",
+    "find": "maxLength={CONFIRM_REFERENCE_MAX}",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the picker keeps cancelled orders",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPicker.tsx",
+    "find": "setOrders(data.filter((order) => order.status !== \"cancelled\"));",
+    "replace": "setOrders(data);",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the picker searches untrimmed",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPicker.tsx",
+    "find": "dispatch(searchUnpaidOrders(debounced.trim()))",
+    "replace": "dispatch(searchUnpaidOrders(debounced))",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the picker marks every order",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPicker.tsx",
+    "find": "const selected = order.id === value;",
+    "replace": "const selected = true;",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the picker hides its error",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPicker.tsx",
+    "find": "{error ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the picker has no empty message",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPicker.tsx",
+    "find": "<p className=\"m-0 p-3 text-xs text-[var(--text-muted)] font-primary\">{t(\"empty\")}</p>",
+    "replace": "null",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an expired code looks calm",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptBadge.tsx",
+    "find": "EXPIRED: \"bg-[rgba(212,165,165,0.2)] text-[var(--accent-rose)]\",",
+    "replace": "EXPIRED: \"bg-[rgba(107,101,96,0.08)] text-[var(--text-muted)]\",",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an unknown code state has no fallback",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AttemptBadge.tsx",
+    "find": "STYLES[status] ?? STYLES.CANCELLED",
+    "replace": "STYLES[status] ?? \"\"",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an unmatched transaction looks fine",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/VerificationBadge.tsx",
+    "find": "UNMATCHED: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",",
+    "replace": "UNMATCHED: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an unknown result has no fallback",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/VerificationBadge.tsx",
+    "find": "STYLES[status] ?? STYLES.IGNORED",
+    "replace": "STYLES[status] ?? \"\"",
+    "tests": [
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the paid time shows for unpaid orders",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "{order.paidAt && <Row",
+    "replace": "{true && <Row",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the customer has no dash",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": ".filter(Boolean).join(\" · \") || \"—\"}",
+    "replace": ".filter(Boolean).join(\" · \")}",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the unpaid buttons show for a paid order",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "{order.paymentStatus === \"unpaid\" && (\n        <div className=\"mt-3 flex flex-wrap gap-2\">",
+    "replace": "{true && (\n        <div className=\"mt-3 flex flex-wrap gap-2\">",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the QR button shows for a cancelled order",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "{order.status !== \"cancelled\" && (\n            <RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CREATE_QR}>",
+    "replace": "{true && (\n            <RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CREATE_QR}>",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the QR button needs the confirm permission",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CREATE_QR}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the confirm button needs the QR permission",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CONFIRM}>\n            <button type=\"button\" className={ACTION_BUTTON} onClick={() => setConfirming({})}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_CREATE_QR}>\n            <button type=\"button\" className={ACTION_BUTTON} onClick={() => setConfirming({})}>",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a pending code is replaced without asking",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "if (overview?.attempts.some((attempt) => attempt.status === \"PENDING\")) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: any code makes the question appear",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "attempt.status === \"PENDING\")) {",
+    "replace": "attempt.status !== \"PAID\")) {",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: backing out still makes the QR",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "if (!ok) return;\n    }\n    setIsCreatingQr(true);",
+    "replace": "}\n    setIsCreatingQr(true);",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the replace question is not dangerous",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "confirmLabel: t(\"qr.confirm.confirm\"),\n        danger: true,",
+    "replace": "confirmLabel: t(\"qr.confirm.confirm\"),\n        danger: false,",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a made QR does not reload the order",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "      setQr(created);\n      setReloadKey((key) => key + 1);",
+    "replace": "      setQr(created);",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a QR failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"qr.toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the polling never starts",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "timer = setTimeout(poll, QR_POLL_INTERVAL_MS);\n    return () => {",
+    "replace": "return () => {",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the parent is not told when paid",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "          onChangedRef.current();\n          return;",
+    "replace": "          return;",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the polling stops at the first miss",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "      } catch {\n        /* a missed poll is retried on the next round */\n      }",
+    "replace": "      } catch {\n        return;\n      }",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the polling goes on after the code expired",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "if (qrExpiresMs !== null && Date.now() > qrExpiresMs) return;",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the polling is never cleaned up",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "      cancelled = true;\n      clearTimeout(timer);",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a confirmed payment does not tell the parent",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "    setReloadKey((key) => key + 1);\n    onChanged();",
+    "replace": "    setReloadKey((key) => key + 1);",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a code can be confirmed when already paid",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "attempt.status !== \"PAID\" && (",
+    "replace": "true && (",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a matched transaction can be attached",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "CONFIRMABLE_VERIFICATION_STATUSES.includes(tx.verificationStatus) && (",
+    "replace": "true && (",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a cancelled order cannot have a code confirmed",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/OrderPaymentTab.tsx",
+    "find": "order.paymentStatus === \"unpaid\" && order.status !== \"cancelled\" && attempt.status !== \"PAID\" && (",
+    "replace": "order.paymentStatus === \"unpaid\" && attempt.status !== \"PAID\" && (",
+    "tests": [
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an unsafe QR address is drawn",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "{isSafeQrUrl(qr.qrUrl) && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the panel ignores paid",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "if (paid && !presenting) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the paid panel hides a view in use",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "if (paid && !presenting) {",
+    "replace": "if (paid) {",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: an expired code keeps spinning",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "{!expired && <Loader2",
+    "replace": "{true && <Loader2",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the end time is never shown",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "qr.expiresAt\n              ? t(\"waiting\"",
+    "replace": "false\n              ? t(\"waiting\"",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: old codes are always mentioned",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "{qr.supersededTransferCodes.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the view for the customer does not open",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/AdminQrPanel.tsx",
+    "find": "onClick={() => setPresenting(true)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the unsafe QR is drawn full screen",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "{isSafeQrUrl(qr.qrUrl) && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: Escape does not close the view",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "if (event.key === \"Escape\") onCloseRef.current();",
+    "replace": "if (event.key === \"Enter\") onCloseRef.current();",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: leaving full screen does not close the view",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "if (!document.fullscreenElement) onCloseRef.current();",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: full screen is never requested",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "layer?.requestFullscreen?.().catch(() => {});",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: full screen is never left",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "if (document.fullscreenElement) document.exitFullscreen().catch(() => {});",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the view does not take focus",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "layer?.focus();",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the paid view shows the QR",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "{paid ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the end time is always shown in full screen",
+    "file": "src/app/[locale]/(admin)/admin/payments/_components/QrPresentation.tsx",
+    "find": "{qr.expiresAt && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/payments/qr-panel.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the review filter is sent as false",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/moduleSlice.ts",
+    "find": "needsReview: params.needsReview ? \"true\" : undefined,",
+    "replace": "needsReview: params.needsReview ? \"true\" : \"false\",",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the order id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/moduleSlice.ts",
+    "find": "`/api/admin/payments/orders/${encodeURIComponent(orderId)}`",
+    "replace": "`/api/admin/payments/orders/${orderId}`",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts"
+    ]
+  },
+  {
+    "name": "payments: the confirm id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/moduleSlice.ts",
+    "find": "`/api/admin/payments/orders/${encodeURIComponent(orderId)}/confirm`",
+    "replace": "`/api/admin/payments/orders/${orderId}/confirm`",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts"
+    ]
+  },
+  {
+    "name": "payments: only paid orders are searched",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/moduleSlice.ts",
+    "find": "{ paymentStatus: \"unpaid\" }",
+    "replace": "{ paymentStatus: \"paid\" }",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the code total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/moduleSlice.ts",
+    "find": "state.attemptsTotal = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a confirmation is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/moduleSlice.ts",
+    "find": ".addCase(confirmOrderPayment.pending, (state) => {\n        state.isUpdating = true;",
+    "replace": ".addCase(confirmOrderPayment.pending, (state) => {",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts"
+    ]
+  },
+  {
+    "name": "payments: the picker shows a hundred orders",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/constants.ts",
+    "find": "export const ORDER_PICKER_LIMIT = 10;",
+    "replace": "export const ORDER_PICKER_LIMIT = 100;",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the polling is fast",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/constants.ts",
+    "find": "export const QR_POLL_INTERVAL_MS = 4000;",
+    "replace": "export const QR_POLL_INTERVAL_MS = 400;",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the mismatch code is another",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/constants.ts",
+    "find": "export const AMOUNT_MISMATCH_CODE = 1710;",
+    "replace": "export const AMOUNT_MISMATCH_CODE = 1711;",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/confirm-modal.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: the sort of transactions gets a creation date",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/constants.ts",
+    "find": "{ value: \"-receivedAt\", key: \"newest\" },",
+    "replace": "{ value: \"-createdAt\", key: \"newest\" },",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/payments-list.test.tsx"
+    ]
+  },
+  {
+    "name": "payments: a late transaction cannot be attached",
+    "file": "src/app/[locale]/(admin)/admin/payments/_common/types.ts",
+    "find": "  \"LATE\",\n  \"NOT_PAYABLE\",\n];",
+    "replace": "  \"NOT_PAYABLE\",\n];",
+    "tests": [
+      "tests/admin/payments/payments-slice.test.ts",
+      "tests/admin/payments/payments-list.test.tsx",
+      "tests/admin/payments/order-tab.test.tsx"
+    ]
+  }
+]

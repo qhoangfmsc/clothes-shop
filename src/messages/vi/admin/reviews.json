@@ -55,7 +55,8 @@
     "title": "Đánh giá",
     "product": {
       "section": "Sản phẩm",
-      "allReviews": "Mọi đánh giá của sản phẩm này"
+      "allReviews": "Mọi đánh giá của sản phẩm này",
+      "viewOnStore": "Xem sản phẩm trên cửa hàng"
     },
     "review": {
       "section": "Đánh giá",

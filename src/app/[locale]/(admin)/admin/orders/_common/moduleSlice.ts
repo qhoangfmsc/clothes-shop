@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   ORDERS MODULE SLICE — Redux Toolkit + BaseReducer
-   ═══════════════════════════════════════════════════════════ */
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseCrudInitialState, baseCrudReducers, type BaseCrudState } from "@/src/store/baseSlice";
 import { authApi } from "@/src/lib/auth-api";
@@ -57,10 +53,8 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
-/**
- * Bulk status change: one PATCH per order (the BE has no bulk endpoint), so one failing order
- * does not stop the others. Resolves with the ids that changed and how many failed.
- */
+/** One PATCH per order (the BE has no bulk endpoint), so one failure does not stop the rest.
+ *  Resolves with the ids that changed and how many failed. */
 export const updateOrderStatuses = createAsyncThunk(
   "orders/updateStatuses",
   async ({

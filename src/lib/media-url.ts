@@ -3,10 +3,8 @@
  *  `/media/[...path]` route handler). */
 const STORAGE_PUBLIC_URL = /^https?:\/\/[^/]+\/storage\/v1\/object\/public\/[^/]+\/(.+)$/;
 
-/** Maps a Supabase Storage public URL to our own `/media/<key>` path so the
- *  project id and bucket never reach the DOM. Anything else (local assets,
- *  other CDNs, data/blob URLs) is returned untouched. Display-only: forms
- *  keep the original URL as their value. */
+/** Maps a Supabase Storage public URL to our own `/media/<key>` path so the project id and bucket never reach the DOM; anything
+ *  else is returned untouched. Display-only: forms keep the original URL as their value. */
 export function toMediaUrl<T extends string | null | undefined>(url: T): T {
   if (!url) return url;
   const match = STORAGE_PUBLIC_URL.exec(url);

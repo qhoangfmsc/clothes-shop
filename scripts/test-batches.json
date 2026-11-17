@@ -1,0 +1,62 @@
+{
+  "_comment": "Test process batch plan (.agent/skills/13-test-process.md). One batch = one working session, at most 5 modules. Every module appears exactly once. Order = risk × value; modules in a batch share helpers. Progress is derived from the repo: run `yarn test:progress`.",
+  "done": ["platform/auth"],
+  "batches": [
+    {
+      "id": 1,
+      "title": "Pure logic and the data foundation",
+      "why": "Pure functions and the HTTP/data layer: highest value per test, no UI, everything else builds on them. Money and error mapping are T0.",
+      "focus": "Complete platform/data-layer (list-query, media-url, product-url, SWR hooks, store) and platform/dev-tooling (check-conventions, check-docs, i18n scripts) which are only partly covered. Table-driven unit tests; hooks via renderHook + MSW.",
+      "modules": ["platform/currency", "platform/data-layer", "platform/i18n", "platform/seo", "platform/dev-tooling"]
+    },
+    {
+      "id": 2,
+      "title": "Cart, checkout and the customer's orders",
+      "why": "Money and stock: a bug here loses revenue. All are private pages, so every module has the guest-versus-signed-in dimension.",
+      "focus": "Extend renderApp with the Redux store (fresh state per test) and next/navigation (useSearchParams, useParams). Cart reducer and sync, optimistic updates, checkout totals from the BE, payment session.",
+      "modules": ["storefront/cart", "storefront/wishlist", "storefront/checkout", "storefront/customer-orders", "storefront/customer-returns"]
+    },
+    {
+      "id": 3,
+      "title": "Shared admin kit and the money-moving admin pages",
+      "why": "DataTable and the form kit are used by every admin page; testing them once covers a lot. Orders and payments change order and payment state.",
+      "focus": "First batch with the permission dimension: admin đủ quyền versus admin thiếu quyền (adminLimited) on every action button. DataTable server mode (search, sort, pagination, error), form validation.",
+      "modules": ["platform/ui-kit", "admin/admin-shell", "admin/products", "admin/orders", "admin/payments"]
+    },
+    {
+      "id": 4,
+      "title": "Admin: refunds, returns, reviews, users, categories",
+      "why": "After-sales and access management. Users controls who gets which permission.",
+      "focus": "Permission matrix per action (view, process, moderate, reply, refund). Reuse the DataTable and form helpers from batch 3.",
+      "modules": ["admin/refunds", "admin/returns", "admin/reviews", "admin/users", "admin/categories"]
+    },
+    {
+      "id": 5,
+      "title": "Admin: the rest",
+      "why": "Lower risk configuration and reporting pages that follow the same patterns.",
+      "focus": "Media upload (success, failure, no storage configured), site-config upsert/delete, dashboard and analytics data states (loading, empty, error).",
+      "modules": ["admin/collections", "admin/media", "admin/site-config", "admin/dashboard", "admin/analytics"]
+    },
+    {
+      "id": 6,
+      "title": "Storefront: browse and buy",
+      "why": "The public path that leads to revenue: landing, shop, product detail, collections, new in.",
+      "focus": "Guest and signed-in behaviour of add-to-cart and wishlist (requireAuth), filters and sorting in the URL, out-of-stock and not-found states, structured data.",
+      "modules": ["storefront/shop", "storefront/product-detail", "storefront/collections", "storefront/new-in", "storefront/landing-page"]
+    },
+    {
+      "id": 7,
+      "title": "Storefront: account, reviews and content pages",
+      "why": "Remaining customer pages. Reviews and account are private; the rest are static content.",
+      "focus": "Review create/edit/delete with images (success, validation, failure), account profile, contact form submit and errors, static pages as smoke plus metadata.",
+      "modules": ["storefront/customer-reviews", "storefront/account", "storefront/contact", "storefront/about", "storefront/legal"]
+    },
+    {
+      "id": 8,
+      "title": "App frame and presentation",
+      "why": "Mostly presentational shell: header, menus, footer, providers, tokens. Smoke and accessibility, not deep logic.",
+      "focus": "Header/menu for guest and signed-in, search bar, language switcher, route transition, 404/error pages; design tokens are declared N/A with a reason where there is nothing to test.",
+      "modules": ["platform/app-shell", "platform/site-chrome", "platform/design-system"]
+    }
+  ]
+}

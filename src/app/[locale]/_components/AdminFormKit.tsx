@@ -8,12 +8,9 @@ import { InfoHint } from "./InfoHint";
 /* `InfoHint` lives in its own file (the storefront uses it too); re-exported so admin imports keep working */
 export { InfoHint };
 
-/* ═══════════════════════════════ Modal shell ══════════════════════════════
-   The one modal frame every popup (admin or otherwise) should be built from:
-   header and footer are pinned, only the middle content scrolls. Compose it
-   as <ModalShell><form>...<ModalBody>fields</ModalBody><Footer /></form></ModalShell> —
-   the shell never scrolls itself, so a footer rendered as a sibling of
-   ModalBody (even several components below) always stays visible. */
+/* The one modal frame every popup is built from: header and footer are pinned, only the middle scrolls. Compose it as
+   <ModalShell><form>…<ModalBody>fields</ModalBody><Footer /></form></ModalShell>: the shell never scrolls itself, so a footer
+   that is a sibling of ModalBody always stays visible. */
 
 export function ModalShell({
   title,
@@ -58,8 +55,6 @@ export function ModalShell({
   );
 }
 
-/* ═══════════════════════════════ Scrollable body ════════════════════════ */
-
 export function ModalBody({
   children,
   className = "",
@@ -73,8 +68,6 @@ export function ModalBody({
     </div>
   );
 }
-
-/* ═══════════════════════════════ Tabs ══════════════════════════════════ */
 
 export interface FormTab {
   id: string;
@@ -109,8 +102,6 @@ export function FormTabs({
     </div>
   );
 }
-
-/* ═══════════════════════════════ Section / Field ═══════════════════════ */
 
 export function FormSection({ title, children }: { title?: string; children: ReactNode }) {
   return (
@@ -147,8 +138,6 @@ export function FormField({
     </div>
   );
 }
-
-/* ═══════════════════════════════ Footer actions ════════════════════════ */
 
 export function FormActions({
   onCancel,

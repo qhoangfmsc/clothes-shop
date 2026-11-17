@@ -9,6 +9,7 @@ import { ArrowLeft, MessageSquare, Package, Undo2 } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
+import { ApiError } from "@/src/lib/api";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
@@ -16,12 +17,13 @@ import UnauthenticatedState from "@/src/app/[locale]/_components/Unauthenticated
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import OrderThumb from "../../orders/_components/OrderThumb";
 import { CUSTOMER_CANCELLABLE_STATUSES, type ReturnRequest } from "../_common/types";
+import LoadFailed from "../_components/LoadFailed";
 import ReturnProgress from "../_components/ReturnProgress";
 import ReturnStatusBadge from "../_components/ReturnStatusBadge";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
 const WRAP_CLASS = "max-w-[45rem] mx-auto px-4 sm:px-6";
 const CARD_CLASS =
   "p-5 sm:p-6 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]";
@@ -41,6 +43,7 @@ export default function ReturnDetailContent() {
   const { apiFetch } = useApiAuth();
   const [request, setRequest] = useState<ReturnRequest | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
 
   const load = useCallback(async () => {
@@ -48,8 +51,10 @@ export default function ReturnDetailContent() {
     try {
       const res = await apiFetch<{ data: ReturnRequest }>(`/api/returns/${encodeURIComponent(params.returnId)}`);
       setRequest(res.data ?? null);
+      setLoadError(false);
     } catch (err) {
-      /* 1801 (not found) is translated by `useErrorMessage`; the page then shows its own "not found" state */
+      /* Only a 404 means "no such request"; anything else is a failure to load */
+      setLoadError(!(err instanceof ApiError && err.status === 404));
       toast.error(toErrorMessage(err, t("toast.loadFailed")));
     } finally {
       setIsLoading(false);
@@ -59,6 +64,20 @@ export default function ReturnDetailContent() {
   useEffect(() => {
     if (isAuthenticated) load();
   }, [isAuthenticated, load]);
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    load();
+  };
+
+  /* A visitor never loads the request, so the wall must not wait for it */
+  if (!authLoading && !isAuthenticated) {
+    return (
+      <main className={SHELL_CLASS}>
+        <UnauthenticatedState />
+      </main>
+    );
+  }
 
   if (authLoading || isLoading) {
     return (
@@ -70,10 +89,18 @@ export default function ReturnDetailContent() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!request && loadError) {
     return (
       <main className={SHELL_CLASS}>
-        <UnauthenticatedState />
+        <div className={`${WRAP_CLASS} flex flex-col items-center gap-4`}>
+          <LoadFailed title={t("error.title")} retryLabel={t("error.retry")} onRetry={handleRetry} />
+          <Link
+            href="/returns"
+            className="inline-flex items-center min-h-11 font-primary text-xs text-[var(--text-accent)] tracking-[0.08em] uppercase no-underline font-medium"
+          >
+            {t("back")}
+          </Link>
+        </div>
       </main>
     );
   }

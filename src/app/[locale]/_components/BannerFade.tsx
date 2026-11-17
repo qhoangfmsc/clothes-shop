@@ -17,10 +17,7 @@ interface BannerFadeProps {
   priority?: boolean;
 }
 
-/**
- * Crossfading banner stack that fills its (positioned) parent.
- * Pair with `useBannerRotation` + `CarouselDots` for hero backgrounds.
- */
+/** Crossfading banner stack that fills its positioned parent; pair with `useBannerRotation` + `CarouselDots`. */
 export default function BannerFade({
   banners,
   index,

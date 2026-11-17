@@ -1,0 +1,1261 @@
+[
+  {
+    "name": "reviews: a made-up tab opens the all tab",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "REVIEW_TABS.find((id) => id === searchParams.get(\"tab\")) ?? \"pending\"",
+    "replace": "REVIEW_TABS.find((id) => id === searchParams.get(\"tab\")) ?? \"all\"",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: any tab name is accepted",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "REVIEW_TABS.find((id) => id === searchParams.get(\"tab\")) ?? \"pending\"",
+    "replace": "((searchParams.get(\"tab\") as ReviewTab | null) ?? \"pending\")",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: another tab drops the other filters",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "const qs = new URLSearchParams(searchParams.toString());",
+    "replace": "const qs = new URLSearchParams();",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the address loses the bare page",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "return text ? `/admin/reviews?${text}` : \"/admin/reviews\";",
+    "replace": "return `/admin/reviews?${text}`;",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the waiting tab keeps its name in the address",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "urlWith({ tab: next === \"pending\" ? null : next })",
+    "replace": "urlWith({ tab: next })",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the waiting tab asks for every state",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "status: pendingTab ? \"PUBLISHED\" :",
+    "replace": "status:",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the waiting tab asks for replied ones too",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "replied: pendingTab ? \"false\" :",
+    "replace": "replied:",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the all tab asks for waiting ones only",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "const pendingTab = tab === \"pending\";",
+    "replace": "const pendingTab = true;",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the state filter is ignored on the all tab",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "((params.filters.status || undefined) as ReviewStatus | undefined)",
+    "replace": "undefined",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply filter is ignored on the all tab",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "((params.filters.replied || undefined) as \"true\" | \"false\" | undefined)",
+    "replace": "undefined",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the stars filter is ignored",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "rating: Number.isInteger(rating) && rating >= 1 && rating <= 5 ? rating : undefined,",
+    "replace": "rating: undefined,",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an empty stars filter sends zero",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "rating: Number.isInteger(rating) && rating >= 1 && rating <= 5 ? rating : undefined,",
+    "replace": "rating,",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the fit filter is ignored",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "fit: (params.filters.fit || undefined) as ReviewFit | undefined,",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the photos filter is ignored",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "hasImages: (params.filters.hasImages || undefined) as \"true\" | \"false\" | undefined,",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "        product,\n        userId,",
+    "replace": "        userId,",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the author filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "        userId,\n        sort: params.sort,",
+    "replace": "        sort: params.sort,",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the table keeps its state when the tab changes",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "key={`${tab}:${product ?? \"\"}:${userId ?? \"\"}`}",
+    "replace": "key={`${product ?? \"\"}:${userId ?? \"\"}`}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the table keeps its state when the product changes",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "key={`${tab}:${product ?? \"\"}:${userId ?? \"\"}`}",
+    "replace": "key={`${tab}:${userId ?? \"\"}`}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the table keeps its state when the author changes",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "key={`${tab}:${product ?? \"\"}:${userId ?? \"\"}`}",
+    "replace": "key={`${tab}:${product ?? \"\"}`}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the tab shows no count",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "t(\"tabs.pending\", { count: counts.reviews })",
+    "replace": "t(\"tabs.pending\", { count: 0 })",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an unknown count shows as a number",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "counts.reviews === undefined ? t(\"tabs.pendingNoCount\") :",
+    "replace": "false ? t(\"tabs.pendingNoCount\") :",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a zero count shows no number",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "counts.reviews === undefined ? t(\"tabs.pendingNoCount\") :",
+    "replace": "!counts.reviews ? t(\"tabs.pendingNoCount\") :",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product chip is always shown",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{product && (\n            <FilterChip",
+    "replace": "{true && (\n            <FilterChip",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the author chip is always shown",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{userId && (\n            <FilterChip",
+    "replace": "{true && (\n            <FilterChip",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product chip clears the author too",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "href={urlWith({ product: null })}",
+    "replace": "href={urlWith({ product: null, userId: null })}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the author chip clears the product too",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "href={urlWith({ userId: null })}",
+    "replace": "href={urlWith({ userId: null, product: null })}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the chip cannot be cleared",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "href={urlWith({ product: null })}",
+    "replace": "href=\"/admin/reviews\"",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: opening does not name the review in the address",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "router.push(urlWith({ reviewId: review.id }), { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: closing does not take the review from the address",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "router.push(urlWith({ reviewId: null }), { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: opening does not fetch the fuller data",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "    dispatch(fetchReviewDetail(review.id))\n      .unwrap()\n      .then(setDetail)\n      .catch(() => {\n        /* keep the row's data */\n      });",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a failed fuller fetch drops the panel",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "      .catch(() => {\n        /* keep the row's data */\n      });",
+    "replace": "      .catch(() => setDetail(null));",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the review in the address is fetched again and again",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "    if (openedFromUrl.current === urlReviewId) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the panel stays after the address loses its review",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "    if (!urlReviewId) {\n      openedFromUrl.current = null;\n      setDetail(null);\n      return;\n    }",
+    "replace": "    if (!urlReviewId) return;",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an action does not refresh the list",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "    setDetail(updated);\n    /* The menu badge and the tab count refresh by themselves after the write */\n    tableRef.current?.refresh();",
+    "replace": "    setDetail(updated);",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a gone review leaves the panel open",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "  const handleGone = () => {\n    closeDetail();",
+    "replace": "  const handleGone = () => {",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a gone review does not refresh the list",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "    closeDetail();\n    tableRef.current?.refresh();",
+    "replace": "    closeDetail();",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product has no name dash",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{r.product?.name ?? \"—\"}</span>",
+    "replace": "{r.product?.name}</span>",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product has no placeholder",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{r.product?.image ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the user id link is always shown",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{r.userId && (\n              <Link",
+    "replace": "{true && (\n              <Link",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the user id is not made safe in the link",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "href={`/admin/reviews?userId=${encodeURIComponent(r.userId)}`}",
+    "replace": "href={`/admin/reviews?userId=${r.userId}`}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the title is always shown",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{r.title && <span className=\"truncate",
+    "replace": "{true && <span className=\"truncate",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an empty text has no dash",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{r.content || \"—\"}",
+    "replace": "{r.content}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: no photos shows a count",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "r.images.length > 0 ? (",
+    "replace": "true ? (",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the replied mark is always the same",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{r.reply ? t(\"table.replied.yes\") : t(\"table.replied.no\")}",
+    "replace": "{t(\"table.replied.no\")}",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the replied mark has one colour",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "${r.reply ? \"text-[var(--text-muted)]\" : \"text-[var(--text-accent)] font-semibold\"}",
+    "replace": "text-[var(--text-muted)]",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the text shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "        hideBelow: \"lg\",\n        render: (r) => (\n          <div className=\"flex max-w-",
+    "replace": "        render: (r) => (\n          <div className=\"flex max-w-",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the photo count shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "        hideBelow: \"md\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the date shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "        hideBelow: \"sm\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the pending tab offers the state filter",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "if (tab === \"pending\") return common;",
+    "replace": "if (tab === \"never\") return common;",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the star options run the other way",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "[5, 4, 3, 2, 1].map",
+    "replace": "[1, 2, 3, 4, 5].map",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the photo options are swapped",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "{ value: \"true\", label: t(\"table.filterOptions.withPhotos\") },\n          { value: \"false\", label: t(\"table.filterOptions.withoutPhotos\") },",
+    "replace": "{ value: \"false\", label: t(\"table.filterOptions.withPhotos\") },\n          { value: \"true\", label: t(\"table.filterOptions.withoutPhotos\") },",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the empty message is always the same",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "filtered ? t(\"table.empty.filtered\") : tab === \"pending\" ? t(\"table.empty.pending\") : t(\"table.empty.none\")",
+    "replace": "t(\"table.empty.none\")",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the pending empty message shows on the all tab",
+    "file": "src/app/[locale]/(admin)/admin/reviews/ReviewsContent.tsx",
+    "find": "tab === \"pending\" ? t(\"table.empty.pending\") : t(\"table.empty.none\")",
+    "replace": "t(\"table.empty.pending\")",
+    "tests": [
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product has no link to the shop",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.product && productPath(review.product) && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product link shows without a product",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "                {review.product && (\n                  <Link\n                    href={`/admin/reviews?product=",
+    "replace": "                {true && (\n                  <Link\n                    href={`/admin/reviews?product=",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the product slug is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "href={`/admin/reviews?product=${encodeURIComponent(review.product.slug)}`}",
+    "replace": "href={`/admin/reviews?product=${review.product.slug}`}",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the shop link opens in the same tab",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "                    target=\"_blank\"\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the shop link has no safe rel",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "                    rel=\"noopener noreferrer\"\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a picture shows for a product without one",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.product?.image && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a gone product shows nothing",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.product?.name ?? \"—\"}",
+    "replace": "{review.product?.name}",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the author link always shows",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.userId && (\n                  <Link",
+    "replace": "{true && (\n                  <Link",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the author id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "href={`/admin/reviews?userId=${encodeURIComponent(review.userId)}`}",
+    "replace": "href={`/admin/reviews?userId=${review.userId}`}",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the edit time always shows",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.editedAt && <Row",
+    "replace": "{true && <Row",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the moderation time always shows",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.moderatedAt && (\n              <>",
+    "replace": "{true && (\n              <>",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the moderator always shows",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.moderatedBy && (\n                  <Row",
+    "replace": "{true && (\n                  <Row",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the hide reason shows on a published review",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{hidden && review.moderationNote && <Row",
+    "replace": "{review.moderationNote && <Row",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the hide reason always shows",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{hidden && review.moderationNote && <Row",
+    "replace": "{hidden && <Row",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the replier always shows",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{review.repliedBy && (\n              <Row",
+    "replace": "{true && (\n              <Row",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.REVIEW_ADMIN_REPLY}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.REVIEW_ADMIN_VIEW}>",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the buttons need no moderate permission",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.REVIEW_ADMIN_MODERATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.REVIEW_ADMIN_VIEW}>",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: moderating needs the reply permission",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.REVIEW_ADMIN_MODERATE}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.REVIEW_ADMIN_REPLY}>",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reminder shows on a hidden review",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{!hidden && <p className=\"m-0 text-xs",
+    "replace": "{true && <p className=\"m-0 text-xs",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hidden review offers Hide",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "{hidden ? (\n                <button",
+    "replace": "{!hidden ? (\n                <button",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: showing again needs no question",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "    if (!ok) return;\n    setBusy(true);",
+    "replace": "    setBusy(true);",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: showing again is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "    setBusy(true);\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: showing again stays busy",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "    } finally {\n      setBusy(false);\n    }",
+    "replace": "    } finally {\n    }",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: showing again does not tell the list",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "      toast.success(t(\"publish.toast.done\"));\n      onChanged(updated);",
+    "replace": "      toast.success(t(\"publish.toast.done\"));",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a failed show again is silent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"publish.toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a gone review is not noticed",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "if (code === CODE_NOT_FOUND) {\n      onGone();",
+    "replace": "if (code === CODE_NOT_FOUND) {",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx",
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an unchanged state is not noticed",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "} else if (code === CODE_INVALID_STATE) {",
+    "replace": "} else if (false) {",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx",
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an unchanged state leaves the hide form open",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "      setHiding(false);\n      try {",
+    "replace": "      try {",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an unchanged state does not reload the review",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "        onChanged(await dispatch(fetchReviewDetail(review.id)).unwrap());",
+    "replace": "        await dispatch(fetchReviewDetail(review.id)).unwrap();",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx",
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the wrong code means gone",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "const CODE_NOT_FOUND = 1901;",
+    "replace": "const CODE_NOT_FOUND = 1906;",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx",
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the wrong code means unchanged",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "const CODE_INVALID_STATE = 1906;",
+    "replace": "const CODE_INVALID_STATE = 1901;",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx",
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hidden review does not close its form",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "            setHiding(false);\n            onChanged(updated);",
+    "replace": "            onChanged(updated);",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hidden review does not tell the list",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "            setHiding(false);\n            onChanged(updated);",
+    "replace": "            setHiding(false);",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the hide form does not hear of a refusal",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "          onFailed={refreshAfterError}\n          onDone",
+    "replace": "          onDone",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply form does not hear of a refusal",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "                onFailed={refreshAfterError}\n              />",
+    "replace": "              />",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply box does not restart",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewDetailPanel.tsx",
+    "find": "key={`${review.id}:${review.reply?.repliedAt ?? \"none\"}`}",
+    "replace": "key={review.id}",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a blank reason is accepted",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "if (!note.trim()) {",
+    "replace": "if (!note) {",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: no reason is accepted",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "    if (!note.trim()) {\n      setError(t(\"errors.note\"));\n      return;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reason keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "hideReview({ reviewId: review.id, note: note.trim() })",
+    "replace": "hideReview({ reviewId: review.id, note })",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reason error stays",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "    setError(null);\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reason has no limit",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "maxLength={REVIEW_LIMITS.hideNoteMax}",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a suggestion adds to the note",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "onClick={() => setNote(t(`reasons.${key}`))}",
+    "replace": "onClick={() => setNote((n) => n + t(`reasons.${key}`))}",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hide does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "toast.success(t(\"toast.done\"));\n      onDone(updated);",
+    "replace": "toast.success(t(\"toast.done\"));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hide failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hide failure is not reported",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/HideReviewModal.tsx",
+    "find": "      onFailed?.(err);",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a low rating reason is added",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/constants.ts",
+    "find": "export const HIDE_REASON_KEYS = [\"link\", \"personal\", \"language\", \"spam\"] as const;",
+    "replace": "export const HIDE_REASON_KEYS = [\"link\", \"personal\", \"language\", \"spam\", \"low\"] as const;",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx",
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: a blank reply is accepted",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "if (!content.trim()) {",
+    "replace": "if (!content) {",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an empty reply is sent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "    if (!content.trim()) {\n      setError(t(\"errors.content\"));\n      return;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "replyToReview({ reviewId: review.id, content: content.trim() })",
+    "replace": "replyToReview({ reviewId: review.id, content })",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply error stays",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "    setError(null);\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a stored reply is not the start",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "useState(review.reply?.content ?? \"\")",
+    "replace": "useState(\"\")",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an untouched reply can be sent again",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "const unchanged = content.trim() === (review.reply?.content ?? \"\");",
+    "replace": "const unchanged = false;",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a reply with extra spaces counts as changed",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "const unchanged = content.trim() === (review.reply?.content ?? \"\");",
+    "replace": "const unchanged = content === (review.reply?.content ?? \"\");",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a new reply says it was updated",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.success(hasReply ? t(\"toast.updated\") : t(\"toast.created\"));",
+    "replace": "toast.success(t(\"toast.updated\"));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a replaced reply says it was posted",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.success(hasReply ? t(\"toast.updated\") : t(\"toast.created\"));",
+    "replace": "toast.success(t(\"toast.created\"));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.success(hasReply ? t(\"toast.updated\") : t(\"toast.created\"));\n      onChanged(updated);",
+    "replace": "toast.success(hasReply ? t(\"toast.updated\") : t(\"toast.created\"));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a reply failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a reply failure is not reported",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));\n      onFailed?.(err);",
+    "replace": "toast.error(toErrorMessage(err, t(\"toast.saveFailed\")));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: deleting needs no question",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "    if (!ok) return;\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the delete question is not a warning",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "      confirmLabel: t(\"confirmDelete.confirm\"),\n      danger: true,",
+    "replace": "      confirmLabel: t(\"confirmDelete.confirm\"),",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the box keeps the deleted reply",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "      setContent(\"\");\n      toast.success(t(\"toast.deleted\"));",
+    "replace": "      toast.success(t(\"toast.deleted\"));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a delete does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.success(t(\"toast.deleted\"));\n      onChanged(updated);",
+    "replace": "toast.success(t(\"toast.deleted\"));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a delete failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a delete failure is not reported",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));\n      onFailed?.(err);",
+    "replace": "toast.error(toErrorMessage(err, t(\"toast.deleteFailed\")));",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: delete shows without a reply",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "{hasReply && (\n          <button",
+    "replace": "{true && (\n          <button",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the reply has no limit",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewReplyForm.tsx",
+    "find": "maxLength={REVIEW_LIMITS.replyMax}",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/review-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a published review looks hidden",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewStatusBadge.tsx",
+    "find": "PUBLISHED: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",",
+    "replace": "PUBLISHED: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: a hidden review looks published",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewStatusBadge.tsx",
+    "find": "HIDDEN: \"bg-[rgba(212,165,165,0.15)] text-[var(--accent-rose)]\",",
+    "replace": "HIDDEN: \"bg-[rgba(163,177,138,0.15)] text-[var(--accent-sage)]\",",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: an unknown state has no fallback colour",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_components/ReviewStatusBadge.tsx",
+    "find": "\"bg-[rgba(107,101,96,0.08)] text-[var(--text-muted)]\"\n      }",
+    "replace": "\"\"\n      }",
+    "tests": [
+      "tests/admin/reviews/review-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the list asks for fewer filters",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    rating: params.rating,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the list drops the fit",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    fit: params.fit,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the list drops the photos filter",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    hasImages: params.hasImages,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the list drops the product",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    product: params.product,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the list drops the author",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    userId: params.userId,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the list drops the reply filter",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    replied: params.replied,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the list drops the state",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "    status: params.status,\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the review id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "`/api/admin/reviews/${encodeURIComponent(reviewId)}`",
+    "replace": "`/api/admin/reviews/${reviewId}`",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the reason is sent under another name",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "`${reviewUrl(reviewId)}/hide`, { note }",
+    "replace": "`${reviewUrl(reviewId)}/hide`, { reason: note }",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the reply is sent under another name",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "`${reviewUrl(reviewId)}/reply`, { content }",
+    "replace": "`${reviewUrl(reviewId)}/reply`, { text: content }",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: a write is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "          state.isUpdating = true;\n          state.error = null;",
+    "replace": "          state.error = null;",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: a write keeps the old error",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "          state.isUpdating = true;\n          state.error = null;",
+    "replace": "          state.isUpdating = true;",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: a write stays busy",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "        .addCase(thunk.fulfilled, (state) => {\n          state.isUpdating = false;\n        })",
+    "replace": "        .addCase(thunk.fulfilled, () => {})",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: a refused write stays busy",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "          state.isUpdating = false;\n          state.error = action.error.message ?? \"Failed\";",
+    "replace": "          state.error = action.error.message ?? \"Failed\";",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": ".addCase(fetchReviews.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchReviews.pending, (state) => {",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts"
+    ]
+  },
+  {
+    "name": "reviews: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts",
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  },
+  {
+    "name": "reviews: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/reviews/_common/constants.ts",
+    "find": "  { value: \"-rating\", key: \"ratingDesc\" },\n  { value: \"rating\", key: \"ratingAsc\" },",
+    "replace": "  { value: \"rating\", key: \"ratingAsc\" },\n  { value: \"-rating\", key: \"ratingDesc\" },",
+    "tests": [
+      "tests/admin/reviews/reviews-slice.test.ts",
+      "tests/admin/reviews/reviews-list.test.tsx"
+    ]
+  }
+]

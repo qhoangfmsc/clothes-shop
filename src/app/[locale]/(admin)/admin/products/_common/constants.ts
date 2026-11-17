@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   PRODUCTS MODULE CONSTANTS
-   Co-located with the module — NOT in src/constants/.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ProductColor } from "@/src/types/product";
 import type { ProductBadge, ProductStatus } from "@/src/types/enums";
 

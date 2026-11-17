@@ -1,3 +1,5 @@
+import type { ProductSummary } from "@/src/types/product";
+
 /* ── Review Types — Matches BE schema (docs/modules/review.md in the API repo) ── */
 
 export const REVIEW_FITS = ["small", "true_to_size", "large"] as const;
@@ -49,12 +51,8 @@ export interface PublicReview {
   reply: ReviewReply | null;
 }
 
-export interface ReviewProduct {
-  id: string;
-  name: string;
-  slug: string;
-  image: string;
-}
+/** The product a review belongs to: the shared `ProductSummary`, `null` on the review once the product is gone */
+export type ReviewProduct = ProductSummary;
 
 /** A review as its author sees it (`POST`/`PATCH` responses and `/api/my-reviews`) */
 export interface AuthorReview extends PublicReview {
@@ -103,6 +101,8 @@ export interface PendingReviewItem {
   productId: string;
   productName: string;
   productImage: string;
+  /** The product as it is now (to link to it); `null` once it was deleted */
+  product: ProductSummary | null;
   size: string;
   color: string;
   quantity: number;

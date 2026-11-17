@@ -25,10 +25,8 @@ interface HideReviewModalProps {
   onFailed?: (err: unknown) => void;
 }
 
-/**
- * Hides a review that breaks the content rules. The reason is required and the author reads it, so the field says so.
- * Suggested reasons fill the note in one tap; "low rating" is not one of them on purpose.
- */
+/** Hides a review that breaks the content rules; the reason is required and the author reads it.
+ *  Suggested reasons fill the note in one tap ("low rating" is not one on purpose). */
 export default function HideReviewModal({ review, onClose, onDone, onFailed }: HideReviewModalProps) {
   const t = useTranslations("admin.reviews.hide");
   const toErrorMessage = useErrorMessage();

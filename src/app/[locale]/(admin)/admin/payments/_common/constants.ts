@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   PAYMENTS MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 /** `sort=field` ascending, `-field` descending (BE whitelist: `receivedAt`, `amount`). `key` = label in admin.components.crud.sort.* */
 export const PAYMENT_SORT_OPTIONS = [
   { value: "-receivedAt", key: "newest" },

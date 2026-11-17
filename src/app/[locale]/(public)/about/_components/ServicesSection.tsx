@@ -7,10 +7,7 @@ import { SERVICES } from "../_common/constants";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-/**
- * Card backgrounds — diverse tinted creams from the palette,
- * each matching a different color family for visual richness.
- */
+/** Tinted cream card backgrounds from the palette, one colour family each. */
 const CARD_STYLES = [
   {
     bg: "var(--color-rose-milk)",
@@ -32,7 +29,7 @@ const CARD_STYLES = [
 export default function ServicesSection() {
   const t = useTranslations("public.about");
   return (
-    <section className="bg-[var(--bg-secondary)] py-20 px-10">
+    <section className="bleed [--bleed-px:2.5rem] bg-[var(--bg-secondary)] py-20">
       <div className="max-w-[75rem] mx-auto">
         {/* Section header */}
         <motion.span
@@ -70,8 +67,10 @@ export default function ServicesSection() {
                   ease: [...ease],
                   delay: idx * 0.12,
                 }}
-                className={`bg-[${style.bg}] border border-[${style.border}] rounded-md p-[clamp(2rem,3.5vw,3rem)] flex flex-col gap-5 cursor-default`}
+                className="border rounded-md p-[clamp(2rem,3.5vw,3rem)] flex flex-col gap-5 cursor-default"
                 style={{
+                  background: style.bg,
+                  borderColor: style.border,
                   transition:
                     "transform var(--duration-base) var(--ease-default), box-shadow var(--duration-base) var(--ease-default), border-color var(--duration-base) var(--ease-default)",
                 }}

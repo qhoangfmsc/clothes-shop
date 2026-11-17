@@ -7,21 +7,27 @@ export interface ProductColor {
   hex: string;
 }
 
-/** Category relation returned from BE (leftJoinAndSelect) */
+/** `category` of a full product (no `subcategories`: the BE drops them; read those from `GET /api/categories`) */
 export interface ProductCategory {
   id: string;
   slug: string;
   title: string;
   description: string;
+  heroImage: string | null;
+  priority: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-/** SubCategory relation returned from BE (leftJoinAndSelect) */
+/** `subcategory` of a full product (no `category`: the BE drops it, use `Product.category`) */
 export interface ProductSubCategory {
-  id: number;
+  id: string;
   slug: string;
   label: string;
   description: string;
   count: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Product {
@@ -36,9 +42,9 @@ export interface Product {
   originalPriceVnd: number | null;
   originalPriceUsd: number | null;
   images: string[];
-  /** BE returns relation object (joined), NOT a plain string */
+  /** Relation object, NOT a plain string */
   category: ProductCategory | null;
-  /** BE returns relation object (joined), NOT a plain string */
+  /** Relation object, NOT a plain string */
   subcategory: ProductSubCategory | null;
   badge: ProductBadge | null;
   status: ProductStatus;
@@ -53,4 +59,16 @@ export interface Product {
   ratingCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+/** The short product the BE nests in autocomplete results and reviews (`ProductSummary`): enough to identify it and build its link.
+ *  `image`, `badge`, `category` and `subcategory` can be `null`; the other keys are always present. */
+export interface ProductSummary {
+  id: string;
+  name: string;
+  slug: string;
+  image: string | null;
+  badge: ProductBadge | null;
+  category: { id: string; slug: string; title: string } | null;
+  subcategory: { id: string; slug: string; label: string } | null;
 }

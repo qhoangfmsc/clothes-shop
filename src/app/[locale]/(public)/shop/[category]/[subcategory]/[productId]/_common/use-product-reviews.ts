@@ -39,15 +39,9 @@ interface ListPage {
   total: number;
 }
 
-/**
- * Published reviews of a product, filtered and sorted by the BE, `REVIEW_PAGE_SIZE` at a time.
- * - The first request is page 1; every "Show more" fetches only the next page and appends it (nothing already on screen is asked for again).
- * - `loaded` is everything fetched, `visible` how many of it are shown. "Show fewer" only lowers `visible`, so the pages stay in
- *   memory and opening the list again is instant and makes no request until it runs past what was fetched.
- * - A change of filter or sort starts over; `reload` asks again for as many reviews as are loaded, in one request.
- * Nothing is requested while `enabled` is false (the section is collapsed); it loads page 1 when it turns true.
- * An answer that arrives after the query changed is dropped.
- */
+/** Published reviews of a product, filtered and sorted by the BE, `REVIEW_PAGE_SIZE` at a time: "Show more" fetches only the next page.
+ *  `loaded` is everything fetched, `visible` how many are shown, so "Show fewer" makes no request. A change of filter or sort starts over;
+ *  nothing is requested while `enabled` is false, and an answer that arrives after the query changed is dropped. */
 export function useReviewList(productId: string, filters: ReviewFilters, enabled = true) {
   const [loaded, setLoaded] = useState<PublicReview[]>([]);
   const [total, setTotal] = useState(0);

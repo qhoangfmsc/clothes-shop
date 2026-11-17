@@ -11,11 +11,8 @@ import type { PendingReviewsResult } from "./types";
 
 export const PENDING_REVIEWS_KEY = "reviews:pending";
 
-/**
- * Order lines the signed-in customer can still review (`GET /api/my-reviews/pending`) — the only truth about
- * what is reviewable; it is never worked out from the order status. A failed request (for example a missing
- * permission) leaves the list empty, so features that depend on it simply stay hidden.
- */
+/** Order lines the customer can still review (`GET /api/my-reviews/pending`): the only truth about what is reviewable,
+ *  never worked out from the order status. A failed request leaves the list empty, so dependent features stay hidden. */
 export function usePendingReviews() {
   const { isAuthenticated } = useAuth();
   const { apiFetch } = useApiAuth();

@@ -40,8 +40,6 @@
     }
   },
   "cta": {
-    "text": "Let us make something beautiful for you",
-    "button": "Get in Touch",
-    "copyright": "DOOVAN ® {year}"
+    "button": "Get in Touch"
   }
 }

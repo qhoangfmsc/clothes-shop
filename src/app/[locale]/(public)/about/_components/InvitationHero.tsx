@@ -9,7 +9,7 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 export default function InvitationHero() {
   const t = useTranslations("public.about.hero");
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--color-rose-milk)]">
+    <section className="bleed relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--color-rose-milk)]">
       {/* Mood wallpaper — subtle background texture */}
       <motion.div
         initial={{ opacity: 0 }}

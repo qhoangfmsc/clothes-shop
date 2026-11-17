@@ -56,14 +56,7 @@ export default function GoogleSignInButton({ redirectAfterLogin = false }: Googl
      is created, so a value that arrives later would be ignored. */
   const [lastEmail] = useState(readLastGoogleEmail);
 
-  /**
-   * Use authorization_code flow:
-   * 1. Google popup → user consents → returns auth code
-   * 2. We exchange code for access_token client-side via Google's token endpoint
-   * 3. Then use the access_token to get user info and send to our BE
-   *
-   * Alternative: use implicit flow to get access_token directly
-   */
+  // authorization_code flow: Google popup → auth code → exchanged client-side for an access_token → user info goes to the BE.
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {

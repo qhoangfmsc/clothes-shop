@@ -31,5 +31,9 @@
   "reorder": {
     "handle": "Drag to reorder",
     "disabled": "Reordering is only available when sorted by priority with no search applied"
+  },
+  "error": {
+    "message": "We couldn't load the data.",
+    "retry": "Try again"
   }
 }

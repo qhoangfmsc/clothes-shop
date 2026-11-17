@@ -15,17 +15,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Check, XCircle, TriangleAlert, Info, X } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
-   TOAST SYSTEM — Global reusable toast notifications
-   
-   Usage:
-     const { toast } = useToast();
-     toast.success("Item added to your bag");
-     toast.error("Something went wrong");
-     toast.info("Your order is being processed");
-     toast.warning("Only 2 left in stock");
-   ═══════════════════════════════════════════════════════════ */
-
 type ToastVariant = "success" | "error" | "info" | "warning";
 type ToastPosition = "top-right" | "top-center" | "bottom-right" | "bottom-center";
 

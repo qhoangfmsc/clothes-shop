@@ -44,11 +44,21 @@ export default function WishlistContent() {
   const handleRemove = useCallback(
     (productId: string, name: string) => {
       dispatch(removeWishlistItem(productId));
-      dispatch(syncRemoveFromWishlist(productId));
+      dispatch(syncRemoveFromWishlist(productId))
+        .unwrap()
+        .catch(() => toast.error(t("toast.syncFailed")));
       toast.info(t("card.removed", { name }));
     },
     [dispatch, toast, t]
   );
+
+  /* The BE has no "empty the list" call: one DELETE per product */
+  const handleClearAll = useCallback(async () => {
+    const productIds = items.map((item) => item.productId);
+    dispatch(clearWishlist());
+    const results = await Promise.allSettled(productIds.map((id) => dispatch(syncRemoveFromWishlist(id)).unwrap()));
+    if (results.some((result) => result.status === "rejected")) toast.error(t("toast.syncFailed"));
+  }, [items, dispatch, toast, t]);
 
   /* Loading */
   if (isLoading) {
@@ -102,7 +112,7 @@ export default function WishlistContent() {
 
           {items.length > 0 && (
             <button
-              onClick={() => dispatch(clearWishlist())}
+              onClick={handleClearAll}
               className="wishlist-page__clear-btn"
             >
               {t("header.clearAll")}
@@ -135,10 +145,6 @@ export default function WishlistContent() {
               <div className="wishlist-empty__feature">
                 <span className="wishlist-empty__feature-dot" style={{ background: "var(--accent-rose)" }} />
                 {t("empty.features.save")}
-              </div>
-              <div className="wishlist-empty__feature">
-                <span className="wishlist-empty__feature-dot" style={{ background: "var(--accent-primary)" }} />
-                {t("empty.features.priceDrops")}
               </div>
               <div className="wishlist-empty__feature">
                 <span className="wishlist-empty__feature-dot" style={{ background: "var(--accent-sage)" }} />
@@ -221,14 +227,14 @@ export default function WishlistContent() {
 
       <style>{`
         .wishlist-page {
-          min-height: 100vh;
-          padding-top: 120px;
+          min-height: var(--page-min-h);
+          padding-top: 7.5rem;
           padding-bottom: var(--space-16);
           background: var(--bg-primary);
         }
 
         .wishlist-page__inner {
-          max-width: 960px;
+          max-width: 60rem;
           margin: 0 auto;
           padding: 0 var(--space-4);
         }
@@ -399,8 +405,8 @@ export default function WishlistContent() {
           position: absolute;
           top: var(--space-2);
           right: var(--space-2);
-          width: 32px;
-          height: 32px;
+          width: 2rem;
+          height: 2rem;
           border-radius: 50%;
           background: rgba(251, 248, 241, 0.85);
           backdrop-filter: blur(8px);
@@ -437,8 +443,8 @@ export default function WishlistContent() {
         }
 
         .wishlist-empty__icon-wrap {
-          width: 80px;
-          height: 80px;
+          width: 5rem;
+          height: 5rem;
           border-radius: 50%;
           background: var(--color-champagne-cream);
           display: flex;
@@ -462,7 +468,7 @@ export default function WishlistContent() {
           color: var(--text-muted);
           letter-spacing: -0.02em;
           line-height: 140%;
-          max-width: 320px;
+          max-width: 20rem;
         }
 
         .wishlist-empty__features {
@@ -472,7 +478,7 @@ export default function WishlistContent() {
           padding-top: var(--space-5);
           border-top: 1px solid var(--border-subtle);
           width: 100%;
-          max-width: 280px;
+          max-width: 17.5rem;
         }
 
         .wishlist-empty__feature {
@@ -487,8 +493,8 @@ export default function WishlistContent() {
         }
 
         .wishlist-empty__feature-dot {
-          width: 6px;
-          height: 6px;
+          width: 0.375rem;
+          height: 0.375rem;
           border-radius: 50%;
           flex-shrink: 0;
         }
@@ -497,7 +503,7 @@ export default function WishlistContent() {
           display: inline-flex;
           align-items: center;
           gap: var(--space-2);
-          padding: 12px 28px;
+          padding: 0.75rem 1.75rem;
           border-radius: var(--radius-pill);
           background: var(--accent-primary);
           color: var(--text-on-gold);
@@ -523,7 +529,7 @@ export default function WishlistContent() {
         .wishlist-page__continue {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 0.375rem;
           font-family: var(--font-primary);
           font-size: var(--text-xs);
           color: var(--text-accent);
@@ -537,7 +543,7 @@ export default function WishlistContent() {
 
         /* ── Skeleton ── */
         .wishlist-skeleton__header {
-          height: 60px;
+          height: 3.75rem;
           border-radius: var(--radius-md);
           background: var(--color-champagne-cream);
           margin-bottom: var(--space-8);

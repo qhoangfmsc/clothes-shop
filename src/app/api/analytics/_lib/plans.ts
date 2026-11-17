@@ -1,12 +1,8 @@
 import type { AnalyticsCapabilities } from "@/src/types/analytics";
 
-/* What each Vercel plan allows (see vercel.com/docs/analytics/limits-and-pricing):
-     Hobby          1 month reporting window, no custom events, no UTM
-     Pro            12 months, custom events, no UTM
-     Pro + Plus     24 months, custom events, UTM
-     Enterprise     24 months, custom events, UTM
-   The API cannot tell us the plan, so it is configured with WEB_ANALYTICS_PLAN.
-   Unset/unknown falls back to Hobby: the report never asks for data the plan cannot return. */
+/* What each Vercel plan allows (vercel.com/docs/analytics/limits-and-pricing): Hobby 1 month, no custom events, no UTM; Pro 12 months,
+   custom events; Pro + Plus and Enterprise 24 months, custom events, UTM. The API cannot tell the plan, so `WEB_ANALYTICS_PLAN` sets it;
+   unset or unknown falls back to Hobby, so the report never asks for data the plan cannot return. */
 const PLAN_CAPABILITIES = {
   hobby: { maxRangeDays: 30, customEvents: false, utm: false },
   pro: { maxRangeDays: 365, customEvents: true, utm: false },

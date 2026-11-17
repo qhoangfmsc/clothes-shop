@@ -27,12 +27,8 @@ interface ImageViewerProps {
   onClose: () => void;
 }
 
-/**
- * Full-screen photo viewer (yet-another-react-lightbox) for phones, tablets and desktops.
- * Pinch, double-tap / double-click, Ctrl + wheel, drag to pan, ± keys; swipe or arrows to change photo;
- * toolbar with zoom out / current zoom (tap = back to fit) / zoom in, and a photo counter.
- * Loaded on demand (`next/dynamic`) so the library stays out of the initial page bundle.
- */
+/** Full-screen photo viewer (yet-another-react-lightbox) with zoom, pan and a photo counter.
+ *  Loaded on demand (`next/dynamic`) so the library stays out of the initial page bundle. */
 export default function ImageViewer({ images, productName, index, open, onView, onClose }: ImageViewerProps) {
   const t = useTranslations("public.product.detail");
 

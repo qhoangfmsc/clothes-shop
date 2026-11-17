@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   COLLECTIONS MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 import type { CollectionFormData } from "./types";
 
 export const SEASONS = ["Limited Edition"] as const;

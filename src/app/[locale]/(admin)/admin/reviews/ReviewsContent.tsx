@@ -25,8 +25,6 @@ import type { ReviewListResult } from "./_common/types";
 import ReviewDetailPanel from "./_components/ReviewDetailPanel";
 import ReviewStatusBadge from "./_components/ReviewStatusBadge";
 
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
-
 export default function ReviewsContent() {
   const t = useTranslations("admin.reviews");
   const tFit = useTranslations("shared.reviews.fit");

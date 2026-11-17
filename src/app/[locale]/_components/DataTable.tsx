@@ -32,8 +32,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { useDebounce } from "@/src/hooks/use-debounce";
 import { LIST_DEFAULT_LIMIT, clampLimit } from "@/src/lib/list-query";
 
-/* ═══════════════════════════════════ Types ═══════════════════════════════════ */
-
 export interface DataTableColumn<T> {
   key: string;
   header: string;
@@ -140,8 +138,6 @@ export interface DataTableProps<T> {
   tableRef?: React.RefObject<DataTableRef | null>;
 }
 
-/* ═══════════════════════════════ Defaults ═══════════════════════════════════ */
-
 const DEBOUNCE_MS = 350;
 
 function defaultKeyExtractor<T extends { id?: string | number }>(row: T): string {
@@ -168,14 +164,10 @@ function getPageRange(current: number, total: number): (number | "...")[] {
   return range;
 }
 
-/* ═══════════════════════════════ Styles ═════════════════════════════════════ */
-
 const inputClass =
   "py-2 px-3 border-0 border-b border-[var(--border-light)] rounded-none text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none";
 const selectClass =
   "py-2 px-3 border-0 rounded-lg text-sm font-primary bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none min-w-[8.125rem] h-9 pointer-coarse:h-11 pointer-coarse:text-base";
-
-/* ═══════════════════════════════ Sortable row ═══════════════════════════════ */
 
 interface SortableRowProps {
   id: string;
@@ -226,8 +218,6 @@ function SortableRow({ id, className, disabled, handleLabel, children }: Sortabl
   );
 }
 
-/* ═══════════════════════════════ Component ══════════════════════════════════ */
-
 function DataTableInner<T extends { id?: string | number }>(
   props: DataTableProps<T>,
   ref: React.Ref<DataTableRef>
@@ -272,6 +262,7 @@ function DataTableInner<T extends { id?: string | number }>(
   const [fetchedData, setData] = useState<T[]>([]);
   const [fetchedTotal, setTotal] = useState(0);
   const [fetching, setLoading] = useState(!!fetchData);
+  const [failed, setFailed] = useState(false);
 
   const isStatic = !fetchData;
   const data = isStatic ? (rows ?? []) : fetchedData;
@@ -326,6 +317,7 @@ function DataTableInner<T extends { id?: string | number }>(
         const result = await fetchData(params);
         setData(result.data);
         setTotal(result.total);
+        setFailed(false);
         /* Keep only ticked rows that are still on screen (page/filter change, deletes). */
         const visibleKeys = new Set(result.data.map(keyExtractor));
         setSelectedKeys((prev) => new Set([...prev].filter((k) => visibleKeys.has(k))));
@@ -336,6 +328,7 @@ function DataTableInner<T extends { id?: string | number }>(
       } catch (err) {
         setData([]);
         setTotal(0);
+        setFailed(true);
         setSelectedKeys(new Set());
         onError?.(err);
       } finally {
@@ -425,7 +418,16 @@ function DataTableInner<T extends { id?: string | number }>(
   }));
 
   /* ── Fetch on param change ── */
+  const askedSearchRef = useRef(debouncedSearch);
   useEffect(() => {
+    /* A new search starts from page 1; the page change then asks, so the old page is never asked with the new search */
+    if (askedSearchRef.current !== debouncedSearch) {
+      askedSearchRef.current = debouncedSearch;
+      if (page !== 1) {
+        setPage(1);
+        return;
+      }
+    }
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, activeFilters, sort, page]);
@@ -494,9 +496,22 @@ function DataTableInner<T extends { id?: string | number }>(
               colSpan={columns.length + (selectable ? 1 : 0) + (reorder ? 1 : 0)}
               className="py-10 px-4 text-center text-[var(--text-muted)] text-sm font-primary"
             >
-              {typeof emptyMessage === "function"
-                ? emptyMessage(hasActiveFilters)
-                : (emptyMessage ?? t(hasActiveFilters ? "empty.filtered" : "empty.none"))}
+              {failed ? (
+                <span role="alert" className="flex flex-col items-center gap-3">
+                  {t("error.message")}
+                  <button
+                    type="button"
+                    onClick={() => load()}
+                    className="py-1.5 px-4 pointer-coarse:min-h-11 rounded-sm border border-[var(--border-light)] bg-transparent cursor-pointer text-xs font-semibold font-primary text-[var(--text-accent)]"
+                  >
+                    {t("error.retry")}
+                  </button>
+                </span>
+              ) : typeof emptyMessage === "function" ? (
+                emptyMessage(hasActiveFilters)
+              ) : (
+                (emptyMessage ?? t(hasActiveFilters ? "empty.filtered" : "empty.none"))
+              )}
             </td>
           </tr>
         )}
@@ -662,7 +677,7 @@ function DataTableInner<T extends { id?: string | number }>(
       )}
 
       {/* ── Table ── */}
-      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden flex-1 min-h-0 flex flex-col">
+      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden flex-initial min-h-0 flex flex-col">
         {loading && (
           <div className="absolute inset-0 bg-[rgba(251,248,241,0.5)] flex items-center justify-center z-10 rounded-2xl">
             <span className="text-sm text-[var(--text-muted)] font-primary">{t("loading")}</span>
@@ -767,8 +782,6 @@ function DataTableInner<T extends { id?: string | number }>(
     </div>
   );
 }
-
-/* ═══════════════════════════════ Forward Ref ════════════════════════════════ */
 
 export const DataTable = forwardRef(DataTableInner) as <T extends { id?: string | number }>(
   props: DataTableProps<T> & { ref?: React.Ref<DataTableRef> }

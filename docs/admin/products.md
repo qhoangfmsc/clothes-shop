@@ -1,6 +1,6 @@
 # Products (quản lý sản phẩm)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/products` · **Cập nhật:** 2026-10-18
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/products` · **Cập nhật:** 2026-10-25
 > **Code:** `(admin)/admin/products/` — `ProductsContent.tsx`, `_common/{moduleSlice,types,constants}.ts`
 > **i18n:** `admin.products`, `admin.components.crud`, `common.status`, `common.productBadge`
 > **Redux slice:** `state.products`
@@ -41,14 +41,14 @@ Cho phép admin đưa sản phẩm lên cửa hàng và giữ catalog đúng: gi
 | Images | `ImageListField` — ảnh đầu tiên là ảnh đại diện |
 
 - Form không có trường điểm hay số đánh giá (BE từ chối nếu gửi `ratingAverage` / `ratingCount`); `openEdit` chỉ nạp các trường của `EMPTY_FORM` nên payload không bao giờ chứa chúng.
-- Gõ tên → `slug = slugify(name)` (bỏ dấu, chữ thường, `-`); slug không có ô nhập riêng.
-- Đổi danh mục sẽ xóa `subcategoryId`.
+- Gõ tên → `slug = slugify(name)` (`src/lib/slugify.ts`, dùng chung với danh mục và bộ sưu tập: chữ thường, `đ` thành `d`, bỏ dấu, ký tự khác chữ số và a–z thành `-`, bỏ `-` hai đầu); slug không có ô nhập riêng và được tính lại cả khi sửa tên một sản phẩm đã có.
+- Đổi danh mục sẽ xóa `subcategoryId`. Danh sách danh mục con của dropdown lấy từ `Category.subcategories` của `GET /api/admin/categories` (`useAdminCategories`, tối đa 200), không từ `product.category`; `subcategoryId` là `product.subcategory.id` (chuỗi).
 - Submit: nếu danh mục có danh mục con mà chưa chọn → toast lỗi `toast.subcategoryRequired`. Trước khi gửi, `parseVndInput` kiểm giá: số nguyên VND từ `MIN_PRICE_VND` (1) đến `MAX_PRICE_VND` (1.000.000.000) và giá gốc (nếu có) không nhỏ hơn giá; sai thì hiện lỗi dưới ô (`form.errors.price` / `form.errors.originalPrice`) và không gọi API (nếu BE vẫn từ chối bằng 400, toast hiện lỗi của BE). Payload gửi: form với `priceVnd` / `originalPriceVnd` (số nguyên hoặc `null`, không còn `price`/`originalPrice`), `subcategoryId || null`.
 - Tạo: `POST /api/admin/products`; sửa: `PATCH /api/admin/products/:id`; xóa: `DELETE /api/admin/products/:id`. Sau thành công: toast, `tableRef.refresh()`, đóng modal; lỗi: toast qua `useErrorMessage` (modal giữ nguyên).
 
 ### 4.3 Kiểu dữ liệu
 
-- `Product` (`src/types/product.ts`): `id, slug, sku, name, priceVnd, priceUsd, originalPriceVnd | null, originalPriceUsd | null, images, category (object join), subcategory (object join), badge, status, description, material, care, sizes, colors[{name,hex}], tags, createdAt, updatedAt`.
+- `Product` (`src/types/product.ts`): `id, slug, sku, name, priceVnd, priceUsd, originalPriceVnd | null, originalPriceUsd | null, images, category (object: id, slug, title, description, heroImage, priority, createdAt, updatedAt — không có `subcategories`), subcategory (object: id (chuỗi), slug, label, description, count, createdAt, updatedAt — không có `category`), badge, status, description, material, care, sizes, colors[{name,hex}], tags, createdAt, updatedAt`.
 - Module: `ProductListParams extends ListParams { category?, badge?, status? }`, `ProductFormData`, `ProductListResult`.
 - Enum: badge `new | sale | bestseller | sold_out | limited | custom_order`; status `active | disabled`.
 
@@ -58,3 +58,7 @@ Cho phép admin đưa sản phẩm lên cửa hàng và giữ catalog đúng: gi
 - Sản phẩm được chọn vào bộ sưu tập ở [collections](./collections.md).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+### 4.5 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/products.md](../../specs/admin/products.md). Test ở `tests/admin/products/` (`products-list`, `products-form`, `products-slice`; `products-kit.tsx` là BE giả và hàm render dùng chung); `mutants.json` có đột biến cho `ProductsContent`, kho và hằng số. Khi BE lỗi, bảng (`DataTable`) hiện "không tải được dữ liệu" kèm nút "Thử lại" thay cho "chưa có dữ liệu".

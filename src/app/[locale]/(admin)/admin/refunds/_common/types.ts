@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   REFUNDS MODULE TYPES — money owed back to customers (admin)
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ListParams } from "@/src/lib/list-query";
 import type { OrderPaymentStatus } from "@/src/types/enums";
 

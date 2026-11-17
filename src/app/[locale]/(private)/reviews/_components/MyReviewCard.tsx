@@ -2,8 +2,9 @@
 
 import { EyeOff, PenLine } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { useRouter } from "@/src/i18n/navigation";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { getProductUrl } from "@/src/hooks/use-api";
+import { productPath } from "@/src/lib/product-url";
 import { toMediaUrl } from "@/src/lib/media-url";
 import ReviewContent from "@/src/app/[locale]/_components/ReviewContent";
 import OrderThumb from "@/src/app/[locale]/(private)/orders/_components/OrderThumb";
@@ -14,17 +15,19 @@ interface MyReviewCardProps {
   onEdit: (review: AuthorReview) => void;
 }
 
-/**
- * One of the customer's own reviews: the product, the review as the public sees it, and what only the author
- * sees — "hidden by the store" with the reason, and the one allowed edit (`canEdit` / `editableUntil` decide).
- */
+/** One of the customer's own reviews: the public view plus what only the author sees ("hidden by the store" with its reason,
+ *  and the one allowed edit, decided by `canEdit` / `editableUntil`). */
 export default function MyReviewCard({ review, onEdit }: MyReviewCardProps) {
   const t = useTranslations("private.reviews.mine.card");
   const format = useFormatter();
   const hidden = review.status === "HIDDEN";
   const router = useRouter();
 
-  /* The product URL needs its category and sub-category, which a review does not carry: look it up on click */
+  /* The review's product carries its category and sub-category, so the link is built from it; they are `null` when the
+     BE could not load them: then the real URL is looked up on click */
+  const productHref = review.product ? productPath(review.product) : null;
+  const viewProductClass =
+    "min-h-6 cursor-pointer self-start border-0 bg-transparent p-0 font-primary text-[0.6875rem] text-[var(--text-accent)] hover:underline pointer-coarse:min-h-11";
   const openProduct = async () => {
     if (!review.product) return;
     router.push((await getProductUrl(review.product.id)) ?? "/shop");
@@ -38,15 +41,16 @@ export default function MyReviewCard({ review, onEdit }: MyReviewCardProps) {
           <span className="line-clamp-2 font-primary text-sm font-medium tracking-[-0.02em] text-[var(--text-primary)]">
             {review.product?.name ?? t("productRemoved")}
           </span>
-          {review.product && (
-            <button
-              type="button"
-              onClick={() => void openProduct()}
-              className="min-h-6 cursor-pointer self-start border-0 bg-transparent p-0 font-primary text-[0.6875rem] text-[var(--text-accent)] hover:underline pointer-coarse:min-h-11"
-            >
-              {t("viewProduct")}
-            </button>
-          )}
+          {review.product &&
+            (productHref ? (
+              <Link href={productHref} className={`${viewProductClass} inline-flex items-center no-underline`}>
+                {t("viewProduct")}
+              </Link>
+            ) : (
+              <button type="button" onClick={() => void openProduct()} className={viewProductClass}>
+                {t("viewProduct")}
+              </button>
+            ))}
         </div>
         {hidden && (
           <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[rgba(212,165,165,0.15)] px-2.5 py-1 font-primary text-xs font-semibold text-[var(--accent-rose)]">

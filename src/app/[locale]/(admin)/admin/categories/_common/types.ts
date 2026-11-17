@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   CATEGORIES MODULE TYPES
-   Co-located with the module — NOT in src/types/.
-   ═══════════════════════════════════════════════════════════ */
-
 import type { Category } from "@/src/types/category";
 
 import type { ListParams } from "@/src/lib/list-query";
@@ -16,7 +11,7 @@ export interface CategoryFormData {
   /** Read-only: the BE assigns it on create (next in line) and changes it via reorder. */
   priority: number | null;
   subcategories: {
-    id?: number;
+    id?: string;
     slug: string;
     label: string;
     description: string;

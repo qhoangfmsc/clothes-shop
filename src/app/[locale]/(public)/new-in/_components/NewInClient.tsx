@@ -15,6 +15,7 @@ import BannerFade from "@/src/app/[locale]/_components/BannerFade";
 import { CarouselDots } from "@/src/app/[locale]/_components/CarouselControls";
 import { useBannerRotation } from "@/src/hooks/use-banner-rotation";
 import type { BannerItem } from "@/src/types/site-config";
+import { productPath } from "@/src/lib/product-url";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,7 +34,7 @@ function buildSpotlights(
     desc: p.description,
     price: formatPrice(p),
     image: p.images[0],
-    href: `/shop/${p.category?.slug ?? ""}/${p.subcategory?.slug ?? ""}/${p.id}`,
+    href: productPath(p) ?? "/shop",
     bgColor: SPOTLIGHT_BGS[idx] ?? "var(--bg-section-2)",
   }));
 }
@@ -203,7 +204,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
       {/* ═══ 1. SPLIT-SCREEN HERO ═══ */}
       <section
         ref={heroRef}
-        className="flex flex-col lg:flex-row min-h-screen overflow-hidden bg-[var(--bg-primary)]"
+        className="bleed flex flex-col lg:flex-row min-h-screen overflow-hidden bg-[var(--bg-primary)]"
       >
         {/* Text side */}
         <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-[7.5rem] pb-12 sm:pb-16 lg:py-0 gap-6 relative overflow-hidden">
@@ -249,12 +250,9 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           </span>
         </div>
 
-        {/* Image side: a champagne base color always shows underneath, and
-            the image (when available) sits at slightly reduced opacity on
-            top — so the brand color and the photo are both visible together.
-            No image yet → the base color alone. */}
+        {/* A champagne base colour always shows; the image (when there is one) sits on it at reduced opacity. */}
         <div
-          className="flex-1 relative min-h-[25rem] lg:min-h-auto overflow-hidden"
+          className="bleed-r flex-1 relative min-h-[25rem] lg:min-h-auto overflow-hidden"
           data-ni-hero-image
           style={{ background: "var(--bg-section-3)" }}
         >
@@ -274,7 +272,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
       </section>
 
       {/* ═══ 2. TICKER STRIP ═══ */}
-      <div className="overflow-hidden py-4 bg-[var(--color-obsidian)]">
+      <div className="bleed overflow-hidden py-4 bg-[var(--color-obsidian)]">
         <div className="flex whitespace-nowrap motion-safe:animate-[ni-ticker-scroll_18s_linear_infinite]">
           {[...Array(2)].map((_, setIdx) =>
             TICKER_ITEMS.map((item, idx) => (
@@ -296,11 +294,11 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           ref={(el) => {
             spotlightRefs.current[0] = el;
           }}
-          className="flex flex-col lg:flex-row min-h-[80vh] overflow-hidden"
+          className="bleed flex flex-col lg:flex-row min-h-[80vh] overflow-hidden"
           style={{ background: SPOTLIGHTS[0].bgColor }}
         >
           <div
-            className="flex-[1.2] relative min-h-[25rem] overflow-hidden"
+            className="bleed-l flex-[1.2] relative min-h-[25rem] overflow-hidden"
             data-ni-spotlight-image
           >
             <Image
@@ -385,11 +383,11 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
           ref={(el) => {
             spotlightRefs.current[1] = el;
           }}
-          className="flex flex-col lg:flex-row-reverse min-h-[80vh] overflow-hidden"
+          className="bleed flex flex-col lg:flex-row-reverse min-h-[80vh] overflow-hidden"
           style={{ background: SPOTLIGHTS[1].bgColor }}
         >
           <div
-            className="flex-[1.2] relative min-h-[25rem] overflow-hidden"
+            className="bleed-r flex-[1.2] relative min-h-[25rem] overflow-hidden"
             data-ni-spotlight-image
           >
             <Image
@@ -441,7 +439,7 @@ export default function NewInClient({ products, total, heroBanners }: NewInClien
       )}
 
       {/* ═══ 6. NEWSLETTER CTA ═══ */}
-      <section className="flex flex-col items-center text-center py-20 px-4 gap-6 bg-[var(--color-obsidian)]">
+      <section className="bleed [--bleed-px:1rem] flex flex-col items-center text-center py-20 gap-6 bg-[var(--color-obsidian)]">
         <div className="w-12 h-12 rounded-full border border-[rgba(201,169,110,0.3)] flex items-center justify-center text-[var(--color-champagne-gold)]">
           <Mail size={20} />
         </div>

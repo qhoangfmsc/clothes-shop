@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useFormatter, useTranslations } from "next-intl";
@@ -9,6 +9,7 @@ import { ArrowLeft, CheckCircle, MapPin, PenLine, QrCode, Undo2 } from "lucide-r
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useApiAuth } from "@/src/hooks/use-api-auth";
+import { ApiError } from "@/src/lib/api";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useOrderStatusLabel } from "@/src/i18n/use-labels";
@@ -22,7 +23,9 @@ import type { Order } from "../_common/types";
 import CopyButton from "@/src/app/[locale]/_components/CopyButton";
 import OrderPaymentBadge from "@/src/app/[locale]/_components/OrderPaymentBadge";
 import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
+import ProductLink from "@/src/app/[locale]/_components/ProductLink";
 import OrderThumb from "../_components/OrderThumb";
+import LoadFailed from "../_components/LoadFailed";
 import OrderReturnCard from "../../returns/_components/OrderReturnCard";
 import ReviewFormModal from "../../reviews/_components/ReviewFormModal";
 import { useDeadlineLabel } from "../../reviews/_common/use-deadline-label";
@@ -31,7 +34,7 @@ import type { PendingReviewItem } from "@/src/types/review";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const SHELL_CLASS = "min-h-screen pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
+const SHELL_CLASS = "min-h-(--page-min-h) pt-[7.5rem] pb-16 bg-[var(--bg-primary)]";
 const WRAP_CLASS = "max-w-[67.5rem] mx-auto px-4 sm:px-6";
 const CARD_CLASS =
   "p-5 sm:p-6 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)] shadow-[var(--shadow-sm)]";
@@ -52,6 +55,7 @@ export default function OrderDetailContent() {
   const confirm = useConfirm();
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const router = useRouter();
   /* Which lines can still be reviewed comes from the BE's own list, never from the order status alone */
@@ -60,22 +64,38 @@ export default function OrderDetailContent() {
   const deadlineLabel = useDeadlineLabel();
   const [reviewTarget, setReviewTarget] = useState<PendingReviewItem | null>(null);
 
+  const fetchOrder = useCallback(async () => {
+    try {
+      const res = await apiFetch<{ data: Order }>(`/api/orders/${params.orderId}`);
+      setOrder(res.data ?? null);
+      setLoadError(false);
+    } catch (err) {
+      /* Only a 404 means "no such order"; anything else is a failure to load */
+      setLoadError(!(err instanceof ApiError && err.status === 404));
+      toast.error(toErrorMessage(err, t("toast.loadFailed")));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [params.orderId, apiFetch, t, toast, toErrorMessage]);
+
   useEffect(() => {
     if (!isAuthenticated || !params.orderId) return;
-
-    const fetchOrder = async () => {
-      try {
-        const res = await apiFetch<{ data: Order }>(`/api/orders/${params.orderId}`);
-        setOrder(res.data ?? null);
-      } catch (err) {
-        toast.error(toErrorMessage(err, t("toast.loadFailed")));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchOrder();
-  }, [isAuthenticated, params.orderId, apiFetch, t, toast, toErrorMessage]);
+  }, [isAuthenticated, params.orderId, fetchOrder]);
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    fetchOrder();
+  };
+
+  /* A visitor never loads the order, so the wall must not wait for it */
+  if (!authLoading && !isAuthenticated) {
+    return (
+      <main className={SHELL_CLASS}>
+        <UnauthenticatedState />
+      </main>
+    );
+  }
 
   if (authLoading || isLoading) {
     return (
@@ -87,10 +107,12 @@ export default function OrderDetailContent() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!order && loadError) {
     return (
       <main className={SHELL_CLASS}>
-        <UnauthenticatedState />
+        <div className={WRAP_CLASS}>
+          <LoadFailed title={t("error.title")} retryLabel={t("error.retry")} onRetry={handleRetry} />
+        </div>
       </main>
     );
   }
@@ -396,11 +418,16 @@ export default function OrderDetailContent() {
             <ul className="m-0 p-0 list-none flex flex-col gap-4">
               {order.items.map((item) => (
                 <li key={item.id} className="flex items-center gap-3">
-                  <OrderThumb src={item.productImage} alt={item.productName} />
+                  <ProductLink product={item.product} className="shrink-0 no-underline">
+                    <OrderThumb src={item.productImage} alt={item.productName} />
+                  </ProductLink>
                   <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                    <span className="font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em] line-clamp-2">
+                    <ProductLink
+                      product={item.product}
+                      className="font-primary text-sm text-[var(--text-primary)] font-medium tracking-[-0.02em] line-clamp-2 no-underline hover:underline"
+                    >
                       {item.productName}
-                    </span>
+                    </ProductLink>
                     <span className="font-primary text-xs text-[var(--text-muted)] tracking-[-0.02em]">
                       {t("itemMeta", { size: item.size, color: item.color })} · {t("quantity", { quantity: item.quantity })}
                     </span>

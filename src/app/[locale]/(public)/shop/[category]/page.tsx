@@ -73,7 +73,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "var(--page-min-h)",
         background: "var(--bg-primary)",
       }}
     >

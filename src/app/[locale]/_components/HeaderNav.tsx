@@ -6,7 +6,6 @@ import { Link } from "@/src/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import HamburgerMenu from "./HamburgerMenu";
-import UserMenu from "./UserMenu";
 import SearchBar from "./SearchBar";
 import { useCategories } from "@/src/hooks/use-api";
 import { MAX_INLINE_CATEGORIES } from "@/src/lib/category-display";
@@ -184,8 +183,8 @@ export default function HeaderNav({
             style={{
               position: "fixed",
               top: 0,
-              left: "var(--page-edge)",
-              right: "var(--page-edge)",
+              left: 0,
+              right: 0,
               zIndex: 15,
               background: "rgba(251, 248, 241, 0.95)",
               backdropFilter: "blur(16px)",
@@ -359,9 +358,15 @@ export default function HeaderNav({
                 position: "relative",
                 paddingBottom: 2,
               }}
-              onClick={() => {
-                if (link.hasMegaMenu && menuOpen) {
+              onClick={(e) => {
+                if (!link.hasMegaMenu) return;
+                if (menuOpen) {
                   closeNow();
+                } else if (shopCategories.length > 0 && window.matchMedia("(hover: none)").matches) {
+                  /* No hover to open the menu with: the first tap opens it, the next one follows the link */
+                  e.preventDefault();
+                  clearTimers();
+                  setMenuOpen(true);
                 }
               }}
             >
@@ -395,15 +400,12 @@ export default function HeaderNav({
           </Link>
         </div>
 
-        {/* <UserMenu /> */}
-
         <HamburgerMenu />
 
         <style>{`
           @media (min-width: 1024px) {
             nav#header-nav { --nav-link-display: block; }
             nav#header-nav { --search-desktop-display: flex; }
-          }
           }
           .header-nav-link::after {
             content: '';

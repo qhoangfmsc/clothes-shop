@@ -446,7 +446,6 @@ export default function MediaContent() {
         </div>
       )}
 
-      {/* ═══════════════ LIGHTBOX ═══════════════ */}
       <ImagePreviewLightbox
         open={!!preview}
         onClose={() => setPreview(null)}

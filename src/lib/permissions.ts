@@ -1,11 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   PERMISSION SYSTEM — Role-Based Access Control
-
-   Mirrors BE permission constants.
-   Usage:
-     import { hasPermission, PERMISSIONS } from "@/src/lib/permissions";
-     if (hasPermission(user, PERMISSIONS.PRODUCT_CREATE)) { ... }
-   ═══════════════════════════════════════════════════════════ */
+// Mirrors the BE permission constants.
 
 export const ROLES = {
   ADMIN: "admin",

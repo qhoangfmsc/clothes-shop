@@ -1,0 +1,695 @@
+[
+  {
+    "name": "collections: the hero asks for the wrong banners",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "SITE_CONFIG_KEYS.COLLECTIONS_HERO_BANNERS",
+    "replace": "SITE_CONFIG_KEYS.NEW_IN_HERO_BANNERS",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the list page does not tell the language",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero gets no banners",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "heroBanners={heroBanners}",
+    "replace": "heroBanners={[]}",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the page gets no collections",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "collections={collections}",
+    "replace": "collections={[]}",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the breadcrumb misses collections",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "          { name: tNav(\"collections\"), path: \"/collections\" },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the breadcrumb ends at the wrong address",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "{ name: tNav(\"collections\"), path: \"/collections\" }",
+    "replace": "{ name: tNav(\"collections\"), path: \"/shop\" }",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the list title has no description",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "    title,\n    description: t(\"description\"),\n    alternates",
+    "replace": "    title,\n    description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the list address is the shop's",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "alternates: buildAlternates(locale, \"/collections\"),",
+    "replace": "alternates: buildAlternates(locale, \"/shop\"),",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the list share card has another address",
+    "file": "src/app/[locale]/(public)/collections/page.tsx",
+    "find": "buildSocialMetadata({ locale, path: \"/collections\", title",
+    "replace": "buildSocialMetadata({ locale, path: \"/shop\", title",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the pages are built for the wrong address",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "slug: col.slug,",
+    "replace": "slug: col.id,",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a missing collection has no \"not found\" title",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "if (!collection) return { title: withBrand(tCommon(\"notFound\")) };",
+    "replace": "if (!collection) return { title: \"\" };",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the collection title has no description",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "description: collection.description,\n    alternates",
+    "replace": "description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the collection has no share picture",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "      image: collection.image,\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the collection share card has another address",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "      path: `/collections/${slug}`,\n      title,",
+    "replace": "      path: \"/collections\",\n      title,",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the collection address is the list's",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "alternates: buildAlternates(locale, `/collections/${slug}`),",
+    "replace": "alternates: buildAlternates(locale, \"/collections\"),",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a missing collection still renders",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "  if (!collection) {\n    notFound();\n  }\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the collection page does not tell the language",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the collection page shows no products",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "await getCollectionProducts(slug)",
+    "replace": "[]",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the breadcrumb misses the collection",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "          { name: collection.name, path: `/collections/${slug}` },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the breadcrumb ends at the list",
+    "file": "src/app/[locale]/(public)/collections/[slug]/page.tsx",
+    "find": "{ name: collection.name, path: `/collections/${slug}` }",
+    "replace": "{ name: collection.name, path: \"/collections\" }",
+    "tests": [
+      "tests/storefront/collections/collections-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the spreads are only two",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "collections.slice(0, 3)",
+    "replace": "collections.slice(0, 2)",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the spreads are four",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "collections.slice(0, 3)",
+    "replace": "collections.slice(0, 4)",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a spread has no leading zero",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "num: String(idx + 1).padStart(2, \"0\"),",
+    "replace": "num: String(idx + 1),",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a spread is headed with the subtitle",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "heading: col.name,",
+    "replace": "heading: col.subtitle,",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a spread describes with the subtitle",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "description: col.description,\n    image",
+    "replace": "description: col.subtitle,\n    image",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a spread shows another picture",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "    image: col.image,\n    bgColor",
+    "replace": "    image: \"/other.jpg\",\n    bgColor",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: every spread has the same tint",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "EDITORIAL_BG_TINTS[idx % EDITORIAL_BG_TINTS.length]",
+    "replace": "EDITORIAL_BG_TINTS[0]",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a spread links to the list",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "cta: { label: ctaLabel, href: `/collections/${col.slug}` },",
+    "replace": "cta: { label: ctaLabel, href: \"/collections\" },",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card links to the list",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "    href: `/collections/${col.slug}`,\n  }));",
+    "replace": "    href: \"/collections\",\n  }));",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card shows the name as its subtitle",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "    subtitle: col.subtitle,\n    image: col.image,",
+    "replace": "    subtitle: col.name,\n    image: col.image,",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card numbers from zero",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "{String(index + 1).padStart(2, \"0\")}\n        </span>\n      </div>",
+    "replace": "{String(index).padStart(2, \"0\")}\n        </span>\n      </div>",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card has no picture name",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "          alt={card.title}",
+    "replace": "          alt=\"\"",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the spreads never turn around",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "idx % 2 === 1 ? \"lg:flex-row-reverse\" : \"\"",
+    "replace": "\"\"",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: every spread turns around",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "idx % 2 === 1 ? \"lg:flex-row-reverse\" : \"\"",
+    "replace": "\"lg:flex-row-reverse\"",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the first strip is short",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "{[...Array(4)].map((_, i) => (\n            <span\n              key={i}\n              className=\"font-display font-normal text-[clamp(2.5rem,6vw,5rem)] text-[rgba(201,169,110,0.12)]",
+    "replace": "{[...Array(3)].map((_, i) => (\n            <span\n              key={i}\n              className=\"font-display font-normal text-[clamp(2.5rem,6vw,5rem)] text-[rgba(201,169,110,0.12)]",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the closing strip is short",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "{[...Array(4)].map((_, i) => (\n            <span\n              key={i}\n              className=\"font-display font-normal text-[clamp(2.5rem,6vw,5rem)] text-[var(--border-light)]",
+    "replace": "{[...Array(3)].map((_, i) => (\n            <span\n              key={i}\n              className=\"font-display font-normal text-[clamp(2.5rem,6vw,5rem)] text-[var(--border-light)]",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero shows no banner",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "            banners={heroBanners}",
+    "replace": "            banners={[]}",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero banner has no name",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "alt={t(\"heroAlt\")}",
+    "replace": "alt=\"\"",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero has no dots",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "count={heroBanners.length}",
+    "replace": "count={0}",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the dots do nothing",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "onSelect={goToHero}",
+    "replace": "onSelect={() => {}}",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the cards are pinned on every screen",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "mm.add(\"(min-width: 768px) and (pointer: fine)\", () => {",
+    "replace": "mm.add(\"(min-width: 0px)\", () => {",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the cards are not pinned",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "          pin: true,\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the pin stays after leaving",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "    return () => mm.revert();",
+    "replace": "    return () => {};",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero motion stays after leaving",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "    }, hero);\n\n    return () => ctx.revert();",
+    "replace": "    }, hero);\n\n    return () => {};",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the carousel has no name",
+    "file": "src/app/[locale]/(public)/collections/_components/CollectionsClient.tsx",
+    "find": "ariaLabel={t(\"carouselAria\")}",
+    "replace": "ariaLabel=\"\"",
+    "tests": [
+      "tests/storefront/collections/collections-list.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the lookbook has two pieces",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "products.slice(0, Math.min(3, products.length))",
+    "replace": "products.slice(0, 2)",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the lookbook has four pieces",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "products.slice(0, Math.min(3, products.length))",
+    "replace": "products.slice(0, 4)",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the lookbook turns the first piece around",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "const isOdd = idx % 2 !== 0;",
+    "replace": "const isOdd = idx % 2 === 0;",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the lookbook counts all the products",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "{String(editorialProducts.length).padStart(2, \"0\")}",
+    "replace": "{String(products.length).padStart(2, \"0\")}",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the lookbook numbers from zero",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "{String(idx + 1).padStart(2, \"0\")} /{\" \"}",
+    "replace": "{String(idx).padStart(2, \"0\")} /{\" \"}",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a lookbook piece shows its price when on request",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "{hasPublicPrice(product.badge) ? fmt(product, \"price\") : tCommon(\"priceOnRequest\")}\n                    {hasPublicPrice",
+    "replace": "{fmt(product, \"price\")}\n                    {hasPublicPrice",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a lookbook custom order shows an old price",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "{hasPublicPrice(product.badge) && product.originalPriceVnd && (",
+    "replace": "{product.originalPriceVnd && (",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a lookbook piece has no badge",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "                  {product.badge && (\n                    <span\n                      className={`absolute top-4 left-4",
+    "replace": "                  {false && (\n                    <span\n                      className={`absolute top-4 left-4",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a lookbook piece shows no description",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "                    {product.description}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a lookbook piece links to the shop",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "          {editorialProducts.map((product, idx) => {\n            const productUrl = productPath(product) ?? \"/shop\";",
+    "replace": "          {editorialProducts.map((product, idx) => {\n            const productUrl = \"/shop\";",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the quote is the name",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "“{collection.description}”",
+    "replace": "“{collection.name}”",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the quote has no season",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "t(\"quoteBy\", { season: collection.season })",
+    "replace": "t(\"quoteBy\", { season: \"\" })",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the count is of the lookbook",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "t(\"pieces\", { count: products.length })",
+    "replace": "t(\"pieces\", { count: editorialProducts.length })",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the grid leaves out the first three",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "const gridProducts = products;",
+    "replace": "const gridProducts = products.slice(3);",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card has no badge",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "        {product.badge && (\n          <span\n            className={`absolute top-3 left-3",
+    "replace": "        {false && (\n          <span\n            className={`absolute top-3 left-3",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card shows a price for a custom order",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "{hasPublicPrice(product.badge) ? fmt(product, \"price\") : tCommon(\"priceOnRequest\")}\n        </span>\n      </div>\n    </Link>",
+    "replace": "{fmt(product, \"price\")}\n        </span>\n      </div>\n    </Link>",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card links to the shop",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "  const productUrl = productPath(product) ?? \"/shop\";\n\n  const notifyWishlist",
+    "replace": "  const productUrl = \"/shop\";\n\n  const notifyWishlist",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: a card has no picture name",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "          alt={product.name}\n          fill\n          sizes=\"(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw\"",
+    "replace": "          alt=\"\"\n          fill\n          sizes=\"(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw\"",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the heart label is always add",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "aria-label={isWishlisted ? t(\"removeFromWishlist\") : t(\"addToWishlist\")}",
+    "replace": "aria-label={t(\"addToWishlist\")}",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the heart does nothing",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "onClick={handleLike}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the heart follows the link",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "      e.preventDefault();\n      e.stopPropagation();\n      toggle();",
+    "replace": "      toggle();",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the bag button follows the link",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "      e.preventDefault();\n      e.stopPropagation();\n      openQuickAdd(product);",
+    "replace": "      openQuickAdd(product);",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the removed note is silent",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "        toast.info(t(\"removed\", { name: product.name }));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the removed note has no name",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "t(\"removed\", { name: product.name })",
+    "replace": "t(\"removed\", { name: \"\" })",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the saved note links elsewhere",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "              <Link href=\"/wishlist\" onClick={(ev) => ev.stopPropagation()}>",
+    "replace": "              <Link href=\"/somewhere\" onClick={(ev) => ev.stopPropagation()}>",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the saved note is silent",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "      if (added) {\n        toast.info(\n          t.rich(\"saved\", {",
+    "replace": "      if (added) {\n        void (\n          t.rich(\"saved\", {",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the bag buttons do nothing",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "onAddToBag={handleQuickAdd}",
+    "replace": "onAddToBag={() => {}}",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero cover has no name",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "            alt={collection.name}\n            fill\n            priority",
+    "replace": "            alt=\"\"\n            fill\n            priority",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero has no season",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "            {collection.season}\n          </span>\n          <h1",
+    "replace": "          </span>\n          <h1",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the hero has the description as subtitle",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "            {collection.subtitle}\n",
+    "replace": "            {collection.description}\n",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the back link goes to the shop",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "          <Link\n            href=\"/collections\"\n            className=\"inline-flex items-center gap-2 text-[var(--text-muted)]",
+    "replace": "          <Link\n            href=\"/shop\"\n            className=\"inline-flex items-center gap-2 text-[var(--text-muted)]",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "collections: the closing link goes to the shop",
+    "file": "src/app/[locale]/(public)/collections/[slug]/_components/CollectionDetailClient.tsx",
+    "find": "          <Link\n            href=\"/collections\"\n            className=\"inline-flex items-center justify-center",
+    "replace": "          <Link\n            href=\"/shop\"\n            className=\"inline-flex items-center justify-center",
+    "tests": [
+      "tests/storefront/collections/collections-detail.test.tsx"
+    ]
+  }
+]

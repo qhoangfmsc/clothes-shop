@@ -1,7 +1,7 @@
 /* ── Category Types — Matches BE schema ── */
 
 export interface SubCategory {
-  id: number;
+  id: string;
   slug: string;
   label: string;
   description: string;

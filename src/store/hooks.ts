@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   TYPED HOOKS — useAppDispatch / useAppSelector
-
-   Replace plain useDispatch / useSelector everywhere.
-   ═══════════════════════════════════════════════════════════ */
-
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "./index";
 

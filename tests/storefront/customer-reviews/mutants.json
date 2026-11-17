@@ -1,0 +1,1577 @@
+[
+  {
+    "name": "customer-reviews: a visitor sees the reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "  if (!isAuthenticated) {\n    return (",
+    "replace": "  if (false) {\n    return (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: no grey boxes while the session is read",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "  if (authLoading) {",
+    "replace": "  if (false) {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an unknown tab opens nothing",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "REVIEW_TABS.find((id) => id === tabParam) ?? \"pending\"",
+    "replace": "REVIEW_TABS.find((id) => id === tabParam) ?? \"mine\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the first tab keeps its address",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    if (next === \"pending\") qs.delete(\"tab\");",
+    "replace": "    if (next === \"pending\") qs.set(\"tab\", \"pending\");",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the tab loses the rest of the address",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    const qs = new URLSearchParams(searchParams.toString());\n    if (next === \"pending\")",
+    "replace": "    const qs = new URLSearchParams();\n    if (next === \"pending\")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the tab scrolls the page",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "router.replace(text ? `/reviews?${text}` : \"/reviews\", { scroll: false });\n  };\n\n  const clearProductFilter",
+    "replace": "router.replace(text ? `/reviews?${text}` : \"/reviews\");\n  };\n\n  const clearProductFilter",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product filter stays",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    qs.delete(\"productId\");",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the tab count is zero",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "t(\"tabs.pending\", { count: pending.total })",
+    "replace": "t(\"tabs.pending\", { count: 0 })",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the tab does not say which is open",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "aria-selected={tab === id}",
+    "replace": "aria-selected={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the pending list shows while loading",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "            {pending.isLoading ? (",
+    "replace": "            {false ? (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed pending list shows as empty",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "            ) : pending.error ? (",
+    "replace": "            ) : false ? (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the retry does nothing for the lines",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "onClick={() => void reloadPending()} className={GHOST_BUTTON_CLASS}>\n                  {t(\"retry\")}",
+    "replace": "onClick={() => {}} className={GHOST_BUTTON_CLASS}>\n                  {t(\"retry\")}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the empty pending list points elsewhere",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "action={{ href: \"/shop\", label: t(\"pending.empty.cta\") }}",
+    "replace": "action={{ href: \"/orders\", label: t(\"pending.empty.cta\") }}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the empty reviews list points elsewhere",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "action={{ href: \"/orders\", label: t(\"mine.empty.cta\") }}",
+    "replace": "action={{ href: \"/shop\", label: t(\"mine.empty.cta\") }}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the status filter does nothing",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "onClick={() => setStatusFilter(value)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the status filter is never lit",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "aria-pressed={statusFilter === value}",
+    "replace": "aria-pressed={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product chip shows always",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "              {productId && (",
+    "replace": "              {true && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product chip does nothing",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "                  onClick={clearProductFilter}",
+    "replace": "                  onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed list shows as empty",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "mine.status === \"error\" && mine.items.length === 0",
+    "replace": "false",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed next page hides the list",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "mine.status === \"error\" && mine.items.length === 0",
+    "replace": "mine.status === \"error\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the grey boxes never show for my reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "            {mine.status === \"loading\" ? (",
+    "replace": "            {false ? (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the retry does nothing for my reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "onClick={() => void mine.reload()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the more button can be pressed twice",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "disabled={mine.status === \"loadingMore\"}",
+    "replace": "disabled={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed next page offers \"more\" again",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": ": mine.status === \"error\" ? t(\"retry\") : t(\"loadMore\")",
+    "replace": ": t(\"loadMore\")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a saved review keeps the form open",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "  const handleSaved = () => {\n    setTarget(null);",
+    "replace": "  const handleSaved = () => {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a saved review does not refresh what is left",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    void refreshReviewData();\n    void reloadMine();\n  };\n\n  /* 1903",
+    "replace": "    void reloadMine();\n  };\n\n  /* 1903",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a saved review does not refresh my reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    void refreshReviewData();\n    void reloadMine();\n  };\n\n  /* 1903",
+    "replace": "    void refreshReviewData();\n  };\n\n  /* 1903",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a review already written does not go to my reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    void reloadMine();\n    setTab(\"mine\");",
+    "replace": "    void reloadMine();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a review already written does not refresh what is left",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    void reloadPending();\n    void reloadMine();\n    setTab(\"mine\");",
+    "replace": "    void reloadMine();\n    setTab(\"mine\");",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a review already written does not refresh my reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "    void reloadPending();\n    void reloadMine();\n    setTab(\"mine\");",
+    "replace": "    void reloadPending();\n    setTab(\"mine\");",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a stale line does not refresh what is left",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "  const handleStale = () => {\n    void reloadPending();\n    void reloadMine();",
+    "replace": "  const handleStale = () => {\n    void reloadMine();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a stale line does not refresh my reviews",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "  const handleStale = () => {\n    void reloadPending();\n    void reloadMine();",
+    "replace": "  const handleStale = () => {\n    void reloadPending();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-flow.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the edit form opens in write mode",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "const openEdit = (review: AuthorReview) => setTarget({ mode: \"edit\", review });",
+    "replace": "const openEdit = (review: AuthorReview) => setTarget({ mode: \"create\", item: review as never });",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the tab panels have no names",
+    "file": "src/app/[locale]/(private)/reviews/ReviewsContent.tsx",
+    "find": "aria-labelledby=\"reviews-tab-pending\"",
+    "replace": "aria-labelledby=\"x\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: five megabytes become four",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "export const REVIEW_IMAGE_MAX_MB = 5;",
+    "replace": "export const REVIEW_IMAGE_MAX_MB = 4;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a link in the middle of words is allowed",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "/(https?:\\/\\/|www\\.)/i",
+    "replace": "/^(https?:\\/\\/|www\\.)/i",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a link in capitals is allowed",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "/(https?:\\/\\/|www\\.)/i",
+    "replace": "/(https?:\\/\\/|www\\.)/",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a link without a scheme is not caught",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "/(https?:\\/\\/|www\\.)/i",
+    "replace": "/(https?:\\/\\/)/i",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a secure link is not caught",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "/(https?:\\/\\/|www\\.)/i",
+    "replace": "/(http:\\/\\/|www\\.)/i",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the list takes fewer pending lines",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "export const PENDING_PAGE_LIMIT = 200;",
+    "replace": "export const PENDING_PAGE_LIMIT = 20;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: my reviews are paged by five",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "export const MY_REVIEWS_PAGE_SIZE = 10;",
+    "replace": "export const MY_REVIEWS_PAGE_SIZE = 5;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a typeless file is always refused",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "  if (file.type !== \"\") return false;",
+    "replace": "  return false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: any typed file is accepted",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "  if (REVIEW_IMAGE_TYPES.includes(file.type)) return true;\n  if (file.type !== \"\") return false;",
+    "replace": "  if (file.type !== \"\") return true;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the extension is case sensitive",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "file.name.split(\".\").pop()?.toLowerCase() ?? \"\"",
+    "replace": "file.name.split(\".\").pop() ?? \"\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a day is 20 hours",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "export const MS_PER_DAY = 24 * 60 * 60 * 1000;",
+    "replace": "export const MS_PER_DAY = 20 * 60 * 60 * 1000;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: days are rounded down",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "Math.ceil(left / MS_PER_DAY)",
+    "replace": "Math.floor(left / MS_PER_DAY)",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: avif is not a photo",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "[\"jpg\", \"jpeg\", \"png\", \"webp\", \"gif\", \"avif\"]",
+    "replace": "[\"jpg\", \"jpeg\", \"png\", \"webp\", \"gif\"]",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: gif is not a photo type",
+    "file": "src/app/[locale]/(private)/reviews/_common/constants.ts",
+    "find": "\"image/webp\", \"image/gif\", \"image/avif\"",
+    "replace": "\"image/webp\", \"image/avif\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the upload goes elsewhere",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "\"/api/reviews/images\"",
+    "replace": "\"/api/images\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the file has another name in the form",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "form.append(\"file\", file);",
+    "replace": "form.append(\"image\", file);",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a too large file keeps no code",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "if (err.status === 413) throw new ApiError(\"\", 413, CODE_FILE_TOO_LARGE);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a daily limit keeps no code",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "if (err.status === 429) throw new ApiError(\"\", 429, CODE_UPLOAD_LIMIT);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of a large file changes",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "const CODE_FILE_TOO_LARGE = 1606;",
+    "replace": "const CODE_FILE_TOO_LARGE = 1600;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of the limit changes",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "const CODE_UPLOAD_LIMIT = 1607;",
+    "replace": "const CODE_UPLOAD_LIMIT = 1600;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a coded failure is replaced",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "if (err instanceof ApiError && err.errorCode === undefined) {",
+    "replace": "if (err instanceof ApiError) {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the upload is not raw",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "method: \"POST\", body: form, raw: true",
+    "replace": "method: \"POST\", body: form",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the address is the whole answer",
+    "file": "src/app/[locale]/(private)/reviews/_common/upload.ts",
+    "find": "return res.data.url;",
+    "replace": "return res.data as never;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: my reviews are not newest first",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "sort: \"-createdAt\"",
+    "replace": "sort: \"createdAt\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: my reviews load for a visitor",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "    if (isAuthenticated) void load(1);",
+    "replace": "    void load(1);",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a status of all is sent",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "status: statusFilter === \"all\" ? undefined : statusFilter",
+    "replace": "status: statusFilter",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product is not sent",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "{ status: statusFilter === \"all\" ? undefined : statusFilter, productId }",
+    "replace": "{ status: statusFilter === \"all\" ? undefined : statusFilter }",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the next page replaces the list",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "setItems((prev) => (nextPage === 1 ? res.data : [...prev, ...res.data]));",
+    "replace": "setItems(res.data);",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the next page is asked twice",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "const loadMore = useCallback(() => load(page + 1), [load, page]);",
+    "replace": "const loadMore = useCallback(() => load(page + 2), [load, page]);",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: more is offered at the end",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "hasMore: items.length < total",
+    "replace": "hasMore: items.length <= total",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed read keeps no error",
+    "file": "src/app/[locale]/(private)/reviews/_common/use-my-reviews.ts",
+    "find": "      } catch (err) {\n        if (mine !== ticket.current) return;\n        setError(err);",
+    "replace": "      } catch (err) {\n        if (mine !== ticket.current) return;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a pending line has no link to its order",
+    "file": "src/app/[locale]/(private)/reviews/_components/PendingReviewCard.tsx",
+    "find": "href={`/orders/${item.orderId}`}",
+    "replace": "href=\"/orders\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a pending line always shows the quantity",
+    "file": "src/app/[locale]/(private)/reviews/_components/PendingReviewCard.tsx",
+    "find": "{item.quantity > 1 && ` · ${t(\"quantity\", { quantity: item.quantity })}`}",
+    "replace": "{` · ${t(\"quantity\", { quantity: item.quantity })}`}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a pending line is urgent at four days",
+    "file": "src/app/[locale]/(private)/reviews/_components/PendingReviewCard.tsx",
+    "find": "daysUntil(item.reviewDeadline) <= 3",
+    "replace": "daysUntil(item.reviewDeadline) <= 4",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a pending line is urgent only at two days",
+    "file": "src/app/[locale]/(private)/reviews/_components/PendingReviewCard.tsx",
+    "find": "daysUntil(item.reviewDeadline) <= 3",
+    "replace": "daysUntil(item.reviewDeadline) <= 2",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a pending line shows the colour first",
+    "file": "src/app/[locale]/(private)/reviews/_components/PendingReviewCard.tsx",
+    "find": "[item.size, item.color].filter(Boolean).join(\" · \")",
+    "replace": "[item.color, item.size].filter(Boolean).join(\" · \")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the review button does nothing",
+    "file": "src/app/[locale]/(private)/reviews/_components/PendingReviewCard.tsx",
+    "find": "onClick={() => onReview(item)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a hidden review shows no badge",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "        {hidden && (\n          <span",
+    "replace": "        {false && (\n          <span",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a hidden review shows no note",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "      {hidden && (\n        <div role=\"note\"",
+    "replace": "      {false && (\n        <div role=\"note\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the reason is always shown",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "{review.moderationNote && <span>",
+    "replace": "{true && <span>",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a hidden review can be edited",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "{review.canEdit && !hidden && (",
+    "replace": "{review.canEdit && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a review that cannot be edited can be",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "{review.canEdit && !hidden && (",
+    "replace": "{!hidden && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the end date is not shown",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "review.canEdit && review.editableUntil\n              ? t(\"editableUntil\"",
+    "replace": "false\n              ? t(\"editableUntil\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edited review is called expired",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "              : review.edited\n                ? t(\"alreadyEdited\")\n                : t(\"editExpired\")",
+    "replace": "              : t(\"editExpired\")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an unedited expired review is called edited",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "              : review.edited\n                ? t(\"alreadyEdited\")",
+    "replace": "              : true\n                ? t(\"alreadyEdited\")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the edit button edits nothing",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "onClick={() => onEdit(review)}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a product link always looks the address up",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "(productHref ? (",
+    "replace": "(false ? (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a product without a category goes nowhere",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "router.push((await getProductUrl(review.product.id)) ?? \"/shop\");",
+    "replace": "router.push((await getProductUrl(review.product.id)) ?? \"/\");",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a removed product has a link",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "          {review.product &&\n            (productHref",
+    "replace": "          {true &&\n            (productHref",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product is not named",
+    "file": "src/app/[locale]/(private)/reviews/_components/MyReviewCard.tsx",
+    "find": "{review.product?.name ?? t(\"productRemoved\")}",
+    "replace": "{t(\"productRemoved\")}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: five photos still offer to add",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "const full = slots.length >= REVIEW_LIMITS.imagesMax;",
+    "replace": "const full = false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: four photos are full",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "const full = slots.length >= REVIEW_LIMITS.imagesMax;",
+    "replace": "const full = slots.length >= REVIEW_LIMITS.imagesMax - 1;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the file field keeps the last file",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "          e.target.value = \"\";\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the file field takes one photo",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "        multiple\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the formats are not offered",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "accept={REVIEW_IMAGE_ACCEPT}",
+    "replace": "accept=\"image/*\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the add button does not open the chooser",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "onClick={() => inputRef.current?.click()}",
+    "replace": "onClick={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the remove button removes the wrong photo",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "onClick={() => onRemove(slot.id)}",
+    "replace": "onClick={() => onRemove(slots[0].id)}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the buttons stay on while sending",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "              onClick={() => onRemove(slot.id)}\n              disabled={disabled}",
+    "replace": "              onClick={() => onRemove(slot.id)}\n              disabled={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the add button stays on while sending",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "              onClick={() => inputRef.current?.click()}\n              disabled={disabled}",
+    "replace": "              onClick={() => inputRef.current?.click()}\n              disabled={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an uploading photo has no mark",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "{slot.status === \"uploading\" && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed photo has no mark",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "{slot.status === \"error\" && (\n              <span",
+    "replace": "{false && (\n              <span",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the refusal is hidden",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "      {notice && (",
+    "replace": "      {false && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed upload says nothing",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "      {failed && (",
+    "replace": "      {false && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed upload ignores its code",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewImageUploader.tsx",
+    "find": "toErrorMessage({ errorCode: failed.errorCode }, t(\"failed\"))",
+    "replace": "t(\"failed\")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a star is not chosen on press",
+    "file": "src/app/[locale]/(private)/reviews/_components/StarPicker.tsx",
+    "find": "onChange={() => onChange(star)}",
+    "replace": "onChange={() => {}}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: hover does not show",
+    "file": "src/app/[locale]/(private)/reviews/_components/StarPicker.tsx",
+    "find": "const shown = hover || value;",
+    "replace": "const shown = value;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: leaving keeps the hover",
+    "file": "src/app/[locale]/(private)/reviews/_components/StarPicker.tsx",
+    "find": "onMouseLeave={() => setHover(0)}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the chosen star is not checked",
+    "file": "src/app/[locale]/(private)/reviews/_components/StarPicker.tsx",
+    "find": "checked={value === star}",
+    "replace": "checked={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the group is never invalid",
+    "file": "src/app/[locale]/(private)/reviews/_components/StarPicker.tsx",
+    "find": "aria-invalid={invalid}",
+    "replace": "aria-invalid={false}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the hint is hidden",
+    "file": "src/app/[locale]/(private)/reviews/_components/StarPicker.tsx",
+    "find": "{value > 0 ? t(`hint.${value as 1 | 2 | 3 | 4 | 5}`) : \"\"}",
+    "replace": "{\"\"}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the stars are not needed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (ratingMissing || titleHasLink || contentHasLink || nothingChanged) return;",
+    "replace": "if (titleHasLink || contentHasLink || nothingChanged) return;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a link in the title is allowed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const titleHasLink = REVIEW_LINK_PATTERN.test(form.title);",
+    "replace": "const titleHasLink = false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a link in the words is allowed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const contentHasLink = REVIEW_LINK_PATTERN.test(form.content);",
+    "replace": "const contentHasLink = false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a second press sends again",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    if (submittingRef.current) return;\n    setShowErrors(true);",
+    "replace": "    setShowErrors(true);",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: Escape closes while sending",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (e.key === \"Escape\" && !submittingRef.current) onClose();",
+    "replace": "if (e.key === \"Escape\") onClose();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: Enter closes",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (e.key === \"Escape\" && !submittingRef.current) onClose();",
+    "replace": "if (!submittingRef.current) onClose();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the page scrolls behind the form",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    document.body.style.overflow = \"hidden\";\n    const onKey",
+    "replace": "    const onKey",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the page never scrolls again",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      document.body.style.overflow = previous;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: Escape is heard after leaving",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      document.removeEventListener(\"keydown\", onKey);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: previews are never released",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    return () => urls.forEach((url) => URL.revokeObjectURL(url));",
+    "replace": "    return () => {};",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the same photo twice is added",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (known.has(fileKey(file)) || accepted.some((f) => fileKey(f) === fileKey(file))) continue; // same file twice: ignore",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a wrong kind of file is added",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      if (!isAcceptedReviewImage(file)) {",
+    "replace": "      if (false) {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a large file is added",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      } else if (file.size > REVIEW_IMAGE_MAX_BYTES) {",
+    "replace": "      } else if (false) {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a file of exactly the limit is refused",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "file.size > REVIEW_IMAGE_MAX_BYTES",
+    "replace": "file.size >= REVIEW_IMAGE_MAX_BYTES",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: more than five photos are added",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      } else if (accepted.length >= room) {",
+    "replace": "      } else if (false) {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the room ignores existing photos",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const room = REVIEW_LIMITS.imagesMax - form.images.length;",
+    "replace": "const room = REVIEW_LIMITS.imagesMax;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the last refusal stays",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "  const handlePick = (files: File[]) => {\n    setNotice(null);",
+    "replace": "  const handlePick = (files: File[]) => {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the photos are sent without uploading",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    if (pending.length === 0) return imageUrls;",
+    "replace": "    return imageUrls;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed photo does not stop the review",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    if (firstError !== null) {\n      toast.error(toErrorMessage(firstError, t(\"images.failed\")));\n      return null;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed photo says nothing",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      toast.error(toErrorMessage(firstError, t(\"images.failed\")));\n      return null;",
+    "replace": "      return null;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed photo is not marked",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "patchSlot(id, { status: \"error\", errorCode: result.reason instanceof ApiError ? result.reason.errorCode : undefined });",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed photo loses its code",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "errorCode: result.reason instanceof ApiError ? result.reason.errorCode : undefined",
+    "replace": "errorCode: undefined",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an uploaded photo is not remembered",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "patchSlot(id, { url: result.value, status: \"done\", errorCode: undefined });",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the photos come in another order",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    return form.images.map((slot) => (slot.status === \"done\" ? slot.url : (urlById.get(slot.id) as string)));",
+    "replace": "    return [...urlById.values(), ...imageUrls];",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: photos are not marked as uploading",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "(pendingIds.has(slot.id) ? { ...slot, status: \"uploading\", errorCode: undefined } : slot)",
+    "replace": "slot",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-photos.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a new review is sent to the wrong line",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "orderItemId: target.item.orderItemId,",
+    "replace": "orderItemId: \"x\",",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the title is sent untrimmed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "...(form.title.trim() && { title: form.title.trim() }),",
+    "replace": "...(form.title.trim() && { title: form.title }),",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the words are sent untrimmed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "...(form.content.trim() && { content: form.content.trim() }),",
+    "replace": "...(form.content.trim() && { content: form.content }),",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an empty title is sent",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "...(form.title.trim() && { title: form.title.trim() }),",
+    "replace": "title: form.title.trim(),",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the fit is not sent",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "...(form.fit && { fit: form.fit }),",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: empty photos are sent",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "...(urls.length > 0 && { images: urls }),",
+    "replace": "images: urls,",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a new review goes to the review address",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "target.mode === \"create\" ? \"/api/reviews\" : `/api/reviews/${encodeURIComponent(target.review.id)}`",
+    "replace": "`/api/reviews/${encodeURIComponent(\"x\")}`",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit is posted",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "method: target.mode === \"create\" ? \"POST\" : \"PATCH\",",
+    "replace": "method: \"POST\",",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit goes to another review",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "`/api/reviews/${encodeURIComponent(target.review.id)}`",
+    "replace": "`/api/reviews/${encodeURIComponent(\"x\")}`",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the thanks are the wrong ones",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "toast.success(target.mode === \"create\" ? tToast(\"created\") : tToast(\"updated\"));",
+    "replace": "toast.success(tToast(\"created\"));",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the server link refusal is not shown",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      if (code === CODE_LINK) {\n        setServerLinkError(true);",
+    "replace": "      if (code === CODE_LINK) {",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the server link refusal stays after typing",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "                  setServerLinkError(false);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: bad photos are kept after the BE refuses them",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "        setForm((f) => ({ ...f, images: [] }));\n        setNotice(null);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a review already written is not told",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "        onAlreadyReviewed?.();\n        onClose();",
+    "replace": "        onClose();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a review already written leaves the form open",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "        onAlreadyReviewed?.();\n        onClose();",
+    "replace": "        onAlreadyReviewed?.();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a stale line is not told",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "        onStale?.();\n        onClose();",
+    "replace": "        onClose();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a stale line leaves the form open",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "        onStale?.();\n        onClose();",
+    "replace": "        onStale?.();",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of a link changes",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const CODE_LINK = 1905;",
+    "replace": "const CODE_LINK = 1900;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of an invalid photo changes",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const CODE_IMAGE_INVALID = 1908;",
+    "replace": "const CODE_IMAGE_INVALID = 1900;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of a reviewed line changes",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const CODE_ALREADY_EXISTS = 1903;",
+    "replace": "const CODE_ALREADY_EXISTS = 1900;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of a closed line changes",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const CODE_NOT_ALLOWED = 1902;",
+    "replace": "const CODE_NOT_ALLOWED = 1900;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the code of a closed edit changes",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const CODE_EDIT_NOT_ALLOWED = 1904;",
+    "replace": "const CODE_EDIT_NOT_ALLOWED = 1900;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a failed save does not unlock the form",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "      submittingRef.current = false;\n      setSubmitting(false);",
+    "replace": "      submittingRef.current = false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit starts empty",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    rating: review.rating,\n    title: review.title,",
+    "replace": "    rating: 0,\n    title: review.title,",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit starts without the fit",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    fit: review.fit,\n    images: review.images.map",
+    "replace": "    fit: null,\n    images: review.images.map",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit starts without the words",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    content: review.content,\n    fit",
+    "replace": "    content: \"\",\n    fit",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit starts without photos",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "    images: review.images.map((url, i) => ({",
+    "replace": "    images: [].map((url, i) => ({",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit sends the stars when unchanged",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (form.rating !== original.rating) body.rating = form.rating;",
+    "replace": "body.rating = form.rating;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit sends the title untrimmed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (form.title.trim() !== original.title) body.title = form.title.trim();",
+    "replace": "if (form.title.trim() !== original.title) body.title = form.title;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit compares the title untrimmed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (form.title.trim() !== original.title) body.title",
+    "replace": "if (form.title !== original.title) body.title",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit sends the words untrimmed",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (form.content.trim() !== original.content) body.content = form.content.trim();",
+    "replace": "if (form.content.trim() !== original.content) body.content = form.content;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an edit sends unchanged photos",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "if (!sameImages) body.images = urls;",
+    "replace": "body.images = urls;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a different number of photos counts as the same",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const sameImages = urls.length === original.images.length && ",
+    "replace": "const sameImages = ",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a picked photo is not a change",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const nothingChanged = isEdit && !hasPendingPhotos && Object.keys(changesFor(imageUrls)).length === 0;",
+    "replace": "const nothingChanged = isEdit && Object.keys(changesFor(imageUrls)).length === 0;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: an unchanged edit can be sent",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const nothingChanged = isEdit && !hasPendingPhotos && Object.keys(changesFor(imageUrls)).length === 0;",
+    "replace": "const nothingChanged = false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a saved fit can be taken back",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "const locked = selected && original?.fit != null;",
+    "replace": "const locked = false;",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: a fit cannot be chosen again",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "fit: selected && !locked ? null : (fit as ReviewFit)",
+    "replace": "fit: (fit as ReviewFit)",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the warning has no end date",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "{original.editableUntil && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the form says write when editing",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "{isEdit ? t(\"titleEdit\") : t(\"titleCreate\")}",
+    "replace": "{t(\"titleCreate\")}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the button says send when editing",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "{submitting ? t(\"submitting\") : isEdit ? t(\"submitEdit\") : t(\"submitCreate\")}",
+    "replace": "{submitting ? t(\"submitting\") : t(\"submitCreate\")}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product link opens in this tab",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "                  product={productSummary}\n                  newTab",
+    "replace": "                  product={productSummary}",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the product of an edit is not named",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "(target.review.product?.name ?? \"\")",
+    "replace": "\"\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the nothing-changed note shows always",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "{nothingChanged && showErrors && (",
+    "replace": "{nothingChanged && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-edit.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the stars error shows before sending",
+    "file": "src/app/[locale]/(private)/reviews/_components/ReviewFormModal.tsx",
+    "find": "{showErrors && ratingMissing && (",
+    "replace": "{ratingMissing && (",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-form.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the metadata title changes",
+    "file": "src/app/[locale]/(private)/reviews/layout.tsx",
+    "find": "t(\"title\")",
+    "replace": "t(\"description\")",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  },
+  {
+    "name": "customer-reviews: the metadata has no description",
+    "file": "src/app/[locale]/(private)/reviews/layout.tsx",
+    "find": "description: t(\"description\")",
+    "replace": "description: \"\"",
+    "tests": [
+      "tests/storefront/customer-reviews/reviews-page.test.tsx"
+    ]
+  }
+]

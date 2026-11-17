@@ -23,7 +23,11 @@
     "loadMore": "Load more orders",
     "loadingMore": "Loading...",
     "returnsLink": "Return requests",
-    "reviewsLink": "Product reviews"
+    "reviewsLink": "Product reviews",
+    "error": {
+      "title": "We couldn't load your orders.",
+      "retry": "Try again"
+    }
   },
   "detail": {
     "notFound": "Order not found.",
@@ -103,6 +107,10 @@
     },
     "review": {
       "cta": "Write a review"
+    },
+    "error": {
+      "title": "We couldn't load this order.",
+      "retry": "Try again"
     }
   }
 }

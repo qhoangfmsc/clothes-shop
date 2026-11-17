@@ -1,0 +1,745 @@
+[
+  {
+    "name": "returns: the queue opens on all requests",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "? (statusParam as StatusTab) : \"REQUESTED\";",
+    "replace": "? (statusParam as StatusTab) : \"all\";",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a made-up status is accepted",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "statusParam === \"all\" || RETURN_STATUSES.some((s) => s === statusParam) ?",
+    "replace": "statusParam ?",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the waiting tab keeps its status in the address",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "urlWith({ status: next === \"REQUESTED\" ? null : next })",
+    "replace": "urlWith({ status: next })",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: another tab drops the other filters",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "const qs = new URLSearchParams(searchParams.toString());",
+    "replace": "const qs = new URLSearchParams();",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the address loses the bare page",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "return text ? `/admin/returns?${text}` : \"/admin/returns\";",
+    "replace": "return `/admin/returns?${text}`;",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: all tabs ask for a status",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "status: status === \"all\" ? undefined : status,",
+    "replace": "status: status === \"all\" ? \"REQUESTED\" : status,",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the order filter is not sent",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "        orderId,\n        sort: params.sort,",
+    "replace": "        sort: params.sort,",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the table keeps its state when the tab changes",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "key={`${status}:${orderId ?? \"\"}`}",
+    "replace": "key=\"x\"",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the notice is active on every tab",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "active={status === \"REQUESTED\"}",
+    "replace": "active={true}",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the notice cannot leave the waiting tab",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "onToggle={() => setStatus(status === \"REQUESTED\" ? \"all\" : \"REQUESTED\")}",
+    "replace": "onToggle={() => setStatus(\"all\")}",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the approved line is not pressed",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "aria-pressed={status === \"APPROVED\"}",
+    "replace": "aria-pressed={false}",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the approved line goes to another tab",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "onClick={() => setStatus(\"APPROVED\")}",
+    "replace": "onClick={() => setStatus(\"RECEIVED\")}",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the tab shows no count",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "t(\"tabs.REQUESTED\", { count: counts.returns ?? 0 })",
+    "replace": "t(\"tabs.REQUESTED\", { count: 0 })",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: opening does not name the request in the address",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "router.push(urlWith({ returnId: request.id }), { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: closing does not take the request from the address",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "router.push(urlWith({ returnId: null }), { scroll: false });",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: opening does not fetch the fuller data",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "    dispatch(fetchReturnDetail(request.id))\n      .unwrap()\n      .then(setDetail)\n      .catch(() => {\n        /* keep the row's data */\n      });",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a failed fuller fetch drops the panel",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "      .catch(() => {\n        /* keep the row's data */\n      });",
+    "replace": "      .catch(() => setDetail(null));",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the request in the address is fetched again and again",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "    if (openedFromUrl.current === urlReturnId) return;\n",
+    "replace": "",
+    "tests": [
+      "returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the panel stays after the address loses its request",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "    if (!urlReturnId) {\n      openedFromUrl.current = null;\n      setDetail(null);\n      return;\n    }",
+    "replace": "    if (!urlReturnId) return;",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an action does not refresh the list",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "    setDetail(updated);\n    /* The menu badge and the tab count refresh by themselves after the write */\n    tableRef.current?.refresh();",
+    "replace": "    setDetail(updated);",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx",
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the order link has no payment state",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "{r.order && <OrderPaymentBadge status={r.order.paymentStatus} />}",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the customer has no dash",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": ".filter(Boolean).join(\" · \") || \"—\"}",
+    "replace": ".filter(Boolean).join(\" · \")}",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the reason shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "        hideBelow: \"md\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the date shows on phones",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "        hideBelow: \"sm\",\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the empty message is always the same",
+    "file": "src/app/[locale]/(admin)/admin/returns/ReturnsContent.tsx",
+    "find": "(filtered ? t(\"table.empty.filtered\") : t(\"table.empty.none\"))",
+    "replace": "t(\"table.empty.none\")",
+    "tests": [
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the panel shows the refund of any request",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{refund && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the refund reference always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{refund.bankReference && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the shipping note always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.shippingRefunded && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the refund link needs no permission",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.PAYMENT_ADMIN_VIEW}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.RETURN_ADMIN_VIEW}>",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the refund link id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "href={`/admin/refunds?orderId=${encodeURIComponent(request.orderId)}`}",
+    "replace": "href={`/admin/refunds?orderId=${request.orderId}`}",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the order link id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "href={`/admin/orders?orderId=${encodeURIComponent(order.id)}`}",
+    "replace": "href={`/admin/orders?orderId=${order.id}`}",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the customer note always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.note && <Row",
+    "replace": "{true && <Row",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the shop reply always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.adminNote && <Row",
+    "replace": "{true && <Row",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the approval time always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.approvedAt && <Row",
+    "replace": "{true && <Row",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the receipt time always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.receivedAt && <Row",
+    "replace": "{true && <Row",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the order section shows without an order",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{order && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a line price shows when missing",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{item.priceVnd !== null && item.priceUsd !== null &&",
+    "replace": "{true &&",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the accepted count always shows",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{item.acceptedQuantity !== null && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: every state has actions",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "const hasActions = request.status === \"REQUESTED\" || request.status === \"APPROVED\";",
+    "replace": "const hasActions = true;",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: actions need no process permission",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "<RoleGuard permission={PERMISSIONS.RETURN_ADMIN_PROCESS}>",
+    "replace": "<RoleGuard permission={PERMISSIONS.RETURN_ADMIN_VIEW}>",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an approved request can be approved again",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.status === \"REQUESTED\" && (\n                <button",
+    "replace": "{true && (\n                <button",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a requested request can be received",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "{request.status === \"APPROVED\" && (\n                <button",
+    "replace": "{true && (\n                <button",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an action does not close its form",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "    setAction(null);\n    onChanged(updated);",
+    "replace": "    onChanged(updated);",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an action does not tell the list",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnDetailPanel.tsx",
+    "find": "    setAction(null);\n    onChanged(updated);",
+    "replace": "    setAction(null);",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a rejectable state is not",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/types.ts",
+    "find": "export const REJECTABLE_STATUSES: readonly ReturnStatus[] = [\"REQUESTED\", \"APPROVED\"];",
+    "replace": "export const REJECTABLE_STATUSES: readonly ReturnStatus[] = [\"REQUESTED\"];",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx",
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: the approval note keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ApproveReturnModal.tsx",
+    "find": "note: note.trim() || undefined",
+    "replace": "note: note || undefined",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an approved request does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ApproveReturnModal.tsx",
+    "find": "toast.success(t(\"toast.done\", { id: request.id }));\n      onDone(updated);",
+    "replace": "toast.success(t(\"toast.done\", { id: request.id }));",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an approval failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ApproveReturnModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the approval note has no limit",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ApproveReturnModal.tsx",
+    "find": "maxLength={RETURN_NOTE_MAX}",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the rejection reason is not required",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/RejectReturnModal.tsx",
+    "find": "if (!note.trim()) {\n      setError(t(\"errors.note\"));\n      return;\n    }",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a blank rejection reason is accepted",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/RejectReturnModal.tsx",
+    "find": "if (!note.trim()) {",
+    "replace": "if (!note) {",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the rejection error stays",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/RejectReturnModal.tsx",
+    "find": "    setError(null);\n    try {",
+    "replace": "    try {",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the rejection reason keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/RejectReturnModal.tsx",
+    "find": "rejectReturn({ returnId: request.id, note: note.trim() })",
+    "replace": "rejectReturn({ returnId: request.id, note })",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a rejected request does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/RejectReturnModal.tsx",
+    "find": "toast.success(t(\"toast.done\", { id: request.id }));\n      onDone(updated);",
+    "replace": "toast.success(t(\"toast.done\", { id: request.id }));",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a rejection failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/RejectReturnModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: lines start at zero",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "Object.fromEntries(request.items.map((item) => [item.id, String(item.quantity)]))",
+    "replace": "Object.fromEntries(request.items.map((item) => [item.id, \"0\"]))",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a letter is a quantity",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "/^\\d+$/.test(text) ? Number(text) : NaN",
+    "replace": "Number(text)",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: more than asked is accepted",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "value >= 0 && value <= item.quantity",
+    "replace": "value >= 0",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: accepting nothing is let through",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "else if (parsed.every((line) => line.value === 0)) found.items = t(\"errors.allZero\");",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: one zero line counts as nothing",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "parsed.every((line) => line.value === 0)",
+    "replace": "parsed.some((line) => line.value === 0)",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: invalid lines are let through",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "if (parsed.some((line) => !line.valid)) found.items = t(\"errors.invalid\");",
+    "replace": "if (false) found.items = t(\"errors.invalid\");",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a form with errors is sent",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "    if (found.items) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the shipping refund is always sent",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "...(refundShipping ? { refundShipping: true } : {}),",
+    "replace": "refundShipping,",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the shipping refund is never sent",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "...(refundShipping ? { refundShipping: true } : {}),",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an empty note is sent on receipt",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "...(note.trim() ? { note: note.trim() } : {}),",
+    "replace": "note: note.trim(),",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the receipt note keeps its spaces",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "...(note.trim() ? { note: note.trim() } : {}),",
+    "replace": "...(note.trim() ? { note } : {}),",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the refund amount is not said",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "updated.refund\n          ? t(\"toast.doneWithAmount\"",
+    "replace": "false\n          ? t(\"toast.doneWithAmount\"",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a received request does not tell the caller",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "      onDone(updated);\n    } catch",
+    "replace": "    } catch",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a receipt failure is silent",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "toast.error(toErrorMessage(err, t(\"toast.failed\")));",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the shipping fee is shown without an order",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "{request.order && (\n                    <span className=\"font-normal",
+    "replace": "{true && (\n                    <span className=\"font-normal",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an invalid line is not marked",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReceiveReturnModal.tsx",
+    "find": "${valid ? \"\" : \"!border-[var(--accent-rose)]\"}",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/return-forms.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: a received state looks waiting",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnBadge.tsx",
+    "find": "RECEIVED: \"bg-[rgba(184,165,200,0.15)] text-[var(--accent-lavender)]\",",
+    "replace": "RECEIVED: \"bg-[rgba(240,228,166,0.2)] text-[var(--color-honey)]\",",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: an unknown state has no fallback",
+    "file": "src/app/[locale]/(admin)/admin/returns/_components/ReturnBadge.tsx",
+    "find": "STYLES[status] ?? STYLES.CANCELLED",
+    "replace": "STYLES[status] ?? \"\"",
+    "tests": [
+      "tests/admin/returns/return-detail.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the list asks for more states",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "buildListQuery(params, { status: params.status, orderId: params.orderId })",
+    "replace": "buildListQuery(params, {})",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts",
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the detail id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "`/api/admin/returns/${encodeURIComponent(returnId)}`",
+    "replace": "`/api/admin/returns/${returnId}`",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: the approve id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "`/api/admin/returns/${encodeURIComponent(returnId)}/approve`",
+    "replace": "`/api/admin/returns/${returnId}/approve`",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: the reject id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "`/api/admin/returns/${encodeURIComponent(returnId)}/reject`",
+    "replace": "`/api/admin/returns/${returnId}/reject`",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: the receive id is not made safe",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "`/api/admin/returns/${encodeURIComponent(returnId)}/receive`",
+    "replace": "`/api/admin/returns/${returnId}/receive`",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: a write is not marked busy",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "        .addCase(thunk.pending, (state) => {\n          state.isUpdating = true;",
+    "replace": "        .addCase(thunk.pending, (state) => {",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: a list is not marked as loading",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": ".addCase(fetchReturns.pending, (state) => {\n        state.isListLoading = true;",
+    "replace": ".addCase(fetchReturns.pending, (state) => {",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts"
+    ]
+  },
+  {
+    "name": "returns: the total is not kept",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/moduleSlice.ts",
+    "find": "state.total = action.payload.total;",
+    "replace": "",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts",
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  },
+  {
+    "name": "returns: the sorts change",
+    "file": "src/app/[locale]/(admin)/admin/returns/_common/constants.ts",
+    "find": "  { value: \"-createdAt\", key: \"newest\" },\n  { value: \"createdAt\", key: \"oldest\" },",
+    "replace": "  { value: \"createdAt\", key: \"oldest\" },\n  { value: \"-createdAt\", key: \"newest\" },",
+    "tests": [
+      "tests/admin/returns/returns-slice.test.ts",
+      "tests/admin/returns/returns-list.test.tsx"
+    ]
+  }
+]

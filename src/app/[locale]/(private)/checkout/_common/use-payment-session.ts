@@ -25,11 +25,8 @@ const FATAL_POLL_STATUSES = new Set([401, 403, 404]);
 
 type RawSession = Omit<PaymentSession, "status"> & { status: string };
 
-/**
- * Payment session of one order. On mount it asks for the QR (`POST /api/payments/qr` returns the same
- * session until it expires, so a reload keeps the QR), then polls the status every `PAYMENT_POLL_INTERVAL_MS`
- * while it is `PENDING`. Polling stops on a final status, once `expiresAt` has passed, and on unmount.
- */
+/** Payment session of one order: asks for the QR on mount (same session until it expires, so a reload keeps it), then polls
+ *  while `PENDING`. Polling stops on a final status, after `expiresAt`, and on unmount. */
 export function usePaymentSession(orderId: string, enabled: boolean) {
   const { apiFetch } = useApiAuth();
   const [phase, setPhase] = useState<PaymentPhase>("loading");

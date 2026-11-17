@@ -26,8 +26,6 @@ import ReturnDetailPanel from "./_components/ReturnDetailPanel";
 /** "all" = no status filter */
 type StatusTab = ReturnStatus | "all";
 
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
-
 export default function ReturnsContent() {
   const t = useTranslations("admin.returns");
   const tReason = useTranslations("admin.returns.reason");

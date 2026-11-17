@@ -1,0 +1,1470 @@
+[
+  {
+    "name": "shop: the heart does not stop the link",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "      e.preventDefault();\n      e.stopPropagation();\n      toggleWishlist();",
+    "replace": "      toggleWishlist();",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the removed note is silent",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "        toast.info(t(\"removed\", { name: product.name }));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the removed note has no name",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "t(\"removed\", { name: product.name })",
+    "replace": "t(\"removed\", { name: \"\" })",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the saved note has no link",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "              <Link href=\"/wishlist\" onClick={(ev) => ev.stopPropagation()}>",
+    "replace": "              <Link href=\"/somewhere\" onClick={(ev) => ev.stopPropagation()}>",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the heart is not synced with the store",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "    setIsWishlisted(storeIsWishlisted);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the heart label is always add",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "aria-label={isWishlisted ? t(\"removeFromWishlist\") : t(\"addToWishlist\")}",
+    "replace": "aria-label={t(\"addToWishlist\")}",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the bag needs no sign-in",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "      requireAuth(() => {\n        openQuickAdd(product);\n      }, \"addToBag\");",
+    "replace": "      openQuickAdd(product);",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the bag does not stop the link",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "    (e: React.MouseEvent) => {\n      e.preventDefault();\n      e.stopPropagation();\n      requireAuth(() => {\n        openQuickAdd",
+    "replace": "    (e: React.MouseEvent) => {\n      requireAuth(() => {\n        openQuickAdd",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the bag asks for the wrong reason",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "      }, \"addToBag\");",
+    "replace": "      }, \"continue\");",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the icon bag shows on desktop",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "            {!isDesktop && (",
+    "replace": "            {true && (",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the icon bag never shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "            {!isDesktop && (",
+    "replace": "            {false && (",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the link goes to the shop when it could go further",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "const productUrl = productPath(product) ?? \"/shop\";",
+    "replace": "const productUrl = \"/shop\";",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the picture has no name",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "            alt={product.name}",
+    "replace": "            alt=\"\"",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge always shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "          {product.badge && (",
+    "replace": "          {true && (",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge never shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "          {product.badge && (",
+    "replace": "          {false && (",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the price shows for custom orders",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "{showPrice ? fmt(product, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{fmt(product, \"price\")}",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the price is hidden for everyone",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "{showPrice ? fmt(product, \"price\") : tCommon(\"priceOnRequest\")}",
+    "replace": "{tCommon(\"priceOnRequest\")}",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the old price shows for custom orders",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "{showPrice && product.originalPriceVnd && (",
+    "replace": "{product.originalPriceVnd && (",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the old price always shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "{showPrice && product.originalPriceVnd && (",
+    "replace": "{showPrice && (",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the old price shows the price",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "{fmtOrNull(product, \"originalPrice\")}",
+    "replace": "{fmt(product, \"price\")}",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the old price is not struck through",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "text-[var(--text-disabled)] line-through text-[0.6875rem]",
+    "replace": "text-[var(--text-disabled)] text-[0.6875rem]",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the rating shows the wrong figure",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductCard.tsx",
+    "find": "<ProductRating average={product.ratingAverage} count={product.ratingCount} />",
+    "replace": "<ProductRating average={product.ratingCount} count={product.ratingAverage} />",
+    "tests": [
+      "tests/storefront/shop/shop-card.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the empty note never shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "  if (products.length === 0) {",
+    "replace": "  if (products.length < 0) {",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the grid has few columns",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "sm:grid-cols-3 sm:gap-5 sm:px-6 sm:pb-16 lg:grid-cols-4 lg:gap-6 lg:px-8 lg:pb-20 xl:grid-cols-5",
+    "replace": "sm:grid-cols-3 sm:gap-5 sm:px-6 sm:pb-16 lg:grid-cols-4 lg:gap-6 lg:px-8 lg:pb-20",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the grid starts with the wrong columns",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "grid grid-cols-2 gap-4",
+    "replace": "grid grid-cols-1 gap-4",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: old cards are revealed again",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "    while (kept < previous.length && kept < ids.length && previous[kept] === ids[kept]) kept += 1;",
+    "replace": "    kept = 0;",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: every change counts as an append",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "    while (kept < previous.length && kept < ids.length && previous[kept] === ids[kept]) kept += 1;",
+    "replace": "    kept = previous.length;",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: nothing is hidden at first",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "    gsap.set(cards, { opacity: 0, y: 32 });\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a card shown stays hidden",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "        visible.forEach((card) => observer.unobserve(card));\n        gsap.to(visible, { opacity: 1, y: 0, duration: 0.55, stagger: 0.06, ease: \"power2.out\", clearProps: \"transform,opacity\" });",
+    "replace": "        visible.forEach((card) => observer.unobserve(card));",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a card out of view is shown",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": ".filter((entry) => entry.isIntersecting)",
+    "replace": ".filter((entry) => !entry.isIntersecting)",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: cards are not watched",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "    cards.forEach((card) => observer.observe(card));\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the watcher is not stopped",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "      observer.disconnect();\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: hidden cards are not freed",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "      gsap.killTweensOf(cards);\n      gsap.set(cards, { clearProps: \"transform,opacity\" });",
+    "replace": "      gsap.killTweensOf(cards);",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shown ids are not remembered",
+    "file": "src/app/[locale]/(public)/shop/_components/ProductGrid.tsx",
+    "find": "    shownIdsRef.current = ids;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-grid.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the grid is a carousel from four",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "const isCarousel = categories.length > MAX_INLINE_CATEGORIES;",
+    "replace": "const isCarousel = categories.length >= MAX_INLINE_CATEGORIES;",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the grid is never a carousel",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "const isCarousel = categories.length > MAX_INLINE_CATEGORIES;",
+    "replace": "const isCarousel = false;",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the pieces count only the first sub-category",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "cat.subcategories.reduce((sum, s) => sum + s.count, 0)",
+    "replace": "cat.subcategories[0]?.count ?? 0",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the pieces are not added up",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "cat.subcategories.reduce((sum, s) => sum + s.count, 0)",
+    "replace": "cat.subcategories.reduce((sum, s) => s.count, 0)",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the card links to the wrong page",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "href={`/shop/${cat.slug}`}",
+    "replace": "href={`/shop/${cat.title}`}",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a card with a picture shows none",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "{cat.heroImage ? (",
+    "replace": "{false ? (",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a card without a picture shows one",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "{cat.heroImage ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the cards are not hidden for the reveal",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "      gsap.set(cards, { opacity: 0, y: 40, scale: 0.97 });\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the carousel has no name",
+    "file": "src/app/[locale]/(public)/shop/_components/CategoryGrid.tsx",
+    "find": "          ariaLabel={t(\"carouselAria\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: all is never the open chip",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "          !activeSlug ? \"bg-[var(--accent-primary)]",
+    "replace": "          false ? \"bg-[var(--accent-primary)]",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: all is always the open chip",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "          !activeSlug ? \"bg-[var(--accent-primary)]",
+    "replace": "          true ? \"bg-[var(--accent-primary)]",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: every chip is open",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "            activeSlug === sub.slug ? \"bg-[var(--accent-primary)]",
+    "replace": "            true ? \"bg-[var(--accent-primary)]",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: no chip is open",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "            activeSlug === sub.slug ? \"bg-[var(--accent-primary)]",
+    "replace": "            false ? \"bg-[var(--accent-primary)]",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a chip links to the category",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "href={`/shop/${categorySlug}/${sub.slug}`}",
+    "replace": "href={`/shop/${categorySlug}`}",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the all chip links to the wrong page",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "href={`/shop/${categorySlug}`}\n        className={`shrink-0",
+    "replace": "href={`/shop`}\n        className={`shrink-0",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a chip has no count",
+    "file": "src/app/[locale]/(public)/shop/_components/SubcategoryChips.tsx",
+    "find": "          <span className=\"opacity-50 text-xs\">{sub.count}</span>\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the last step is a link",
+    "file": "src/app/[locale]/(public)/shop/_components/BreadcrumbNav.tsx",
+    "find": "{isLast || !crumb.href ? (",
+    "replace": "{!crumb.href ? (",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: no step is a link",
+    "file": "src/app/[locale]/(public)/shop/_components/BreadcrumbNav.tsx",
+    "find": "{isLast || !crumb.href ? (",
+    "replace": "{true ? (",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the first step has a diamond",
+    "file": "src/app/[locale]/(public)/shop/_components/BreadcrumbNav.tsx",
+    "find": "{idx > 0 && <span",
+    "replace": "{true && <span",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the breadcrumb has no name",
+    "file": "src/app/[locale]/(public)/shop/_components/BreadcrumbNav.tsx",
+    "find": "aria-label={t(\"aria\")}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the description always shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopHero.tsx",
+    "find": "{description && <p data-hero-desc",
+    "replace": "{true && <p data-hero-desc",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the description never shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopHero.tsx",
+    "find": "{description && <p data-hero-desc",
+    "replace": "{false && <p data-hero-desc",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the text is not hidden for the entrance",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopHero.tsx",
+    "find": "      gsap.set(textEls, { opacity: 0, y: 16 });\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the dots go to the wrong banner",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopHero.tsx",
+    "find": "        onSelect={goTo}\n",
+    "replace": "        onSelect={() => goTo(0)}\n",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the dots count the wrong number",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopHero.tsx",
+    "find": "        count={banners.length}\n",
+    "replace": "        count={banners.length + 1}\n",
+    "tests": [
+      "tests/storefront/shop/shop-parts.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the filters start on another sort",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "  sort: DEFAULT_SORT,\n  minPrice: null,",
+    "replace": "  sort: \"price\",\n  minPrice: null,",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the scope is left out of requests",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      ...scope,\n      sort: next.sort,",
+    "replace": "      sort: next.sort,",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sort is left out of requests",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      sort: next.sort,\n      minPrice",
+    "replace": "      minPrice",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the lowest price is left out",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      minPrice: next.minPrice ?? undefined,",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the highest price is left out",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      maxPrice: next.maxPrice ?? undefined,",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the rating is left out",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      minRating: next.minRating ?? undefined,",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sizes are joined wrongly",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "sizes: next.sizes.length > 0 ? next.sizes.join(\",\") : undefined,",
+    "replace": "sizes: next.sizes.length > 0 ? next.sizes.join(\" \") : undefined,",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the colours are joined wrongly",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "colors: next.colors.length > 0 ? next.colors.join(\",\") : undefined,",
+    "replace": "colors: next.colors.length > 0 ? next.colors.join(\" \") : undefined,",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the page is not sent",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      page: pageNumber,\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the page size changes",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      limit: SHOP_PAGE_SIZE,\n    }),",
+    "replace": "      limit: 10,\n    }),",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: an older answer is used",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "        if (request !== requestRef.current) return;\n        setProducts(res.data);",
+    "replace": "        setProducts(res.data);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a new filter answer is dropped",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      const request = ++requestRef.current;",
+    "replace": "      const request = requestRef.current;",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a filter failure is silent",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "        if (request === requestRef.current) toast.error(t(\"loadFailed\"));\n      }\n    },\n    [queryFor, remember, toast, t]",
+    "replace": "      }\n    },\n    [queryFor, remember, toast, t]",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the total is not updated by a filter",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "        setTotal(res.total);\n        setPage(1);",
+    "replace": "        setPage(1);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the page is not reset by a filter",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "        setTotal(res.total);\n        setPage(1);",
+    "replace": "        setTotal(res.total);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a filter keeps the loading state",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      setFilters(next);\n      setIsLoadingMore(false);",
+    "replace": "      setFilters(next);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more replaces the list",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "        return [...prev, ...res.data.filter((p) => !shown.has(p.id))];",
+    "replace": "        return [...res.data.filter((p) => !shown.has(p.id))];",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more repeats products",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "        return [...prev, ...res.data.filter((p) => !shown.has(p.id))];",
+    "replace": "        return [...prev, ...res.data];",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more asks for the same page",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "queryFor(filters, page + 1)",
+    "replace": "queryFor(filters, page)",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more ignores the filters",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "queryFor(filters, page + 1)",
+    "replace": "queryFor(EMPTY_FILTERS, page + 1)",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more does not count the page",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      setTotal(res.total);\n      setPage((p) => p + 1);",
+    "replace": "      setTotal(res.total);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more does not update the total",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      setTotal(res.total);\n      setPage((p) => p + 1);",
+    "replace": "      setPage((p) => p + 1);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more uses a stale answer",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      if (request !== requestRef.current) return;\n      setProducts((prev) => {",
+    "replace": "      setProducts((prev) => {",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more failure is silent",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      if (request === requestRef.current) toast.error(t(\"loadFailed\"));\n    } finally {",
+    "replace": "    } finally {",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more stays busy",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      if (request === requestRef.current) setIsLoadingMore(false);",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more shows for a full list",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "  const hasMore = products.length < total;",
+    "replace": "  const hasMore = products.length <= total;",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: load more never shows",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "  const hasMore = products.length < total;",
+    "replace": "  const hasMore = false;",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the button does not say loading",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "{isLoadingMore ? t(\"loadingMore\") : t(\"loadMore\")}",
+    "replace": "{t(\"loadMore\")}",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the button stays on while loading",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "            disabled={isLoadingMore}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the heading is not shown",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      {heading && <div key=\"heading\">{heading}</div>}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sizes are not remembered",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "    setSizes((prev) => collectSizes(prev, incoming));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the colours are not remembered",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "    setColors((prev) => collectColors(prev, incoming));",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sizes are forgotten with the page",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "    setSizes((prev) => collectSizes(prev, incoming));",
+    "replace": "    setSizes(() => collectSizes([], incoming));",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sizes are not sorted",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "  return Array.from(set).sort();",
+    "replace": "  return Array.from(set);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a known colour is overwritten",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "      if (!map.has(name)) map.set(name, hex);",
+    "replace": "      map.set(name, hex);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the first page sizes are not collected",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "useState<string[]>(() => collectSizes([], initialProducts))",
+    "replace": "useState<string[]>([])",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the first page colours are not collected",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "useState<[string, string][]>(() => collectColors([], initialProducts))",
+    "replace": "useState<[string, string][]>([])",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the toolbar count is the loaded number",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopProductsClient.tsx",
+    "find": "          totalFiltered={total}",
+    "replace": "          totalFiltered={products.length}",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sort list loses a way",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "  { value: \"-ratingCount\", key: \"reviewsDesc\" },\n];",
+    "replace": "];",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the default sort changes",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "export const DEFAULT_SORT: SortValue = \"-createdAt\";",
+    "replace": "export const DEFAULT_SORT: SortValue = \"price\";",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a size toggles the wrong way",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "      const sizes = activeFilters.sizes.includes(size)\n        ? activeFilters.sizes.filter((s) => s !== size)\n        : [...activeFilters.sizes, size];",
+    "replace": "      const sizes = activeFilters.sizes.includes(size)\n        ? [...activeFilters.sizes, size]\n        : activeFilters.sizes.filter((s) => s !== size);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a size is added in front",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": ": [...activeFilters.sizes, size];",
+    "replace": ": [size, ...activeFilters.sizes];",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a colour is never lifted",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "      const colors = activeFilters.colors.includes(color)\n        ? activeFilters.colors.filter((c) => c !== color)\n        : [...activeFilters.colors, color];",
+    "replace": "      const colors = [...activeFilters.colors, color];",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sort alone does not count",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "    activeFilters.sort !== DEFAULT_SORT ||\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a rating does not count",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "    activeFilters.colors.length > 0 ||\n    activeFilters.minRating != null;",
+    "replace": "    activeFilters.colors.length > 0;",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: clearing keeps the sort",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "      sort: DEFAULT_SORT,\n      minPrice: null,\n      maxPrice: null,\n      sizes: [],\n      colors: [],\n      minRating: null,\n    });",
+    "replace": "      sort: activeFilters.sort,\n      minPrice: null,\n      maxPrice: null,\n      sizes: [],\n      colors: [],\n      minRating: null,\n    });",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: clearing keeps the rating",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "      colors: [],\n      minRating: null,\n    });",
+    "replace": "      colors: [],\n      minRating: activeFilters.minRating,\n    });",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge counts the sort",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "  const activeFiltersCount =\n",
+    "replace": "  const activeFiltersCount =\n    (activeFilters.sort !== DEFAULT_SORT ? 1 : 0) +\n",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge counts every size",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "(activeFilters.sizes.length > 0 ? 1 : 0)",
+    "replace": "activeFilters.sizes.length",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge forgets the colours",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "(activeFilters.colors.length > 0 ? 1 : 0) +\n",
+    "replace": "0 +\n",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge forgets the rating",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "(activeFilters.minRating != null ? 1 : 0) +\n",
+    "replace": "0 +\n",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the badge forgets the price",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "(activeFilters.minPrice != null || activeFilters.maxPrice != null ? 1 : 0);",
+    "replace": "0;",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the price bands change",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "{ min: null, max: 500_000 },",
+    "replace": "{ min: null, max: 400_000 },",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the middle band changes",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "{ min: 500_000, max: 1_000_000 },",
+    "replace": "{ min: 500_000, max: 900_000 },",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the top band changes",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "{ min: 2_000_000, max: null },",
+    "replace": "{ min: 3_000_000, max: null },",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a band is never lifted",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "minPrice: active ? null : band.min,",
+    "replace": "minPrice: band.min,",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a band keeps its top when lifted",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "maxPrice: active ? null : band.max,",
+    "replace": "maxPrice: band.max,",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a band is active by its top only",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "activeFilters.minPrice === band.min && activeFilters.maxPrice === band.max",
+    "replace": "activeFilters.maxPrice === band.max",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a band is not marked",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "                        aria-pressed={active}\n                        onClick={() =>\n                          onFiltersChange({\n                            ...activeFilters,\n                            minPrice",
+    "replace": "                        aria-pressed={false}\n                        onClick={() =>\n                          onFiltersChange({\n                            ...activeFilters,\n                            minPrice",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a rating is never lifted",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "minRating: active ? null : stars",
+    "replace": "minRating: stars",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a rating is not marked",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "                        aria-pressed={active}\n                        onClick={() => onFiltersChange({ ...activeFilters, minRating",
+    "replace": "                        aria-pressed={false}\n                        onClick={() => onFiltersChange({ ...activeFilters, minRating",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the ratings change",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "const MIN_RATING_OPTIONS = [4, 3, 2, 1] as const;",
+    "replace": "const MIN_RATING_OPTIONS = [5, 4, 3, 2] as const;",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the size group shows when empty",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "{availableSizes.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the colour group shows when empty",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "{availableColors.length > 0 && (",
+    "replace": "{true && (",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the panel opens closed-to-closed",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "onClick={() => setOpen((p) => !p)}",
+    "replace": "onClick={() => setOpen(true)}",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the panel starts open",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "const [open, setOpen] = useState(false);",
+    "replace": "const [open, setOpen] = useState(true);",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the colour swatch has the wrong colour",
+    "file": "src/app/[locale]/(public)/shop/_components/ShopFilters.tsx",
+    "find": "style={{ background: hex }}",
+    "replace": "style={{ background: \"#000\" }}",
+    "tests": [
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop page asks for few products",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "getProductsWithParams({ limit: SHOP_PAGE_SIZE })",
+    "replace": "getProductsWithParams({ limit: 5 })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop page asks for the wrong banners",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "getBannerConfig(SITE_CONFIG_KEYS.SHOP_HERO_BANNERS)",
+    "replace": "getBannerConfig(SITE_CONFIG_KEYS.NEW_IN_HERO_BANNERS)",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop page counts the wrong number of categories",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "t(\"browse.description\", { count: categories.length })",
+    "replace": "t(\"browse.description\", { count: 0 })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop page shows a total of the loaded products",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "initialTotal={firstPage.total}",
+    "replace": "initialTotal={firstPage.data.length}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop page leaves out the banners",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "banners={heroBanners}",
+    "replace": "banners={[]}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop breadcrumb lacks the shop step",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "          { name: tNav(\"shop\"), path: \"/shop\" },\n        ])}",
+    "replace": "        ])}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop breadcrumb for search engines has the wrong address",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "{ name: tNav(\"shop\"), path: \"/shop\" },",
+    "replace": "{ name: tNav(\"shop\"), path: \"/store\" },",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop title has no brand",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "  const title = withBrand(t(\"title\"));",
+    "replace": "  const title = t(\"title\");",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop has no language alternates",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "alternates: buildAlternates(locale, \"/shop\"),",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the shop share card is missing",
+    "file": "src/app/[locale]/(public)/shop/page.tsx",
+    "find": "    ...buildSocialMetadata({ locale, path: \"/shop\", title, description: t(\"description\") }),\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category page asks for few products",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "getProductsWithParams({ category: slug, limit: SHOP_PAGE_SIZE })",
+    "replace": "getProductsWithParams({ category: slug, limit: 5 })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category page does not ask for its own products",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "getProductsWithParams({ category: slug, limit: SHOP_PAGE_SIZE })",
+    "replace": "getProductsWithParams({ limit: SHOP_PAGE_SIZE })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a missing category is shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "  if (!category) {\n    notFound();\n  }",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category hero has no picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "banners={firstProductImage ? [{ image: firstProductImage }] : []}",
+    "replace": "banners={[]}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category hero takes the last picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "const firstProductImage = products[0]?.images[0];",
+    "replace": "const firstProductImage = products[products.length - 1]?.images[0];",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category products have no scope",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "          scope={{ category: slug }}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category total is the loaded number",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "initialTotal={firstPage.total}",
+    "replace": "initialTotal={products.length}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category breadcrumb lacks the category",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "          { name: category.title, path: `/shop/${slug}` },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category chips are for another category",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "<SubcategoryChips categorySlug={slug} subcategories={[...category.subcategories]} />",
+    "replace": "<SubcategoryChips categorySlug=\"x\" subcategories={[...category.subcategories]} />",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category title says nothing when missing",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "if (!category) return { title: withBrand(tCommon(\"notFound\")) };",
+    "replace": "if (!category) return { title: \"\" };",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category share card has no picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "      image: products[0]?.images[0],\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category share card has the wrong name",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "      imageAlt: category.title,",
+    "replace": "      imageAlt: slug,",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the category pages are not built ahead",
+    "file": "src/app/[locale]/(public)/shop/[category]/page.tsx",
+    "find": "  return categories.map((cat) => ({\n    category: cat.slug,\n  }));",
+    "replace": "  return [];",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category page asks for few products",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "getProductsWithParams({ category: catSlug, subcategory: subSlug, limit: SHOP_PAGE_SIZE })",
+    "replace": "getProductsWithParams({ category: catSlug, subcategory: subSlug, limit: 5 })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category page asks only for the category",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "getProductsWithParams({ category: catSlug, subcategory: subSlug, limit: SHOP_PAGE_SIZE })",
+    "replace": "getProductsWithParams({ category: catSlug, limit: SHOP_PAGE_SIZE })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: a missing sub-category is shown",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "  if (!result) {\n    notFound();\n  }",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category hero has no picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "banners={firstProductImage ? [{ image: firstProductImage }] : []}",
+    "replace": "banners={[]}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category chip is not open",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "        activeSlug={subSlug}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category products have no scope",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "scope={{ category: catSlug, subcategory: subSlug }}",
+    "replace": "scope={{ category: catSlug }}",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category count is the loaded number",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "t(\"pieceCount\", { count: firstPage.total })",
+    "replace": "t(\"pieceCount\", { count: products.length })",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category breadcrumb lacks a step",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "          { name: category.title, path: `/shop/${catSlug}` },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category breadcrumb link is missing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "{ label: category.title, href: `/shop/${category.slug}` },",
+    "replace": "{ label: category.title },",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category title is not both names",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "const title = withBrand(`${subcategory.label} — ${category.title}`);",
+    "replace": "const title = withBrand(subcategory.label);",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category share card has no picture",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "      image: products[0]?.images[0],\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category pages are not built ahead",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "  return categories.flatMap((cat) =>",
+    "replace": "  return [].flatMap((cat: typeof categories[0]) =>",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the sub-category title says nothing when missing",
+    "file": "src/app/[locale]/(public)/shop/[category]/[subcategory]/page.tsx",
+    "find": "if (!result) return { title: withBrand(tCommon(\"notFound\")) };",
+    "replace": "if (!result) return { title: \"\" };",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "shop: the page size changes",
+    "file": "src/app/[locale]/(public)/shop/_common/constants.ts",
+    "find": "export const SHOP_PAGE_SIZE = LIST_DEFAULT_LIMIT;",
+    "replace": "export const SHOP_PAGE_SIZE = 10;",
+    "tests": [
+      "tests/storefront/shop/shop-pages.test.tsx",
+      "tests/storefront/shop/shop-products.test.tsx"
+    ]
+  }
+]

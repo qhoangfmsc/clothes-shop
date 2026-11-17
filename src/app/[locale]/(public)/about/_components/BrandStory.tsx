@@ -97,7 +97,7 @@ export default function BrandStory() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [...ease], delay: 0.2 }}
-          className="relative w-full aspect-[3/4] p-1 bg-[var(--color-warm-white)] border border-[var(--border-subtle)] shadow-[var(--shadow-lg)]"
+          className="relative w-full aspect-[3/4] p-1 bg-[var(--color-pearl-cream)] border border-[var(--border-subtle)] shadow-[var(--shadow-lg)]"
         >
           {/* Inner image */}
           <div className="relative w-full h-full overflow-hidden">

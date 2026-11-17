@@ -33,7 +33,7 @@ Decide in this order: **content priority on the phone → how it grows → what 
 
 **Mobile-first classes.** `grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5` (columns per `.agent/rules/design-system.md`: 2 → 3 → 4, plus a wide step). Spacing and type step up the same way (`p-4 sm:p-6 lg:p-8`, page edge 16 → 24 → 32 px).
 
-**Wide screens.** Wrap page content in a centered max-width container (`mx-auto w-full max-w-[…]`) taken from the neighbouring pages of the same module so the site stays consistent; heroes/backgrounds are full-bleed with the content wrapper inside. Text blocks keep `max-w-[65ch]`-style limits. Check 1920 and 2560, not only 1440.
+**Wide screens.** Wrap page content in a centered max-width container (`mx-auto w-full max-w-[…]`) taken from the neighbouring pages of the same module so the site stays consistent; heroes/backgrounds are full-bleed with the content wrapper inside: above 1920px the page column is capped, so put `bleed` (`globals.css`) on a band whose background must reach the screen edges (`[--bleed-px:…]` for its own side padding, `bleed-l` / `bleed-r` on the picture half of a split section; never on a GSAP-pinned element, wrap it instead). Text blocks keep `max-w-[65ch]`-style limits. Check 1920 and 2560, not only 1440.
 
 **Hover vs touch.**
 ```tsx

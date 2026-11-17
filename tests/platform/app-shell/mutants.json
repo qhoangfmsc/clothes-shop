@@ -1,0 +1,1244 @@
+[
+  {
+    "name": "app-shell: an unknown language is accepted",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "  if (!hasLocale(routing.locales, locale)) notFound();",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the page is not told its language",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "  setRequestLocale(locale);\n\n  /* Root scopes",
+    "replace": "\n  /* Root scopes",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the page is in the wrong language",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "lang={locale}",
+    "replace": "lang=\"vi\"",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the typeface is missing",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "      className={siteFont.variable}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the root sends the admin texts",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "[\"common\", \"shared\", \"auth\"]",
+    "replace": "[\"common\", \"shared\", \"auth\", \"admin\"]",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the root misses the shared texts",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "[\"common\", \"shared\", \"auth\"]",
+    "replace": "[\"common\", \"auth\"]",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the root misses the sign-in texts",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "[\"common\", \"shared\", \"auth\"]",
+    "replace": "[\"common\", \"shared\"]",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the texts are of another language",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "<NextIntlClientProvider locale={locale} messages={messages}>",
+    "replace": "<NextIntlClientProvider locale=\"vi\" messages={messages}>",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the page is not inside the providers",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "                      {children}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: hydration warnings are shown",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "      suppressHydrationWarning\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: only one language is built ahead",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "return routing.locales.map((locale) => ({ locale }));",
+    "replace": "return routing.locales.slice(0, 1).map((locale) => ({ locale }));",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the site title is the description",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "    title: t(\"title\"),\n    description: t(\"description\"),\n    applicationName",
+    "replace": "    title: t(\"description\"),\n    description: t(\"description\"),\n    applicationName",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the application has no name",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "    applicationName: BRAND_NAME,\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the addresses are relative",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "    metadataBase: new URL(SITE_URL),\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the language alternates are missing",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "    alternates: buildAlternates(locale),\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the share card is of another site name",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "      siteName: BRAND_NAME,",
+    "replace": "      siteName: \"x\",",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the share card is of one language",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "      locale: LOCALE_LABELS[locale].ogLocale,",
+    "replace": "      locale: LOCALE_LABELS.vi.ogLocale,",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the share picture is smaller",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "width: 1200, height: 630",
+    "replace": "width: 600, height: 315",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the share picture has no description",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "alt: t(\"ogAlt\")",
+    "replace": "alt: \"\"",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the tweet card is small",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "card: \"summary_large_image\",",
+    "replace": "card: \"summary\",",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the search proof is not sent",
+    "file": "src/app/[locale]/layout.tsx",
+    "find": "    verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the catch-all shows a page",
+    "file": "src/app/[locale]/[...rest]/page.tsx",
+    "find": "  notFound();",
+    "replace": "  return null;",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the public group sends the private texts",
+    "file": "src/app/[locale]/(public)/layout.tsx",
+    "find": "<ScopedMessages scope=\"public\">",
+    "replace": "<ScopedMessages scope=\"private\">",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the public group has no header",
+    "file": "src/app/[locale]/(public)/layout.tsx",
+    "find": "      <SiteHeader />\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the public group has no footer",
+    "file": "src/app/[locale]/(public)/layout.tsx",
+    "find": "      <SiteFooter />\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the public group accepts an unknown language",
+    "file": "src/app/[locale]/(public)/layout.tsx",
+    "find": "  if (!hasLocale(routing.locales, locale)) notFound();",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the public group is not told the language",
+    "file": "src/app/[locale]/(public)/layout.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the private group sends the public texts",
+    "file": "src/app/[locale]/(private)/layout.tsx",
+    "find": "<ScopedMessages scope=\"private\">",
+    "replace": "<ScopedMessages scope=\"public\">",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the private pages are indexed",
+    "file": "src/app/[locale]/(private)/layout.tsx",
+    "find": "robots: { index: false, follow: false }",
+    "replace": "robots: { index: true, follow: false }",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the private pages are followed",
+    "file": "src/app/[locale]/(private)/layout.tsx",
+    "find": "robots: { index: false, follow: false }",
+    "replace": "robots: { index: false, follow: true }",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the private group accepts an unknown language",
+    "file": "src/app/[locale]/(private)/layout.tsx",
+    "find": "  if (!hasLocale(routing.locales, locale)) notFound();",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-layouts.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the error is not recorded",
+    "file": "src/app/[locale]/(public)/error.tsx",
+    "find": "    console.error(error);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: \"try again\" does nothing",
+    "file": "src/app/[locale]/(public)/error.tsx",
+    "find": "          onClick={reset}",
+    "replace": "          onClick={() => {}}",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the way home goes to the shop",
+    "file": "src/app/[locale]/(public)/error.tsx",
+    "find": "          href=\"/\"\n          className=\"inline-flex items-center gap-1.5 py-2.5 px-5 rounded-full border",
+    "replace": "          href=\"/shop\"\n          className=\"inline-flex items-center gap-1.5 py-2.5 px-5 rounded-full border",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the error page has no title",
+    "file": "src/app/[locale]/(public)/error.tsx",
+    "find": "        {t(\"title\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the home button goes to the shop",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "          <Link\n            href=\"/\"\n            style={{",
+    "replace": "          <Link\n            href=\"/shop\"\n            style={{",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the explore button goes home",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "            href=\"/shop\"\n            style={{\n              background: \"transparent\",",
+    "replace": "            href=\"/\"\n            style={{\n              background: \"transparent\",",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the wallpaper is described",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "          alt=\"\"\n          fill",
+    "replace": "          alt=\"wallpaper\"\n          fill",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the first button does not dim",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.opacity = \"0.9\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the first button does not grow",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.transform = \"scale(1.02)\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the first button stays dim",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.opacity = \"1\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the second button is not tinted",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.background = \"var(--color-rose-milk)\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the second button does not lift",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.transform = \"translateY(-2px)\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the second button stays tinted",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.background = \"transparent\";\n              e.currentTarget.style.transform = \"translateY(0)\";",
+    "replace": "              e.currentTarget.style.transform = \"translateY(0)\";",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the second button stays lifted",
+    "file": "src/app/[locale]/not-found.tsx",
+    "find": "              e.currentTarget.style.transform = \"translateY(0)\";",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a signed-out visitor is told they are signed in",
+    "file": "src/app/[locale]/unauthorized/UnauthorizedContent.tsx",
+    "find": "{isAuthenticated\n            ? t(\"signedIn\"",
+    "replace": "{true\n            ? t(\"signedIn\"",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the email is not shown",
+    "file": "src/app/[locale]/unauthorized/UnauthorizedContent.tsx",
+    "find": "t(\"signedIn\", { email: user?.email ?? t(\"unknownEmail\") })",
+    "replace": "t(\"signedIn\", { email: t(\"unknownEmail\") })",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: an admin looks like a customer",
+    "file": "src/app/[locale]/unauthorized/UnauthorizedContent.tsx",
+    "find": "user.role === \"admin\"\n                  ?",
+    "replace": "user.role === \"user\"\n                  ?",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a signed-in customer is sent to sign in",
+    "file": "src/app/[locale]/unauthorized/UnauthorizedContent.tsx",
+    "find": "          {isAuthenticated ? (\n            <Link\n              href=\"/\"",
+    "replace": "          {!isAuthenticated ? (\n            <Link\n              href=\"/\"",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: sign-in goes home",
+    "file": "src/app/[locale]/unauthorized/UnauthorizedContent.tsx",
+    "find": "              href=\"/login\"",
+    "replace": "              href=\"/\"",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the way back goes to sign-in",
+    "file": "src/app/[locale]/unauthorized/UnauthorizedContent.tsx",
+    "find": "              href=\"/\"\n              className=\"flex items-center gap-2 py-2.5 px-6 bg-[var(--accent-primary)] text-[var(--text-on-gold)] no-underline rounded-md text-sm font-semibold font-primary\"\n            >\n              <ArrowLeft",
+    "replace": "              href=\"/login\"\n              className=\"flex items-center gap-2 py-2.5 px-6 bg-[var(--accent-primary)] text-[var(--text-on-gold)] no-underline rounded-md text-sm font-semibold font-primary\"\n            >\n              <ArrowLeft",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the page can be indexed",
+    "file": "src/app/[locale]/unauthorized/page.tsx",
+    "find": "robots: { index: false, follow: false }",
+    "replace": "robots: { index: true, follow: false }",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the page has no brand in the title",
+    "file": "src/app/[locale]/unauthorized/page.tsx",
+    "find": "title: withBrand(t(\"title\"))",
+    "replace": "title: t(\"title\")",
+    "tests": [
+      "tests/platform/app-shell/shell-pages.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the page is dropped",
+    "file": "src/app/[locale]/_components/Providers.tsx",
+    "find": "          {children}\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for the page already open",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "isCurrentPage(href, pathname)",
+    "replace": "false",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for a link to another site",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "href.startsWith(\"http\") || ",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for a place on the page",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "href.startsWith(\"#\") || ",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for a link with no address",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "if (!href || ",
+    "replace": "if (",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for a new tab",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "anchor.target === \"_blank\" || ",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes with the meta key",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": " || e.metaKey",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes with the control key",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": " || e.ctrlKey",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes with the shift key",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": " || e.shiftKey",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for a button in a link",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "      if (target.closest(\"button, [role='button'], input, select, textarea\")) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes for a click that is no link",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "      if (!anchor) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the language is not taken off a link",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": ".replace(LOCALE_PREFIX, \"\")",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a query makes a different page",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "href.split(/[?#]/)[0]",
+    "replace": "href",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the language home is not the home",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "|| \"/\") === pathname;",
+    "replace": "|| \"\") === pathname;",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil is not safe from staying",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "timerRef.current = setTimeout(() => setPhase(\"out\"), 4000);",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil stays 5 seconds",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "setPhase(\"out\"), 4000",
+    "replace": "setPhase(\"out\"), 5000",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil goes at once",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "const minHold = 300;",
+    "replace": "const minHold = 0;",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil holds for a second",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "const minHold = 300;",
+    "replace": "const minHold = 1000;",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil does not count the time already waited",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "const wait = Math.max(0, minHold - elapsed);",
+    "replace": "const wait = minHold;",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil waits for two frames",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "      requestAnimationFrame(() => {\n        requestAnimationFrame(() => {\n          requestAnimationFrame(() => {\n            setPhase(\"out\");\n          });\n        });\n      });",
+    "replace": "      requestAnimationFrame(() => {\n        requestAnimationFrame(() => {\n          setPhase(\"out\");\n        });\n      });",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil fades out for 300 ms",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "setPhase(\"idle\"), 350",
+    "replace": "setPhase(\"idle\"), 300",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil never goes away",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "setTimeout(() => setPhase(\"idle\"), 350)",
+    "replace": "setTimeout(() => {}, 350)",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil comes on its own with a new address",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "    if (phase === \"idle\") return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a click is heard after the shell goes",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "return () => document.removeEventListener(\"click\", handleClick, true);",
+    "replace": "return () => {};",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the timer outlives the shell",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "useEffect(() => () => clearTimeout(timerRef.current), []);",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil covers nothing",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "z-9999",
+    "replace": "z-0",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil blocks the page",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "pointer-events-none",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the veil is read out",
+    "file": "src/app/[locale]/_components/RouteTransition.tsx",
+    "find": "      aria-hidden=\"true\"\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/route-transition.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the admin's visits are counted",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "isAdminUrl(event.url) ? null : event",
+    "replace": "event",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: every visit is dropped",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "isAdminUrl(event.url) ? null : event",
+    "replace": "null",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: only one language's admin is dropped",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "^/(${routing.locales.join(\"|\")})/admin(/|$)",
+    "replace": "^/vi/admin(/|$)",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: pages that look like admin are dropped",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "/admin(/|$)`",
+    "replace": "/admin`",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the admin root is counted",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "/admin(/|$)`",
+    "replace": "/admin/`",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: an unreadable address is dropped",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "  } catch {\n    return false;",
+    "replace": "  } catch {\n    return true;",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the speed is not measured",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "      <SpeedInsights beforeSend={(event) => skipAdmin(event)} />\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the visits are not measured",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "      <Analytics beforeSend={(event: BeforeSendEvent) => skipAdmin(event)} />\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the speed counts the admin",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "<SpeedInsights beforeSend={(event) => skipAdmin(event)} />",
+    "replace": "<SpeedInsights beforeSend={(event) => event} />",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the visits count the admin",
+    "file": "src/app/[locale]/_components/VercelTelemetry.tsx",
+    "find": "<Analytics beforeSend={(event: BeforeSendEvent) => skipAdmin(event)} />",
+    "replace": "<Analytics beforeSend={(event: BeforeSendEvent) => event} />",
+    "tests": [
+      "tests/platform/app-shell/providers.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a touch device gets the cursor",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "    if (!hasFinePointer) return;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a touch device is asked about the wrong pointer",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "window.matchMedia(\"(pointer: fine)\")",
+    "replace": "window.matchMedia(\"(pointer: coarse)\")",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer is not followed horizontally",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "      x.set(event.clientX);",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer is not followed vertically",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "      y.set(event.clientY);",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer shows no hand",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "  if (target.closest(POINTER_SELECTOR)) return \"pointer\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer shows no bar",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "  if (target.closest(TEXT_SELECTOR)) return \"text\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the bar and the hand swap order",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "  if (target.closest(TEXT_SELECTOR)) return \"text\";\n  if (target.closest(POINTER_SELECTOR)) return \"pointer\";",
+    "replace": "  if (target.closest(POINTER_SELECTOR)) return \"pointer\";\n  if (target.closest(TEXT_SELECTOR)) return \"text\";",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the system pointer is never kept",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "  if (target.closest(NATIVE_SELECTOR)) return \"native\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a non-element gets no arrow",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "  if (!(target instanceof Element)) return \"default\";\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer stays when the variant changes",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "        lastVariant.current = variant;\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer does not appear on the first move",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "setState((prev) => (prev.isVisible ? prev : { ...prev, isVisible: true }));",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer does not appear with a new look",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "setState((prev) => ({ ...prev, isVisible: true, variant }));",
+    "replace": "setState((prev) => ({ ...prev, variant }));",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer stays when the mouse leaves",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "const handleLeave = () => setState((prev) => ({ ...prev, isVisible: false }));",
+    "replace": "const handleLeave = () => {};",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a press is not noticed",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "const handleDown = () => setState((prev) => ({ ...prev, isPressed: true }));",
+    "replace": "const handleDown = () => {};",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a release is not noticed",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "const handleUp = () => setState((prev) => ({ ...prev, isPressed: false }));",
+    "replace": "const handleUp = () => {};",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: moves are not heard when the page stops them",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "window.addEventListener(\"pointermove\", handleMove, { passive: true, capture: true });",
+    "replace": "window.addEventListener(\"pointermove\", handleMove, { passive: true });",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a cancelled pointer is not a release",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "window.addEventListener(\"pointercancel\", handleUp, capture);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: losing focus is not a release",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "window.addEventListener(\"blur\", handleUp);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the leave listener stays",
+    "file": "src/app/[locale]/_components/cursor/use-cursor-tracker.ts",
+    "find": "      document.removeEventListener(\"mouseleave\", handleLeave);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the cursor is not drawn",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "  if (!isSupported || variant === \"native\") return null;",
+    "replace": "  if (!isSupported) return null;",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the cursor is drawn over the system pointer",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "  if (!isSupported || variant === \"native\") return null;",
+    "replace": "  if (variant === \"native\") return null;",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the system pointer is not hidden",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "    document.documentElement.classList.add(\"custom-cursor-active\");\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the system pointer stays hidden",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "      document.documentElement.classList.remove(\"custom-cursor-active\");\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the petals do not bloom",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "      setBursts((prev) => [...prev, burst]);\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the petals stay",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "      setTimeout(() => {\n        setBursts((prev) => prev.filter((b) => b.id !== burst.id));\n      }, BURST_LIFETIME_MS);",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the petals stay a second",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "const BURST_LIFETIME_MS = 500;",
+    "replace": "const BURST_LIFETIME_MS = 1000;",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the bloom has five petals",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "const PETAL_COUNT = 6;",
+    "replace": "const PETAL_COUNT = 5;",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the petals have one colour",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "color: PETAL_COLORS[i % PETAL_COLORS.length],",
+    "replace": "color: PETAL_COLORS[0],",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the petals are not heard when the page stops them",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "window.addEventListener(\"pointerdown\", handleDown, { capture: true });",
+    "replace": "window.addEventListener(\"pointerdown\", handleDown);",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the petal listener stays",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "      window.removeEventListener(\"pointerdown\", handleDown, { capture: true });\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer does not shrink when pressed",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "scale * (isPressed ? 0.85 : 1)",
+    "replace": "scale",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the pointer is hidden when it should show",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "opacity: isVisible ? 1 : 0,",
+    "replace": "opacity: 1,",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the tip is not on the position",
+    "file": "src/app/[locale]/_components/cursor/CustomCursor.tsx",
+    "find": "marginLeft: -(anchor.x * width), marginTop: -(anchor.y * height)",
+    "replace": "marginLeft: 0, marginTop: 0",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the hand has the arrow's picture",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "src: \"/cursor/pointer.png\",",
+    "replace": "src: \"/cursor/default.png\",",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the bar has another picture",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "src: \"/cursor/text.png\",",
+    "replace": "src: \"/cursor/pointer.png\",",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: links are not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "export const POINTER_SELECTOR = [\n  \"a\",\n",
+    "replace": "export const POINTER_SELECTOR = [\n",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: buttons are not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"button\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: labels are not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"label\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: tabs are not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  '[role=\"tab\"]',\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: boxes are not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"input[type='checkbox']\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: send buttons are not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"input[type='submit']\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a marked element is not a hand",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"[data-cursor='pointer']\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: text areas are not a bar",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"textarea\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: editable text is not a bar",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"[contenteditable='true']\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: a marked element is not a bar",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "  \"[data-cursor='text']\",\n",
+    "replace": "",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: the system pointer cannot be asked for",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "export const NATIVE_SELECTOR = \"[data-cursor='native']\";",
+    "replace": "export const NATIVE_SELECTOR = \"[data-cursor='system']\";",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  },
+  {
+    "name": "app-shell: check boxes are a bar",
+    "file": "src/app/[locale]/_components/cursor/cursor-config.ts",
+    "find": "\"input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio'])\"",
+    "replace": "\"input:not([type='button']):not([type='submit']):not([type='reset']):not([type='radio'])\"",
+    "tests": [
+      "tests/platform/app-shell/cursor.test.tsx"
+    ]
+  }
+]

@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   REFUNDS MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 /** BE sort whitelist: `createdAt`, `processedAt`, `amount` (`-` = descending). `key` = label in admin.components.crud.sort.* */
 export const REFUND_SORT_OPTIONS = [
   { value: "-createdAt", key: "newest" },

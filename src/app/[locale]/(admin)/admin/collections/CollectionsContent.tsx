@@ -29,6 +29,7 @@ import {
   type FormTab,
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { PERMISSIONS } from "@/src/lib/permissions";
+import { slugify } from "@/src/lib/slugify";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -41,19 +42,6 @@ import { SEASONS, EMPTY_COLLECTION_FORM, COLLECTION_SORT_OPTIONS } from "./_comm
 import type { CollectionListResult } from "./_common/types";
 import type { Collection } from "@/src/types/collection";
 import { toMediaUrl } from "@/src/lib/media-url";
-
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function CollectionsContent() {
   const t = useTranslations("admin.collections");
@@ -306,7 +294,6 @@ export default function CollectionsContent() {
         sortOptions={sortOptions}
       />
 
-      {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
         <ModalShell title={editingId ? t("form.titleEdit") : t("form.titleCreate")} onClose={closeModal}>
           <FormTabs tabs={COLLECTION_TABS} active={activeTab} onChange={setActiveTab} />

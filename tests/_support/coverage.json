@@ -1,0 +1,1546 @@
+{
+  "include": [
+    "src/lib/**",
+    "src/hooks/**",
+    "src/contexts/**",
+    "src/store/**",
+    "src/app/[locale]/_components/{RoleGuard,AdminPasswordGate,SystemPasswordPrompt,LoginPromptModal,SignOutButton,UnauthenticatedState,MoneyText,VndInput}.tsx",
+    "src/app/[locale]/\\(auth\\)/login/**",
+    "src/app/[locale]/unauthorized/**",
+    "src/app/media/**",
+    "src/types/enums.ts",
+    "src/types/site-config.ts",
+    "**/server-fetchers.ts",
+    "src/middleware.ts",
+    "scripts/i18n-lib.mjs",
+    "src/i18n/{ScopedMessages,error-message,formats,messages,metadata,navigation,request,routing,use-error-message,use-labels}.{ts,tsx}",
+    "src/app/{robots,sitemap}.ts",
+    "src/lib/{site-url,brand,structured-data}.ts",
+    "src/app/[locale]/_components/JsonLd.tsx",
+    "scripts/{quality-lib,progress-lib,comment-lib}.mjs",
+    "src/app/api/cron/**",
+    "next.config.ts",
+    "src/app/[locale]/\\(private\\)/cart/**",
+    "src/app/[locale]/_components/QuickAddDrawer.tsx",
+    "src/app/[locale]/\\(private\\)/wishlist/**",
+    "src/app/[locale]/\\(private\\)/checkout/**",
+    "src/app/[locale]/\\(private\\)/orders/**",
+    "src/app/[locale]/\\(private\\)/returns/**",
+    "src/app/[locale]/_components/{DataTable,AdminFormKit,InfoHint,Toast,ConfirmDialog,Carousel,CarouselControls,ImageUrlField,ImageListField,ImagePreviewLightbox,ResponsiveBannerImage,StarRating,ProductRating,ProductLink,ReviewContent,ReviewAvatar,ReviewImageGrid,ReviewImageViewer,BannerFade,Checkbox,CopyButton,PendingActionNotice,OrderDetailPanel,OrderPaymentBadge,ProductBagButton}.tsx",
+    "src/app/[locale]/\\(admin\\)/{layout.tsx,AdminLayoutClient.tsx}",
+    "src/app/[locale]/_components/PendingCountsProvider.tsx",
+    "src/app/[locale]/\\(admin\\)/admin/orders/**",
+    "src/app/[locale]/\\(admin\\)/admin/products/**",
+    "src/app/[locale]/\\(admin\\)/admin/payments/**",
+    "src/app/[locale]/\\(admin\\)/admin/refunds/**",
+    "src/app/[locale]/\\(admin\\)/admin/returns/**",
+    "src/app/[locale]/\\(admin\\)/admin/reviews/**",
+    "src/app/[locale]/\\(admin\\)/admin/users/**",
+    "src/app/[locale]/\\(admin\\)/admin/categories/**",
+    "src/app/[locale]/\\(admin\\)/admin/collections/**",
+    "src/app/[locale]/\\(admin\\)/admin/site-config/**",
+    "src/app/[locale]/\\(admin\\)/admin/DashboardContent.tsx",
+    "src/app/[locale]/\\(admin\\)/admin/_components/**",
+    "src/app/[locale]/\\(admin\\)/admin/analytics/**",
+    "src/app/api/analytics/**",
+    "src/hooks/use-admin-analytics.ts",
+    "src/lib/analytics.ts",
+    "src/lib/percent-change.ts",
+    "src/app/[locale]/\\(admin\\)/admin/media/**",
+    "src/app/[locale]/\\(public\\)/shop/page.tsx",
+    "src/app/[locale]/\\(public\\)/shop/[category]/page.tsx",
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/page.tsx",
+    "src/app/[locale]/\\(public\\)/shop/_components/**",
+    "src/app/[locale]/\\(public\\)/shop/_common/**",
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/page.tsx",
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/**",
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/**",
+    "src/app/[locale]/\\(public\\)/collections/page.tsx",
+    "src/app/[locale]/\\(public\\)/collections/[slug]/page.tsx",
+    "src/app/[locale]/\\(public\\)/collections/_components/**",
+    "src/app/[locale]/\\(public\\)/collections/[slug]/_components/**",
+    "src/app/[locale]/\\(public\\)/new-in/page.tsx",
+    "src/app/[locale]/\\(public\\)/new-in/_components/**",
+    "src/app/[locale]/\\(public\\)/page.tsx",
+    "src/app/[locale]/\\(public\\)/landing-page/**",
+    "src/app/[locale]/\\(private\\)/reviews/**",
+    "src/app/[locale]/\\(private\\)/account/**",
+    "src/app/[locale]/\\(public\\)/contact/**",
+    "src/lib/contact.ts",
+    "src/app/[locale]/\\(public\\)/about/**",
+    "src/app/[locale]/\\(public\\)/legal/**",
+    "src/app/[locale]/\\(public\\)/terms/page.tsx",
+    "src/app/[locale]/\\(public\\)/privacy/page.tsx",
+    "src/app/[locale]/\\(public\\)/shipping-returns/page.tsx",
+    "src/lib/legal.ts",
+    "src/app/[locale]/layout.tsx",
+    "src/app/[locale]/not-found.tsx",
+    "src/app/[locale]/\\(public\\)/layout.tsx",
+    "src/app/[locale]/\\(public\\)/error.tsx",
+    "src/app/[locale]/\\(private\\)/layout.tsx",
+    "src/app/[locale]/_components/{Providers,RouteTransition,VercelTelemetry}.tsx",
+    "src/app/[locale]/_components/cursor/**",
+    "src/app/[locale]/_components/{SiteHeader,HeaderNav,HamburgerMenu,DrawerSearch,SearchBar,UserAvatar,Logo,SiteFooter,LanguageSwitcher,SocialIcons,CartFAB}.tsx",
+    "src/app/[locale]/_components/useSearchHistory.ts",
+    "src/lib/socials.tsx"
+  ],
+  "thresholds": {
+    "src/lib/session.ts": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/lib/auth-api.ts": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/lib/api.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/hooks/use-api-auth.ts": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/contexts/auth-context.tsx": {
+      "lines": 85,
+      "functions": 70
+    },
+    "src/lib/permissions.ts": {
+      "lines": 85,
+      "branches": 95
+    },
+    "src/hooks/use-auth-action.ts": {
+      "lines": 95,
+      "branches": 75
+    },
+    "**/RoleGuard.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "**/AdminPasswordGate.tsx": {
+      "lines": 90,
+      "branches": 80
+    },
+    "**/SystemPasswordPrompt.tsx": {
+      "lines": 90,
+      "branches": 85
+    },
+    "**/LoginPromptModal.tsx": {
+      "lines": 90,
+      "branches": 80
+    },
+    "**/SignOutButton.tsx": {
+      "lines": 90,
+      "branches": 85
+    },
+    "**/UnauthenticatedState.tsx": {
+      "lines": 85
+    },
+    "**/GoogleSignInButton.tsx": {
+      "lines": 90,
+      "branches": 80
+    },
+    "src/lib/money.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-money.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "**/MoneyText.tsx": {
+      "lines": 95
+    },
+    "**/VndInput.tsx": {
+      "lines": 95,
+      "branches": 90
+    },
+    "src/lib/list-query.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/media-url.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-url.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-list.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/category-display.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-debounce.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/index.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/baseSlice.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/hooks.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/store/StoreProvider.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/types/enums.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/types/site-config.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-api.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-admin-api.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-media-upload.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/media/**": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "**/server-fetchers.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/middleware.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "scripts/i18n-lib.mjs": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/ScopedMessages.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/error-message.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/formats.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/messages.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/metadata.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/navigation.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/request.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/routing.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/use-error-message.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/i18n/use-labels.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/robots.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/sitemap.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/site-url.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/brand.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/structured-data.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "**/JsonLd.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "scripts/comment-lib.mjs": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "scripts/progress-lib.mjs": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "scripts/quality-lib.mjs": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/cron/**": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "next.config.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/cart/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/cart/_components/CartSync.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/cart/CartContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/QuickAddDrawer.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/wishlist/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/wishlist/WishlistContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/checkout.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/payment.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/use-order-quote.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/_common/use-payment-session.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private)/checkout/CheckoutContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_components/OrderSummary.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_components/ShippingForm.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/payment/[orderId]/PaymentContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/checkout/_components/PaymentCountdown.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/orders/OrdersContent.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/orders/[orderId]/OrderDetailContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 70
+    },
+    "src/app/[locale]/\\(private)/orders/_components/OrderStatusBadge.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/orders/_components/OrderThumb.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/ReturnsContent.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/[returnId]/ReturnDetailContent.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/new/NewReturnContent.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/_components/OrderReturnCard.tsx": {
+      "lines": 90,
+      "branches": 85,
+      "functions": 75
+    },
+    "src/app/[locale]/\\(private)/returns/_common/use-return-eligibility.ts": {
+      "lines": 90,
+      "branches": 70,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/_components/ReturnProgress.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private)/returns/_components/ReturnStatusBadge.tsx": {
+      "lines": 90,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/DataTable.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/AdminFormKit.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/InfoHint.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/Toast.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ConfirmDialog.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/Carousel.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/CarouselControls.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ImageUrlField.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ImageListField.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ImagePreviewLightbox.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ResponsiveBannerImage.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/StarRating.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ProductRating.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ProductLink.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewContent.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewAvatar.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewImageGrid.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ReviewImageViewer.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/BannerFade.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/Checkbox.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/CopyButton.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/PendingActionNotice.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/OrderDetailPanel.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/OrderPaymentBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/ProductBagButton.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/useMediaQuery.ts": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/hooks/use-sort-options.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-auto-advance.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/hooks/use-banner-rotation.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-badge.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/product-purchase.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/AdminLayoutClient.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/layout.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/PendingCountsProvider.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/orders/OrdersContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/orders/_common/moduleSlice.ts": {
+      "lines": 90,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/products/ProductsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/products/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/PaymentsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/AttemptsTable.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/ConfirmPaymentModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/OrderPaymentTab.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/OrderPicker.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/AdminQrPanel.tsx": {
+      "lines": 92,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/QrPresentation.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/AttemptBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_components/VerificationBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/payments/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 65,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/RefundsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/CompleteRefundModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/RejectRefundModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/OrderRefundBanner.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/RefundPaymentSource.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_components/RefundBadge.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/refunds/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/ReturnsContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ReturnDetailPanel.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 80
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ApproveReturnModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/RejectReturnModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ReceiveReturnModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_components/ReturnBadge.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/returns/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/ReviewsContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/ReviewDetailPanel.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/HideReviewModal.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/ReviewReplyForm.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_components/ReviewStatusBadge.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/reviews/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/users/UsersContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/users/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/categories/CategoriesContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/categories/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/collections/CollectionsContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/collections/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/SiteConfigContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/registry.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/banner/BannerConfigModal.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/banner/banner-form.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/shipping/ShippingConfigModal.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/shipping/shipping-form.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/currency/ExchangeRateModal.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/site-config/_types/currency/exchange-rate-form.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/DashboardContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(admin\\)/admin/_components/AnalyticsSummary.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/AnalyticsContent.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/StatTile.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/StatusCard.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/FunnelCard.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/BreakdownCard.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/analytics/_components/TrafficChart.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/api/analytics/route.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/admin-auth.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/plans.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/range.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/vercel-client.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/api/analytics/_lib/build-report.ts": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/hooks/use-admin-analytics.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/lib/analytics.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/lib/percent-change.ts": {
+      "lines": 100,
+      "branches": 90,
+      "functions": 100
+    },
+    "src/app/[locale]/\\(admin\\)/admin/media/MediaContent.tsx": {
+      "lines": 90,
+      "branches": 75,
+      "functions": 80
+    },
+    "src/app/[locale]/\\(admin\\)/admin/media/_common/moduleSlice.ts": {
+      "lines": 95,
+      "branches": 45,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(admin\\)/admin/media/_common/download.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/ProductCard.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/ProductGrid.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/CategoryGrid.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/SubcategoryChips.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/BreadcrumbNav.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/ShopHero.tsx": {
+      "lines": 90,
+      "branches": 60,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/ShopProductsClient.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/_components/ShopFilters.tsx": {
+      "lines": 92,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/_common/constants.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ProductDetailClient.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ZoomableImage.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ImageViewer.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/SizeGuideModal.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ShippingAccordion.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ReviewsSection.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ReviewSummaryPanel.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ReviewFilterBar.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ReviewItem.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/HelpfulButton.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/WriteReviewBar.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/reviews.ts": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/use-product-reviews.ts": {
+      "lines": 95,
+      "branches": 75,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/use-review-votes.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/collections/page.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/collections/[slug]/page.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/collections/_components/CollectionsClient.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/collections/[slug]/_components/CollectionDetailClient.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/new-in/page.tsx": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/new-in/_components/NewInClient.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/page.tsx": {
+      "lines": 95,
+      "branches": 65,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/CollectionShowcase.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/VideoContainer.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 85
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/OutroSection.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/ProductInfo.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/ViewButton.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/Footer.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/landing-page/_components/Caption.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/wishlist/_common/use-product-wishlist.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/ReviewsContent.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/constants.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/upload.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/use-my-reviews.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_common/use-deadline-label.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/ReviewFormModal.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/ReviewImageUploader.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/StarPicker.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/MyReviewCard.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/reviews/_components/PendingReviewCard.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(private\\)/account/AccountContent.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/account/layout.tsx": {
+      "lines": 70,
+      "branches": 45,
+      "functions": 45
+    },
+    "src/app/[locale]/\\(public\\)/contact/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/contact/_components/OrderRequestForm.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/contact/_components/ProductSummaryCard.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/contact/_common/build-order-request.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/contact/_common/constants.ts": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/lib/contact.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/_components/BrandStory.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/_components/ServicesSection.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/about/_components/InvitationHero.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_common/content.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_common/metadata.ts": {
+      "lines": 95,
+      "branches": 50,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_components/LegalPage.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/legal/_components/LegalToc.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/terms/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/privacy/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shipping-returns/page.tsx": {
+      "lines": 95,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/lib/legal.ts": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 95
+    },
+    "src/app/[locale]/layout.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/not-found.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/layout.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/error.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(private\\)/layout.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/Providers.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/RouteTransition.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/VercelTelemetry.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/cursor/CustomCursor.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/cursor/cursor-config.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/cursor/use-cursor-tracker.ts": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/unauthorized/UnauthorizedContent.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/unauthorized/page.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/CartFAB.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 75
+    },
+    "src/app/[locale]/_components/HamburgerMenu.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/HeaderNav.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/LanguageSwitcher.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/Logo.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/SearchBar.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/_components/SiteFooter.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/SiteHeader.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/SocialIcons.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/UserAvatar.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/useSearchHistory.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/lib/socials.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/_components/DrawerSearch.tsx": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/use-add-to-bag.tsx": {
+      "lines": 95,
+      "branches": 70,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_common/use-product-selection.ts": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ProductGallery.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/ProductSpecs.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/PurchaseActions.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 95
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/RelatedProducts.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    },
+    "src/app/[locale]/\\(public\\)/shop/[category]/[subcategory]/[productId]/_components/VariantPickers.tsx": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 90
+    }
+  }
+}

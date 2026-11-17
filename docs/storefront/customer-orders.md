@@ -1,7 +1,7 @@
 # Customer orders (đơn hàng của tôi)
 
-> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-18
-> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
+> **Nhóm:** Storefront (private) · **Route:** `/[locale]/orders`, `/[locale]/orders/[orderId]` · **Cập nhật:** 2026-10-23
+> **Code:** `(private)/orders/` — `page.tsx`, `layout.tsx`, `OrdersContent.tsx`, `[orderId]/{page.tsx,OrderDetailContent.tsx}`, `_common/{constants,types}.ts`, `_components/{LoadFailed,OrderStatusBadge,OrderThumb}.tsx`, dùng `returns/_components/OrderReturnCard.tsx`, `reviews/_components/ReviewFormModal.tsx`, `reviews/_common/{use-pending-reviews,use-deadline-label}.ts`
 > **i18n:** `private.orders` (`meta`, `list`, `detail`; `list.reviewsLink`, `detail.review`), `common.orderStatus`
 
 ## 1. Tóm tắt module
@@ -27,8 +27,8 @@ Cho khách nhìn là biết đơn đang ở đâu (chờ xử lý → xác nhậ
 
 ### 4.1 Dữ liệu
 
-- Danh sách: `GET /api/orders?sort=-createdAt&page&limit=25` (`useApiAuth().apiFetch`) → `{ data: Order[], total }`; trang đầu tải khi vào trang, nút "Xem thêm đơn hàng" (ẩn khi đã đủ `total`) tải trang kế và nối vào cuối danh sách. Lỗi tải → toast `toast.loadFailed` qua `useErrorMessage`.
-- Chi tiết: `GET /api/orders/:orderId` (id lấy từ `useParams`). Lỗi → toast; không có đơn → thông báo `notFound`.
+- Danh sách: `GET /api/orders?sort=-createdAt&page&limit=25` (`useApiAuth().apiFetch`) → `{ data: Order[], total }`; trang đầu tải khi vào trang, nút "Xem thêm đơn hàng" (ẩn khi đã đủ `total`) tải trang kế và nối vào cuối danh sách. Lỗi tải trang đầu → toast `toast.loadFailed` qua `useErrorMessage` và khối `LoadFailed` (`list.error.title`, nút `list.error.retry` gọi lại trang đầu) thay cho màn trống; lỗi ở "Xem thêm" chỉ có toast.
+- Chi tiết: `GET /api/orders/:orderId` (id lấy từ `useParams`). BE trả 404 hoặc đơn rỗng → thông báo `notFound` (404 còn kèm toast); lỗi khác → toast và khối `LoadFailed` (`detail.error.title`, nút `detail.error.retry` gọi lại).
 - `Order` (`_common/types.ts`): `id, status, subtotalVnd/Usd, shippingFeeVnd/Usd, totalVnd/Usd, shippingMethod, shippingAddress: Record<string,string>, note, createdAt, updatedAt, items[{ id, productId | null, productName, productImage, quantity, priceVnd, priceUsd, size, color, createdAt }]`.
 - Thanh toán: lấy từ chính đơn (`Order.paymentStatus` `unpaid` | `paid` | `refunded`, `paidAt`, `paymentAttempts[]`, `refunds[]`; `deliveredAt` là lúc đơn giao tới khách, mở đầu thời hạn trả hàng), không gọi thêm API. `OrderPaymentAttempt { transferCode, amountVnd, amountUsd, status (PENDING|PAID|EXPIRED|CANCELLED, trạng thái thật), createdAt, expiresAt, paidAt, transactionRef | null }`, mới nhất trước; `transferCode` là duy nhất nên dùng làm key.
 
@@ -53,8 +53,19 @@ Ngoài đường dẫn sang thanh toán và hủy đơn chưa trả, trang chỉ
 
 Danh sách dòng còn đánh giá được lấy từ `usePendingReviews()` (`GET /api/my-reviews/pending`, SWR khóa `reviews:pending`), đối chiếu `orderItemId` với `OrderItem.id`; trạng thái đơn không được dùng để suy ra dòng nào đánh giá được (API đơn không cho biết dòng đã đánh giá chưa). Nút chỉ hiện khi `order.status` là `delivered` hoặc `completed` và dòng nằm trong danh sách chờ; bấm mở `ReviewFormModal` (module [customer-reviews](./customer-reviews.md)). Lưu xong: làm mới danh sách chờ (nút biến mất) và tổng hợp ở trang sản phẩm; `1903` đưa sang `/reviews?tab=mine`; `1902` làm mới danh sách chờ. Danh sách chờ lỗi (kể cả thiếu quyền) thì không có nút nào, không báo lỗi. Danh sách đơn không có nút trên từng dòng vì cả thẻ là một link.
 
-### 4.5 Liên quan
+### 4.5 Thiết kế và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/customer-orders.md](../../specs/storefront/customer-orders.md). Test ở `tests/storefront/customer-orders/` (`orders-list`, `order-detail`, `order-cancel`, `order-extras`; `orders-kit.tsx` là BE giả dùng chung); `mutants.json` có đột biến cho hai trang và các thành phần nhỏ.
+
+Các điểm cần biết về hành vi hiện tại:
+
+- Trang chi tiết kiểm tra "chưa đăng nhập" trước "đang tải đơn", nên khách chưa đăng nhập thấy màn chặn ngay (không chờ gọi BE).
+
+
+### 4.6 Liên quan
 
 Đơn được tạo ở [checkout](./checkout.md) (sau khi đặt, `/checkout` chuyển sang trang thanh toán VietQR hoặc `/orders/<id>`); [account](./account.md) hiện tóm tắt 3 đơn gần nhất.
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.
+- **Link sản phẩm:** `OrderItem.product` là `ProductSummary | null` (sản phẩm hiện tại, cạnh phần ảnh chụp `productId`/`productName`/`productImage`). Ở chi tiết đơn, ảnh và tên dòng hàng là `ProductLink` (cùng tab) tới `/shop/<cat>/<sub>/<id>`; `product` `null` thì không có link. Thẻ đơn ở danh sách không có link sản phẩm vì cả thẻ đã là link tới chi tiết đơn.

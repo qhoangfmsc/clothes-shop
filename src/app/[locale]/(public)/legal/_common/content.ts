@@ -4,13 +4,9 @@ import { LEGAL_CONTACT, type LegalDocKey } from "@/src/lib/legal";
 import { getShippingInfo } from "@/src/app/[locale]/(public)/shop/_lib/server-fetchers";
 import type { LegalBlock, LegalDocumentContent } from "./types";
 
-/**
- * Reads one legal document from `public.legal.<doc>` in the message files.
- *
- * Sections and their items are discovered from the JSON itself (in file order), so adding a
- * section or a paragraph is a message-only change. Inside a section: `title`, `p1…pN` are
- * paragraphs and `l1…lN` are list items (consecutive items form one bullet list).
- */
+/** Reads one legal document from `public.legal.<doc>` in the message files. Sections and items are discovered from the JSON
+ *  (file order), so adding a section or paragraph is message-only. In a section: `title`, `p1…pN` paragraphs, `l1…lN` list
+ *  items (consecutive items form one bullet list). */
 export async function getLegalDocument(
   locale: AppLocale,
   doc: LegalDocKey

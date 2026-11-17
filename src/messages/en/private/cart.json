@@ -46,7 +46,8 @@
   "toast": {
     "removed": "{count, plural, one {# item removed from your bag} other {# items removed from your bag}}",
     "addedToWishlist": "{count, plural, one {# item added to your wishlist} other {# items added to your wishlist}}",
-    "alreadyInWishlist": "Already in your wishlist"
+    "alreadyInWishlist": "Already in your wishlist",
+    "wishlistFailed": "Couldn't update your wishlist. Please try again."
   },
   "checkout": {
     "subtotal": "Subtotal ({count, plural, one {# item} other {# items}})",

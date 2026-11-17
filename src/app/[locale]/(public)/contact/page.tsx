@@ -18,6 +18,7 @@ import { pageUrl } from "@/src/lib/structured-data";
 import { getProductById } from "../shop/_lib/server-fetchers";
 import OrderRequestForm from "./_components/OrderRequestForm";
 import type { OrderProduct } from "./_common/types";
+import { productPath } from "@/src/lib/product-url";
 
 type ContactPageProps = {
   params: Promise<{ locale: AppLocale }>;
@@ -51,7 +52,7 @@ async function loadOrderProduct(
   if (!id) return null;
   const product = await getProductById(id);
   if (!product) return null;
-  const path = `/shop/${product.category?.slug ?? ""}/${product.subcategory?.slug ?? ""}/${product.id}`;
+  const path = productPath(product) ?? "/shop";
   return {
     id: product.id,
     name: product.name,
@@ -79,7 +80,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
   const product = await loadOrderProduct(locale, productParam);
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] pt-[7.5rem] pb-20">
+    <main className="min-h-(--page-min-h) bg-[var(--bg-primary)] pt-[7.5rem] pb-20">
       <div className="mx-auto flex max-w-[65rem] flex-col gap-14 px-4 sm:px-6">
         <header className="flex flex-col gap-4">
           <span className="font-primary text-xs font-medium uppercase tracking-[0.08em] text-[var(--accent-primary)]">

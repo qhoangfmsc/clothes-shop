@@ -2,15 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-/**
- * Hook detecting current breakpoint.
- * Returns `{ isMobile, isTablet, isDesktop }`.
- *
- * Breakpoints:
- *   mobile  < 640px
- *   tablet  640px–1023px
- *   desktop ≥ 1024px
- */
+/** Current breakpoint as `{ isMobile, isTablet, isDesktop }`: mobile < 640px, tablet 640–1023px, desktop ≥ 1024px. */
 const BREAKPOINTS = {
   tablet: 640,
   desktop: 1024,

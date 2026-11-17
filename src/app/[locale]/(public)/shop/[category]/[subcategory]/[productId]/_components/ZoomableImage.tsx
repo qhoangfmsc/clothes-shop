@@ -17,13 +17,8 @@ interface ZoomableImageProps {
   onOpen?: () => void;
 }
 
-/**
- * Photo that magnifies under a mouse cursor and follows it for close inspection.
- * The hover zoom is for mouse / pen only (touch keeps native swipe); a click or tap on any device opens the
- * full-screen viewer (`onOpen`). Pressing to drag the gallery drops the hover zoom until the button is released.
- * A small magnifier badge tells visitors the photo can be inspected; the zoom starts after a short hover and eases in.
- * Fills its (relative) slide. The gallery's autoplay already holds while the mouse hovers it, so zooming needs no extra pause.
- */
+/** Photo that magnifies under a mouse or pen cursor (touch keeps native swipe); a click or tap on any device opens the full-screen viewer.
+ *  Pressing to drag the gallery drops the hover zoom until release. Fills its relative slide; the gallery autoplay already pauses on hover. */
 export default function ZoomableImage({ src, alt, priority, onOpen }: ZoomableImageProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const pressedRef = useRef(false);

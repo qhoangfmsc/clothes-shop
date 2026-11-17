@@ -9,10 +9,11 @@ import { useConfirm } from "@/src/app/[locale]/_components/ConfirmDialog";
 import { useToast } from "@/src/app/[locale]/_components/Toast";
 import ReviewContent from "@/src/app/[locale]/_components/ReviewContent";
 import ReviewAvatar from "@/src/app/[locale]/_components/ReviewAvatar";
+import { errorCodeOf } from "@/src/i18n/error-message";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
-import { ApiError } from "@/src/lib/api";
 import { PERMISSIONS } from "@/src/lib/permissions";
 import { toMediaUrl } from "@/src/lib/media-url";
+import { productPath } from "@/src/lib/product-url";
 import { useAppDispatch } from "@/src/store/hooks";
 import type { AdminReview } from "@/src/types/review";
 import { fetchReviewDetail, publishReview } from "../_common/moduleSlice";
@@ -61,7 +62,7 @@ export default function ReviewDetailPanel({ review, onClose, onChanged, onGone }
 
   /** After a failed action: 1906 (already in that state) → show the row as it is now; 1901 → it is gone */
   const refreshAfterError = async (err: unknown) => {
-    const code = err instanceof ApiError ? err.errorCode : undefined;
+    const code = errorCodeOf(err);
     if (code === CODE_NOT_FOUND) {
       onGone();
     } else if (code === CODE_INVALID_STATE) {
@@ -114,6 +115,17 @@ export default function ReviewDetailPanel({ review, onClose, onChanged, onGone }
                     className="text-xs text-[var(--accent-primary)] no-underline hover:underline pointer-coarse:min-h-11 inline-flex items-center"
                   >
                     {t("product.allReviews")}
+                  </Link>
+                )}
+                {/* The link comes from the product's own category / sub-category (`null` when the BE could not load them: no link) */}
+                {review.product && productPath(review.product) && (
+                  <Link
+                    href={productPath(review.product)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[var(--accent-primary)] no-underline hover:underline pointer-coarse:min-h-11 inline-flex items-center"
+                  >
+                    {t("product.viewOnStore")}
                   </Link>
                 )}
               </div>

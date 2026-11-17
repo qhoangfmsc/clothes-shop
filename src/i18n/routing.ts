@@ -15,7 +15,7 @@ export const routing = defineRouting({
 export type AppLocale = (typeof routing.locales)[number];
 
 /** Native name of every language — always shown in its own language, never translated. */
-export const LOCALE_LABELS: Record<AppLocale, { name: string; short: string; ogLocale: string }> = {
-  vi: { name: "Tiếng Việt", short: "VI", ogLocale: "vi_VN" },
-  en: { name: "English", short: "EN", ogLocale: "en_US" },
+export const LOCALE_LABELS: Record<AppLocale, { name: string; ogLocale: string }> = {
+  vi: { name: "Tiếng Việt", ogLocale: "vi_VN" },
+  en: { name: "English", ogLocale: "en_US" },
 };

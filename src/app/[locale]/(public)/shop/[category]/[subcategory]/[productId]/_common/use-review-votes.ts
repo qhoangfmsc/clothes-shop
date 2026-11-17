@@ -19,15 +19,9 @@ interface VoteResult {
   data: { reviewId: string; helpfulCount: number; voted: boolean };
 }
 
-/**
- * "Helpful" state of the signed-in visitor on one product page:
- *  - which reviews they already marked (`GET /api/my-reviews/votes`),
- *  - their own reviews of this product (`GET /api/my-reviews?productId=`): the BE refuses a vote on those, and the
- *    page offers "Edit your review" for the one that can still be edited (fetched `raw` so an edit sends the BE's photo URLs back),
- *  - the counts the BE returned after each vote (the list's own counts are older).
- * Visitors without a session or without the review permission simply get empty sets: the button still works for them
- * after signing in, and a permission error on the lookups is not shown.
- */
+/** "Helpful" state of the signed-in visitor on one product page: reviews already marked, their own reviews of this product
+ *  (the BE refuses votes on those; fetched `raw` so an edit sends the BE's photo URLs back) and the counts returned after each vote.
+ *  Without a session or the review permission the sets stay empty and lookup errors are not shown. */
 export function useReviewVotes(productId: string, onReviewGone: () => void) {
   const t = useTranslations("public.product.reviews");
   const toErrorMessage = useErrorMessage();

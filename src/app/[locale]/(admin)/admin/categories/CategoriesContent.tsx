@@ -25,6 +25,7 @@ import {
 } from "@/src/app/[locale]/_components/AdminFormKit";
 import { ImageUrlField } from "@/src/app/[locale]/_components/ImageUrlField";
 import { PERMISSIONS } from "@/src/lib/permissions";
+import { slugify } from "@/src/lib/slugify";
 import { useErrorMessage } from "@/src/i18n/use-error-message";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import {
@@ -43,19 +44,6 @@ import {
 } from "./_common/constants";
 import type { CategoryListResult } from "./_common/types";
 import type { Category } from "@/src/types/category";
-
-/* ═══════════════════════════════ Helpers ═══════════════════════════════ */
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-/* ═══════════════════════════════ Main Component ═══════════════════════ */
 
 export default function CategoriesContent() {
   const t = useTranslations("admin.categories");
@@ -179,7 +167,7 @@ export default function CategoriesContent() {
       ...p,
       subcategories: [
         ...p.subcategories,
-        { id: 0, slug: "", label: "", description: "", count: 0 },
+        { slug: "", label: "", description: "", count: 0 },
       ],
     }));
 
@@ -327,7 +315,6 @@ export default function CategoriesContent() {
         reorder={{ sortValue: CATEGORY_PRIORITY_SORT, onReorder: handleReorder }}
       />
 
-      {/* ═══════════════ MODAL FORM ═══════════════ */}
       {showModal && (
         <ModalShell title={editingId ? t("form.titleEdit") : t("form.titleCreate")} onClose={closeModal}>
           <FormTabs tabs={CATEGORY_TABS} active={activeTab} onChange={setActiveTab} />

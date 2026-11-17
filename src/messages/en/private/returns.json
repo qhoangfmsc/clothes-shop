@@ -48,6 +48,10 @@
     },
     "toast": {
       "loadFailed": "Couldn't load your return requests. Please try again."
+    },
+    "error": {
+      "title": "We couldn't load your return requests.",
+      "retry": "Try again"
     }
   },
   "detail": {
@@ -97,6 +101,10 @@
     },
     "toast": {
       "loadFailed": "Couldn't load this return request. Please try again."
+    },
+    "error": {
+      "title": "We couldn't load this return request.",
+      "retry": "Try again"
     }
   },
   "form": {

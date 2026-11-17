@@ -42,7 +42,7 @@ export default async function ShopPage({ params }: ShopPageProps) {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "var(--page-min-h)",
         background: "var(--bg-primary)",
       }}
     >
@@ -73,6 +73,7 @@ export default async function ShopPage({ params }: ShopPageProps) {
 
       {/* All Products Section with Filter + Sort + Load More */}
       <div
+        className="bleed"
         style={{
           background: "var(--bg-section-3)",
           paddingTop: 1,

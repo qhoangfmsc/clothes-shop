@@ -85,7 +85,7 @@ export function ImageListField({
             )}
             <button
               type="button"
-              className="absolute top-1 right-1 flex items-center justify-center w-5 h-5 rounded-full bg-black/60 text-white border-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1 right-1 flex items-center justify-center w-5 h-5 rounded-full bg-black/60 text-white border-0 cursor-pointer opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100 pointer-coarse:w-8 pointer-coarse:h-8 transition-opacity"
               onClick={() => removeAt(i)}
               title={t("list.remove")}
             >

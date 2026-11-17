@@ -1,6 +1,6 @@
 # Orders (quản lý đơn hàng)
 
-> **Nhóm:** Admin · **Route:** `/[locale]/admin/orders` (`?orderId=<id>` mở chi tiết) · **Cập nhật:** 2026-10-17
+> **Nhóm:** Admin · **Route:** `/[locale]/admin/orders` (`?orderId=<id>` mở chi tiết) · **Cập nhật:** 2026-10-23
 > **Code:** `(admin)/admin/orders/` — `OrdersContent.tsx`, `_common/{moduleSlice,types,constants}.ts`, `page.tsx` · dùng `_components/OrderDetailPanel.tsx`, `_components/OrderPaymentBadge.tsx`, `admin/payments/_components/OrderPaymentTab.tsx`, `admin/refunds/_components/OrderRefundBanner.tsx`
 > **i18n:** `admin.orders`, `admin.components.orderDetailPanel`, `common.orderStatus`, `common.orderPaymentStatus`
 > **Redux slice:** `state.orders`
@@ -30,14 +30,14 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 - Cột: **Order ID** (`#id`), **Customer** (`shippingAddress.fullName` hoặc `userId`), **Items** (số món), **Total** (`MoneyText`, theo ngôn ngữ), **Status**, **Payment** (`OrderPaymentBadge`, ẩn dưới `sm`), **Date** (`short`), **Actions** (nút "View").
 - Lọc `status` (`ORDER_STATUSES`) và `paymentStatus` (`ORDER_PAYMENT_STATUSES`: `unpaid`, `paid`, `refunded`). Sort (`ORDER_SORT_OPTIONS`): `-createdAt` (mặc định), `createdAt`, `-total`, `total` (sắp theo VND).
 - Ô tìm kiếm (placeholder: mã đơn, SĐT, tên, nội dung chuyển khoản) cũng khớp nội dung chuyển khoản của mọi phiên thanh toán, kể cả đã hết hạn.
-- `fetchOrderList` → `GET /api/admin/orders?search&status&paymentStatus&sort&page&limit`.
+- `fetchOrderList` → `GET /api/admin/orders?search&status&paymentStatus&sort&page&limit`. BE lỗi thì bảng (`DataTable`) hiện "không tải được dữ liệu" kèm nút "Thử lại".
 
 - **Việc cần xử lý** (`needsAction`): khung `PendingActionNotice` ở đầu trang với số `counts.orders` từ `usePendingCounts()` ([admin-shell](./admin-shell.md)): "N đơn cần xử lý" gồm đơn mới chờ xác nhận mà khách chưa có mã QR còn hạn, và đơn đã xác nhận/đã thanh toán chờ chuyển sang giao hàng; không gồm đơn khách đang chuyển khoản (QR còn hạn), đang giao, đã giao, hoàn tất, đã hủy (nên tổng đơn đang chờ có thể lớn hơn số này). Nút "Xem đơn cần xử lý" bật `?needsAction=true` (đồng bộ lên URL, giữ các tham số khác như `orderId`) và gửi `needsAction=true` tới `GET /api/admin/orders` (BE chỉ nhận `true`/`false`; FE chỉ gửi `true`); bật rồi thì nút thành "Xem tất cả"; bảng dựng lại (`key`).
 
 ### 4.2 Đổi trạng thái
 
 - Quy trình (`ORDER_STATUS_TRANSITIONS`): `pending → confirmed | cancelled`; `confirmed → shipping | cancelled`; `shipping → delivered`; `delivered → completed`; `completed` và `cancelled` là trạng thái cuối. `getSelectableOrderStatuses(current)` trả trạng thái hiện tại + các bước tiếp theo — chính là danh sách trong dropdown.
-- `updateOrderStatus` → `PATCH /api/admin/orders/:id/status` với `{ status }`. Thành công: toast `statusChanged` (mã đơn + nhãn trạng thái mới), cập nhật panel đang mở, refresh bảng. Lỗi: toast `statusFailed` qua `useErrorMessage`.
+- `updateOrderStatus` → `PATCH /api/admin/orders/:id/status` với `{ status }`. Thành công: toast `statusChanged` (mã đơn + nhãn trạng thái mới), cập nhật panel đang mở nếu đó là đúng đơn vừa đổi (dạng updater, vì hàm này được cột ghi nhớ giữ), refresh bảng. Lỗi: toast `statusFailed` qua `useErrorMessage`.
 - Dropdown bị khóa khi `isUpdating`.
 - Chuyển đơn **đã thanh toán** (`paymentStatus = paid`) sang `cancelled` hỏi xác nhận trước (`useConfirm`, `danger`, `confirmCancelPaid.*`): BE sẽ tạo yêu cầu hoàn tiền, admin chuyển khoản trả khách ở [refunds](./refunds.md). Đơn `pending` chuyển sang `confirmed` tự động khi thanh toán thành công (BE), nên đơn đã trả thường đã ở `confirmed`.
 
@@ -67,3 +67,7 @@ Cho nhân viên theo dõi đơn, xem nội dung một đơn (sản phẩm, đị
 - Đơn do khách tạo ở [checkout](../storefront/checkout.md); khách xem lại ở [customer-orders](../storefront/customer-orders.md).
 - `OrderDetailPanel` cũng được dùng trong [users](./users.md).
 - Khung modal chi tiết đơn tự dựng (không dùng `ModalShell`): overlay `p-3` → `sm:p-6`, chiều cao tối đa `calc(100dvh - 1.5rem)` (từ `sm`: `85dvh`), cuộn trong khung.
+
+### 4.6 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/admin/orders.md](../../specs/admin/orders.md). Test ở `tests/admin/orders/` (`orders-list`, `orders-actions`, `orders-slice`; `orders-kit.tsx` là BE giả và hàm render dùng chung, tab thanh toán và cảnh báo hoàn tiền được thay bằng bản giả có cùng props); `mutants.json` có đột biến cho `OrdersContent`, kho và hằng sắp xếp.

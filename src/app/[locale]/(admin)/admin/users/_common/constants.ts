@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   USERS MODULE CONSTANTS
-   ═══════════════════════════════════════════════════════════ */
-
 /** `sort=field` ascending, `-field` descending. `key` = label in admin.components.crud.sort.* */
 export const USER_SORT_OPTIONS = [
   { value: "-createdAt", key: "newest" },

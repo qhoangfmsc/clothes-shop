@@ -49,5 +49,9 @@
     "sparkline": "Khách truy cập mỗi ngày trong 7 ngày qua",
     "notConfigured": "Kết nối Vercel Web Analytics để xem lượng truy cập cửa hàng tại đây.",
     "unavailable": "Hiện chưa tải được số liệu truy cập."
+  },
+  "error": {
+    "message": "Không tải được số liệu tổng quan.",
+    "retry": "Thử lại"
   }
 }

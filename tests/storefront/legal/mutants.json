@@ -1,0 +1,470 @@
+[
+  {
+    "name": "legal: the overview does not tell the language",
+    "file": "src/app/[locale]/(public)/legal/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview shows two documents",
+    "file": "src/app/[locale]/(public)/legal/page.tsx",
+    "find": "docs={LEGAL_DOCS.map((d) => d.key)}",
+    "replace": "docs={LEGAL_DOCS.slice(0, 2).map((d) => d.key)}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview is indexed",
+    "file": "src/app/[locale]/(public)/legal/page.tsx",
+    "find": "robots: { index: false, follow: true }",
+    "replace": "robots: { index: true, follow: true }",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview links are not followed",
+    "file": "src/app/[locale]/(public)/legal/page.tsx",
+    "find": "robots: { index: false, follow: true }",
+    "replace": "robots: { index: false, follow: false }",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview has no description",
+    "file": "src/app/[locale]/(public)/legal/page.tsx",
+    "find": "    title,\n    description: t(\"description\"),\n    alternates",
+    "replace": "    title,\n    description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview address is the terms'",
+    "file": "src/app/[locale]/(public)/legal/page.tsx",
+    "find": "alternates: buildAlternates(locale, LEGAL_HUB_PATH),",
+    "replace": "alternates: buildAlternates(locale, \"/terms\"),",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the terms page shows the privacy document",
+    "file": "src/app/[locale]/(public)/terms/page.tsx",
+    "find": "docs={[\"terms\"]}",
+    "replace": "docs={[\"privacy\"]}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the terms title is the privacy one",
+    "file": "src/app/[locale]/(public)/terms/page.tsx",
+    "find": "buildLegalMetadata(locale, \"terms\")",
+    "replace": "buildLegalMetadata(locale, \"privacy\")",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the terms page does not tell the language",
+    "file": "src/app/[locale]/(public)/terms/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the privacy page shows the terms document",
+    "file": "src/app/[locale]/(public)/privacy/page.tsx",
+    "find": "docs={[\"privacy\"]}",
+    "replace": "docs={[\"terms\"]}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the privacy title is the terms one",
+    "file": "src/app/[locale]/(public)/privacy/page.tsx",
+    "find": "buildLegalMetadata(locale, \"privacy\")",
+    "replace": "buildLegalMetadata(locale, \"terms\")",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the shipping page shows the privacy document",
+    "file": "src/app/[locale]/(public)/shipping-returns/page.tsx",
+    "find": "docs={[\"shippingReturns\"]}",
+    "replace": "docs={[\"privacy\"]}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the shipping title is the terms one",
+    "file": "src/app/[locale]/(public)/shipping-returns/page.tsx",
+    "find": "buildLegalMetadata(locale, \"shippingReturns\")",
+    "replace": "buildLegalMetadata(locale, \"terms\")",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the return window is not filled in",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "returnWindow: returnDays ? tTitles(\"returnWindow\", { days: returnDays }) : tTitles(\"returnWindowUnknown\"),",
+    "replace": "returnWindow: tTitles(\"returnWindowUnknown\"),",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: an unknown window shows a number",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "returnDays ? tTitles(\"returnWindow\", { days: returnDays }) : tTitles(\"returnWindowUnknown\")",
+    "replace": "tTitles(\"returnWindow\", { days: returnDays ?? 0 })",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the shop details are not filled in",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "    ...LEGAL_CONTACT,\n    returnWindow",
+    "replace": "    returnWindow",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the title is the key",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "title: tTitles(doc),",
+    "replace": "title: doc,",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the intro has no shop details",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "intro: text(`${doc}.intro`, LEGAL_CONTACT),",
+    "replace": "intro: text(`${doc}.intro`, {}),",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the section title is shown as a paragraph",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "      if (itemKey === \"title\") continue;\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: every item is a paragraph",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "if (!itemKey.startsWith(\"l\")) {",
+    "replace": "if (true) {",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: every item is a list",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "if (!itemKey.startsWith(\"l\")) {",
+    "replace": "if (false) {",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: each list item makes a list of its own",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "} else if (last?.type === \"list\") {",
+    "replace": "} else if (false) {",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the sections are in another order",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "const sections = Object.entries(rawSections).map(",
+    "replace": "const sections = Object.entries(rawSections).reverse().map(",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: a section loses its key",
+    "file": "src/app/[locale]/(public)/legal/_common/content.ts",
+    "find": "      key: sectionKey,",
+    "replace": "      key: \"x\",",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the reading page title is the hub one",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "const title = isOverview ? t(\"hub.title\") : single.title;",
+    "replace": "const title = t(\"hub.title\");",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the reading page subtitle is the hub one",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "const subtitle = isOverview ? t(\"hub.subtitle\") : single.intro;",
+    "replace": "const subtitle = t(\"hub.subtitle\");",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview title is the first document's",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "const title = isOverview ? t(\"hub.title\") : single.title;",
+    "replace": "const title = single.title;",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: one document is called an overview",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "const isOverview = docs.length > 1;",
+    "replace": "const isOverview = docs.length > 0;",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the update date is the short one",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "format.dateTime(new Date(`${LEGAL_LAST_UPDATED}T12:00:00Z`), \"long\")",
+    "replace": "format.dateTime(new Date(`${LEGAL_LAST_UPDATED}T12:00:00Z`), \"short\")",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the other documents list the current one",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "const otherDocs = LEGAL_DOCS.filter((d) => !docKeys.includes(d.key));",
+    "replace": "const otherDocs = LEGAL_DOCS;",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the other documents are never listed",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "{!isOverview && otherDocs.length > 0 && (",
+    "replace": "{false && (",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the sections are not numbered",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "            {index + 1}. {section.title}",
+    "replace": "            {section.title}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the sections are numbered from zero",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "            {index + 1}. {section.title}",
+    "replace": "            {index}. {section.title}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the reading page heads each document",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "DocumentBody key={doc.key} doc={doc} showHeading={isOverview}",
+    "replace": "DocumentBody key={doc.key} doc={doc} showHeading={true}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the overview does not head each document",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "DocumentBody key={doc.key} doc={doc} showHeading={isOverview}",
+    "replace": "DocumentBody key={doc.key} doc={doc} showHeading={false}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the sections keep one level on the overview",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "const SectionHeading = showHeading ? \"h3\" : \"h2\";",
+    "replace": "const SectionHeading = \"h2\";",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: a section has no address",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "          id={`${doc.key}-${section.key}`}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: a document has no address",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "    <article id={doc.key}",
+    "replace": "    <article",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the list items are lost",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "                {block.items.map((item) => (\n                  <li key={item}>{item}</li>\n                ))}",
+    "replace": "",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the label is missing",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalPage.tsx",
+    "find": "            {tTitles(\"title\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the contents are grouped for one document",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalToc.tsx",
+    "find": "const grouped = docs.length > 1;",
+    "replace": "const grouped = docs.length > 0;",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the contents are never grouped",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalToc.tsx",
+    "find": "const grouped = docs.length > 1;",
+    "replace": "const grouped = false;",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: a content link goes to the wrong section",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalToc.tsx",
+    "find": "href={`#${doc.key}-${section.key}`}",
+    "replace": "href={`#${section.key}`}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: a content link has no number",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalToc.tsx",
+    "find": "                    {index + 1}. {section.title}",
+    "replace": "                    {section.title}",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the contents have no name",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalToc.tsx",
+    "find": "aria-label={t(\"contents\")}",
+    "replace": "aria-label=\"\"",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: a document link goes to the wrong place",
+    "file": "src/app/[locale]/(public)/legal/_components/LegalToc.tsx",
+    "find": "href={`#${doc.key}`}",
+    "replace": "href=\"#\"",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the metadata title is the key",
+    "file": "src/app/[locale]/(public)/legal/_common/metadata.ts",
+    "find": "const title = withBrand(tTitles(doc));",
+    "replace": "const title = withBrand(doc);",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the metadata description is the hub's",
+    "file": "src/app/[locale]/(public)/legal/_common/metadata.ts",
+    "find": "const description = t(`${doc}.meta.description`);",
+    "replace": "const description = t(\"hub.meta.description\");",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the metadata address is the hub's",
+    "file": "src/app/[locale]/(public)/legal/_common/metadata.ts",
+    "find": "const path = LEGAL_DOCS.find((d) => d.key === doc)?.path ?? \"\";",
+    "replace": "const path = \"/legal\";",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the privacy path changes",
+    "file": "src/lib/legal.ts",
+    "find": "{ key: \"privacy\", path: \"/privacy\" },",
+    "replace": "{ key: \"privacy\", path: \"/privacy-policy\" },",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the terms come last",
+    "file": "src/lib/legal.ts",
+    "find": "  { key: \"terms\", path: \"/terms\" },\n  { key: \"privacy\", path: \"/privacy\" },",
+    "replace": "  { key: \"privacy\", path: \"/privacy\" },\n  { key: \"terms\", path: \"/terms\" },",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  },
+  {
+    "name": "legal: the hub path changes",
+    "file": "src/lib/legal.ts",
+    "find": "export const LEGAL_HUB_PATH = \"/legal\";",
+    "replace": "export const LEGAL_HUB_PATH = \"/policies\";",
+    "tests": [
+      "tests/storefront/legal/legal.test.tsx"
+    ]
+  }
+]

@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   PRODUCT REVIEWS (product page) — constants and types
-   ═══════════════════════════════════════════════════════════ */
-
 import type { ReviewFit } from "@/src/types/review";
 
 /** Reviews fetched and revealed per step: the first 5 newest, then 5 more for every "Show more" */

@@ -1,6 +1,6 @@
 # Design system (token, font, style toàn cục)
 
-> **Nhóm:** Platform · **Cập nhật:** 2026-10-18
+> **Nhóm:** Platform · **Cập nhật:** 2026-11-17
 > **Code:** `src/styles/design-system.css` · `src/app/globals.css` · `src/assets/fonts/` · `postcss.config.mjs` · `DESIGN.md` (gốc repo) · `public/`
 > **Quy tắc dùng:** `.agent/rules/design-system.md`, `.agent/skills/03-tailwind-styling.md`
 
@@ -36,7 +36,8 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - **Spacing** (lưới 4 px): `--space-1 … --space-20` và **radius** `sm / md / lg / xl` đều bằng `rem` (4 px = 0.25 rem …); `pill` = 9999 px.
 - **Motion**: `--ease-default/out-cubic/in-out/luxury`, `--duration-fast 150 / base 300 / slow 600 / slower 1000 / cinematic 1200`.
 - **z-index**: `base 0, panel 10, overlay 12, fixed 20, cursor 50, modal 100, toast 200`.
-- **Khung rộng trang**: `--page-max-w: 1920px` (giá trị max-width duy nhất của site) và `--page-edge: max(0px, calc((100% - var(--page-max-w)) / 2))` — khoảng cách từ mép viewport tới cột nội dung, dùng cho phần tử `fixed` (xem 4.3, 4.4).
+- **Khung rộng trang**: `--page-max-w: 1920px` (giá trị max-width duy nhất của site), `--page-edge: max(0px, calc((100% - var(--page-max-w)) / 2))` — khoảng cách từ mép viewport tới cột nội dung, dùng cho phần tử `fixed` (xem 4.3, 4.4) — và `--page-bleed: max(0px, calc((100vw - var(--page-max-w)) / 2))` — cùng khoảng cách tính theo `100vw`, dùng cho margin / padding của dải tràn màn hình (class `.bleed`, 4.3).
+- **Chiều cao tối thiểu trang**: `--page-min-h: min(100dvh, 64rem)` — `min-height` của `<main>` các trang nội dung (trang private, contact, legal, danh sách shop, trang chi tiết sản phẩm, wishlist); cửa sổ cao hơn 64 rem (rất cao khi thu nhỏ trình duyệt) không kéo trang ngắn dài theo, và dưới ngưỡng đó hành vi như `100dvh`.
 - Breakpoint: mặc định của Tailwind v4 (không ghi đè): `sm 640`, `md 768`, `lg 1024`, `xl 1280`, `2xl 1536` — xem 4.4.
 
 ### 4.2 Font
@@ -47,11 +48,12 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 
 - **Thang co giãn màn rộng**: `html { font-size: clamp(1rem, 1.0417vw, 1.25rem) }` — bằng cỡ mặc định của trình duyệt (16 px) tới 1536 px, tăng tuyến tính theo viewport (1728 px → 18 px) và dừng ở 20 px từ 1920 px (đúng bề rộng `--page-max-w`). `rem` trong media query vẫn theo cỡ mặc định của trình duyệt nên các breakpoint không dịch chuyển; dưới 1536 px kết quả y hệt thang 16 px. Kích thước viết bằng `px` cố định (`w-[400px]`…) không đi theo thang này nên phải viết bằng `rem` (`.agent/rules/responsive.md`).
 - Reset: `overflow-x: hidden`, font/ màu/ nền từ token.
-- `body` có `width: 100%; max-width: var(--page-max-w); margin-inline: auto` — toàn bộ nội dung (kể cả khu admin) nằm trong một cột căn giữa tối đa 1920 px; viewport rộng hơn (thu nhỏ trình duyệt, màn 2560+) chỉ thấy nền `--bg-primary` hai bên. Phần tử `position: fixed` không theo `body` nên tự căn bằng `--page-edge`: `SiteHeader` và panel mega menu (`left/right`), `CartFAB` (`right`), sidebar admin (`left`). Lớp phủ toàn màn (backdrop, modal, drawer menu/Quick Add, toast), video và panel nền của landing page (`landing-page/`) vẫn theo viewport; các lớp chữ `fixed` của landing page đặt theo `--page-edge`.
+- `body` có `width: 100%; max-width: var(--page-max-w); margin-inline: auto` — toàn bộ nội dung (kể cả khu admin) nằm trong một cột căn giữa tối đa 1920 px; viewport rộng hơn (thu nhỏ trình duyệt, màn 2560+) thấy nền `--bg-primary` hai bên, còn header, footer và các dải màu / hero tràn hết chiều ngang nhờ `.bleed` (xem bên dưới). Phần tử `position: fixed` không theo `body` nên tự căn bằng `--page-edge`: `SiteHeader` và panel mega menu (`left/right`), `CartFAB` (`right`), sidebar admin (`left`). Lớp phủ toàn màn (backdrop, modal, drawer menu/Quick Add, toast), video và panel nền của landing page (`landing-page/`) vẫn theo viewport; các lớp chữ `fixed` của landing page đặt theo `--page-edge`.
+- **Dải tràn màn hình** (`.bleed`, `.bleed-l`, `.bleed-r` trong `globals.css`): nội dung nằm trong cột 1920 px nhưng nền của dải (hero, băng màu, footer, thanh chạy chữ) phủ hết chiều ngang viewport. `.bleed` đặt `margin-inline: calc(var(--page-bleed) * -1)` và `padding-inline: calc(var(--page-bleed) + var(--bleed-px, 0px))` nên nội dung trong dòng không xê dịch; `--bleed-px` là padding ngang riêng của dải (thay cho `px-*`, ví dụ `[--bleed-px:1rem] sm:[--bleed-px:1.5rem]`); con `absolute inset-0` của dải (ảnh nền, lớp phủ) phủ hết chiều ngang. `.bleed-l` / `.bleed-r` đẩy một bên của con (nửa có ảnh của section chia đôi) ra mép màn hình. Từ 1921 px `body` chuyển `overflow-x: visible` để không cắt dải (`html` vẫn ẩn cuộn ngang); dưới 1920 px `--page-bleed` bằng 0 nên không gì đổi. Dải đang dùng: header (nền kính, panel mega menu), `SiteFooter`, `ShopHero`, dải "tất cả sản phẩm" ở `/shop`, hero và `ServicesSection` ở About, các section và thanh chạy chữ của New In và Collections, hero và dải CTA ở chi tiết bộ sưu tập. Không đặt `.bleed` lên phần tử mà GSAP `pin` (pin-spacer sao chép margin/padding): bọc ngoài bằng một `div.bleed` (như thư viện ngang của Collections).
 - Mọi `<img>` fade-in 0.4 s (`img-fade-in`); `img[data-admin-img]` và `img[data-cursor-img]` bỏ qua hiệu ứng này.
 - Keyframes: `spin`, `rt-in`/`rt-out` (route transition), `cart-shimmer`, `skeleton-shimmer`, `checkout-shimmer`, `ni-pulse`, `ni-ticker-scroll` (New In).
 - Custom variant `carousel` (điện thoại/thiết bị cảm ứng) cho Tailwind.
-- Class riêng cho drawer menu (`.drawer-nav-link`, `.drawer-category-link`, `.drawer-close-btn`, `.drawer-signin-btn`, `.drawer-featured-cta`, `.drawer-nav-featured`; drawer không còn style cho chân trang; `.drawer-nav-featured` là hàng nền vàng nhạt + viền vàng của link "Đặt thiết kế", chỉ đổi nền/viền khi hover, không animation hay bóng), mega menu (`.mega-menu-item-link`), user menu (`.user-avatar-btn`, `.user-menu-item`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
+- Class riêng cho drawer menu (`.drawer-nav-link`, `.drawer-category-link`, `.drawer-close-btn`, `.drawer-signin-btn`, `.drawer-featured-cta`, `.drawer-nav-featured`; drawer không còn style cho chân trang; `.drawer-nav-featured` là hàng nền vàng nhạt + viền vàng của link "Đặt thiết kế", chỉ đổi nền/viền khi hover, không animation hay bóng), mega menu (`.mega-menu-item-link`), avatar (`.user-avatar-btn`), `.collection-card`, `.skeleton-product-grid`; `html.custom-cursor-active *` ẩn con trỏ hệ thống.
 - Khối `prefers-reduced-motion: reduce` tắt chuyển động cho các thành phần trên.
 
 ### 4.4 Responsive (hiện trạng)
@@ -71,3 +73,7 @@ Nguồn sự thật cho giao diện: bảng token CSS (màu, chữ, khoảng cá
 - Quy tắc cũ ghi font "Quiche Display / Inter Tight", nhưng code hiện tại dùng một font duy nhất (`--font-site` = Doovan Display) cho cả `--font-primary` và `--font-display`.
 - Tailwind chỉ dùng cho layout/khoảng cách; màu lấy qua `bg-[var(--token)]`, `text-[var(--token)]`.
 - Tài liệu thiết kế chi tiết ở `DESIGN.md` (gốc repo) và `.gemini/skills/doovan-*.md`; file ảnh thiết kế tham chiếu `src/assets/fonts/DOOVAN_design_v1.png`, `v2.png`.
+
+### 4.6 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/platform/design-system.md](../../specs/platform/design-system.md). Test ở `tests/platform/design-system/design-tokens.test.ts` đọc `design-system.css`, `globals.css` và nguồn `src/` để kiểm tính nhất quán của token và style toàn cục (không dựng giao diện); `mutants.json` có đột biến cho hai file CSS.

@@ -6,11 +6,8 @@ const CODE_UPLOAD_LIMIT = 1607;
 
 type ApiFetch = <T>(path: string, options?: { method?: string; body?: unknown; raw?: boolean }) => Promise<T>;
 
-/**
- * Uploads one review photo and returns the URL the BE gives back (the only form it accepts in `images`).
- * The BE blocks a file over 5 MB with a bare `413 File too large` and the daily limit with `429`:
- * both are given a code here so the UI shows a translated message.
- */
+/** Uploads one review photo and returns the URL the BE gives back (the only form `images` accepts).
+ *  The BE answers a file over 5 MB with a bare `413` and the daily limit with `429`; both get a code so the UI can translate. */
 export async function uploadReviewImage(apiFetch: ApiFetch, file: File): Promise<string> {
   const form = new FormData();
   form.append("file", file);

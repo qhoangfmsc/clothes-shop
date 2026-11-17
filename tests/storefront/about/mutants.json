@@ -1,0 +1,371 @@
+[
+  {
+    "name": "about: the page does not tell the language",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "  setRequestLocale(locale);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the hero is missing",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "      <InvitationHero />\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the story is missing",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "      <BrandStory />\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the services are missing",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "      <ServicesSection />\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the story comes first",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "      <InvitationHero />\n\n      {/* Section 2: Brand Story — clean editorial text */}\n      <BrandStory />",
+    "replace": "      <BrandStory />\n\n      {/* Section 2: Brand Story — clean editorial text */}\n      <InvitationHero />",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the title has no description",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "    title,\n    description: t(\"description\"),\n    alternates",
+    "replace": "    title,\n    description: \"\",\n    alternates",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the address is the shop's",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "alternates: buildAlternates(locale, \"/about\"),",
+    "replace": "alternates: buildAlternates(locale, \"/shop\"),",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the share card has another address",
+    "file": "src/app/[locale]/(public)/about/page.tsx",
+    "find": "buildSocialMetadata({ locale, path: \"/about\", title",
+    "replace": "buildSocialMetadata({ locale, path: \"/shop\", title",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the label is missing",
+    "file": "src/app/[locale]/(public)/about/_components/InvitationHero.tsx",
+    "find": "          {t(\"label\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the subheading is missing",
+    "file": "src/app/[locale]/(public)/about/_components/InvitationHero.tsx",
+    "find": "          {t(\"subheading\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the founding line is missing",
+    "file": "src/app/[locale]/(public)/about/_components/InvitationHero.tsx",
+    "find": "          {t(\"established\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the wallpaper is described",
+    "file": "src/app/[locale]/(public)/about/_components/InvitationHero.tsx",
+    "find": "          alt=\"\"\n          fill\n          className=\"object-cover\"\n          priority",
+    "replace": "          alt=\"wallpaper\"\n          fill\n          className=\"object-cover\"\n          priority",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the wallpaper is another picture",
+    "file": "src/app/[locale]/(public)/about/_components/InvitationHero.tsx",
+    "find": "wall_sticker_pink_floral.webp",
+    "replace": "wall_sticker_soft_cream_roses.webp",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the desktop breakpoint is lower",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "window.innerWidth >= 1024",
+    "replace": "window.innerWidth >= 768",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the desktop breakpoint is higher",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "window.innerWidth >= 1024",
+    "replace": "window.innerWidth > 1024",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a resize is not heard",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "    window.addEventListener(\"resize\", check);\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a resize is heard after leaving",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "    return () => window.removeEventListener(\"resize\", check);",
+    "replace": "    return () => {};",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the width is not read at the start",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "    check();\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a wide screen has one column",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "isDesktop ? \"grid-cols-2 gap-16\" : \"grid-cols-1 gap-12\"",
+    "replace": "isDesktop ? \"grid-cols-1 gap-16\" : \"grid-cols-1 gap-12\"",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a narrow screen has two columns",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "isDesktop ? \"grid-cols-2 gap-16\" : \"grid-cols-1 gap-12\"",
+    "replace": "isDesktop ? \"grid-cols-2 gap-16\" : \"grid-cols-2 gap-12\"",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the story subtitle is missing",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "            {t(\"subtitle\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the story title is missing",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "            {t(\"title\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the story picture has no words",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "alt={t(\"imageAlt\")}",
+    "replace": "alt=\"\"",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the story picture is another one",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "wall_sticker_soft_cream_roses.webp",
+    "replace": "wall_sticker_pink_floral.webp",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the quote is missing",
+    "file": "src/app/[locale]/(public)/about/_components/BrandStory.tsx",
+    "find": "            {t(\"quote\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a paragraph is missing",
+    "file": "src/app/[locale]/(public)/about/_common/constants.ts",
+    "find": "[\"first\", \"second\", \"third\", \"identity\"]",
+    "replace": "[\"first\", \"second\", \"third\"]",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the paragraphs are in another order",
+    "file": "src/app/[locale]/(public)/about/_common/constants.ts",
+    "find": "[\"first\", \"second\", \"third\", \"identity\"]",
+    "replace": "[\"second\", \"first\", \"third\", \"identity\"]",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a service is missing",
+    "file": "src/app/[locale]/(public)/about/_common/constants.ts",
+    "find": "  { key: \"styling\", icon: \"❋\" },\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the services are in another order",
+    "file": "src/app/[locale]/(public)/about/_common/constants.ts",
+    "find": "  { key: \"curated\", icon: \"✦\" },\n  { key: \"custom\", icon: \"◈\" },",
+    "replace": "  { key: \"custom\", icon: \"◈\" },\n  { key: \"curated\", icon: \"✦\" },",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a service has another mark",
+    "file": "src/app/[locale]/(public)/about/_common/constants.ts",
+    "find": "icon: \"✦\"",
+    "replace": "icon: \"◈\"",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the section label is missing",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "          {t(\"services.label\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the section title is missing",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "          {t(\"services.title\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a card has no tint",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "                  background: style.bg,\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a card has no border colour",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "                  borderColor: style.border,\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a card has no border",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "className=\"border rounded-md",
+    "replace": "className=\"rounded-md",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the first card has the second tint",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "    bg: \"var(--color-rose-milk)\",",
+    "replace": "    bg: \"var(--color-sage-cream)\",",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the marks have one colour",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "style={{ color: style.iconColor }}",
+    "replace": "style={{ color: \"var(--color-sage)\" }}",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a card shows its key as title",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "{t(`services.items.${service.key}.title`)}",
+    "replace": "{service.key}",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: a card shows its title as description",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "{t(`services.items.${service.key}.description`)}",
+    "replace": "{t(`services.items.${service.key}.title`)}",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the button writes to nobody",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "href={buildMailto()}",
+    "replace": "href=\"#\"",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  },
+  {
+    "name": "about: the button has no words",
+    "file": "src/app/[locale]/(public)/about/_components/ServicesSection.tsx",
+    "find": "            {t(\"cta.button\")}\n",
+    "replace": "",
+    "tests": [
+      "tests/storefront/about/about.test.tsx"
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 # Contact / Custom order (liên hệ đặt may)
 
-> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-10-18
+> **Nhóm:** Storefront (public) · **Route:** `/[locale]/contact` (`?product=<id sản phẩm>`) · **Cập nhật:** 2026-11-17
 > **Code:** `(public)/contact/` — `page.tsx`, `_common/{types,constants,build-order-request}.ts`, `_components/{OrderRequestForm,ProductSummaryCard}.tsx` · `src/lib/product-purchase.ts` (`CONTACT_PATH`, `buildOrderInquiryHref`) · `src/lib/contact.ts` (`CONTACT_EMAIL`, `buildMailto`) · `src/lib/socials.tsx`
 > **i18n:** `public.contact`
 
@@ -27,14 +27,22 @@ Sản phẩm gắn badge `custom_order` không vào giỏ được; nút "Đặt
 
 - `searchParams.product` là id sản phẩm. `loadOrderProduct` gọi `getProductById` (`shop/_lib/server-fetchers.ts`) và rút gọn thành `OrderProduct` (`id, name, sku, priceVnd, priceUsd, originalPriceVnd, originalPriceUsd, badge, images, categoryTitle, subcategoryLabel, description, material, url`; giá lấy nguyên cặp VND/USD của API; phần trăm giảm của thẻ tính từ hai giá VND, không phải số tiền; `url` = `pageUrl(locale, /shop/<category>/<subcategory>/<id>)`, `sku` chỉ đi vào nội dung tin nhắn). Chữ của thẻ nằm ở `public.contact.product.*`. Không có id hoặc id không tồn tại → `product = null`: form vẫn dùng được, không có thẻ sản phẩm và message bỏ khối `PRODUCT`.
 - Điểm vào: `ProductBagButton` (thẻ sản phẩm), nút mua ở trang chi tiết sản phẩm và dòng sản phẩm trong giỏ hàng (khi sản phẩm có badge `custom_order`) → `buildOrderInquiryHref(productId)` = `/contact?product=<encodeURIComponent(id)>`.
+- Ô ngày cần nhận có `min` = ngày hôm nay theo đồng hồ của máy khách (`localDateValue` trong `_common/local-date.ts`, không phải ngày UTC).
 - `buildOrderRequest(t, { product, values, formatDate })` (`_common/build-order-request.ts`) dựng `{ subject, body }` dạng văn bản thuần (`mailto:` không mang được HTML): lời chào, câu mở đầu, các khối `PRODUCT` / `PERSONALISED DESIGN REQUEST` / `ORDER DETAILS` (số đo, cân nặng, số lượng, ngày cần) / `CONTACT` (tiêu đề in hoa, dòng `  nhãn: giá trị`), lời kết kèm tên. Khối hoặc dòng không có dữ liệu bị bỏ. Chuỗi nằm ở `public.contact.message.*`; ngày hiển thị bằng `format.dateTime(…, "long")`.
 - Cân nặng (`values.weight`, chuỗi chỉ gồm số/`.`/`,`, tối đa 5 ký tự) tách khỏi `Measurements` vì đơn vị là kg, không phải cm; vào message thành dòng riêng `message.labels.weight` ("Cân nặng (kg)"), bỏ khi để trống. Chuỗi form: `form.measurements.weight|weightUnit`.
 - Kiểm tra khi bấm gửi (`validate`): `note` (yêu cầu thiết kế) và `fullName` không rỗng; số điện thoại có từ `MIN_PHONE_DIGITS` (8) đến `MAX_PHONE_DIGITS` (15) chữ số. Lỗi hiện dưới ô (`form.errors.*`). Chưa hợp lệ thì không mở `mailto:`.
 - Gửi email: `window.location.href = buildMailto(subject, body)`. Không có request nào đến BE.
-- Email liên hệ `contact@doovan.vn` khai báo một chỗ ở `src/lib/contact.ts` (`CONTACT_EMAIL`); Số hotline (`CONTACT_PHONE` hiển thị, `CONTACT_PHONE_E164` dạng quốc tế) và địa chỉ (`CONTACT_ADDRESS` một dòng, `CONTACT_ADDRESS_PARTS` tách phần cho dữ liệu có cấu trúc, `CONTACT_MAPS_URL` = `GOOGLE_BUSINESS_URL`, link chia sẻ Google Business Profile của DOOVAN, biến `NEXT_PUBLIC_GOOGLE_BUSINESS_URL` ghi đè được) cũng khai báo ở đó. `buildMailto(subject?, body?)` dựng link `mailto:` (mã hóa `%20`, xuống dòng `%0A`).
+- Email liên hệ `contact@doovan.vn` khai báo một chỗ ở `src/lib/contact.ts` (`CONTACT_EMAIL`); Số hotline (`CONTACT_PHONE` hiển thị, `CONTACT_PHONE_E164` dạng quốc tế) và địa chỉ (`CONTACT_ADDRESS` một dòng, `CONTACT_ADDRESS_PARTS` tách phần cho dữ liệu có cấu trúc, `CONTACT_MAPS_URL` = `GOOGLE_BUSINESS_URL`, link chia sẻ Google Business Profile của DOOVAN, hằng cố định) cũng khai báo ở đó. `buildMailto(subject?, body?)` dựng link `mailto:` (mã hóa `%20`, xuống dòng `%0A`).
 - Metadata: `public.contact.meta` + `buildAlternates(locale, "/contact")` + `buildSocialMetadata`. Có trong sitemap (`/contact`, 0.8). Trang phụ thuộc `searchParams` nên được render theo yêu cầu.
 - Hồ sơ mạng xã hội cấu hình ở `src/lib/socials.tsx` (Instagram `doovan.vn`, Facebook `doovan.vn`).
 - Hiện trạng: yêu cầu không được lưu hay gửi từ server; khách dùng app mail của mình để gửi và đính kèm ảnh tham khảo.
 - Thẻ sản phẩm không hiện giá khi sản phẩm có badge `custom_order` (hiện `common.priceOnRequest`, `hasPublicPrice`).
 
 - **Đơn vị kích thước:** các số px trong doc này là giá trị ở gốc 16 px; trong code, chiều dài và cỡ chữ của module viết bằng `rem` (class `…-[…rem]`, token `--text-*` / `--space-*`, style inline `"…rem"`) nên lớn dần từ 1536 px tới 1920 px theo thang gốc `html` ([design-system](../platform/design-system.md) 4.3).
+
+- **Link sản phẩm:** dựng bằng `productPath(product)` (`src/lib/product-url.ts`) từ `product.category.slug` và `product.subcategory.slug` có sẵn trong response (sản phẩm đầy đủ luôn có cả hai); thiếu một trong hai thì `/shop`.
+- **Chiều cao tối thiểu của `<main>`:** `min-h-(--page-min-h)` (token `--page-min-h = min(100dvh, 64rem)`, xem [design-system](../platform/design-system.md)), không còn `min-h-screen` — cửa sổ rất cao (thu nhỏ trình duyệt) không kéo trang ngắn dài ra, chân trang nằm ngay sau nội dung.
+
+### 4.1 Spec và test
+
+Thiết kế, quyết định và các điểm cần biết: [specs/storefront/contact.md](../../specs/storefront/contact.md). Test ở `tests/storefront/contact/` (`contact-lib`, `contact-form`, `contact-page`; `contact-kit.tsx` là dữ liệu mẫu, API sản phẩm giả và công cụ ghi địa chỉ `mailto:`); `mutants.json` có đột biến cho mọi file của module.
